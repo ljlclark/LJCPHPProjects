@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright (c) Lester J. Clark 2022 - All Rights Reserved -->
+<!-- LJCDocDataLib.xml -->
+<items>
+	<!-- File Level -->
+	<LJCDocDataLib>
+		<summary>
+			Contains classes to represent and generate DocData XML.
+		</summary>
+		<remarks>
+			DocData XML data is generated from the PHP source files.
+			&lt;p&gt;
+			Contains classes for these functions:&lt;br /&gt;
+			- Represent a DocData Object Tree&lt;br /&gt;
+			- Serialize and Deserialize DocData XML
+			&lt;/p&gt;
+			&lt;pre&gt;DocData Object Graph:&lt;br /&gt;
+			LJCDocDataFile&lt;br /&gt;
+				Classes - LJCDocDataClasses&lt;br /&gt;
+					LJCDocDataClass&lt;br /&gt;
+						Methods - LJCDocDataMethods&lt;br /&gt;
+							LJCDocDataMethod&lt;br /&gt;
+								Params - LJCDocDataParams&lt;br /&gt;
+									LJCDocDataParam&lt;br /&gt;
+						Properties - LJCDocDataProperties&lt;br /&gt;
+							LJCDocDataProperty&lt;br /&gt;
+				Functions - LJCDocDataMethods&lt;/pre&gt;
+		</remarks>
+	</LJCDocDataLib>
+</items>

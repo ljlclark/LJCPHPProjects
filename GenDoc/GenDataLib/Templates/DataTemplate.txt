@@ -1,0 +1,49 @@
+<?php
+	// Copyright (c) Lester J. Clark 2022 - All Rights Reserved
+
+	// #SectionBegin Class
+	// #Value _ClassName_
+	// #Value _TableName_
+	// ***************
+	/// <summary>Represents a _ClassName_ record.</summary>
+	class _ClassName_
+	{
+		/// <summary>Initializes an object instance.</summary>
+		/// <param name="$name">The Name value.</param>.
+		public function __construct(string $name)
+		{
+			$this->Name = trim($name);
+		}
+
+		// ---------------
+		// Properties
+		// #SectionBegin Properties
+		// #Value _DataType_
+		// #Value _PropertyName_
+
+		/// <summary>The _PropertyName_ value.</summary>
+		public _DataType_ $_PropertyName_;
+		// #SectionEnd Properties
+
+		// ---------------
+		// Property Values
+		// #SectionBegin Properties
+		// #Value _DataType_
+		// #Value _PropertyName_
+
+		/// <summary>The _PropertyName_ property name.</summary>
+		public string $Property_PropertyName_ = "_PropertyName_";
+		// #SectionEnd Properties
+		// #SectionBegin Properties
+		// #Value _DataType_
+		// #Value _MaxLength_
+		// #Value _PropertyName_
+		// #IfBegin _DataType_ string
+
+		/// <summary>The _PropertyName_ length.</summary>
+		public string $Length_PropertyName_ = _MaxLength_;
+		// #IfEnd _DataType_
+		// #SectionEnd Properties
+	}
+	// #SectionEnd Class
+?>

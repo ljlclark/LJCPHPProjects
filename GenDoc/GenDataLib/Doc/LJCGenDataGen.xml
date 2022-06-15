@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright (c) Lester J. Clark 2022 - All Rights Reserved -->
+<!-- LJCGenDataGen.xml -->
+<items>
+	<!-- File Level -->
+	<LJCGenDataGen>
+		<summary>
+			Provides methods to generate GenData XML files.
+		</summary>
+		<remarks>
+			The GenData XML files	provide the	data for GenTextLib-LJCGenText to
+			generate CodeDoc HTML	files.
+			&lt;p&gt;
+			The GenData XML is intended to display the XML Comments based on the Text
+			Template that will be used.
+			&lt;/p&gt;
+			&lt;p&gt;
+			The Text Section and Replacement names must
+			match	those expected by the Template.
+			&lt;/p&gt;
+			&lt;p&gt;
+			The number and names of sections, items and replacements depends on the GenData
+			from the PHP files and the requirements of the HTML Template.
+			&lt;/p&gt;
+			This is the standard layout for the GenData XML files.
+			&lt;pre&gt; &amp;lt;Data xmlns:xsd="http://www.w3.org/2001/XMLSchema"&lt;br /&gt;
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"&amp;gt;&lt;br /&gt;
+        &amp;lt;Sections&amp;gt;&lt;br /&gt;
+          &amp;lt;Section&amp;gt;&lt;br /&gt;
+            &amp;lt;Begin/&amp;gt;&lt;br /&gt;
+            &amp;lt;Name&amp;gt;Main&amp;lt;/Name&amp;gt;&lt;br /&gt;
+            &amp;lt;Items&amp;gt;&lt;br /&gt;
+              &amp;lt;Item&amp;gt;&lt;br /&gt;
+                &amp;lt;Replacements&amp;gt;&lt;br /&gt;
+                  &amp;lt;Replacement&amp;gt;&lt;br /&gt;
+                    &amp;lt;Name&amp;gt;&amp;lt;/Name&amp;gt;&lt;br /&gt;
+                    &amp;lt;Value&amp;gt;&amp;lt;/Value&amp;gt;&lt;br /&gt;
+                  &amp;lt;Replacement&amp;gt;&lt;br /&gt;
+                &amp;lt;Replacements&amp;gt;&lt;br /&gt;
+              &amp;lt;Item&amp;gt;&lt;br /&gt;
+            &amp;lt;Items&amp;gt;&lt;br /&gt;
+          &amp;lt;Section&amp;gt;&lt;br /&gt;
+        &amp;lt;Sections&amp;gt;&lt;br /&gt;
+      &amp;lt;/Data&amp;gt;&lt;/pre&gt;
+		</remarks>
+	</LJCGenDataGen>
+	
+	<!-- Public -->
+	<CreateLibXMLString>
+		<summary>Creates a Lib GenData XML string and optional file.</summary>
+		<param name="$docXMLString">The DocData XML string.</param>
+		<param name="$codeFileSpec">The code file specification.</param>
+		<param name="$writeXML">Indicates if the XML file is to be written.</param>
+		<param name="$outputPath">The output path.</param>
+		<code>
+			$devPath = "c:/Users/Les/Documents/Visual Studio 2022/LJCPHPProjects";
+			require_once "$devPath/GenDoc/GenDataLib/LJCGenDataGenLib.php";
+			require_once "$devPath/GenDoc/GenDataLib/LJCGenDataGenLib.php";
+
+			$docDataGen = new LJCDocDataGen();
+			$genDataGen = new LJCGenDAtaGen();
+
+			$fileSpec = "SourceFile.php";
+			$docXMLString = $this->DocDataGen->CreateDocXMLString($fileSpec);
+			$genXMLString = $this->GenDataGen->CreateLibXMLString($docXMLString
+				, $fileSpec);
+		</code>
+	</CreateLibXMLString>
+	<!-- Private -->
+	<CreateLibClassString>
+		<summary>Creates a Lib Class section GenData XML string.</summary>
+		<param name="$docFileNode">The DocData XML main node.</param>
+	</CreateLibClassString>
+	<CreateLibString>
+		<summary>Creates a Lib GenData XML string.</summary>
+		<param name="$docFileNode">The DocData XML main node.</param>
+		<param name="$fileName"></param>
+	</CreateLibString>
+	<OutputLibSpec>
+		<summary>Creates a Lib DocData XML output file spec.</summary>
+		<param name="$codeFileSpec">The code file specification.</param>
+		<param name="$outputPath">The output path.</param>
+	</OutputLibSpec>
+
+	<!-- Class Methods -->
+	<!-- Private -->
+	<CreateClassMethodString>
+		<summary>Creates a Class Methods section GenData XML string.</summary>
+		<param name="$class">The Class object.</param>
+	</CreateClassMethodString>
+	<CreateClassString>
+		<summary>Creates a Class GenData XML string.</summary>
+		<param name="$class">The Class object.</param>
+		<param name="$fileName"></param>
+	</CreateClassString>
+	<CreateClassesXML>
+		<summary>Creates the Class GenData XML strings and optionally files.</summary>
+		<param name="$docFileNode">The DocData XML main node.</param>
+		<param name="$writeXML">Indicates if the XML file is to be written.</param>
+		<param name="$outputPath">The output path.</param>
+	</CreateClassesXML>
+	<CreateClassXML>
+		<summary>Creates a Class GenData XML string and optional file.</summary>
+		<param name="$class">The Class object.</param>
+		<param name="$libName"></param>
+		<param name="$writeXML">Indicates if the XML file is to be written.</param>
+		<param name="$outputPath">The output path.</param>
+	</CreateClassXML>
+	<OutputClassSpec>
+		<summary>Creates a Class GenData XML output file spec.</summary>
+		<param name="$class">The Class object.</param>
+		<param name="$outputPath">The output path.</param>
+	</OutputClassSpec>
+
+	<!-- Method Methods -->
+	<!-- Private -->
+	<CreateMethodString>
+		<summary>Creates a Method GenData XML string.</summary>
+		<param name="$class">The Class object.</param>
+		<param name="$fileName"></param>
+	</CreateMethodString>
+	<CreateMethodsXML>
+		<summary>Creates the Method GenData XML strings and optionally files.</summary>
+		<param name="$method">The Method object.</param>
+		<param name="$writeXML">Indicates if the XML file is to be written.</param>
+		<param name="$outputPath">The output path.</param>
+	</CreateMethodsXML>
+	<CreateMethodXML>
+		<summary>Creates a Method GenData XML string and optional file.</summary>
+		<param name="$class">The Class object.</param>
+		<param name="$method">The Method object.</param>
+		<param name="$writeXML">Indicates if the XML file is to be written.</param>
+		<param name="$outputPath">The output path.</param>
+	</CreateMethodXML>
+	<OutputMethodSpec>
+		<summary>Creates a Method GenData XML output file spec.</summary>
+		<param name="$class">The Class object.</param>
+		<param name="$method">The Method object.</param>
+		<param name="$outputPath">The output path.</param>
+	</OutputMethodSpec>
+
+	<!-- Property Methods -->
+	<!-- Private -->
+	<CreatePropertyString>
+		<summary>Creates a Property GenData XML string.</summary>
+		<param name="$class">The Class object.</param>
+		<param name="$fileName"></param>
+	</CreatePropertyString>
+	<CreatePropertiesXML>
+		<summary>Creates the Property GenData XML strings and optionally files.</summary>
+		<param name="$property">The Property object.</param>
+		<param name="$writeXML">Indicates if the XML file is to be written.</param>
+		<param name="$outputPath">The output path.</param>
+	</CreatePropertiesXML>
+	<CreatePropertyXML>
+		<summary>Creates a Property GenData XML string and optional file.</summary>
+		<param name="$class">The Class object.</param>
+		<param name="$property">The property object.</param>
+		<param name="$writeXML">Indicates if the XML file is to be written.</param>
+		<param name="$outputPath">The output path.</param>
+	</CreatePropertyXML>
+	<OutputPropertySpec>
+		<summary>Creates a Property GenData XML output file spec.</summary>
+		<param name="$class">The Class object.</param>
+		<param name="$proerty">The property object.</param>
+		<param name="$outputPath">The output path.</param>
+	</OutputPropertySpec>
+</items>

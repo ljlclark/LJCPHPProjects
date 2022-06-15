@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright (c) Lester J. Clark 2022 - All Rights Reserved -->
+<!-- LJCDirective.xml -->
+<items>
+	<LJCDirective>
+		<summary>Represents a template Directive.</summary>
+		<remarks>
+			Template Directives are include in a valid comment line for whatever
+			text type or language is being generated. A line which contains a
+			Directive will not appear in the generated text.
+			&lt;p&gt;
+			The valid Directives are:
+			&lt;/p&gt;
+			&lt;p&gt;
+			&amp;lt;!-- #SectionBegin Name --&gt;
+			&lt;br /&gt;
+			Indicates the beginning of a Section.	The Directive includes the Section
+			name. The Section name is used in the	XMLData to indicate to which Section
+			the Items and Replacements apply.
+			&lt;/p&gt;
+			&lt;p&gt;
+			&amp;lt;!-- #SectionEnd Name --&gt;
+			&lt;br /&gt;
+			Indicates the end of a Section. The	section name is optional and simply
+			helps to identify what section is	ending.
+			&lt;/p&gt;
+			&lt;p&gt;
+			&amp;lt;!-- #Value _ReplacementValue_ --&gt;
+			&lt;br /&gt;
+			A value Directive is currently informational only.	It identifies a
+			Replacement value that appears in Items within that	Section.
+			&lt;/p&gt;
+			&lt;p&gt;
+			&amp;lt;!-- #IfBegin _ReplacementValue_ ComparisonValue --&gt;
+			&lt;br /&gt;
+			This Directive indicates the beginning of conditional text. If the
+			_ReplacementValue_ is	equal to the ComparisonValue, then the next text
+			lines are generated up to	the #IfElse or #IfEnd directive.
+			&lt;br /&gt;
+			The ComparisonValue can be "NotNull". The #IfBegin will be true if the
+			_ReplacementValue_ is not null.
+			&lt;/p&gt;
+			&lt;p&gt;
+			&amp;lt;!-- #IfElse --&gt;
+			&lt;br /&gt;
+			The next text lines are generated	up to the #IfEnd Directive if the
+			#IfBegin Directive was false.
+			&lt;/p&gt;
+			&lt;p&gt;
+			&amp;lt;!-- #IfEnd _ReplacementValue_ comparisonValue --&gt;
+			&lt;br /&gt;
+			The end of the #IfBegin text. The _ReplacementValue_ and ComparisonValue
+			are optional and help to identify which #IfBegin is ending.
+		</remarks>
+	</LJCDirective>
+	<Find>
+		<summary>Find any Directives in a line.</summary>
+		<param name="$line">The text line.</param>
+		<returns>The Directive object or null.</returns>
+		<code>
+			$webCommonPath = "c:/inetpub/wwwroot/LJCPHPCommon";
+			require_once "$webCommonPath/LJCGenTextSectionLib.php";
+
+			$line = "  // #SectionBegin Class
+			$directive = LJCDirective::Find($line);
+		</code>
+	</Find>
+	<construct>
+		<summary> Initializes an object instance.</summary>
+		<param name="$type">The Directive Type.</param>
+		<param name="$name">The Directive name.</param>
+		<code>
+			$webCommonPath = "c:/inetpub/wwwroot/LJCPHPCommon";
+			require_once "$webCommonPath/LJCGenTextSectionLib.php";
+
+			$directive = new LJCDirective("SectionBegin", "Class");
+		</code>
+	</construct>
+</items>

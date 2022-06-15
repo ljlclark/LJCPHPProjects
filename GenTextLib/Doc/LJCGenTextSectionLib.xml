@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright (c) Lester J. Clark 2022 - All Rights Reserved -->
+<!-- LJCGenTextSectionLib.xml -->
+<items>
+	<LJCGenTextSectionLib>
+		<summary>The GenText Section Library</summary>
+		<remarks>
+			Contains the GenData classes used in the text generation process. These
+			classes are also used to Serialize and Deserialize the GenData XML that
+			defines the text Sections, Items and Replacement values.
+			&lt;p&gt;
+			GenData is the XML data format for the data that is merged with a text
+			template file	to generate a customized output file.
+			&lt;/p&gt;
+			See: LJCSections Deserialize() method for the layout of the GenData XML.
+		</remarks>
+	</LJCGenTextSectionLib>
+</items>

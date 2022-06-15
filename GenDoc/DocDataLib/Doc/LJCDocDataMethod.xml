@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright (c) Lester J. Clark 2022 - All Rights Reserved -->
+<!-- LJCDocDataClass.xml -->
+<items>
+	<construct>
+		<summary>Initializes a class instance.</summary>
+		<param name="$name">The Name value.</param>
+		<param name="$summary">The Summary value.</param>
+		<param name="$returns">The Returns value.</param>
+	</construct>
+</items>

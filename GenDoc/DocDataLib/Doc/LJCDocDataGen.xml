@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright (c) Lester J. Clark 2022 - All Rights Reserved -->
+<!-- LJCDocDataGen.xml -->
+<items>
+	<LJCDocDataGen>
+		<summary></summary>
+		<remarks>Generates the DocData XML strings and optionally files.</remarks>
+	</LJCDocDataGen>
+	
+	<!-- Public Static Functions -->
+	<GetFunctionName>
+		<summary>Sets the Function Name if present.</summary>
+		<param name="$tokens">The line tokens.</param>
+		<returns>The function name or null if not found.</returns>
+	</GetFunctionName>
+	<ScrubFunctionName>
+		<summary>Gets the Function Name from the function token.</summary>
+		<param name="$functionToken">The raw parsed function token.</param>
+		<returns>The scrubbed function name.</returns>
+	</ScrubFunctionName>
+	
+	<!-- Public Methods -->
+	<CreateDocXMLString>
+		<summary>Creates and writes the DocData XML.</summary>
+		<param name="$codeFileSpec">The code file specification.</param>
+		<param name="$writeXML">Indicates if the XML file is to be written.</param>
+		<param name="$outputPath">The output path.</param>
+		<returns>The DocData XML string.</returns>
+		<code>
+			require_once "LJCDocDataGenLib.php";
+			
+			$docDataGen = new LJCDocDataGen();
+			$xmlString = $docDataGen->CreateDocXMLString("SourceFile.php");
+		</code>
+	</CreateDocXMLString>
+	<ProcessCode>
+		<summary>Generates the Doc data for the file.</summary>
+		<param name="$codeFileSpec">The code file spec.</param>
+		<returns>The DocData XML string.</returns>
+	</ProcessCode>
+	<DocOutputFileSpec>
+		<summary>Creates the DocData XML output file spec.</summary>
+		<param name="$codeFileSpec">The code file spec.</param>
+		<param name="$outputPath">The output path.</param>
+		<returns>The output file spec.</returns>
+	</DocOutputFileSpec>
+
+	<!-- Private Methods -->
+	<Debug>
+		<summary>Writes a Debug line.</summary>
+		<param name="$text">The output text.</param>
+		<param name="$addLine">True if a cr/lf is included.</param>
+	</Debug>
+</items>

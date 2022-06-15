@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright (c) Lester J. Clark 2022 - All Rights Reserved -->
+<items>
+	<LJCGenDataXML>
+		<summary>Provides methods for creating GenData XML text.</summary>
+		<remarks>
+			Contains static methods for	generating supporting GenData XML text.
+		</remarks>
+	</LJCGenDataXML>
+	
+	<!-- Public Functionss -->
+	<ItemBegin>
+		<summary>Creates the Item begin string.</summary>
+		<param name="$name">The Item name.</param>
+		<param name="$indent">The indent count.</param>
+		<returns>The Item Begin XML string.</returns>
+	</ItemBegin>
+	<ItemEnd>
+		<summary>Creates the Item end string.</summary>
+		<param name="$indent">The indent count.</param>
+		<returns>The Item End XML string.</returns>
+	</ItemEnd>
+	<Replacement>
+		<summary>Creates the Replacement string.</summary>
+		<param name="$name">The Replacement name.</param>
+		<param name="$value">The Replacement value.</param>
+		<param name="$indent">The indent count.</param>
+		<returns>The Replacement XML string.</returns>
+	</Replacement>
+	<SectionBegin>
+		<summary>Creates the Section begin string.</summary>
+		<param name="$name">The Section name.</param>
+		<param name="$indent">The indent count.</param>
+		<returns>The Section Begin XML string.</returns>
+	</SectionBegin>
+	<SectionEnd>
+		<summary>Creates the Section end string.</summary>
+		<param name="$indent">The indent count.</param>
+		<returns>The Section End XML string.</returns>
+	</SectionEnd>
+</items>

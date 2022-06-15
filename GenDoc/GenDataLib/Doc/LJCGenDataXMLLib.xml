@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright (c) Lester J. Clark 2022 - All Rights Reserved -->
+<items>
+	<LJCGenDataXMLLib>
+		<summary>
+			Contains Classes to generate supporting GenData XML text.
+		</summary>
+	</LJCGenDataXMLLib>
+</items>

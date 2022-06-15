@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright (c) Lester J. Clark 2022 - All Rights Reserved -->
+<!-- LJCDocDataGenLib.xml -->
+<items>
+	<LJCDocDataGenLib>
+		<summary>
+			Contains Classes to create DocData from a PHP source file.
+		</summary>
+		<remarks>
+			Contains classes for these functions:&lt;br /&gt;
+			- Extract XML Comments from a PHP File&lt;br /&gt;
+			- Extract XML Comments from Include XML files
+		</remarks>
+	</LJCDocDataGenLib>
+</items>

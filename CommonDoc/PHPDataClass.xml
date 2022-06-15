@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright (c) Lester J. Clark 2022 - All Rights Reserved -->
+<!-- PHPDataClass.xml -->
+<items>
+	<Clone>
+		<summary>Creates a Clone of the current object.</summary>
+		<returns>The cloned object.</returns>
+	</Clone>
+</items>

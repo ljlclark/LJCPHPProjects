@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright (c) Lester J. Clark 2022 - All Rights Reserved -->
+<!-- LJCGenTextLib.xml -->
+<items>
+	<LJCGenTextLib>
+		<summary>
+			The utility to generate text from a template and custom data.
+		</summary>
+	</LJCGenTextLib>
+</items>

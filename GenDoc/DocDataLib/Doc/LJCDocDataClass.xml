@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright (c) Lester J. Clark 2022 - All Rights Reserved -->
+<!-- LJCDocDataClass.xml -->
+<items>
+	<construct>
+		<summary>Initializes a class instance.</summary>
+		<param name="$name">The Name value.</param>
+		<param name="$summary">The Summary value.</param>
+	</construct>
+
+	<!-- Public Methods -->
+	<Clone>
+		<summary>Creates a Clone of the current object.</summary>
+		<returns>The cloned object.</returns>
+		<code>
+			require_once "LJCDocDataLib.php";
+
+			$docDataClass = new LJCDocDataClass("ClassName", "Summary Text");
+			$newDocDataClass = $docDataClass->Clone();
+		</code>
+	</Clone>
+</items>

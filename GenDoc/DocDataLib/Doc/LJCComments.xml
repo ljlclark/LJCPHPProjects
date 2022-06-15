@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright (c) Lester J. Clark 2022 - All Rights Reserved -->
+<!-- LJCComments.xml -->
+<items>
+	<LJCComments>
+		<summary>Provides methods to parse code XML comment values.</summary>
+		<remarks>
+			Parses the code XML comments and holds them until the next generation
+			point. A generation point is the start of a File, Class, Method or
+			Property.
+		</remarks>
+	</LJCComments>
+	
+	<!-- Public Methods -->
+	<SetComment>
+		<summary>Sets the XML comment value.</summary>
+		<param name="$line">The code line.</param>
+		<param name="$codeFileSpec">The code file spec.</param>
+		<code>
+			require_once "LJCCommentsLib.php";
+
+			$line = "/// &amp;lt;summary&amp;gt;A summary comment.&amp;lt;/summary&amp;gt;";
+			$comments = new LJCComments();
+			$comments->SetComment($line, "SourceFile.php");
+			$summary = $comments->Summary;
+		</code>
+	</SetComment>
+</items>

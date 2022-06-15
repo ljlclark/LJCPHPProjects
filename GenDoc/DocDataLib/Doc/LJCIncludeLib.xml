@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright (c) Lester J. Clark 2022 - All Rights Reserved -->
+<!-- LJCIncludeLib.xml -->
+<items>
+	<LJCIncludeLib>
+		<summary>
+			Contains Classes to retrieve XML Comments from include XML files.
+		</summary>
+	</LJCIncludeLib>
+</items>

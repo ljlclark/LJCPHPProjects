@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright (c) Lester J. Clark 2022 - All Rights Reserved -->
+<!-- LJCInclude.xml -->
+<items>
+	<LJCInclude>
+		<summary>Handles Include file XML comment values.</summary>
+		<remarks>
+			Parses the include XML Comments from a referenced Include XML
+			documentation file.
+			&lt;br /&gt;
+			&lt;br /&gt;
+			After the	XML Comments are parsed	for that
+			generation point, they are copied to the LJCComments object.
+		</remarks>
+	</LJCInclude>
+
+	<!-- Public Methods -->
+	<SetComments>
+		<summary>Sets the comments from the specified include file.</summary>
+		<param name="$line">The code line.</param>
+		<param name="$codeFileSpec">The Code File spec.</param>
+		<code>
+			require_once "LJCIncludeLib.php";
+
+			$includeFile = new LJCInclude();
+			$line = "/// &amp;lt;include path='items/SetComment/*' file='Doc/LJCComments.xml'/&amp;gt;"
+			$includeFile->SetComments($line, "SourceFile.php");
+			foreach ($includeFile->Comments as $comment)
+			{
+				// Process each XML comment.
+				// This code is included in the LJCComments->SetComment() method.
+			}
+	</code>
+	</SetComments>
+</items>

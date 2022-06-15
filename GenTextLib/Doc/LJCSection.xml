@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright (c) Lester J. Clark 2022 - All Rights Reserved -->
+<!-- LJCSection.xml -->
+<items>
+	<LJCSection>
+		<summary>Represents a template Section.</summary>
+		<remarks>
+			A Section identifies a section of text for which there can be one or more
+			items.
+			&lt;p&gt;
+			The text within the Section will be generated once for each Item identified
+			in the XMLData file. The Replacements for the current Item are applied to
+			the text.
+			&lt;/p&gt;
+			A Section can appear within another Section but must not cross Section
+			borders. The active Replacements will be for the current Item and the
+			parent tree current Items. That is for all current Items in which the
+			current section is enclosed.
+		</remarks>
+	</LJCSection>
+</items>

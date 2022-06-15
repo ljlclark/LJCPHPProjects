@@ -1,0 +1,19 @@
+webCommonPath /LJCCollectionLib.php
+webCommonPath /LJCCommonLib.php
+webCommonPath /LJCDataManagerLib.php
+webCommonPath /LJCDBAccessLib.php
+webCommonPath /LJCTextLib.php
+
+devPath /GenTextLib/LJCGenTextLib.php
+devPath /GenTextLib/LJCGenTextSectionLib.php
+
+devPath /GenDoc/DocDataLib/LJCCommentsLib.php
+devPath /GenDoc/DocDataLib/LJCDocDataGenLib.php
+devPath /GenDoc/DocDataLib/LJCDocDataLib.php
+devPath /GenDoc/DocDataLib/LJCIncludeLib.php
+devPath /GenDoc/DocDataLib/LJCParamCommentLib.php
+
+devPath /GenDoc/GenCodeDoc/GenCodeDocLib.php
+
+devPath /GenDoc/GenDataLib/LJCGenDataGenLib.php
+devPath /GenDoc/GenDataLib/LJCGenDataXMLLib.php

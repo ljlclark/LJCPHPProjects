@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright (c) Lester J. Clark 2022 - All Rights Reserved -->
+<!-- LJCCommentsLib.xml -->
+<items>
+	<LJCCommentsLib>
+		<summary>
+			Contains Classes to parse code XML comments.
+		</summary>
+		<remarks>
+			Holds the XML Comments for the next generation point. A generation point
+			is the start of a File, Class, Method or Property.
+		</remarks>
+	</LJCCommentsLib>
+</items>

@@ -1,0 +1,163 @@
+﻿<!DOCTYPE html>
+<!-- Copyright(c) Lester J. Clark 2022 - All Rights Reserved -->
+<!-- PHPCodeDoc.html -->
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>LJC PHP Projects</title>
+	<meta charset='utf-8' />
+	<meta name='author' content='Les Clark' />
+	<meta name='viewport' content='width=device-width, initial -scale=1' />
+	<link rel='stylesheet' type='text/css' href='CSS/CodeDoc.css' />
+	<link rel='stylesheet' type='text/css' href='CSS/IFrames.css' />
+	<script src="c:/inetpub/wwwroot/Common/Common.js"></script>
+	<script src="Script/CodeDocNavItems.js"></script>
+	<script src="Script/CodeDocNavEvents.js"></script>
+	<style>
+	</style>
+</head>
+<body>
+	<div>
+		<ul>
+			<li id="Projects" class="navGroup">LJC PHP Projects</li>
+			<li>
+				Common Libraries
+				<ul>
+					<li>
+						<span id="CommonCode" class="navItem">Common Code</span>
+						<ul>
+							<li id="LJCCommon" class="navItem">LJCCommon</li>
+						</ul>
+					</li>
+					<li>
+						<span id="TextOutput" class="navItem">Common Text Output</span>
+						<ul>
+							<li id="TableColumn" class="navItem">LJCHTMLTableColumn</li>
+							<li id="HTMLWriter" class="navItem">LJCHTMLWriter</li>
+							<li id="StringBuilder" class="navItem">LJCStringBuilder</li>
+							<li id="Writer" class="navItem">LJCWriter</li>
+						</ul>
+					</li>
+					<li>
+						<span id="Collections" class="navItem">Collections</span>
+						<ul>
+							<li id="Collection" class="navItem">LJCCollectionBase</li>
+						</ul>
+					</li>
+				</ul>
+			</li>
+			<li>
+				Data Libraries
+				<ul>
+					<li>
+						<span id="DataAccessLib" class="navItem">PDO Data Access</span>
+						<ul>
+							<li id="Connection" class="navItem">LJCConnectionValues</li>
+							<li id="DataAccess" class="navItem">LJCDataAccess</li>
+							<li id="Column" class="navItem">LJCDbColumn</li>
+							<li id="Columns" class="navItem">LJCDbColumns</li>
+							<li id="Join" class="navItem">LJCJoin</li>
+							<li id="Joins" class="navItem">LJCJoins</li>
+							<li id="JoinOn" class="navItem">LJCJoinOn</li>
+							<li id="JoinOns" class="navItem">LJCJoinOns</li>
+						</ul>
+					</li>
+					<li>
+						<span id="DataManagerLib" class="navItem">PDO Data Manager</span>
+						<ul>
+							<li id="DataManager" class="navItem">LJCDataManager</li>
+							<li id="SQLBuilder" class="navItem">LJCSQLBuilder</li>
+						</ul>
+					</li>
+				</ul>
+			</li>
+			<li>
+				Text Generator Utility
+				<ul>
+					<li>
+						<span id="GenSections" class="navItem">Gen Sections</span>
+						<ul>
+							<li id="Directive" class="navItem">LJCDirective</li>
+							<li id="Section" class="navItem">LJCSection</li>
+							<li id="Sections" class="navItem">LJCSections</li>
+							<li id="Replacement" class="navItem">LJCReplacement</li>
+						</ul>
+					</li>
+					<li>
+						<span id="TextGenerator" class="navItem">Text Generator</span>
+						<ul>
+							<li id="GenText" class="navItem">LJCGenText</li>
+						</ul>
+					</li>
+				</ul>
+			</li>
+			<li>
+				CodeDoc Generator Utility
+				<ul>
+					<li>
+						<span id="XMLComments" class="navItem">XML Comments</span>
+						<ul>
+							<li id="LJCComments" class="navItem">LJCComments</li>
+						</ul>
+					</li>
+					<li>
+						<span id="DocDataXML" class="navItem">DocData XML</span>
+						<ul>
+							<li id="DocDataGen" class="navItem">LJCDocDataGen</li>
+						</ul>
+					</li>
+					<li>
+						<span id="DocData" class="navItem">DocData</span>
+						<ul>
+							<li id="DocDataClass" class="navItem">LJCDocDataClass</li>
+							<li id="DocDataClasses" class="navItem">LJCDocDataClasses</li>
+							<li id="DocDataFile" class="navItem">LJCDocDataFile</li>
+							<li id="DocDataMethod" class="navItem">LJCDocDataMethod</li>
+							<li id="DocDataMethods" class="navItem">LJCDocDataMethods</li>
+							<li id="DocDataParam" class="navItem">LJCDocDataParam</li>
+							<li id="DocDataParams" class="navItem">LJCDocDataParams</li>
+							<li id="DocDataProperty" class="navItem">LJCDocDataProperty</li>
+							<li id="DocDataProperties" class="navItem">LJCDocDataProperties</li>
+						</ul>
+					</li>
+					<li>
+						<span id="GenDataXML" class="navItem">GenData XML</span>
+						<ul>
+							<li id="GenDataGen" class="navItem">LJCGenDataGen</li>
+						</ul>
+					</li>
+					<li>
+						<span id="GenXMLSections" class="navItem">GenData XML Sections</span>
+						<ul>
+							<li id="GenSectionXML" class="navItem">LJCGenDataXML</li>
+						</ul>
+					</li>
+					<li>
+						<span id="FileXMLComments" class="navItem">File XML Comments</span>
+						<ul>
+							<li id="Include" class="navItem">LJCInclude</li>
+						</ul>
+					</li>
+					<li>
+						<span id="ParamXMLComments" class="navItem">Param XML Comments</span>
+						<ul>
+							<li id="ParamComment" class="navItem">LJCParamComment</li>
+						</ul>
+					</li>
+				</ul>
+			</li>
+		</ul>
+	</div>
+
+	<script>
+		let parentWindow = window.parent;
+		alert(`frames length: ${parentWindow.length}`);
+
+		let contentFrame = parentWindow.frames[1];
+		Common.ShowProperties("Here", contentFrame);
+
+		let navEvents = new NavEvents();
+		navEvents.AddEvents();
+	</script>
+</body>
+</html>

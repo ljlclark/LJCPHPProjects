@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright (c) Lester J. Clark 2022 - All Rights Reserved -->
+<!-- LJCGenText.xml -->
+<items>
+	<!-- Public Methods -->
+	<ProcessTemplate>
+		<summary>Processes the Template and Data to produce the output string.</summary>
+		<param name="$templateFileSpec">The template file.</param>
+		<param name="$sections">The data sections.</param>
+		<code>$webCommonPath = "c:/inetpub/wwwroot/LJCPHPCommon";
+		 require_once "$webCommonPath/LJCGenTextLib.php";
+		 require_once "$webCommonPath/LJCGenTextSectionLib.php";
+
+		 // $sections is an LJCSections object.
+		 $sections = LJCSections::Deserialize("Sections.xml");
+		 
+		 $genText = new LJCGenText();
+		 $templateFileSpec = "GenDataLib\Templates\ClassTemplate.html";
+		 $outputString = $genText->ProcessTemplate($templateFileSpec, $sections);
+		</code>
+	</ProcessTemplate>
+	
+	<!-- Private Methods -->
+	<ManageSections>
+		<summary>Adds or removes an Active Section.</summary>
+		<param name="$prevLineBegin">The previous line file position.</param>
+		<param name="$itemIndex">The Section Item index.</param>
+		<returns>The Directive object.</returns>
+		<remarks>
+			Sets the Current Section.
+			The Line is set to null if it is a Directive.
+		</remarks>
+	</ManageSections>
+</items>

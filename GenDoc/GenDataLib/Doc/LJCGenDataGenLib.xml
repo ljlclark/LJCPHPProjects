@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright (c) Lester J. Clark 2022 - All Rights Reserved -->
+<!-- LJCGenDataGen.xml -->
+<items>
+	<LJCGenDataGenLib>
+		<summary>
+			Contains classes to create GenData from DocData.
+		</summary>
+		<remarks>
+			Contains classes for these functions:&lt;br /&gt;
+			- Create GenData XML from DocData XML&lt;br /&gt;
+			- Serialize GenData XML&lt;br /&gt;
+			- Create CodeDoc HTML Files
+			&lt;p&gt;
+			Uses the LJCGenTextLib class GenTextLib to create the CodeDoc HTML files
+			by combining the GenData and an HTML Text Template.&lt;br /&gt;
+			In this implementation there is a GenData XML file created for each PHP
+			file,	Class, Method/Function and Property.
+			&lt;/p&gt;
+			&lt;p&gt;
+			An HTML page is generated for each GenData XML file and the corresponding HTML
+			Text Template.&lt;br /&gt;
+			The templates are in the Templates subfolder.
+			&lt;/p&gt;
+			&lt;p&gt;
+			PHP File - LibTemplate.html&lt;br /&gt;
+			Class - ClassTemplate.html&lt;br /&gt;
+			Method - FunctionTemplate.html&lt;br /&gt;
+			Property - PropertyTemplate.html
+			&lt;/p&gt;
+			&lt;p&gt;
+			The PHP HTML files are output to the folder "DocPages".
+			&lt;br /&gt;
+			&lt;br /&gt;
+			A subfolder is created for each class. This folder contains the Class HTML,
+			Methods HTML and Properties HTML files.&lt;br /&gt;
+			The Methods and Properties HTML names	are prefixed with the Class name to
+			prevent overwriting items with the same	name.
+		</remarks>
+	</LJCGenDataGenLib>
+</items>

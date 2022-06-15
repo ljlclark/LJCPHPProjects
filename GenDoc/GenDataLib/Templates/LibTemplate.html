@@ -1,0 +1,56 @@
+﻿<!DOCTYPE html>
+<!-- Copyright(c) Lester J. Clark 2022 - All Rights Reserved -->
+<!-- #SectionBegin Main -->
+<!-- #Value _LibName_ -->
+<!-- #Value _ProjectListFile_ -->
+<!-- #Value _FileSummary_ -->
+<!-- #Value _ItemCount_ -->
+<!-- _LibName_.html -->
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>_LibName_</title>
+	<meta charset="utf-8" />
+	<meta name="author" content="Lester J. Clark" />
+	<meta name="keywords" content="LJCCodeDoc, CodeDoc, File, Library, PHP" />
+	<meta name="description" content="PHP File/Library code documentation." />
+	<meta name="viewport" content="width=device-width" , initial-scale=1 />
+	<link rel='stylesheet' type='text/css' href='../../CSS/CodeDoc.css' />
+</head>
+<body>
+	<div id='Title'><a href='../_ProjectListFile_'>Project List</a><br /></div>
+	<br />
+	<div id='Header'>
+		<div id='Title'>_LibName_.php</div>
+	</div>
+	<br />
+	<div class='Text'>
+		_FileSummary_
+	</div>
+	<!-- #IfBegin _Remarks_ NotNull -->
+	<br />
+	<div class='Text'>Remarks</div>
+	<br />
+	<div class='Text'>
+		_Remarks_
+	</div>
+	<!-- #IfEnd _Remarks_ NotNull -->
+	<br />
+	<div id='Title'>Classes<br></div>
+	<table class='ListTable'>
+		<!-- #SectionBegin Class -->
+		<!-- #Value _ClassName_ -->
+		<!-- #Value _ClassSummary_ -->
+		<tr>
+			<td class='ListTable' width='25%'><a href='_ClassName_/_ClassName_.html'>_ClassName_</a></td>
+			<td class='ListTable'>
+				_ClassSummary_
+			</td>
+		</tr>
+		<!-- #SectionEnd Class -->
+	</table>
+	<div class='Text'>_ItemCount_ Item(s)</div>
+	<br />
+	<div class='SmallText'>Copyright &copy; Lester J. Clark 2022 - All Rights Reserved</div>
+	<!-- #SectionEnd Main -->
+</body>
+</html>

@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright (c) Lester J. Clark 2022 - All Rights Reserved -->
+<!-- LJCDocDataFile.xml -->
+<items>
+	<!-- File Level -->
+	<LJCDocDataFile>
+		<summary>
+			Represents DocData Lib File XML Comments.
+		</summary>
+		<remarks>
+			The DocData XML is intended to contain the XML Comments based on the PHP
+			file structure of Classes, Methods and Properties.
+			&lt;br /&gt;
+			&lt;pre&gt; &amp;lt;LJCDocDataFile&amp;gt;&lt;br /&gt;
+				&amp;lt;Name/&amp;gt;&lt;br /&gt;
+				&amp;lt;Summary/&amp;gt;&lt;br /&gt;
+				&amp;lt;Remarks/&amp;gt;&lt;br /&gt;
+				&amp;lt;Classes&amp;gt;&lt;br /&gt;
+					&amp;lt;Class&gt;&lt;br /&gt;
+						&amp;lt;Name/&amp;gt;&lt;br /&gt;
+						&amp;lt;Summary/&amp;gt;&lt;br /&gt;
+						&amp;lt;Remarks/&amp;gt;&lt;br /&gt;
+						&amp;lt;Methods&amp;gt;&lt;br /&gt;
+							&amp;lt;Method&amp;gt;&lt;br /&gt;
+								&amp;lt;Name/&amp;gt;&lt;br /&gt;
+								&amp;lt;Summary/&amp;gt;&lt;br /&gt;
+								&amp;lt;Params&amp;gt;&lt;br /&gt;
+									&amp;lt;Param&amp;gt;&lt;br /&gt;
+										&amp;lt;Name/&amp;gt;&lt;br /&gt;
+										&amp;lt;Summary/&amp;gt;&lt;br /&gt;
+									&amp;lt;/Param&amp;gt;&lt;br /&gt;
+								&amp;lt;/Params&amp;gt;&lt;br /&gt;
+								&amp;lt;Remarks/&amp;gt;&lt;br /&gt;
+								&amp;lt;Returns/&amp;gt;&lt;br /&gt;
+								&amp;lt;Syntax/&amp;gt;&lt;br /&gt;
+								&amp;lt;Code/&amp;gt;&lt;br /&gt;
+							&amp;lt;/Method&amp;gt;&lt;br /&gt;
+						&amp;lt;/Methods&amp;gt;&lt;br /&gt;
+						&amp;lt;Properties&amp;gt;&lt;br /&gt;
+							&amp;lt;Property&amp;gt;&lt;br /&gt;
+								&amp;lt;Name/&amp;gt;&lt;br /&gt;
+								&amp;lt;Summary/&amp;gt;&lt;br /&gt;
+								&amp;lt;Syntax/&amp;gt;&lt;br /&gt;
+							&amp;lt;/Property&amp;gt;&lt;br /&gt;
+						&amp;lt;/Properties&amp;gt;&lt;br /&gt;
+					&amp;lt;/Class&amp;gt;&lt;br /&gt;
+				&amp;lt;/Classes&amp;gt;&lt;br /&gt;
+			&amp;lt;/LJCDocDataFile&amp;gt;&lt;/pre&gt;
+		</remarks>
+	</LJCDocDataFile>
+	
+	<!-- Static Functions -->
+	<Deserialize>
+		<summary>Deserializes the data from an LJCDocDataFile XML file.</summary>
+		<param name="$xmlFileSpec">The source XML file specification.</param>
+		<returns>The LJCDocDataFile object.</returns>
+		<code>
+			require_once "LJCDocDataLib.php";
+
+			$docDataFile = LJCDocDataFile::Deserialize("DocData.xml");
+		</code>
+	</Deserialize>
+	<DeserializeString>
+		<summary>Deserializes the data from an LJCDocDataFile XML string.</summary>
+		<param name="$xmlString">The XML string.</param>
+		<returns>The LJCDocDataFile object.</returns>
+		<code>
+			require_once "LJCDocDataLib.php";
+
+			$xmlString = readfile("DocData.xml");
+			$docDataFile = LJCDocDataFile::DeserializeString($xmlString);
+		</code>
+	</DeserializeString>
+	<GetProperties>
+		<summary>Deserialize Properties from the Class node.</summary>
+		<param name="$classNode"></param>
+		<returns>The LJCDocDataProperties object.</returns>
+	</GetProperties>
+	
+	<!-- Public Methods -->
+	<Serialize>
+		<summary>Writes the serialized XML.</summary>
+		<param name="$xmlFileSpec">The source XML file specification.</param>
+		<code>
+			require_once "LJCDocDataLib.php";
+			
+			$docDataFile = LJCDocDataFile::Deserialize("DocData.xml");
+			$docDataFile->Serialize("NewDocData.xml");
+		</code>
+	</Serialize>
+	<SerializeToString>
+		<code>
+			require_once "LJCDocDataLib.php";
+
+			$docDataFile = LJCDocDataFile::Deserialize("DocData.xml");
+			$xmlString = $docDataFile->SerializeToString();
+		</code>
+	</SerializeToString>
+</items>

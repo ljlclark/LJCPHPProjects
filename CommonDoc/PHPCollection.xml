@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright (c) Lester J. Clark 2022 - All Rights Reserved -->
+<!-- PHPCollection.xml -->
+<items>
+	<Add>
+		<summary>Adds an object and key value.</summary>
+		<param name="$item">The object to be added to the collection.</param>
+		<param name="$key">The element key.</param>
+		<returns>The added item.</returns>
+	</Add>
+	<Get>
+		<summary>Get the item by Key value.</summary>
+		<param name="$key">The element key.</param>
+		<param name="$throwError">Indicates if an error should be thrown if the key is not found.</param>
+		<returns>The object with the matching key value.</returns>
+	</Get>
+</items>

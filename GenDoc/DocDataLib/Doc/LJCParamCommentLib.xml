@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright (c) Lester J. Clark 2022 - All Rights Reserved -->
+<!-- LJCParamCommentLib.xml -->
+<items>
+	<LJCParamCommentLib>
+		<summary>
+			Contains Classes to manage param XML Comments.
+		</summary>
+	</LJCParamCommentLib>
+</items>
