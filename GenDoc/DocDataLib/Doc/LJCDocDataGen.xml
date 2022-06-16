@@ -4,7 +4,7 @@
 <items>
 	<LJCDocDataGen>
 		<summary></summary>
-		<remarks>Generates the DocData XML strings and optionally files.</remarks>
+		<remarks>Generates the DocData XML strings and optionally XML files.</remarks>
 	</LJCDocDataGen>
 	
 	<!-- Public Static Functions -->
@@ -21,7 +21,7 @@
 	
 	<!-- Public Methods -->
 	<CreateDocXMLString>
-		<summary>Creates and writes the DocData XML.</summary>
+		<summary>Creates and optionally writes the DocData XML.</summary>
 		<param name="$codeFileSpec">The code file specification.</param>
 		<param name="$writeXML">Indicates if the XML file is to be written.</param>
 		<param name="$outputPath">The output path.</param>
