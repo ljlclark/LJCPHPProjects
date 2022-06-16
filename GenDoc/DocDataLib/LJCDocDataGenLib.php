@@ -3,8 +3,9 @@
 	// LJCDocDataGenLib.php
 	declare(strict_types=1);
 	$webCommonPath = "c:/inetpub/wwwroot/LJCPHPCommon";
-	require_once "$webCommonPath/LJCCommonLib.php";
-	require_once "$webCommonPath/LJCTextLib.php";
+	$devPath = "c:/Users/Les/Documents/Visual Studio 2022/LJCPHPProjects";
+	require_once "$devPath/LJCPHPCommon/LJCCommonLib.php";
+	require_once "$devPath/LJCPHPCommon/LJCTextLib.php";
 	require_once "LJCDocDataLib.php";
 	require_once "LJCCommentsLib.php";
 

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright (c) Lester J. Clark 2022 - All Rights Reserved -->
+<!-- LJCHTMLWriter.xml -->
+<items>
+	<WriteHeader>
+		<summary>Writes an HTML table header row.</summary>
+		<param name="$columns">The column definitions.</param>
+		<param name="$width">The column width.</param>
+	</WriteHeader>
+	<WriteRow>
+		<summary>Writes an HTML table data row.</summary>
+		<param name="$dataObject">The data object.</param>
+		<param name="$columns">The column definitions.</param>
+	</WriteRow>
+</items>

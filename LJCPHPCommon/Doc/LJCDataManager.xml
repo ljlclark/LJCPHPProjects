@@ -1,0 +1,321 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright (c) Lester J. Clark 2022 - All Rights Reserved -->
+<!-- LJCDataManager.xml -->
+<items>
+	<LJCDataManager>
+		<summary>Provides Standard DB Table methods.</summary>
+		<remarks>
+			The DataManager class provides a higher level of abstraction on top of the
+			DataAccess class.
+			&lt;p&gt;
+			It does not require the developer to create SQL statements. Instead the
+			developer can use strongly typed DataObjects, KeyColumn definitions, Join
+			definitions and Included PropertyNames arrays to interact with the
+			database.
+			&lt;/p&gt;
+			&lt;p&gt;
+			The DataManager retrieves the Table SchemaColumn Definitions from the
+			database. It uses these definitions to create the SQL statements and
+			modifies them based on KeyColumn definitions, Join definitions and
+			PropertyNames arrays.
+			&lt;/p&gt;
+			The retrieved data can be mapped into strongly typed DataObjects using the
+			methods CreateDataCollection() and CreateDataObject().
+		</remarks>
+	</LJCDataManager>
+	
+	<!-- Constructors -->
+	<construct>
+		<summary>Initializes a class instance with the provided values.</summary>
+		<param name="$connectionValues">The DB Connection values.</param>
+		<param name="$tableName">The table name.</param>
+		<code>$webCommonPath = "c:/inetpub/wwwroot/LJCPHPCommon";
+		 require_once "$webCommonPath/LJCDataManagerLib.php";
+		 require_once "$webCommonPath/LJCDBAccessLib.php";
+
+		 $database = "DatabaseName";
+		 $userID = "UserID";
+		 $password = "Password":
+		 $connectionValues = new LJCConnectionValues("localhost", $database, $userID
+			 , $password);
+
+		 $tableName = "TableName";
+		 $manager = new LJCDataManager($connectionValues, $tableName);
+		</code>
+	</construct>
+	
+	<!-- Public Data Methods -->
+	<Add>
+		<summary>Adds the record for the provided values.</summary>
+		<param name="$dataColumns">The data columns.</param>
+		<returns>The count of affected records.</returns>
+		<remarks>
+			The Add() method uses the values from the $dataColumns collection
+			parameter to insert a record into the database.
+		</remarks>
+		<code>$webCommonPath = "c:/inetpub/wwwroot/LJCPHPCommon";
+		 require_once "$webCommonPath/LJCDataManagerLib.php";
+		 require_once "$webCommonPath/LJCDBAccessLib.php";
+
+		 // See constructor for how to create $connectionValues.
+		 $tableName = "TableName";
+		 $manager = new LJCDataManager($connectionValues, $tableName);
+
+		 $dataColumns = new LJCDbColumns();
+		 $dataColumns->Add("Name", value:"NameValue");
+		 $affectedCount = $manager->Add($dataColumns);
+
+		 // $manager->SQL =
+		 // insert into TableName
+		 //  (
+		 //   Name
+		 //  )
+		 //  values
+		 //  (
+		 //   Name = 'NameValue'
+		 //  )
+		</code>
+	</Add>
+	<Delete>
+		<summary>Deletes the records for the provided values.</summary>
+		<param name="$keyColumns">The where clause key columns.</param>
+		<returns>The count of affected records.</returns>
+		<remarks>
+			The Delete() method deletes records in the database.
+			&lt;p&gt;
+			The $keyColumns collection parameter contains the data for the where
+			clause.
+			&lt;/p&gt;
+			The $keyColumns parameter is required and must have collection elements
+			or the Delete will not be executed.
+		</remarks>
+		<code>$webCommonPath = "c:/inetpub/wwwroot/LJCPHPCommon";
+		 require_once "$webCommonPath/LJCDataManagerLib.php";
+		 require_once "$webCommonPath/LJCDBAccessLib.php";
+
+		 // See constructor for how to create $connectionValues.
+		 $tableName = "TableName";
+		 $manager = new LJCDataManager($connectionValues, $tableName);
+
+		 $keyColumns = new DbColumns();
+		 $keyColumns->Add("ID", value:1);
+		 $affectedCount = $manager->Delete($keyColumns);
+
+		 // $manager->SQL =
+		 // delete from TableName
+		 // where TableName.ID = 1;
+		</code>
+	</Delete>
+	<Load>
+		<summary>Loads the records for the provided values.</summary>
+		<param name="$keyColumns">The where clause key columns.</param>
+		<param name="$propertyNames">The included column property names.</param>
+		<returns>An array of data records.</returns>
+		<remarks>
+			Loads records from the database.
+			&lt;p&gt;
+			The $keyColumns collection parameter contains the data for the where
+			clause.
+			&lt;/p&gt;
+			The optional $propertyNames array parameter contains the names of the
+			properties that will be retrieved. All columns are retrieved if it is
+			null.
+		</remarks>
+		<code>$webCommonPath = "c:/inetpub/wwwroot/LJCPHPCommon";
+		 require_once "$webCommonPath/LJCDataManagerLib.php";
+		 require_once "$webCommonPath/LJCDBAccessLib.php";
+
+		 // See constructor for how to create $connectionValues.
+		 $tableName = "TableName";
+		 $manager = new LJCDataManager($connectionValues, $tableName);
+
+		 $propertyNames = [];
+		 $propertyNames[] = "ID";
+		 $propertyNames[] = "Name";
+		 $affectedCount = $manager->Load(null, $propertyNames);
+
+		 // $manager->SQL =
+		 // select
+		 //   TableName.ID,
+		 //   TableName.Name
+		 // from TableName;
+		</code>
+	</Load>
+	<Retrieve>
+		<summary>Retrieves the record for the provided values.</summary>
+		<param name="$keyColumns">The where clause key columns.</param>
+		<param name="$propertyNames">The included column property names.</param>
+		<returns>An array of record columns.</returns>
+		<remarks>
+			Retrieves a single record from the database.
+			&lt;p&gt;
+			The $keyColumns collection parameter contains the data for the where
+			clause.
+			&lt;/p&gt;
+			The optional $propertyNames array parameter contains the names of the
+			properties that will be retrieved. All columns are retrieved if it is
+			null.
+		</remarks>
+		<code>$webCommonPath = "c:/inetpub/wwwroot/LJCPHPCommon";
+		 require_once "$webCommonPath/LJCDataManagerLib.php";
+		 require_once "$webCommonPath/LJCDBAccessLib.php";
+
+		 // See constructor for how to create $connectionValues.
+		 $tableName = "TableName";
+		 $manager = new LJCDataManager($connectionValues, $tableName);
+
+		 $keyColumns = new DbColumns();
+		 $keyColumns->Add("ID", value:1);
+			
+		 $propertyNames = [];
+		 $propertyNames[] = "ID";
+		 $propertyNames[] = "Name";
+		 $row = $manager->Retrieve($keyColumns, $propertyNames);
+
+		 // $manager->SQL =
+		 // select
+		 //   TableName.ID,
+		 //   TableName.Name
+		 // from TableName
+		 // where TableName.ID = 1;
+		</code>
+	</Retrieve>
+	<Update>
+		<summary>Updates the records for the provided values.</summary>
+		<param name="$keyColumns">The where clause key columns.</param>
+		<param name="$dataColumns">The data columns.</param>
+		<returns>The count of affected records.</returns>
+		<remarks>
+			The Update() method updates records in the database using the values
+			from the $dataColumns collection parameter.
+			&lt;p&gt;
+			The $keyColumns collection parameter contains the data for the where
+			clause.
+			&lt;/p&gt;
+			The $keyColumns parameter is required and must have collection elements
+			or the Update will not be executed.
+		</remarks>
+		<code>$webCommonPath = "c:/inetpub/wwwroot/LJCPHPCommon";
+		 require_once "$webCommonPath/LJCDataManagerLib.php";
+		 require_once "$webCommonPath/LJCDBAccessLib.php";
+
+		 // See constructor for how to create $connectionValues.
+		 $tableName = "TableName";
+		 $manager = new LJCDataManager($connectionValues, $tableName);
+
+		 $keyColumns = new LJCDbColumns();
+		 $keyColumns->Add("ID", value:1);
+			
+		 $dataColumns = new LJCDbColumns();
+		 $dataColumns->Add("Name", value:"NameValue");
+		 $affectedCount = $manager->Update($keyColumns, $dataColumns);
+
+		 // $manager->SQL =
+		 // update TableName
+		 //   set Name = 'NameValue'
+		 // where TableName.ID = 1;
+		</code>
+	</Update>
+	<SQLExecute>
+		<summary>Executes an Add, Delete or Update SQL statement.</summary>
+		<param name="$sql">The SQL statement.</param>
+		<returns>The count of affected records.</returns>
+	</SQLExecute>
+	<SQLLoad>
+		<summary>Executes a Select SQL statement.</summary>
+		<param name="$sql">The SQL statement.</param>
+		<returns>An array of data records.</returns>
+	</SQLLoad>
+	<SQLRetrieve>
+		<summary>Executes a Select SQL statement.</summary>
+		<param name="$sql">The SQL statement.</param>
+		<returns>An array of record columns.</returns>
+	</SQLRetrieve>
+	
+	<!-- Public Methods -->
+	<CreateDataCollection>
+		<summary>
+			Creates an array of typed Data Objects from a DB rows array.
+		</summary>
+		<param name="$collection">A Collection Object to use as a template.</param>
+		<param name="$dataObject">A Data Object to use as a template.</param>
+		<param name="$rows">An array of data records.</param>
+		<returns>An array of Data object records or null if there are no rows.</returns>
+		<remarks>
+			This method provides Object to Relational Mapping (ORM) as it maps an
+			array	of data records into a collection of strongly	typed data objects.
+			It calls the CreateDataObject() method for each data record and adds the
+			resulting typed object to the strongly typed collection.
+			&lt;p&gt;
+			The collection must be an object that extends (inherits from)
+			LJCCollectionLib.php class LJCCollectionBase and provides an AddObject
+			method with the signature	AddObject(DataObject $item, $key = null); Where
+			DataObject is a strongly typed Data Object. See LJCDbAccessLib.php class
+			LJCDbColumns and LJCDbColumn for examples.
+			&lt;/p&gt;
+			&lt;p&gt;
+			The AddObject() method should supply a default key value or the method can
+			be changed to require the programmer to enter it by removing the "= null"
+			from the method signature.
+			&lt;/p&gt;
+			The DataObject must supply a Clone() method.
+		</remarks>
+		<code>$webCommonPath = "c:/inetpub/wwwroot/LJCPHPCommon";
+		 require_once "$webCommonPath/LJCDataManagerLib.php";
+
+		 // See constructor for how to create $connectionValues.
+		 $manager = new LJCDataManager($connectionValues, "TableName");
+
+		 class Person
+		 {
+			 public int $ID;
+			 public string $Name;
+		 }
+
+		 $rows = $manager->Load(null);
+		 $persons = $manager->CreateDataCollection(new Persons(), new Person()
+			 , $rows);
+		 foreach ($persons as $person)
+		 {
+			 echo $person->ID;
+			 echo $person->Name;
+		 }
+		</code>
+	</CreateDataCollection>
+	<CreateDataObject>
+		<summary>Populates a typed Data Object with values from a DB row.</summary>
+		<param name="$dataObject">A Data Object to use as a template.</param>
+		<param name="$row">An array of data columns.</param>
+		<returns>A data object record.</returns>
+		<remarks>
+			This method provides Object to Relational Mapping (ORM) as it maps the
+			data columns to properties in the DataObject and copies the matching
+			values.
+			&lt;br /&gt;
+			&lt;br /&gt;
+			The data column keys which are the result set column names must match
+			property names in the DataObject.
+		</remarks>
+		<code>$webCommonPath = "c:/inetpub/wwwroot/LJCPHPCommon";
+		 require_once "$webCommonPath/LJCDBAccessLib.php";
+
+		 // See constructor for how to create $connectionValues.
+		 $manager = new LJCDataManager($connectionValues, "TableName");
+
+		 class Person
+		 {
+			 public int $ID;
+			 public ?string $Name;
+		 }
+			
+		 $keyColumns = new LJCDbColumns();
+		 $keyColumns->Add("ID", value: 1);
+		 $row = $manager->Retrieve($keyColumns);
+
+		 $dataObject = new Person();
+		 $person = $manager->CreateDataObject($dataObject, $row);
+		 echo $person->ID;
+		 echo $person->Name;
+		</code>
+	</CreateDataObject>
+</items>

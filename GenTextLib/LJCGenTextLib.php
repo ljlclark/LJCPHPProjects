@@ -4,8 +4,8 @@
 	declare(strict_types=1);
 	$webCommonPath = "c:/inetpub/wwwroot/LJCPHPCommon";
 	$devPath = "c:/Users/Les/Documents/Visual Studio 2022/LJCPHPProjects";
-	require_once "$webCommonPath/LJCCommonLib.php";
-	require_once "$webCommonPath/LJCTextLib.php";
+	require_once "$devPath/LJCPHPCommon/LJCCommonLib.php";
+	require_once "$devPath/LJCPHPCommon/LJCTextLib.php";
 	require_once "$devPath/GenTextLib/LJCGenTextSectionLib.php";
 
 	// The utility to generate text from a template and custom GenData.

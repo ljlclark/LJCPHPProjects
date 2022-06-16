@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright (c) Lester J. Clark 2022 - All Rights Reserved -->
+<!-- LJCDbColumn.xml -->
+<items>
+	<LJCDbColumn>
+		<summary>Represents a DB Column definition.</summary>
+		<remarks>
+			The LJCDbColumn object is used extensively throughout the LJC PHP files,
+			utilities and applications; wherever data elements need to be	dynamically
+			defined or manipulated. It is commonly used to define	database table
+			columns.
+			&lt;p&gt;
+			The LJCDbColumn object is often used to facilitate moving data between a
+			database table column and a data object.
+			&lt;/p&gt;
+			A Data Object is an instance of a class that contains properties for each
+			data element in a data source row. It is a strongly typed, object
+			oriented representation of the data source row for use in code. It may
+			contain common methods to assist with cloning and other Data Object
+			functions.
+		</remarks>
+	</LJCDbColumn>
+
+	<!-- Static Methods -->
+	<GetDataType>
+		<summary>Coverts MySQL type names to PHP type names.</summary>
+		<param name="$mySQLTypeName">The MySQL data type name.</param>
+		<returns>The PHP data type name.</returns>
+		<code>$webCommonPath = "c:/inetpub/wwwroot/LJCPHPCommon";
+		 require_once "$webCommonPath/LJCDBAccessLib.php";
+
+		 $dbColumn = new LJCDbColumn("ID", dadtaTypeName: "int");
+		 $phpType = $dbColumn->GetDataType("bit");
+		</code>
+	</GetDataType>
+
+	<!-- Constructors -->
+	<construct>
+		<summary>Initializes a class instance.</summary>
+		<param name="$columnName">The Column name.</param>
+		<param name="$propertyName">The Property name.</param>
+		<param name="$dataTypeName">The DataType name.</param>
+		<param name="$value">The Column value.</param>
+		<code>$webCommonPath = "c:/inetpub/wwwroot/LJCPHPCommon";
+		 require_once "$webCommonPath/LJCDBAccessLib.php";
+
+		 $dbColumn = new LJCDbColumn("Name");
+		</code>
+	</construct>
+</items>

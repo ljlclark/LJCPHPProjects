@@ -3,8 +3,9 @@
   // LJCGenTextSectionLib.php
 	declare(strict_types=1);
 	$webCommonPath = "c:/inetpub/wwwroot/LJCPHPCommon";
-	require_once "$webCommonPath/LJCTextLib.php";
-	require_once "$webCommonPath/LJCDBAccessLib.php";
+	$devPath = "c:/Users/Les/Documents/Visual Studio 2022/LJCPHPProjects";
+	require_once "$devPath/LJCPHPCommon/LJCTextLib.php";
+	require_once "$devPath/LJCPHPCommon/LJCDBAccessLib.php";
 
 	// The utility to generate text from a template and custom data.
 	// The GenText Section Library

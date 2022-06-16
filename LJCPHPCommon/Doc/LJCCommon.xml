@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright (c) Lester J. Clark 2022 - All Rights Reserved -->
+<!-- LJCCommon.xml -->
+<items>
+	<!-- Static Functions -->
+	<StrPos>
+		<summary>Gets the first index for the search value.</summary>
+		<param name="$text">The text to be searched.</param>
+		<param name="$find">The search value.</param>
+		<param name="$start">The search start index.</param>
+		<param name="$exact">Indicates if a case sensitive search is performed.</param>
+		<returns>The integer index value.</returns>
+		<remarks>
+			The integer -1 is returned if the search value is not found.
+			&lt;br /&gt;
+			&lt;br /&gt;
+			This alternative for PHP strpos() always returns an integer. It can be
+			simply tested for success $index &gt;= 0 or failure $index &lt; 0.
+		</remarks>
+		<code>$webCommonPath = "c:/inetpub/wwwroot/LJCPHPCommon";
+		 require_once "$webCommonPath/LJCCommonLib.php";
+
+		 // $index = 5
+		 $index = LJCCommon::StrPos("This here.", "Here");
+
+		 // $index = -1
+		 $index = LJCCommon::StrPos("This here.", "Here", exact: true);
+		</code>
+	</StrPos>
+	<StrRPos>
+		<summary>Gets the last index for the search value.</summary>
+		<param name="$text">The text to be searched.</param>
+		<param name="$find">The search value.</param>
+		<param name="$start">The search start index.</param>
+		<param name="$exact">Indicates if a case sensitive search is performed.</param>
+		<returns>The integer index value.</returns>
+		<remarks>
+			The integer -1 is returned if the search value is not found. It can be
+			simply tested for success $index &gt;= 0 or failure $index &lt; 0.
+			&lt;br /&gt;
+			&lt;br /&gt;
+			This alternative for PHP strpos() always returns an integer.
+		</remarks>
+		<code>$webCommonPath = "c:/inetpub/wwwroot/LJCPHPCommon";
+		 require_once "$webCommonPath/LJCCommonLib.php";
+
+		 // $index = 13
+		 $index = LJCCommon::StrRPos("This here is here.", "Here");
+
+		 // $index = -1
+		 $index = LJCCommon::StrRPos("This here is here.", "Here", exact: true);
+		</code>
+	</StrRPos>
+	<GetDebugFileName>
+		<summary>Gets the Debug file name.</summary>
+		<param name="$folder">The folder name.</param>
+		<param name="$fileName">The file name.</param>
+		<returns>The Debug file spec.</returns>
+		<remarks>
+			This function takes a folder name and a file name. It makes sure the
+			folder exists and returns the text "folder/fileName" with the extension
+			"txt".
+		</remarks>
+		<code>$webCommonPath = "c:/inetpub/wwwroot/LJCPHPCommon";
+			require_once "$webCommonPath/LJCCommonLib.php";
+
+      // $debugFileSpec = "Debug\SourceFile.txt"
+			$debugFileSpec = LJCCommon::GetDebugFileName("Debug", "SourceFile.php");
+		</code>
+	</GetDebugFileName>
+	<GetDelimitedString>
+		<summary>Gets the string between the delimiters.</summary>
+		<param name="$text">The text to be parsed.</param>
+		<param name="$beginDelimiter">The beginning delimiter.</param>
+		<param name="$endDelimiter">The ending delimiter.</param>
+		<param name="$lTrim">Indicates if the parsed value is to be left trimmed.</param>
+		<param name="$rTrim">Indicates if the parsed value is to be right trimmed.</param>
+		<returns>The parsed value.</returns>
+		<remarks>
+			Returns null if the begin delimiter is not found.
+			&lt;br /&gt;
+			&lt;br /&gt;
+			Includes to the end of the string if the end delimiter is null
+			or not found.
+		</remarks>
+		<code>$webCommonPath = "c:/inetpub/wwwroot/LJCPHPCommon";
+		 require_once "$webCommonPath/LJCCommonLib.php";
+
+		 // $text = "here"
+		 $text = LJCCommon::GetDelimitedString("This | here |.", "|", "|");
+		</code>
+	</GetDelimitedString>
+	<GetFileName>
+		<summary>Gets the FileName from the file spec.</summary>
+		<param name="$fileSpec">The file specification.</param>
+		<returns>The file name.</returns>
+		<remarks>
+			Parses from the last "/" to the following ".".
+			&lt;br /&gt;
+			&lt;br /&gt;
+			Includes to the end of the string if the "." is not found.
+		</remarks>
+		<code>$webCommonPath = "c:/inetpub/wwwroot/LJCPHPCommon";
+		 require_once "$webCommonPath/LJCCommonLib.php";
+
+		 // $text = "File"
+		 $text = LJCCommon::GetFileName("../Folder/File.txt");
+		</code>
+	</GetFileName>
+	<GetFileSpecPath>
+		<summary>Gets the Path from the file spec.</summary>
+		<param name="$fileSpec">The file specification.</param>
+		<returns>The file path.</returns>
+		<remarks>
+			Parses to the last "/".
+		</remarks>
+		<code>$webCommonPath = "c:/inetpub/wwwroot/LJCPHPCommon";
+		 require_once "$webCommonPath/LJCCommonLib.php";
+
+		 // $text = "../Folder"
+		 $text = LJCCommon::GetFileSpecPath("../Folder/File.txt");
+		</code>
+	</GetFileSpecPath>
+	<GetIndexedDebugFileName>
+		<summary>Gets the indexed Debug file name.</summary>
+		<param name="$folder">The folder name.</param>
+		<param name="$fileName">The file name.</param>
+		<returns>The indexed Debug file spec.</returns>
+		<remarks>
+			This function takes a folder name and a file name. It makes sure the
+			folder exists and returns the text "folder/fileName$index" with the
+			extension "txt".
+			&lt;br /&gt;
+			&lt;br /&gt;
+			The variable $index in the example file name indicates a unique index
+			value that does not already exist on disk. It begins checking with an
+			index value of 1.
+		</remarks>
+		<code>$webCommonPath = "c:/inetpub/wwwroot/LJCPHPCommon";
+		 require_once "$webCommonPath/LJCCommonLib.php";
+
+		 // $debugFileSpec = "Debug\SourceFile1.txt"
+		 $debugFileSpec = LJCCommon::GetIndexedDebugFileName("Debug"
+			 , "SourceFile.php");
+		</code>
+	</GetIndexedDebugFileName>
+	<Scrub>
+		<summary>Returns a scrubbed external value.</summary>
+		<param name="$text">The text to be scrubbed.</param>
+		<returns>The scrubbed value.</returns>
+		<remarks>
+			Trims the text, strips slashes and converts HTML characters to HTML
+			entities.
+		</remarks>
+		<code>$webCommonPath = "c:/inetpub/wwwroot/LJCPHPCommon";
+		 require_once "$webCommonPath/LJCCommonLib.php";
+
+		 // $text = "&amp;amp;lt;tag&amp;amp;gt;"
+		 $text = LJCCommon::Scrub(" &amp;lt;/tag&amp;gt; ");
+		</code>
+	</Scrub>
+	<SetSessionValue>
+		<summary>Assigns a session value and returns the value.</summary>
+		<param name="$name">The session value name.</param>
+		<param name="$value">The session value.</param>
+		<returns>The session value.</returns>
+		<code>$webCommonPath = "c:/inetpub/wwwroot/LJCPHPCommon";
+		 require_once "$webCommonPath/LJCCommonLib.php";
+
+		 // $dbServer = "localhost"
+		 $dbServer = LJCCommon::SetSessionValue("dbServer", "localhost");
+		</code>
+	</SetSessionValue>
+</items>

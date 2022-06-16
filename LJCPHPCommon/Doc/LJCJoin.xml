@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright (c) Lester J. Clark 2022 - All Rights Reserved -->
+<!-- LJCJoin.xml -->
+<items>
+	<construct>
+		<summary>Initializes a class instance.</summary>
+		<param name="$tableName">The Join table name.</param>
+		<param name="$tableAlias">The Join table alias.</param>
+	</construct>
+</items>

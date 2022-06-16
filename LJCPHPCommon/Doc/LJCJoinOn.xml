@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright (c) Lester J. Clark 2022 - All Rights Reserved -->
+<!-- LJCJoinOn.xml -->
+<items>
+	<construct>
+		<summary>Initializes a class instance.</summary>
+		<param name="$fromColumnName">The 'from' column name.</param>
+		<param name="$toColumnName">The 'to' column name.</param>
+	</construct>
+</items>

@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright (c) Lester J. Clark 2022 - All Rights Reserved -->
+<!-- LJCDbAccess.xml -->  
+<items>
+	<LJCDbAccess>
+		<summary>Provides standard PDO Data Access.</summary>
+		<remarks>
+			The Data Access class encapsulates the repetitive code required to
+			perform common database functions using PDO. This reduces the amount of
+			application code required to access this functionality and provides a
+			standard location for implementing common best practices.
+		</remarks>
+	</LJCDbAccess>
+	
+	<!-- Static Functions -->
+	<GetValue>
+		<summary>
+			Returns a data value if the element exists, otherwise returns null.</summary>
+		<param name="$row">The data row columns.</param>
+		<param name="$columnName">The column name.</param>
+		<returns>The data value.</returns>
+		<remarks>
+			Returns null if the element does not exist.
+		</remarks>
+		<code>$webCommonPath = "c:/inetpub/wwwroot/LJCPHPCommon";
+		 require_once "$webCommonPath/LJCDBAccessLib.php";
+
+		 // See constructor for how to create $connectionValues.
+		 $dbAccess = new LJCDbAccess($connectionValues);
+
+		 $tableName = "TableName";
+		 $sql = "select ID, Name from $tableName where ID = 1";
+		 $row = $dbAccess->Retrieve($sql);
+		 $id = LJCDbAccess::GetValue($row, "ID");
+		 $name = LJCDbAccess::GetValue($row, "Name");
+		</code>
+	</GetValue>
+
+	<!-- Constructors -->
+	<construct>
+		<summary>Initializes a class instance.</summary>
+		<param name="$connectionValues">The Connection values.</param>
+		<code>$webCommonPath = "c:/inetpub/wwwroot/LJCPHPCommon";
+		 require_once "$webCommonPath/LJCDBAccessLib.php";
+
+		 $database = "DatabaseName";
+		 $userID = "UserID";
+		 $password = "Password":
+		 $connectionValues = new LJCConnectionValues("localhost", $database, $userID
+			 , $password);
+		 $dbAccess = new LJCDbAccess($connectionValues);
+		</code>
+	</construct>
+
+	<!-- Public Data Methods -->
+	<Execute>
+		<summary>Executes a non-query sql statement.</summary>
+		<param name="$sql">The SQL statement.</param>
+		<returns>The count of affected records.</returns>
+		<code>$webCommonPath = "c:/inetpub/wwwroot/LJCPHPCommon";
+		 require_once "$webCommonPath/LJCDBAccessLib.php";
+
+		 // See constructor for how to create $connectionValues.
+		 $dbAccess = new LJCDbAccess($connectionValues);
+
+		 $tableName = "TableName";
+		 $sql = "delete from $tableName where ID = 1";
+		 $affectedCount = $dbAccess->Execute($sql);
+		</code>
+	</Execute>
+	<Load>
+		<summary>Loads the records for the provided SQL statement.</summary>
+		<param name="$sql">The SQL statement.</param>
+		<returns>An array of data records.</returns>
+		<code>$webCommonPath = "c:/inetpub/wwwroot/LJCPHPCommon";
+		 require_once "$webCommonPath/LJCDBAccessLib.php";
+
+		 // See constructor for how to create $connectionValues.
+		 $dbAccess = new LJCDbAccess($connectionValues);
+
+		 $tableName = "TableName";
+		 $sql = "select * from $tableName";
+		 $rows = $dbAccess->Load($sql);
+		</code>
+	</Load>
+	<Retrieve>
+		<summary>Retrieves a record for the provided SQL statement.</summary>
+		<param name="$sql">The SQL statement.</param>
+		<returns>An array of record columns.</returns>
+		<code>$webCommonPath = "c:/inetpub/wwwroot/LJCPHPCommon";
+		 require_once "$webCommonPath/LJCDBAccessLib.php";
+
+		 // See constructor for how to create $connectionValues.
+		 $dbAccess = new LJCDbAccess($connectionValues);
+
+		 $tableName = "TableName";
+		 $sql = "select * from $tableName where ID = 1";
+		 $row = $dbAccess->Retrieve($sql);
+		</code>
+	</Retrieve>
+
+	<!-- Other Public Methods -->
+	<GetConnection>
+		<summary>Creates the PDO connection.</summary>
+		<returns>The PDO connection object.</returns>
+		<code>$webCommonPath = "c:/inetpub/wwwroot/LJCPHPCommon";
+		 require_once "$webCommonPath/LJCDBAccessLib.php";
+
+		 // See constructor for how to create $connectionValues.
+		 $dbAccess = new LJCDbAccess($connectionValues);
+
+		 $connection = $dbAccess->GetConnection();
+		 if ($connection != null)
+		 {
+			 // Use connection to perform low level data access.
+		 }
+		</code>
+	</GetConnection>
+	<LoadTableSchema>
+		<summary>Returns the Table Schema DbColumns collection.</summary>
+		<param name="$dbName">The Database name.</param>
+		<param name="$tableName">The Table name.</param>
+		<returns>A DbColumns collection of column definitions.</returns>
+		<code>$webCommonPath = "c:/inetpub/wwwroot/LJCPHPCommon";
+		 require_once "$webCommonPath/LJCDBAccessLib.php";
+
+		 // See constructor for how to create $connectionValues.
+		 $dbAccess = new LJCDbAccess($connectionValues);
+
+		 $tableName = "TableName";
+		 $dbColumns = $dbAccess->LoadTableSchema($database, $tableName);
+		 if (count($dbColumns) > 0)
+		 {
+			 // Use DbColumns data definitions.
+		 }
+		</code>
+	</LoadTableSchema>
+	<SetConnectionValues>
+		<summary>Sets the $ConnectionValues property.</summary>
+		<param name="$dbServer">The DB Server name.</param>
+		<param name="$dbName">The Database name.</param>
+		<param name="$userID">The user name.</param>
+		<param name="$password">The user Password.</param>
+		<code>$webCommonPath = "c:/inetpub/wwwroot/LJCPHPCommon";
+		 require_once "$webCommonPath/LJCDBAccessLib.php";
+
+		 // See constructor for how to create $connectionValues.
+		 $dbAccess = new LJCDbAccess($connectionValues);
+
+		 // Change some of the object properties.
+		 $tableName = "NewTableName";
+		 $dbAccess->SetConnectionValues($database, $tableName);
+		</code>
+	</SetConnectionValues>
+
+	<!-- Private Methods -->
+	<GetTableSchema>
+		<summary>Creates the Table Schema DbColumn object.</summary>
+		<param name="$row">The array of data columns.</param>
+		<returns>A DbColumn table column definition.</returns>
+	</GetTableSchema>
+</items>

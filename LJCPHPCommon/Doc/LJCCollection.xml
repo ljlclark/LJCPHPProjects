@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright (c) Lester J. Clark 2022 - All Rights Reserved -->
+<!-- LJCCollection.xml -->
+<items>
+	<AddItem>
+		<summary>Adds an object and key value.</summary>
+		<param name="$item">The object to be added to the collection.</param>
+		<param name="$key">The element key.</param>
+		<returns>The added item.</returns>
+		<code>
+			$webCommonPath = "c:/inetpub/wwwroot/LJCPHPCommon";
+			require_once "$webCommonPath/LJCCollectionLib.php";
+
+			// Adds an object and key value.
+			public function AddObject(ObjectItem $item, $key = null)
+			{
+				if (null == $key)
+				{
+					$key = $item->Name;
+				}
+				$retValue = $this->&lt;b&gt;AddItem&lt;/b&gt;($item, $key);
+				return $retValue;
+			}
+		</code>
+	</AddItem>
+	<GetItem>
+		<summary>Get the item by Key value.</summary>
+		<param name="$key">The element key.</param>
+		<param name="$throwError">Indicates if an error should be thrown if the key is not found.</param>
+		<returns>The object with the matching key value.</returns>
+		<code>
+			$webCommonPath = "c:/inetpub/wwwroot/LJCPHPCommon";
+			require_once "$webCommonPath/LJCCollectionLib.php";
+
+			// Get the item by Key value.
+			public function Get($key)
+			{
+				$retValue = $this->&lt;b&gt;GetItem&lt;/b&gt;($key, $throwError);
+				return $retValue;
+			}
+		</code>
+	</GetItem>
+	<HasKey>
+		<summary>Indicates if a key already exists.</summary>
+		<param name="$key">The element key.</param>
+		<returns>True if the key already exists, otherwise false.</returns>
+	</HasKey>
+	<Remove>
+		<summary>Remove the item by Key value.</summary>
+		<param name="$key">The element key.</param>
+		<param name="$throwError">Indicates if an error should be thrown if the key is not found.</param>
+	</Remove>
+</items>

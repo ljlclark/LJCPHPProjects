@@ -3,7 +3,8 @@
 	// LJCGenDataXMLLib.php
 	declare(strict_types=1);
 	$webCommonPath = "c:/inetpub/wwwroot/LJCPHPCommon";
-	require_once "$webCommonPath/LJCTextLib.php";
+	$devPath = "c:/Users/Les/Documents/Visual Studio 2022/LJCPHPProjects";
+	require_once "$devPath/LJCPHPCommon/LJCTextLib.php";
 
 	// Contains Classes to generate GenData XML.
 	/// <include path='items/LJCGenDataXMLLib/*' file='Doc/LJCGenDataXMLLib.xml'/>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright (c) Lester J. Clark 2022 - All Rights Reserved -->
+<!-- LJCHTMLTableColumn.xml -->
+<items>
+	<construct>
+		<summary>Initializes an object instance.</summary>
+		<param name="$columnName">The column name.</param>
+		<param name="$headingName">The heading name.</param>
+		<param name="$style">The style value.</param>
+		<param name="$width">The column width.</param>
+	</construct>
+</items>

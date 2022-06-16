@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright (c) Lester J. Clark 2022 - All Rights Reserved -->
+<!-- LJCSQLBuilder.xml -->
+<items>
+	<LJCSQLBuilder>
+		<summary>
+			Provides static functions for creating SQL statements.
+		</summary>		
+	</LJCSQLBuilder>
+	
+	<!-- Static Functions -->
+	<CreateDelete>
+		<summary>Creates a Delete SQL statement.</summary>
+		<param name="$tableName">The table name.</param>
+		<param name="$keyColumns">The where clause key columns.</param>
+		<returns>The Update SQL statement.</returns>
+		<code>$webCommonPath = "c:/inetpub/wwwroot/LJCPHPCommon";
+		 require_once "$webCommonPath/LJCDataManagerLib.php";
+		 require_once "$webCommonPath/LJCDBAccessLib.php";
+
+		 $keyColumns = new DbColumns();
+		 $keyColumns->Add("ID", value:1);
+			
+		 $sql = $LJCSQLBuilder::CreateDelete("TableName", $keyColumns);
+
+		 // $sql =
+		 // delete from TableName
+		 // where TableName.ID = 1
+		</code>
+	</CreateDelete>
+	<CreateInsert>
+		<summary>Creates an Insert SQL statement.</summary>
+		<param name="$tableName">The table name.</param>
+		<param name="$dataColumns">The Data columns.</param>
+		<returns>The Update SQL statement.</returns>
+		<code>$webCommonPath = "c:/inetpub/wwwroot/LJCPHPCommon";
+		 require_once "$webCommonPath/LJCDataManagerLib.php";
+		 require_once "$webCommonPath/LJCDBAccessLib.php";
+
+		 $dataColumns = new DbColumns();
+		 $dataColumns->Add("FirstName", value: "First");
+		 $dataColumns->Add("LastName", value: "Last");
+			
+		 $sql = $LJCSQLBuilder::CreateInsert("TableName", $dataColumns);
+
+		 // $sql =
+		 // update TableName set
+		 //   FirstName = 'First',
+		 //   LastName = 'Last'
+		</code>
+	</CreateInsert>
+	<CreateSelect>
+		<summary>Creates a Select SQL statement.</summary>
+		<param name="$tableName">The table name.</param>
+		<param name="$schemaColumns">The table schema definition columns.</param>
+		<param name="$keyColumns">The where clause key columns.</param>
+		<param name="$propertyNames">The included column property names.</param>
+		<param name="$joins">The Collection of Join objects.</param>
+		<returns>The Select SQL statement.</returns>
+		<code>$webCommonPath = "c:/inetpub/wwwroot/LJCPHPCommon";
+		 require_once "$webCommonPath/LJCDataManagerLib.php";
+		 require_once "$webCommonPath/LJCDBAccessLib.php";
+
+		 $schemaColumns = new LJCDbColumns();
+		 $schemaColumns->Add("ID", null, "int");
+		 $schemaColumns->Add("Name");
+
+		 $keyColumns = new LJCDbColumns();
+		 $keyColumns->Add("ID", value:1);
+
+		 array $propertyNames = [];
+		 $propertyNames[] = "ID";
+		 $propertyNames[] = "Name";
+
+		 $joins = new LJCJoins();
+		 $join = $joins->Add("JoinTableName");
+		 $join->JoinOns->Add("FromColumnName", "ToColumnName");
+		 $join->Columns->Add("JoinColumnName", "PropertyName", "ResultName");
+
+		 $sql = $LJCSQLBuilder::CreateSelect("TableName", $schemaColumns
+			 , $keyColumns, $propertyNames, $joins);
+
+		 // $sql =
+		 // select
+		 //   TableName.ID,
+		 //   TableName.Name
+		 //   JoinTableName.JoinColumnName as ResultName
+		 // from TableName;
+		 // left join JoinTableName
+		 //   on ((TableName.FromColumnName = JoinTableName.ToColumnName))
+		 // where TableName.ID = 1
+		</code>
+	</CreateSelect>
+	<CreateUpdate>
+		<summary>Creates an Update SQL statement.</summary>
+		<param name="$tableName">The table name.</param>
+		<param name="$keyColumns">The where clause key columns.</param>
+		<param name="$dataColumns">The Data columns.</param>
+		<returns>The Update SQL statement.</returns>
+		<code>$webCommonPath = "c:/inetpub/wwwroot/LJCPHPCommon";
+		 require_once "$webCommonPath/LJCDataManagerLib.php";
+		 require_once "$webCommonPath/LJCDBAccessLib.php";
+
+		 $keyColumns = new LJCDbColumns();
+		 $keyColumns->Add("ID", value:1);
+
+		 $dataColumns = new DbColumns();
+		 $dataColumns->Add("FirstName", value: "First");
+		 $dataColumns->Add("LastName", value: "Last");
+
+		 $sql = $LJCSQLBuilder::CreateUpdate("TableName", $keyColumns
+		   , $dataColumns);
+
+		 // $sql =
+		 // update TableName set
+		 //   FirstName = 'First',
+		 //   LastName = 'Last'
+		 // where TableName.ID = 1
+		</code>
+	</CreateUpdate>
+	<GetJoinOns>
+		<summary>Get the JoinOn statements.</summary>
+		<param name="$tableName">The request table name.</param>
+		<param name="$join">The Join object.</param>
+		<param name="$recursive">Indicates if it is a recursive call.</param>
+		<returns>The JoinOn statements.</returns>
+		<code>$webCommonPath = "c:/inetpub/wwwroot/LJCPHPCommon";
+		 require_once "$webCommonPath/LJCDataManagerLib.php";
+
+		 $joins = new LJCJoins();
+		 $join = $joins->Add("JoinTableName");
+		 $join->JoinOns->Add("FromColumnName", "ToColumnName");
+		</code>
+	</GetJoinOns>
+	<GetJoinStatement>
+		<summary>Creates the join statement.</summary>
+		<param name="$tableName">The request table name.</param>
+		<param name="$joins">The Collection of Join objects.</param>
+		<returns>The Join clause.</returns>
+		<code>$webCommonPath = "c:/inetpub/wwwroot/LJCPHPCommon";
+		 require_once "$webCommonPath/LJCDataManagerLib.php";
+
+		 $joins = new LJCJoins();
+		 $join = $joins->Add("JoinTableName");
+		 $join->JoinOns->Add("FromColumnName", "ToColumnName");
+		 $join->Columns->Add("JoinColumnName", "PropertyName", "ResultName");
+
+		 $tableName = "TableName";
+		 $schemaColumns = $dataManager->SchemaColumns;
+		 $sql = "select\r\n";
+		 $sql .= LJCSQLBuilder::SQLColumns($tableName, $schemaColumns
+		   , joins: $joins);
+		 $sql .= "from $tableName \r\n";
+		 $sql .= LJCSQLBuilder::GetJoinStatement($tableName, $joins);
+		</code>
+	</GetJoinStatement>
+	<GetJoinTableString>
+		<summary>Get the full join table string.</summary>
+		<param name="$join">The Join object.</param>
+		<returns>The Join table string.</returns>
+	</GetJoinTableString>
+	<GetOrderBy>
+		<summary>Creates an OrderBy clause.</summary>
+		<param name="$orderByNames">The OrderBy names array.</param>
+		<returns>The OrderBy clause.</returns>
+	</GetOrderBy>
+	<SQLColumns>
+		<summary>Creates the columns for a Select SQL statement.</summary>
+		<param name="$tableName">The request Table name.</param>
+		<param name="$sqlColumns">The included columns.</param>
+		<param name="$includeParens">Includes the statement parenthesis.</param>
+		<param name="$joins">The Join definitions.</param>
+		<returns>The Select columns.</returns>
+		<code>$webCommonPath = "c:/inetpub/wwwroot/LJCPHPCommon";
+		 require_once "$webCommonPath/LJCDataManagerLib.php";
+		 require_once "$webCommonPath/LJCDBAccessLib.php";
+
+		 $joins = new LJCJoins();
+		 $join = $joins->Add("JoinTableName");
+		 $join->JoinOns->Add("FromColumnName", "ToColumnName");
+		 $join->Columns->Add("JoinColumnName", "PropertyName", "ResultName");
+
+		 $tableName = "TableName";
+		 $dbColumns = new DbColumns();
+		 $dbColumns->Add("ID", dataTypeName: "int");
+		 $dbColumns->Add("Name");
+		 $columns = $LJCSQLBuilder::SQLColumns($tableName, $dbColumns, $joins);
+
+		 // $columns =
+		 //  TableName.ID,
+		 //  TableName.Name,
+		 //  JoinTableName.JoinColumnName as ResultName
+		</code>
+	</SQLColumns>
+	<SQLJoinColumns>
+		<summary>Creates the Join columns for a Select SQL statement.</summary>
+		<param name="$joins">The Join definitions.</param>
+		<returns>The Join columns.</returns>
+	</SQLJoinColumns>
+	<SQLValueColumns>
+		<summary>Creates the value columns for an Update SQL statement.</summary>
+		<param name="$dataColumns">The Data columns.</param>
+		<param name="$isUpdate">Indicates if the values are for an Update.</param>
+		<param name="$includeParens">Includes the statement parenthesis.</param>
+		<returns>The Add and Update value columns.</returns>
+		<code>$webCommonPath = "c:/inetpub/wwwroot/LJCPHPCommon";
+		 require_once "$webCommonPath/LJCDataManagerLib.php";
+		 require_once "$webCommonPath/LJCDBAccessLib.php";
+
+		 $dbColumns = new DbColumns();
+		 $dbColumns->Add("FirstName", value: "First");
+		 $dbColumns->Add("LastName", value: "Last");
+
+		 // For an Update "set" statement.
+		 $columns = $LJCSQLBuilder::SQLValueColumns($dbColumns, true);
+		 // $columns =
+		 //  FirstName = 'First',
+		 //  LastName = 'Last'
+
+		 // For an Insert "values" statement.
+		 $columns = $LJCSQLBuilder::SQLValueColumns($dbColumns, false, true);
+		 // $columns =
+		 //  (
+		 //   'First',
+		 //   'Last'
+		 //  )
+		</code>
+	</SQLValueColumns>
+	<GetQualifiedColumnName>
+		<summary>
+			Qualify with the table name or alias unless already qualified.
+		</summary>
+		<param name="$columnName">The Column name.</param>
+		<param name="$tableName">The Table name.</param>
+		<param name="$alias">The Alias value.</param>
+		<returns>The qualified Column name.</returns>
+	</GetQualifiedColumnName>
+</items>

@@ -4,7 +4,7 @@
 	declare(strict_types=1);
 	$webCommonPath = "c:/inetpub/wwwroot/LJCPHPCommon";
 	$devPath = "c:/Users/Les/Documents/Visual Studio 2022/LJCPHPProjects";
-	require_once "$webCommonPath/LJCCommonLib.php";
+	require_once "$devPath/LJCPHPCommon/LJCCommonLib.php";
 	require_once "$devPath/GenTextLib/LJCGenTextSectionLib.php";
 	require_once "LJCIncludeLib.php";
 	require_once "LJCParamCommentLib.php";

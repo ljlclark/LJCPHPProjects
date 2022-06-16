@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright (c) Lester J. Clark 2022 - All Rights Reserved -->
+<!-- LJCCollectionBase.xml -->
+<items>
+	<LJCCollectionBase>
+		<summary>Represents a Collection of objects.</summary>
+		<remarks>
+			The LJCCollectionBase class provides the code that can be inherited to
+			create a strongly typed Collection.
+			&lt;p&gt;
+			It accomplishes this by implementing IteratorAggregate which provides
+			"foreach" functionality and Countable which provides "count" functionality.
+			&lt;/p&gt;
+			&lt;p&gt;
+			A strongly typed collection class would extend (inherit) from this base
+			class	and add an AddObject() method that would require the strongly typed
+			object collection element. This is what makes the collection strongly
+			typed.
+			&lt;/p&gt;
+			&lt;p&gt;
+			The strongly typed collection class would also provide a Get() method
+			that could retrieve the internal array element by key.
+			&lt;/p&gt;
+			For an example of how this works, see class: LJCDBAccessLib-LJCDbColumns.
+		</remarks>
+	</LJCCollectionBase>
+	
+	<!-- Public Methods -->
+	<AddItem>
+		<summary>Adds an object and key value.</summary>
+		<param name="$item">The object to be added to the collection.</param>
+		<param name="$key">The element key.</param>
+		<returns>The added item.</returns>
+		<code>$webCommonPath = "c:/inetpub/wwwroot/LJCPHPCommon";
+		 require_once "$webCommonPath/LJCCollectionLib.php";
+
+		 // Add to class that extends LJCCollectionBase
+		 // Adds an object and key value.
+		 public function AddObject(ObjectItem $item, $key = null)
+		 {
+			 if (null == $key)
+			 {
+				 $key = $item->Name;
+			 }
+			 $retValue = $this->&lt;b&gt;AddItem&lt;/b&gt;($item, $key);
+			 return $retValue;
+		 }
+		</code>
+	</AddItem>
+	<GetItem>
+		<summary>Get the item by Key value.</summary>
+		<param name="$key">The element key.</param>
+		<param name="$throwError">Indicates if an error should be thrown if the key is not found.</param>
+		<returns>The object with the matching key value.</returns>
+		<code>$webCommonPath = "c:/inetpub/wwwroot/LJCPHPCommon";
+		 require_once "$webCommonPath/LJCCollectionLib.php";
+
+		 // Add to class that extends LJCCollectionBase
+		 // Get the item by Key value.
+		 public function Get($key)
+		 {
+			 $retValue = $this->&lt;b&gt;GetItem&lt;/b&gt;($key, $throwError);
+			 return $retValue;
+		 }
+		</code>
+	</GetItem>
+	<HasKey>
+		<summary>Indicates if a key already exists.</summary>
+		<param name="$key">The element key.</param>
+		<returns>True if the key already exists, otherwise false.</returns>
+		<code>$webCommonPath = "c:/inetpub/wwwroot/LJCPHPCommon";
+		 require_once "$webCommonPath/LJCCollectionLib.php";
+
+		 // $collection extends LJCCollectionBase
+		 $key = "KeyName";
+		 if ($collection->HasKey($key))
+		 {
+			 throw new Exception("Key: {$key} already in use.");
+		 }
+		</code>
+	</HasKey>
+	<Remove>
+		<summary>Remove the item by Key value.</summary>
+		<param name="$key">The element key.</param>
+		<param name="$throwError">Indicates if an error should be thrown if the key is not found.</param>
+		<code>$webCommonPath = "c:/inetpub/wwwroot/LJCPHPCommon";
+		 require_once "$webCommonPath/LJCCollectionLib.php";
+
+		 // $collection extends LJCCollectionBase
+		 $collection->Remove("KeyName");
+		</code>
+	</Remove>
+</items>

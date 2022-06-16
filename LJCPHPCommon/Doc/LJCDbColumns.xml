@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright (c) Lester J. Clark 2022 - All Rights Reserved -->
+<!-- LJCDbColumns.xml -->
+<items>
+	<LJCDbColumns>
+		<summary>Represents a typed Collection of LJCDbColumn objects.</summary>
+		<remarks>
+			It extends (inherits) from class LJCCollectionLib-LJCCollectionBase which
+			provides the "foreach" and "count" functionality.
+			&lt;p&gt;
+			It includes an AddObject() method that requires the strongly typed
+			LJCDbColumn object collection element. This is what makes the collection
+			strongly typed.
+			&lt;/p&gt;
+			The Get() method retrieves the internal array element by key.
+		</remarks>
+	</LJCDbColumns>
+	
+	<!-- Public Methods -->
+	<Add>
+		<summary>Creates an object and adds it to the collection.</summary>
+		<param name="$columnName">The Column name.</param>
+		<param name="$propertyName">The Property name.</param>
+		<param name="$dataTypeName">The DataType name.</param>
+		<param name="$value">The Column value.</param>
+		<param name="$key">The collection array key.</param>
+		<code>$webCommonPath = "c:/inetpub/wwwroot/LJCPHPCommon";
+		 require_once "$webCommonPath/LJCDBAccessLib.php";
+
+		 $dbColumns = new LJCDbColumns();
+		 $dbColumns->Add("ID", dataTypeName: "int");
+		</code>
+	</Add>
+	<AddObject>
+		<summary>Adds an object and key value.</summary>
+		<param name="$item">The DbColumn definition.</param>
+		<param name="$key">The collection array key.</param>
+		<code>$webCommonPath = "c:/inetpub/wwwroot/LJCPHPCommon";
+		 require_once "$webCommonPath/LJCDBAccessLib.php";
+
+		 $dbColumns = new LJCDbColumns();
+		 $dbColumn = new LJCDbColumn("Name");
+		 $dbColumns->AddObject($dbColumn);
+		</code>
+	</AddObject>
+	<Get>
+		<summary>Get the item by Key value.</summary>
+		<param name="$key">The collection array key.</param>
+		<returns>The collection item.</returns>
+		<code>$webCommonPath = "c:/inetpub/wwwroot/LJCPHPCommon";
+		 require_once "$webCommonPath/LJCDBAccessLib.php";
+
+		 $dbColumns = new LJCDbColumns();
+		 $dbColumns->Add("Name");
+		 $dbColumn = $dbColumns->Get("Name");
+		</code>
+	</Get>
+	<GetColumns>
+		<summary>
+			Get the column definitions that match the property names.
+		</summary>
+		<param name="$propertyNames">The collection of property names.</param>
+		<returns>The definitions for the specified properties.</returns>
+		<code>$webCommonPath = "c:/inetpub/wwwroot/LJCPHPCommon";
+		 require_once "$webCommonPath/LJCDBAccessLib.php";
+
+		 $dbColumns = new LJCDbColumns();
+		 $dbColumns->Add"FirstName");
+		 $dbColumns->Add("MiddleName");
+		 $dbColumns->Add("LastName");
+
+		 $propertyNames = [];
+		 $propertyNames[] = "FirstName";
+		 $propertyNames[] = "LastName";
+		 $specificColumns = $dbColumns->GetColumns($propertyNames);
+		</code>
+	</GetColumns>
+	<MapNames>
+		<summary>
+			Sets the PropertyName, RenameAs and Caption values for a column.
+		</summary>
+		<param name="$columnName">The Column name.</param>
+		<param name="$propertyName">The Property name.</param>
+		<param name="$renameAs">The RenameAs name.</param>
+		<param name="$caption">The Caption value.</param>
+	</MapNames>
+	<SetWhereOperators>
+		<summary>Sets the Where Clause operators.</summary>
+		<param name="$key">The collection array key.</param>
+		<param name="$compareOperator">The comparison operator.</param>
+		<param name="$boolOperator">The boolean operator.</param>
+		<code>$webCommonPath = "c:/inetpub/wwwroot/LJCPHPCommon";
+		 require_once "$webCommonPath/LJCDBAccessLib.php";
+
+		 $dbColumns = new LJCDbColumns();
+		 $dbColumns->Add("Name", value: "%C%");
+
+     // $compareOperator - Any valid comparison operator; defaults to "=".
+		 // $boolOperator - "and" or "or"; defaults to "and".
+		 $dbColumns->SetWhereOperators("Name", "like", "or");
+		</code>
+	</SetWhereOperators>
+</items>
