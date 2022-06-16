@@ -12,7 +12,8 @@
 			GenData is the XML data format for the data that is merged with a text
 			template file	to generate a customized output file.
 			&lt;/p&gt;
-			See: LJCSections Deserialize() method for the layout of the GenData XML.
+			See: &lt;a href="LJCSections/LJCSectionsDeserialize.html"&gt;LJCSections Deserialize()&lt;/a&gt; method
+			for the layout of the GenData XML.
 		</remarks>
 	</LJCGenTextSectionLib>
 </items>

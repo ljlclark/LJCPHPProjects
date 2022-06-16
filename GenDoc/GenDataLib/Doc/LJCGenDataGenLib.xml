@@ -29,13 +29,17 @@
 			Property - PropertyTemplate.html
 			&lt;/p&gt;
 			&lt;p&gt;
-			The PHP HTML files are output to the folder "DocPages".
-			&lt;br /&gt;
-			&lt;br /&gt;
+			The PHP HTML files are output to the folder specified in the LJCGenDataGen
+			constructor.
+			&lt;/p&gt;
 			A subfolder is created for each class. This folder contains the Class HTML,
 			Methods HTML and Properties HTML files.&lt;br /&gt;
 			The Methods and Properties HTML names	are prefixed with the Class name to
 			prevent overwriting items with the same	name.
+			&lt;br /&gt;
+			&lt;br /&gt;
+			See: &lt;a href="LJCGenTextSectionLib.html"&gt;Gen Sections&lt;/a&gt; for
+			more information about GenData XML.
 		</remarks>
 	</LJCGenDataGenLib>
 </items>
