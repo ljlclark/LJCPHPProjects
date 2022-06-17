@@ -14,7 +14,7 @@
 	/// LibName: LJCDocDataGenLib
 
 	// Main Call Tree
-	// CreateDocXML() public
+	// CreateDocDataXMLString() public
 	//   ProcessCode() public
 	//     LineProcessed()
 	//       ProcessLib()
@@ -32,7 +32,9 @@
 	//   DocOutputFileSpec() public
 
 	// ***************
-	/// <summary>Provides methods to generate DocData XML files.</summary>
+	/// <summary>
+	///		Provides methods to generate DocData XML files from a code file.
+	/// </summary>
 	class LJCDocDataGen
 	{
 		// ---------------
@@ -116,7 +118,10 @@
 		// ---------------
 		// Constructors - LJCDocDataGen
 
-		/// <summary>Initializes a class instance.</summary>
+		/// <summary>
+		///		Initializes a class instance.
+		///		And More.
+		/// </summary>
 		public function __construct()
 		{
 			$this->ClassName = null;

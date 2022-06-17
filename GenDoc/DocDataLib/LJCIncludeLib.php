@@ -104,6 +104,7 @@
 								$comment = $this->GetComment($line);
 								if ($comment != null)
 								{
+									// *** Next Statement *** Delete? - 6/17
 									$comment = $this->TrimXMLComment($comment);
 									if (false === $this->InvalidCommentEndTag($comment))
 									{
@@ -155,7 +156,11 @@
 				$beginTag = "/";
 			}
 
-			$comment = LJCCommon::GetDelimitedString($line, $beginTag, $endTag, false);
+			// *** Next Statement *** Change? - 6/17
+			$comment = LJCCommon::GetDelimitedString($line, $beginTag, $endTag
+				, false);
+			//$comment = LJCCommon::GetDelimitedString($line, $beginTag, $endTag
+			//	, rTrim: true);
 
 			$success = true;
 			if ($this->InvalidCommentEndTag($comment))

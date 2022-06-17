@@ -1,8 +1,8 @@
-webCommonPath /LJCCollectionLib.php
-webCommonPath /LJCCommonLib.php
-webCommonPath /LJCDataManagerLib.php
-webCommonPath /LJCDBAccessLib.php
-webCommonPath /LJCTextLib.php
+devPath /LJCPHPCommon/LJCCollectionLib.php
+devPath /LJCPHPCommon/LJCCommonLib.php
+devPath /LJCPHPCommon/LJCDataManagerLib.php
+devPath /LJCPHPCommon/LJCDBAccessLib.php
+devPath /LJCPHPCommon/LJCTextLib.php
 
 devPath /GenTextLib/LJCGenTextLib.php
 devPath /GenTextLib/LJCGenTextSectionLib.php

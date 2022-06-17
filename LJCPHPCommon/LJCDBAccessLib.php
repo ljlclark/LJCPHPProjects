@@ -328,7 +328,7 @@
 		/// <include path='items/Add/*' file='Doc/LJCDbColumns.xml'/>
 		public function Add(string $columnName, ?string $propertyName = null
 			, ?string $renameAs = null, string $dataTypeName = "string"
-			, ?string $value = null, $key = null) : LJCDbColumn
+			, ?string $value = null, $key = null) : ?LJCDbColumn
 		{
 			$retValue = null;
 
@@ -349,7 +349,7 @@
 
 		// Adds an object and key value.
 		/// <include path='items/AddObject/*' file='Doc/LJCDbColumns.xml'/>
-		public function AddObject(LJCDbColumn $item, $key = null) : LJCDbColumn
+		public function AddObject(LJCDbColumn $item, $key = null) : ?LJCDbColumn
 		{
 			if (null == $key)
 			{
@@ -373,7 +373,7 @@
 
 		// Get the item by Key value.
 		/// <include path='items/Get/*' file='Doc/LJCDbColumns.xml'/>
-		public function Get($key, bool $throwError = true) : LJCDbColumn
+		public function Get($key, bool $throwError = true) : ?LJCDbColumn
 		{
 			$retValue = $this->GetItem($key, $throwError);
 			return $retValue;
@@ -500,7 +500,7 @@
 		/// <summary>Creates an object and adds it to the collection.</summary>
 		/// <include path='items/Add/*' file='Doc/LJCJoins.xml'/>
 		public function Add(string $tableName, string $tableAlias = null
-			, $key = null) : LJCJoin
+			, $key = null) : ?LJCJoin
 		{
 			$retValue = null;
 
@@ -516,7 +516,7 @@
 
 		/// <summary>Adds an object and key value.</summary>
 		/// <include path='items/AddObject/*' file='Doc/LJCJoins.xml'/>
-		public function AddObject(LJCJoin $item, $key = null) : LJCJoin
+		public function AddObject(LJCJoin $item, $key = null) : ?LJCJoin
 		{
 			if (null == $key)
 			{
@@ -540,7 +540,7 @@
 
 		/// <summary>Get the item by Key value.</summary>
 		/// <include path='items/Get/*' file='Doc/LJCJoins.xml'/>
-		public function Get($key, bool $throwError = true) : LJCJoin
+		public function Get($key, bool $throwError = true) : ?LJCJoin
 		{
 			$retValue = $this->GetItem($key, $throwError);
 			return $retValue;
@@ -603,7 +603,7 @@
 		// Creates an object and adds it to the collection.
 		/// <include path='items/Add/*' file='Doc/LJCJoinOns.xml'/>
 		public function Add(string $fromColumnName, string $toColumnName
-			, $key = null) : LJCJoinOn
+			, $key = null) : ?LJCJoinOn
 		{
 			$retValue = null;
 
@@ -619,7 +619,7 @@
 
 		// Adds an object and key value.
 		/// <include path='items/AddObject/*' file='Doc/LJCJoinOns.xml'/>
-		public function AddObject(LJCJoinOn $item, $key = null) : LJCJoinOn
+		public function AddObject(LJCJoinOn $item, $key = null) : ?LJCJoinOn
 		{
 			if (null == $key)
 			{
@@ -643,7 +643,7 @@
 
 		/// <summary>Get the item by Key value.</summary>
 		/// <include path='items/Get/*' file='Doc/LJCJoinOns.xml'/>
-		public function Get($key, bool $throwError = true) : LJCJoinOn
+		public function Get($key, bool $throwError = true) : ?LJCJoinOn
 		{
 			$retValue = $this->GetItem($key, $throwError);
 			return $retValue;

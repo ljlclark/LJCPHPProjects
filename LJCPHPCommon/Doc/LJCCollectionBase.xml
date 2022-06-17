@@ -3,7 +3,10 @@
 <!-- LJCCollectionBase.xml -->
 <items>
 	<LJCCollectionBase>
-		<summary>Represents a Collection of objects.</summary>
+		<summary>
+			Represents a Collection of objects.
+			Testing include of cr/lf.
+		</summary>
 		<remarks>
 			The LJCCollectionBase class provides the code that can be inherited to
 			create a strongly typed Collection.

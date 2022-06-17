@@ -21,7 +21,7 @@
 		 $keyColumns = new DbColumns();
 		 $keyColumns->Add("ID", value:1);
 			
-		 $sql = $LJCSQLBuilder::CreateDelete("TableName", $keyColumns);
+		 $sql = LJCSQLBuilder::CreateDelete("TableName", $keyColumns);
 
 		 // $sql =
 		 // delete from TableName
@@ -41,7 +41,7 @@
 		 $dataColumns->Add("FirstName", value: "First");
 		 $dataColumns->Add("LastName", value: "Last");
 			
-		 $sql = $LJCSQLBuilder::CreateInsert("TableName", $dataColumns);
+		 $sql = LJCSQLBuilder::CreateInsert("TableName", $dataColumns);
 
 		 // $sql =
 		 // update TableName set
@@ -77,7 +77,7 @@
 		 $join->JoinOns->Add("FromColumnName", "ToColumnName");
 		 $join->Columns->Add("JoinColumnName", "PropertyName", "ResultName");
 
-		 $sql = $LJCSQLBuilder::CreateSelect("TableName", $schemaColumns
+		 $sql = LJCSQLBuilder::CreateSelect("TableName", $schemaColumns
 			 , $keyColumns, $propertyNames, $joins);
 
 		 // $sql =
@@ -108,7 +108,7 @@
 		 $dataColumns->Add("FirstName", value: "First");
 		 $dataColumns->Add("LastName", value: "Last");
 
-		 $sql = $LJCSQLBuilder::CreateUpdate("TableName", $keyColumns
+		 $sql = LJCSQLBuilder::CreateUpdate("TableName", $keyColumns
 		   , $dataColumns);
 
 		 // $sql =
@@ -184,7 +184,7 @@
 		 $dbColumns = new DbColumns();
 		 $dbColumns->Add("ID", dataTypeName: "int");
 		 $dbColumns->Add("Name");
-		 $columns = $LJCSQLBuilder::SQLColumns($tableName, $dbColumns, $joins);
+		 $columns = LJCSQLBuilder::SQLColumns($tableName, $dbColumns, $joins);
 
 		 // $columns =
 		 //  TableName.ID,
@@ -218,7 +218,7 @@
 		 //  LastName = 'Last'
 
 		 // For an Insert "values" statement.
-		 $columns = $LJCSQLBuilder::SQLValueColumns($dbColumns, false, true);
+		 $columns = LJCSQLBuilder::SQLValueColumns($dbColumns, false, true);
 		 // $columns =
 		 //  (
 		 //   'First',

@@ -81,7 +81,9 @@
 				$this->CodeFileSpec = $codeFileSpec;
 			}
 
-			$text = rtrim($line);
+			//$text = rtrim($line);
+			//LJCWriter::WriteLine("LJCComments.SetComment line:");
+			//LJCWriter::WriteLine("$line");
 			if (false == $this->IsContinue)
 			{
 				// New comment so find current tag name.
@@ -94,6 +96,8 @@
 				}
 
 				$comment = $this->GetComment($line);
+				LJCWriter::WriteLine("LJCComments.SetComment comment:");
+				LJCWriter::WriteLine("$comment");
 
 				// Process if Include comment processing is not done.
 				if ($this->CurrentTagName != null)
@@ -115,6 +119,8 @@
 				}
 
 				$comment = $this->GetComment($line);
+				LJCWriter::WriteLine("LJCComments.SetComment isContinue:");
+				LJCWriter::WriteLine("$comment");
 				$this->SaveComment($comment);
 			}
 		}  // SetComment();
@@ -225,6 +231,8 @@
 				// Process the include comment lines through SetComment().
 				foreach ($this->IncludeFile->Comments as $comment)
 				{
+					LJCWriter::WriteLine("LJCComments.GetComment include:");
+					LJCWriter::WriteLine("$comment");
 					$this->SetComment($comment);
 				}
 
@@ -246,6 +254,7 @@
 			if ($isSimpleComment)
 			{
 				$lTrim = false;
+				// *** Next Statement *** Change? - 6/17
 				$rTrim = true;
 				if (null == $endTag)
 				{

@@ -7,15 +7,38 @@
 		<param name="$tableName">The Join table name.</param>
 		<param name="$tableAlias">The Join table alias.</param>
 		<param name="$key">The optional key value.</param>
+		<code>
+			$webCommonPath = "c:/inetpub/wwwroot/LJCPHPCommon";
+			require_once "$webCommonPath/LJCDBAccessLib.php";
+
+			$joins = new LJCJoins();
+			$joins->Add("TableName", "alias");
+		</code>
 	</Add>
 	<AddObject>
 		<summary>Adds an object and key value.</summary>
 		<param name="$item">The item to add to the collection.</param>
 		<param name="$key">The optional key value.</param>
+		<code>
+			$webCommonPath = "c:/inetpub/wwwroot/LJCPHPCommon";
+			require_once "$webCommonPath/LJCDBAccessLib.php";
+
+			$joins = new LJCJoins();
+			$join = new LJCJoin("TableName");
+			$joins->AddObject($join);
+		</code>
 	</AddObject>
 	<Get>
 		<summary>Get the item by Key value.</summary>
 		<param name="$key">The key value.</param>
 		<param name="$throwError">The optional throw error flag.</param>
+		<code>
+			$webCommonPath = "c:/inetpub/wwwroot/LJCPHPCommon";
+			require_once "$webCommonPath/LJCDBAccessLib.php";
+
+			$joins = new LJCJoins();
+			$joins->Add("TableName");
+			$join = $joins->Get("TableName");
+		</code>
 	</Get>
 </items>
