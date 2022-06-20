@@ -29,8 +29,10 @@
 		/// <summary>Initializes an object instance.</summary>
 		public function __construct()
 		{
+			$this->DebugClass = "LJCComments";
 			$this->CurrentTagName = null;
 			$this->Code = null;
+			$this->LibName = null;
 			$this->Params = null;
 			$this->Remarks = null;
 			$this->Returns = null;
@@ -42,7 +44,6 @@
 			$this->EndTags = null;
 			$this->IncludeFile = null;
 			$this->IsContinue = false;
-			$this->LibName = null;
 
 			$this->ClearComments();
 			$this->SetCommentTags();
@@ -76,18 +77,19 @@
 		public function SetComment(string $line, ?string $codeFileSpec = null)
 			: void
 		{
+			$loc = "$this->DebugClass.SetComment";
+
 			if ($codeFileSpec != null)
 			{
 				$this->CodeFileSpec = $codeFileSpec;
 			}
 
-			//$text = rtrim($line);
-			//LJCWriter::WriteLine("LJCComments.SetComment line:");
-			//LJCWriter::WriteLine("$line");
+			// Testing
+			$this->Output("$loc line", $line);
 			if (false == $this->IsContinue)
 			{
-				// New comment so find current tag name.
-				$this->CurrentTagName = $this->FindBeginTagName($line);
+				// New comment.
+				$this->CurrentTagName = $this->GetBeginTagName($line);
 
 				// Critical to handle multiple params.
 				if($this->CurrentTagName != "param")
@@ -96,16 +98,16 @@
 				}
 
 				$comment = $this->GetComment($line);
-				LJCWriter::WriteLine("LJCComments.SetComment comment:");
-				LJCWriter::WriteLine("$comment");
+				// Testing
+				$this->Output("$loc comment", $comment);
 
 				// Process if Include comment processing is not done.
 				if ($this->CurrentTagName != null)
 				{
 					$this->SaveComment($comment);
-
 					if (false == $this->HasCurrentEndTag($line))
 					{
+						// No end tag so start Continue comment.
 						$this->IsContinue = true;
 					}
 				}
@@ -115,12 +117,12 @@
 				// Continue comment.
 				if ($this->HasCurrentEndTag($line))
 				{
+					// Has end tag so end Continue comment.
 					$this->IsContinue = false;
 				}
-
 				$comment = $this->GetComment($line);
-				LJCWriter::WriteLine("LJCComments.SetComment isContinue:");
-				LJCWriter::WriteLine("$comment");
+				// Testing
+				$this->Output("$loc isContinue", $comment);
 				$this->SaveComment($comment);
 			}
 		}  // SetComment();
@@ -168,9 +170,100 @@
 			}
 		}
 
-		// Returns the current or other BeginTag found in the line.
-		private function FindBeginTagName(string $line) : ?string
+		// Gets the comment for the current comment tag.
+		private function GetComment(string $line) : ?string
 		{
+			$loc = "$this->DebugClass.GetComment";
+			$retValue = null;
+
+			// Get using $CurrentTagName.
+			$beginTag = $this->GetBeginTag();
+			$endTag = $this->GetEndTag();
+
+			$positionBegin = LJCCommon::StrPos($line, $beginTag);
+			if ($positionBegin < 0)
+			{
+				// No BeginTag so set for start of comment.
+				$beginTag = "///";
+			}
+
+			$isSimpleComment = true;
+			if ("<include" == $beginTag)
+			{
+				$isSimpleComment = false;
+				$this->IncludeFile->SetComments($line, $this->CodeFileSpec);
+
+				// Process the include comment lines through SetComment().
+				foreach ($this->IncludeFile->Comments as $comment)
+				{
+					$this->SetComment($comment);
+				}
+
+				// Remove extra line from code.
+				$this->Code = rtrim($this->Code);
+
+				// Indicate that Include comment processing is done.
+				$this->CurrentTagName = null;
+			}
+
+			if ("<param" == $beginTag)
+			{
+				$isSimpleComment = false;
+				$paramComment = new LJCParamComment();
+				$param = $paramComment->GetParam($line);
+				$this->Params->AddObject($param);
+			}
+
+			if ($isSimpleComment)
+			{
+				$rTrim = true;
+				// *** Next Statement *** Change - 6/19
+				//if (null == $endTag)
+				if (false == $this->HasCurrentEndTag($line))
+				{
+					// No EndTag so do not remove cr/lf.
+					$rTrim = false;
+				}
+				$retValue = LJCCommon::GetDelimitedString($line, $beginTag, $endTag
+					, false, $rTrim);
+			}
+			return $retValue;
+		}  // GetComment();
+
+		// Saves the comment for the current comment tag.
+		private function SaveComment(?string $comment) : void
+		{
+			switch ($this->CurrentTagName)
+			{
+				case "code":
+					if ($this->Code != "")
+					{
+						$this->Code .= "\r\n";
+					}
+					$this->Code .= htmlspecialchars($comment);
+					break;
+
+				case "remarks":
+					$this->Remarks .= htmlspecialchars($comment);
+					break;
+
+				case "returns":
+					$this->Returns .= htmlspecialchars($comment);
+					break;
+
+				case "summary":
+					$this->Summary .= htmlspecialchars($comment);
+					break;
+			}
+		}
+
+		// ---------------
+		// Tag Private Methods
+
+		// Returns the current or other BeginTag found in the line.
+		private function GetBeginTagName(string $line) : ?string
+		{
+			$loc = "$this->DebugClass.GetBeginTagName";
 			$retValue = null;
 			
 			if ($this->CurrentTagName != null)
@@ -205,67 +298,6 @@
 			}
 			return $retValue;
 		}
-
-		// Gets the comment for the current comment tag.
-		private function GetComment(string $line) : ?string
-		{
-			$retValue = null;
-
-			// Get using $CurrentTagName.
-			$beginTag = $this->GetBeginTag();
-			$endTag = $this->GetEndTag();
-
-			$positionBegin = LJCCommon::StrPos($line, $beginTag);
-			if ($positionBegin < 0)
-			{
-				// No begin tag so set for start of comment.
-				$beginTag = "///";
-			}
-
-			$isSimpleComment = true;
-			if ("<include" == $beginTag)
-			{
-				$isSimpleComment = false;
-				$this->IncludeFile->SetComments($line, $this->CodeFileSpec);
-
-				// Process the include comment lines through SetComment().
-				foreach ($this->IncludeFile->Comments as $comment)
-				{
-					LJCWriter::WriteLine("LJCComments.GetComment include:");
-					LJCWriter::WriteLine("$comment");
-					$this->SetComment($comment);
-				}
-
-				// Remove extra line from code.
-				$this->Code = rtrim($this->Code);
-
-				// Indicate that Include comment processing is done.
-				$this->CurrentTagName = null;
-			}
-
-			if ("<param" == $beginTag)
-			{
-				$isSimpleComment = false;
-				$paramComment = new LJCParamComment();
-				$param = $paramComment->GetParam($line);
-				$this->Params->AddObject($param);
-			}
-
-			if ($isSimpleComment)
-			{
-				$lTrim = false;
-				// *** Next Statement *** Change? - 6/17
-				$rTrim = true;
-				if (null == $endTag)
-				{
-					// No end tag so do not remove cr/lf.
-					$rTrim = false;
-				}
-				$retValue = LJCCommon::GetDelimitedString($line, $beginTag, $endTag
-					, $lTrim, $rTrim);
-			}
-			return $retValue;
-		}  // GetComment();
 
 		// Gets the EndTag for the specified or current comment tag.
 		private function GetEndTag(?string $tagName = null) : ?string
@@ -337,33 +369,6 @@
 			return $retValue;
 		}
 
-		// Saves the comment for the current comment tag.
-		private function SaveComment(?string $comment) : void
-		{
-			switch ($this->CurrentTagName)
-			{
-				case "code":
-					if ($this->Code != "")
-					{
-						$this->Code .= "\r\n";
-					}
-					$this->Code .= htmlspecialchars($comment);
-					break;
-
-				case "remarks":
-					$this->Remarks .= htmlspecialchars($comment);
-					break;
-
-				case "returns":
-					$this->Returns .= htmlspecialchars($comment);
-					break;
-
-				case "summary":
-					$this->Summary .= htmlspecialchars($comment);
-					break;
-			}
-		}
-
 		// Sets the comment tag values
 		private function SetCommentTags() : void
 		{
@@ -380,7 +385,7 @@
 			$this->EndTags["summary"] = "</summary>";
 		}
 
-		// Writes a Debug line.
+		// Writes a file Debug line.
 		private function Debug(string $text, bool $addLine= true) : void
 		{
 			if ($this->DebugWriter != null)
@@ -393,6 +398,19 @@
 				{
 					$this->DebugWriter->FWrite($text);
 				}
+			}
+		}
+
+		// Writes an output line.
+		private function Output($text, $value)
+		{
+			$lib = "";
+			//$lib = "LJCCommonLib";
+			if ("" == $lib
+				||$lib == $this->LibName
+				|| $lib == $this->IncludeFile->LibName)
+			{
+				LJCWriter::WriteLine("$text:\r\n|$value|");
 			}
 		}
 
@@ -427,6 +445,9 @@
 		// The Code File specification.
 		private ?string $CodeFileSpec;
 
+		/// <summary>The Code File base (Library) name.</summary>
+		public ?string $LibName;
+
 		// The Debug writer.
 		private ?Writer $DebugWriter;
 
@@ -438,8 +459,5 @@
 
 		// The IsContinue flag.
 		private bool $IsContinue;
-
-		// The Code File base (Library) name.
-		private ?string $LibName;
 	}
 ?>

@@ -124,6 +124,7 @@
 		/// </summary>
 		public function __construct()
 		{
+			$this->DebugClass = "LJCDocDataGen";
 			$this->ClassName = null;
 			$this->Comments = new LJCComments();
 			$this->DebugWriter = null;
@@ -154,6 +155,8 @@
 			$retValue = null;
 
 			$this->LibName = LJCCommon::GetFileName($codeFileSpec);
+			// *** Next Line *** Add - 6/19
+			$this->Comments->LibName = $this->LibName;
 			$this->DocDataFile = new LJCDocDataFile($this->LibName);
 			$retValue = $this->ProcessCode($codeFileSpec);
 			if ($writeXML)
@@ -261,6 +264,7 @@
 		// Process XML Comment or Skip Null line and Comment Line.
 		private function LineProcessed(?string $line, string $codeFileSpec) : bool
 		{
+			$loc = "$this->DebugClass.LineProcessed";
 			$retValue = false;
 
 			$trimLine = trim($line);
@@ -274,15 +278,12 @@
 				$position = LJCCommon::StrPos($trimLine, "///");
 				if (0 == $position)
 				{
-					//LJCWriter::WriteLine("line: $trimLine");
 					$tokens = LJCCommon::GetTokens($trimLine);
 					if (count($tokens) > 1)
 					{
 						if ("LibName:" == $tokens[1])
 						{
-							//LJCWriter::WriteLine("ProcessLib: $this->LibName");
 							$this->ProcessLib();
-							//LJCWriter::WriteLine("");
 							$retValue = true;
 						}
 					}
@@ -363,9 +364,9 @@
 				case "class":
 					// class name
 					$this->ClassName = $tokens[1];
-					//LJCWriter::WriteLine("ProcessClass: $this->ClassName");
+					// Testing
+					$this->Output("ClassName", $this->ClassName);
 					$this->ProcessClass();
-					//LJCWriter::WriteLine("");
 					break;
 
 				case "protected":
@@ -375,9 +376,9 @@
 					if ($name != null)
 					{
 						$this->PropertyName = $name;
-						//LJCWriter::WriteLine("ProcessProperty: $name");
+						// Testing
+						$this->Output("PropertyName", $this->PropertyName);
 						$this->ProcessProperty();
-						//LJCWriter::WriteLine("");
 					}
 					else
 					{
@@ -399,9 +400,9 @@
 
 			if ($isFunction)
 			{
-				//LJCWriter::WriteLine("ProcessFunction: $this->FunctionName");
+				// Testing
+				$this->Output("FunctionName", $this->FunctionName);
 				$this->ProcessFunction();
-				//LJCWriter::WriteLine("");
 			}
 		}  // ProcessItem()
 
@@ -473,6 +474,18 @@
 				{
 					$this->DebugWriter->FWrite($text);
 				}
+			}
+		}
+
+		// Writes an output line.
+		private function Output($text, $value)
+		{
+			$lib = "";
+			//$lib = "LJCCommonLib";
+			if ("" == $lib
+				|| $lib == $this->LibName)
+			{
+				LJCWriter::WriteLine("$text:\r\n|$value|");
 			}
 		}
 

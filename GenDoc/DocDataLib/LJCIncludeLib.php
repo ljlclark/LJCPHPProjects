@@ -26,6 +26,8 @@
 		/// <summary>Initializes an object instance.</summary>
 		public function __construct()
 		{
+			$this->DebugClass = "LJCInclude";
+			$this->CurrentTagName = null;
 			$this->Comments = null;
 			$this->XMLFile = null;
 
@@ -49,17 +51,22 @@
 		public function SetComments(string $includeLine, string $codeFileSpec)
 			: void
 		{
+			$loc = "$this->DebugClass.SetComments";
+
 			// Sets LibName, XMLFile and itemTag.
-			if ($this->SetValues($includeLine, $codeFileSpec, $itemTag))
+			if ($this->SetIncludeValues($includeLine, $codeFileSpec, $itemTag))
 			{
 				$isItem = false;
 				$isContinue = false;
 				$stream = fopen($this->XMLFile, "r");
+
+				// Potentially get multiple comment lines.
 				while (false == feof($stream))
 				{
 					$line = (string)fgets($stream);
 					$trimLine = trim($line);
 
+					// Do not start processing until the itemTag is found.
 					if (LJCCommon::StrPos($trimLine, "<$itemTag>") >= 0)
 					{
 						$isItem = true;
@@ -68,23 +75,17 @@
 					{
 						if ($isItem)
 						{
+							$endTag = $this->GetLineEndTag($trimLine);
 							if (false === $isContinue)
 							{
+								// New comment.
+								$this->CurrentTagName = $this->GetLineBeginTag($line);
 								$comment = $this->GetComment($line);
-								if ($comment != null)
-								{
-									$comment = $this->TrimXMLComment($comment);
-									$this->Comments[] = $comment;
-								}
-
-								$endTag = $this->GetEndTag($trimLine);
 								if ($this->InvalidCommentEndTag($trimLine))
 								{
-									$isItem = false;
 									fclose($stream);
 									break;
 								}
-
 								if (null === $endTag)
 								{
 									// No end tag so start Continue comment.
@@ -94,27 +95,14 @@
 							else
 							{
 								// Continue comment.
-								$endTag = $this->GetEndTag($trimLine);
 								if ($endTag)
 								{
 									// Has end tag so end Continue comment.
 									$isContinue = false;
 								}
-
 								$comment = $this->GetComment($line);
-								if ($comment != null)
-								{
-									// *** Next Statement *** Delete? - 6/17
-									$comment = $this->TrimXMLComment($comment);
-									if (false === $this->InvalidCommentEndTag($comment))
-									{
-										$this->Comments[] = $comment;
-									}
-								}
-
 								if ($this->InvalidCommentEndTag($comment))
 								{
-									$isItem = false;
 									fclose($stream);
 									break;
 								}
@@ -128,39 +116,31 @@
 		// ---------------
 		// Private Methods
 
-		// Gets the begin tag.
-		private  function GetBeginTag(string $line) : ?string
-		{
-			$retValue = null;
-
-			$beginTag = LJCCommon::GetDelimitedString($line, "<", ">");
-			if ($this->IsCommentTag($beginTag))
-			{
-				$retValue = "<$beginTag>";								
-			}
-			return $retValue;
-		}
-
 		// Gets the comment for the specified code line.
 		private function GetComment(string $line) : ?string
 		{
+			$loc = "$this->DebugClass.GetComment";
 			$retValue = null;
 
-			$beginTag = $this->GetBeginTag($line);
-			$endTag = $this->GetEndTag($line);
+			$beginTag = $this->GetLineBeginTag($line);
+			$endTag = $this->GetLineEndTag($line);
 
 			if (null == $beginTag)
 			{
-				// No begin tag so set tag for start of comment.
+				// No BeginTag so set tag for start of comment.
 				$line = "/$line";
 				$beginTag = "/";
 			}
 
-			// *** Next Statement *** Change? - 6/17
+			$rTrim = false;
+			if ("<code>" == $this->CurrentTagName
+				|| $endTag != null)
+			{
+				// Is Code or Has EndTag then remove cr/lf.
+				$rTrim = true;
+			}
 			$comment = LJCCommon::GetDelimitedString($line, $beginTag, $endTag
-				, false);
-			//$comment = LJCCommon::GetDelimitedString($line, $beginTag, $endTag
-			//	, rTrim: true);
+				, false, $rTrim);
 
 			$success = true;
 			if ($this->InvalidCommentEndTag($comment))
@@ -187,11 +167,34 @@
 					$retValue .= $endTag;
 				}
 			}
+
+			if ($retValue != null)
+			{
+				// Left Trim and Save comment.
+				$retValue = $this->LTrimXMLComment($retValue);
+				if (false === $this->InvalidCommentEndTag($retValue))
+				{
+					$this->Comments[] = $retValue;
+				}
+			}
+			return $retValue;
+		}
+
+		// Gets the begin tag.
+		private  function GetLineBeginTag(string $line) : ?string
+		{
+			$retValue = null;
+
+			$beginTag = LJCCommon::GetDelimitedString($line, "<", ">");
+			if ($this->IsCommentTag($beginTag))
+			{
+				$retValue = "<$beginTag>";								
+			}
 			return $retValue;
 		}
 
 		// Gets the end tag.
-		private function GetEndTag(string $line) : ?string
+		private function GetLineEndTag(string $line) : ?string
 		{
 			$retValue = null;
 
@@ -199,6 +202,25 @@
 			if ($this->IsCommentTag($endTag))
 			{
 				$retValue = "</$endTag>";								
+			}
+			return $retValue;
+		}
+
+		// Checks for an invalid end comment tag.
+		private function InvalidCommentEndTag(?string $comment) : bool
+		{
+			$retValue = false;
+
+			if ($comment != null)
+			{
+				$endTag = LJCCommon::GetDelimitedString($comment, "</", ">");
+
+				if ($endTag != null
+					&& false === $this->IsCommentTag($endTag))
+				{
+					// End tag was found and not a comment tag.
+					$retValue = true;
+				}
 			}
 			return $retValue;
 		}
@@ -225,27 +247,8 @@
 			return $retValue;
 		}
 
-		// Checks for an invalid end comment tag.
-		private function InvalidCommentEndTag(?string $comment) : bool
-		{
-			$retValue = false;
-
-			if ($comment != null)
-			{
-				$endTag = LJCCommon::GetDelimitedString($comment, "</", ">");
-
-				if ($endTag != null
-					&& false === $this->IsCommentTag($endTag))
-				{
-					// End tag was found and not a comment tag.
-					$retValue = true;
-				}
-			}
-			return $retValue;
-		}
-
-		// Sets the Class include file values.
-		private function SetValues(string $includeLine, string $codeFileSpec
+		// Sets the Class include file values: LibName, XMLFile and itemTag.
+		private function SetIncludeValues(string $includeLine, string $codeFileSpec
 			, ?string &$itemTag) : bool
 		{
 			$retValue = true;
@@ -278,11 +281,16 @@
 		}
 
 		// Replaces tabs with spaces and removes extra leading spaces
-		private function TrimXMLComment(string $comment) : string
+		private function LTrimXMLComment(string $comment) : string
 		{
+			// Convert comment tabs to spaces.
 			$retValue = str_replace("\t", "  ", $comment);
+
+			// Start after /// and get count chars.
 			$count = 6;
 			$check = substr($retValue, 3, $count);
+
+			// If at least count spaces, left trim the count spaces.
 			if ($check == "      ")
 			{
 				$retValue = "///" . substr($retValue, $count + 3);
@@ -306,11 +314,20 @@
 			}
 		}
 
+		// Writes an output line.
+		private function Output($text, $value)
+		{
+			LJCWriter::WriteLine("$text:\r\n|$value|");
+		}
+
 		// ---------------
 		// Public Properties
 
 		/// <summary>The Incude comments.</summary>
 		public ?array $Comments;
+
+		/// <summary>The Code File base (Library) name.</summary>
+		public ?string $LibName;
 
 		/// <summary>The Include file spec.</summary>
 		public ?string $XMLFile;
@@ -320,8 +337,5 @@
 
 		// The Debug writer.
 		private ?Writer $DebugWriter;
-
-		// The Code File base (Library) name.
-		private ?string $LibName;
 	}
 ?>
