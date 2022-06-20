@@ -59,7 +59,7 @@
 		}
 
 		// ---------------
-		// Public Methods
+		// Public Methods - LJCComments
 
 		/// <summary>Clears the XML comments.</summary>
 		public function ClearComments() : void
@@ -85,6 +85,7 @@
 			}
 
 			// Testing
+			$this->Output("---------------");
 			$this->Output("$loc line", $line);
 			if (false == $this->IsContinue)
 			{
@@ -128,7 +129,7 @@
 		}  // SetComment();
 
 		// ---------------
-		// Private Methods
+		// Private Methods - LJCComments
 
 		// Clears the comments for the specified comment tag.
 		private function ClearComment(?string $tagName = null) : void
@@ -258,7 +259,7 @@
 		}
 
 		// ---------------
-		// Tag Private Methods
+		// Private Tag Methods- LJCComments
 
 		// Returns the current or other BeginTag found in the line.
 		private function GetBeginTagName(string $line) : ?string
@@ -385,6 +386,9 @@
 			$this->EndTags["summary"] = "</summary>";
 		}
 
+		// ---------------
+		// Private Output Methods
+
 		// Writes a file Debug line.
 		private function Debug(string $text, bool $addLine= true) : void
 		{
@@ -402,7 +406,7 @@
 		}
 
 		// Writes an output line.
-		private function Output($text, $value)
+		private function Output($text = null, $value = null)
 		{
 			$lib = "";
 			//$lib = "LJCCommonLib";
@@ -410,12 +414,17 @@
 				||$lib == $this->LibName
 				|| $lib == $this->IncludeFile->LibName)
 			{
-				LJCWriter::WriteLine("$text:\r\n|$value|");
+				LJCWriter::Write($text);
+				if ($value != null)
+				{
+					LJCWriter::Write(":\r\n|$value|");
+				}
+				LJCWriter::WriteLine("");
 			}
 		}
 
 		// ---------------
-		// Public Properties
+		// Public Properties - LJCComments
 
 		/// <summary>The example Code.</summary>
 		public ?string $Code;
@@ -437,7 +446,7 @@
 		public ?string $Summary;
 
 		// ---------------
-		// Private Properties
+		// Private Properties - LJCComments
 
 		// The Begin comment tags.
 		private ?array $BeginTags;

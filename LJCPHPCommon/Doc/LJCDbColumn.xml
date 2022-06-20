@@ -26,11 +26,12 @@
 		<summary>Coverts MySQL type names to PHP type names.</summary>
 		<param name="$mySQLTypeName">The MySQL data type name.</param>
 		<returns>The PHP data type name.</returns>
-		<code>$webCommonPath = "c:/inetpub/wwwroot/LJCPHPCommon";
-		 require_once "$webCommonPath/LJCDBAccessLib.php";
+		<code>
+			$webCommonPath = "c:/inetpub/wwwroot/LJCPHPCommon";
+			require_once "$webCommonPath/LJCDBAccessLib.php";
 
-		 $dbColumn = new LJCDbColumn("ID", dadtaTypeName: "int");
-		 $phpType = $dbColumn->GetDataType("bit");
+			$dbColumn = new LJCDbColumn("ID", dadtaTypeName: "int");
+			$phpType = $dbColumn->GetDataType("bit");
 		</code>
 	</GetDataType>
 
@@ -41,10 +42,11 @@
 		<param name="$propertyName">The Property name.</param>
 		<param name="$dataTypeName">The DataType name.</param>
 		<param name="$value">The Column value.</param>
-		<code>$webCommonPath = "c:/inetpub/wwwroot/LJCPHPCommon";
-		 require_once "$webCommonPath/LJCDBAccessLib.php";
+		<code>
+			$webCommonPath = "c:/inetpub/wwwroot/LJCPHPCommon";
+			require_once "$webCommonPath/LJCDBAccessLib.php";
 
-		 $dbColumn = new LJCDbColumn("Name");
+			$dbColumn = new LJCDbColumn("Name");
 		</code>
 	</construct>
 </items>

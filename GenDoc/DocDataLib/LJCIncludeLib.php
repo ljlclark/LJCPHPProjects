@@ -44,7 +44,7 @@
 		}
 
 		// ---------------
-		// Public Methods
+		// Public Methods - LJCInclude
 
 		// Sets the comments from the specified include file.
 		/// <include path='items/SetComments/*' file='Doc/LJCInclude.xml'/>
@@ -114,7 +114,7 @@
 		}  // SetComments();
 
 		// ---------------
-		// Private Methods
+		// Private Methods - LJCInclude
 
 		// Gets the comment for the specified code line.
 		private function GetComment(string $line) : ?string
@@ -178,7 +178,7 @@
 				}
 			}
 			return $retValue;
-		}
+		}  // GetComment()
 
 		// Gets the begin tag.
 		private  function GetLineBeginTag(string $line) : ?string
@@ -247,6 +247,24 @@
 			return $retValue;
 		}
 
+		// Replaces tabs with spaces and removes extra leading spaces
+		private function LTrimXMLComment(string $comment) : string
+		{
+			// Convert comment tabs to spaces.
+			$retValue = str_replace("\t", "  ", $comment);
+
+			// Start after /// and get count chars.
+			$count = 6;
+			$check = substr($retValue, 3, $count);
+
+			// If at least count spaces, left trim the count spaces.
+			if ($check == "      ")
+			{
+				$retValue = "///" . substr($retValue, $count + 3);
+			}
+			return $retValue;
+		}
+
 		// Sets the Class include file values: LibName, XMLFile and itemTag.
 		private function SetIncludeValues(string $includeLine, string $codeFileSpec
 			, ?string &$itemTag) : bool
@@ -280,23 +298,8 @@
 			return $retValue;
 		}
 
-		// Replaces tabs with spaces and removes extra leading spaces
-		private function LTrimXMLComment(string $comment) : string
-		{
-			// Convert comment tabs to spaces.
-			$retValue = str_replace("\t", "  ", $comment);
-
-			// Start after /// and get count chars.
-			$count = 6;
-			$check = substr($retValue, 3, $count);
-
-			// If at least count spaces, left trim the count spaces.
-			if ($check == "      ")
-			{
-				$retValue = "///" . substr($retValue, $count + 3);
-			}
-			return $retValue;
-		}
+		// ---------------
+		// Private Output Methods
 
 		// Writes a Debug line.
 		private function Debug(string $text, bool $addLine = true) : void
@@ -315,13 +318,25 @@
 		}
 
 		// Writes an output line.
-		private function Output($text, $value)
+		private function Output($text = null, $value = null)
 		{
-			LJCWriter::WriteLine("$text:\r\n|$value|");
+			$lib = "";
+			//$lib = "LJCCommonLib";
+			if ("" == $lib
+				||$lib == $this->LibName
+				|| $lib == $this->IncludeFile->LibName)
+			{
+				LJCWriter::Write($text);
+				if ($value != null)
+				{
+					LJCWriter::Write(":\r\n|$value|");
+				}
+				LJCWriter::WriteLine("");
+			}
 		}
 
 		// ---------------
-		// Public Properties
+		// Public Properties - LJCInclude
 
 		/// <summary>The Incude comments.</summary>
 		public ?array $Comments;

@@ -7,16 +7,17 @@
 		<summary>Processes the Template and Data to produce the output string.</summary>
 		<param name="$templateFileSpec">The template file.</param>
 		<param name="$sections">The data sections.</param>
-		<code>$webCommonPath = "c:/inetpub/wwwroot/LJCPHPCommon";
-		 require_once "$webCommonPath/LJCGenTextLib.php";
-		 require_once "$webCommonPath/LJCGenTextSectionLib.php";
+		<code>
+			$webCommonPath = "c:/inetpub/wwwroot/LJCPHPCommon";
+			require_once "$webCommonPath/LJCGenTextLib.php";
+			require_once "$webCommonPath/LJCGenTextSectionLib.php";
 
-		 // $sections is an LJCSections object.
-		 $sections = LJCSections::Deserialize("Sections.xml");
+			// $sections is an LJCSections object.
+			$sections = LJCSections::Deserialize("Sections.xml");
 		 
-		 $genText = new LJCGenText();
-		 $templateFileSpec = "GenDataLib\Templates\ClassTemplate.html";
-		 $outputString = $genText->ProcessTemplate($templateFileSpec, $sections);
+			$genText = new LJCGenText();
+			$templateFileSpec = "GenDataLib\Templates\ClassTemplate.html";
+			$outputString = $genText->ProcessTemplate($templateFileSpec, $sections);
 		</code>
 	</ProcessTemplate>
 	

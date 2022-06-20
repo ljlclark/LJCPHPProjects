@@ -17,14 +17,15 @@
 			This alternative for PHP strpos() always returns an integer. It can be
 			simply tested for success $index &gt;= 0 or failure $index &lt; 0.
 		</remarks>
-		<code>$webCommonPath = "c:/inetpub/wwwroot/LJCPHPCommon";
-		 require_once "$webCommonPath/LJCCommonLib.php";
+		<code>
+			$webCommonPath = "c:/inetpub/wwwroot/LJCPHPCommon";
+			require_once "$webCommonPath/LJCCommonLib.php";
 
-		 // $index = 5
-		 $index = LJCCommon::StrPos("This here.", "Here");
+			// $index = 5
+			$index = LJCCommon::StrPos("This here.", "Here");
 
-		 // $index = -1
-		 $index = LJCCommon::StrPos("This here.", "Here", exact: true);
+			// $index = -1
+			$index = LJCCommon::StrPos("This here.", "Here", exact: true);
 		</code>
 	</StrPos>
 	<StrRPos>
@@ -41,14 +42,15 @@
 			&lt;br /&gt;
 			This alternative for PHP strpos() always returns an integer.
 		</remarks>
-		<code>$webCommonPath = "c:/inetpub/wwwroot/LJCPHPCommon";
-		 require_once "$webCommonPath/LJCCommonLib.php";
+		<code>
+			$webCommonPath = "c:/inetpub/wwwroot/LJCPHPCommon";
+			require_once "$webCommonPath/LJCCommonLib.php";
 
-		 // $index = 13
-		 $index = LJCCommon::StrRPos("This here is here.", "Here");
+			// $index = 13
+			$index = LJCCommon::StrRPos("This here is here.", "Here");
 
-		 // $index = -1
-		 $index = LJCCommon::StrRPos("This here is here.", "Here", exact: true);
+			// $index = -1
+			$index = LJCCommon::StrRPos("This here is here.", "Here", exact: true);
 		</code>
 	</StrRPos>
 	<GetDebugFileName>
@@ -61,7 +63,8 @@
 			folder exists and returns the text "folder/fileName" with the extension
 			"txt".
 		</remarks>
-		<code>$webCommonPath = "c:/inetpub/wwwroot/LJCPHPCommon";
+		<code>
+			$webCommonPath = "c:/inetpub/wwwroot/LJCPHPCommon";
 			require_once "$webCommonPath/LJCCommonLib.php";
 
       // $debugFileSpec = "Debug\SourceFile.txt"
@@ -83,11 +86,12 @@
 			Includes to the end of the string if the end delimiter is null
 			or not found.
 		</remarks>
-		<code>$webCommonPath = "c:/inetpub/wwwroot/LJCPHPCommon";
-		 require_once "$webCommonPath/LJCCommonLib.php";
+		<code>
+			$webCommonPath = "c:/inetpub/wwwroot/LJCPHPCommon";
+			require_once "$webCommonPath/LJCCommonLib.php";
 
-		 // $text = "here"
-		 $text = LJCCommon::GetDelimitedString("This | here |.", "|", "|");
+			// $text = "here"
+			$text = LJCCommon::GetDelimitedString("This | here |.", "|", "|");
 		</code>
 	</GetDelimitedString>
 	<GetFileName>
@@ -100,11 +104,12 @@
 			&lt;br /&gt;
 			Includes to the end of the string if the "." is not found.
 		</remarks>
-		<code>$webCommonPath = "c:/inetpub/wwwroot/LJCPHPCommon";
-		 require_once "$webCommonPath/LJCCommonLib.php";
+		<code>
+			$webCommonPath = "c:/inetpub/wwwroot/LJCPHPCommon";
+			require_once "$webCommonPath/LJCCommonLib.php";
 
-		 // $text = "File"
-		 $text = LJCCommon::GetFileName("../Folder/File.txt");
+			// $text = "File"
+			$text = LJCCommon::GetFileName("../Folder/File.txt");
 		</code>
 	</GetFileName>
 	<GetFileSpecPath>
@@ -114,11 +119,12 @@
 		<remarks>
 			Parses to the last "/".
 		</remarks>
-		<code>$webCommonPath = "c:/inetpub/wwwroot/LJCPHPCommon";
-		 require_once "$webCommonPath/LJCCommonLib.php";
+		<code>
+			$webCommonPath = "c:/inetpub/wwwroot/LJCPHPCommon";
+			require_once "$webCommonPath/LJCCommonLib.php";
 
-		 // $text = "../Folder"
-		 $text = LJCCommon::GetFileSpecPath("../Folder/File.txt");
+			// $text = "../Folder"
+			$text = LJCCommon::GetFileSpecPath("../Folder/File.txt");
 		</code>
 	</GetFileSpecPath>
 	<GetIndexedDebugFileName>
@@ -136,12 +142,13 @@
 			value that does not already exist on disk. It begins checking with an
 			index value of 1.
 		</remarks>
-		<code>$webCommonPath = "c:/inetpub/wwwroot/LJCPHPCommon";
-		 require_once "$webCommonPath/LJCCommonLib.php";
+		<code>
+			$webCommonPath = "c:/inetpub/wwwroot/LJCPHPCommon";
+			require_once "$webCommonPath/LJCCommonLib.php";
 
-		 // $debugFileSpec = "Debug\SourceFile1.txt"
-		 $debugFileSpec = LJCCommon::GetIndexedDebugFileName("Debug"
-			 , "SourceFile.php");
+			// $debugFileSpec = "Debug\SourceFile1.txt"
+			$debugFileSpec = LJCCommon::GetIndexedDebugFileName("Debug"
+				, "SourceFile.php");
 		</code>
 	</GetIndexedDebugFileName>
 	<Scrub>
@@ -152,11 +159,12 @@
 			Trims the text, strips slashes and converts HTML characters to HTML
 			entities.
 		</remarks>
-		<code>$webCommonPath = "c:/inetpub/wwwroot/LJCPHPCommon";
-		 require_once "$webCommonPath/LJCCommonLib.php";
+		<code>
+			$webCommonPath = "c:/inetpub/wwwroot/LJCPHPCommon";
+			require_once "$webCommonPath/LJCCommonLib.php";
 
-		 // $text = "&amp;amp;lt;tag&amp;amp;gt;"
-		 $text = LJCCommon::Scrub(" &amp;lt;/tag&amp;gt; ");
+			// $text = "&amp;amp;lt;tag&amp;amp;gt;"
+			$text = LJCCommon::Scrub(" &amp;lt;/tag&amp;gt; ");
 		</code>
 	</Scrub>
 	<SetSessionValue>
@@ -164,11 +172,12 @@
 		<param name="$name">The session value name.</param>
 		<param name="$value">The session value.</param>
 		<returns>The session value.</returns>
-		<code>$webCommonPath = "c:/inetpub/wwwroot/LJCPHPCommon";
-		 require_once "$webCommonPath/LJCCommonLib.php";
+		<code>
+			$webCommonPath = "c:/inetpub/wwwroot/LJCPHPCommon";
+			require_once "$webCommonPath/LJCCommonLib.php";
 
-		 // $dbServer = "localhost"
-		 $dbServer = LJCCommon::SetSessionValue("dbServer", "localhost");
+			// $dbServer = "localhost"
+			$dbServer = LJCCommon::SetSessionValue("dbServer", "localhost");
 		</code>
 	</SetSessionValue>
 </items>

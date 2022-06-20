@@ -28,18 +28,19 @@
 		<param name="$tableName">The Table name.</param>
 		<param name="$className">The Class name.</param>
 		<returns>The sections array.</returns>
-		<code>$webCommonPath = "c:/inetpub/wwwroot/LJCPHPCommon";
-		 require_once "$webCommonPath/LJCDBAccessLib.php";
-		 require_once "$webCommonPath/LJCGenTextSectionLib.php";
+		<code>
+			$webCommonPath = "c:/inetpub/wwwroot/LJCPHPCommon";
+			require_once "$webCommonPath/LJCDBAccessLib.php";
+			require_once "$webCommonPath/LJCGenTextSectionLib.php";
 
-		 $dbAccess = new LJCDbAccess($connectionValues);
+			$dbAccess = new LJCDbAccess($connectionValues);
 
-		 $tableName = "TableName";
-		 $dbColumns = $dbAccess->LoadTableSchema($database, $tableName);
+			$tableName = "TableName";
+			$dbColumns = $dbAccess->LoadTableSchema($database, $tableName);
 
-		 // $sections is an LJCSections object.
-		 $sections = LJCSections::CreateColumnData($dbColumns, $tableName
-			, "ClassName");
+			// $sections is an LJCSections object.
+			$sections = LJCSections::CreateColumnData($dbColumns, $tableName
+				, "ClassName");
 		</code>
 	</CreateColumnData>
 	<AddReplacement>
@@ -47,72 +48,76 @@
 		<param name="$item">The Item object.</param>
 		<param name="$name">The Replacement name.</param>
 		<param name="$value">The Replacement value.</param>
-		<code>$webCommonPath = "c:/inetpub/wwwroot/LJCPHPCommon";
-		 require_once "$webCommonPath/LJCGenTextSectionLib.php";
+		<code>
+			$webCommonPath = "c:/inetpub/wwwroot/LJCPHPCommon";
+			require_once "$webCommonPath/LJCGenTextSectionLib.php";
 
-		 $sections = new LJCSections();
-		 $section = new LJCSection("SectionName");
-		 $sections->Add($section, $section->Name);
+			$sections = new LJCSections();
+			$section = new LJCSection("SectionName");
+			$sections->Add($section, $section->Name);
 		 
-		 $item = new LJCItem("ItemName");
-		 $section->Items[] = $item;
-		 $sections::AddReplacement($item, "_ClassName_", "ClassName");
+			$item = new LJCItem("ItemName");
+			$section->Items[] = $item;
+			$sections::AddReplacement($item, "_ClassName_", "ClassName");
 		</code>
 	</AddReplacement>
 	<Deserialize>
 		<summary>Deserializes the data from a Sections XML file.</summary>
 		<param name="$xmlFileSpec">The source XML file specification.</param>
 		<returns>The Sections object.</returns>
-		<code>&amp;lt;Data xmlns:xsd='http://www.w3.org/2001/XMLSchema'
-			xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'&amp;gt;
-			 &amp;lt;Sections&amp;gt;
-				 &amp;lt;Section&amp;gt;
-					 &amp;lt;Begin/&amp;gt;
-					 &amp;lt;Name&amp;gt;Main&amp;lt;/Name&amp;gt;
-					 &amp;lt;Items&amp;gt;
-						 &amp;lt;Item&amp;gt;
-							 &amp;lt;Replacements&amp;gt;
-								 &amp;lt;Replacement&amp;gt;
-									 &amp;lt;Name&amp;gt;_FileSummary_&amp;lt;/Name&amp;gt;
-									 &amp;lt;Value&amp;gt;This is the file summary text.&amp;lt;/Value&amp;gt;
-								 &amp;lt;/Replacement&amp;gt;
-								 &amp;lt;Replacement&amp;gt;
-									 &amp;lt;Name&amp;gt;_FileName_&amp;lt;/Name&amp;gt;
-									 &amp;lt;Value&amp;gt;LJCLib&amp;lt;/Value&amp;gt;
-								 &amp;lt;/Replacement&amp;gt;
-							 &amp;lt;/Replacements&amp;gt;
-						 &amp;lt;/Item&amp;gt;
-					 &amp;lt;/Items&amp;gt;
-				 &amp;lt;/Section&amp;gt;
-			 &amp;lt;/Sections&amp;gt;
-		 &amp;lt;/Data&amp;gt;
+		<code>
+			&amp;lt;Data xmlns:xsd='http://www.w3.org/2001/XMLSchema'
+				xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'&amp;gt;
+				&amp;lt;Sections&amp;gt;
+					&amp;lt;Section&amp;gt;
+						&amp;lt;Begin/&amp;gt;
+						&amp;lt;Name&amp;gt;Main&amp;lt;/Name&amp;gt;
+						&amp;lt;Items&amp;gt;
+							&amp;lt;Item&amp;gt;
+								&amp;lt;Replacements&amp;gt;
+									&amp;lt;Replacement&amp;gt;
+										&amp;lt;Name&amp;gt;_FileSummary_&amp;lt;/Name&amp;gt;
+										&amp;lt;Value&amp;gt;This is the file summary text.&amp;lt;/Value&amp;gt;
+									&amp;lt;/Replacement&amp;gt;
+									&amp;lt;Replacement&amp;gt;
+										&amp;lt;Name&amp;gt;_FileName_&amp;lt;/Name&amp;gt;
+										&amp;lt;Value&amp;gt;LJCLib&amp;lt;/Value&amp;gt;
+									&amp;lt;/Replacement&amp;gt;
+								&amp;lt;/Replacements&amp;gt;
+							&amp;lt;/Item&amp;gt;
+						&amp;lt;/Items&amp;gt;
+					&amp;lt;/Section&amp;gt;
+				&amp;lt;/Sections&amp;gt;
+			&amp;lt;/Data&amp;gt;
 
-		 $webCommonPath = "c:/inetpub/wwwroot/LJCPHPCommon";
-		 require_once "$webCommonPath/LJCGenTextSectionLib.php";
+			$webCommonPath = "c:/inetpub/wwwroot/LJCPHPCommon";
+			require_once "$webCommonPath/LJCGenTextSectionLib.php";
 
-		 // $sections is an LJCSections object.
-		 $sections = LJCSections::Deserialize("Sections.xml");
+			// $sections is an LJCSections object.
+			$sections = LJCSections::Deserialize("Sections.xml");
 		</code>
 	</Deserialize>
 	<DeserializeString>
 		<summary>Deserializes the data from a Sections XML string.</summary>
 		<param name="$xmlString">The XMLDoc node.</param>
 		<returns>The Sections object.</returns>
-		<code>$webCommonPath = "c:/inetpub/wwwroot/LJCPHPCommon";
-		 require_once "$webCommonPath/LJCGenTextSectionLib.php";
+		<code>
+			$webCommonPath = "c:/inetpub/wwwroot/LJCPHPCommon";
+			require_once "$webCommonPath/LJCGenTextSectionLib.php";
 
-		 $sections = LJCSections::DeserializeString($xmlstring);
+			$sections = LJCSections::DeserializeString($xmlstring);
 		</code>
 	</DeserializeString>
 	<CreateSections>
 		<summary>Creates the Section data from an XMLDoc node.</summary>
 		<param name="$xmlElement">The root Element.</param>
 		<returns>The sections array.</returns>
-		<code>$webCommonPath = "c:/inetpub/wwwroot/LJCPHPCommon";
-		 require_once "$webCommonPath/LJCGenTextSectionLib.php";
+		<code>
+			$webCommonPath = "c:/inetpub/wwwroot/LJCPHPCommon";
+			require_once "$webCommonPath/LJCGenTextSectionLib.php";
 
-		 $xmlElement = simplexml_load_file("Sections.xml");
-		 $sections = LJCSections::CreateSections($xmlElement);		 
+			$xmlElement = simplexml_load_file("Sections.xml");
+			$sections = LJCSections::CreateSections($xmlElement);		 
 		</code>
 	</CreateSections>
 	<Serialize>
@@ -120,10 +125,11 @@
 		<param name="$xmlFile">The target XML file.</param>
 		<param name="$sections">The sections array.</param>
 		<param name="$rootName">The XML root name.</param>
-		<code>$webCommonPath = "c:/inetpub/wwwroot/LJCPHPCommon";
-		 require_once "$webCommonPath/LJCGenTextSectionLib.php";
+		<code>
+			$webCommonPath = "c:/inetpub/wwwroot/LJCPHPCommon";
+			require_once "$webCommonPath/LJCGenTextSectionLib.php";
 
-		 LJCSections::Serialize("Sections.xml", $sections);		 
+			LJCSections::Serialize("Sections.xml", $sections);		 
 		</code>
 	</Serialize>
 	
@@ -133,12 +139,13 @@
 		<param name="$item">The object to be added to the collection.</param>
 		<param name="$key">The element key.</param>
 		<returns>The added item.</returns>
-		<code>$webCommonPath = "c:/inetpub/wwwroot/LJCPHPCommon";
-		 require_once "$webCommonPath/LJCGenTextSectionLib.php";
+		<code>
+			$webCommonPath = "c:/inetpub/wwwroot/LJCPHPCommon";
+			require_once "$webCommonPath/LJCGenTextSectionLib.php";
 
-		 $sections = new LJCSections();
-		 $section = new LJCSection("SectionName");
-		 $sections->Add($section, $section->Name);
+			$sections = new LJCSections();
+			$section = new LJCSection("SectionName");
+			$sections->Add($section, $section->Name);
 		</code>
 	</Add>
 	<Get>
@@ -146,33 +153,35 @@
 		<param name="$key">The element key.</param>
 		<param name="$throwError">Indicates if an error should be thrown if the key is not found.</param>
 		<returns>The object with the matching key value.</returns>
-		<code>$webCommonPath = "c:/inetpub/wwwroot/LJCPHPCommon";
-		 require_once "$webCommonPath/LJCGenTextSectionLib.php";
+		<code>
+			$webCommonPath = "c:/inetpub/wwwroot/LJCPHPCommon";
+			require_once "$webCommonPath/LJCGenTextSectionLib.php";
 
-		 $sections = new LJCSections();
-		 $section = new LJCSection("SectionName");
-		 $sections->Add($section, $section->Name);
+			$sections = new LJCSections();
+			$section = new LJCSection("SectionName");
+			$sections->Add($section, $section->Name);
 		 
-		 $section = LJCSections->Get("SectionName");
+			$section = LJCSections->Get("SectionName");
 		</code>
 	</Get>
 	<HasKey>
 		<summary>Indicates if a key already exists.</summary>
 		<param name="$key">The element key.</param>
 		<returns>True if the key already exists, otherwise false.</returns>
-		<code>$webCommonPath = "c:/inetpub/wwwroot/LJCPHPCommon";
-		 require_once "$webCommonPath/LJCGenTextSectionLib.php";
+		<code>
+			$webCommonPath = "c:/inetpub/wwwroot/LJCPHPCommon";
+			require_once "$webCommonPath/LJCGenTextSectionLib.php";
 
-		 $sections = new LJCSections();
-		 $key = "SectionName";
-		 if ($sections->HasKey($key))
-		 {
-			 throw new Exception("Key: {$key} already in use.");
-		 }
-		 else
-		 {
-			 $section = new LJCSection($key);
-		 }
+			$sections = new LJCSections();
+			$key = "SectionName";
+			if ($sections->HasKey($key))
+			{
+				throw new Exception("Key: {$key} already in use.");
+			}
+			else
+			{
+				$section = new LJCSection($key);
+			}
 		</code>
 	</HasKey>
 </items>

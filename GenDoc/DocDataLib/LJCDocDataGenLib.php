@@ -311,6 +311,8 @@
 		// Process the Class XML data.
 		private function ProcessClass() : void
 		{
+			$loc = "LJCDocDataGen.ProcessClass";
+
 			$classes = $this->DocDataFile->Classes;
 			if (null == $classes)
 			{
@@ -325,12 +327,22 @@
 			$class->Syntax = trim($this->Line);
 			$class->Remarks = $this->Comments->Remarks;
 			$class->Code = $this->Comments->Code;
+
+			// Testing
+			$this->Output("**");
+			$this->Output("$loc summary", $class->Summary);
+			$this->Output("Syntax", $class->Syntax);
+			$this->Output("Remarks", $class->Remarks);
+			$this->Output("Code", $class->Code);
+
 			$this->Comments->ClearComments();
 		}
 
 		// Process the Function XML data.
 		private function ProcessFunction() : void
 		{
+			$loc = "LJCDocDataGen.ProcessFunction";
+
 			$classes = $this->DocDataFile->Classes;
 			$class = $classes->Get($this->ClassName);
 			$methods = $class->Methods;
@@ -351,6 +363,16 @@
 			$method->Syntax = $this->Syntax;
 			$method->Remarks = $this->Comments->Remarks;
 			$method->Code = $this->Comments->Code;
+
+			// Testing
+			$this->Output("**");
+			$this->Output("$loc summary", $summary);
+			//$this->Output("params", $method->Params);
+			$this->Output("Syntax", $method->Syntax);
+			$this->Output("Returns", $returns);
+			$this->Output("Remarks", $method->Remarks);
+			$this->Output("Code", $method->Code);
+
 			$this->Comments->ClearComments();
 		}
 
@@ -409,15 +431,25 @@
 		// Process the Lib XML data.
 		private function ProcessLib() : void
 		{
+			$loc = "LJCDocDataGen.ProcessLib";
+
 			$docDataFile = $this->DocDataFile;
 			$docDataFile->Summary = $this->Comments->Summary;
 			$docDataFile->Remarks = $this->Comments->Remarks;
+
+			// Testing
+			$this->Output("**");
+			$this->Output("$loc summary", $docDataFile->Summary);
+			$this->Output("Remarks", $docDataFile->Remarks);
+
 			$this->Comments->ClearComments();
 		}
 
 		// Process the Property XML data.
 		private function ProcessProperty() : void
 		{
+			$loc = "LJCDocDataGen.ProcessProperty";
+
 			$classes = $this->DocDataFile->Classes;
 			$class = $classes->Get($this->ClassName);
 			$properties = $class->Properties;
@@ -434,6 +466,14 @@
 
 			$property->Syntax = trim($this->Line);
 			$property->Remarks = $this->Comments->Remarks;
+
+			// Testing
+			$this->Output("**");
+			$this->Output("$loc summary", $summary);
+			$this->Output("Syntax", $property->Syntax);
+			$this->Output("Returns", $returns);
+			$this->Output("Remarks", $property->Remarks);
+
 			$this->Comments->ClearComments();
 		}
 
@@ -478,14 +518,30 @@
 		}
 
 		// Writes an output line.
-		private function Output($text, $value)
+		private function Output($text = null, $value = null)
 		{
 			$lib = "";
 			//$lib = "LJCCommonLib";
 			if ("" == $lib
-				|| $lib == $this->LibName)
+				||$lib == $this->LibName
+				|| $lib == $this->IncludeFile->LibName)
 			{
-				LJCWriter::WriteLine("$text:\r\n|$value|");
+				LJCWriter::Write($text);
+				if ($value != null)
+				{
+					if (is_array($value))
+					{
+						foreach ($value as $item)
+						{
+							LJCWriter::WriteLine(":\r\n|$item|");
+						}
+					}
+					else
+					{
+						LJCWriter::Write(":\r\n|$value|");
+					}
+				}
+				LJCWriter::WriteLine("");
 			}
 		}
 
