@@ -436,7 +436,6 @@
 					$builder->Append($this->CreateParams($method->Params, $indent + 2));
 					$builder->AppendTags("Returns", $method->Returns, $indent + 2);
 					$builder->AppendTags("Remarks", $method->Remarks, $indent + 2);
-					// *** Next Statement *** Change - Add Syntax
 					$builder->AppendTags("Syntax", $method->Syntax, $indent + 2);
 					$builder->AppendTags("Code", $method->Code, $indent + 2);
 					$builder->AppendLine("</Method>", $indent + 1);

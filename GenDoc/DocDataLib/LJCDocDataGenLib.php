@@ -152,6 +152,7 @@
 		public function CreateDocDataXMLString(string $codeFileSpec, bool $writeXML = false
 			, string $outputPath = null) : ?string
 		{
+			$loc = "$this->DebugClass.CreateDocDataXMLString";
 			$retValue = null;
 
 			$this->LibName = LJCCommon::GetFileName($codeFileSpec);
@@ -164,6 +165,7 @@
 				$outputFileSpec = $this->DocOutputFileSpec($codeFileSpec, $outputPath);
 				LJCWriter::WriteFile($retValue, $outputFileSpec);
 			}
+			$this->Output("$loc retValue", $retValue);
 			return $retValue;
 		}
 
@@ -358,7 +360,6 @@
 			$methods->AddObject($method, $name);
 
 			$this->SetFunctionSyntax();
-			// *** Next Line *** Add
 			$method->Params = $this->Comments->Params;
 			$method->Syntax = $this->Syntax;
 			$method->Remarks = $this->Comments->Remarks;

@@ -36,7 +36,8 @@
 		{
 			global $webCommonPath;
 			global $devPath;
-			$writeXML = false;
+			$writeDocDataXML = false;
+			$writeGenDataXML = true;
 
 			$tokens = LJCCommon::GetTokens($fileSpecLine);
 			if (count($tokens) > 1)
@@ -56,11 +57,11 @@
 				$fileSpec .= trim($tokens[1]);
 
 				$docXMLString = $this->DocDataGen->CreateDocDataXMLString($fileSpec
-					, $writeXML);
+					, $writeDocDataXML);
 				if ($docXMLString != null)
 				{
 					$genXMLString = $this->GenDataGen->CreateLibXMLString($docXMLString
-						, $fileSpec, $writeXML);
+						, $fileSpec, $writeGenDataXML);
 				}
 			}
 		}
