@@ -37,7 +37,7 @@
 			global $webCommonPath;
 			global $devPath;
 			$writeDocDataXML = false;
-			$writeGenDataXML = true;
+			$writeGenDataXML = false;
 
 			$tokens = LJCCommon::GetTokens($fileSpecLine);
 			if (count($tokens) > 1)

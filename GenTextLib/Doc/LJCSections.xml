@@ -11,13 +11,12 @@
 			template file	to generate a customized output file.
 			&lt;/p&gt;
 			&lt;pre&gt;
-				LJCSections&lt;br /&gt;
-					LJCSection&lt;br /&gt;
-						LJCItems&lt;br /&gt;
-							LJCItem&lt;br /&gt;
-								LJCReplacements&lt;br /&gt;
-									LJCReplacement
-			&lt;/pre&gt;
+				LJCSections
+					LJCSection
+						LJCItems
+							LJCItem
+								LJCReplacements
+									LJCReplacement&lt;/pre&gt;
 		</remarks>
 	</LJCSections>
 	

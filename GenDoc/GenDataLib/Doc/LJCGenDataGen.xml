@@ -23,24 +23,24 @@
 			from the PHP files and the requirements of the HTML Template.
 			&lt;/p&gt;
 			This is the standard layout for the GenData XML files.
-			&lt;pre&gt; &amp;lt;Data xmlns:xsd="http://www.w3.org/2001/XMLSchema"&lt;br /&gt;
- xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"&amp;gt;&lt;br /&gt;
-        &amp;lt;Sections&amp;gt;&lt;br /&gt;
-          &amp;lt;Section&amp;gt;&lt;br /&gt;
-            &amp;lt;Begin/&amp;gt;&lt;br /&gt;
-            &amp;lt;Name&amp;gt;Main&amp;lt;/Name&amp;gt;&lt;br /&gt;
-            &amp;lt;Items&amp;gt;&lt;br /&gt;
-              &amp;lt;Item&amp;gt;&lt;br /&gt;
-                &amp;lt;Replacements&amp;gt;&lt;br /&gt;
-                  &amp;lt;Replacement&amp;gt;&lt;br /&gt;
-                    &amp;lt;Name&amp;gt;&amp;lt;/Name&amp;gt;&lt;br /&gt;
-                    &amp;lt;Value&amp;gt;&amp;lt;/Value&amp;gt;&lt;br /&gt;
-                  &amp;lt;Replacement&amp;gt;&lt;br /&gt;
-                &amp;lt;Replacements&amp;gt;&lt;br /&gt;
-              &amp;lt;Item&amp;gt;&lt;br /&gt;
-            &amp;lt;Items&amp;gt;&lt;br /&gt;
-          &amp;lt;Section&amp;gt;&lt;br /&gt;
-        &amp;lt;Sections&amp;gt;&lt;br /&gt;
+			&lt;pre&gt; &amp;lt;Data xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"&amp;gt;
+        &amp;lt;Sections&amp;gt;
+          &amp;lt;Section&amp;gt;
+            &amp;lt;Begin/&amp;gt;
+            &amp;lt;Name&amp;gt;Main&amp;lt;/Name&amp;gt;
+            &amp;lt;Items&amp;gt;
+              &amp;lt;Item&amp;gt;
+                &amp;lt;Replacements&amp;gt;
+                  &amp;lt;Replacement&amp;gt;
+                    &amp;lt;Name&amp;gt;&amp;lt;/Name&amp;gt;
+                    &amp;lt;Value&amp;gt;&amp;lt;/Value&amp;gt;
+                  &amp;lt;Replacement&amp;gt;
+                &amp;lt;Replacements&amp;gt;
+              &amp;lt;Item&amp;gt;
+            &amp;lt;Items&amp;gt;
+          &amp;lt;Section&amp;gt;
+        &amp;lt;Sections&amp;gt;
       &amp;lt;/Data&amp;gt;&lt;/pre&gt;
 		</remarks>
 	</LJCGenDataGen>

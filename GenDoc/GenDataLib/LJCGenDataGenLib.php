@@ -58,6 +58,7 @@
 
 			// GenData XML file name same as source file with .xml extension.
 			$fileName = LJCCommon::GetFileName($codeFileSpec) . ".xml";
+			// Start Testing
 			$docDataFile = LJCDocDataFile::DeserializeString($docXMLString);
 			$retValue = $this->CreateLibString($docDataFile, $fileName);
 			if ($writeXML && $retValue != null)
@@ -75,65 +76,6 @@
 			}
 
 			$this->CreateClassesXML($docDataFile, $writeXML, $outputPath);
-			return $retValue;
-		}
-
-		// Creates a Lib Class section GenData XML string.
-		// <include path='items/CreateLibClassString/*' file='Doc/LJCGenDataGen.xml'/>
-		private function CreateLibClassString(LJCDocDataFile $docDataFile) : ?string
-		{
-			$retValue = null;
-
-			$classes = $docDataFile->Classes;
-			if ($classes != null)
-			{
-				$builder = new LJCStringBuilder();
-
-				// Section Begin Lines.
-				$indent = 2;
-				$value = LJCGenDataXML::SectionBegin("Class", $indent);
-				$builder->Append($value);
-
-				$indent += 2;
-				foreach ($classes as $class)
-				{
-					// Items Begin Lines
-					$text = $class->Name;
-					$value = LJCGenDataXML::ItemBegin($text, $indent);
-					$builder->Append($value);
-					$indent++;
-
-					// Replacements
-					$text = $class->Name;
-					$value = LJCGenDataXML::Replacement("_ClassName_", $text, $indent);
-					$builder->Append($value);
-
-					$text = $class->Summary;
-					$value = LJCGenDataXML::Replacement("_ClassSummary_", $text, $indent);
-					$builder->Append($value);
-
-					// Items End Lines				
-					$value = LJCGenDataXML::ItemEnd($indent);
-					$builder->Append($value);
-					$indent--;
-
-					// Section End Lines
-					//$indent--;
-					//$value = LJCGenDataXML::SectionEnd($indent);
-					//LJCWriter::WriteLine("LJCGenDataLib-LJCGenDataGen.CreateLibClassString()"
-					//	. " SectionEnd:\r\n $value");
-					//$builder->Append($value);
-					//$retValue = $builder->ToString();
-				}
-
-				// Section End Lines
-				$indent--;
-				$value = LJCGenDataXML::SectionEnd($indent);
-				//LJCWriter::WriteLine("LJCGenDataLib-LJCGenDataGen.CreateLibClassString()"
-				//	. " SectionEnd:\r\n $value");
-				$builder->Append($value);
-				$retValue = $builder->ToString();
-			}
 			return $retValue;
 		}
 
@@ -207,6 +149,65 @@
 			return $retValue;
 		}  // CreateLibString()
 
+		// Creates a Lib Class section GenData XML string.
+		// <include path='items/CreateLibClassString/*' file='Doc/LJCGenDataGen.xml'/>
+		private function CreateLibClassString(LJCDocDataFile $docDataFile) : ?string
+		{
+			$retValue = null;
+
+			$classes = $docDataFile->Classes;
+			if ($classes != null)
+			{
+				$builder = new LJCStringBuilder();
+
+				// Section Begin Lines.
+				$indent = 2;
+				$value = LJCGenDataXML::SectionBegin("Class", $indent);
+				$builder->Append($value);
+
+				$indent += 2;
+				foreach ($classes as $class)
+				{
+					// Items Begin Lines
+					$text = $class->Name;
+					$value = LJCGenDataXML::ItemBegin($text, $indent);
+					$builder->Append($value);
+					$indent++;
+
+					// Replacements
+					$text = $class->Name;
+					$value = LJCGenDataXML::Replacement("_ClassName_", $text, $indent);
+					$builder->Append($value);
+
+					$text = $class->Summary;
+					$value = LJCGenDataXML::Replacement("_ClassSummary_", $text, $indent);
+					$builder->Append($value);
+
+					// Items End Lines				
+					$value = LJCGenDataXML::ItemEnd($indent);
+					$builder->Append($value);
+					$indent--;
+
+					// Section End Lines
+					//$indent--;
+					//$value = LJCGenDataXML::SectionEnd($indent);
+					//LJCWriter::WriteLine("LJCGenDataLib-LJCGenDataGen.CreateLibClassString()"
+					//	. " SectionEnd:\r\n $value");
+					//$builder->Append($value);
+					//$retValue = $builder->ToString();
+				}
+
+				// Section End Lines
+				$indent--;
+				$value = LJCGenDataXML::SectionEnd($indent);
+				//LJCWriter::WriteLine("LJCGenDataLib-LJCGenDataGen.CreateLibClassString()"
+				//	. " SectionEnd:\r\n $value");
+				$builder->Append($value);
+				$retValue = $builder->ToString();
+			}
+			return $retValue;
+		}
+
 		// Creates a Lib GenData XML output file spec.
 		// <include path='items/OutputLibSpec/*' file='Doc/LJCGenDataGen.xml'/>
 		private function OutputLibSpec(string $codeFileSpec
@@ -226,55 +227,6 @@
 		
 		// ---------------
 		// Class Methods - LJCGenDataGen
-
-		// Creates a Class Methods section GenData XML string.
-		// <include path='items/CreateClassMethodString/*' file='Doc/LJCGenDataGen.xml'/>
-		private function CreateClassMethodString(LJCDocDataClass $class) : ?string
-		{
-			$retValue = null;
-
-			$methods = $class->Methods;
-			if ($methods != null)
-			{
-				$builder = new LJCStringBuilder();
-
-				// Section Begin Lines.
-				$indent = 2;
-				$value = LJCGenDataXML::SectionBegin("Function", $indent);
-				$builder->Append($value);
-
-				$indent += 2;
-				foreach ($methods as $method)
-				{
-					// Items Begin Lines
-					$text = $method->Name;
-					$value = LJCGenDataXML::ItemBegin($text, $indent);
-					$builder->Append($value);
-					$indent++;
-
-					// Replacements
-					$text = $method->Name;
-					$value = LJCGenDataXML::Replacement("_FunctionName_", $text, $indent);
-					$builder->Append($value);
-
-					$text = $method->Summary;
-					$value = LJCGenDataXML::Replacement("_FunctionSummary_", $text, $indent);
-					$builder->Append($value);
-
-					// Items End Lines				
-					$value = LJCGenDataXML::ItemEnd($indent);
-					$builder->Append($value);
-					$indent--;
-				}
-
-				// Section End Lines
-				$indent--;
-				$value = LJCGenDataXML::SectionEnd($indent);
-				$builder->Append($value);
-				$retValue = $builder->ToString();
-			}
-			return $retValue;
-		}  // CreateClassMethodString()
 
 		// Creates a Class GenData XML string.
 		// <include path='items/CreateClassString/*' file='Doc/LJCGenDataGen.xml'/>
@@ -367,6 +319,55 @@
 			$retValue = $builder->ToString();
 			return $retValue;
 		}  // CreateClassString()
+
+		// Creates a Class Methods section GenData XML string.
+		// <include path='items/CreateClassMethodString/*' file='Doc/LJCGenDataGen.xml'/>
+		private function CreateClassMethodString(LJCDocDataClass $class) : ?string
+		{
+			$retValue = null;
+
+			$methods = $class->Methods;
+			if ($methods != null)
+			{
+				$builder = new LJCStringBuilder();
+
+				// Section Begin Lines.
+				$indent = 2;
+				$value = LJCGenDataXML::SectionBegin("Function", $indent);
+				$builder->Append($value);
+
+				$indent += 2;
+				foreach ($methods as $method)
+				{
+					// Items Begin Lines
+					$text = $method->Name;
+					$value = LJCGenDataXML::ItemBegin($text, $indent);
+					$builder->Append($value);
+					$indent++;
+
+					// Replacements
+					$text = $method->Name;
+					$value = LJCGenDataXML::Replacement("_FunctionName_", $text, $indent);
+					$builder->Append($value);
+
+					$text = $method->Summary;
+					$value = LJCGenDataXML::Replacement("_FunctionSummary_", $text, $indent);
+					$builder->Append($value);
+
+					// Items End Lines				
+					$value = LJCGenDataXML::ItemEnd($indent);
+					$builder->Append($value);
+					$indent--;
+				}
+
+				// Section End Lines
+				$indent--;
+				$value = LJCGenDataXML::SectionEnd($indent);
+				$builder->Append($value);
+				$retValue = $builder->ToString();
+			}
+			return $retValue;
+		}  // CreateClassMethodString()
 
 		// Creates a Class Methods section GenData XML string.
 		private function CreateClassPropertyString(LJCDocDataClass $class) : ?string
@@ -570,51 +571,9 @@
 			return $retValue;
 		}  // CreateMethodString()
 
-		// Creates the Method GenData class XML strings and optionally files.
-		// <include path='items/CreateMethodsXML/*' file='Doc/LJCGenDataGen.xml'/>
-		private function CreateMethodsXML(LJCDocDataClass $class, string $libName
-			, bool $writeXML = true, string $outputPath = null) : void
-		{
-			$methods = $class->Methods;
-			if ($methods != null)
-			{
-				foreach ($methods as $method)
-				{
-					$this->CreateMethodXML($class, $method, $libName, $writeXML, $outputPath);
-				}
-			}
-		}
-
-		// Creates a Method GenData XML string and optional file.
-		// <include path='items/CreateMethodXML/*' file='Doc/LJCGenDataGen.xml'/>
-		private function CreateMethodXML(LJCDocDataClass $class
-			, LJCDocDataMethod $method, string $libName, bool $writeXML = false
-			, string $outputPath = null) : string
-		{
-			$retValue = null;
-
-			$fileName = $method->Name;
-			$retValue = $this->CreateMethodString($class, $method, $fileName
-				, $libName);
-			if ($writeXML && $retValue != null)
-			{
-				$outputFileSpec = $this->OutputMethodSpec($class, $method, $outputPath);
-				LJCWriter::WriteFile($retValue, $outputFileSpec);
-			}
-
-			if ($retValue != null)
-			{
-				$htmlText = $this->GetHTMLText($retValue, "FunctionTemplate.html");
-				$htmlPath = "$this->HTMLPath/$class->Name";
-				$htmlFileName = "$class->Name$method->Name";
-				$this->WriteHTML($htmlText, $htmlPath, $htmlFileName);
-			}
-			return $retValue;
-		}
-
-		/// <summary>Creates a Method Params section GenData XML string.</summary>
-		/// <param name="$method">The Method object.</param>
-		public function CreateMethodParamString(LJCDocDataMethod $method) : ?string
+		// <summary>Creates a Method Params section GenData XML string.</summary>
+		// <param name="$method">The Method object.</param>
+		private function CreateMethodParamString(LJCDocDataMethod $method) : ?string
 		{
 			$retValue = null;
 
@@ -657,6 +616,48 @@
 				$value = LJCGenDataXML::SectionEnd($indent);
 				$builder->Append($value);
 				$retValue = $builder->ToString();
+			}
+			return $retValue;
+		}
+
+		// Creates the Method GenData class XML strings and optionally files.
+		// <include path='items/CreateMethodsXML/*' file='Doc/LJCGenDataGen.xml'/>
+		private function CreateMethodsXML(LJCDocDataClass $class, string $libName
+			, bool $writeXML = true, string $outputPath = null) : void
+		{
+			$methods = $class->Methods;
+			if ($methods != null)
+			{
+				foreach ($methods as $method)
+				{
+					$this->CreateMethodXML($class, $method, $libName, $writeXML, $outputPath);
+				}
+			}
+		}
+
+		// Creates a Method GenData XML string and optional file.
+		// <include path='items/CreateMethodXML/*' file='Doc/LJCGenDataGen.xml'/>
+		private function CreateMethodXML(LJCDocDataClass $class
+			, LJCDocDataMethod $method, string $libName, bool $writeXML = false
+			, string $outputPath = null) : string
+		{
+			$retValue = null;
+
+			$fileName = $method->Name;
+			$retValue = $this->CreateMethodString($class, $method, $fileName
+				, $libName);
+			if ($writeXML && $retValue != null)
+			{
+				$outputFileSpec = $this->OutputMethodSpec($class, $method, $outputPath);
+				LJCWriter::WriteFile($retValue, $outputFileSpec);
+			}
+
+			if ($retValue != null)
+			{
+				$htmlText = $this->GetHTMLText($retValue, "FunctionTemplate.html");
+				$htmlPath = "$this->HTMLPath/$class->Name";
+				$htmlFileName = "$class->Name$method->Name";
+				$this->WriteHTML($htmlText, $htmlPath, $htmlFileName);
 			}
 			return $retValue;
 		}

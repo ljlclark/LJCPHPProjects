@@ -187,7 +187,7 @@
 					$class->Remarks = self::Value($classNode->Remarks);
 					$class->Methods = self::GetMethods($classNode);
 					$class->Properties = self::GetProperties($classNode);
-					$class->Code = self::Value($classNode->Code);
+					$class->Code = self::Value($classNode->Code, false);
 				}
 			}
 			return $retValue;
@@ -214,7 +214,7 @@
 					$method->Remarks = self::Value($methodNode->Remarks);
 					// *** Next Statement *** Add
 					$method->Syntax = self::Value($methodNode->Syntax);
-					$method->Code = self::Value($methodNode->Code);
+					$method->Code = self::Value($methodNode->Code, false);
 				}
 			}
 			return $retValue;
@@ -327,13 +327,18 @@
 		}
 
 		// Get the value from the XML value.
-		private static function Value(SimpleXMLElement $xmlValue) : ?string
+		private static function Value(SimpleXMLElement $xmlValue
+			, bool $trim = true) : ?string
 		{
 			$retValue = null;
 
 			if ($xmlValue != null)
 			{
-				$retValue = trim((string)$xmlValue);
+				$retValue = (string)$xmlValue;
+				if (true == $trim)
+				{
+					$retValue = trim($retValue);
+				}
 			}
 			return $retValue;
 		}
