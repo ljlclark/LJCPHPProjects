@@ -3,7 +3,7 @@ ReadMeDocDataLib.txt
 
 This project contains classes to generate DocData XML.
 
-DocData XML data is generated from the PHP source files.
+DocData XML is generated from the PHP source files.
 
 The DocData XML is intended to contain the XML Comments based on the PHP file
 structure of Classes, Methods and Properties.

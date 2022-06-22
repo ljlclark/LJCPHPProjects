@@ -156,7 +156,6 @@
 			$retValue = null;
 
 			$this->LibName = LJCCommon::GetFileName($codeFileSpec);
-			// *** Next Line *** Add - 6/19
 			$this->Comments->LibName = $this->LibName;
 			$this->DocDataFile = new LJCDocDataFile($this->LibName);
 			$retValue = $this->ProcessCode($codeFileSpec);
@@ -165,7 +164,8 @@
 				$outputFileSpec = $this->DocOutputFileSpec($codeFileSpec, $outputPath);
 				LJCWriter::WriteFile($retValue, $outputFileSpec);
 			}
-			$this->Output("$loc retValue", $retValue);
+			// Testing
+			//$this->Output("$loc retValue", $retValue);
 			return $retValue;
 		}
 
@@ -333,9 +333,9 @@
 			// Testing
 			$this->Output("**");
 			$this->Output("$loc summary", $class->Summary);
-			$this->Output("Syntax", $class->Syntax);
-			$this->Output("Remarks", $class->Remarks);
-			$this->Output("Code", $class->Code);
+			//$this->Output("Syntax", $class->Syntax);
+			//$this->Output("Remarks", $class->Remarks);
+			//$this->Output("Code", $class->Code);
 
 			$this->Comments->ClearComments();
 		}
@@ -368,11 +368,10 @@
 			// Testing
 			$this->Output("**");
 			$this->Output("$loc summary", $summary);
-			//$this->Output("params", $method->Params);
-			$this->Output("Syntax", $method->Syntax);
-			$this->Output("Returns", $returns);
-			$this->Output("Remarks", $method->Remarks);
-			$this->Output("Code", $method->Code);
+			//$this->Output("Syntax", $method->Syntax);
+			//$this->Output("Returns", $returns);
+			//$this->Output("Remarks", $method->Remarks);
+			//$this->Output("Code", $method->Code);
 
 			$this->Comments->ClearComments();
 		}
@@ -441,7 +440,7 @@
 			// Testing
 			$this->Output("**");
 			$this->Output("$loc summary", $docDataFile->Summary);
-			$this->Output("Remarks", $docDataFile->Remarks);
+			//$this->Output("Remarks", $docDataFile->Remarks);
 
 			$this->Comments->ClearComments();
 		}
@@ -471,9 +470,9 @@
 			// Testing
 			$this->Output("**");
 			$this->Output("$loc summary", $summary);
-			$this->Output("Syntax", $property->Syntax);
-			$this->Output("Returns", $returns);
-			$this->Output("Remarks", $property->Remarks);
+			//$this->Output("Syntax", $property->Syntax);
+			//$this->Output("Returns", $returns);
+			//$this->Output("Remarks", $property->Remarks);
 
 			$this->Comments->ClearComments();
 		}

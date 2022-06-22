@@ -4,7 +4,7 @@
 <items>
 	<LJCDocDataGenLib>
 		<summary>
-			Contains Classes to create DocData from a PHP source file.
+			Contains Classes to create DocData XML from a PHP source file.
 		</summary>
 		<remarks>
 			Contains classes for these functions:&lt;br /&gt;

@@ -84,9 +84,6 @@
 				$this->CodeFileSpec = $codeFileSpec;
 			}
 
-			// Testing
-			$this->Output("---------------");
-			$this->Output("$loc line", $line);
 			if (false == $this->IsContinue)
 			{
 				// New comment.
@@ -99,12 +96,9 @@
 				}
 
 				$comment = $this->GetComment($line);
-				// Testing
-				$this->Output("$loc comment", $comment);
-
-				// Process if Include comment processing is not done.
 				if ($this->CurrentTagName != null)
 				{
+					// Process if Include comment processing is not done.
 					$this->SaveComment($comment);
 					if (false == $this->HasCurrentEndTag($line))
 					{
@@ -122,8 +116,6 @@
 					$this->IsContinue = false;
 				}
 				$comment = $this->GetComment($line);
-				// Testing
-				$this->Output("$loc isContinue", $comment);
 				$this->SaveComment($comment);
 			}
 		}  // SetComment();
@@ -218,8 +210,6 @@
 			if ($isSimpleComment)
 			{
 				$rTrim = true;
-				// *** Next Statement *** Change - 6/19
-				//if (null == $endTag)
 				if (false == $this->HasCurrentEndTag($line))
 				{
 					// No EndTag so do not remove cr/lf.
