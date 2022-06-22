@@ -4,12 +4,13 @@ with C and some exposure to C++; my coding is heavily influenced by strongly typ
 and Camel case names. To help keep things familiar for me it will be noticed that much of this influence has been brought forward
 to my code in PHP.
 
-LJCPHPCodeDoc
+#GenDoc
 
 One of my first projects was to write a CodeDoc generator in PHP to read my PHP files and generate CodeDoc HTML. These CodeDoc
 pages are found in the WebSites repository, folder CodeDoc/LJCPHPCodeDoc. Much of the internal code XML Documentation syntax was
 borrowed from C#.
 
+#LJCPHPCommon
 LJCCommonLib.php
 
 There are certain functions that are used in multiple projects. These are coded as static functions in LJCCommonLib.
@@ -27,5 +28,9 @@ LJCCollectionLib.php
 A base class that can be used to represent a strongly-typed collection of objects.
 
 LJCTextLib.php
+
+Code for writing output to a file or stdout.
+
+#GenTextLib
 
 A generic template driven code or text generator.
