@@ -6,6 +6,8 @@ to my code in PHP.
 
 GenDoc
 
+A technical code HTML documentation generator.
+
 One of my first projects was to write a CodeDoc generator in PHP to read my PHP files and generate CodeDoc HTML. These CodeDoc
 pages are found in the WebSites repository, folder CodeDoc/LJCPHPCodeDoc. Much of the internal code XML Documentation syntax was
 borrowed from C#.
@@ -15,6 +17,8 @@ GenTextLib
 A generic template driven code or text generator.
 
 LJCPHPCommon
+
+Some classes can be used in multiple PHP projects. The following are the PHP files that contain these classes.
 
 LJCCommonLib.php
 
