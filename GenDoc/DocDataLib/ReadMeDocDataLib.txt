@@ -56,7 +56,7 @@ LJCDocDataGenLib - Contains Classes to generate DocData XML strings and
 
   Included Classes:
   LJCDocDataLib - Contains Classes to represent DocData and for Serialization
-	          and Deserialization.
+	                and Deserialization.
 
   Main Object Graph
   LJCDocDataFile
