@@ -5,17 +5,27 @@ case and Camel case names. To help keep things familiar for me it will be notice
 forward to my code in PHP.
 
 LJCPHPCodeDoc
+
 One of my first projects was to write a CodeDoc generator in PHP to read my PHP files and generate CodeDoc HTML. These CodeDoc
-pages are found in the WebSites repository folder LJCPHPCodeDoc.
+pages are found in the WebSites repository folder LJCPHPCodeDoc. Much of the internal code XML Documentation syntax was borrowed
+from C#.
 
 LJCCommonLib.php
+
 There are certain functions that are used in multiple projects. These are coded as static functions in LJCCommonLib.
 
 LJCDbAccessLib.php
 
+The Database Access functions are encapsulated in class LJCDbAccess.
 
-LJDataManagerLib.PHP
+LJCDataManagerLib.php
+
+A high-level, message based Data Access approach is encapsulated in class LJCDataManager.
 
 LJCCollectionLib.php
 
+A base class that can be used to represent a strongly-typed collection of objects.
+
 LJCTextLib.php
+
+A generic template driven code or text generator.
