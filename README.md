@@ -26,11 +26,13 @@ There are certain functions that are used in multiple projects. These are coded 
 
 LJCDbAccessLib.php
 
-The Database Access functions are encapsulated in class LJCDbAccess.
+The PDO Database Access functions are encapsulated in class LJCDbAccess.
 
 LJCDataManagerLib.php
 
 A high-level, message based Data Access approach is encapsulated in class LJCDataManager.
+
+The LJCDataManager class contains a reference to LJCDbAccess to perform the low-level PDO Database Access.
 
 LJCCollectionLib.php
 
