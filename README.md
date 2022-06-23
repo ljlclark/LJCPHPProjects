@@ -30,13 +30,14 @@ The PDO Database Access functions are encapsulated in class LJCDbAccess.
 
 LJCDataManagerLib.php
 
-A high-level, message based Data Access approach is encapsulated in class LJCDataManager.
-
-The LJCDataManager class contains a reference to LJCDbAccess to perform the low-level PDO Database Access.
+A message based Data Access approach is encapsulated in class LJCDataManager. The LJCDataManager class provides a higher level of
+abstraction on top of the LJCDbAccess class. It does not require the developer to create SQL statements. Instead the developer
+can use strongly typed DataObjects, KeyColumn definitions, Join definitions and Included PropertyNames arrays to interact with
+the database.
 
 LJCCollectionLib.php
 
-A base class that can be used to extend another class to represent a strongly-typed collection of objects.
+A base class that can be used to extend (be inherited by) another class to represent a strongly-typed collection of objects.
 
 LJCTextLib.php
 
