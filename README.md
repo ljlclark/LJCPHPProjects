@@ -34,7 +34,7 @@ A high-level, message based Data Access approach is encapsulated in class LJCDat
 
 LJCCollectionLib.php
 
-A base class that can be used to represent a strongly-typed collection of objects.
+A base class that can be used to extend another class to represent a strongly-typed collection of objects.
 
 LJCTextLib.php
 
