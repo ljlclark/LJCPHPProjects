@@ -57,6 +57,12 @@
 			return $retValue;
 		}
 
+		// Clears the collection items.
+		public function Clear()
+		{
+			$this->Items = [];
+		}
+
 		/// <summary>Gets an indexed array of keys.</summary>
 		/// <returns>The indexed keys array.</returns>
 		public function GetKeys() : array
