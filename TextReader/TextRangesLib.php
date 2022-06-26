@@ -1,17 +1,18 @@
 <?php
 	// Copyright (c) Lester J. Clark 2022 - All Rights Reserved
-	// TextRegionsLib.php
+	// TextRangesLib.php
 	declare(strict_types=1);
 	$devPath = "c:/Users/Les/Documents/Visual Studio 2022/LJCPHPProjects";
 	require_once "$devPath/LJCPHPCommon/LJCCollectionLib.php";
 	require_once "$devPath/LJCPHPCommon/LJCCommonLib.php";
+	require_once "$devPath/LJCPHPCommon/LJCTextLib.php";
 
-	/// <summary>The PHP Text Regions Class Library</summary>
-	/// LibName: LJCTextRegionsLib
+	/// <summary>The PHP Text Ranges Class Library</summary>
+	/// LibName: LJCTextRangesLib
 
 	// ***************
-	/// <summary>Represents the text region.</summary>
-	class TextRegion
+	/// <summary>Represents the text range.</summary>
+	class TextRange
 	{
 		/// <summary>
 		///		Initializes a class instance with the provided values.
@@ -36,12 +37,12 @@
 		public int $BeginIndex;
 
 		/// <summary>The region ending index.</summary>
-		public string $EndIndex;
+		public int $EndIndex;
 	}
 
 	// ***************
-	/// <summary>Represents a collection of TextRegion objects.</summary>
-	class TextRegions extends LJCCollectionBase
+	/// <summary>Represents a collection of TextRange objects.</summary>
+	class TextRanges extends LJCCollectionBase
 	{
 		/// <summary>
 		///		Initializes a class instance with the provided values.
@@ -51,6 +52,7 @@
 		{
 			$this->FieldDelimiter = $fieldDelimiter;
 			$this->ValueDelimiter = $valueDelimiter;
+			$this->DebugWriter = new LJCDebugWriter("TextRanges");
 		}
 
 		// ---------------
@@ -59,7 +61,7 @@
 		// Creates an object and adds it to the collection.
 		// <include path='items/Add/*' file='Doc/TextRegions.xml'/>
 		public function Add(int $beginIndex, int $endIndex, $key = null)
-			: ?TextRegion
+			: ?TextRange
 		{
 			$retValue = null;
 
@@ -68,18 +70,18 @@
 				$key = $beginIndex;
 			}
 
-			$item = new TextRegion($beginIndex, $endIndex, $renameAs);
+			$item = new TextRange($beginIndex, $endIndex);
 			$retValue = $this->AddObject($item , $key);
 			return $retValue;
 		}
 
 		// Adds an object and key value.
 		// <include path='items/AddObject/*' file='Doc/TextRegions.xml'/>
-		public function AddObject(TextRegion $item, $key = null) : ?TextRegion
+		public function AddObject(TextRange $item, $key = null) : ?TextRange
 		{
 			if (null == $key)
 			{
-				$key = $item->PropertyName;
+				$key = strval($item->BeginIndex);
 			}
 			$retValue = $this->AddItem($item, $key);
 			return $retValue;
@@ -99,7 +101,7 @@
 
 		// Get the item by Key value.
 		// <include path='items/Get/*' file='Doc/TextRegions.xml'/>
-		public function Get($key, bool $throwError = true) : ?TextRegion
+		public function Get($key, bool $throwError = true) : ?TextRange
 		{
 			$retValue = $this->GetItem($key, $throwError);
 			return $retValue;
@@ -108,42 +110,14 @@
 		// ---------------
 		// Public Other Methods
 
-		// Sets regions and returns true if a region was defined.
-		public function SetRegions(string $text) : bool
+		/// <summary>Determines if a delimiter is in a text value.</summary>
+		public function IsInValue(int $index) : bool
 		{
 			$retValue = false;
 
-			$this->Clear();
-			$currentIndex = 0;
-			$beginIndex = LJCCommon::StrPos($text, $this->ValueDelimiter);
-			while ($beginIndex > -1)
+			foreach ($this->Items as $value)
 			{
-				$currentIndex = $eginIndex + 1;
-				$endIndex = LJCCommon::StrPos($text, $this->ValueDelimiter
-					, $currentIndex);
-				if (-1 == $endIndex)
-				{
-					$beginIndex = -1;
-					continue;
-				}
-				$retValue = true;
-				$this->Add($beginIndex, $endIndex);
-				$currentIndex = $endIndex + 1;
-				$endIndex = -1;
-				$beginIndex = LJCCommon::StrPos($text, $this->ValueDelimiter
-					, $currentIndex);
-			}
-			return $retValue;
-		}
-
-		/// <summary>Determines if a delimiter is in a text region.</summary>
-		public function IsInRegion(int $index) : bool
-		{
-			$retValue = false;
-
-			foreach ($this->Items as $region)
-			{
-				if ($region->BeginIndex <= $index && $region->EndIndex >= $index)
+				if ($value->BeginIndex <= $index && $value->EndIndex >= $index)
 				{
 					$retValue = true;
 					break;
@@ -152,14 +126,54 @@
 			return $retValue;
 		}
 
+		// Sets value ranges and returns true if a range was defined.
+		public function SetRanges(string $text) : bool
+		{
+			$retValue = false;
+
+			$this->Clear();
+
+			// Search for beginning of first value.
+			$currentIndex = 0;
+			$beginIndex = LJCCommon::StrPos($text, $this->ValueDelimiter);
+			while ($beginIndex > -1)
+			{
+				// Search for ending of value.
+				$currentIndex = $beginIndex + 1;
+				$endIndex = LJCCommon::StrPos($text, $this->ValueDelimiter
+					, $currentIndex);
+				if (-1 == $endIndex)
+				{
+					$beginIndex = -1;
+					continue;
+				}
+				if (false == $this->VerifyValue($text, $endIndex))
+				{
+					$beginIndex = $endIndex;
+					continue;
+				}
+
+				// Add value range.
+				$retValue = true;
+				$this->Add($beginIndex, $endIndex);
+
+				// Search for beginning of next value.
+				$currentIndex = $endIndex + 1;
+				$endIndex = -1;
+				$beginIndex = LJCCommon::StrPos($text, $this->ValueDelimiter
+					, $currentIndex);
+			}
+			return $retValue;
+		}
+
 		/// <summary>
-		/// Splits a line of text on the delimiters not enclosed in text regions.
+		/// Splits a line of text on the delimiters not enclosed in a value.
 		/// </summary>
 		public function Split(string $line) : array
 		{
 			$retValue = [];
 
-			if (false == $this->SetRegions($line))
+			if (false == $this->SetRanges($line))
 			{
 				$retValue = explode($this->FieldDelimiter, $line);
 			}
@@ -192,8 +206,8 @@
 					}
 					if ($endIndex > -1)
 					{
-						// Get delimiter that is not already in a region?
-						while ($this->IsInRegion($endIndex))
+						// Get delimiter that is not already in a value?
+						while ($this->IsInValue($endIndex))
 						{
 							$currentIndex = $endIndex + 1;
 							$endIndex = LJCCommon::StrPos($line, $this->FieldDelimiter
@@ -224,6 +238,63 @@
 					// Set beginning of next field.
 					$beginIndex = $currentIndex;
 				}
+			}
+			return $retValue;
+		}
+
+		// ---------------
+		// Private Methods
+
+		// 
+		private function Debug(string $text, bool $addLine = true) : void
+		{
+			$this->DebugWriter->Debug($text, $addLine);
+		}
+
+		// 
+		private function RemoveLeadingBlanks($text)
+		{
+			$length = strlen($text);
+			if($length > 1)
+			{
+				for ($index = 0; $index < $length; $index++)
+				{
+					if ($text[$index] != " ")
+					{
+						$text = substr($text, $index);
+						break;
+					}
+				}
+			}
+			return $text;
+		}
+
+		// A field value must be immediately followed by the field delimiter
+		// or be at the end of the string to be a valid value.
+		// Otherwise it contains an embeded value delimiter.
+		private function VerifyValue(string $text, int $endIndex) : bool
+		{
+			$retValue = false;
+
+			// Verify ending of value.
+			$verifyStartIndex = $endIndex + 1;
+			$verifyIndex = LJCCommon::StrPos($text, $this->FieldDelimiter
+				, $verifyStartIndex);
+			if (-1 == $verifyIndex)
+			{
+				$verifyIndex = strlen($text) - 1;
+			}
+			$verifyLen = $verifyIndex - $verifyStartIndex + 1;
+			$verifyValue = substr($text, $verifyStartIndex, $verifyLen);
+			$verifyValue = $this->RemoveLeadingBlanks($verifyValue);
+
+			if ($verifyValue == $this->FieldDelimiter)
+			{
+				$retValue = true;
+			}
+			else
+			{
+				$beginIndex = $verifyIndex;
 			}
 			return $retValue;
 		}

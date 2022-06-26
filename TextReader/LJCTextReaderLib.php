@@ -2,7 +2,7 @@
 	// Copyright (c) Lester J. Clark 2022 - All Rights Reserved
 	// LJCTextReaderLib.php
 	declare(strict_types=1);
-	require_once "TextRegionsLib.php";
+	require_once "TextRangesLib.php";
 
 	/// <summary>The PHP Text Reader Class Library</summary>
 	/// LibName: LJCTextReaderLib
@@ -22,7 +22,7 @@
 			$this->FieldCount = 0;
 			$this->FieldDelimiter = "\t";
 			$this->ValueDelimiter = "\"";
-			$this->TextRegions = new TextRegions($this->FieldDelimiter
+			$this->TextRanges = new TextRanges($this->FieldDelimiter
 				, $this->ValueDelimiter);
 
 			// Open for reading and to allow positioning?
@@ -68,13 +68,7 @@
 			{
 				$this->ValueCount = 0;
 				$line = (string)fgets($this->InputStream);
-				$values = $this->TextRegions->Split($line);
-				// Testing
-				$testValues = $this->TextRegions->GetValues();
-				foreach ($testValues as $testValue)
-				{
-					echo "testValue: $testValue";
-				}
+				$values = $this->TextRanges->Split($line);
 				$valueLength = count($values);
 				if ($valueLength > 0)
 				{

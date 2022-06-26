@@ -280,4 +280,35 @@
 		// Class Data
 		private $Stream;
 	}
+
+	// 
+	class LJCDebugWriter
+	{
+		// 
+		public function __construct(string $locName)
+		{
+			$fileName = LJCCommon::GetDebugFileName("Debug", $locName);
+			$outputStream = fopen($fileName, "w");
+			$this->DebugWriter = new LJCWriter($outputStream);
+		}
+
+		// 
+		public function Debug(string $text, bool $addLine = true) : void
+		{
+			if ($this->DebugWriter != null)
+			{
+				if ($addLine)
+				{
+					$this->DebugWriter->FWriteLine("$text");
+				}
+				else
+				{
+					$this->DebugWriter->FWrite("$text");
+				}
+			}
+		}
+
+		// 
+		private ?LJCWriter $DebugWriter;
+	}
 ?>
