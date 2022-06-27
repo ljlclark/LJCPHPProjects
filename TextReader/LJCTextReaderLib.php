@@ -24,13 +24,16 @@
 				throw new Exception("Input file '$fileSpec' was not found.");
 			}
 			$this->FileSpec = $fileSpec;
+			$this->ConfigXMLSpec = null;
 			$this->FieldDelimiter = ",";
+			$this->IsFirstRead = true;
 			$this->ValueDelimiter = "\"";
 		}
 
 		/// <summary></summary>
 		public function SetConfig(string $configXMLSpec = null)
 		{
+			$this->ConfigXMLSpec = $configXMLSpec;
 			$this->TextRanges = new TextRanges($this->FieldDelimiter
 				, $this->ValueDelimiter);
 
@@ -44,7 +47,9 @@
 					throw new Exception("First line configuration was not found.");
 				}
 				$line = (string)fgets($this->InputStream);
-				$this->FieldNames = explode($this->FieldDelimiter, $line);
+				$this->IsFirstRead = false;
+				$names = explode($this->FieldDelimiter, $line);
+				$this->SetFieldNames($names);
 			}
 			else
 			{
@@ -64,7 +69,7 @@
 			{
 				$this->FieldCount = count($this->FieldNames);
 			}
-		}
+		}  // SetConfig()
 
 		// ---------------
 		// Public Methods - LJCTextReader
@@ -98,6 +103,17 @@
 				$this->ValueCount = 0;
 				$line = (string)fgets($this->InputStream);
 				$values = $this->TextRanges->Split($line);
+
+				if ($this->IsFirstRead
+					&& null != $this->ConfigXMLSpec
+					&& $this->IsConfig($values))
+				{
+					// Skip Config line if configured with XML file.
+					$line = (string)fgets($this->InputStream);
+					$values = $this->TextRanges->Split($line);
+				}
+				$this->IsFirstRead = false;
+
 				$valueLength = count($values);
 				if ($valueLength > 0)
 				{
@@ -135,6 +151,37 @@
 
 		// ---------------
 		// Private Methods - LJCTextReader
+
+		// Checks if the line is a Config line.
+		private function IsConfig($names)
+		{
+			$retValue = false;
+
+			if ("Config" == $names[0])
+			{
+				$retValue = true;
+			}
+			return $retValue;
+		}
+
+		// Sets the field names from the Config line.
+		private function SetFieldNames(array $names)
+		{
+			if ($this->IsConfig($names))
+			{
+				foreach ($names as $name)
+				{
+					if ("Config" != $name)
+					{
+						$this->FieldNames[] = $name;
+					}
+				}
+			}
+			else
+			{
+				throw new Exception("First line configuration was not found.");
+			}
+		}
 
 		// Remove the trailing cr/lf or lf without removing anything else.
 		// <include path='items/TrimCrLf/*' file='Doc/LJCTextReader.xml'/>
