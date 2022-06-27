@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright (c) Lester J. Clark 2022 - All Rights Reserved -->
+<!-- TextRanges.xml -->
+<items>
+	<construct>
+		<summary>
+			Initializes a class instance with the provided values.
+		</summary>
+		<param name="$fieldDelimiter">The field delimiter.</param>
+		<param name="$valueDelimiter">The value delimiter.</param>
+	</construct>
+	<Add>
+		<summary>Creates an object and adds it to the collection.</summary>
+		<param name="$beginIndex">The begin index.</param>
+		<param name="$endIndex">The end index.</param>
+		<param name="$key">The optional key value.</param>
+		<returns>The added TextRange item.</returns>
+	</Add>
+	<AddObject>
+		<summary>Adds an object and key value.</summary>
+		<param name="$item">The item value.</param>
+		<param name="$key">The optional key value.</param>
+		<returns>The added TextRange item.</returns>
+	</AddObject>
+	<Get>
+		<summary>Get the item by Key value.</summary>
+		<param name="$key">The item key.</param>
+		<param name="$throwError">Indicates if an error should be thrown.</param>
+		<returns>The specified TextRange item.</returns>
+	</Get>
+	<IsInValue>
+		<summary>Determines if a delimiter is in a text value.</summary>
+		<param name="$index">The delimiter index.</param>
+		<returns>True if the index is in a range, otherwise false.</returns>
+	</IsInValue>
+	<SetRanges>
+		<summary>Sets value ranges and returns true if a range was defined.</summary>
+		<param name="$text">The text value.</param>
+		<returns>True if there are ranges, otherwise false.</returns>
+	</SetRanges>
+	<Split>
+		<summary>
+			Splits a line of text on the delimiters not enclosed in a value.
+		</summary>
+		<param name="$line">The line text value.</param>
+		<returns>An array of text values.</returns>
+	</Split>
+	<RemoveLeadingBlanks>
+		<summary>Removes only the leading blanks.</summary>
+		<param name="$text">The text value.</param>
+		<returns>The left trimmed text.</returns>
+		<remarks>Potential Common function?</remarks>
+	</RemoveLeadingBlanks>
+</items>

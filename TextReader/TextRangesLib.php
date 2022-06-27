@@ -14,9 +14,8 @@
 	/// <summary>Represents the text range.</summary>
 	class TextRange
 	{
-		/// <summary>
-		///		Initializes a class instance with the provided values.
-		/// </summary>
+		// Initializes a class instance with the provided values.
+		/// <include path='items/construct/*' file='Doc/TextRange.xml'/>
 		public function __construct(int $beginIndex, int $endIndex)
 		{
 			$this->BeginIndex = $beginIndex;
@@ -24,6 +23,7 @@
 		}
 
 		/// <summary>Creates an object clone.</summary>
+		/// <returns>The cloned item.</return>
 		public function Clone() : self
 		{
 			$retValue = new self($this->BeginIndex, $this->EndIndex);
@@ -31,7 +31,7 @@
 		}
 
 		// ---------------
-		// Properties
+		// Properties - TextRange
 
 		/// <summary>The region beginning index.</summary>
 		public int $BeginIndex;
@@ -44,9 +44,8 @@
 	/// <summary>Represents a collection of TextRange objects.</summary>
 	class TextRanges extends LJCCollectionBase
 	{
-		/// <summary>
-		///		Initializes a class instance with the provided values.
-		/// </summary>
+		// Initializes a class instance with the provided values.
+		/// <include path='items/construct/*' file='Doc/TextRanges.xml'/>
 		public function __construct(string $fieldDelimiter = ","
 			, string $valueDelimiter = "\"")
 		{
@@ -56,10 +55,10 @@
 		}
 
 		// ---------------
-		// Public Collection Methods
+		// Public Collection Methods - TextRanges
 
 		// Creates an object and adds it to the collection.
-		// <include path='items/Add/*' file='Doc/TextRegions.xml'/>
+		// <include path='items/Add/*' file='Doc/TextRanges.xml'/>
 		public function Add(int $beginIndex, int $endIndex, $key = null)
 			: ?TextRange
 		{
@@ -76,7 +75,7 @@
 		}
 
 		// Adds an object and key value.
-		// <include path='items/AddObject/*' file='Doc/TextRegions.xml'/>
+		// <include path='items/AddObject/*' file='Doc/TextRanges.xml'/>
 		public function AddObject(TextRange $item, $key = null) : ?TextRange
 		{
 			if (null == $key)
@@ -88,6 +87,7 @@
 		}
 
 		/// <summary>Creates an object clone.</summary>
+		/// <returns>The cloned item.</returns>
 		public function Clone() : self
 		{
 			$retValue = new self();
@@ -100,7 +100,7 @@
 		}
 
 		// Get the item by Key value.
-		// <include path='items/Get/*' file='Doc/TextRegions.xml'/>
+		/// <include path='items/Get/*' file='Doc/TextRanges.xml'/>
 		public function Get($key, bool $throwError = true) : ?TextRange
 		{
 			$retValue = $this->GetItem($key, $throwError);
@@ -108,9 +108,10 @@
 		}
 
 		// ---------------
-		// Public Other Methods
+		// Public Other Methods - TextRanges
 
-		/// <summary>Determines if a delimiter is in a text value.</summary>
+		// Determines if a delimiter is in a text value.
+		/// <include path='items/IsInValue/*' file='Doc/TextRanges.xml'/>
 		public function IsInValue(int $index) : bool
 		{
 			$retValue = false;
@@ -127,6 +128,7 @@
 		}
 
 		// Sets value ranges and returns true if a range was defined.
+		/// <include path='items/SetRanges/*' file='Doc/TextRanges.xml'/>
 		public function SetRanges(string $text) : bool
 		{
 			$retValue = false;
@@ -164,11 +166,10 @@
 					, $currentIndex);
 			}
 			return $retValue;
-		}
+		}  // SetRanges()
 
-		/// <summary>
-		/// Splits a line of text on the delimiters not enclosed in a value.
-		/// </summary>
+		// Splits a line of text on the delimiters not enclosed in a value.
+		/// <include path='items/Split/*' file='Doc/TextRanges.xml'/>
 		public function Split(string $line) : array
 		{
 			$retValue = [];
@@ -240,19 +241,20 @@
 				}
 			}
 			return $retValue;
-		}
+		}  // Split()
 
 		// ---------------
-		// Private Methods
+		// Private Methods - TextRanges
 
-		// 
+		// Output the debug value.
 		private function Debug(string $text, bool $addLine = true) : void
 		{
 			$this->DebugWriter->Debug($text, $addLine);
 		}
 
-		// 
-		private function RemoveLeadingBlanks($text)
+		// Removes only the leading blanks.
+		// <include path='items/Split/*' file='Doc/TextRanges.xml'/>
+		private function RemoveLeadingBlanks(string $text) : string
 		{
 			$length = strlen($text);
 			if($length > 1)
@@ -297,7 +299,7 @@
 				$beginIndex = $verifyIndex;
 			}
 			return $retValue;
-		}
+		}  // VerifyValue()
 
 		// ---------------
 		// Properties
@@ -307,5 +309,5 @@
 
 		/// <summary>The text region delimiter.</summary>
 		public string $ValueDelimiter;
-	}
+	}  // TextRanges
 ?>

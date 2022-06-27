@@ -8,19 +8,17 @@
 	/// LibName: LJCTextReaderLib
 
 	// ***************
-	/// <summary>
-	///		Contains methods to read text files and parse into fields.
-	/// </summary>
+	// Contains methods to read text files and parse into fields.
+	/// <include path='items/LJCTextReader/*' file='Doc/LJCTextReader.xml'/>
 	class LJCTextReader
 	{
-		/// <summary>
-		///		Initializes a class instance with the provided values.
-		/// </summary>
+		// Initializes a class instance with the provided values.
+		/// <include path='items/construct/*' file='Doc/LJCTextReader.xml'/>
 		public function __construct(string $fileSpec)
 		{
 			$this->FileSpec = $fileSpec;
 			$this->FieldCount = 0;
-			$this->FieldDelimiter = "\t";
+			$this->FieldDelimiter = ",";
 			$this->ValueDelimiter = "\"";
 			$this->TextRanges = new TextRanges($this->FieldDelimiter
 				, $this->ValueDelimiter);
@@ -41,7 +39,7 @@
 		// ---------------
 		// Public Methods - LJCTextReader
 
-		/// <summary>Clear field values.</summary>
+		/// <summary>Clears the field values.</summary>
 		public function Clear() : void
 		{
 			if (isset($this->FieldValues))
@@ -58,7 +56,8 @@
 			}
 		}  // Clear()
 
-		/// <summary>Read the next input line.</summary>
+		/// <summary>Reads the next input line.</summary>
+		/// <returns>True if the line was read, otherwise false.</returns>
 		public function Read() : bool
 		{
 			$retValue = false;
@@ -91,8 +90,9 @@
 			return $retValue;
 		}  // Read()
 
-		/// <summary>Gets the field value.</summary>
-		public function GetString(string $fieldName)
+		// Gets the field value.
+		/// <include path='items/GetString/*' file='Doc/LJCTextReader.xml'/>
+		public function GetString(string $fieldName) : string
 		{
 			$retValue = null;
 
@@ -106,10 +106,11 @@
 		// ---------------
 		// Private Methods - LJCTextReader
 
-		// Remove cr/lf.
-		private function TrimCrLf(string $value)
+		// Remove the trailing cr/lf or lf without removing anything else.
+		// <include path='items/TrimCrLf/*' file='Doc/LJCTextReader.xml'/>
+		private function TrimCrLf(string $text) : string
 		{
-			$retValue = $value;
+			$retValue = $text;
 
 			if ($retValue != null)
 			{
@@ -117,9 +118,19 @@
 				if ($length > 1)
 				{
 					$end = substr($retValue, $length);
-					if ($end == "\r\n")
+					$success = true;
+					if ("\r\n" != $end)
 					{
-						// Remove \r\n;
+						$length++;
+						$end = substr($retValue, $length);
+						$success = false;
+						if ("\n" == $end)
+						{
+							$success = true;
+						}
+					}
+					if ($success)
+					{
 						$retValue = substr($retValue, 0, $length);
 					}
 				}

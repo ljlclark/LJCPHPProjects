@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright (c) Lester J. Clark 2022 - All Rights Reserved -->
+<!-- LJCTextReader.xml -->
+<items>
+	<LJCTextReader>
+		<summary>
+			Contains methods to read text files and parse into fields.
+		</summary>
+	</LJCTextReader>
+	<construct>
+		<summary>
+			Initializes a class instance with the provided values.
+		</summary>
+		<param name="$fileSpec">The text file specification.</param>
+	</construct>
+	<GetString>
+		<summary>Gets the field value.</summary>
+		<param name="$fieldName">The field name.</param>
+		<returns>The field value as a string.</returns>
+	</GetString>
+	<TrimCrLf>
+		<summary>
+			Remove the trailing cr/lf or lf without removing anything else.
+		</summary>
+		<param name="$value">The text value.</param>
+		<returns>The trimmed text.</returns>
+		<remarks>Potential Common function?</remarks>
+	</TrimCrLf>
+</items>
