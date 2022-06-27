@@ -157,7 +157,7 @@
 		{
 			$retValue = null;
 
-			if ($xmlNode != null)
+			if (null != $xmlNode)
 			{
 				$name = self::Value($xmlNode->Name);
 				$retValue = new LJCDocDataFile($name);
@@ -175,7 +175,7 @@
 			$retValue = null;
 
 			$classNodes = self::GetClassNodes($docNode);
-			if ($classNodes != null)
+			if (null != $classNodes)
 			{
 				$retValue = new LJCDocDataClasses();
 				foreach ($classNodes as $classNode)
@@ -277,7 +277,7 @@
 			$retValue = null;
 
 			$nodes = $docNode->Classes;
-			if ($nodes != null)
+			if (null != $nodes)
 			{
 				$retValue = $nodes->children();
 			}

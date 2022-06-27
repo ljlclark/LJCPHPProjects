@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) Lester J. Clark 2022 - All Rights Reserved -->
+<DbColumns xmlns:xsd='http://www.w3.org/2001/XMLSchema'
+	xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'>
+	<DbColumn>
+		<AllowDbNull></AllowDbNull>
+		<AutoIncrement></AutoIncrement>
+		<ColumnName>FirstName</ColumnName>
+		<DataTypeName></DataTypeName>
+		<DefaultValue></DefaultValue>
+		<MaxLength></MaxLength>
+		<MySQLTypeName></MySQLTypeName>
+		<PropertyName>FirstName</PropertyName>
+		<RenameAs></RenameAs>
+		<Value></Value>
+		<WhereBoolOperator></WhereBoolOperator>
+		<WhereCompareOperator></WhereCompareOperator>
+	</DbColumn>
+	<DbColumn>
+		<ColumnName>MiddleInitial</ColumnName>
+		<PropertyName>MiddleInitial</PropertyName>
+	</DbColumn>
+	<DbColumn>
+		<ColumnName>LastName</ColumnName>
+		<PropertyName>LastName</PropertyName>
+	</DbColumn>
+</DbColumns>

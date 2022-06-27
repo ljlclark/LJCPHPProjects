@@ -3,8 +3,6 @@
 	// LJCDBAccessLib.php
 	declare(strict_types=1);
 	$webCommonPath = "c:/inetpub/wwwroot/LJCPHPCommon";
-	$devPath = "c:/Users/Les/Documents/Visual Studio 2022/LJCPHPProjects";
-	require_once "$devPath/LJCPHPCommon/LJCCollectionLib.php";
 
 	/// <summary>The PDO Data Access Library</summary>
 	/// LibName: LJCDBAccessLib
@@ -322,6 +320,20 @@
 	class LJCDbColumns extends LJCCollectionBase
 	{
 		// ---------------
+		// Static Functions
+
+		// Deserializes the data from an LJCDocDataFile XML file.
+		/// <include path='items/Deserialize/*' file='Doc/LJCDocDataFile.xml'/>
+		public static function Deserialize(string $xmlFileSpec) : ?LJCDbColumns
+		{
+			$retValue = null;
+
+			$dbColumnsSerializer = new DbColumnsSerializer($xmlFileSpec);
+			$retValue = $dbColumnsSerializer->Deserialize();
+			return $retValue;
+		}
+
+		// ---------------
 		// Public Methods
 
 		// Creates an object and adds it to the collection.
@@ -439,6 +451,96 @@
 			}
 		}
 	}  // LJCDbColumns
+
+	// ***************
+	// Provides methods to Serialize and Deserialize LJCDbColumns.
+	class DbColumnsSerializer
+	{
+		/// <summary>Initializes a class instance with the provided values.</summary>
+		/// <param name="$xmlFileSpec"></param>
+		public function __construct(string $xmlFileSpec)
+		{
+			$this->XMLFileSpec = $xmlFileSpec;
+			if (false == file_exists($xmlFileSpec))
+			{
+				throw new Exception("Input file '$xmlFileSpec' was not found.");
+			}
+			$this->DebugWriter = new LJCDebugWriter("DbColumnsSerializer");
+		}
+
+		/// <summary>Deserializes the XML file.</summary>
+		/// <returns>The LJCDbColumns object.</returns>
+		public function Deserialize() : ?LJCDbColumns
+		{
+			$retValue = null;
+
+			$docNode = simplexml_load_file($this->XMLFileSpec);
+			if (null != $docNode)
+			{
+				$retValue = $this->CreateDbColumns($docNode);
+			}
+			return $retValue;
+		}
+
+		// Deserialize columns from the Doc node.
+		private function CreateDbColumns(SimpleXMLElement $docNode) : ?LJCDbColumns
+		{
+			$retValue = null;
+
+			$dbColumnNodes = $docNode->children();
+			if (null != $dbColumnNodes)
+			{
+				$this->Debug("dbColumnNodes");
+				$retValue = new LJCDbColumns();
+				foreach ($dbColumnNodes as $dbColumnNode)
+				{
+					$columnName = $this->Value($dbColumnNode->ColumnName);
+					$this->Debug("columnName: $columnName");
+					$propertyName = $this->Value($dbColumnNode->PropertyName);
+					$renameAs = $this->Value($dbColumnNode->RenameAs);
+					$dataTypeName = $this->Value($dbColumnNode->DataTypeName);
+					$value = $this->Value($dbColumnNode->Value);
+					$dbColumn = new LJCDbColumn($columnName, $propertyName, $renameAs
+						, $dataTypeName, $value);
+					$retValue->AddObject($dbColumn);
+					//$dbColumn->AllowDbNull = $this->Value($dbColumnNode->AllowDbNull);
+					//$dbColumn->AutoIncrement = $this->Value($dbColumnNode->AutoIncrement);
+					$dbColumn->DefaultValue = $this->Value($dbColumnNode->DefaultValue);
+					$dbColumn->MaxLength = $this->Value($dbColumnNode->MaxLength);
+					$dbColumn->MySQLTypeName = $this->Value($dbColumnNode->MySQLTypeName);
+					$dbColumn->WhereBoolOperator
+						= $this->Value($dbColumnNode->WhereBoolOperator);
+					$dbColumn->WhereCompareOperator
+						= $this->Value($dbColumnNode->WhereCompareOperator);
+				}
+			}
+			return $retValue;
+		}  // CreateDbColumns()
+	
+		// Get the value from the XML value.
+		// Potential Common function?
+		private function Value(SimpleXMLElement $xmlValue, bool $trim = true)
+			: ?string
+		{
+			$retValue = null;
+
+			if ($xmlValue != null)
+			{
+				$retValue = (string)$xmlValue;
+				if (true == $trim)
+				{
+					$retValue = trim($retValue);
+				}
+			}
+			return $retValue;
+		}
+
+		// Output the debug value.
+		private function Debug(string $text, bool $addLine = true) : void
+		{
+			$this->DebugWriter->Debug($text, $addLine);
+		}
+	}  // DbColumnsSerializer
 
 	// ***************
 	/// <summary>Represents a SQL Join.</summary>

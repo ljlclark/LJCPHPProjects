@@ -2,6 +2,9 @@
 	// Copyright (c) Lester J. Clark 2022 - All Rights Reserved
 	// LJCTextReaderLib.php
 	declare(strict_types=1);
+	$devPath = "c:/Users/Les/Documents/Visual Studio 2022/LJCPHPProjects";
+	require_once "$devPath/LJCPHPCommon/LJCCollectionLib.php";
+	require_once "$devPath/LJCPHPCommon/LJCDbAccessLib.php";
 	require_once "TextRangesLib.php";
 
 	/// <summary>The PHP Text Reader Class Library</summary>
@@ -16,20 +19,47 @@
 		/// <include path='items/construct/*' file='Doc/LJCTextReader.xml'/>
 		public function __construct(string $fileSpec)
 		{
+			if (false == file_exists($fileSpec))
+			{
+				throw new Exception("Input file '$fileSpec' was not found.");
+			}
 			$this->FileSpec = $fileSpec;
-			$this->FieldCount = 0;
 			$this->FieldDelimiter = ",";
 			$this->ValueDelimiter = "\"";
+		}
+
+		/// <summary></summary>
+		public function SetConfig(string $configXMLSpec = null)
+		{
 			$this->TextRanges = new TextRanges($this->FieldDelimiter
 				, $this->ValueDelimiter);
 
 			// Open for reading and to allow positioning?
-			$this->InputStream = fopen($fileSpec, "r+");
-			if (false == feof($this->InputStream))
+			$this->InputStream = fopen($this->FileSpec, "r+");
+			if (null == $configXMLSpec)
 			{
+				// First line must have the configuration.
+				if (feof($this->InputStream))
+				{
+					throw new Exception("First line configuration was not found.");
+				}
 				$line = (string)fgets($this->InputStream);
-				$this->FieldNames = explode("\t", $line);
+				$this->FieldNames = explode($this->FieldDelimiter, $line);
 			}
+			else
+			{
+				if (false == file_exists($configXMLSpec))
+				{
+					throw new Exception("Config file '$configXMLSpec' was not found.");
+				}
+				$dbColumns = LJCDbColumns::Deserialize($configXMLSpec);
+				foreach($dbColumns as $dbColumn)
+				{
+					$this->FieldNames[] = $dbColumn->PropertyName;
+				}
+			}
+
+			$this->FieldCount = 0;
 			if (isset($this->FieldNames))
 			{
 				$this->FieldCount = count($this->FieldNames);
@@ -77,7 +107,7 @@
 						{
 							$name = $this->FieldNames[$index];
 							$value = $this->TrimCrLf($values[$index]);
-							if ($value != null)
+							if (null != $value)
 							{
 								$this->FieldValues[$name] = $value;
 								$this->ValueCount++;
@@ -112,7 +142,7 @@
 		{
 			$retValue = $text;
 
-			if ($retValue != null)
+			if (null != $retValue)
 			{
 				$length = strlen($retValue) - 2;
 				if ($length > 1)

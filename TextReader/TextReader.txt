@@ -1,6 +1,10 @@
 fieldName: FirstName
 fieldName: MiddleInitial
 fieldName: LastName
+fieldValue: FirstName
+fieldValue: MiddleInitial
+fieldValue: LastName
+firstName: FirstName
 fieldValue: Lester
 fieldValue: J
 fieldValue: Clark

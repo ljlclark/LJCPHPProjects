@@ -183,7 +183,7 @@
 				$currentIndex;
 				$beginIndex = -1;
 				$lineLength = strlen($line);
-				if ($line != null && $lineLength > 0)
+				if (null != $line && $lineLength > 0)
 				{
 					$beginIndex = 0;
 				}
@@ -246,12 +246,6 @@
 		// ---------------
 		// Private Methods - TextRanges
 
-		// Output the debug value.
-		private function Debug(string $text, bool $addLine = true) : void
-		{
-			$this->DebugWriter->Debug($text, $addLine);
-		}
-
 		// Removes only the leading blanks.
 		// <include path='items/Split/*' file='Doc/TextRanges.xml'/>
 		private function RemoveLeadingBlanks(string $text) : string
@@ -261,7 +255,7 @@
 			{
 				for ($index = 0; $index < $length; $index++)
 				{
-					if ($text[$index] != " ")
+					if (" " != $text[$index])
 					{
 						$text = substr($text, $index);
 						break;
@@ -300,6 +294,12 @@
 			}
 			return $retValue;
 		}  // VerifyValue()
+
+		// Output the debug value.
+		private function Debug(string $text, bool $addLine = true) : void
+		{
+			$this->DebugWriter->Debug($text, $addLine);
+		}
 
 		// ---------------
 		// Properties

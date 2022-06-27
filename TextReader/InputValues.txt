@@ -1,3 +1,3 @@
-FirstName	MiddleInitial	LastName
+FirstName,MiddleInitial,LastName
 "Lester" ,J,Clark
 Cherrymae,A,Clark

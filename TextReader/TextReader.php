@@ -9,6 +9,7 @@
 	$fileSpec = $args["fileSpec"];
 
 	$textReader = new LJCTextReader($fileSpec);
+	$textReader->SetConfig("test.xml");
 	foreach ($textReader->FieldNames as $fieldName)
 	{
 		$fieldName = rTrim($fieldName);
