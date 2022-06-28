@@ -1,11 +1,8 @@
-fieldName: FirstName
-fieldName: MiddleInitial
-fieldName: LastName
-fieldValue: Lester
-fieldValue: J
-fieldValue: Clark
+Lester
+J
+Clark
 firstName: Lester
-fieldValue: Cherrymae
-fieldValue: A
-fieldValue: Clark
+Cherrymae
+A
+Clark
 firstName: Cherrymae

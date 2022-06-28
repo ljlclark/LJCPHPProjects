@@ -13,6 +13,14 @@
 		</summary>
 		<param name="$fileSpec">The text file specification.</param>
 	</construct>
+	<SetConfig>
+		<summary>
+			Set the configuration.
+		</summary>
+		<remarks>
+			This must be called after the delimiters have been set.
+		</remarks>
+	</SetConfig>
 	<GetString>
 		<summary>Gets the field value.</summary>
 		<param name="$fieldName">The field name.</param>

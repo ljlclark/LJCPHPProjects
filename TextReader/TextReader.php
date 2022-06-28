@@ -5,37 +5,48 @@
 	$devPath = "c:/Users/Les/Documents/Visual Studio 2022/LJCPHPProjects";
 	require_once "LJCTextReaderLib.php";
 
+	// Get parameters.
 	parse_str(implode('&', array_slice($argv, 1)), $args);
 	$fileSpec = $args["fileSpec"];
 
 	$textReader = new LJCTextReader($fileSpec);
 	$textReader->SetConfig("test.xml");
-	foreach ($textReader->FieldNames as $fieldName)
-	{
-		$fieldName = rTrim($fieldName);
-		echo "fieldName: $fieldName\r\n";
-	}
 
 	while ($textReader->Read())
 	{
 		if ($textReader->ValueCount > 0)
 		{
-			foreach ($textReader->FieldNames as $fieldName)
-			{
-				if ($fieldName != null)
-				{
-					$fieldValue = $textReader->GetString($fieldName);
-					if ($fieldValue != null)
-					{
-						echo "fieldValue: $fieldValue\r\n";
-					}
-				}
-			}
+			//foreach ($textReader->FieldNames as $fieldName)
+			//{
+			//	if ($fieldName != null)
+			//	{
+			//		$fieldValue = $textReader->GetString($fieldName);
+			//		if ($fieldValue != null)
+			//		{
+			//			echo "fieldValue: $fieldValue\r\n";
+			//		}
+			//	}
+			//}
+			$name = new Name();
+			$textReader->FillDataObject($name);
+			echo "$name->FirstName\r\n";
+			echo "$name->MiddleInitial\r\n";
+			echo "$name->LastName\r\n";
+
 			$firstName = $textReader->GetString("FirstName");
 			if ($firstName != null)
 			{
 				echo "firstName: $firstName\r\n";
 			}
 		}
+	}
+
+	class Name
+	{
+		public ?string $FirstName;
+
+		public ?string $MiddleInitial;
+
+		public ?string $LastName;
 	}
 ?>

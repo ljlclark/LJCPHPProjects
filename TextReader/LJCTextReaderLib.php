@@ -5,7 +5,8 @@
 	$devPath = "c:/Users/Les/Documents/Visual Studio 2022/LJCPHPProjects";
 	require_once "$devPath/LJCPHPCommon/LJCCollectionLib.php";
 	require_once "$devPath/LJCPHPCommon/LJCDbAccessLib.php";
-	require_once "TextRangesLib.php";
+	require_once "$devPath/LJCPHPCommon/LJCTextLib.php";
+	require_once "LJCTextRangesLib.php";
 
 	/// <summary>The PHP Text Reader Class Library</summary>
 	/// LibName: LJCTextReaderLib
@@ -28,13 +29,16 @@
 			$this->FieldDelimiter = ",";
 			$this->IsFirstRead = true;
 			$this->ValueDelimiter = "\"";
+			$this->DbColumns = null;
+			$this->DebugWriter = new LJCDebugWriter("LJCTextReader");
 		}
 
-		/// <summary></summary>
+		// Set the configuration after the delimiters have been set.
+		/// <include path='items/SetConfig/*' file='Doc/LJCTextReader.xml'/>
 		public function SetConfig(string $configXMLSpec = null)
 		{
 			$this->ConfigXMLSpec = $configXMLSpec;
-			$this->TextRanges = new TextRanges($this->FieldDelimiter
+			$this->TextRanges = new LJCTextRanges($this->FieldDelimiter
 				, $this->ValueDelimiter);
 
 			// Open for reading and to allow positioning?
@@ -57,10 +61,11 @@
 				{
 					throw new Exception("Config file '$configXMLSpec' was not found.");
 				}
-				$dbColumns = LJCDbColumns::Deserialize($configXMLSpec);
-				foreach($dbColumns as $dbColumn)
+				$this->DbColumns = LJCDbColumns::Deserialize($configXMLSpec);
+				foreach($this->DbColumns as $dbColumn)
 				{
-					$this->FieldNames[] = $dbColumn->PropertyName;
+					$name = $dbColumn->PropertyName;
+					$this->FieldNames[] = $name;
 				}
 			}
 
@@ -90,6 +95,30 @@
 				}
 			}
 		}  // Clear()
+
+		/// <summary>Populates a DataObject from the field values.</summary>
+		/// <param name="$dataObject">The DataObject.</param>
+		public function FillDataObject($dataObject)
+		{
+			$dbColumns = $this->DbColumns;
+			if (null != $dbColumns && count($dbColumns) > 0)
+			{
+				foreach ($dbColumns as $dbColumn)
+				{
+					$columnName = $dbColumn->ColumnName;
+					if (null != $dbColumn->RenameAs)
+					{
+						$columnName = $dbColumn->RenameAs;
+					}
+					$propertyName = $dbColumn->PropertyName;
+					if (property_exists($dataObject, $propertyName))
+					{
+						// Using variable name for object property.
+						$dataObject->$propertyName = $this->GetString($propertyName);
+					}
+				}
+			}
+		}
 
 		/// <summary>Reads the next input line.</summary>
 		/// <returns>True if the line was read, otherwise false.</returns>
@@ -169,10 +198,12 @@
 		{
 			if ($this->IsConfig($names))
 			{
+				$this->DbColumns = new LJCDbColumns();
 				foreach ($names as $name)
 				{
 					if ("Config" != $name)
 					{
+						$this->DbColumns->Add($name);
 						$this->FieldNames[] = $name;
 					}
 				}
@@ -215,8 +246,17 @@
 			return $retValue;
 		}  // TrimCrLf()
 
+		// Output the debug value.
+		private function Debug(string $text, bool $addLine = true) : void
+		{
+			$this->DebugWriter->Debug($text, $addLine);
+		}
+
 		// ---------------
 		// Properties - LJCTextReader
+
+		/// <summary>The field configuration.</summary>
+		public ?LJCDbColumns $DbColumns;
 
 		/// <summary>The field count.</summary>
 		public int $FieldCount;

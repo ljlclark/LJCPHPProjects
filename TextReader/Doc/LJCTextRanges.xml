@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!-- Copyright (c) Lester J. Clark 2022 - All Rights Reserved -->
-<!-- TextRanges.xml -->
+<!-- LJCTextRanges.xml -->
 <items>
 	<construct>
 		<summary>
@@ -46,7 +46,7 @@
 		<returns>An array of text values.</returns>
 	</Split>
 	<RemoveLeadingBlanks>
-		<summary>Removes only the leading blanks.</summary>
+		<summary>Removes only the leading blanks not other whitespace.</summary>
 		<param name="$text">The text value.</param>
 		<returns>The left trimmed text.</returns>
 		<remarks>Potential Common function?</remarks>

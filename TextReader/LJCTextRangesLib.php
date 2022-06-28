@@ -1,6 +1,6 @@
 <?php
 	// Copyright (c) Lester J. Clark 2022 - All Rights Reserved
-	// TextRangesLib.php
+	// LJCTextRangesLib.php
 	declare(strict_types=1);
 	$devPath = "c:/Users/Les/Documents/Visual Studio 2022/LJCPHPProjects";
 	require_once "$devPath/LJCPHPCommon/LJCCollectionLib.php";
@@ -12,10 +12,10 @@
 
 	// ***************
 	/// <summary>Represents the text range.</summary>
-	class TextRange
+	class LJCTextRange
 	{
 		// Initializes a class instance with the provided values.
-		/// <include path='items/construct/*' file='Doc/TextRange.xml'/>
+		/// <include path='items/construct/*' file='Doc/LJCTextRange.xml'/>
 		public function __construct(int $beginIndex, int $endIndex)
 		{
 			$this->BeginIndex = $beginIndex;
@@ -31,36 +31,36 @@
 		}
 
 		// ---------------
-		// Properties - TextRange
+		// Properties - LJCTextRange
 
 		/// <summary>The region beginning index.</summary>
 		public int $BeginIndex;
 
 		/// <summary>The region ending index.</summary>
 		public int $EndIndex;
-	}
+	}  // LJCTextRange
 
 	// ***************
-	/// <summary>Represents a collection of TextRange objects.</summary>
-	class TextRanges extends LJCCollectionBase
+	/// <summary>Represents a collection of LJCTextRange objects.</summary>
+	class LJCTextRanges extends LJCCollectionBase
 	{
 		// Initializes a class instance with the provided values.
-		/// <include path='items/construct/*' file='Doc/TextRanges.xml'/>
+		/// <include path='items/construct/*' file='Doc/LJCTextRanges.xml'/>
 		public function __construct(string $fieldDelimiter = ","
 			, string $valueDelimiter = "\"")
 		{
 			$this->FieldDelimiter = $fieldDelimiter;
 			$this->ValueDelimiter = $valueDelimiter;
-			$this->DebugWriter = new LJCDebugWriter("TextRanges");
+			$this->DebugWriter = new LJCDebugWriter("LJCTextRanges");
 		}
 
 		// ---------------
-		// Public Collection Methods - TextRanges
+		// Public Collection Methods - LJCTextRanges
 
 		// Creates an object and adds it to the collection.
-		// <include path='items/Add/*' file='Doc/TextRanges.xml'/>
+		// <include path='items/Add/*' file='Doc/LJCTextRanges.xml'/>
 		public function Add(int $beginIndex, int $endIndex, $key = null)
-			: ?TextRange
+			: ?LJCTextRange
 		{
 			$retValue = null;
 
@@ -69,14 +69,14 @@
 				$key = $beginIndex;
 			}
 
-			$item = new TextRange($beginIndex, $endIndex);
+			$item = new LJCTextRange($beginIndex, $endIndex);
 			$retValue = $this->AddObject($item , $key);
 			return $retValue;
 		}
 
 		// Adds an object and key value.
-		// <include path='items/AddObject/*' file='Doc/TextRanges.xml'/>
-		public function AddObject(TextRange $item, $key = null) : ?TextRange
+		// <include path='items/AddObject/*' file='Doc/LJCTextRanges.xml'/>
+		public function AddObject(LJCTextRange $item, $key = null) : ?LJCTextRange
 		{
 			if (null == $key)
 			{
@@ -100,18 +100,18 @@
 		}
 
 		// Get the item by Key value.
-		/// <include path='items/Get/*' file='Doc/TextRanges.xml'/>
-		public function Get($key, bool $throwError = true) : ?TextRange
+		/// <include path='items/Get/*' file='Doc/LJCTextRanges.xml'/>
+		public function Get($key, bool $throwError = true) : ?LJCTextRange
 		{
 			$retValue = $this->GetItem($key, $throwError);
 			return $retValue;
 		}
 
 		// ---------------
-		// Public Other Methods - TextRanges
+		// Public Other Methods - LJCTextRanges
 
 		// Determines if a delimiter is in a text value.
-		/// <include path='items/IsInValue/*' file='Doc/TextRanges.xml'/>
+		/// <include path='items/IsInValue/*' file='Doc/LJCTextRanges.xml'/>
 		public function IsInValue(int $index) : bool
 		{
 			$retValue = false;
@@ -128,7 +128,7 @@
 		}
 
 		// Sets value ranges and returns true if a range was defined.
-		/// <include path='items/SetRanges/*' file='Doc/TextRanges.xml'/>
+		/// <include path='items/SetRanges/*' file='Doc/LJCTextRanges.xml'/>
 		public function SetRanges(string $text) : bool
 		{
 			$retValue = false;
@@ -169,7 +169,7 @@
 		}  // SetRanges()
 
 		// Splits a line of text on the delimiters not enclosed in a value.
-		/// <include path='items/Split/*' file='Doc/TextRanges.xml'/>
+		/// <include path='items/Split/*' file='Doc/LJCTextRanges.xml'/>
 		public function Split(string $line) : array
 		{
 			$retValue = [];
@@ -244,10 +244,10 @@
 		}  // Split()
 
 		// ---------------
-		// Private Methods - TextRanges
+		// Private Methods - LJCTextRanges
 
-		// Removes only the leading blanks.
-		// <include path='items/Split/*' file='Doc/TextRanges.xml'/>
+		// Removes only the leading blanks not other whitespace.
+		// <include path='items/Split/*' file='Doc/LJCTextRanges.xml'/>
 		private function RemoveLeadingBlanks(string $text) : string
 		{
 			$length = strlen($text);
@@ -309,5 +309,5 @@
 
 		/// <summary>The text region delimiter.</summary>
 		public string $ValueDelimiter;
-	}  // TextRanges
+	}  // LJCTextRanges
 ?>
