@@ -1,8 +1,6 @@
 Lester
 J
 Clark
-firstName: Lester
 Cherrymae
 A
 Clark
-firstName: Cherrymae

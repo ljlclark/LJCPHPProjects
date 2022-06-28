@@ -25,11 +25,18 @@
 				throw new Exception("Input file '$fileSpec' was not found.");
 			}
 			$this->FileSpec = $fileSpec;
+
 			$this->ConfigXMLSpec = null;
-			$this->FieldDelimiter = ",";
-			$this->IsFirstRead = true;
-			$this->ValueDelimiter = "\"";
 			$this->DbColumns = null;
+			$this->FieldCount = 0;
+			$this->FieldDelimiter = ",";
+			$this->FieldNames = [];
+			$this->FieldValues = [];
+			$this->InputSteam = null;
+			$this->IsFirstRead = true;
+			$this->ValueCount = 0;
+			$this->ValueDelimiter = "\"";
+
 			$this->DebugWriter = new LJCDebugWriter("LJCTextReader");
 		}
 
@@ -41,32 +48,15 @@
 			$this->TextRanges = new LJCTextRanges($this->FieldDelimiter
 				, $this->ValueDelimiter);
 
-			// Open for reading and to allow positioning?
-			$this->InputStream = fopen($this->FileSpec, "r+");
+			// Open for reading.
+			$this->InputStream = fopen($this->FileSpec, "r");
 			if (null == $configXMLSpec)
 			{
-				// First line must have the configuration.
-				if (feof($this->InputStream))
-				{
-					throw new Exception("First line configuration was not found.");
-				}
-				$line = (string)fgets($this->InputStream);
-				$this->IsFirstRead = false;
-				$names = explode($this->FieldDelimiter, $line);
-				$this->SetFieldNames($names);
+				$this->ConfigFromFirstLine();
 			}
 			else
 			{
-				if (false == file_exists($configXMLSpec))
-				{
-					throw new Exception("Config file '$configXMLSpec' was not found.");
-				}
-				$this->DbColumns = LJCDbColumns::Deserialize($configXMLSpec);
-				foreach($this->DbColumns as $dbColumn)
-				{
-					$name = $dbColumn->PropertyName;
-					$this->FieldNames[] = $name;
-				}
+				$this->ConfigFromXMLFile($configXMLSpec);
 			}
 
 			$this->FieldCount = 0;
@@ -82,16 +72,13 @@
 		/// <summary>Clears the field values.</summary>
 		public function Clear() : void
 		{
-			if (isset($this->FieldValues))
+			$valuesLength = count($this->FieldValues);
+			if ($valuesLength > 0)
 			{
-				$valuesLength = count($this->FieldValues);
-				if ($valuesLength > 0)
+				for ($index = 0; $index < $this->FieldCount; $index++)
 				{
-					for ($index = 0; $index < $this->FieldCount; $index++)
-					{
-						$name = $this->FieldNames[$index];
-						$this->FieldValues[$name] = null;
-					}
+					$name = $this->FieldNames[$index];
+					$this->FieldValues[$name] = null;
 				}
 			}
 		}  // Clear()
@@ -105,11 +92,6 @@
 			{
 				foreach ($dbColumns as $dbColumn)
 				{
-					$columnName = $dbColumn->ColumnName;
-					if (null != $dbColumn->RenameAs)
-					{
-						$columnName = $dbColumn->RenameAs;
-					}
 					$propertyName = $dbColumn->PropertyName;
 					if (property_exists($dataObject, $propertyName))
 					{
@@ -120,6 +102,19 @@
 			}
 		}
 
+		// Gets the field value.
+		/// <include path='items/GetString/*' file='Doc/LJCTextReader.xml'/>
+		public function GetString(string $fieldName) : string
+		{
+			$retValue = null;
+
+			if (isset($this->FieldValues[$fieldName]))
+			{
+				$retValue = $this->FieldValues[$fieldName];
+			}
+			return $retValue;
+		}  // GetString()
+
 		/// <summary>Reads the next input line.</summary>
 		/// <returns>True if the line was read, otherwise false.</returns>
 		public function Read() : bool
@@ -129,15 +124,14 @@
 			$this->Clear();
 			if (false == feof($this->InputStream))
 			{
-				$this->ValueCount = 0;
 				$line = (string)fgets($this->InputStream);
 				$values = $this->TextRanges->Split($line);
 
+				// Skip Config line if configured with XML file.
 				if ($this->IsFirstRead
 					&& null != $this->ConfigXMLSpec
 					&& $this->IsConfig($values))
 				{
-					// Skip Config line if configured with XML file.
 					$line = (string)fgets($this->InputStream);
 					$values = $this->TextRanges->Split($line);
 				}
@@ -146,6 +140,7 @@
 				$valueLength = count($values);
 				if ($valueLength > 0)
 				{
+					$this->ValueCount = 0;
 					for ($index = 0; $index < $this->FieldCount; $index++)
 					{
 						if ($valueLength > $index)
@@ -165,21 +160,39 @@
 			return $retValue;
 		}  // Read()
 
-		// Gets the field value.
-		/// <include path='items/GetString/*' file='Doc/LJCTextReader.xml'/>
-		public function GetString(string $fieldName) : string
-		{
-			$retValue = null;
-
-			if (isset($this->FieldValues[$fieldName]))
-			{
-				$retValue = $this->FieldValues[$fieldName];
-			}
-			return $retValue;
-		}  // GetString()
-
 		// ---------------
 		// Private Methods - LJCTextReader
+
+		// Configures the fields from the first line of the input file.
+		private function ConfigFromFirstLine()
+		{
+			// First line must have the configuration.
+			if (feof($this->InputStream))
+			{
+				throw new Exception("First line configuration was not found.");
+			}
+			$line = (string)fgets($this->InputStream);
+			$this->IsFirstRead = false;
+
+			$names = explode($this->FieldDelimiter, $line);
+			$this->SetFieldNames($names);
+		}
+
+		// Configures the fields from an XML file.
+		private function ConfigFromXMLFile(string $configXMLSpec)
+		{
+			// Must have a configuration XML file.
+			if (false == file_exists($configXMLSpec))
+			{
+				throw new Exception("Config file '$configXMLSpec' was not found.");
+			}
+			$this->DbColumns = LJCDbColumns::Deserialize($configXMLSpec);
+			foreach($this->DbColumns as $dbColumn)
+			{
+				$name = $dbColumn->PropertyName;
+				$this->FieldNames[] = $name;
+			}
+		}
 
 		// Checks if the line is a Config line.
 		private function IsConfig($names)
@@ -201,6 +214,7 @@
 				$this->DbColumns = new LJCDbColumns();
 				foreach ($names as $name)
 				{
+					$name = $this->TrimCrLf($name);
 					if ("Config" != $name)
 					{
 						$this->DbColumns->Add($name);
@@ -261,7 +275,7 @@
 		/// <summary>The field count.</summary>
 		public int $FieldCount;
 
-		/// <summary>The field count.</summary>
+		/// <summary>The field delimiter.</summary>
 		public string $FieldDelimiter;
 
 		/// <summary>The field names.</summary>
@@ -277,9 +291,9 @@
 		private $InputStream;
 
 		/// <summary>The value count.</summary>
-		public string $ValueDelimiter;
-
-		/// <summary>The value count.</summary>
 		public int $ValueCount;
+
+		/// <summary>The value delimiter.</summary>
+		public string $ValueDelimiter;
 	}  // LJCTextReader
 ?>

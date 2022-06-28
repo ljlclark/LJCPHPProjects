@@ -2,6 +2,7 @@
 <!-- Copyright (c) Lester J. Clark 2022 - All Rights Reserved -->
 <!-- LJCTextRanges.xml -->
 <items>
+	<!-- Class -->
 	<construct>
 		<summary>
 			Initializes a class instance with the provided values.
@@ -9,6 +10,8 @@
 		<param name="$fieldDelimiter">The field delimiter.</param>
 		<param name="$valueDelimiter">The value delimiter.</param>
 	</construct>
+
+	<!-- Public Collection Methods -->
 	<Add>
 		<summary>Creates an object and adds it to the collection.</summary>
 		<param name="$beginIndex">The begin index.</param>
@@ -28,6 +31,8 @@
 		<param name="$throwError">Indicates if an error should be thrown.</param>
 		<returns>The specified TextRange item.</returns>
 	</Get>
+
+	<!-- Public Other Methods -->
 	<IsInValue>
 		<summary>Determines if a delimiter is in a text value.</summary>
 		<param name="$index">The delimiter index.</param>
@@ -45,6 +50,8 @@
 		<param name="$line">The line text value.</param>
 		<returns>An array of text values.</returns>
 	</Split>
+	
+	<!-- Private Methods -->
 	<RemoveLeadingBlanks>
 		<summary>Removes only the leading blanks not other whitespace.</summary>
 		<param name="$text">The text value.</param>

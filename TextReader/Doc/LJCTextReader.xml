@@ -7,6 +7,8 @@
 			Contains methods to read text files and parse into fields.
 		</summary>
 	</LJCTextReader>
+
+	<!-- Class -->
 	<construct>
 		<summary>
 			Initializes a class instance with the provided values.
@@ -21,6 +23,8 @@
 			This must be called after the delimiters have been set.
 		</remarks>
 	</SetConfig>
+
+	<!-- Public Methods -->
 	<GetString>
 		<summary>Gets the field value.</summary>
 		<param name="$fieldName">The field name.</param>

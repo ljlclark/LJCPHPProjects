@@ -51,6 +51,7 @@
 		{
 			$this->FieldDelimiter = $fieldDelimiter;
 			$this->ValueDelimiter = $valueDelimiter;
+
 			$this->DebugWriter = new LJCDebugWriter("LJCTextRanges");
 		}
 

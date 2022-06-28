@@ -10,43 +10,25 @@
 	$fileSpec = $args["fileSpec"];
 
 	$textReader = new LJCTextReader($fileSpec);
-	$textReader->SetConfig("test.xml");
+	//$textReader->SetConfig("test.xml");
+	$textReader->SetConfig();
 
 	while ($textReader->Read())
 	{
 		if ($textReader->ValueCount > 0)
 		{
-			//foreach ($textReader->FieldNames as $fieldName)
-			//{
-			//	if ($fieldName != null)
-			//	{
-			//		$fieldValue = $textReader->GetString($fieldName);
-			//		if ($fieldValue != null)
-			//		{
-			//			echo "fieldValue: $fieldValue\r\n";
-			//		}
-			//	}
-			//}
 			$name = new Name();
 			$textReader->FillDataObject($name);
 			echo "$name->FirstName\r\n";
 			echo "$name->MiddleInitial\r\n";
 			echo "$name->LastName\r\n";
-
-			$firstName = $textReader->GetString("FirstName");
-			if ($firstName != null)
-			{
-				echo "firstName: $firstName\r\n";
-			}
 		}
 	}
 
 	class Name
 	{
 		public ?string $FirstName;
-
 		public ?string $MiddleInitial;
-
 		public ?string $LastName;
 	}
 ?>
