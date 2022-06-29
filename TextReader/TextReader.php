@@ -3,6 +3,7 @@
   // TextReader.php
   declare(strict_types=1);
   $devPath = "c:/Users/Les/Documents/Visual Studio 2022/LJCPHPProjects";
+  require_once "$devPath/LJCPHPCommon/LJCDBAccessLib.php";
   require_once "LJCTextReaderLib.php";
 
   // Get parameters.

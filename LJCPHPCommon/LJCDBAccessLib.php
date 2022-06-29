@@ -3,6 +3,8 @@
   // LJCDBAccessLib.php
   declare(strict_types=1);
   $webCommonPath = "c:/inetpub/wwwroot/LJCPHPCommon";
+  $devPath = "c:/Users/Les/Documents/Visual Studio 2022/LJCPHPProjects";
+  require_once "$devPath/LJCPHPCommon/LJCCollectionLib.php";
 
   /// <summary>The PDO Data Access Library</summary>
   /// LibName: LJCDBAccessLib
@@ -328,8 +330,8 @@
     {
       $retValue = null;
 
-      $dbColumnsXML = new DbColumnsXML($xmlFileSpec);
-      $retValue = $dbColumnsXML->Deserialize();
+      $dbColumnsXML = new DbColumnsXML();
+      $retValue = $dbColumnsXML->Deserialize($xmlFileSpec);
       return $retValue;
     }
 
@@ -458,23 +460,22 @@
   {
     /// <summary>Initializes a class instance with the provided values.</summary>
     /// <param name="$xmlFileSpec"></param>
-    public function __construct(string $xmlFileSpec)
+    public function __construct()
     {
-      $this->XMLFileSpec = $xmlFileSpec;
-      if (false == file_exists($xmlFileSpec))
-      {
-        throw new Exception("Input file '$xmlFileSpec' was not found.");
-      }
       $this->DebugWriter = new LJCDebugWriter("DbColumnsXML");
     }
 
     /// <summary>Deserializes the XML file.</summary>
     /// <returns>The LJCDbColumns object.</returns>
-    public function Deserialize() : ?LJCDbColumns
+    public function Deserialize(string $xmlFileSpec) : ?LJCDbColumns
     {
       $retValue = null;
 
-      $docNode = simplexml_load_file($this->XMLFileSpec);
+      if (false == file_exists($xmlFileSpec))
+      {
+        throw new Exception("Input file '$xmlFileSpec' was not found.");
+      }
+      $docNode = simplexml_load_file($xmlFileSpec);
       if (null != $docNode)
       {
         $retValue = $this->CreateDbColumns($docNode);
@@ -535,10 +536,12 @@
       return $retValue;
     }
 
+    // 
     public function SerializeToString(LJCDbColumns $dbColumns
       , $xmlFileName = null) : string
     {
       $builder = new LJCStringBuilder();
+      $retValue = null;
 
       $builder->AppendLine("<?xml version=\"1.0\"?>");
       $builder->Append("<!-- Copyright (c) Lester J. Clark 2022 -");
@@ -547,15 +550,46 @@
       {
         $builder->AppendLine("<!-- $xmlFileName -->");
       }
-      $builder->Append("<LJCDocDataFile xmlns:xsd=");
+      $builder->Append("<DbColumns xmlns:xsd=");
       $builder->AppendLine("'http://www.w3.org/2001/XMLSchema'");
       $builder->Append("  xmlns:xsi=");
       $builder->AppendLine("'http://www.w3.org/2001/XMLSchema-instance'>");
 
-      foreach ($dbColumns as $dbColumns)
+      foreach ($dbColumns as $dbColumn)
       {
-
+        $builder->AppendLine("<DbColumn>", 1);
+        $builder->Append($this->DbValue($dbColumn, "AllowDbNull"));
+        $builder->Append($this->DbValue($dbColumn, "AutoIncrement"));
+        $builder->Append($this->DbValue($dbColumn, "ColumnName"));
+        $builder->Append($this->DbValue($dbColumn, "DataTypeName"));
+        $builder->Append($this->DbValue($dbColumn, "DefaultValue"));
+        $builder->Append($this->DbValue($dbColumn, "MaxLength"));
+        $builder->Append($this->DbValue($dbColumn, "MySQLTypeName"));
+        $builder->Append($this->DbValue($dbColumn, "PropertyName"));
+        $builder->Append($this->DbValue($dbColumn, "RenameAs"));
+        $builder->Append($this->DbValue($dbColumn, "Value"));
+        $builder->Append($this->DbValue($dbColumn, "WhereBoolOperator"));
+        $builder->Append($this->DbValue($dbColumn, "WhereCompareOperator"));
+        $builder->AppendLine("</DbColumn>" ,1);
       }
+      $builder->AppendLine("</DbColumns>");
+      $retValue = $builder->ToString();
+      return $retValue;
+    }
+
+    // 
+    private function DbValue(LJCDbColumn $dbColumn, string $propertyName) : ?string
+    {
+      $builder = new LJCStringBuilder();
+      $retValue= null;
+
+      $value = $dbColumn->$propertyName;
+      if (null != $value)
+      {
+        $builder->AppendTags($propertyName, $value, 2);
+        $retValue = $builder->ToString();
+      }
+      return $retValue;
     }
 
     // Output the debug value.
