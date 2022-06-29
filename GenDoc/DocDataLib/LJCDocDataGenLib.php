@@ -215,7 +215,7 @@
 
 			if ($this->DocDataFile != null)
 			{
-				$retValue = $this->DocDataFile->SerializeToString();
+				$retValue = $this->DocDataFile->SerializeToString(null);
 			}
 			return $retValue;
 		}  // ProcessCode()
