@@ -1,0 +1,84 @@
+1. Configure IIS
+
+Control Panel | Programs | Turn Windows features on or off
+
+Check Internet Information Services
+Check IIS | World Wide Web Services | Application Development Features | CGI
+OK
+
+2. Install the NTS (non-thread safe) 64-bit version of PHP
+
+Download and save onto the machine:
+
+http://windows.php.net/downloads/releases/php-7.x.x-nts-Win32-VC14-x64.zip
+
+Extract all the contents of the zip file to C:\PHP
+
+Now edit the System PATH variable so IIS knows where the PHP executables are:
+
+Control Panel | System and Security | System | Advanced System Settings
+Environment Variables
+System Variables | Path | Edit
+New -> C:\PHP
+
+3. Configure the php.ini file. This is the part you’d never figure out without some help.
+
+Make a copy of file C:\PHP\php.ini-development and save it as C:\PHP\php.ini
+
+Edit file php.ini by finding the following entries, uncomment them, and change values to:
+
+1. fastcgi.impersonate = 1
+2. cgi.fix_pathinfo = 0
+3. cgi.force_redirect = 0
+4. open_basedir = “C:\inetpub\wwwroot”
+5. extension_dir = “ext”
+6. error_log=”php_errors.log”
+7. uncomment the 24 Windows Extensions entries:
+
+extension=php_bz2.dll
+extension=php_curl.dll
+extension=php_fileinfo.dll
+extension=php_ftp.dll
+extension=php_gd2.dll
+extension=php_gettext.dll
+extension=php_gmp.dll
+extension=php_intl.dll
+extension=php_imap.dll
+extension=php_interbase.dll
+extension=php_ldap.dll
+extension=php_mbstring.dll
+extension=php_exif.dll
+extension=php_mysqli.dll
+extension=php_oci8_12c.dll
+extension=php_openssl.dll
+extension=php_pdo_firebird.dll
+extension=php_pdo_mysql.dll
+extension=php_pdo_oci.dll
+extension=php_pdo_odbc.dll
+extension=php_pdo_pgsql.dll
+extension=php_pdo_sqlite.dll
+extension=php_pgsql.dll
+extension=php_shmop.dll
+
+Save the edited php.ini file.
+
+4. Configure IIS to work with PHP
+
+Run | inetmgr
+Handler Mappings | Add Module Mapping
+
+Request path: *.php
+Module: FastCgiModule (from the dropdown)
+Executable (optional): C:\PHP\php-cgi.exe
+Name: FastCGI
+
+OK (Yes)
+
+5. Test the installation and configuration
+
+Launch Notepad with Administrative privleges.
+Create a file test.php and save it at C:\inetpub\wwwroot.
+
+Now launch a browser and navigate to
+
+http://localhost/test.php

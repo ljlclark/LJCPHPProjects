@@ -324,8 +324,8 @@
     // ---------------
     // Static Functions
 
-    // Deserializes the data from an LJCDocDataFile XML file.
-    /// <include path='items/Deserialize/*' file='Doc/LJCDocDataFile.xml'/>
+    // Deserializes the data from an LJCDbColumns XML file.
+    /// <include path='items/Deserialize/*' file='Doc/LJCDbColumns.xml'/>
     public static function Deserialize(string $xmlFileSpec) : ?LJCDbColumns
     {
       $retValue = null;

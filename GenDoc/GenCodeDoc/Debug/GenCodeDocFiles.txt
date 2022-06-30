@@ -1,0 +1,1531 @@
+**
+LJCDocDataGen.ProcessLib summary:
+|Contains Classes to represent a Collection.|
+ClassName:
+|LJCCollectionBase|
+**
+LJCDocDataGen.ProcessClass summary:
+|
+ Represents a Collection of objects.
+ Testing include of cr/lf.
+|
+FunctionName:
+|AddItem|
+**
+LJCDocDataGen.ProcessFunction summary:
+|Adds an object and key value.|
+FunctionName:
+|GetItem|
+**
+LJCDocDataGen.ProcessFunction summary:
+|Get the item by Key value.|
+FunctionName:
+|Clear|
+**
+LJCDocDataGen.ProcessFunction summary
+FunctionName:
+|GetKeys|
+**
+LJCDocDataGen.ProcessFunction summary:
+|Gets an indexed array of keys.|
+FunctionName:
+|GetValues|
+**
+LJCDocDataGen.ProcessFunction summary:
+|Gets an indexed array of objects.|
+FunctionName:
+|HasKey|
+**
+LJCDocDataGen.ProcessFunction summary:
+|Indicates if a key already exists.|
+FunctionName:
+|Remove|
+**
+LJCDocDataGen.ProcessFunction summary:
+|Remove the item by Key value.|
+FunctionName:
+|count|
+**
+LJCDocDataGen.ProcessFunction summary:
+|Allows Count(object).|
+FunctionName:
+|getIterator|
+**
+LJCDocDataGen.ProcessFunction summary:
+|Allows foreach()|
+PropertyName:
+|$Item|
+**
+LJCDocDataGen.ProcessProperty summary:
+|The elements array.|
+**
+LJCDocDataGen.ProcessLib summary:
+|The Common PHP Class Library|
+ClassName:
+|LJCCommon|
+**
+LJCDocDataGen.ProcessClass summary:
+|Contains common functions.|
+FunctionName:
+|StrPos|
+**
+LJCDocDataGen.ProcessFunction summary:
+|Gets the first index for the search value.|
+FunctionName:
+|StrRPos|
+**
+LJCDocDataGen.ProcessFunction summary:
+|Gets the last index for the search value.|
+FunctionName:
+|GetBool|
+**
+LJCDocDataGen.ProcessFunction summary:
+|Returns a text value as boolean.|
+FunctionName:
+|GetDebugFileName|
+**
+LJCDocDataGen.ProcessFunction summary:
+|Gets the Debug file name.|
+FunctionName:
+|GetDelimitedString|
+**
+LJCDocDataGen.ProcessFunction summary:
+|Gets the string between the delimiters.|
+FunctionName:
+|GetFileName|
+**
+LJCDocDataGen.ProcessFunction summary:
+|Gets the FileName from the file spec.|
+FunctionName:
+|GetFileSpecPath|
+**
+LJCDocDataGen.ProcessFunction summary:
+|Gets the Path from the file spec.|
+FunctionName:
+|GetIndexedDebugFileName|
+**
+LJCDocDataGen.ProcessFunction summary:
+|Gets the indexed Debug file name.|
+FunctionName:
+|GetTokens|
+**
+LJCDocDataGen.ProcessFunction summary:
+|Get string tokens.|
+FunctionName:
+|MkDir|
+**
+LJCDocDataGen.ProcessFunction summary:
+|Creates the specified folder if it does not already exist.|
+FunctionName:
+|Scrub|
+**
+LJCDocDataGen.ProcessFunction summary:
+|Returns a scrubbed external value.|
+FunctionName:
+|SetSessionValue|
+**
+LJCDocDataGen.ProcessFunction summary:
+|Assigns a session value and returns the value.|
+**
+LJCDocDataGen.ProcessLib summary:
+|The PDO Data Manager Library|
+ClassName:
+|LJCDataManager|
+**
+LJCDocDataGen.ProcessClass summary:
+|Provides Standard DB Table methods.|
+FunctionName:
+|construct|
+**
+LJCDocDataGen.ProcessFunction summary:
+|Initializes a class instance with the provided values.|
+FunctionName:
+|Add|
+**
+LJCDocDataGen.ProcessFunction summary:
+|Adds the record for the provided values.|
+FunctionName:
+|Delete|
+**
+LJCDocDataGen.ProcessFunction summary:
+|Deletes the records for the provided values.|
+FunctionName:
+|Load|
+**
+LJCDocDataGen.ProcessFunction summary:
+|Loads the records for the provided values.|
+FunctionName:
+|Retrieve|
+**
+LJCDocDataGen.ProcessFunction summary:
+|Retrieves the record for the provided values.|
+FunctionName:
+|Update|
+**
+LJCDocDataGen.ProcessFunction summary:
+|Updates the records for the provided values.|
+FunctionName:
+|SQLExecute|
+**
+LJCDocDataGen.ProcessFunction summary:
+|Executes an Add, Delete or Update SQL statement.|
+FunctionName:
+|SQLLoad|
+**
+LJCDocDataGen.ProcessFunction summary:
+|Executes a Select SQL statement.|
+FunctionName:
+|SQLRetrieve|
+**
+LJCDocDataGen.ProcessFunction summary:
+|Executes a Select SQL statement.|
+FunctionName:
+|CreateDataCollection|
+**
+LJCDocDataGen.ProcessFunction summary:
+|
+ Creates an array of typed Data Objects from a DB rows array.
+|
+FunctionName:
+|CreateDataObject|
+**
+LJCDocDataGen.ProcessFunction summary:
+|Populates a typed Data Object with values from a DB row.|
+PropertyName:
+|$DbAccess|
+**
+LJCDocDataGen.ProcessProperty summary:
+|The DbAccess object.|
+PropertyName:
+|$Joins|
+**
+LJCDocDataGen.ProcessProperty summary:
+|The Join definitions.|
+PropertyName:
+|$OrderByNames|
+**
+LJCDocDataGen.ProcessProperty summary:
+|The OrderBy names.|
+PropertyName:
+|$SchemaColumns|
+**
+LJCDocDataGen.ProcessProperty summary:
+|The column definitions.|
+PropertyName:
+|$SQL|
+**
+LJCDocDataGen.ProcessProperty summary:
+|The last SQL statement.|
+PropertyName:
+|$TableName|
+**
+LJCDocDataGen.ProcessProperty summary:
+|The table name.|
+ClassName:
+|LJCSQLBuilder|
+**
+LJCDocDataGen.ProcessClass summary:
+|
+ Provides static functions for creating SQL statements.
+|
+FunctionName:
+|CreateDelete|
+**
+LJCDocDataGen.ProcessFunction summary:
+|Creates a Delete SQL statement.|
+FunctionName:
+|CreateInsert|
+**
+LJCDocDataGen.ProcessFunction summary:
+|Creates an Insert SQL statement.|
+FunctionName:
+|CreateSelect|
+**
+LJCDocDataGen.ProcessFunction summary:
+|Creates a Select SQL statement.|
+FunctionName:
+|CreateUpdate|
+**
+LJCDocDataGen.ProcessFunction summary:
+|Creates an Update SQL statement.|
+FunctionName:
+|GetJoinOns|
+**
+LJCDocDataGen.ProcessFunction summary:
+|Get the JoinOn statements.|
+FunctionName:
+|GetJoinStatement|
+**
+LJCDocDataGen.ProcessFunction summary:
+|Creates the join statement.|
+FunctionName:
+|GetOrderBy|
+**
+LJCDocDataGen.ProcessFunction summary:
+|Creates an OrderBy clause.|
+FunctionName:
+|SQLColumns|
+**
+LJCDocDataGen.ProcessFunction summary:
+|Creates the columns for a Select SQL statement.|
+FunctionName:
+|SQLJoinColumns|
+**
+LJCDocDataGen.ProcessFunction summary:
+|Creates the Join columns for a Select SQL statement.|
+FunctionName:
+|SQLValueColumns|
+**
+LJCDocDataGen.ProcessFunction summary:
+|Creates the value columns for an Update SQL statement.|
+**
+LJCDocDataGen.ProcessLib summary:
+|The PDO Data Access Library|
+ClassName:
+|LJCConnectionValues|
+**
+LJCDocDataGen.ProcessClass summary:
+|Contains the Connection values.|
+FunctionName:
+|construct|
+**
+LJCDocDataGen.ProcessFunction summary:
+|Initializes a class instance with the provided values.|
+PropertyName:
+|$DbName|
+**
+LJCDocDataGen.ProcessProperty summary:
+|The Database name.|
+PropertyName:
+|$DbServer|
+**
+LJCDocDataGen.ProcessProperty summary:
+|The DB Server name.|
+PropertyName:
+|$Password|
+**
+LJCDocDataGen.ProcessProperty summary:
+|The user Password.|
+PropertyName:
+|$UserID|
+**
+LJCDocDataGen.ProcessProperty summary:
+|The User ID.|
+ClassName:
+|LJCDbAccess|
+**
+LJCDocDataGen.ProcessClass summary:
+|Provides standard PDO Data Access.|
+FunctionName:
+|GetValue|
+**
+LJCDocDataGen.ProcessFunction summary:
+|
+ Returns a data value if the element exists, otherwise returns null.|
+FunctionName:
+|construct|
+**
+LJCDocDataGen.ProcessFunction summary:
+|Initializes a class instance.|
+FunctionName:
+|Execute|
+**
+LJCDocDataGen.ProcessFunction summary:
+|Executes a non-query sql statement.|
+FunctionName:
+|Load|
+**
+LJCDocDataGen.ProcessFunction summary:
+|Loads the records for the provided SQL statement.|
+FunctionName:
+|Retrieve|
+**
+LJCDocDataGen.ProcessFunction summary:
+|Retrieves a record for the provided SQL statement.|
+FunctionName:
+|GetConnection|
+**
+LJCDocDataGen.ProcessFunction summary:
+|Creates the PDO connection.|
+FunctionName:
+|LoadTableSchema|
+**
+LJCDocDataGen.ProcessFunction summary:
+|Returns the Table Schema DbColumns collection.|
+FunctionName:
+|SetConnectionValues|
+**
+LJCDocDataGen.ProcessFunction summary:
+|Sets the $ConnectionValues property.|
+PropertyName:
+|$ConnectionValues|
+**
+LJCDocDataGen.ProcessProperty summary:
+|The Database Connection values.|
+ClassName:
+|LJCDbColumn|
+**
+LJCDocDataGen.ProcessClass summary:
+|Represents a DB Column definition.|
+FunctionName:
+|GetDataType|
+**
+LJCDocDataGen.ProcessFunction summary:
+|Coverts MySQL type names to PHP type names.|
+FunctionName:
+|construct|
+**
+LJCDocDataGen.ProcessFunction summary:
+|Initializes a class instance.|
+FunctionName:
+|Clone|
+**
+LJCDocDataGen.ProcessFunction summary:
+|Creates an object clone.|
+PropertyName:
+|$AllowDbNull|
+**
+LJCDocDataGen.ProcessProperty summary:
+|Indicates if the Column allows nulls.|
+PropertyName:
+|$AutoIncrement|
+**
+LJCDocDataGen.ProcessProperty summary:
+|The AutoIncrement flag.|
+PropertyName:
+|$ColumnName|
+**
+LJCDocDataGen.ProcessProperty summary:
+|The Column name.|
+PropertyName:
+|$DataTypeName|
+**
+LJCDocDataGen.ProcessProperty summary:
+|The DataType name.|
+PropertyName:
+|$DefaultValue|
+**
+LJCDocDataGen.ProcessProperty summary:
+|The Default value.|
+PropertyName:
+|$MaxLength|
+**
+LJCDocDataGen.ProcessProperty summary:
+|The MaxLength value.|
+PropertyName:
+|$MySQLTypeName|
+**
+LJCDocDataGen.ProcessProperty summary:
+|The MySQL Type name.|
+PropertyName:
+|$PropertyName|
+**
+LJCDocDataGen.ProcessProperty summary:
+|The Property name.|
+PropertyName:
+|$RenameAs|
+**
+LJCDocDataGen.ProcessProperty summary:
+|The RenameAs value.|
+PropertyName:
+|$Value|
+**
+LJCDocDataGen.ProcessProperty summary:
+|The Column value.|
+PropertyName:
+|$WhereBoolOperator|
+**
+LJCDocDataGen.ProcessProperty summary:
+|The Where clause boolean operator.|
+PropertyName:
+|$WhereCompareOperator|
+**
+LJCDocDataGen.ProcessProperty summary:
+|The Where clause comparison operator.|
+ClassName:
+|LJCDbColumns|
+**
+LJCDocDataGen.ProcessClass summary:
+|Represents a typed Collection of LJCDbColumn objects.|
+FunctionName:
+|Deserialize|
+**
+LJCDocDataGen.ProcessFunction summary:
+|Deserializes the data from an LJCDbColumns XML file.|
+FunctionName:
+|Add|
+**
+LJCDocDataGen.ProcessFunction summary:
+|Creates an object and adds it to the collection.|
+FunctionName:
+|AddObject|
+**
+LJCDocDataGen.ProcessFunction summary:
+|Adds an object and key value.|
+FunctionName:
+|Clone|
+**
+LJCDocDataGen.ProcessFunction summary:
+|Creates an object clone.|
+FunctionName:
+|Get|
+**
+LJCDocDataGen.ProcessFunction summary:
+|Get the item by Key value.|
+FunctionName:
+|GetColumns|
+**
+LJCDocDataGen.ProcessFunction summary:
+|
+ Get the column definitions that match the property names.
+|
+FunctionName:
+|MapNames|
+**
+LJCDocDataGen.ProcessFunction summary:
+|
+ Sets the PropertyName, RenameAs and Caption values for a column.
+|
+FunctionName:
+|SetWhereOperators|
+**
+LJCDocDataGen.ProcessFunction summary:
+|Sets the Where Clause operators.|
+ClassName:
+|DbColumnsXML|
+**
+LJCDocDataGen.ProcessClass summary
+FunctionName:
+|construct|
+**
+LJCDocDataGen.ProcessFunction summary:
+|Initializes a class instance with the provided values.|
+FunctionName:
+|Deserialize|
+**
+LJCDocDataGen.ProcessFunction summary:
+|Deserializes the XML file.|
+FunctionName:
+|SerializeToString|
+**
+LJCDocDataGen.ProcessFunction summary
+ClassName:
+|LJCJoin|
+**
+LJCDocDataGen.ProcessClass summary:
+|Represents a SQL Join.|
+FunctionName:
+|construct|
+**
+LJCDocDataGen.ProcessFunction summary:
+|Initializes a class instance.|
+FunctionName:
+|Clone|
+**
+LJCDocDataGen.ProcessFunction summary:
+|Creates an object clone.|
+PropertyName:
+|$Columns|
+**
+LJCDocDataGen.ProcessProperty summary
+PropertyName:
+|$JoinOns|
+**
+LJCDocDataGen.ProcessProperty summary:
+|The JoinOn definintions.|
+PropertyName:
+|$JoinType|
+**
+LJCDocDataGen.ProcessProperty summary:
+|The Join type.|
+PropertyName:
+|$SchemaName|
+**
+LJCDocDataGen.ProcessProperty summary:
+|The Schema name.|
+PropertyName:
+|$TableAlias|
+**
+LJCDocDataGen.ProcessProperty summary:
+|The table alias.|
+PropertyName:
+|$TableName|
+**
+LJCDocDataGen.ProcessProperty summary:
+|The table name.|
+ClassName:
+|LJCJoins|
+**
+LJCDocDataGen.ProcessClass summary:
+|Represents a collection of LJCJoin objects.|
+FunctionName:
+|Add|
+**
+LJCDocDataGen.ProcessFunction summary:
+|Creates an object and adds it to the collection.|
+FunctionName:
+|AddObject|
+**
+LJCDocDataGen.ProcessFunction summary:
+|Adds an object and key value.|
+FunctionName:
+|Clone|
+**
+LJCDocDataGen.ProcessFunction summary:
+|Creates an object clone.|
+FunctionName:
+|Get|
+**
+LJCDocDataGen.ProcessFunction summary:
+|Get the item by Key value.|
+ClassName:
+|LJCJoinOn|
+**
+LJCDocDataGen.ProcessClass summary:
+|Represents a SQL JoinOn.|
+FunctionName:
+|construct|
+**
+LJCDocDataGen.ProcessFunction summary:
+|Initializes a class instance.|
+FunctionName:
+|Clone|
+**
+LJCDocDataGen.ProcessFunction summary:
+|Creates an object clone.|
+PropertyName:
+|$BooleanOperator|
+**
+LJCDocDataGen.ProcessProperty summary:
+|The Boolean Operator value.|
+PropertyName:
+|$FromColumnName|
+**
+LJCDocDataGen.ProcessProperty summary:
+|The &#039;From&#039; column name.|
+PropertyName:
+|$JoinOnOperator|
+**
+LJCDocDataGen.ProcessProperty summary:
+|The Join On Operator.|
+PropertyName:
+|$JoinOns|
+**
+LJCDocDataGen.ProcessProperty summary:
+|The contained JoinOns.|
+PropertyName:
+|$ToColumnName|
+**
+LJCDocDataGen.ProcessProperty summary:
+|The &#039;To&#039; column name.|
+ClassName:
+|LJCJoinOns|
+**
+LJCDocDataGen.ProcessClass summary:
+|Represents a collection of LJCJoin objects.|
+FunctionName:
+|Add|
+**
+LJCDocDataGen.ProcessFunction summary:
+|Creates an object and adds it to the collection.|
+FunctionName:
+|AddObject|
+**
+LJCDocDataGen.ProcessFunction summary:
+|Adds an object and key value.|
+FunctionName:
+|Clone|
+**
+LJCDocDataGen.ProcessFunction summary:
+|Creates an object clone.|
+FunctionName:
+|Get|
+**
+LJCDocDataGen.ProcessFunction summary:
+|Get the item by Key value.|
+**
+LJCDocDataGen.ProcessLib summary:
+|The Common Text Output Class Library|
+ClassName:
+|LJCStringBuilder|
+**
+LJCDocDataGen.ProcessClass summary:
+|Represents a built string value.|
+FunctionName:
+|construct|
+**
+LJCDocDataGen.ProcessFunction summary:
+|Initializes a class instance.|
+FunctionName:
+|Append|
+**
+LJCDocDataGen.ProcessFunction summary:
+|Appends text with indents.|
+FunctionName:
+|AppendLine|
+**
+LJCDocDataGen.ProcessFunction summary:
+|Appends a text line with indents.|
+FunctionName:
+|AppendTags|
+**
+LJCDocDataGen.ProcessFunction summary:
+|Appends a text line with begin tag, end tag and indents.|
+FunctionName:
+|Length|
+**
+LJCDocDataGen.ProcessFunction summary:
+|Gets the current builder string length.|
+FunctionName:
+|ToString|
+**
+LJCDocDataGen.ProcessFunction summary:
+|Gets the built string.|
+ClassName:
+|LJCHTMLTableColumn|
+**
+LJCDocDataGen.ProcessClass summary:
+|The HTML table column definition.|
+FunctionName:
+|construct|
+**
+LJCDocDataGen.ProcessFunction summary:
+|Initializes an object instance.|
+PropertyName:
+|$ColumnName|
+**
+LJCDocDataGen.ProcessProperty summary:
+|The Column name.|
+PropertyName:
+|$HeadingName|
+**
+LJCDocDataGen.ProcessProperty summary:
+|The Column Heading name.|
+PropertyName:
+|$Style|
+**
+LJCDocDataGen.ProcessProperty summary:
+|The Style value.|
+PropertyName:
+|$Width|
+**
+LJCDocDataGen.ProcessProperty summary:
+|The Column width.|
+ClassName:
+|LJCHTMLWriter|
+**
+LJCDocDataGen.ProcessClass summary:
+|Contains HTML output methods.|
+FunctionName:
+|WriteHeader|
+**
+LJCDocDataGen.ProcessFunction summary:
+|Writes an HTML table header row.|
+FunctionName:
+|WriteRow|
+**
+LJCDocDataGen.ProcessFunction summary:
+|Writes an HTML table data row.|
+ClassName:
+|LJCWriter|
+**
+LJCDocDataGen.ProcessClass summary:
+|Contains console and file output methods.|
+FunctionName:
+|Write|
+**
+LJCDocDataGen.ProcessFunction summary:
+|Writes text with indents.|
+FunctionName:
+|WriteFile|
+**
+LJCDocDataGen.ProcessFunction summary:
+|Writes a text file.|
+FunctionName:
+|WriteLine|
+**
+LJCDocDataGen.ProcessFunction summary:
+|Writes a text line with indents.|
+FunctionName:
+|construct|
+**
+LJCDocDataGen.ProcessFunction summary:
+|Initializes an object instance.|
+FunctionName:
+|FWrite|
+**
+LJCDocDataGen.ProcessFunction summary:
+|Writes file text with indents.|
+FunctionName:
+|FWriteLine|
+**
+LJCDocDataGen.ProcessFunction summary:
+|Writes a file text line with indents.|
+ClassName:
+|LJCDebugWriter|
+**
+LJCDocDataGen.ProcessClass summary
+FunctionName:
+|construct|
+**
+LJCDocDataGen.ProcessFunction summary
+FunctionName:
+|Debug|
+**
+LJCDocDataGen.ProcessFunction summary
+**
+LJCDocDataGen.ProcessLib summary:
+|
+ The utility to generate text from a template and custom data.
+|
+ClassName:
+|LJCGenText|
+**
+LJCDocDataGen.ProcessClass summary:
+|The GenText text generator class.|
+FunctionName:
+|construct|
+**
+LJCDocDataGen.ProcessFunction summary:
+|Initializes an object instance.|
+FunctionName:
+|ProcessTemplate|
+**
+LJCDocDataGen.ProcessFunction summary:
+|Processes the Template and Data to produce the output string.|
+**
+LJCDocDataGen.ProcessLib summary:
+|The GenText Section Library|
+ClassName:
+|LJCDirective|
+**
+LJCDocDataGen.ProcessClass summary:
+|Represents a template Directive.|
+FunctionName:
+|Find|
+**
+LJCDocDataGen.ProcessFunction summary:
+|Find any Directives in a line.|
+FunctionName:
+|construct|
+**
+LJCDocDataGen.ProcessFunction summary:
+| Initializes an object instance.|
+PropertyName:
+|$Name|
+**
+LJCDocDataGen.ProcessProperty summary:
+|The Directive Name.|
+PropertyName:
+|$Type|
+**
+LJCDocDataGen.ProcessProperty summary:
+|The Directive Type.|
+PropertyName:
+|$Value|
+**
+LJCDocDataGen.ProcessProperty summary:
+|The compare value.|
+ClassName:
+|LJCSection|
+**
+LJCDocDataGen.ProcessClass summary:
+|Represents a template Section.|
+FunctionName:
+|construct|
+**
+LJCDocDataGen.ProcessFunction summary:
+|Initializes an object instance.|
+FunctionName:
+|Clone|
+**
+LJCDocDataGen.ProcessFunction summary:
+|Creates a copy of the current object.|
+PropertyName:
+|$Begin|
+**
+LJCDocDataGen.ProcessProperty summary:
+|The Section begin stream offset.|
+PropertyName:
+|$CurrentItem|
+**
+LJCDocDataGen.ProcessProperty summary:
+|The Current Item object.|
+PropertyName:
+|$Items|
+**
+LJCDocDataGen.ProcessProperty summary:
+|The Section Items.|
+PropertyName:
+|$Name|
+**
+LJCDocDataGen.ProcessProperty summary:
+|The Section name.|
+ClassName:
+|LJCSections|
+**
+LJCDocDataGen.ProcessClass summary:
+|Represents a collection of Section objects.|
+FunctionName:
+|CreateColumnData|
+**
+LJCDocDataGen.ProcessFunction summary:
+|Creates the data from a table definition.|
+FunctionName:
+|AddReplacement|
+**
+LJCDocDataGen.ProcessFunction summary:
+| Adds a Replacement to an Item.|
+FunctionName:
+|Deserialize|
+**
+LJCDocDataGen.ProcessFunction summary:
+|Deserializes the data from a Sections XML file.|
+FunctionName:
+|DeserializeString|
+**
+LJCDocDataGen.ProcessFunction summary:
+|Deserializes the data from a Sections XML string.|
+FunctionName:
+|CreateSections|
+**
+LJCDocDataGen.ProcessFunction summary:
+|Creates the Section data from an XMLDoc node.|
+FunctionName:
+|Serialize|
+**
+LJCDocDataGen.ProcessFunction summary:
+|Serializes the data to an XML file.|
+FunctionName:
+|Add|
+**
+LJCDocDataGen.ProcessFunction summary:
+|Adds an object and key value.|
+FunctionName:
+|Clone|
+**
+LJCDocDataGen.ProcessFunction summary:
+|Creates an object clone.|
+FunctionName:
+|Get|
+**
+LJCDocDataGen.ProcessFunction summary:
+|Get the item by Key value.|
+FunctionName:
+|GetKeys|
+**
+LJCDocDataGen.ProcessFunction summary:
+|Gets an indexed array of keys.|
+FunctionName:
+|GetValues|
+**
+LJCDocDataGen.ProcessFunction summary:
+|Gets an indexed array of objects.|
+FunctionName:
+|HasKey|
+**
+LJCDocDataGen.ProcessFunction summary:
+|Indicates if a key already exists.|
+FunctionName:
+|Remove|
+**
+LJCDocDataGen.ProcessFunction summary:
+|Remove the item by Key value.|
+FunctionName:
+|getIterator|
+**
+LJCDocDataGen.ProcessFunction summary:
+|Allows foreach()|
+FunctionName:
+|count|
+**
+LJCDocDataGen.ProcessFunction summary:
+|Allows Count(object).|
+ClassName:
+|LJCItem|
+**
+LJCDocDataGen.ProcessClass summary:
+|Represents a Section Item.|
+FunctionName:
+|construct|
+**
+LJCDocDataGen.ProcessFunction summary:
+|Initializes an object instance.|
+FunctionName:
+|Clone|
+**
+LJCDocDataGen.ProcessFunction summary:
+|Creates a copy of the current object.|
+PropertyName:
+|$Name|
+**
+LJCDocDataGen.ProcessProperty summary:
+|The Item name.|
+PropertyName:
+|$Replacements|
+**
+LJCDocDataGen.ProcessProperty summary:
+|The Item replacements.|
+PropertyName:
+|$RootNam|
+**
+LJCDocDataGen.ProcessProperty summary:
+|The XML Root Name value.|
+ClassName:
+|LJCReplacement|
+**
+LJCDocDataGen.ProcessClass summary:
+|Represents Item Replacements.|
+FunctionName:
+|construct|
+**
+LJCDocDataGen.ProcessFunction summary
+FunctionName:
+|Clone|
+**
+LJCDocDataGen.ProcessFunction summary:
+|Creates a copy of the current object.|
+PropertyName:
+|$Name|
+**
+LJCDocDataGen.ProcessProperty summary:
+|The Replacement name.|
+PropertyName:
+|$Value|
+**
+LJCDocDataGen.ProcessProperty summary:
+|The Replacement value.|
+PropertyName:
+|$RootNam|
+**
+LJCDocDataGen.ProcessProperty summary:
+|The XML Root Name value.|
+**
+LJCDocDataGen.ProcessLib summary:
+|
+ Contains Classes to parse code XML comments.
+|
+ClassName:
+|LJCComments|
+**
+LJCDocDataGen.ProcessClass summary:
+|Provides methods to parse code XML comment values.|
+FunctionName:
+|construct|
+**
+LJCDocDataGen.ProcessFunction summary:
+|Initializes an object instance.|
+FunctionName:
+|ClearComments|
+**
+LJCDocDataGen.ProcessFunction summary:
+|Clears the XML comments.|
+FunctionName:
+|SetComment|
+**
+LJCDocDataGen.ProcessFunction summary:
+|Sets the XML comment value.|
+PropertyName:
+|$Code|
+**
+LJCDocDataGen.ProcessProperty summary:
+|The example Code.|
+PropertyName:
+|$CurrentTagName|
+**
+LJCDocDataGen.ProcessProperty summary:
+|The current tag name.|
+PropertyName:
+|$Params|
+**
+LJCDocDataGen.ProcessProperty summary:
+|The Param comments.|
+PropertyName:
+|$Remarks|
+**
+LJCDocDataGen.ProcessProperty summary:
+|The Remark comment.|
+PropertyName:
+|$Returns|
+**
+LJCDocDataGen.ProcessProperty summary:
+|The Returns comment.|
+PropertyName:
+|$Summary|
+**
+LJCDocDataGen.ProcessProperty summary:
+|The Summary comment.|
+PropertyName:
+|$LibName|
+**
+LJCDocDataGen.ProcessProperty summary:
+|The Code File base (Library) name.|
+**
+LJCDocDataGen.ProcessLib summary:
+|
+ Contains Classes to create DocData XML from a PHP source file.
+|
+ClassName:
+|LJCDocDataGen|
+**
+LJCDocDataGen.ProcessClass summary:
+|
+		Provides methods to generate DocData XML files from a code file.
+|
+FunctionName:
+|construct|
+**
+LJCDocDataGen.ProcessFunction summary:
+|
+		Initializes a class instance.
+		And More.
+|
+FunctionName:
+|CreateDocDataXMLString|
+**
+LJCDocDataGen.ProcessFunction summary:
+|Creates and optionally writes the DocData XML.|
+FunctionName:
+|ProcessCode|
+**
+LJCDocDataGen.ProcessFunction summary:
+|Generates the Doc data for the file.|
+**
+LJCDocDataGen.ProcessLib summary:
+|
+ Contains classes to represent and generate DocData XML.
+|
+ClassName:
+|LJCDocDataClass|
+**
+LJCDocDataGen.ProcessClass summary:
+|Represents a DocData Class.|
+FunctionName:
+|construct|
+**
+LJCDocDataGen.ProcessFunction summary:
+|Initializes a class instance.|
+FunctionName:
+|Clone|
+**
+LJCDocDataGen.ProcessFunction summary:
+|Creates a Clone of the current object.|
+PropertyName:
+|$Code|
+**
+LJCDocDataGen.ProcessProperty summary:
+|The Code value.|
+PropertyName:
+|$Methods|
+**
+LJCDocDataGen.ProcessProperty summary:
+|The Method array.|
+PropertyName:
+|$Name|
+**
+LJCDocDataGen.ProcessProperty summary:
+|The Name value.|
+PropertyName:
+|$Properties|
+**
+LJCDocDataGen.ProcessProperty summary:
+|The Property array.|
+PropertyName:
+|$Remarks|
+**
+LJCDocDataGen.ProcessProperty summary:
+|The Remarks value.|
+PropertyName:
+|$Summary|
+**
+LJCDocDataGen.ProcessProperty summary:
+|The Summary value.|
+ClassName:
+|LJCDocDataClasses|
+**
+LJCDocDataGen.ProcessClass summary:
+|Represents a collection of objects.|
+FunctionName:
+|AddObject|
+**
+LJCDocDataGen.ProcessFunction summary
+FunctionName:
+|Clone|
+**
+LJCDocDataGen.ProcessFunction summary:
+|Creates an object clone.|
+FunctionName:
+|Get|
+**
+LJCDocDataGen.ProcessFunction summary:
+|Get the item by Key value.|
+ClassName:
+|LJCDocDataFile|
+**
+LJCDocDataGen.ProcessClass summary:
+|
+ Represents DocData Lib File XML Comments.
+|
+FunctionName:
+|Deserialize|
+**
+LJCDocDataGen.ProcessFunction summary:
+|Deserializes the data from an LJCDocDataFile XML file.|
+FunctionName:
+|DeserializeString|
+**
+LJCDocDataGen.ProcessFunction summary:
+|Deserializes the data from an LJCDocDataFile XML string.|
+FunctionName:
+|GetProperties|
+**
+LJCDocDataGen.ProcessFunction summary:
+|Deserialize Properties from the Class node.|
+FunctionName:
+|construct|
+**
+LJCDocDataGen.ProcessFunction summary
+FunctionName:
+|Clone|
+**
+LJCDocDataGen.ProcessFunction summary:
+|Creates a Clone of the current object.|
+FunctionName:
+|Serialize|
+**
+LJCDocDataGen.ProcessFunction summary:
+|Writes the serialized XML.|
+FunctionName:
+|SerializeToString|
+**
+LJCDocDataGen.ProcessFunction summary
+PropertyName:
+|$Classes|
+**
+LJCDocDataGen.ProcessProperty summary:
+|The Class collection.|
+PropertyName:
+|$Functions|
+**
+LJCDocDataGen.ProcessProperty summary:
+|The Function array.|
+PropertyName:
+|$Name|
+**
+LJCDocDataGen.ProcessProperty summary:
+|The Name value.|
+PropertyName:
+|$Remarks|
+**
+LJCDocDataGen.ProcessProperty summary:
+|The Name value.|
+PropertyName:
+|$Summary|
+**
+LJCDocDataGen.ProcessProperty summary:
+|The Summary value.|
+ClassName:
+|LJCDocDataMethod|
+**
+LJCDocDataGen.ProcessClass summary:
+|Represents a DocData Function.|
+FunctionName:
+|construct|
+**
+LJCDocDataGen.ProcessFunction summary:
+|Initializes a class instance.|
+FunctionName:
+|Clone|
+**
+LJCDocDataGen.ProcessFunction summary:
+|Creates a Clone of the current object.|
+PropertyName:
+|$Code|
+**
+LJCDocDataGen.ProcessProperty summary:
+|The Code value.|
+PropertyName:
+|$Name|
+**
+LJCDocDataGen.ProcessProperty summary:
+|The Name value.|
+PropertyName:
+|$Params|
+**
+LJCDocDataGen.ProcessProperty summary:
+|The Param array.|
+PropertyName:
+|$Remarks|
+**
+LJCDocDataGen.ProcessProperty summary:
+|The Remarks value.|
+PropertyName:
+|$Returns|
+**
+LJCDocDataGen.ProcessProperty summary:
+|The Returns value.|
+PropertyName:
+|$Summary|
+**
+LJCDocDataGen.ProcessProperty summary:
+|The Summary value.|
+PropertyName:
+|$Syntax|
+**
+LJCDocDataGen.ProcessProperty summary:
+|The Syntax value.|
+ClassName:
+|LJCDocDataMethods|
+**
+LJCDocDataGen.ProcessClass summary:
+|Represents a collection of objects.|
+FunctionName:
+|AddObject|
+**
+LJCDocDataGen.ProcessFunction summary
+FunctionName:
+|Clone|
+**
+LJCDocDataGen.ProcessFunction summary:
+|Creates an object clone.|
+FunctionName:
+|Get|
+**
+LJCDocDataGen.ProcessFunction summary:
+|Get the item by Key value.|
+ClassName:
+|LJCDocDataParam|
+**
+LJCDocDataGen.ProcessClass summary:
+|Represents a DocData Parameter.|
+FunctionName:
+|construct|
+**
+LJCDocDataGen.ProcessFunction summary:
+|Initializes a class instance.|
+FunctionName:
+|Clone|
+**
+LJCDocDataGen.ProcessFunction summary:
+|Creates a Clone of the current object.|
+PropertyName:
+|$Name|
+**
+LJCDocDataGen.ProcessProperty summary:
+|The Name value.|
+PropertyName:
+|$Summary|
+**
+LJCDocDataGen.ProcessProperty summary:
+|The Summary value.|
+ClassName:
+|LJCDocDataParams|
+**
+LJCDocDataGen.ProcessClass summary:
+|Represents a collection of objects.|
+FunctionName:
+|AddObject|
+**
+LJCDocDataGen.ProcessFunction summary
+FunctionName:
+|Clone|
+**
+LJCDocDataGen.ProcessFunction summary:
+|Creates an object clone.|
+FunctionName:
+|Get|
+**
+LJCDocDataGen.ProcessFunction summary:
+|Get the item by Key value.|
+ClassName:
+|LJCDocDataProperty|
+**
+LJCDocDataGen.ProcessClass summary:
+|Represents a DocData Property.|
+FunctionName:
+|construct|
+**
+LJCDocDataGen.ProcessFunction summary:
+|Initializes a class instance.|
+FunctionName:
+|Clone|
+**
+LJCDocDataGen.ProcessFunction summary:
+|Creates a Clone of the current object.|
+PropertyName:
+|$Name|
+**
+LJCDocDataGen.ProcessProperty summary:
+|The Name value.|
+PropertyName:
+|$Remarks|
+**
+LJCDocDataGen.ProcessProperty summary:
+|The Remarks value.|
+PropertyName:
+|$Returns|
+**
+LJCDocDataGen.ProcessProperty summary:
+|The Returns value.|
+PropertyName:
+|$Summary|
+**
+LJCDocDataGen.ProcessProperty summary:
+|The Summary value.|
+PropertyName:
+|$Syntax|
+**
+LJCDocDataGen.ProcessProperty summary:
+|The Syntax value.|
+ClassName:
+|LJCDocDataProperties|
+**
+LJCDocDataGen.ProcessClass summary:
+|Represents a collection of objects.|
+FunctionName:
+|AddObject|
+**
+LJCDocDataGen.ProcessFunction summary
+FunctionName:
+|Clone|
+**
+LJCDocDataGen.ProcessFunction summary
+FunctionName:
+|Get|
+**
+LJCDocDataGen.ProcessFunction summary:
+|Get the item by Key value.|
+**
+LJCDocDataGen.ProcessLib summary:
+|
+ Contains Classes to retrieve XML Comments from include XML files.
+|
+ClassName:
+|LJCInclude|
+**
+LJCDocDataGen.ProcessClass summary:
+|Handles Include file XML comment values.|
+FunctionName:
+|construct|
+**
+LJCDocDataGen.ProcessFunction summary:
+|Initializes an object instance.|
+FunctionName:
+|SetComments|
+**
+LJCDocDataGen.ProcessFunction summary:
+|Sets the comments from the specified include file.|
+PropertyName:
+|$Comments|
+**
+LJCDocDataGen.ProcessProperty summary:
+|The Incude comments.|
+PropertyName:
+|$LibName|
+**
+LJCDocDataGen.ProcessProperty summary:
+|The Code File base (Library) name.|
+PropertyName:
+|$XMLFile|
+**
+LJCDocDataGen.ProcessProperty summary:
+|The Include file spec.|
+**
+LJCDocDataGen.ProcessLib summary:
+|
+ Contains Classes to manage param XML Comments.
+|
+ClassName:
+|LJCParamComment|
+**
+LJCDocDataGen.ProcessClass summary:
+|Handles param comments.|
+FunctionName:
+|GetParam|
+**
+LJCDocDataGen.ProcessFunction summary:
+|Creates a Param object from a param XML comment.|
+ClassName:
+|GenCodeDoc|
+**
+LJCDocDataGen.ProcessClass summary
+FunctionName:
+|construct|
+**
+LJCDocDataGen.ProcessFunction summary:
+|Initializes an object instance.|
+FunctionName:
+|CreateFromList|
+**
+LJCDocDataGen.ProcessFunction summary:
+|Creates CodeDoc pages from source file list.|
+FunctionName:
+|CreateFilePages|
+**
+LJCDocDataGen.ProcessFunction summary:
+|Create the HTML files.|
+**
+LJCDocDataGen.ProcessLib summary:
+|
+ Contains classes to create GenData from DocData.
+|
+ClassName:
+|LJCGenDataGen|
+**
+LJCDocDataGen.ProcessClass summary:
+|
+ Provides methods to generate GenData XML files.
+|
+FunctionName:
+|construct|
+**
+LJCDocDataGen.ProcessFunction summary:
+|Initializes an object instance.|
+FunctionName:
+|CreateLibXMLString|
+**
+LJCDocDataGen.ProcessFunction summary:
+|Creates a Lib GenData XML string and optional file.|
+PropertyName:
+|$HTMLPath|
+**
+LJCDocDataGen.ProcessProperty summary
+**
+LJCDocDataGen.ProcessLib summary:
+|
+ Contains Classes to generate supporting GenData XML text.
+|
+ClassName:
+|LJCGenDataXML|
+**
+LJCDocDataGen.ProcessClass summary:
+|Provides methods for creating GenData XML text.|
+FunctionName:
+|ItemBegin|
+**
+LJCDocDataGen.ProcessFunction summary:
+|Creates the Item begin string.|
+FunctionName:
+|ItemEnd|
+**
+LJCDocDataGen.ProcessFunction summary:
+|Creates the Item end string.|
+FunctionName:
+|Replacement|
+**
+LJCDocDataGen.ProcessFunction summary:
+|Creates the Replacement string.|
+FunctionName:
+|SectionBegin|
+**
+LJCDocDataGen.ProcessFunction summary:
+|Creates the Section begin string.|
+FunctionName:
+|SectionEnd|
+**
+LJCDocDataGen.ProcessFunction summary:
+|Creates the Section end string.|
+FunctionName:
+|XMLHead|
+**
+LJCDocDataGen.ProcessFunction summary
