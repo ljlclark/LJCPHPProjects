@@ -23,7 +23,7 @@
     }
 
     /// <summary>Creates an object clone.</summary>
-    /// <returns>The cloned item.</return>
+    /// <returns>The cloned item.</returns>
     public function Clone() : self
     {
       $retValue = new self($this->BeginIndex, $this->EndIndex);
@@ -59,7 +59,7 @@
     // Public Collection Methods - LJCTextRanges
 
     // Creates an object and adds it to the collection.
-    // <include path='items/Add/*' file='Doc/LJCTextRanges.xml'/>
+    /// <include path='items/Add/*' file='Doc/LJCTextRanges.xml'/>
     public function Add(int $beginIndex, int $endIndex, $key = null)
       : ?LJCTextRange
     {
@@ -76,7 +76,7 @@
     }
 
     // Adds an object and key value.
-    // <include path='items/AddObject/*' file='Doc/LJCTextRanges.xml'/>
+    /// <include path='items/AddObject/*' file='Doc/LJCTextRanges.xml'/>
     public function AddObject(LJCTextRange $item, $key = null) : ?LJCTextRange
     {
       if (null == $key)

@@ -17,3 +17,6 @@ devPath /GenDoc/GenCodeDoc/GenCodeDocLib.php
 
 devPath /GenDoc/GenDataLib/LJCGenDataGenLib.php
 devPath /GenDoc/GenDataLib/LJCGenDataXMLLib.php
+
+devPath /TextReader/LJCTextReaderLib.php
+devPath /TextReader/LJCTextRangesLib.php
