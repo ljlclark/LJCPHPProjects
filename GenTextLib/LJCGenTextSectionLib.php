@@ -2,7 +2,6 @@
   // Copyright (c) Lester J. Clark 2022 - All Rights Reserved
   // LJCGenTextSectionLib.php
   declare(strict_types=1);
-  $webCommonPath = "c:/inetpub/wwwroot/LJCPHPCommon";
   $devPath = "c:/Users/Les/Documents/Visual Studio 2022/LJCPHPProjects";
   require_once "$devPath/LJCPHPCommon/LJCTextLib.php";
   require_once "$devPath/LJCPHPCommon/LJCDBAccessLib.php";
@@ -393,7 +392,7 @@
   /// <summary>Represents a Section Item.</summary>
   class LJCItem
   {
-    /// <summary>Initializes an object instance.</summary>
+    /// <summary>Initializes an object instance with the provided values.</summary>
     /// <param name="$name">The Item name.</param>
     public function __construct(string $name)
     {
@@ -401,7 +400,7 @@
       $this->Replacements = [];
     }
 
-    /// <summary>Creates a copy of the current object.</summary>
+    /// <summary>Creates a Clone of the current object.</summary>
     public function Clone() : self
     {
       $retValue = new self($this->Name);
@@ -427,7 +426,7 @@
   /// <summary>Represents Item Replacements.</summary>
   class LJCReplacement
   {
-    // Initializes an object instance.
+    // Initializes an object instance with the provided values.
     /// <param name="$name">The Replacement name.</param>
     /// <param name="$value">The Replacement value.</param>
     public function __construct(string $name, string $value)
@@ -436,7 +435,7 @@
       $this->Value = $value;
     }
 
-    /// <summary>Creates a copy of the current object.</summary>
+    /// <summary>Creates a Clone of the current object.</summary>
     public function Clone() : self
     {
       $retValue = new self($this->Name, $this->Value);

@@ -24,14 +24,7 @@
       $this->ActiveSections = [];
       $this->CurrentSection = null;
 
-      $debug = false;
-      if ($debug)
-      {
-        $fileName = LJCCommon::GetFileName($debugFileSuffix);
-        $fileName = LJCCommon::GetDebugFileName("Debug", $fileName);
-        $debugOutputStream = fopen($fileName, "w");
-        $this->DebugWriter = new LJCWriter($debugOutputStream);
-      }
+      $this->DebugWriter = new LJCDebugWriter("GenData");
     }  // construct()
 
     // ---------------
@@ -417,20 +410,10 @@
     // ---------------
     // Private Write Helper Methods
 
-    // Writes a Debug line.
+    // Writes the debug value.
     private function Debug(string $text, bool $addLine = true) : void
     {
-      if (isset($this->DebugWriter))
-      {
-        if ($addLine)
-        {
-          $this->DebugWriter->FWriteLine($text);
-        }
-        else
-        {
-          $this->DebugWriter->FWrite($text);
-        }
-      }
+      $this->DebugWriter->Debug($text, $addLine);
     }
 
     // Indicates if it is a SectionBegin or SectionEnd directive.
@@ -474,9 +457,6 @@
 
     // The current Section.
     private ?LJCSection $CurrentSection;
-
-    // The Debug writer.
-    private LJCWriter $DebugWriter;
 
     // The current If operation.
     private ?string $IfOperation;

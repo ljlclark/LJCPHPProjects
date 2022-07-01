@@ -49,13 +49,7 @@
       $this->SetCommentTags();
       $this->IncludeFile = new LJCInclude();
 
-      $debug = false;
-      if ($debug)
-      {
-        $fileName = LJCCommon::GetDebugFileName("Debug","LJCCommentsLib");
-        $debugOutputStream = fopen($fileName, "w");
-        $this->DebugWriter = new Writer($debugOutputStream);
-      }
+      $this->DebugWriter = new LJCDebugWriter("CommentsLib");
     }
 
     // ---------------
@@ -379,20 +373,10 @@
     // ---------------
     // Private Output Methods
 
-    // Writes a file Debug line.
-    private function Debug(string $text, bool $addLine= true) : void
+    // Writes the debug value.
+    private function Debug(string $text, bool $addLine = true) : void
     {
-      if ($this->DebugWriter != null)
-      {
-        if ($addLine)
-        {
-          $this->DebugWriter->FWriteLine($text);
-        }
-        else
-        {
-          $this->DebugWriter->FWrite($text);
-        }
-      }
+      $this->DebugWriter->Debug($text, $addLine);
     }
 
     // Writes an output line.
@@ -446,9 +430,6 @@
 
     /// <summary>The Code File base (Library) name.</summary>
     public ?string $LibName;
-
-    // The Debug writer.
-    private ?Writer $DebugWriter;
 
     // The End comment tags.
     private ?array $EndTags;

@@ -2,7 +2,6 @@
   // Copyright (c) Lester J. Clark 2022 - All Rights Reserved
   // TextLib.php
   declare(strict_types=1);
-  $webCommonPath = "c:/inetpub/wwwroot/LJCPHPCommon";
   $devPath = "c:/Users/Les/Documents/Visual Studio 2022/LJCPHPProjects";
   require_once "$devPath/LJCPHPCommon/LJCCommonLib.php";
   
@@ -281,7 +280,8 @@
     private $Stream;
   }
 
-  // 
+  // ***************
+  /// <summary>Contains Debug output methods.</summary>
   class LJCDebugWriter
   {
     // 
@@ -292,7 +292,9 @@
       $this->DebugWriter = new LJCWriter($outputStream);
     }
 
-    // 
+    /// <summary>Writes a Debug output line.</summary>
+    /// <param name="$text"></param>
+    /// <param name="$addLine"></param>
     public function Debug(string $text, bool $addLine = true) : void
     {
       if ($this->DebugWriter != null)
@@ -308,7 +310,7 @@
       }
     }
 
-    // 
+    // The DebugWriter value.
     private ?LJCWriter $DebugWriter;
   }
 ?>

@@ -2,7 +2,6 @@
   // Copyright (c) Lester J. Clark 2022 - All Rights Reserved
   // LJCIncludeLib.php
   declare(strict_types=1);
-  $webCommonPath = "c:/inetpub/wwwroot/LJCPHPCommon";
   $devPath = "c:/Users/Les/Documents/Visual Studio 2022/LJCPHPProjects";
   require_once "$devPath/LJCPHPCommon/LJCCommonLib.php";
   require_once "$devPath/GenTextLib/LJCGenTextSectionLib.php";
@@ -27,20 +26,13 @@
     public function __construct()
     {
       $this->DebugClass = "LJCInclude";
-      $this->CurrentTagName = null;
+
       $this->Comments = null;
+      $this->LibName = null;
       $this->XMLFile = null;
 
-      $this->DebugWriter = null;
-      $this->LibName = null;
-
-      $debug = false;
-      if ($debug)
-      {
-        $fileName = LJCCommon::GetDebugFileName("Debug", "IncludeLib");
-        $debugOutputStream = fopen($fileName, "w");
-        $this->DebugWriter = new Writer($debugOutputStream);
-      }
+      $this->CurrentTagName = null;
+      $this->DebugWriter = new LJCDebugWriter("IncludeLib");
     }
 
     // ---------------
@@ -301,20 +293,10 @@
     // ---------------
     // Private Output Methods
 
-    // Writes a Debug line.
+    // Writes a Debug value.
     private function Debug(string $text, bool $addLine = true) : void
     {
-      if ($this->DebugWriter != null)
-      {
-        if ($addLine)
-        {
-          $this->DebugWriter->FWriteLine($text);
-        }
-        else
-        {
-          $this->DebugWriter->FWrite($text);
-        }
-      }
+      $this->DebugWriter->Debug($text, $addLine);
     }
 
     // Writes an output line.
@@ -350,7 +332,7 @@
     // ---------------
     // Private Properties
 
-    // The Debug writer.
-    private ?Writer $DebugWriter;
+    /// <summary>The Current tag name.</summary>
+    public ?string $CurrentTagName;
   }
 ?>

@@ -37,7 +37,7 @@
       $this->ValueCount = 0;
       $this->ValueDelimiter = "\"";
 
-      $this->DebugWriter = new LJCDebugWriter("LJCTextReader");
+      $this->DebugWriter = new LJCDebugWriter("TextReader");
     }
 
     // Set the configuration after the delimiters have been set.

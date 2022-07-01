@@ -2,7 +2,6 @@
   // Copyright (c) Lester J. Clark 2022 - All Rights Reserved
   // LJCGenDataGenLib.php
   declare(strict_types=1);
-  $webCommonPath = "c:/inetpub/wwwroot/LJCPHPCommon";
   $devPath = "c:/Users/Les/Documents/Visual Studio 2022/LJCPHPProjects";
   require_once "$devPath/LJCPHPCommon/LJCTextLib.php";
   require_once "$devPath/GenTextLib/LJCGenTextLib.php";

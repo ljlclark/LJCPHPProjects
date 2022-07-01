@@ -2,7 +2,6 @@
   // Copyright (c) Lester J. Clark 2022 - All Rights Reserved
   // LJCDocDataLib.php
   declare(strict_types=1);
-  $webCommonPath = "c:/inetpub/wwwroot/LJCPHPCommon";
   $devPath = "c:/Users/Les/Documents/Visual Studio 2022/LJCPHPProjects";
   require_once "$devPath/LJCPHPCommon/LJCCommonLib.php";
   require_once "$devPath/LJCPHPCommon/LJCTextLib.php";
@@ -31,7 +30,7 @@
     // ---------------
     // Constructors
 
-    // Initializes a class instance.
+    // Initializes an object instance with the provided values.
     /// <include path='items/construct/*' file='Doc/LJCDocDataClass.xml'/>
     public function __construct(string $name, ?string $summary = null)
     {
@@ -47,7 +46,7 @@
     // Public Methods
 
     // Creates a Clone of the current object.
-    /// <include path='items/Clone/*' file='Doc/LJCDocDataClass.xml'/>
+    /// <include path='items/Clone/*' file='../../CommonDoc/PHPDataClass.xml'/>
     public function Clone() : self
     {
       $retValue = new self($this->Name, $this->Summary);
@@ -85,6 +84,21 @@
   class LJCDocDataClasses extends LJCCollectionBase
   {
     // ---------------
+    // Constructors
+
+    /// <summary>Creates an object clone.</summary>
+    public function Clone() : self
+    {
+      $retValue = new self();
+      foreach ($this->Items as $key => $item)
+      {
+        $retValue->AddObject($item);
+      }
+      unset($item);
+      return $retValue;
+    }
+
+    // ---------------
     // Public Methods
 
     // Adds an object and key value.
@@ -97,18 +111,6 @@
         $key = $item->ID;
       }
       $retValue = $this->AddItem($item, $key);
-      return $retValue;
-    }
-
-    /// <summary>Creates an object clone.</summary>
-    public function Clone() : self
-    {
-      $retValue = new self();
-      foreach ($this->Items as $key => $item)
-      {
-        $retValue->AddObject($item);
-      }
-      unset($item);
       return $retValue;
     }
 
@@ -127,7 +129,7 @@
   class LJCDocDataFile
   {
     // ---------------
-    // Static Functions
+    // Public Static Functions
 
     // Deserializes the data from an LJCDocDataFile XML file.
     /// <include path='items/Deserialize/*' file='Doc/LJCDocDataFile.xml'/>
@@ -212,7 +214,6 @@
           $method->Params = self::GetParams($methodNode);
           $method->Returns = self::Value($methodNode->Returns);
           $method->Remarks = self::Value($methodNode->Remarks);
-          // *** Next Statement *** Add
           $method->Syntax = self::Value($methodNode->Syntax);
           $method->Code = self::Value($methodNode->Code, false);
         }
@@ -327,6 +328,7 @@
     }
 
     // Get the value from the XML value.
+    // Possible for Common code.
     private static function Value(SimpleXMLElement $xmlValue
       , bool $trim = true) : ?string
     {
@@ -346,7 +348,7 @@
     // ---------------
     // Constructors
 
-    // Initializes a class instance.
+    // Initializes an object instance with the provided values.
     /// <include path='items/construct/*' file='Doc/LJCDocDataFile.xml'/>
     public function __construct(string $name, ?string $summary = null)
     {
@@ -387,6 +389,7 @@
     {
       $builder = new LJCStringBuilder();
 
+      // Possible Common code.
       $builder->AppendLine("<?xml version=\"1.0\"?>");
       $builder->Append("<!-- Copyright (c) Lester J. Clark 2022 -");
       $builder->AppendLine(" All Rights Reserved -->");
@@ -529,7 +532,7 @@
     // ---------------
     // Constructors
 
-    // Initializes a class instance.
+    // Initializes an object instance with the provided values.
     /// <include path='items/construct/*' file='Doc/LJCDocDataMethod.xml'/>
     public function __construct(string $name, ?string $summary = null
       , ?string $returns = null)
@@ -586,7 +589,22 @@
   /// <summary>Represents a collection of objects.</summary>
   class LJCDocDataMethods extends LJCCollectionBase
   {
-    // ----------------------
+    // ---------------
+    // Constructors
+
+    /// <summary>Creates an object clone.</summary>
+    public function Clone() : self
+    {
+      $retValue = new self();
+      foreach ($this->Items as $key => $item)
+      {
+        $retValue->AddObject($item);
+      }
+      unset($item);
+      return $retValue;
+    }
+
+    // ---------------
     // *** Public Methods ***
 
     // Adds an object and key value.
@@ -599,18 +617,6 @@
         $key = $item->ID;
       }
       $retValue = $this->AddItem($item, $key);
-      return $retValue;
-    }
-
-    /// <summary>Creates an object clone.</summary>
-    public function Clone() : self
-    {
-      $retValue = new self();
-      foreach ($this->Items as $key => $item)
-      {
-        $retValue->AddObject($item);
-      }
-      unset($item);
       return $retValue;
     }
 
@@ -630,16 +636,13 @@
     // ---------------
     // Constructors
 
-    // Initializes a class instance.
+    // Initializes an object instance with the provided values.
     /// <include path='items/construct/*' file='Doc/LJCDocDataClass.xml'/>
     public function __construct(string $name, ?string $summary = null)
     {
       $this->Name = $name;
       $this->Summary = $summary;
     }
-
-    // ---------------
-    // Public Methods
 
     // Creates a Clone of the current object.
     /// <include path='items/Clone/*' file='../../CommonDoc/PHPDataClass.xml'/>
@@ -663,7 +666,22 @@
   /// <summary>Represents a collection of objects.</summary>
   class LJCDocDataParams extends LJCCollectionBase
   {
-    // ----------------------
+    // ---------------
+    // Constructors
+
+    /// <summary>Creates an object clone.</summary>
+    public function Clone() : self
+    {
+      $retValue = new self();
+      foreach ($this->Items as $key => $item)
+      {
+        $retValue->AddObject($item);
+      }
+      unset($item);
+      return $retValue;
+    }
+
+    // ---------------
     // *** Public Methods ***
 
     // Adds an object and key value.
@@ -676,18 +694,6 @@
         $key = $item->Name;
       }
       $retValue = $this->AddItem($item, $key);
-      return $retValue;
-    }
-
-    /// <summary>Creates an object clone.</summary>
-    public function Clone() : self
-    {
-      $retValue = new self();
-      foreach ($this->Items as $key => $item)
-      {
-        $retValue->AddObject($item);
-      }
-      unset($item);
       return $retValue;
     }
 
@@ -718,9 +724,6 @@
       $this->Summary = $summary;
       $this->Syntax = null;
     }
-
-    // ---------------
-    // Public Methods
 
     // Creates a Clone of the current object.
     /// <include path='items/Clone/*' file='../../CommonDoc/PHPDataClass.xml'/>
@@ -754,21 +757,8 @@
   /// <summary>Represents a collection of objects.</summary>
   class LJCDocDataProperties extends LJCCollectionBase
   {
-    // ----------------------
-    // *** Public Methods ***
-
-    // Adds an object and key value.
-    /// <include path='items/AddObject/*' file='../../CommonDoc/PHPCollection.xml'/>
-    public function AddObject(LJCDocDataProperty $item, $key = null)
-      : ?LJCDocDataProperty
-    {
-      if (null == $key)
-      {
-        $key = $item->ID;
-      }
-      $retValue = $this->AddItem($item, $key);
-      return $retValue;
-    }
+    // ---------------
+    // Constructors
 
     // Creates an object clone.
     /// <include path='items/Clone/*' file='../../CommonDoc/PHPCollection.xml'/>
@@ -780,6 +770,22 @@
         $retValue->AddObject($item);
       }
       unset($item);
+      return $retValue;
+    }
+
+    // ---------------
+    // Public Methods
+
+    // Adds an object and key value.
+    /// <include path='items/AddObject/*' file='../../CommonDoc/PHPCollection.xml'/>
+    public function AddObject(LJCDocDataProperty $item, $key = null)
+      : ?LJCDocDataProperty
+    {
+      if (null == $key)
+      {
+        $key = $item->ID;
+      }
+      $retValue = $this->AddItem($item, $key);
       return $retValue;
     }
 

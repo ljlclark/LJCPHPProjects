@@ -43,7 +43,7 @@
     // ---------------
     // Private Static Functions
 
-    // Creates the LJCDocDataFile object.
+    // Creates the LJC** object.
     private static function Create**(SimpleXMLElement $xmlNode)
       : ?LJC**
     {
@@ -97,6 +97,7 @@
     }
 
     // Get the value from the XML value.
+    // Possible Common code.
     private static function Value(SimpleXMLElement $xmlValue
       , bool $trim = true) : ?string
     {
@@ -125,11 +126,11 @@
       $this->Name = null;
       $this->Code = null;
 
-      $this->DebugWriter = new LJCDebugWriter("LJCTextRanges");
+      $this->DebugWriter = new LJCDebugWriter("**");
     }
 
     // Creates a Clone of the current object.
-    /// <include path='items/Clone/*' file='../../CommonDoc/PHPDataClass.xml.xml'/>
+    /// <include path='items/Clone/*' file='../../CommonDoc/PHPDataClass.xml'/>
     public function Clone() : self
     {
       $loc = "LJC**.Clone";
@@ -160,6 +161,7 @@
     {
       $builder = new LJCStringBuilder();
 
+      // Possible Common code.
       $builder->AppendLine("<?xml version=\"1.0\"?>");
       $builder->Append("<!-- Copyright (c) Lester J. Clark 2022 -");
       $builder->AppendLine(" All Rights Reserved -->");
@@ -192,7 +194,7 @@
     // ---------------
     // Private Methods - LJC**
 
-    // Output the debug value.
+    // Writes the debug value.
     private function Debug(string $text, bool $addLine = true) : void
     {
       $this->DebugWriter->Debug($text, $addLine);
@@ -210,5 +212,7 @@
     // ---------------
     // Private Properties - LJC**
 
+    // The Writer object.
+    private LJCWriter $Writer;
   }  // LJC**
 ?>

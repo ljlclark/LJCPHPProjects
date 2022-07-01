@@ -2,7 +2,6 @@
   // Copyright (c) Lester J. Clark 2022 - All Rights Reserved
   // LJCDBAccessLib.php
   declare(strict_types=1);
-  $webCommonPath = "c:/inetpub/wwwroot/LJCPHPCommon";
   $devPath = "c:/Users/Les/Documents/Visual Studio 2022/LJCPHPProjects";
   require_once "$devPath/LJCPHPCommon/LJCCollectionLib.php";
 
@@ -233,7 +232,7 @@
       return $retValue;
     }
 
-    // Initializes a class instance.
+    // Initializes an object instance.
     /// <include path='items/construct/*' file='Doc/LJCDbColumn.xml'/>
     public function __construct(string $columnName, ?string $propertyName = null
       , ?string $renameAs = null, string $dataTypeName = "string"
@@ -257,7 +256,8 @@
       $this->WhereCompareOperator = "=";
     }
 
-    /// <summary>Creates an object clone.</summary>
+    /// <summary>Creates a Clone of the current object.</summary>
+    /// <include path='items/Clone/*' file='../../CommonDoc/PHPDataClass.xml'/>
     public function Clone() : self
     {
       $retValue = new self();
@@ -373,7 +373,8 @@
       return $retValue;
     }
 
-    /// <summary>Creates an object clone.</summary>
+    /// <summary>Creates a Clone of the current object.</summary>
+    /// <include path='items/Clone/*' file='../../CommonDoc/PHPDataClass.xml'/>
     public function Clone() : self
     {
       $retValue = new self();
@@ -519,7 +520,7 @@
     }  // CreateDbColumns()
   
     // Get the value from the XML value.
-    // Potential Common function?
+    // Possible Common function?
     private function Value(SimpleXMLElement $xmlValue, bool $trim = true)
       : ?string
     {
@@ -536,13 +537,17 @@
       return $retValue;
     }
 
-    // 
+    /// <summary>Creates the serialized XML string.</summary>
+    /// <param name="$dbColumns"></param>
+    /// <param name="$xmlFileName"></param>
+    /// <returns>The XML string.</returns>
     public function SerializeToString(LJCDbColumns $dbColumns
       , $xmlFileName = null) : string
     {
       $builder = new LJCStringBuilder();
       $retValue = null;
 
+      // Possible Common code.
       $builder->AppendLine("<?xml version=\"1.0\"?>");
       $builder->Append("<!-- Copyright (c) Lester J. Clark 2022 -");
       $builder->AppendLine(" All Rights Reserved -->");
@@ -577,7 +582,7 @@
       return $retValue;
     }
 
-    // 
+    // Gets the DbColumn value.
     private function DbValue(LJCDbColumn $dbColumn, string $propertyName) : ?string
     {
       $builder = new LJCStringBuilder();
@@ -615,7 +620,8 @@
       $this->TableName = $tableName;
     }
 
-    /// <summary>Creates an object clone.</summary>
+    // Creates a Clone of the current object.
+    /// <include path='items/Clone/*' file='../../CommonDoc/PHPDataClass.xml'/>
     public function Clone() : self
     {
       $retValue = new self();
@@ -653,6 +659,19 @@
   /// <summary>Represents a collection of LJCJoin objects.</summary>
   class LJCJoins extends LJCCollectionBase
   {
+    // Creates a Clone of the current object.
+    /// <include path='items/Clone/*' file='../../CommonDoc/PHPDataClass.xml.xml'/>
+    public function Clone() : self
+    {
+      $retValue = new self();
+      foreach ($this->Items as $key => $item)
+      {
+        $retValue->AddObject($item);
+      }
+      unset($item);
+      return $retValue;
+    }
+
     // ---------------
     // Public Methods
 
@@ -685,18 +704,6 @@
       return $retValue;
     }
 
-    /// <summary>Creates an object clone.</summary>
-    public function Clone() : self
-    {
-      $retValue = new self();
-      foreach ($this->Items as $key => $item)
-      {
-        $retValue->AddObject($item);
-      }
-      unset($item);
-      return $retValue;
-    }
-
     /// <summary>Get the item by Key value.</summary>
     /// <include path='items/Get/*' file='Doc/LJCJoins.xml'/>
     public function Get($key, bool $throwError = true) : ?LJCJoin
@@ -721,7 +728,8 @@
       $this->ToColumnName = $toColumnName;
     }
 
-    /// <summary>Creates an object clone.</summary>
+    // Creates a Clone of the current object.
+    /// <include path='items/Clone/*' file='../../CommonDoc/PHPDataClass.xml.xml'/>
     public function Clone() : self
     {
       $retValue = new self();
@@ -756,6 +764,19 @@
   /// <summary>Represents a collection of LJCJoin objects.</summary>
   class LJCJoinOns extends LJCCollectionBase
   {
+    // Creates a Clone of the current object.
+    /// <include path='items/Clone/*' file='../../CommonDoc/PHPDataClass.xml.xml'/>
+    public function Clone() : self
+    {
+      $retValue = new self();
+      foreach ($this->Items as $key => $item)
+      {
+        $retValue->AddObject($item);
+      }
+      unset($item);
+      return $retValue;
+    }
+
     // ---------------
     // Public Methods
 
@@ -785,18 +806,6 @@
         $key = $item->FromColumnName;
       }
       $retValue = $this->AddItem($item, $key);
-      return $retValue;
-    }
-
-    /// <summary>Creates an object clone.</summary>
-    public function Clone() : self
-    {
-      $retValue = new self();
-      foreach ($this->Items as $key => $item)
-      {
-        $retValue->AddObject($item);
-      }
-      unset($item);
       return $retValue;
     }
 

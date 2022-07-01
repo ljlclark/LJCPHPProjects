@@ -135,13 +135,7 @@
       $this->Line = null;
       $this->PropertyName = null;
 
-      $debug = false;
-      if ($debug)
-      {
-        $fileName = LJCCommon::GetDebugFileName("Debug", "DocDataGenLib");
-        $debugOutputStream = fopen($fileName, "w");
-        $this->DebugWriter = new Writer($debugOutputStream);
-      }
+      $this->DebugWriter = new LJCDebugWriter("DocDataGen");
     }
 
     // ---------------
@@ -500,21 +494,10 @@
       }
     }
 
-    // Writes a Debug line.
-    // <include path='items/Debug/*' file='Doc/LJCGenDataXML.xml'/>
+    // Writes the debug value.
     private function Debug(string $text, bool $addLine = true) : void
     {
-      if ($this->DebugWriter != null)
-      {
-        if ($addLine)
-        {
-          $this->DebugWriter->FWriteLine($text);
-        }
-        else
-        {
-          $this->DebugWriter->FWrite($text);
-        }
-      }
+      $this->DebugWriter->Debug($text, $addLine);
     }
 
     // Writes an output line.
@@ -553,9 +536,6 @@
 
     // The XML Comments object.
     private LJCComments $Comments;
-
-    // The Debug writer.
-    private ?Writer $DebugWriter;
 
     // The DocDataFile object.
     private ?LJCDocDataFile $DocDataFile;

@@ -22,8 +22,8 @@
       $this->EndIndex = $endIndex;
     }
 
-    /// <summary>Creates an object clone.</summary>
-    /// <returns>The cloned item.</returns>
+    // Creates a Clone of the current object.
+    /// <include path='items/Clone/*' file='../../CommonDoc/PHPDataClass.xml'/>
     public function Clone() : self
     {
       $retValue = new self($this->BeginIndex, $this->EndIndex);
@@ -44,7 +44,7 @@
   /// <summary>Represents a collection of LJCTextRange objects.</summary>
   class LJCTextRanges extends LJCCollectionBase
   {
-    // Initializes a class instance with the provided values.
+    // Initializes an object with the provided values.
     /// <include path='items/construct/*' file='Doc/LJCTextRanges.xml'/>
     public function __construct(string $fieldDelimiter = ","
       , string $valueDelimiter = "\"")
@@ -53,6 +53,19 @@
       $this->ValueDelimiter = $valueDelimiter;
 
       $this->DebugWriter = new LJCDebugWriter("LJCTextRanges");
+    }
+
+    /// <summary>Creates an object clone.</summary>
+    /// <returns>The cloned item.</returns>
+    public function Clone() : self
+    {
+      $retValue = new self();
+      foreach ($this->Items as $key => $item)
+      {
+        $retValue->AddObject($item);
+      }
+      unset($item);
+      return $retValue;
     }
 
     // ---------------
@@ -84,19 +97,6 @@
         $key = strval($item->BeginIndex);
       }
       $retValue = $this->AddItem($item, $key);
-      return $retValue;
-    }
-
-    /// <summary>Creates an object clone.</summary>
-    /// <returns>The cloned item.</returns>
-    public function Clone() : self
-    {
-      $retValue = new self();
-      foreach ($this->Items as $key => $item)
-      {
-        $retValue->AddObject($item);
-      }
-      unset($item);
       return $retValue;
     }
 
