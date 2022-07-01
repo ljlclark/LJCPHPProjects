@@ -257,7 +257,7 @@
     }
 
     /// <summary>Creates a Clone of the current object.</summary>
-    /// <include path='items/Clone/*' file='../../CommonDoc/PHPDataClass.xml'/>
+    /// <include path='items/Clone/*' file='../CommonDoc/PHPDataClass.xml'/>
     public function Clone() : self
     {
       $retValue = new self();
@@ -374,7 +374,7 @@
     }
 
     /// <summary>Creates a Clone of the current object.</summary>
-    /// <include path='items/Clone/*' file='../../CommonDoc/PHPDataClass.xml'/>
+    /// <include path='items/Clone/*' file='../CommonDoc/PHPDataClass.xml'/>
     public function Clone() : self
     {
       $retValue = new self();
@@ -621,7 +621,7 @@
     }
 
     // Creates a Clone of the current object.
-    /// <include path='items/Clone/*' file='../../CommonDoc/PHPDataClass.xml'/>
+    /// <include path='items/Clone/*' file='../CommonDoc/PHPDataClass.xml'/>
     public function Clone() : self
     {
       $retValue = new self();
@@ -660,7 +660,7 @@
   class LJCJoins extends LJCCollectionBase
   {
     // Creates a Clone of the current object.
-    /// <include path='items/Clone/*' file='../../CommonDoc/PHPDataClass.xml.xml'/>
+    /// <include path='items/Clone/*' file='../CommonDoc/PHPDataClass.xml'/>
     public function Clone() : self
     {
       $retValue = new self();
@@ -729,7 +729,7 @@
     }
 
     // Creates a Clone of the current object.
-    /// <include path='items/Clone/*' file='../../CommonDoc/PHPDataClass.xml.xml'/>
+    /// <include path='items/Clone/*' file='../CommonDoc/PHPDataClass.xml'/>
     public function Clone() : self
     {
       $retValue = new self();
@@ -765,7 +765,7 @@
   class LJCJoinOns extends LJCCollectionBase
   {
     // Creates a Clone of the current object.
-    /// <include path='items/Clone/*' file='../../CommonDoc/PHPDataClass.xml.xml'/>
+    /// <include path='items/Clone/*' file='../CommonDoc/PHPDataClass.xml'/>
     public function Clone() : self
     {
       $retValue = new self();

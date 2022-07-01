@@ -23,7 +23,7 @@
     }
 
     // Creates a Clone of the current object.
-    /// <include path='items/Clone/*' file='../../CommonDoc/PHPDataClass.xml'/>
+    /// <include path='items/Clone/*' file='../CommonDoc/PHPDataClass.xml'/>
     public function Clone() : self
     {
       $retValue = new self($this->BeginIndex, $this->EndIndex);
