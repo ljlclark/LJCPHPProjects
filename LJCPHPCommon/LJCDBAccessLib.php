@@ -463,7 +463,8 @@
     /// <param name="$xmlFileSpec"></param>
     public function __construct()
     {
-      $this->DebugWriter = new LJCDebugWriter("DbColumnsXML");
+      $this->DebugWriter = null;
+      //$this->DebugWriter = new LJCDebugWriter("DbColumnsXML");
     }
 
     /// <summary>Deserializes the XML file.</summary>
@@ -600,7 +601,10 @@
     // Output the debug value.
     private function Debug(string $text, bool $addLine = true) : void
     {
-      $this->DebugWriter->Debug($text, $addLine);
+      if (isset($this->DebugWriter))
+      {
+        $this->DebugWriter->Debug($text, $addLine);
+      }
     }
   }  // DbColumnsXML
 

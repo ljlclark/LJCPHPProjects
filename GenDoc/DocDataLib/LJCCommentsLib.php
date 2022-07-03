@@ -49,7 +49,8 @@
       $this->SetCommentTags();
       $this->IncludeFile = new LJCInclude();
 
-      $this->DebugWriter = new LJCDebugWriter("CommentsLib");
+      $this->DebugWriter = null;
+      //$this->DebugWriter = new LJCDebugWriter("CommentsLib");
     }
 
     // ---------------
@@ -376,7 +377,10 @@
     // Writes the debug value.
     private function Debug(string $text, bool $addLine = true) : void
     {
-      $this->DebugWriter->Debug($text, $addLine);
+      if (isset($this->DebugWriter))
+      {
+        $this->DebugWriter->Debug($text, $addLine);
+      }
     }
 
     // Writes an output line.

@@ -1,5 +1,6 @@
 if exist "Debug" goto continue
-mkdir "Debug"
+rem mkdir "Debug"
 :continue
-PHP.exe GenCodeDocFiles.php > Debug/GenCodeDocFiles.txt
+rem PHP.exe GenCodeDocFiles.php > Debug/GenCodeDocFiles.txt
+PHP.exe GenCodeDocFiles.php
 

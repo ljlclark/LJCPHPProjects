@@ -24,7 +24,8 @@
       $this->ActiveSections = [];
       $this->CurrentSection = null;
 
-      $this->DebugWriter = new LJCDebugWriter("GenData");
+      $this->DebugWriter = null;
+      //$this->DebugWriter = new LJCDebugWriter("GenData");
     }  // construct()
 
     // ---------------
@@ -69,10 +70,6 @@
         }
         if ($writeLine)
         {
-          $text = rtrim($this->Line);
-          $this->Debug("-$text");
-
-          //LJCWriter::Write($this->Line);
           $builder->Append($this->Line);
         }
       }
@@ -116,7 +113,6 @@
 
               // Push active section.
               $this->ActiveSections[] = $this->CurrentSection;
-              //$this->ShowActive();
             }
             $this->Line = null;
             break;
@@ -134,7 +130,6 @@
                 if ($itemIndex >= $count - 1)
                 {
                   $section = array_pop($this->ActiveSections);
-                  //$this->ShowActive();
 
                   $activeSectionsCount = count($this->ActiveSections);
                   $this->CurrentSection->Begin = null;
@@ -169,8 +164,6 @@
       switch (strtolower($directive->Type))
       {
         case "#ifbegin":
-          $this->Debug("");
-          $this->Debug("IfBegin:");
           $this->IfOperation = "else";
           if ($directive->Value != null)
           {
@@ -184,16 +177,13 @@
             {
               $name = $replacement->Name;
               $value = $replacement->Value;
-              $this->Debug("Replacement: $name, $value");
             }
 
-            $this->Debug("Directive: $directive->Type, $directive->Name, $directive->Value");
             if ("notnull" == strtolower($directive->Value))
             {
               if (null == $value)
               {
                 $doElse = true;
-                $this->Debug("Replacement Value: IsNull");
               }
             }
             else
@@ -202,18 +192,12 @@
                 || $directive->Value != $value)
               {
                 $doElse = true;
-                $this->Debug("Directive Value != Replacement Value:");
               }
             }
             if ($doElse)
             {
               $this->IfOperation = "else";
               $retValue = false;
-              $this->Debug("doElse:");
-            }
-            else
-            {
-              $this->Debug("doIf:");
             }
           }
           break;
@@ -229,8 +213,6 @@
         case "#ifend":
           $this->IfOperation = null;
           $retValue = true;
-          $this->Debug("IfEnd:");
-          $this->Debug("");
           break;
       }
       return $retValue;
@@ -319,7 +301,6 @@
               }
 
               $this->DoOutput = $this->ProcessIfDirectives($directive, $saveLine);
-              $this->Debug("ProcessSection() DoOutput: $this->DoOutput");
 
               // Set to beginning of Current Section if Section End
               // and more Items.
@@ -337,10 +318,6 @@
             {
               $this->ProcessReplacements($item);
             }
-            $text = rtrim($this->Line);
-            $this->Debug("-$text");
-
-            //LJCWriter::Write($this->Line);
             $builder->Append($this->Line);
           }
         }  // while(true)
@@ -413,7 +390,10 @@
     // Writes the debug value.
     private function Debug(string $text, bool $addLine = true) : void
     {
-      $this->DebugWriter->Debug($text, $addLine);
+      if (isset($this->DebugWriter))
+      {
+        $this->DebugWriter->Debug($text, $addLine);
+      }
     }
 
     // Indicates if it is a SectionBegin or SectionEnd directive.
@@ -431,19 +411,6 @@
         }
       }
       return $retValue;
-    }
-
-    // Show the Active Sections.
-    private function ShowActive() : void
-    {
-      if (is_array($this->ActiveSections)
-        && count($this->ActiveSections) > 0)
-      {
-        foreach ($this->ActiveSections as $activeSection)
-        {
-          $this->Debug("Active Section: $activeSection->Name");
-        }
-      }
     }
 
     // ---------------

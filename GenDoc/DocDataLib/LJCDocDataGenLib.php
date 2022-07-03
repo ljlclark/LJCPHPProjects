@@ -127,7 +127,6 @@
       $this->DebugClass = "LJCDocDataGen";
       $this->ClassName = null;
       $this->Comments = new LJCComments();
-      $this->DebugWriter = null;
       $this->DocDataFile = new LJCDocDataFile("");
       $this->FunctionName= null;
       $this->InputStream = null;
@@ -135,7 +134,8 @@
       $this->Line = null;
       $this->PropertyName = null;
 
-      $this->DebugWriter = new LJCDebugWriter("DocDataGen");
+      $this->DebugWriter = null;
+      //$this->DebugWriter = new LJCDebugWriter("DocDataGen");
     }
 
     // ---------------
@@ -158,8 +158,6 @@
         $outputFileSpec = $this->DocOutputFileSpec($codeFileSpec, $outputPath);
         LJCWriter::WriteFile($retValue, $outputFileSpec);
       }
-      // Testing
-      //$this->Output("$loc retValue", $retValue);
       return $retValue;
     }
 
@@ -324,13 +322,6 @@
       $class->Remarks = $this->Comments->Remarks;
       $class->Code = $this->Comments->Code;
 
-      // Testing
-      $this->Output("**");
-      $this->Output("$loc summary", $class->Summary);
-      //$this->Output("Syntax", $class->Syntax);
-      //$this->Output("Remarks", $class->Remarks);
-      //$this->Output("Code", $class->Code);
-
       $this->Comments->ClearComments();
     }
 
@@ -359,14 +350,6 @@
       $method->Remarks = $this->Comments->Remarks;
       $method->Code = $this->Comments->Code;
 
-      // Testing
-      $this->Output("**");
-      $this->Output("$loc summary", $summary);
-      //$this->Output("Syntax", $method->Syntax);
-      //$this->Output("Returns", $returns);
-      //$this->Output("Remarks", $method->Remarks);
-      //$this->Output("Code", $method->Code);
-
       $this->Comments->ClearComments();
     }
 
@@ -380,8 +363,6 @@
         case "class":
           // class name
           $this->ClassName = $tokens[1];
-          // Testing
-          $this->Output("ClassName", $this->ClassName);
           $this->ProcessClass();
           break;
 
@@ -392,8 +373,6 @@
           if ($name != null)
           {
             $this->PropertyName = $name;
-            // Testing
-            $this->Output("PropertyName", $this->PropertyName);
             $this->ProcessProperty();
           }
           else
@@ -416,8 +395,6 @@
 
       if ($isFunction)
       {
-        // Testing
-        $this->Output("FunctionName", $this->FunctionName);
         $this->ProcessFunction();
       }
     }  // ProcessItem()
@@ -430,11 +407,6 @@
       $docDataFile = $this->DocDataFile;
       $docDataFile->Summary = $this->Comments->Summary;
       $docDataFile->Remarks = $this->Comments->Remarks;
-
-      // Testing
-      $this->Output("**");
-      $this->Output("$loc summary", $docDataFile->Summary);
-      //$this->Output("Remarks", $docDataFile->Remarks);
 
       $this->Comments->ClearComments();
     }
@@ -460,13 +432,6 @@
 
       $property->Syntax = trim($this->Line);
       $property->Remarks = $this->Comments->Remarks;
-
-      // Testing
-      $this->Output("**");
-      $this->Output("$loc summary", $summary);
-      //$this->Output("Syntax", $property->Syntax);
-      //$this->Output("Returns", $returns);
-      //$this->Output("Remarks", $property->Remarks);
 
       $this->Comments->ClearComments();
     }
@@ -497,7 +462,10 @@
     // Writes the debug value.
     private function Debug(string $text, bool $addLine = true) : void
     {
-      $this->DebugWriter->Debug($text, $addLine);
+      if (isset($this->DebugWriter))
+      {
+        $this->DebugWriter->Debug($text, $addLine);
+      }
     }
 
     // Writes an output line.

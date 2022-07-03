@@ -131,12 +131,8 @@
         $className = $tableName;
       }
 
-      // Iterator Change
-      //$sections = [];
       $sections = new LJCSections();
       $section = new LJCSection("Class");
-      // Iterator Change
-      //$sections[$section->Name] = $section;
       $sections->Add($section, $section->Name);
       $Item = new LJCItem($section->Name);
       $section->Items[] = $Item;
@@ -144,8 +140,6 @@
       self::AddReplacement($Item, "_TableName_", $tableName);
 
       $section = new LJCSection("Properties");
-      // Iterator Change
-      //$sections[$section->Name] = $section;
       $sections->Add($section, $section->Name);
       foreach ($dbColumns as $dbColumn)
       {

@@ -186,21 +186,11 @@
           $value = LJCGenDataXML::ItemEnd($indent);
           $builder->Append($value);
           $indent--;
-
-          // Section End Lines
-          //$indent--;
-          //$value = LJCGenDataXML::SectionEnd($indent);
-          //LJCWriter::WriteLine("LJCGenDataLib-LJCGenDataGen.CreateLibClassString()"
-          //	. " SectionEnd:\r\n $value");
-          //$builder->Append($value);
-          //$retValue = $builder->ToString();
         }
 
         // Section End Lines
         $indent--;
         $value = LJCGenDataXML::SectionEnd($indent);
-        //LJCWriter::WriteLine("LJCGenDataLib-LJCGenDataGen.CreateLibClassString()"
-        //	. " SectionEnd:\r\n $value");
         $builder->Append($value);
         $retValue = $builder->ToString();
       }
