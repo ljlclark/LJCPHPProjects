@@ -4,17 +4,17 @@ with C and some exposure to C++; my coding is heavily influenced by strongly typ
 and Camel case names. To help keep things familiar for me it will be noticed that much of this influence has been brought forward
 to my code in PHP.
 
-## GenDoc
+### GenDoc
 A technical code HTML documentation generator.
 
 One of my first projects was to write a CodeDoc generator in PHP to read my PHP files and generate CodeDoc HTML. These CodeDoc
 pages are found in the WebSites repository, folder CodeDoc/LJCPHPCodeDoc. Much of the internal code XML Documentation syntax was
 borrowed from C#.
 
-## GenTextLib
+### GenTextLib
 A generic template driven code or text generator.
 
-## LJCPHPCommon
+### LJCPHPCommon
 Some classes can be used in multiple PHP projects. The following are the PHP files that contain these classes.
 
 ###### LJCCommonLib.php
