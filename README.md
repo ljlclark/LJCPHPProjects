@@ -4,33 +4,33 @@ with C and some exposure to C++; my coding is heavily influenced by strongly typ
 and Camel case names. To help keep things familiar for me it will be noticed that much of this influence has been brought forward
 to my code in PHP.
 
-##GenDoc
+## GenDoc
 A technical code HTML documentation generator.
 
 One of my first projects was to write a CodeDoc generator in PHP to read my PHP files and generate CodeDoc HTML. These CodeDoc
 pages are found in the WebSites repository, folder CodeDoc/LJCPHPCodeDoc. Much of the internal code XML Documentation syntax was
 borrowed from C#.
 
-##GenTextLib
+## GenTextLib
 A generic template driven code or text generator.
 
-##LJCPHPCommon
+## LJCPHPCommon
 Some classes can be used in multiple PHP projects. The following are the PHP files that contain these classes.
 
-######LJCCommonLib.php
+###### LJCCommonLib.php
 There are certain functions that are used in multiple projects. These are coded as static functions in LJCCommonLib.
 
-######LJCDbAccessLib.php
+###### LJCDbAccessLib.php
 The PDO Database Access functions are encapsulated in class LJCDbAccess.
 
-######LJCDataManagerLib.php
+###### LJCDataManagerLib.php
 A message based Data Access approach is encapsulated in class LJCDataManager. The LJCDataManager class provides a higher level of
 abstraction on top of the LJCDbAccess class. It does not require the developer to create SQL statements. Instead the developer
 can use strongly typed DataObjects, KeyColumn definitions, Join definitions and Included PropertyNames arrays to interact with
 the database.
 
-######LJCCollectionLib.php
+###### LJCCollectionLib.php
 A base class that can be used to extend (be inherited by) another class to represent a strongly-typed collection of objects.
 
-######LJCTextLib.php
+###### LJCTextLib.php
 Code for writing output to a file or stdout.
