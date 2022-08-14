@@ -1,0 +1,62 @@
+﻿/* Syntax.css */
+
+/* Type Selectors */
+
+/* Type/Class Selectors */
+
+/* Class Selectors */
+.attrib {
+	color: red;
+}
+
+.comment {
+	color: green;
+}
+
+.commonType {
+	color: blue;
+}
+
+.data {
+	color: blue;
+}
+
+.keyWord {
+	color: blue;
+}
+
+.libType {
+	color: lightseagreen;
+}
+
+.ltgt {
+	color: blue;
+}
+
+.modifier {
+	color: blue;
+}
+
+.name {
+	color: brown;
+}
+
+.pad1 {
+	padding-left: 14px;
+}
+
+.pad2 {
+	padding-left: 28px;
+}
+
+.refType {
+	color: blue;
+}
+
+.userType{
+	color: lightseagreen;
+}
+
+.xmlComment {
+	color: grey;
+}

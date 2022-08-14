@@ -1,0 +1,63 @@
+/* SideBar.css */
+
+/* Type Selectors */
+body {
+  height: 100%;
+  margin: 0;
+}
+
+html {
+  height: 100%;
+}
+
+ul {
+  list-style-type: none;
+  padding-left: 15px;
+}
+
+/* Class Selectors */
+.navFirst {
+  padding-top: 7px;
+}
+
+.navGroup {
+  padding-bottom: 4px;
+}
+
+.navItem {
+  padding-bottom: 3px;
+  padding-top: 2px;
+}
+
+.navItemGroup {
+  margin-top: 3px;
+}
+
+/* ID Selectors */
+#content {
+  display: inline-block;
+  height: 100%;
+  overflow: hidden;
+  vertical-align: top;
+  width: 80%;
+}
+
+#contentFrame {
+  border: none;
+  height: 100%;
+  width: 100%;
+}
+
+#sidebar {
+  background-color: lightsteelblue;
+  display: inline-block;
+  height: 100%;
+  overflow: auto;
+  vertical-align: top;
+  width: 20%;
+}
+
+  /* Combined Selectors */
+  #sidebar .navGroup:hover, .navItemGroup:hover, .navItem:hover {
+    background-color: aliceblue;
+  }
