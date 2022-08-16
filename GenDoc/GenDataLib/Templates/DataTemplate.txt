@@ -1,6 +1,5 @@
 <?php
-	// Copyright (c) Lester J. Clark 2022 - All Rights Reserved
-
+	// DataTemplate.txt
 	// #SectionBegin Class
 	// #Value _ClassName_
 	// #Value _TableName_
