@@ -1,5 +1,4 @@
 <?php
-  // Copyright (c) Lester J. Clark 2022 - All Rights Reserved
   // ParamCommentLib.php
   declare(strict_types=1);
 

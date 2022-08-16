@@ -1,4 +1,3 @@
-Copyright (c) Lester J. Clark 2022 - All Rights Reserved
 ReadMeGenCodeDoc.txt
 
 The project contains classes to generate HTML files for specific PHP Source

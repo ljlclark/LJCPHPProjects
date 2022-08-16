@@ -1,5 +1,4 @@
 <?php
-  // Copyright (c) Lester J. Clark 2022 - All Rights Reserved
   // LJCGenDataGenLib.php
   declare(strict_types=1);
   $devPath = "c:/Users/Les/Documents/Visual Studio 2022/LJCPHPProjects";

@@ -1,4 +1,3 @@
-Copyright (c) Lester J. Clark 2022 - All Rights Reserved
 ReadMeGenDataLib.txt
 
 This project contains classes to generate GenData XML and CodeDoc HTML files.

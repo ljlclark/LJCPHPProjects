@@ -1,4 +1,3 @@
-rem Copyright (c) Lester J. Clark 2022 - All Rights Reserved
 echo off
 rem ** ReleaseDocDataLib.cmd
 rem ** There must be no space on either side of "=".

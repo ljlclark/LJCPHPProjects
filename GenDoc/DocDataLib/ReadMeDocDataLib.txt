@@ -1,4 +1,3 @@
-Copyright (c) Lester J. Clark 2022 - All Rights Reserved
 ReadMeDocDataLib.txt
 
 This project contains classes to generate DocData XML.

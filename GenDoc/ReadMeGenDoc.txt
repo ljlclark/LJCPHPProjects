@@ -1,4 +1,3 @@
-Copyright (c) Lester J. Clark 2022 - All Rights Reserved
 ReadMeGenDoc.txt
 
 The GenDoc project group has three projects:
