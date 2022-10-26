@@ -4,29 +4,3 @@ Clark
 Cherrymae
 A
 Clark
-xmlString: <?xml version="1.0"?>
-	<!-- Copyright (c) Lester J. Clark 2022 - All Rights Reserved -->
-<DbColumns xmlns:xsd='http://www.w3.org/2001/XMLSchema'
-  xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'>
-	<DbColumn>
-		<ColumnName>FirstName</ColumnName>
-		<DataTypeName>string</DataTypeName>
-		<PropertyName>FirstName</PropertyName>
-		<WhereBoolOperator>and</WhereBoolOperator>
-		<WhereCompareOperator>=</WhereCompareOperator>
-	</DbColumn>
-	<DbColumn>
-		<ColumnName>MiddleInitial</ColumnName>
-		<DataTypeName>string</DataTypeName>
-		<PropertyName>MiddleInitial</PropertyName>
-		<WhereBoolOperator>and</WhereBoolOperator>
-		<WhereCompareOperator>=</WhereCompareOperator>
-	</DbColumn>
-	<DbColumn>
-		<ColumnName>LastName</ColumnName>
-		<DataTypeName>string</DataTypeName>
-		<PropertyName>LastName</PropertyName>
-		<WhereBoolOperator>and</WhereBoolOperator>
-		<WhereCompareOperator>=</WhereCompareOperator>
-	</DbColumn>
-</DbColumns>

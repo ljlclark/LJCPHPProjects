@@ -1,4 +1,5 @@
 ﻿<!DOCTYPE html>
+<!-- Copyright(c) Lester J. Clark 2022 - All Rights Reserved -->
 <!-- #SectionBegin Main -->
 <!-- #Value _LibName_ -->
 <!-- #Value _ProjectListFile_ -->
@@ -12,46 +13,50 @@
   <meta name="author" content="Lester J. Clark" />
   <meta name="keywords" content="LJCCodeDoc, CodeDoc, File, Library, PHP" />
   <meta name="description" content="PHP File/Library code documentation." />
-  <meta name="viewport" content="width=device-width" initial-scale=1 />
+  <meta name="viewport" content="width=device-width" , initial-scale=1 />
   <link rel='stylesheet' type='text/css' href='../CSS/CodeDoc.css' />
 </head>
-<body>
-  <br />
-  <div class="PathText">
-    / <a href="../_ProjectListFile_#_LibName_">LJCPHPCodeDoc</a>
-    / _LibName_
+<body style="background: #F0F5FF">
+  <div style="margin-left: 15px; margin-right: 10px">
+    <br />
+    <div class="PathText">
+      / <a href="../_ProjectListFile_#_LibName_">LJCPHPCodeDoc</a>
+      / _LibName_
+    </div>
+    <br />
+    <div id='Header'>
+      <div id='Title'>_LibName_.php</div>
+    </div>
+    <br />
+    <div class='Text'>
+      _FileSummary_
+    </div>
+    <!-- #IfBegin _Remarks_ NotNull -->
+    <br />
+    <div class='Text'>Remarks</div>
+    <br />
+    <div class='Text'>
+      _Remarks_
+    </div>
+    <!-- #IfEnd _Remarks_ NotNull -->
+    <br />
+    <div id='Title'>Classes<br></div>
+    <table class='ListTable'>
+      <!-- #SectionBegin Class -->
+      <!-- #Value _ClassName_ -->
+      <!-- #Value _ClassSummary_ -->
+      <tr>
+        <td class='ListTable' width='25%'><a href='_ClassName_/_ClassName_.html'>_ClassName_</a></td>
+        <td class='ListTable'>
+          _ClassSummary_
+        </td>
+      </tr>
+      <!-- #SectionEnd Class -->
+    </table>
+    <div class='Text'>_ItemCount_ Item(s)</div>
+    <br />
+    <div class='SmallText'>Copyright &copy; Lester J. Clark 2022 - All Rights Reserved</div>
+    <!-- #SectionEnd Main -->
   </div>
-  <br />
-  <div id='Header'>
-    <div id='Title'>_LibName_.php</div>
-  </div>
-  <br />
-  <div class='Text'>
-    _FileSummary_
-  </div>
-  <!-- #IfBegin _Remarks_ NotNull -->
-  <br />
-  <div class='Text'>Remarks</div>
-  <br />
-  <div class='Text'>
-    _Remarks_
-  </div>
-  <!-- #IfEnd _Remarks_ NotNull -->
-  <br />
-  <div id='Title'>Classes<br></div>
-  <table class='ListTable'>
-    <!-- #SectionBegin Class -->
-    <!-- #Value _ClassName_ -->
-    <!-- #Value _ClassSummary_ -->
-    <tr>
-      <td class='ListTable' width='25%'><a href='_ClassName_/_ClassName_.html'>_ClassName_</a></td>
-      <td class='ListTable'>
-        _ClassSummary_
-      </td>
-    </tr>
-    <!-- #SectionEnd Class -->
-  </table>
-  <div class='Text'>_ItemCount_ Item(s)</div>
-  <!-- #SectionEnd Main -->
 </body>
 </html>

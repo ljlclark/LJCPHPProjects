@@ -70,6 +70,13 @@
       }
     }
 
+    // Encode to HTML entities to display HTML.
+    public static function Display(string $text) : string
+    {
+      $retValue = htmlspecialchars($text);
+      return $retValue;
+    }
+
     /// <summary>Gets the current builder string length.</summary>
     public function Length() : int
     {

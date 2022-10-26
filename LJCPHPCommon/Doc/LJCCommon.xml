@@ -4,7 +4,7 @@
 <items>
 	<!-- Static Functions -->
 	<StrPos>
-		<summary>Gets the first index for the search value.</summary>
+		<summary>Gets the first index for the search value. (E)</summary>
 		<param name="$text">The text to be searched.</param>
 		<param name="$find">The search value.</param>
 		<param name="$start">The search start index.</param>
@@ -29,7 +29,7 @@
 		</code>
 	</StrPos>
 	<StrRPos>
-		<summary>Gets the last index for the search value.</summary>
+		<summary>Gets the last index for the search value. (E)</summary>
 		<param name="$text">The text to be searched.</param>
 		<param name="$find">The search value.</param>
 		<param name="$start">The search start index.</param>
@@ -54,7 +54,7 @@
 		</code>
 	</StrRPos>
 	<GetDebugFileName>
-		<summary>Gets the Debug file name.</summary>
+		<summary>Gets the Debug file name. (E)</summary>
 		<param name="$folder">The folder name.</param>
 		<param name="$fileName">The file name.</param>
 		<returns>The Debug file spec.</returns>
@@ -72,7 +72,7 @@
 		</code>
 	</GetDebugFileName>
 	<GetDelimitedString>
-		<summary>Gets the string between the delimiters.</summary>
+		<summary>Gets the string between the delimiters. (E)</summary>
 		<param name="$text">The text to be parsed.</param>
 		<param name="$beginDelimiter">The beginning delimiter.</param>
 		<param name="$endDelimiter">The ending delimiter.</param>
@@ -95,7 +95,7 @@
 		</code>
 	</GetDelimitedString>
 	<GetFileName>
-		<summary>Gets the FileName from the file spec.</summary>
+		<summary>Gets the FileName from the file spec. (E)</summary>
 		<param name="$fileSpec">The file specification.</param>
 		<returns>The file name.</returns>
 		<remarks>
@@ -113,7 +113,7 @@
 		</code>
 	</GetFileName>
 	<GetFileSpecPath>
-		<summary>Gets the Path from the file spec.</summary>
+		<summary>Gets the Path from the file spec. (E)</summary>
 		<param name="$fileSpec">The file specification.</param>
 		<returns>The file path.</returns>
 		<remarks>
@@ -128,7 +128,7 @@
 		</code>
 	</GetFileSpecPath>
 	<GetIndexedDebugFileName>
-		<summary>Gets the indexed Debug file name.</summary>
+		<summary>Gets the indexed Debug file name. (E)</summary>
 		<param name="$folder">The folder name.</param>
 		<param name="$fileName">The file name.</param>
 		<returns>The indexed Debug file spec.</returns>
@@ -152,7 +152,7 @@
 		</code>
 	</GetIndexedDebugFileName>
 	<Scrub>
-		<summary>Returns a scrubbed external value.</summary>
+		<summary>Returns a scrubbed external value. (E)</summary>
 		<param name="$text">The text to be scrubbed.</param>
 		<returns>The scrubbed value.</returns>
 		<remarks>
@@ -168,7 +168,7 @@
 		</code>
 	</Scrub>
 	<SetSessionValue>
-		<summary>Assigns a session value and returns the value.</summary>
+		<summary>Assigns a session value and returns the value. (E)</summary>
 		<param name="$name">The session value name.</param>
 		<param name="$value">The session value.</param>
 		<returns>The session value.</returns>
