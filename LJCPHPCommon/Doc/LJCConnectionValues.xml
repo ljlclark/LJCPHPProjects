@@ -9,15 +9,14 @@
 		<param name="$dbName">The Database name.</param>
 		<param name="$userID">The user name.</param>
 		<param name="$password">The user Password.</param>
-		<code>
-			$webCommonPath = "c:/inetpub/wwwroot/LJCPHPCommon";
-			require_once "$webCommonPath/LJCDBAccessLib.php";
+		<code>$webCommonPath = "c:/inetpub/wwwroot/LJCPHPCommon";
+		 require_once "$webCommonPath/LJCDBAccessLib.php";
 
-			$database = "DatabaseName";
-			$userID = "UserID";
-			$password = "Password":
-			$connectionValues = new LJCConnectionValues("localhost", $database, $userID
-				, $password);
+		 $database = "DatabaseName";
+		 $userID = "UserID";
+		 $password = "Password":
+		 $connectionValues = new LJCConnectionValues("localhost", $database, $userID
+			 , $password);
 		</code>
 	</construct>
 </items>

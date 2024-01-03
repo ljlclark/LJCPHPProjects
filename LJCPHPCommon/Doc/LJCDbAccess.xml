@@ -22,18 +22,17 @@
 		<remarks>
 			Returns null if the element does not exist.
 		</remarks>
-		<code>
-			$webCommonPath = "c:/inetpub/wwwroot/LJCPHPCommon";
-			require_once "$webCommonPath/LJCDBAccessLib.php";
+		<code>$webCommonPath = "c:/inetpub/wwwroot/LJCPHPCommon";
+		 require_once "$webCommonPath/LJCDBAccessLib.php";
 
-			// See constructor for how to create $connectionValues.
-			$dbAccess = new LJCDbAccess($connectionValues);
+		 // See constructor for how to create $connectionValues.
+		 $dbAccess = new LJCDbAccess($connectionValues);
 
-			$tableName = "TableName";
-			$sql = "select ID, Name from $tableName where ID = 1";
-			$row = $dbAccess->Retrieve($sql);
-			$id = LJCDbAccess::GetValue($row, "ID");
-			$name = LJCDbAccess::GetValue($row, "Name");
+		 $tableName = "TableName";
+		 $sql = "select ID, Name from $tableName where ID = 1";
+		 $row = $dbAccess->Retrieve($sql);
+		 $id = LJCDbAccess::GetValue($row, "ID");
+		 $name = LJCDbAccess::GetValue($row, "Name");
 		</code>
 	</GetValue>
 
@@ -41,16 +40,15 @@
 	<construct>
 		<summary>Initializes a class instance.</summary>
 		<param name="$connectionValues">The Connection values.</param>
-		<code>
-			$webCommonPath = "c:/inetpub/wwwroot/LJCPHPCommon";
-			require_once "$webCommonPath/LJCDBAccessLib.php";
+		<code>$webCommonPath = "c:/inetpub/wwwroot/LJCPHPCommon";
+		 require_once "$webCommonPath/LJCDBAccessLib.php";
 
-			$database = "DatabaseName";
-			$userID = "UserID";
-			$password = "Password":
-			$connectionValues = new LJCConnectionValues("localhost", $database, $userID
-				, $password);
-			$dbAccess = new LJCDbAccess($connectionValues);
+		 $database = "DatabaseName";
+		 $userID = "UserID";
+		 $password = "Password":
+		 $connectionValues = new LJCConnectionValues("localhost", $database, $userID
+			 , $password);
+		 $dbAccess = new LJCDbAccess($connectionValues);
 		</code>
 	</construct>
 
@@ -59,48 +57,45 @@
 		<summary>Executes a non-query sql statement.</summary>
 		<param name="$sql">The SQL statement.</param>
 		<returns>The count of affected records.</returns>
-		<code>
-			$webCommonPath = "c:/inetpub/wwwroot/LJCPHPCommon";
-			require_once "$webCommonPath/LJCDBAccessLib.php";
+		<code>$webCommonPath = "c:/inetpub/wwwroot/LJCPHPCommon";
+		 require_once "$webCommonPath/LJCDBAccessLib.php";
 
-			// See constructor for how to create $connectionValues.
-			$dbAccess = new LJCDbAccess($connectionValues);
+		 // See constructor for how to create $connectionValues.
+		 $dbAccess = new LJCDbAccess($connectionValues);
 
-			$tableName = "TableName";
-			$sql = "delete from $tableName where ID = 1";
-			$affectedCount = $dbAccess->Execute($sql);
+		 $tableName = "TableName";
+		 $sql = "delete from $tableName where ID = 1";
+		 $affectedCount = $dbAccess->Execute($sql);
 		</code>
 	</Execute>
 	<Load>
 		<summary>Loads the records for the provided SQL statement.</summary>
 		<param name="$sql">The SQL statement.</param>
 		<returns>An array of data records.</returns>
-		<code>
-			$webCommonPath = "c:/inetpub/wwwroot/LJCPHPCommon";
-			require_once "$webCommonPath/LJCDBAccessLib.php";
+		<code>$webCommonPath = "c:/inetpub/wwwroot/LJCPHPCommon";
+		 require_once "$webCommonPath/LJCDBAccessLib.php";
 
-			// See constructor for how to create $connectionValues.
-			$dbAccess = new LJCDbAccess($connectionValues);
+		 // See constructor for how to create $connectionValues.
+		 $dbAccess = new LJCDbAccess($connectionValues);
 
-			$tableName = "TableName";
-			$sql = "select * from $tableName";
-			$rows = $dbAccess->Load($sql);
+		 $tableName = "TableName";
+		 $sql = "select * from $tableName";
+		 $rows = $dbAccess->Load($sql);
 		</code>
 	</Load>
 	<Retrieve>
 		<summary>Retrieves a record for the provided SQL statement.</summary>
 		<param name="$sql">The SQL statement.</param>
 		<returns>An array of record columns.</returns>
-		<code>
-			$webCommonPath = "c:/inetpub/wwwroot/LJCPHPCommon";
-			require_once "$webCommonPath/LJCDBAccessLib.php";
+		<code>$webCommonPath = "c:/inetpub/wwwroot/LJCPHPCommon";
+		 require_once "$webCommonPath/LJCDBAccessLib.php";
 
-			// See constructor for how to create $connectionValues.
-			$dbAccess = new LJCDbAccess($connectionValues);
+		 // See constructor for how to create $connectionValues.
+		 $dbAccess = new LJCDbAccess($connectionValues);
 
-			$tableName = "TableName";
-			$sql = "select * from $tableName where ID = 1";
-			$row = $dbAccess->Retrieve($sql);
+		 $tableName = "TableName";
+		 $sql = "select * from $tableName where ID = 1";
+		 $row = $dbAccess->Retrieve($sql);
 		</code>
 	</Retrieve>
 
@@ -108,18 +103,17 @@
 	<GetConnection>
 		<summary>Creates the PDO connection.</summary>
 		<returns>The PDO connection object.</returns>
-		<code>
-			$webCommonPath = "c:/inetpub/wwwroot/LJCPHPCommon";
-			require_once "$webCommonPath/LJCDBAccessLib.php";
+		<code>$webCommonPath = "c:/inetpub/wwwroot/LJCPHPCommon";
+		 require_once "$webCommonPath/LJCDBAccessLib.php";
 
-			// See constructor for how to create $connectionValues.
-			$dbAccess = new LJCDbAccess($connectionValues);
+		 // See constructor for how to create $connectionValues.
+		 $dbAccess = new LJCDbAccess($connectionValues);
 
-			$connection = $dbAccess->GetConnection();
-			if ($connection != null)
-			{
-				// Use connection to perform low level data access.
-			}
+		 $connection = $dbAccess->GetConnection();
+		 if ($connection != null)
+		 {
+			 // Use connection to perform low level data access.
+		 }
 		</code>
 	</GetConnection>
 	<LoadTableSchema>
@@ -127,19 +121,18 @@
 		<param name="$dbName">The Database name.</param>
 		<param name="$tableName">The Table name.</param>
 		<returns>A DbColumns collection of column definitions.</returns>
-		<code>
-			$webCommonPath = "c:/inetpub/wwwroot/LJCPHPCommon";
-			require_once "$webCommonPath/LJCDBAccessLib.php";
+		<code>$webCommonPath = "c:/inetpub/wwwroot/LJCPHPCommon";
+		 require_once "$webCommonPath/LJCDBAccessLib.php";
 
-			// See constructor for how to create $connectionValues.
-			$dbAccess = new LJCDbAccess($connectionValues);
+		 // See constructor for how to create $connectionValues.
+		 $dbAccess = new LJCDbAccess($connectionValues);
 
-			$tableName = "TableName";
-			$dbColumns = $dbAccess->LoadTableSchema($database, $tableName);
-			if (count($dbColumns) > 0)
-			{
-				// Use DbColumns data definitions.
-			}
+		 $tableName = "TableName";
+		 $dbColumns = $dbAccess->LoadTableSchema($database, $tableName);
+		 if (count($dbColumns) > 0)
+		 {
+			 // Use DbColumns data definitions.
+		 }
 		</code>
 	</LoadTableSchema>
 	<SetConnectionValues>
@@ -148,16 +141,15 @@
 		<param name="$dbName">The Database name.</param>
 		<param name="$userID">The user name.</param>
 		<param name="$password">The user Password.</param>
-		<code>
-			$webCommonPath = "c:/inetpub/wwwroot/LJCPHPCommon";
-			require_once "$webCommonPath/LJCDBAccessLib.php";
+		<code>$webCommonPath = "c:/inetpub/wwwroot/LJCPHPCommon";
+		 require_once "$webCommonPath/LJCDBAccessLib.php";
 
-			// See constructor for how to create $connectionValues.
-			$dbAccess = new LJCDbAccess($connectionValues);
+		 // See constructor for how to create $connectionValues.
+		 $dbAccess = new LJCDbAccess($connectionValues);
 
-			// Change some of the object properties.
-			$tableName = "NewTableName";
-			$dbAccess->SetConnectionValues($database, $tableName);
+		 // Change some of the object properties.
+		 $tableName = "NewTableName";
+		 $dbAccess->SetConnectionValues($database, $tableName);
 		</code>
 	</SetConnectionValues>
 

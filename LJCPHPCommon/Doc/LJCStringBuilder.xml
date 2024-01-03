@@ -8,16 +8,15 @@
 		<param name="$text">The text value.</param>
 		<param name="$indent">The number of tabs to add to the line beginning.</param>
 		<param name="$addBreak">Adds an HTML break before the cr/lf.</param>
-		<code>
-			$webCommonPath = "c:/inetpub/wwwroot/LJCPHPCommon";
-			require_once "$webCommonPath/LJCTextLib.php";
+		<code>$webCommonPath = "c:/inetpub/wwwroot/LJCPHPCommon";
+		 require_once "$webCommonPath/LJCTextLib.php";
 
-			$builder = new StringBuilder();
-			$builder->Append("First ");
-			$builder->Append("Name");
+		 $builder = new StringBuilder();
+		 $builder->Append("First ");
+		 $builder->Append("Name");
 
-			// $text = "First Name"
-			$text = $builder->ToString();
+		 // $text = "First Name"
+		 $text = $builder->ToString();
 		</code>
 	</Append>
 	<AppendLine>
@@ -25,18 +24,17 @@
 		<param name="$text">The text value.</param>
 		<param name="$indent">The number of tabs to add to the line beginning.</param>
 		<param name="$addBreak">Adds an HTML break before the cr/lf.</param>
-		<code>
-			$webCommonPath = "c:/inetpub/wwwroot/LJCPHPCommon";
-			require_once "$webCommonPath/LJCTextLib.php";
+		<code>$webCommonPath = "c:/inetpub/wwwroot/LJCPHPCommon";
+		 require_once "$webCommonPath/LJCTextLib.php";
 
-			$builder = new StringBuilder();
-			$builder->AppendLine("First");
-			$builder->AppendLine("Second", 1);
+		 $builder = new StringBuilder();
+		 $builder->AppendLine("First");
+		 $builder->AppendLine("Second", 1);
 
-			// $text =
-			// First
-			//   Second
-			$text = $builder->ToString();
+		 // $text =
+		 // First
+		 //   Second
+		 $text = $builder->ToString();
 		</code>
 	</AppendLine>
 	<AppendTags>
@@ -45,18 +43,17 @@
 		<param name="$text">The text value.</param>
 		<param name="$indent">The number of tabs to add to the line beginning.</param>
 		<param name="$addBreak">Adds an HTML break before the cr/lf.</param>
-		<code>
-			$webCommonPath = "c:/inetpub/wwwroot/LJCPHPCommon";
-			require_once "$webCommonPath/LJCTextLib.php";
+		<code>$webCommonPath = "c:/inetpub/wwwroot/LJCPHPCommon";
+		 require_once "$webCommonPath/LJCTextLib.php";
 
-			$builder = new StringBuilder();
-			$builder->AppendTags("First", "FirstValue", 0, true);
-			$builder->AppendTags("Second", "SecondValue", 1, true);
+		 $builder = new StringBuilder();
+		 $builder->AppendTags("First", "FirstValue", 0, true);
+		 $builder->AppendTags("Second", "SecondValue", 1, true);
 
-			// $text =
-			// &amp;lt;First&amp;gt;FirstValue&amp;lt;/First&amp;gt;&amp;lt;br /&amp;gt;
-			//   &amp;lt;Second&amp;gt;SecondValue&amp;lt;/Second&amp;gt;&amp;lt;br /&amp;gt;
-			$text = $builder->ToString();
+		 // $text =
+		 // &amp;lt;First&amp;gt;FirstValue&amp;lt;/First&amp;gt;&amp;lt;br /&amp;gt;
+		 //   &amp;lt;Second&amp;gt;SecondValue&amp;lt;/Second&amp;gt;&amp;lt;br /&amp;gt;
+		 $text = $builder->ToString();
 		</code>
 	</AppendTags>
 </items>

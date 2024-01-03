@@ -1,0 +1,70 @@
+/* Copyright(c) Lester J. Clark 2022 - All Rights Reserved */
+/* Menu.css */
+
+/* */
+div.clsMenuBar {
+	background-color: #87c7ff;
+	border-top: 1px #c8e8ff solid;
+	border-left: 1px #c8e8ff solid;
+	border-right: 1px #4480b8 solid;
+	border-bottom: 1px #4480b8 solid;
+}
+
+/* */
+table.clsMenuBarTable td {
+	padding: 0px 5px 2px 5px;
+	font-family: verdana;
+	font-size: 65%;
+	font-weight: bold;
+	color: black;
+	cursor: default;
+}
+
+/* */
+table td.clsMenuBarItem {
+	cursor: pointer;
+}
+
+/* */
+div.clsMenu {
+	position: absolute;
+	width: 130px;
+	padding: 5px 5px 5px 8px;
+	font-family: verdana;
+	font-size: 65%;
+	font-weight: bold;
+	color: black;
+	background-color: #87c7ff;
+	border-top: 1px #c8e8ff solid;
+	border-left: 1px #c8e8ff solid;
+	border-right: 1px #4480b8 solid;
+	border-bottom: 1px #4480b8 solid;
+	cursor: pointer;
+	visibility: hidden;
+}
+
+/* */
+.clsMenu A {
+	font-weight: bold;
+	text-decoration: none;
+	color: black;
+}
+
+	/* */
+	.clsMenu A:hover {
+		color: #fe4000;
+	}
+
+/* */
+.clsMenuItem {
+	border-top: 1px #87c7ff solid;
+	border-left: 1px #87c7ff solid;
+	border-right: 1px #87c7ff solid;
+	border-bottom: 1px #87c7ff solid;
+}
+
+/* */
+.clsMenuSep {
+	border-top: 1px #c8e8ff solid;
+	border-bottom: 1px #4480b8 solid;
+}

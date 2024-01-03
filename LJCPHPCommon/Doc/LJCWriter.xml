@@ -25,24 +25,22 @@
 			&lt;br /&gt;
 			It is often used for Debug output.
 		</remarks>
-		<code>
-			$webCommonPath = "c:/inetpub/wwwroot/LJCPHPCommon";
-			require_once "$webCommonPath/LJCTextLib.php";
+		<code>$webCommonPath = "c:/inetpub/wwwroot/LJCPHPCommon";
+			 require_once "$webCommonPath/LJCTextLib.php";
 
-			$text = "This value";
-			LJCWriter::Write("SomeMethod() text: $text");
+			 $text = "This value";
+			 LJCWriter::Write("SomeMethod() text: $text");
 		</code>
 	</Write>
 	<WriteFile>
 		<summary>Writes a text file.</summary>
 		<param name="$text">The text value.</param>
 		<param name="$fileSpec">The file specification.</param>
-		<code>
-			$webCommonPath = "c:/inetpub/wwwroot/LJCPHPCommon";
-			require_once "$webCommonPath/LJCTextLib.php";
+		<code>$webCommonPath = "c:/inetpub/wwwroot/LJCPHPCommon";
+			 require_once "$webCommonPath/LJCTextLib.php";
 
-			$text = "This is some text.";
-			LJCWriter::WriteFile($text, "Output.txt");
+			 $text = "This is some text.";
+			 LJCWriter::WriteFile($text, "Output.txt");
 		</code>
 	</WriteFile>
 	<WriteLine>
@@ -56,12 +54,11 @@
 			&lt;br /&gt;
 			It is often used for Debug output.
 		</remarks>
-		<code>
-			$webCommonPath = "c:/inetpub/wwwroot/LJCPHPCommon";
-			require_once "$webCommonPath/LJCTextLib.php";
+		<code>$webCommonPath = "c:/inetpub/wwwroot/LJCPHPCommon";
+			 require_once "$webCommonPath/LJCTextLib.php";
 
-			$text = "This value";
-			LJCWriter::WriteLine("SomeMethod() text: $text");
+			 $text = "This value";
+			 LJCWriter::WriteLine("SomeMethod() text: $text");
 		</code>
 	</WriteLine>
 
@@ -70,28 +67,26 @@
 		<summary>Writes file text with indents.</summary>
 		<param name="$text">The text value.</param>
 		<param name="$indentCount">The number of tabs to add to the line beginning.</param>
-		<code>
-			$webCommonPath = "c:/inetpub/wwwroot/LJCPHPCommon";
-			require_once "$webCommonPath/LJCTextLib.php";
+		<code>$webCommonPath = "c:/inetpub/wwwroot/LJCPHPCommon";
+			 require_once "$webCommonPath/LJCTextLib.php";
 
-			$stream = fopen($fileName, "w");
-			$writer = new LJCWriter($stream);
+			 $stream = fopen($fileName, "w");
+			 $writer = new LJCWriter($stream);
 
-			$writer->FWrite("This is some text.");
+			 $writer->FWrite("This is some text.");
 		</code>
 	</FWrite>
 	<FWriteLine>
 		<summary>Writes a file text line with indents.</summary>
 		<param name="$text">The text value.</param>
 		<param name="$indentCount">The number of tabs to add to the line beginning.</param>
-		<code>
-			$webCommonPath = "c:/inetpub/wwwroot/LJCPHPCommon";
-			require_once "$webCommonPath/LJCTextLib.php";
+		<code>$webCommonPath = "c:/inetpub/wwwroot/LJCPHPCommon";
+			 require_once "$webCommonPath/LJCTextLib.php";
 
-			$stream = fopen($fileName, "w");
-			$writer = new LJCWriter($stream);
+			 $stream = fopen($fileName, "w");
+			 $writer = new LJCWriter($stream);
 
-			$writer->FWriteLine("This is some text.");
+			 $writer->FWriteLine("This is some text.");
 		</code>
 	</FWriteLine>
 </items>
