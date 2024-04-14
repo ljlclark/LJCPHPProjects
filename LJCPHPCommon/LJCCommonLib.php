@@ -1,254 +1,254 @@
 <?php
   // Copyright(c) Lester J. Clark and Contributors.
   // Licensed under the MIT License.
-	// LJCCommonLib.php
-	declare(strict_types=1);
+  // LJCCommonLib.php
+  declare(strict_types=1);
 
-	/// <summary>The Common PHP Class Library</summary>
-	/// LibName: LJCCommonLib
+  /// <summary>The Common PHP Class Library</summary>
+  /// LibName: LJCCommonLib
 
-	// ***************
-	/// <summary>Contains common functions.</summary>
-	class LJCCommon
-	{
-		// ---------------
-		// Static Functions
+  // ***************
+  /// <summary>Contains common functions.</summary>
+  class LJCCommon
+  {
+    // ---------------
+    // Static Functions
 
-		// Gets the first index for the search value.
-		/// <include path='items/StrPos/*' file='Doc/LJCCommon.xml'/>
-		public static function StrPos(?string $text, ?string $find
-			, int $start = 0, bool $exact = false) : int
-		{
-			$retValue = -1;
+    // Gets the first index for the search value.
+    /// <include path='items/StrPos/*' file='Doc/LJCCommon.xml'/>
+    public static function StrPos(?string $text, ?string $find
+      , int $start = 0, bool $exact = false) : int
+    {
+      $retValue = -1;
 
-			$isFound = false;
-			if ($text != null && $find !=null)
-			{
-				$index = stripos($text, $find, $start);
-				if ($exact)
-				{
-					$index = strpos($text, $find, $start);
-				}
+      $isFound = false;
+      if ($text != null && $find !=null)
+      {
+        $index = stripos($text, $find, $start);
+        if ($exact)
+        {
+          $index = strpos($text, $find, $start);
+        }
 
-				// strpos and stripos are inconsistant.
-				// if not found: == null and >= 0 are true.
-				if ($index === 0)
-				{
-					// if first index: === 0, == null and >= 0 are true. 
-					$isFound = true;
-				}
-				else
-				{
-					// if not first index: != null and >= 0 are true. 
-					if ($index != null && $index >= 0)
-					{
-						$isFound = true;
-					}
-				}
-				if ($isFound)
-				{
-					$retValue = $index;
-				}
-			}
-			return $retValue;
-		}
+        // strpos and stripos are inconsistant.
+        // if not found: == null and >= 0 are true.
+        if ($index === 0)
+        {
+          // if first index: === 0, == null and >= 0 are true. 
+          $isFound = true;
+        }
+        else
+        {
+          // if not first index: != null and >= 0 are true. 
+          if ($index != null && $index >= 0)
+          {
+            $isFound = true;
+          }
+        }
+        if ($isFound)
+        {
+          $retValue = $index;
+        }
+      }
+      return $retValue;
+    }
 
-		// Gets the last index for the search value.
-		/// <include path='items/StrRPos/*' file='Doc/LJCCommon.xml'/>
-		public static function StrRPos(?string $text, ?string $find
-			, int $start = 0, bool $exact = false) : int
-		{
-			$retValue = -1;
+    // Gets the last index for the search value.
+    /// <include path='items/StrRPos/*' file='Doc/LJCCommon.xml'/>
+    public static function StrRPos(?string $text, ?string $find
+      , int $start = 0, bool $exact = false) : int
+    {
+      $retValue = -1;
 
-			$isFound = false;
-			if ($text != null && $find !=null)
-			{
-				$index = strripos($text, $find, $start);
-				if ($exact)
-				{
-					$index = strrpos($text, $find, $start);
-				}
+      $isFound = false;
+      if ($text != null && $find !=null)
+      {
+        $index = strripos($text, $find, $start);
+        if ($exact)
+        {
+          $index = strrpos($text, $find, $start);
+        }
 
-				// strrpos and strripos are inconsistant.
-				// if not found: == null and >= 0 are true.
-				if ($index === 0)
-				{
-					// if first index: === 0, == null and >= 0 are true. 
-					$isFound = true;
-				}
-				else
-				{
-					// if not first index: != null and >= 0 are true. 
-					if ($index != null && $index >= 0)
-					{
-						$isFound = true;
-					}
-				}
-				if ($isFound)
-				{
-					$retValue = $index;
-				}
-			}
-			return $retValue;
-		}
+        // strrpos and strripos are inconsistant.
+        // if not found: == null and >= 0 are true.
+        if ($index === 0)
+        {
+          // if first index: === 0, == null and >= 0 are true. 
+          $isFound = true;
+        }
+        else
+        {
+          // if not first index: != null and >= 0 are true. 
+          if ($index != null && $index >= 0)
+          {
+            $isFound = true;
+          }
+        }
+        if ($isFound)
+        {
+          $retValue = $index;
+        }
+      }
+      return $retValue;
+    }
 
-		/// <summary>Returns a text value as boolean.</summary>
-		public static function GetBool(?string $text) : bool
-		{
-			$retValue = true;
+    /// <summary>Returns a text value as boolean.</summary>
+    public static function GetBool(?string $text) : bool
+    {
+      $retValue = true;
 
-			if (null == $text)
-			{
-				$retValue = false;
-			}
-			else
-			{
-				switch (strtolower(trim($text)))
-				{
-					case "false":
-					case "":
-					case "0":
-						$retValue = false;
-						break;
-				}
-			}
-			return $retValue;
-		}
+      if (null == $text)
+      {
+        $retValue = false;
+      }
+      else
+      {
+        switch (strtolower(trim($text)))
+        {
+          case "false":
+          case "":
+          case "0":
+            $retValue = false;
+            break;
+        }
+      }
+      return $retValue;
+    }
 
-		// Gets the Debug file name.
-		/// <include path='items/GetDebugFileName/*' file='Doc/LJCCommon.xml'/>
-		public static function GetDebugFileName(string $folder, string $fileName)
-			: string
-		{
-			$retValue = "$folder/$fileName.txt";
+    // Gets the Debug file name.
+    /// <include path='items/GetDebugFileName/*' file='Doc/LJCCommon.xml'/>
+    public static function GetDebugFileName(string $folder, string $fileName)
+      : string
+    {
+      $retValue = "$folder/$fileName.txt";
 
-			self::MkDir($folder);
-			return $retValue;
-		}
+      self::MkDir($folder);
+      return $retValue;
+    }
 
-		// Gets the string between the delimiters.
-		/// <include path='items/GetDelimitedString/*' file='Doc/LJCCommon.xml'/>
-		public static function GetDelimitedString(string $text, string $beginDelimiter
-			, ?string $endDelimiter, bool $lTrim = true, bool $rTrim = true) : ?string
-		{
-			$retValue = null;
+    // Gets the string between the delimiters.
+    /// <include path='items/GetDelimitedString/*' file='Doc/LJCCommon.xml'/>
+    public static function GetDelimitedString(string $text, string $beginDelimiter
+      , ?string $endDelimiter, bool $lTrim = true, bool $rTrim = true) : ?string
+    {
+      $retValue = null;
 
-			$begin = self::StrPos($text, $beginDelimiter);
-			if ($begin >= 0)
-			{
-				$begin += strlen($beginDelimiter);
+      $begin = self::StrPos($text, $beginDelimiter);
+      if ($begin >= 0)
+      {
+        $begin += strlen($beginDelimiter);
 
-				$end = -1;
-				if ($endDelimiter != null)
-				{
-					$end = self::StrPos($text, $endDelimiter, $begin);
-				}
-				if ($end < 0)
-				{
-					// Set to end of line.
-					$end = strlen($text) + 1;
-				}
-				$length = $end - $begin;
-				$retValue = substr($text, $begin, $length);
-				if ($lTrim)
-				{
-					$retValue = ltrim($retValue);
-				}
-				if ($rTrim)
-				{
-					$retValue = rtrim($retValue);
-				}
-			}
-			return $retValue;
-		}
+        $end = -1;
+        if ($endDelimiter != null)
+        {
+          $end = self::StrPos($text, $endDelimiter, $begin);
+        }
+        if ($end < 0)
+        {
+          // Set to end of line.
+          $end = strlen($text) + 1;
+        }
+        $length = $end - $begin;
+        $retValue = substr($text, $begin, $length);
+        if ($lTrim)
+        {
+          $retValue = ltrim($retValue);
+        }
+        if ($rTrim)
+        {
+          $retValue = rtrim($retValue);
+        }
+      }
+      return $retValue;
+    }
 
-		// Gets the FileName from the file spec.
-		/// <include path='items/GetFileName/*' file='Doc/LJCCommon.xml'/>
-		public static function GetFileName(string $fileSpec) : string
-		{
-			$retValue = $fileSpec;
+    // Gets the FileName from the file spec.
+    /// <include path='items/GetFileName/*' file='Doc/LJCCommon.xml'/>
+    public static function GetFileName(string $fileSpec) : string
+    {
+      $retValue = $fileSpec;
 
-			$begin = self::StrRPos($fileSpec, "/");
-			if ($begin < 0)
-			{
-				$begin = -1;
-			}
-			$begin++;
-			$end = self::StrRPos($fileSpec, ".");
-			if ($end < 0)
-			{
-				$end = strlen($fileSpec);
-			}
-			$length = $end - $begin;
-			$retValue = substr($fileSpec, $begin, $length);
-			return $retValue;
-		}
+      $begin = self::StrRPos($fileSpec, "/");
+      if ($begin < 0)
+      {
+        $begin = -1;
+      }
+      $begin++;
+      $end = self::StrRPos($fileSpec, ".");
+      if ($end < 0)
+      {
+        $end = strlen($fileSpec);
+      }
+      $length = $end - $begin;
+      $retValue = substr($fileSpec, $begin, $length);
+      return $retValue;
+    }
 
-		// Gets the Path from the file spec.
-		/// <include path='items/GetFileSpecPath/*' file='Doc/LJCCommon.xml'/>
-		public static function GetFileSpecPath(string $fileSpec) : string
-		{
-			$retValue = $fileSpec;
+    // Gets the Path from the file spec.
+    /// <include path='items/GetFileSpecPath/*' file='Doc/LJCCommon.xml'/>
+    public static function GetFileSpecPath(string $fileSpec) : string
+    {
+      $retValue = $fileSpec;
 
-			$length = LJCCommon::StrRPos($fileSpec, "/");
-			if ($length >= 0)
-			{
-				$retValue = substr($fileSpec, 0, $length);
-			}
-			return $retValue;
-		}
+      $length = LJCCommon::StrRPos($fileSpec, "/");
+      if ($length >= 0)
+      {
+        $retValue = substr($fileSpec, 0, $length);
+      }
+      return $retValue;
+    }
 
-		// Gets the indexed Debug file name.
-		/// <include path='items/GetIndexedDebugFileName/*' file='Doc/LJCCommon.xml'/>
-		public static function GetIndexedDebugFileName(string $folder
-			, string $fileName)	: string
-		{
-			$retValue = "$folder/$fileName.txt";
+    // Gets the indexed Debug file name.
+    /// <include path='items/GetIndexedDebugFileName/*' file='Doc/LJCCommon.xml'/>
+    public static function GetIndexedDebugFileName(string $folder
+      , string $fileName)	: string
+    {
+      $retValue = "$folder/$fileName.txt";
 
-			self::MkDir($folder);
+      self::MkDir($folder);
 
-			$index = 1;
-			while (file_exists($retValue))
-			{
-				$index++;
-				$retValue = "$folder/$fileName$index.txt";
-			}
-			return $retValue;
-		}
+      $index = 1;
+      while (file_exists($retValue))
+      {
+        $index++;
+        $retValue = "$folder/$fileName$index.txt";
+      }
+      return $retValue;
+    }
 
-		/// <summary>Get string tokens.</summary>
-		/// <param name="$text">The string value.</param>
-		/// <param name="$splitString">The split string value.</param>
-		public static function GetTokens(string $text, ?string $splitString = null)
-			: array
-		{
-			if (null == $splitString)
-			{
-				$splitString = "/[\s,]+/";
-			}
-			$trimLine = trim($text);
-			$retValue = preg_split($splitString, $trimLine, 0, PREG_SPLIT_NO_EMPTY);
-			return $retValue;
-		}
+    /// <summary>Get string tokens.</summary>
+    /// <param name="$text">The string value.</param>
+    /// <param name="$splitString">The split string value.</param>
+    public static function GetTokens(string $text, ?string $splitString = null)
+      : array
+    {
+      if (null == $splitString)
+      {
+        $splitString = "/[\s,]+/";
+      }
+      $trimLine = trim($text);
+      $retValue = preg_split($splitString, $trimLine, 0, PREG_SPLIT_NO_EMPTY);
+      return $retValue;
+    }
 
-		/// <summary>Creates the specified folder if it does not already exist.</summary>
-		/// <param name="$folder">The folder name.</param>
-		public static function MkDir(string $folder)
-		{
-			if (false == file_exists($folder))
-			{
-				mkdir($folder);
-			}
-		}
+    /// <summary>Creates the specified folder if it does not already exist.</summary>
+    /// <param name="$folder">The folder name.</param>
+    public static function MkDir(string $folder)
+    {
+      if (false == file_exists($folder))
+      {
+        mkdir($folder);
+      }
+    }
 
-		// Returns a scrubbed external value.
-		/// <include path='items/Scrub/*' file='Doc/LJCCommon.xml'/>
-		public static function Scrub(string $text) : string
-		{
-			$retValue = trim($text);
-			$retValue = stripslashes($retValue);
-			$retValue = htmlspecialchars($retValue);
-			return $retValue;
-		}
-	}
+    // Returns a scrubbed external value.
+    /// <include path='items/Scrub/*' file='Doc/LJCCommon.xml'/>
+    public static function Scrub(string $text) : string
+    {
+      $retValue = trim($text);
+      $retValue = stripslashes($retValue);
+      $retValue = htmlspecialchars($retValue);
+      return $retValue;
+    }
+  }
 ?>
