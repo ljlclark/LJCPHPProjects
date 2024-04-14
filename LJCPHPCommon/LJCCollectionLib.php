@@ -17,7 +17,7 @@
 
     // Adds an object and key value.
     /// <include path='items/AddItem/*' file='Doc/LJCCollectionBase.xml'/>
-    protected function Add($item, $key = null)
+    protected function AddItem($item, $key = null)
     {
       $retValue = $item;
 
@@ -36,16 +36,9 @@
       return $retValue;
     }
 
-    // Adds an object and key value.
-    // Obsolete: Use Add().
-    protected function AddItem($item, $key = null)
-    {
-      return Add($item, $key);
-    }
-
     // Remove the item by Key value.
     /// <include path='items/Remove/*' file='Doc/LJCCollectionBase.xml'/>
-    public function Delete($key, bool $throwError = true) : void
+    public function DeleteItem($key, bool $throwError = true) : void
     {
       $success = true;
       if (false == $this->HasKey($key))
@@ -64,9 +57,10 @@
 
     // Get the item by Key value.
     /// <include path='items/GetItem/*' file='Doc/LJCCollectionBase.xml'/>
+    // Obsolete: Use RetrieveItem().
     protected function GetItem($key, bool $throwError = true)
     {
-      return Retrieve($key, $throwError);
+      return RetrieveItem($key, $throwError);
     }
 
     /// <summary>Gets an indexed array of keys.</summary>
@@ -92,15 +86,15 @@
     }
 
     // Remove the item by Key value.
-    // Obsolete: Use Delete().
+    // Obsolete: Use DeleteItem().
     public function Remove($key, bool $throwError = true) : void
     {
-      Delete($key, $throwError);
+      DeleteItem($key, $throwError);
     }
 
     // Get the item by Key value.
     /// <include path='items/GetItem/*' file='Doc/LJCCollectionBase.xml'/>
-    protected function Retrieve($key, bool $throwError = true)
+    protected function RetrieveItem($key, bool $throwError = true)
     {
       $retValue = null;
 

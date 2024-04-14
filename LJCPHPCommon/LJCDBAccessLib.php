@@ -372,11 +372,10 @@
     }
 
     // Get the item by Key value.
-    /// <include path='items/Get/*' file='Doc/LJCDbColumns.xml'/>
+    // Obsolete: Use Retrieve().
     public function Get($key, bool $throwError = true) : ?LJCDbColumn
     {
-      $retValue = $this->GetItem($key, $throwError);
-      return $retValue;
+      return $this->Retrieve($key, $throwError);
     }
 
     // Get the column definitions that match the property names.
@@ -424,6 +423,14 @@
           $dbColumn->Caption = $caption;
         }
       }
+    }
+
+    // Get the item by Key value.
+    /// <include path='items/Get/*' file='Doc/LJCDbColumns.xml'/>
+    public function Retrieve($key, bool $throwError = true) : ?LJCDbColumn
+    {
+      $retValue = $this->RetrieveItem($key, $throwError);
+      return $retValue;
     }
 
     // Sets the Where Clause operators.
@@ -538,11 +545,18 @@
       return $retValue;
     }
 
-    /// <summary>Get the item by Key value.</summary>
-    /// <include path='items/Get/*' file='Doc/LJCJoins.xml'/>
+    // Get the item by Key value.
+    // Obsolete: Use Retrieve().
     public function Get($key, bool $throwError = true) : ?LJCJoin
     {
-      $retValue = $this->GetItem($key, $throwError);
+      return $this->Retrieve($key, $throwError);
+    }
+
+    /// <summary>Get the item by Key value.</summary>
+    /// <include path='items/Get/*' file='Doc/LJCJoins.xml'/>
+    public function Retrieve($key, bool $throwError = true) : ?LJCJoin
+    {
+      $retValue = $this->RetrieveItem($key, $throwError);
       return $retValue;
     }
   }
@@ -641,11 +655,18 @@
       return $retValue;
     }
 
-    /// <summary>Get the item by Key value.</summary>
-    /// <include path='items/Get/*' file='Doc/LJCJoinOns.xml'/>
+    // Get the item by Key value.
+    // Obsolete: Use Retrieve().
     public function Get($key, bool $throwError = true) : ?LJCJoinOn
     {
-      $retValue = $this->GetItem($key, $throwError);
+      return $this.Retrieve($key,$throwError);
+    }
+
+    /// <summary>Get the item by Key value.</summary>
+    /// <include path='items/Get/*' file='Doc/LJCJoinOns.xml'/>
+    public function Retrieve($key, bool $throwError = true) : ?LJCJoinOn
+    {
+      $retValue = $this->RetrieveItem($key, $throwError);
       return $retValue;
     }
   }
