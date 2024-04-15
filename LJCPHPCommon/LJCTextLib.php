@@ -1,7 +1,7 @@
 <?php
   // Copyright(c) Lester J. Clark and Contributors.
   // Licensed under the MIT License.
-  // TextLib.php
+  // LJCTextLib.php
   declare(strict_types=1);
   $webCommonPath = "c:/inetpub/wwwroot/LJCPHPCommon";
   require_once "$webCommonPath/LJCCommonLib.php";
@@ -195,6 +195,15 @@
     // ---------------
     // Static Functions
 
+  // Runs a program and returns the output.
+  public static function Run($programName) : array
+  {
+    $lines = null;
+    $status = null;
+    exec($programName, $lines, $status);
+    return $lines;
+  }
+
     // Writes text with indents.
     /// <include path='items/Write/*' file='Doc/LJCWriter.xml'/>
     public static function Write(?string $text, int $indentCount = 0
@@ -225,6 +234,19 @@
         }
       }
       echo $text;
+    }
+
+    // Writes text with indents.
+    public static function WriteAll(array $lines, bool $addCRLF = true)
+    {
+      foreach ($lines as $line)
+      {
+        echo $line;
+        if ($addCRLF)
+        {
+          echo "\r\n";
+        }
+      }
     }
 
     // <summary>Writes an XML file.</summary>
