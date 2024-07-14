@@ -16,43 +16,130 @@
   /// <include path='items/LJCDirective/*' file='Doc/LJCDirective.xml'/>
   class LJCDirective
   {
-    // Find any Directives in a line.
-    /// <include path='items/Find/*' file='Doc/LJCDirective.xml'/>
-    public static function Find(string $line) : ?LJCDirective
+    /// <summary>
+    /// Checks line for directive and returns the directive object.
+    /// </summary>
+    public static function GetDirective(string $line
+      , string $commentChars) : ?LJCDirective
     {
-      $success = true;
+      $values = [];
       $retValue = null;
 
-      if (strpos($line, "#") < 0)
+      // Templates directive is in a comment.
+      if (str_starts_with(trim($line), $commentChars))
       {
-        $success = false;
-      }
-
-      if ($success)
-      {
-        $tokens = preg_split("/[\s,]+/", $line, 0, PREG_SPLIT_NO_EMPTY);
-        if (count($tokens) > 1)
+        // Template directive starts with "#".
+        $index = LJCCommon::StrPos($line, "#");
+        if ($index > -1)
         {
-          if ("#" == $tokens[1][0])
+          $retValue = new LJCDirective("", $commentChars);
+          $values = preg_split("/[\s,]+/", $line, 0, PREG_SPLIT_NO_EMPTY);
+          if (count($values) > 0)
           {
-            if ("#SectionBegin" == $tokens[1]
-              || "#SectionEnd" == $tokens[1]
-              || "#Value" == $tokens[1]
-              || "#IfBegin" == $tokens[1]
-              || "#IfElse" == $tokens[1]
-              || "#IfEnd" == $tokens[1])
-            {
-              $retValue = new LJCDirective($tokens[1], "");
-              if (count($tokens) > 2)
-              {
-                $retValue->Name = $tokens[2];
-              }
-              if (count($tokens) > 3)
-              {
-                $retValue->Value = $tokens[3];
-              }
-            }
+            // The directive identifier.
+            $retValue->ID = $values[1];
           }
+          if (count($values) > 2)
+          {
+            $retValue->Name = $values[2];
+          }
+          if (count($values) > 3)
+          {
+            $retValue->Value = $values[3];
+          }
+        }
+      }
+      return $retValue;
+    }
+
+    /// <summary>Checks if the line has a directive.</summary>
+    public static function IsDirective(string $line
+      , string $commentChars) : bool
+    {
+      $retValue = false;
+
+      $directive = self::GetDirective($line, $commentChars);
+      if ($directive != null)
+      {
+        $lowerName = strtolower($directive->ID);
+        if ("#commentchars" == $lowerName 
+          || "#placeholderbegin" == $lowerName
+          || "#placeholderend" == $lowerName
+          || "#sectionbegin" == $lowerName
+          || "#sectionend" == $lowerName 
+          || "#value" == $lowerName 
+          || "#ifbegin" == $lowerName 
+          || "#ifend" == $lowerName)
+        {
+          $retValue = true;
+        }
+      }
+      return $retValue;
+    }
+
+    // Checks if directive ID = IfElses.
+    public static function IfElse(string $line, string $commentChars)
+      : bool
+    {
+      $retValue = false;
+
+      $directive = self::GetDirective($line, $commentChars);
+      if ($directive != null)
+      {
+        if ("#ifelse" == strtolower($directive->ID))
+        {
+          $retValue = true;
+        }
+      }
+      return $retValue;
+    }
+
+    // Checks if directive ID = IfEnd.
+    public static function IfEnd(string $line, string $commentChars)
+      : bool
+    {
+      $retValue = false;
+
+      $directive = self::GetDirective($line, $commentChars);
+      if ($directive != null)
+      {
+        if ("#ifend" == strtolower($directive->ID))
+        {
+          $retValue = true;
+        }
+      }
+      return $retValue;
+    }
+
+    // Checks if directive ID = SectionBegin.
+    public static function SectionBegin(string $line, string $commentChars)
+      : bool
+    {
+      $retValue = false;
+
+      $directive = self::GetDirective($line, $commentChars);
+      if ($directive != null)
+      {
+        if ("#sectionbegin" == strtolower($directive->ID))
+        {
+          $retValue = true;
+        }
+      }
+      return $retValue;
+    }
+
+    // Checks if directive ID = SectionEnd.
+    public static function SectionEnd(string $line, string $commentChars)
+      : bool
+    {
+      $retValue = false;
+
+      $directive = self::GetDirective($line, $commentChars);
+      if ($directive != null)
+      {
+        if ("#sectionend" == strtolower($directive->ID))
+        {
+          $retValue = true;
         }
       }
       return $retValue;
@@ -64,6 +151,42 @@
     {
       $this->Type = $type;
       $this->Name = trim($name);
+    }
+
+    // Checks if directive ID = IfBegin.
+    public function IsIfBegin() : bool
+    {
+      $retValue = false;
+
+      if ("#ifbegin" == strtolower($this->ID))
+      {
+        $retValue = true;
+      }
+      return $retValue;
+    }
+
+    // Checks if directive ID = SectionBegin.
+    public function IsSectionBegin() : bool
+    {
+      $retValue = false;
+
+      if ("#sectionbegin" == strtolower($this->ID))
+      {
+        $retValue = true;
+      }
+      return $retValue;
+    }
+
+    // Checks if directive ID = SectionEnd.
+    public function IsSectionEnd() : bool
+    {
+      $retValue = false;
+
+      if ("#sectionend" == strtolower($this->ID))
+      {
+        $retValue = true;
+      }
+      return $retValue;
     }
 
     /// <summary>The Directive Name.</summary>
@@ -86,7 +209,7 @@
     public function __construct(string $name)
     {
       $this->Name = trim($name);
-      $this->Items = [];
+      $this->RepeatItems = [];
     }
 
     /// <summary>Creates a copy of the current object.</summary>
@@ -95,7 +218,7 @@
       $retValue = new self($this->Name);
       $retValue->Begin = $this->Begin;
       $retValue->CurrentItem = $this->CurrentItem;
-      $retValue->Items = $this->Items;
+      $retValue->RepeatItems = $this->RepeatItems;
       $retValue->Name = $this->Name;
       return $retValue;
     }
@@ -107,7 +230,7 @@
     public LJCItem $CurrentItem;
 
     /// <summary>The Section Items.</summary>
-    public array $Items;
+    public array $RepeatItems;
 
     /// <summary>The Section name.</summary>
     public string $Name;
@@ -164,7 +287,7 @@
       , string $value) : void
     {
       $replacement = new LJCReplacement($name, $value);
-      $item->Replacements[] = $replacement;
+      $item->Replacements->Add($replacement);
     }
 
     // Deserializes the data from a Sections XML file.
@@ -220,10 +343,10 @@
                   $name = (string)$xmlReplacement->Name;
                   $value = (string)$xmlReplacement->Value;
                   $replacement = new LJCReplacement($name, $value);
-                  $item->Replacements[] = $replacement;
+                  $item->Replacements->Add($replacement, $name);
                 }
               }
-              $section->Items[] = $item;
+              $section->RepeatItems[] = $item;
             }
             $sections->Add($section, $section->Name);
           }
@@ -277,25 +400,7 @@
     }
 
     // ----------------------
-    // *** Public Methods ***
-
-    // Adds an object and key value.
-    /// <include path='items/Add/*' file='Doc/LJCSections.xml'/>
-    public function Add(LJCSection $item, $key = null) : void
-    {
-      if (null === $key)
-      {
-        $this->Items[] = $item;
-      }
-      else
-      {
-        if ($this->HasKey($key))
-        {
-          throw new Exception("Key: {$key} already in use.");
-        }
-        $this->Items[$key] = $item;
-      }
-    }
+    // *** Collection Methods ***
 
     /// <summary>Creates an object clone.</summary>
     public function Clone() : self
@@ -306,28 +411,6 @@
         $retValue->Add($item);
       }
       unset($item);
-      return $retValue;
-    }
-
-    // Get the item by Key value.
-    /// <include path='items/Get/*' file='Doc/LJCSections.xml'/>
-    public function Get($key, bool $showError = true) : ?LJCSection
-    {
-      $retValue = null;
-
-      $success = true;
-      if (false == $this->HasKey($key))
-      {
-        $success = false;
-        if ($showError)
-        {
-          throw new Exception("Key: '$key' was not found.");
-        }
-      }
-      if ($success)
-      {
-        $retValue = $this->Items[$key];
-      }
       return $retValue;
     }
 
@@ -352,6 +435,49 @@
       return isset($this->Items[$key]);
     }
 
+    // ----------------------
+    // *** Data Methods ***
+
+    // Adds an object and key value.
+    /// <include path='items/Add/*' file='Doc/LJCSections.xml'/>
+    public function Add(LJCSection $item, $key = null) : void
+    {
+      if (null === $key)
+      {
+        $this->Items[] = $item;
+      }
+      else
+      {
+        if ($this->HasKey($key))
+        {
+          throw new Exception("Key: {$key} already in use.");
+        }
+        $this->Items[$key] = $item;
+      }
+    }
+
+    // Get the item by Key value.
+    /// <include path='items/Get/*' file='Doc/LJCSections.xml'/>
+    public function Retrieve($key, bool $showError = true) : ?LJCSection
+    {
+      $retValue = null;
+
+      $success = true;
+      if (false == $this->HasKey($key))
+      {
+        $success = false;
+        if ($showError)
+        {
+          throw new Exception("Key: '$key' was not found.");
+        }
+      }
+      if ($success)
+      {
+        $retValue = $this->Items[$key];
+      }
+      return $retValue;
+    }
+
     /// <summary>Remove the item by Key value.</summary>
     /// <param name="$key">The element key.</param>
     public function Remove($key) : void
@@ -362,6 +488,9 @@
       }
       unset($this->Items[$key]);
     }
+
+    // ----------------------
+    // *** Interface Methods ***
 
     /// <summary>Allows foreach()</summary>
     public function getIterator() : Traversable
@@ -391,7 +520,7 @@
     public function __construct(string $name)
     {
       $this->Name = trim($name);
-      $this->Replacements = [];
+      $this->Replacements = new LJCReplacements();
     }
 
     /// <summary>Creates a Clone of the current object.</summary>
@@ -410,7 +539,7 @@
     public string $Name;
 
     /// <summary>The Item replacements.</summary>
-    public $Replacements;
+    public LJCReplacements $Replacements;
 
     /// <summary>The XML Root Name value.</summary>
     public string $RootName = "Items";
@@ -448,5 +577,103 @@
 
     /// <summary>The XML Root Name value.</summary>
     public string $RootName = "Replacements";
+  }
+
+  // ***************
+  // Represents a collection of Replacement objects.
+  class LJCReplacements implements IteratorAggregate, \Countable
+  {
+    // ----------------------
+    // *** Collection Methods ***
+
+    // Creates an object clone.
+    public function Clone() : self
+    {
+      $retValue = new self();
+      foreach ($this->Items as $key => $item)
+      {
+        $retValue->Add($item);
+      }
+      unset($item);
+      return $retValue;
+    }
+
+    // Indicates if a key already exists.
+    public function HasKey($key) : bool
+    {
+      return isset($this->Items[$key]);
+    }
+
+    // ----------------------
+    // *** Data Methods ***
+
+    // Adds an object and key value.
+    public function Add(LJCReplacement $item, $key = null) : void
+    {
+      if (null === $key)
+      {
+        $this->Items[] = $item;
+      }
+      else
+      {
+        if ($this->HasKey($key))
+        {
+          throw new Exception("Key: {$key} already in use.");
+        }
+        $this->Items[$key] = $item;
+      }
+    }
+
+    // Delete the item by Key value.
+    public function Delete($key) : void
+    {
+      if (false == $this->HasKey($key))
+      {
+        throw new Exception("Key: {$key} was not found.");
+      }
+      unset($this->Items[$key]);
+    }
+
+    // Get the item by Key value.
+    public function Retrieve($key, bool $showError = true) : ?LJCReplacement
+    {
+      $retValue = null;
+
+      $success = true;
+      if (false == $this->HasKey($key))
+      {
+        $success = false;
+        if ($showError)
+        {
+          throw new Exception("Key: '$key' was not found.");
+        }
+      }
+      if ($success)
+      {
+        $retValue = $this->Items[$key];
+      }
+      return $retValue;
+    }
+
+    // ----------------------
+    // *** Interface Methods ***
+
+    // Allows foreach()
+    public function getIterator() : Traversable
+    {
+      return new ArrayIterator($this->Items);
+    }
+
+    // Allows Count(object)
+    public function count() : int
+    {
+      return count($this->Items);
+    }
+
+    // ------------------
+    // *** Class Data ***
+
+    // The elements array.
+    private $Items = [];
   }
 ?>
