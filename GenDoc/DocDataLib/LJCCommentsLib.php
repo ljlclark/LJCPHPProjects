@@ -1,12 +1,32 @@
 <?php
+  // Copyright(c) Lester J. Clark and Contributors.
+  // Licensed under the MIT License.
   // LJCCommentsLib.php
   declare(strict_types=1);
-  $webCommonPath = "c:/inetpub/wwwroot/LJCPHPCommon";
-  $devPath = "c:/Users/Les/Documents/Visual Studio 2022/LJCPHPProjects";
-  require_once "$devPath/LJCPHPCommon/LJCCommonLib.php";
-  require_once "$devPath/GenTextLib/LJCGenTextSectionLib.php";
-  require_once "LJCIncludeLib.php";
-  require_once "LJCParamCommentLib.php";
+  $devPath = "../External";
+  include_once "$devPath/LJCCommonLib.php";
+  include_once "$devPath/LJCGenTextSectionLib.php";
+  include_once "LJCIncludeLib.php";
+  include_once "LJCParamCommentLib.php";
+
+  // Classes
+  // LJCCommonLib
+  //   LJCCommon
+  // LJCGenTextSectionLib
+  //   LJCDirective
+  //   LJCSection
+  //   LJCSections
+  //   LJCItem
+  //   LJCReplacement
+  //   LJCReplacements
+  // LJCIncludeLib
+  //   LJCInclude
+  // LJCParamCommentLib
+  //   LJCParamComment
+  // File
+  //   LJCComments
+
+  // Class - LJCComments
 
   // Contains Classes to parse code XML comments.
   /// <include path='items/LJCCommentsLib/*' file='Doc/LJCCommentsLib.xml'/>
@@ -50,7 +70,7 @@
 
       $this->DebugWriter = null;
       //$this->DebugWriter = new LJCDebugWriter("CommentsLib");
-    }
+    } // __construct()
 
     // ---------------
     // Public Methods - LJCComments
@@ -64,7 +84,7 @@
       $this->ClearComment("remarks");
       $this->ClearComment("returns");
       $this->ClearComment("summary");
-    }
+    } // ClearComments()
 
     // Sets the XML comment value.
     /// <include path='items/SetComment/*' file='Doc/LJCComments.xml'/>
@@ -112,7 +132,7 @@
         $comment = $this->GetComment($line);
         $this->SaveComment($comment);
       }
-    }  // SetComment();
+    } // SetComment();
 
     // ---------------
     // Private Methods - LJCComments
@@ -155,7 +175,7 @@
             break;
         }
       }
-    }
+    } // ClearComment()
 
     // Gets the comment for the current comment tag.
     private function GetComment(string $line) : ?string
@@ -240,7 +260,7 @@
           $this->Summary .= htmlspecialchars($comment);
           break;
       }
-    }
+    } // SaveComment()
 
     // ---------------
     // Private Tag Methods- LJCComments
@@ -265,7 +285,7 @@
         }
       }
       return $retValue;
-    }
+    } // GetBeginTagName()
 
     // Gets the BeginTag for the specified comment tag.
     private function GetBeginTag(?string $tagName = null) : ?string
@@ -282,7 +302,7 @@
         $retValue = $this->BeginTags[$tagName];
       }
       return $retValue;
-    }
+    } // GetBeginTag()
 
     // Gets the EndTag for the specified or current comment tag.
     private function GetEndTag(?string $tagName = null) : ?string
@@ -299,7 +319,7 @@
         $retValue = $this->EndTags[$tagName];
       }
       return $retValue;
-    }
+    } // GetEndTag()
 
     // Gets the BeginTag length for the specified or current comment tag.
     private function GetLengthBeginTag(?string $tagName = null) : int
@@ -317,7 +337,7 @@
         $retValue = strlen($value);
       }
       return $retValue;
-    }
+    } // GetLengthBeginTag()
 
     // Gets the EndTag length for the specified or current comment tag.
     private function GetLengthEndTag(?string $tagName = null) : int
@@ -338,7 +358,7 @@
         }
       }
       return $retValue;
-    }
+    } // GetLengthEndTag()
 
     // Indicates if the lines has a current EndTag.
     private function HasCurrentEndTag(string $line) : bool
@@ -352,7 +372,7 @@
         $retValue = true;
       }
       return $retValue;
-    }
+    } // HasCurrentEndTag()
 
     // Sets the comment tag values
     private function SetCommentTags() : void
@@ -368,7 +388,7 @@
       $this->EndTags["remarks"] = "</remarks>";
       $this->EndTags["returns"] = "</returns>";
       $this->EndTags["summary"] = "</summary>";
-    }
+    } // GetCommentTag()
 
     // ---------------
     // Private Output Methods
@@ -380,7 +400,7 @@
       {
         $this->DebugWriter->Debug($text, $addLine);
       }
-    }
+    } // Debug()
 
     // Writes an output line.
     private function Output($text = null, $value = null)
@@ -398,7 +418,7 @@
         }
         LJCWriter::WriteLine("");
       }
-    }
+    } // Output()
 
     // ---------------
     // Public Properties - LJCComments
@@ -442,5 +462,5 @@
 
     // The IsContinue flag.
     private bool $IsContinue;
-  }
+  } // LJCComments
 ?>

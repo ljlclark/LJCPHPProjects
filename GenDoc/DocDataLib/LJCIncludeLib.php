@@ -1,16 +1,33 @@
 <?php
+  // Copyright(c) Lester J. Clark and Contributors.
+  // Licensed under the MIT License.
   // LJCIncludeLib.php
   declare(strict_types=1);
-  $devPath = "c:/Users/Les/Documents/Visual Studio 2022/LJCPHPProjects";
-  require_once "$devPath/LJCPHPCommon/LJCCommonLib.php";
-  require_once "$devPath/GenTextLib/LJCGenTextSectionLib.php";
+  $devPath = "../External";
+  include_once "$devPath/LJCCommonLib.php";
+  include_once "$devPath/LJCGenTextSectionLib.php";
+
+  // Classes
+  // LJCCommonLib
+  //   LJCCommon
+  // LJCGenTextSectionLib
+  //   LJCDirective
+  //   LJCSection
+  //   LJCSections
+  //   LJCItem
+  //   LJCReplacement
+  //   LJCReplacements
+  // File
+  //   LJCInclude
+
+  // #01 Correct XMLFileName - 5/1/25
 
   // Contains Classes to retrieve data from include XML files.
   /// <include path='items/LJCIncludeLib/*' file='Doc/LJCIncludeLib.xml'/>
   /// LibName: LJCIncludeLib
 
   // Main Call Tree
-  // SetComments()
+  // SetComments() public
   //   GetComment()
 
   // ***************
@@ -24,7 +41,8 @@
     /// <summary>Initializes an object instance.</summary>
     public function __construct()
     {
-      $this->DebugClass = "LJCInclude";
+      // Instantiate properties with Pascal case.
+      $this->DebugClass = "LJCIncludeLib.LJCInclude";
 
       $this->Comments = null;
       $this->LibName = null;
@@ -32,8 +50,8 @@
 
       $this->CurrentTagName = null;
       $this->DebugWriter = null;
-      //$this->DebugWriter = new LJCDebugWriter("IncludeLib");
-    }
+      $this->DebugWriter = new LJCDebugWriter("IncludeLib");
+    } // __construct()
 
     // ---------------
     // Public Methods - LJCInclude
@@ -103,7 +121,7 @@
           }
         }
       }
-    }  // SetComments();
+    } // SetComments();
 
     // ---------------
     // Private Methods - LJCInclude
@@ -170,7 +188,7 @@
         }
       }
       return $retValue;
-    }  // GetComment()
+    } // GetComment()
 
     // Gets the begin tag.
     private  function GetLineBeginTag(string $line) : ?string
@@ -183,7 +201,7 @@
         $retValue = "<$beginTag>";								
       }
       return $retValue;
-    }
+    } // GetLineBeginTag()
 
     // Gets the end tag.
     private function GetLineEndTag(string $line) : ?string
@@ -196,7 +214,7 @@
         $retValue = "</$endTag>";								
       }
       return $retValue;
-    }
+    } // GetLineEndTag()
 
     // Checks for an invalid end comment tag.
     private function InvalidCommentEndTag(?string $comment) : bool
@@ -215,7 +233,7 @@
         }
       }
       return $retValue;
-    }
+    } // InvalidCommentEndTag()
 
     // Checks for a valid comment tag.
     private function IsCommentTag(?string $tag) : bool
@@ -237,7 +255,7 @@
         }
       }
       return $retValue;
-    }
+    } // IsCommentTag()
 
     // Replaces tabs with spaces and removes extra leading spaces
     private function LTrimXMLComment(string $comment) : string
@@ -255,18 +273,17 @@
         $retValue = "///" . substr($retValue, $count + 3);
       }
       return $retValue;
-    }
+    } // LTrimXMLComment()
 
     // Sets the Class include file values: LibName, XMLFile and itemTag.
     private function SetIncludeValues(string $includeLine, string $codeFileSpec
       , ?string &$itemTag) : bool
     {
+      $loc = "$this->DebugClass.SetIncludeValues():\r\n";
       $retValue = true;
 
       $itemTag = null;
-
       $this->LibName = LJCCommon::GetFileName($codeFileSpec);
-
       $this->Comments = [];
       $xmlPath = LJCCommon::GetDelimitedString($includeLine, "path='", "'");
       if (null == $xmlPath)
@@ -285,10 +302,14 @@
 
         // Add code file path to doc file path to create XML file spec.
         $fileSpecPath = LJCCommon::GetFileSpecPath($codeFileSpec);
-        $this->XMLFile = "$fileSpecPath/$this->XMLFile";
+        // ToDo: Compare next line with backup.
+        // *** Change *** #01
+        //$this->XMLFile = "$fileSpecPath/$this->XMLFile";
+        $this->XMLFile = "$this->XMLFile";
+        $this->Debug("$loc this->XMLFile = $this->XMLFile");
       }
       return $retValue;
-    }
+    } // SetIncludeValues()
 
     // ---------------
     // Private Output Methods
@@ -300,7 +321,7 @@
       {
         $this->DebugWriter->Debug($text, $addLine);
       }
-    }
+    } // Debug()
 
     // Writes an output line.
     private function Output($text = null, $value = null)
@@ -318,7 +339,7 @@
         }
         LJCWriter::WriteLine("");
       }
-    }
+    } // Output()
 
     // ---------------
     // Public Properties - LJCInclude
@@ -337,5 +358,5 @@
 
     /// <summary>The Current tag name.</summary>
     public ?string $CurrentTagName;
-  }
+  } // LJCInclude
 ?>

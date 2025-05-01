@@ -1,10 +1,32 @@
 <?php
+  // Copyright(c) Lester J. Clark and Contributors.
+  // Licensed under the MIT License.-->
   // LJCDocDataLib.php
   declare(strict_types=1);
-  $devPath = "c:/Users/Les/Documents/Visual Studio 2022/LJCPHPProjects";
-  require_once "$devPath/LJCPHPCommon/LJCCommonLib.php";
-  require_once "$devPath/LJCPHPCommon/LJCTextLib.php";
-  require_once "$devPath/LJCPHPCommon/LJCCollectionLib.php";
+  $devPath = "../External";
+  include_once "$devPath/LJCCommonLib.php";
+  require_once "$devPath/LJCTextLib.php";
+  include_once "$devPath/LJCCollectionLib.php";
+
+  // Classes
+  // LJCCommonLib
+  //   LJCCommon
+  // LJCTextLib
+  //   LJCStringBuilder
+  //   LJCHTMLTableColumn
+  //   LJCHTMLWriter
+  //   LJCWriter
+  //   LJCDebugWriter
+  // File
+  //   LJCDocDataClass
+  //   LJCDocDataClasses
+  //   LJCDocDataFile
+  //   LJCDocDataMethod
+  //   LJCDocDataMethods
+  //   LJCDocDataParam
+  //   LJCDocDataParams
+  //   LJCDocDataProperty
+  //   LJCDocDataProperties
 
   // Contains Classes to represent DocData.
   /// <include path='items/LJCDocDataLib/*' file='Doc/LJCDocDataLib.xml'/>
@@ -21,6 +43,11 @@
   //       LJCDocDataProperties
   //         LJCDocDataProperty
   //   LJCDocDataMethods
+
+  // #01 Correct XMLFileName - 5/1/25
+  //   LJCIncludeLib.php
+  // #02 Correct Syntac - 5/1/25
+  //   LJCCollectionLib.php
 
   // ***************
   /// <summary>Represents a DocData Class.</summary>
@@ -39,7 +66,7 @@
       $this->Properties = null;
       $this->Remarks = null;
       $this->Summary = $summary;
-    }
+    } // __construct()
 
     // ---------------
     // Public Methods
@@ -54,7 +81,7 @@
       $retValue->Properties = $this->Properties;
       $retValue->Remarks = $this->Remarks;
       return $retValue;
-    }
+    } // Clone()
 
     // ---------------
     // Public Properties - LJCDocDataClass
@@ -76,7 +103,7 @@
 
     /// <summary>The Summary value.</summary>
     public ?string $Summary;
-  }  // LJCDocDataClass
+  } // LJCDocDataClass
 
   // ***************
   /// <summary>Represents a collection of objects.</summary>
@@ -95,7 +122,7 @@
       }
       unset($item);
       return $retValue;
-    }
+    } // Clone()
 
     // ---------------
     // Public Methods
@@ -111,7 +138,7 @@
       }
       $retValue = $this->AddItem($item, $key);
       return $retValue;
-    }
+    } // AddObject()
 
     // Get the item by Key value.
     /// <include path='items/Get/*' file='../../CommonDoc/PHPCollection.xml'/>
@@ -119,8 +146,8 @@
     {
       $retValue = $this->GetItem($key, $throwError);
       return $retValue;
-    }
-  }  // LJCDocDataClasses
+    } // Get()
+  } // LJCDocDataClasses
 
   // ***************
   // Represents a DocData Lib File.
@@ -139,7 +166,7 @@
       $docNode = simplexml_load_file($xmlFileSpec);
       $retValue = self::CreateDocDataFile($docNode);
       return $retValue;
-    }
+    } // Deserialize()
 
     // Deserializes the data from an LJCDocDataFile XML string.
     /// <include path='items/DeserializeString/*' file='Doc/LJCDocDataFile.xml'/>
@@ -150,7 +177,7 @@
       $docNode = simplexml_load_string($xmlString);
       $retValue = self::CreateDocDataFile($docNode);
       return $retValue;
-    }
+    } // DeserializeString()
 
     // Creates the LJCDocDataFile object.
     private static function CreateDocDataFile(SimpleXMLElement $xmlNode)
@@ -167,7 +194,7 @@
         $retValue->Summary = self::Value($xmlNode->Summary);
       }
       return $retValue;
-    }
+    } // CreateDocDataFile()
 
     // Deserialize Classes from the Doc node.
     private static function GetClasses(SimpleXMLElement $docNode)
@@ -192,7 +219,7 @@
         }
       }
       return $retValue;
-    }
+    } // GetClasses()
 
     // Deserialize Methods from the Class node.
     private static function GetMethods(SimpleXMLElement $classNode)
@@ -218,7 +245,7 @@
         }
       }
       return $retValue;
-    }
+    } // GetMethods()
 
     // Deserialize Params from the Method node.
     private static function GetParams(SimpleXMLElement $methodNode)
@@ -239,7 +266,7 @@
         }
       }
       return $retValue;
-    }
+    } // GetParams()
 
     // Deserialize Properties from the Class node.
     /// <include path='items/GetProperties/*' file='Doc/LJCDocDataFile.xml'/>
@@ -260,12 +287,11 @@
           $property->Summary = self::Value($propertyNode->Summary);
           $property->Returns = self::Value($propertyNode->Returns);
           $property->Remarks = self::Value($propertyNode->Remarks);
-          // *** Next Statement *** Add
           $property->Syntax = self::Value($propertyNode->Syntax);
         }
       }
       return $retValue;
-    }
+    } // GetProperties()
 
     // ---------------
     // Static GetNodes Functions - LJCDocDataFile
@@ -282,7 +308,7 @@
         $retValue = $nodes->children();
       }
       return $retValue;
-    }
+    } // GetClassNodes()
 
     // Retrieves the Method nodes.
     private static function GetMethodNodes(SimpleXMLElement $classNode)
@@ -296,7 +322,7 @@
         $retValue = $nodes->children();
       }
       return $retValue;
-    }
+    } // GetMethodNodes()
 
     // Retrieves the Para nodes.
     private static function GetParamNodes(SimpleXMLElement $functionNode)
@@ -310,7 +336,7 @@
         $retValue = $nodes->children();
       }
       return $retValue;
-    }
+    } // GetParamNodes()
 
     // Retrieves the Property nodes.
     private static function GetPropertyNodes(SimpleXMLElement $classNode)
@@ -324,7 +350,7 @@
         $retValue = $nodes->children();
       }
       return $retValue;
-    }
+    } // GetPropertyNodes()
 
     // Get the value from the XML value.
     // Possible for Common code.
@@ -342,7 +368,7 @@
         }
       }
       return $retValue;
-    }
+    } // Value()
 
     // ---------------
     // Constructors
@@ -356,7 +382,7 @@
       $this->Name = $name;
       $this->Remarks = null;
       $this->Summary = $summary;
-    }
+    } // __construct()
 
     // ---------------
     // Public Methods - LJCDocDataFile
@@ -369,7 +395,7 @@
       $retValue->Classes = $this->Classes;
       $retValue->Functions = $this->Functions;
       return $retValue;
-    }
+    } // Clone()
 
     // Writes the serialized XML.
     /// <include path='items/Serialize/*' file='Doc/LJCDocDataFile.xml'/>
@@ -380,7 +406,7 @@
       $this->Writer = new LJCWriter($stream);
       $this->Writer->FWrite($docDataXML);
       fclose($stream);
-    }
+    } // Serialize()
 
     // Creates the serialized XML string.
     /// <include path='items/SerializeToString/*' file='Doc/LJCDocDataFile.xml'/>
@@ -424,7 +450,7 @@
       }
       $builder->AppendLine("</LJCDocDataFile>");
       return $builder->ToString();
-    }
+    } // SerializeToString()
     
     // ---------------
     // Private Methods - LJCDocDataFile
@@ -454,7 +480,7 @@
         $builder->AppendLine("</Methods>", $indent);
       }
       return $builder->ToString();
-    }
+    } // CreateMethods()
 
     // Creates the serialized Params XML.
     private function CreateParams(?LJCDocDataParams $params, int $indent)
@@ -475,7 +501,7 @@
         $builder->AppendLine("</Params>", $indent);
       }
       return $builder->ToString();
-    }
+    } // CreateParams()
 
     // Appends the serialized Properties XML.
     private function CreateProperties(LJCDocDataClass $class, int $indent)
@@ -493,14 +519,13 @@
           $builder->AppendTags("Summary", $property->Summary, $indent + 2);
           $builder->AppendTags("Returns", $property->Returns, $indent + 2);
           $builder->AppendTags("Remarks", $property->Remarks, $indent + 2);
-          // *** Next Statement *** Change - Add Syntax
           $builder->AppendTags("Syntax", $property->Syntax, $indent + 2);
           $builder->AppendLine("</Property>", $indent + 1);
         }
         $builder->AppendLine("</Properties>", $indent);
       }
       return $builder->ToString();
-    }
+    } // CreateProperties()
 
     // ---------------
     // Public Properties - LJCDocDataFile
@@ -522,7 +547,7 @@
 
     // The Writer object.
     private LJCWriter $Writer;
-  }  // LJCDocDataFile
+  } // LJCDocDataFile
 
   // ***************
   /// <summary>Represents a DocData Function.</summary>
@@ -543,7 +568,7 @@
       $this->Returns = $returns;
       $this->Summary = $summary;
       $this->Syntax = null;
-    }
+    } // __construct()
 
     // ---------------
     // Public Methods
@@ -557,7 +582,7 @@
       $retValue->Params = $this->Params;
       $retValue->Remarks = $this->Remarks;
       return $retValue;
-    }
+    } // Clone()
 
     // ---------------
     // Public Properties - LJCDocDataMethod
@@ -582,7 +607,7 @@
 
     /// <summary>The Syntax value.</summary>
     public ?string $Syntax;
-  }  // LJCDocDataMethod
+  } // LJCDocDataMethod
 
   // ***************
   /// <summary>Represents a collection of objects.</summary>
@@ -601,7 +626,7 @@
       }
       unset($item);
       return $retValue;
-    }
+    } // Clone()
 
     // ---------------
     // *** Public Methods ***
@@ -617,7 +642,7 @@
       }
       $retValue = $this->AddItem($item, $key);
       return $retValue;
-    }
+    } // AddObject()
 
     // Get the item by Key value.
     /// <include path='items/Get/*' file='../../CommonDoc/PHPCollection.xml'/>
@@ -625,8 +650,8 @@
     {
       $retValue = $this->GetItem($key, $throwError);
       return $retValue;
-    }
-  }  // LJCDocDataMethods
+    } // Get()
+  } // LJCDocDataMethods
 
   // ***************
   /// <summary>Represents a DocData Parameter.</summary>
@@ -641,7 +666,7 @@
     {
       $this->Name = $name;
       $this->Summary = $summary;
-    }
+    } // __construct()
 
     // Creates a Clone of the current object.
     /// <include path='items/Clone/*' file='../../CommonDoc/PHPDataClass.xml'/>
@@ -649,7 +674,7 @@
     {
       $retValue = new self($this->Name, $this->Summary);
       return $retValue;
-    }
+    } // Clone()
 
     // ---------------
     // Public Properties
@@ -659,7 +684,7 @@
 
     /// <summary>The Summary value.</summary>
     public ?string $Summary;
-  }  // LJCDocDataParam
+  } // LJCDocDataParam
 
   // ***************
   /// <summary>Represents a collection of objects.</summary>
@@ -678,7 +703,7 @@
       }
       unset($item);
       return $retValue;
-    }
+    } // Clone()
 
     // ---------------
     // *** Public Methods ***
@@ -694,7 +719,7 @@
       }
       $retValue = $this->AddItem($item, $key);
       return $retValue;
-    }
+    } // AddObject()
 
     // Get the item by Key value.
     /// <include path='items/Get/*' file='../../CommonDoc/PHPCollection.xml'/>
@@ -702,8 +727,8 @@
     {
       $retValue = $this->GetItem($key, $throwError);
       return $retValue;
-    }
-  }  // LJCDocDataParams
+    } // Get()
+  } // LJCDocDataParams
 
   // ***************
   /// <summary>Represents a DocData Property.</summary>
@@ -722,7 +747,7 @@
       $this->Returns = $returns;
       $this->Summary = $summary;
       $this->Syntax = null;
-    }
+    } // __construct()
 
     // Creates a Clone of the current object.
     /// <include path='items/Clone/*' file='../../CommonDoc/PHPDataClass.xml'/>
@@ -731,7 +756,7 @@
       $retValue = new self($this->Name, $this->Summary, $this->Returns);
       $retValue->Remarks = $this->Remarks;
       return $retValue;
-    }
+    } // Clone()
 
     // ---------------
     // Public Properties  - LJCDocDataProperty
@@ -750,7 +775,7 @@
 
     /// <summary>The Syntax value.</summary>
     public ?string $Syntax;
-  }  // LJCDocDataProperty
+  } // LJCDocDataProperty
 
   // ***************
   /// <summary>Represents a collection of objects.</summary>
@@ -770,7 +795,7 @@
       }
       unset($item);
       return $retValue;
-    }
+    } // Clone()
 
     // ---------------
     // Public Methods
@@ -786,7 +811,7 @@
       }
       $retValue = $this->AddItem($item, $key);
       return $retValue;
-    }
+    } // AddObject()
 
     // Get the item by Key value.
     /// <include path='items/Get/*' file='../../CommonDoc/PHPCollection.xml'/>
@@ -794,6 +819,6 @@
     {
       $retValue = $this->GetItem($key, $throwError);
       return $retValue;
-    }
-  }  // LJCDocDataProperties
+    } // Get()
+  } // LJCDocDataProperties
 ?>

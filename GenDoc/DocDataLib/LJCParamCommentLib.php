@@ -1,10 +1,16 @@
 <?php
+  // Copyright(c) Lester J. Clark and Contributors.
+  // Licensed under the MIT License.
   // ParamCommentLib.php
   declare(strict_types=1);
 
   // Contains Classes to manage param comments.
   /// <include path='items/LJCParamCommentLib/*' file='Doc/LJCParamCommentLib.xml'/>
   /// LibName: LJCParamCommentLib
+
+  // Classes
+  // File
+  //   LJCParamComment
 
   // ***************
   /// <summary>Handles param comments.</summary>
@@ -27,6 +33,6 @@
         $retValue = new LJCDocDataParam($name, $summary);
       }
       return $retValue;
-    }
+    } // GetParam()
   }
 ?>

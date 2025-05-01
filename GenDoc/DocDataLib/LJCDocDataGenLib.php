@@ -1,12 +1,17 @@
 <?php
+  // Copyright(c) Lester J. Clark and Contributors.
+  // Licensed under the MIT License.
   // LJCDocDataGenLib.php
   declare(strict_types=1);
-  $webCommonPath = "c:/inetpub/wwwroot/LJCPHPCommon";
-  $devPath = "c:/Users/Les/Documents/Visual Studio 2022/LJCPHPProjects";
-  require_once "$devPath/LJCPHPCommon/LJCCommonLib.php";
-  require_once "$devPath/LJCPHPCommon/LJCTextLib.php";
-  require_once "LJCDocDataLib.php";
-  require_once "LJCCommentsLib.php";
+  $devPath = "../External";
+  include_once "$devPath/LJCCommonLib.php";
+  include_once "$devPath/LJCTextLib.php";
+  include_once "LJCDocDataLib.php";
+  include_once "LJCCommentsLib.php";
+
+  // Classes
+  // File
+  //   LJCDocDataGen
 
   // Contains Classes to generate DocData XML strings and optionally files.
   /// <include path='items/LJCDocDataGenLib/*' file='Doc/LJCDocDataGenLib.xml'/>
@@ -61,7 +66,7 @@
         $retValue = self::ScrubFunctionName($tokens[2]);
       }
       return $retValue;
-    }
+    } // GetFunctionName()
 
     // Gets the Property Name if present. 
     private static function GetPropertyName(array $tokens) : ?string
@@ -81,7 +86,7 @@
         }
       }
       return $retValue;
-    }
+    }  // GetPropertyName()
 
     // Gets the Function Name from the function token.
     // <include path='items/ScrubFunctionName/*' file='Doc/LJCDocDataGen.xml'/>
@@ -104,7 +109,7 @@
         $retValue = substr($retValue, 0, $length);
       }
       return $retValue;
-    }
+    } // ScrubFunctionName
 
     // Gets the Property Name from the property token.
     private static function ScrubPropertyName(string $propertyToken) : string
@@ -112,7 +117,7 @@
       $length = strlen($propertyToken);
       $retValue = substr($propertyToken, 0, $length - 1);
       return $retValue;
-    }
+    } // ScrubPropertyName
 
     // ---------------
     // Constructors - LJCDocDataGen
@@ -134,8 +139,10 @@
       $this->PropertyName = null;
 
       $this->DebugWriter = null;
-      //$this->DebugWriter = new LJCDebugWriter("DocDataGen");
-    }
+
+      // Create DebugWriter if writing debug data.
+      $this->DebugWriter = new LJCDebugWriter("DocDataGen");
+    } // __construct()
 
     // ---------------
     // Public Methods
@@ -149,6 +156,7 @@
       $retValue = null;
 
       $this->LibName = LJCCommon::GetFileName($codeFileSpec);
+      $this->Debug("LibName: $this->LibName");
       $this->Comments->LibName = $this->LibName;
       $this->DocDataFile = new LJCDocDataFile($this->LibName);
       $retValue = $this->ProcessCode($codeFileSpec);
@@ -158,7 +166,7 @@
         LJCWriter::WriteFile($retValue, $outputFileSpec);
       }
       return $retValue;
-    }
+    } // CreateDocDataXMLString()
 
     // Generates the Doc data for the file.
     /// <include path='items/ProcessCode/*' file='Doc/LJCDocDataGen.xml'/>
@@ -209,7 +217,7 @@
         $retValue = $this->DocDataFile->SerializeToString(null);
       }
       return $retValue;
-    }  // ProcessCode()
+    } // ProcessCode()
 
     // ---------------
     // Private Methods - LJCDocDataGen
@@ -229,7 +237,7 @@
       $fileName = LJCCommon::GetFileName($codeFileSpec) . ".xml";
       $retValue = "$outputPath/$fileName";
       return $retValue;
-    }
+    } // DocOutputFileSpec()
 
     // Indicates if the Syntax eligible statement is continued.
     private function IsSyntaxContinue(string $line) : bool
@@ -252,7 +260,7 @@
         $retValue = true;
       }
       return $retValue;
-    }
+    } // IsSyntaxContinue()
 
     // Process XML Comment or Skip Null line and Comment Line.
     private function LineProcessed(?string $line, string $codeFileSpec) : bool
@@ -299,7 +307,7 @@
         }
       }
       return $retValue;
-    }  // LineProcessed()
+    } // LineProcessed()
 
     // Process the Class XML data.
     private function ProcessClass() : void
@@ -322,7 +330,7 @@
       $class->Code = $this->Comments->Code;
 
       $this->Comments->ClearComments();
-    }
+    } // ProcessClass()
 
     // Process the Function XML data.
     private function ProcessFunction() : void
@@ -350,7 +358,7 @@
       $method->Code = $this->Comments->Code;
 
       $this->Comments->ClearComments();
-    }
+    } // ProcessFunction()
 
     // Processes the Class, Function or Property.
     // $tokens - The array of line tokens.
@@ -396,7 +404,7 @@
       {
         $this->ProcessFunction();
       }
-    }  // ProcessItem()
+    } // ProcessItem()
 
     // Process the Lib XML data.
     private function ProcessLib() : void
@@ -408,7 +416,7 @@
       $docDataFile->Remarks = $this->Comments->Remarks;
 
       $this->Comments->ClearComments();
-    }
+    } // ProcessLib()
 
     // Process the Property XML data.
     private function ProcessProperty() : void
@@ -433,7 +441,7 @@
       $property->Remarks = $this->Comments->Remarks;
 
       $this->Comments->ClearComments();
-    }
+    } // ProcessProperty()
 
     // Sets the Syntax value for a function.
     private function SetFunctionSyntax() : void
@@ -456,7 +464,7 @@
           $syntaxContinue = $this->IsSyntaxContinue($trimLine);
         }
       }
-    }
+    } // SetFunctionSyntax()
 
     // Writes the debug value.
     private function Debug(string $text, bool $addLine = true) : void
@@ -465,7 +473,7 @@
       {
         $this->DebugWriter->Debug($text, $addLine);
       }
-    }
+    } // Debug()
 
     // Writes an output line.
     private function Output($text = null, $value = null)
@@ -493,7 +501,7 @@
         }
         LJCWriter::WriteLine("");
       }
-    }
+    } // Output()
 
     // ---------------
     // Private Properties - LJCDocDataGen
@@ -521,5 +529,5 @@
 
     // The Property name.
     private ?string $PropertyName;
-  }
+  } // LJCDocDataGen
 ?>
