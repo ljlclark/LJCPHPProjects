@@ -26,8 +26,6 @@
   // File
   //   LJCComments
 
-  // Class - LJCComments
-
   // Contains Classes to parse code XML comments.
   /// <include path='items/LJCCommentsLib/*' file='Doc/LJCCommentsLib.xml'/>
   /// LibName: LJCCommentsLib
@@ -48,6 +46,7 @@
     /// <summary>Initializes an object instance.</summary>
     public function __construct()
     {
+      // Instantiate properties with Pascal case.
       $this->DebugClass = "LJCComments";
       $this->CurrentTagName = null;
       $this->Code = null;
@@ -263,7 +262,7 @@
     } // SaveComment()
 
     // ---------------
-    // Private Tag Methods- LJCComments
+    // Private Tag Methods - LJCComments
 
     // Returns the current or other BeginTag found in the line.
     private function GetBeginTagName(string $line) : ?string
@@ -377,6 +376,7 @@
     // Sets the comment tag values
     private function SetCommentTags() : void
     {
+      // Instantiate properties with Pascal case.
       $this->BeginTags["code"] = "<code>";
       $this->BeginTags["include"] = "<include";
       $this->BeginTags["param"] = "<param";
@@ -391,7 +391,7 @@
     } // GetCommentTag()
 
     // ---------------
-    // Private Output Methods
+    // Private Output Methods - LJCComments
 
     // Writes the debug value.
     private function Debug(string $text, bool $addLine = true) : void

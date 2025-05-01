@@ -128,6 +128,7 @@
     /// </summary>
     public function __construct()
     {
+      // Instantiate properties with Pascal case.
       $this->DebugClass = "LJCDocDataGen";
       $this->ClassName = null;
       $this->Comments = new LJCComments();
@@ -138,14 +139,13 @@
       $this->Line = null;
       $this->PropertyName = null;
 
-      $this->DebugWriter = null;
-
       // Create DebugWriter if writing debug data.
+      $this->DebugWriter = null;
       $this->DebugWriter = new LJCDebugWriter("DocDataGen");
     } // __construct()
 
     // ---------------
-    // Public Methods
+    // Public Methods - LJCDocDataGen
 
     // Creates and writes the DocData XML.
     /// <include path='items/CreateDocXMLString/*' file='Doc/LJCDocDataGen.xml'/>
@@ -156,7 +156,6 @@
       $retValue = null;
 
       $this->LibName = LJCCommon::GetFileName($codeFileSpec);
-      $this->Debug("LibName: $this->LibName");
       $this->Comments->LibName = $this->LibName;
       $this->DocDataFile = new LJCDocDataFile($this->LibName);
       $retValue = $this->ProcessCode($codeFileSpec);

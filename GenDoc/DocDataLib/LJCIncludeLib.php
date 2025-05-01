@@ -302,11 +302,9 @@
 
         // Add code file path to doc file path to create XML file spec.
         $fileSpecPath = LJCCommon::GetFileSpecPath($codeFileSpec);
-        // ToDo: Compare next line with backup.
         // *** Change *** #01
         //$this->XMLFile = "$fileSpecPath/$this->XMLFile";
         $this->XMLFile = "$this->XMLFile";
-        $this->Debug("$loc this->XMLFile = $this->XMLFile");
       }
       return $retValue;
     } // SetIncludeValues()

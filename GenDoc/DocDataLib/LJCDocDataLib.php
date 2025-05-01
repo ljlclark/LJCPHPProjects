@@ -60,6 +60,7 @@
     /// <include path='items/construct/*' file='Doc/LJCDocDataClass.xml'/>
     public function __construct(string $name, ?string $summary = null)
     {
+      // Instantiate properties with Pascal case.
       $this->Code = null;
       $this->Methods = null;
       $this->Name = $name;
@@ -69,7 +70,7 @@
     } // __construct()
 
     // ---------------
-    // Public Methods
+    // Public Methods - LJCDocDataClass
 
     // Creates a Clone of the current object.
     /// <include path='items/Clone/*' file='../../CommonDoc/PHPDataClass.xml'/>
@@ -125,7 +126,7 @@
     } // Clone()
 
     // ---------------
-    // Public Methods
+    // Public Methods - LJCDocDataClasses
 
     // Adds an object and key value.
     /// <include path='items/AddObject/*' file='../../CommonDoc/PHPCollection.xml'/>
@@ -371,12 +372,13 @@
     } // Value()
 
     // ---------------
-    // Constructors
+    // Constructors - LJCDocDataFile
 
     // Initializes an object instance with the provided values.
     /// <include path='items/construct/*' file='Doc/LJCDocDataFile.xml'/>
     public function __construct(string $name, ?string $summary = null)
     {
+      // Instantiate properties with Pascal case.
       $this->Classes = null;
       $this->Functions = null;
       $this->Name = $name;
@@ -561,6 +563,7 @@
     public function __construct(string $name, ?string $summary = null
       , ?string $returns = null)
     {
+      // Instantiate properties with Pascal case.
       $this->Code = null;
       $this->Name = $name;
       $this->Params = null;
@@ -571,7 +574,7 @@
     } // __construct()
 
     // ---------------
-    // Public Methods
+    // Public Methods - LJCDocDataMethod
 
     // Creates a Clone of the current object.
     /// <include path='items/Clone/*' file='../../CommonDoc/PHPDataClass.xml'/>
@@ -629,7 +632,7 @@
     } // Clone()
 
     // ---------------
-    // *** Public Methods ***
+    // Public Methods - LJCDocDataMethods
 
     // Adds an object and key value.
     /// <include path='items/AddObject/*' file='../../CommonDoc/PHPCollection.xml'/>
@@ -664,6 +667,7 @@
     /// <include path='items/construct/*' file='Doc/LJCDocDataClass.xml'/>
     public function __construct(string $name, ?string $summary = null)
     {
+      // Instantiate properties with Pascal case.
       $this->Name = $name;
       $this->Summary = $summary;
     } // __construct()
@@ -677,7 +681,7 @@
     } // Clone()
 
     // ---------------
-    // Public Properties
+    // Public Properties - LJCDocDataParam
 
     /// <summary>The Name value.</summary>
     public string $Name;
@@ -706,7 +710,7 @@
     } // Clone()
 
     // ---------------
-    // *** Public Methods ***
+    // Public Methods - LJCDocDataParams
 
     // Adds an object and key value.
     /// <include path='items/AddObject/*' file='../../CommonDoc/PHPCollection.xml'/>
@@ -742,6 +746,7 @@
     public function __construct(string $name, ?string $summary = null
       , ?string $returns = null)
     {
+      // Instantiate properties with Pascal case.
       $this->Name = $name;
       $this->Remarks = null;
       $this->Returns = $returns;
@@ -798,7 +803,7 @@
     } // Clone()
 
     // ---------------
-    // Public Methods
+    // Public Methods - LJCDocDataProperties
 
     // Adds an object and key value.
     /// <include path='items/AddObject/*' file='../../CommonDoc/PHPCollection.xml'/>
