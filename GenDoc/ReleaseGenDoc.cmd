@@ -5,7 +5,7 @@ rem ** md requires folder to end with "\".
 if %1%. == . goto Error
 
 set toPath=%1%
-call ..\MkDir.cmd %toPath%
+call ..\MkDir.cmd %toPath%\
 copy ReadMe*.txt %toPath%
 copy Release*.cmd %toPath%
 
