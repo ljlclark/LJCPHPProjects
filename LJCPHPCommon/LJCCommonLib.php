@@ -4,6 +4,10 @@
   // LJCCommonLib.php
   declare(strict_types=1);
 
+  // Classes
+  // File
+  //   LJCCommon
+
   /// <summary>The Common PHP Class Library</summary>
   /// LibName: LJCCommonLib
 
@@ -51,7 +55,7 @@
         }
       }
       return $retValue;
-    }
+    } // StrPos()
 
     // Gets the last index for the search value.
     /// <include path='items/StrRPos/*' file='Doc/LJCCommon.xml'/>
@@ -90,7 +94,7 @@
         }
       }
       return $retValue;
-    }
+    } // StrRPos()
 
     /// <summary>Returns a text value as boolean.</summary>
     public static function GetBool(?string $text) : bool
@@ -113,7 +117,7 @@
         }
       }
       return $retValue;
-    }
+    } // GetBool()
 
     // Gets the Debug file name.
     /// <include path='items/GetDebugFileName/*' file='Doc/LJCCommon.xml'/>
@@ -124,7 +128,7 @@
 
       self::MkDir($folder);
       return $retValue;
-    }
+    } // GetDebugFileName()
 
     // Gets the string between the delimiters.
     /// <include path='items/GetDelimitedString/*' file='Doc/LJCCommon.xml'/>
@@ -160,7 +164,7 @@
         }
       }
       return $retValue;
-    }
+    } // GetDelimitedString()
 
     // Gets the FileName from the file spec.
     /// <include path='items/GetFileName/*' file='Doc/LJCCommon.xml'/>
@@ -182,7 +186,7 @@
       $length = $end - $begin;
       $retValue = substr($fileSpec, $begin, $length);
       return $retValue;
-    }
+    } // GetFileName()
 
     // Gets the Path from the file spec.
     /// <include path='items/GetFileSpecPath/*' file='Doc/LJCCommon.xml'/>
@@ -196,7 +200,7 @@
         $retValue = substr($fileSpec, 0, $length);
       }
       return $retValue;
-    }
+    } // GetFileSpecPath()
 
     // Gets the indexed Debug file name.
     /// <include path='items/GetIndexedDebugFileName/*' file='Doc/LJCCommon.xml'/>
@@ -214,7 +218,7 @@
         $retValue = "$folder/$fileName$index.txt";
       }
       return $retValue;
-    }
+    } // GetIndexedDebugFileName()
 
     /// <summary>Get string tokens.</summary>
     /// <param name="$text">The string value.</param>
@@ -229,7 +233,7 @@
       $trimLine = trim($text);
       $retValue = preg_split($splitString, $trimLine, 0, PREG_SPLIT_NO_EMPTY);
       return $retValue;
-    }
+    } // GetTokens()
 
     /// <summary>Creates the specified folder if it does not already exist.</summary>
     /// <param name="$folder">The folder name.</param>
@@ -239,7 +243,7 @@
       {
         mkdir($folder);
       }
-    }
+    } // MkDir()
 
     // Returns a scrubbed external value.
     /// <include path='items/Scrub/*' file='Doc/LJCCommon.xml'/>
@@ -249,6 +253,6 @@
       $retValue = stripslashes($retValue);
       $retValue = htmlspecialchars($retValue);
       return $retValue;
-    }
-  }
+    } // Scrub()
+  } // LJCCommon
 ?>

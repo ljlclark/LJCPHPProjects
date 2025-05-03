@@ -3,9 +3,19 @@
   // Licensed under the MIT License.
   // LJCTextLib.php
   declare(strict_types=1);
-  $webCommonPath = "c:/inetpub/wwwroot/LJCPHPCommon";
-  require_once "$webCommonPath/LJCCommonLib.php";
+  // Must refer to exact same file in codeline.
+  include_once "LJCCommonLib.php";
   
+  // Classes
+  // LJCCommonLib
+  //   LJCCommon
+  // File
+  //   LJCStringBuilder
+  //   LJCHTMLTableColumn
+  //   LJCHTMLWriter
+  //   LJCWriter
+  //   LJCDebugWriter
+
   /// <summary>The Common Text Output Class Library</summary>
   /// LibName: LJCTextLib
 
@@ -20,7 +30,7 @@
     public function __construct()
     {
       $this->StringValue = null;
-    }
+    } // __construct()
 
     // ---------------
     // Public Methods - LJCStringBuilder
@@ -50,7 +60,7 @@
         }
       }
       $this->StringValue .= $text;
-    }
+    } // Append()
 
     // Appends a text line with indents.
     /// <include path='items/AppendLine/*' file='Doc/LJCStringBuilder.xml'/>
@@ -59,7 +69,7 @@
     {
       $this->Append($text, $indent, $addBreak);
       $this->Append("\r\n");
-    }
+    } // AppendLine()
 
     // Appends a text line with begin tag, end tag and indents.
     /// <include path='items/AppendTags/*' file='Doc/LJCStringBuilder.xml'/>
@@ -70,7 +80,7 @@
       {
         $this->AppendLine("<$tag>$text</$tag>", $indent, $addBreak);
       }
-    }
+    } // AppendTags()
 
     /// <summary>Gets the current builder string length.</summary>
     public function Length() : int
@@ -83,13 +93,13 @@
         $retValue = strlen($text);
       }
       return $retValue;
-    }
+    } // Length()
 
     /// <summary>Gets the built string.</summary>
     public function ToString()
     {
       return $this->StringValue;
-    }
+    } // ToString()
 
     // Initializes built string value.
     private function InitValue()
@@ -98,16 +108,19 @@
       {
         $this->StringValue = "";
       }
-    }
+    } // InitValue()
 
     // The built string value.
     private ?string $StringValue;
-  }
+  } // LJCStringBuilder
 
   // ***************
   /// <summary>The HTML table column definition.</summary> 
   class LJCHTMLTableColumn
   {
+    // ---------------
+    // Constructors
+
     // Initializes an object instance.
     /// <include path='items/construct/*' file='Doc/LJCHTMLTableColumn.xml'/>
     public function __construct(string $columnName, string $headingName = null
@@ -121,7 +134,7 @@
       }
       $this->Style = $style;
       $this->Width = $width;
-    }
+    } // __construct()
 
     /// <summary>The Column name.</summary> 
     public string $ColumnName;
@@ -134,12 +147,15 @@
 
     /// <summary>The Column width.</summary> 
     public ?string $Width;
-  }
+  } // LJCHTMLTableColumn
 
   // ***************
   /// <summary>Contains HTML output methods.</summary> 
   class LJCHTMLWriter
   {
+    // ---------------
+    // Public Static Functions
+
     // Writes an HTML table header row.
     /// <include path='items/WriteHeader/*' file='Doc/LJCHTMLWriter.xml'/>
     public static function WriteHeader($columns, $width = null)
@@ -155,7 +171,7 @@
       }	
       LJCWriter::WriteLine("</tr>");
       LJCWriter::WriteLine("</thead>", 1);
-    }
+    } // WriteHeader()
 
     // Writes an HTML table data row.
     /// <include path='items/WriteRow/*' file='Doc/LJCHTMLWriter.xml'/>
@@ -175,7 +191,7 @@
         LJCWriter::Write(">$value</td>");
       }
       LJCWriter::WriteLine("</tr>");
-    }
+    } // WriteRow()
 
     // Writes the style property values.
     public static function WriteAttribute(string $name, ?string $value)
@@ -184,8 +200,8 @@
       {
         LJCWriter::Write(" $name='$value'");
       }
-    }
-  }
+    } // WriteAttribute()
+  } // LJCHTMLWriter
 
   // ***************
   // Contains console and file output methods.
@@ -193,16 +209,16 @@
   class LJCWriter
   {
     // ---------------
-    // Static Functions
+    // Public Static Functions
 
-  // Runs a program and returns the output.
-  public static function Run($programName) : array
-  {
-    $lines = null;
-    $status = null;
-    exec($programName, $lines, $status);
-    return $lines;
-  }
+    // Runs a program and returns the output.
+    public static function Run($programName) : array
+    {
+      $lines = null;
+      $status = null;
+      exec($programName, $lines, $status);
+      return $lines;
+    } // Run()
 
     // Writes text with indents.
     /// <include path='items/Write/*' file='Doc/LJCWriter.xml'/>
@@ -234,7 +250,7 @@
         }
       }
       echo $text;
-    }
+    } // Write()
 
     // Writes text with indents.
     public static function WriteAll(array $lines, bool $addCRLF = true)
@@ -247,7 +263,7 @@
           echo "\r\n";
         }
       }
-    }
+    } // WriteAll()
 
     // <summary>Writes an XML file.</summary>
     /// <include path='items/WriteFile/*' file='Doc/LJCWriter.xml'/>
@@ -260,7 +276,7 @@
         $writer->FWrite($text);
         fclose($stream);
       }
-    }
+    } // WriteFile()
 
     // Writes a text line with indents.
     /// <include path='items/WriteLine/*' file='Doc/LJCWriter.xml'/>
@@ -269,17 +285,20 @@
     {
       self::Write($text, $indentCount, $addBreak);
       echo "\r\n";
-    }
+    } // WriteLine()
+
+    // ---------------
+    // Constructors - LJCWriter
 
     /// <summary>Initializes an object instance.</summary>
     /// <param name="$stream">The stream object.</param>
     public function __construct($stream)
     {
       $this->Stream = $stream;
-    }
+    } // __construct()
 
     // ---------------
-    // Public Methods 
+    // Public Methods - LJCWriter
 
     // Writes file text with indents.
     /// <include path='items/FWrite/*' file='Doc/LJCWriter.xml'/>
@@ -290,17 +309,56 @@
         fwrite($this->Stream, str_repeat("\t", $indentCount));
       }
       fwrite($this->Stream, "$text");
-    }
+    } // FWrite()
 
     // Writes a file text line with indents.
     /// <include path='items/FWriteLine/*' file='Doc/LJCWriter.xml'/>
     public function FWriteLine(string $text, int $indentCount = 0)
     {
       $this->FWrite("$text\r\n", $indentCount);
-    }
+    } // FWriteLine()
 
     // ---------------
     // Class Data
     private $Stream;
-  }
+  } // LJCWriter
+
+  // ***************
+  /// <summary>Contains Debug output methods.</summary>
+  class LJCDebugWriter
+  {
+    // ---------------
+    // Constructors
+
+    public function __construct(string $locName)
+    {
+      $fileName = LJCCommon::GetDebugFileName("Debug", $locName);
+      $outputStream = fopen($fileName, "w");
+      $this->DebugWriter = new LJCWriter($outputStream);
+    } // __construct()
+
+    // ---------------
+    // Public Methods - LJCDebugWriter
+
+    /// <summary>Writes a Debug output line.</summary>
+    /// <param name="$text"></param>
+    /// <param name="$addLine"></param>
+    public function Debug(string $text, bool $addLine = true) : void
+    {
+      if ($this->DebugWriter != null)
+      {
+        if ($addLine)
+        {
+          $this->DebugWriter->FWriteLine("$text");
+        }
+        else
+        {
+          $this->DebugWriter->FWrite("$text");
+        }
+      }
+    } // Debug()
+
+    // The DebugWriter value.
+    private ?LJCWriter $DebugWriter;
+  } // LJCDebugWriter
 ?>

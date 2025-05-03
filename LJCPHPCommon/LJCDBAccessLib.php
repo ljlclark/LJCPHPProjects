@@ -3,8 +3,21 @@
   // Licensed under the MIT License.
   // LJCDBAccessLib.php
   declare(strict_types=1);
-  $webCommonPath = "c:/inetpub/wwwroot/LJCPHPCommon";
-  require_once "$webCommonPath/LJCCollectionLib.php";
+  // Must refer to exact same file in codeline.
+  include_once "LJCCollectionLib.php";
+
+  // Classes
+  // LJCCollectionLib
+  //   LJCCollectionBase
+  // File
+  //   LJCConnectionValues
+  //   LJCDbAccess
+  //   LJCDbColumn
+  //   LJCDbColumns
+  //   LJCJoin
+  //   LJCJoins
+  //   LJCJoinOn
+  //   LJCJoinOns
 
   /// <summary>The PDO Data Access Library</summary>
   /// LibName: LJCDBAccessLib
@@ -22,10 +35,10 @@
       $this->DbName = $dbName;
       $this->UserID = $userID;
       $this->Password = $password;
-    }
+    } // __construct()
 
     // ---------------
-    // Properties
+    // Properties - LJCConnectionValues
 
     /// <summary>The Database name.</summary>
     public string $DbName;
@@ -59,7 +72,7 @@
         $retValue = $row[$columnName];
       }
       return $retValue;
-    }
+    } // GetValue()
 
     // Initializes a class instance.
     /// <include path='items/construct/*' file='Doc/LJCDbAccess.xml'/>
@@ -68,10 +81,10 @@
       $this->SetConnectionValues($connectionValues->DbServer
         , $connectionValues->DbName, $connectionValues->UserID
         , $connectionValues->Password);
-    }
+    } // __construct()
 
     // ---------------
-    // Public Data Methods
+    // Public Data Methods - LJCDbAccess
 
     // Executes a non-query sql statement.
     /// <include path='items/Execute/*' file='Doc/LJCDbAccess.xml'/>
@@ -89,7 +102,7 @@
         $connection = null;
       }
       return $retValue;
-    }
+    } // Execute()
 
     // Loads the records using the provided SQL statement.
     /// <include path='items/Load/*' file='Doc/LJCDbAccess.xml'/>
@@ -108,7 +121,7 @@
         $connection = null;
       }
       return $retValue;
-    }
+    } // Load()
 
     // Retrieves a record using the provided SQL statement.
     /// <include path='items/Retrieve/*' file='Doc/LJCDbAccess.xml'/>
@@ -122,10 +135,10 @@
         $retValue = $rows[0];
       }
       return $retValue;
-    }
+    } // Retrieve()
 
     // ---------------
-    // Other Public Methods
+    // Other Public Methods - LJCDbAccess
 
     // Creates the PDO connection.
     /// <include path='items/GetConnection/*' file='Doc/LJCDbAccess.xml'/>
@@ -146,7 +159,7 @@
         Writer::WriteLine("Connection failed: ".$e->getMessage());
       }
       return $retValue;
-    }
+    } // GetConnection()
 
     // Returns the Table Schema LJCDbColumns collection.
     /// <include path='items/LoadTableSchema/*' file='Doc/LJCDbAccess.xml'/>
@@ -171,7 +184,7 @@
       }
       $this->Connection = null;
       return $retValue;
-    }
+    } // LoadTableSchema()
 
     // Sets the $ConnectionValues property.
     /// <include path='items/SetConnectionValues/*' file='Doc/LJCDbAccess.xml'/>
@@ -180,10 +193,10 @@
     {
       $this->ConnectionValues = new LJCConnectionValues($dbServer, $dbName
         , $userID, $password);
-    }
+    } // SetConnectionValues()
 
     // ---------------
-    // Private Methods
+    // Private Methods - LJCDbAccess
 
     // Creates the Table Schema LJCDbColumn object.
     // <include path='items/GetTableSchema/*' file='Doc/LJCDbAccess.xml'/>
@@ -202,7 +215,7 @@
       $retValue->RenameAs = null;
       $retValue->Value = null;
       return $retValue;
-    }
+    } // GetTableSchema()
 
     /// <summary>The Database Connection values.</summary>
     public LJCConnectionValues $ConnectionValues;
@@ -231,7 +244,7 @@
           break;
       }
       return $retValue;
-    }
+    } // GetDataType()
 
     // Initializes a class instance.
     /// <include path='items/construct/*' file='Doc/LJCDbColumn.xml'/>
@@ -255,7 +268,7 @@
       $this->Value = $value;
       $this->WhereBoolOperator = "and";
       $this->WhereCompareOperator = "=";
-    }
+    } // __construct()
 
     /// <summary>Creates an object clone.</summary>
     public function Clone() : self
@@ -274,10 +287,10 @@
       $retValue->WhereBoolOperator = $this->WhereBoolOperator;
       $retValue->WhereCompareOperator = $this->WhereCompareOperator;
       return $retValue;
-    }
+    } // Clone()
 
     // ---------------
-    // Properties
+    // Properties - LJCDbColumn
 
     /// <summary>Indicates if the Column allows nulls.</summary>
     public bool $AllowDbNull;
@@ -345,7 +358,7 @@
         , $dataTypeName, $value);
       $retValue = $this->AddObject($item , $key);
       return $retValue;
-    }
+    } // Add()
 
     // Adds an object and key value.
     /// <include path='items/AddObject/*' file='Doc/LJCDbColumns.xml'/>
@@ -357,7 +370,7 @@
       }
       $retValue = $this->AddItem($item, $key);
       return $retValue;
-    }
+    } // AddObject()
 
     /// <summary>Creates an object clone.</summary>
     public function Clone() : self
@@ -369,14 +382,14 @@
       }
       unset($item);
       return $retValue;
-    }
+    } // Clone()
 
     // Get the item by Key value.
     // Obsolete: Use Retrieve().
     public function Get($key, bool $throwError = true) : ?LJCDbColumn
     {
       return $this->Retrieve($key, $throwError);
-    }
+    } // Get()
 
     // Get the column definitions that match the property names.
     /// <include path='items/GetColumns/*' file='Doc/LJCDbColumns.xml'/>
@@ -400,7 +413,7 @@
         }
       }
       return $retValue;
-    }
+    } // GetColumns()
 
     // Sets the PropertyName, RenameAs and Caption values for a column.
     /// <include path='items/MapNames/*' file='Doc/LJCDbColumns.xml'/>
@@ -423,7 +436,7 @@
           $dbColumn->Caption = $caption;
         }
       }
-    }
+    } // MapNames()
 
     // Get the item by Key value.
     /// <include path='items/Get/*' file='Doc/LJCDbColumns.xml'/>
@@ -431,7 +444,7 @@
     {
       $retValue = $this->RetrieveItem($key, $throwError);
       return $retValue;
-    }
+    } // Retrieve()
 
     // Sets the Where Clause operators.
     /// <include path='items/SetWhereOperators/*' file='Doc/LJCDbColumns.xml'/>
@@ -444,7 +457,7 @@
         $item->WhereBoolOperator = $boolOperator;
         $item->WhereCompareOperator = $compareOperator;
       }
-    }
+    } // SetWhereOperators()
   }  // LJCDbColumns
 
   // ***************
@@ -461,7 +474,7 @@
       $this->SchemaName = null;
       $this->TableAlias = $tableAlias;
       $this->TableName = $tableName;
-    }
+    } // __construct()
 
     /// <summary>Creates an object clone.</summary>
     public function Clone() : self
@@ -473,10 +486,10 @@
       $retValue->TableAlias = $this->TableAlias;
       $retValue->TableName = $this->TableName;
       return $retValue;
-    }
+    } // Clone()
 
     // ---------------
-    // Properties
+    // Properties - LJCJoin
 
     // The included join table columns.
     public LJCDbColumns $Columns;
@@ -495,7 +508,7 @@
 
     /// <summary>The table name.</summary>
     public string $TableName;
-  }
+  } // LJCJoin
 
   // ***************
   /// <summary>Represents a collection of LJCJoin objects.</summary>
@@ -519,7 +532,7 @@
       $item = new LJCJoin($tableName, $tableAlias);
       $retValue = $this->AddObject($item , $key);
       return $retValue;
-    }
+    } // Add()
 
     /// <summary>Adds an object and key value.</summary>
     /// <include path='items/AddObject/*' file='Doc/LJCJoins.xml'/>
@@ -531,7 +544,7 @@
       }
       $retValue = $this->AddItem($item, $key);
       return $retValue;
-    }
+    } // AddObject()
 
     /// <summary>Creates an object clone.</summary>
     public function Clone() : self
@@ -543,14 +556,14 @@
       }
       unset($item);
       return $retValue;
-    }
+    } // Clone()
 
     // Get the item by Key value.
     // Obsolete: Use Retrieve().
     public function Get($key, bool $throwError = true) : ?LJCJoin
     {
       return $this->Retrieve($key, $throwError);
-    }
+    } // Get()
 
     /// <summary>Get the item by Key value.</summary>
     /// <include path='items/Get/*' file='Doc/LJCJoins.xml'/>
@@ -558,8 +571,8 @@
     {
       $retValue = $this->RetrieveItem($key, $throwError);
       return $retValue;
-    }
-  }
+    } // Retrieve()
+  } // LJCJoins
 
   // ***************
   /// <summary>Represents a SQL JoinOn.</summary>
@@ -574,7 +587,7 @@
       $this->JoinOnOperator = "=";
       $this->JoinOns = null;
       $this->ToColumnName = $toColumnName;
-    }
+    } // __construct()
 
     /// <summary>Creates an object clone.</summary>
     public function Clone() : self
@@ -586,10 +599,10 @@
       $retValue->JoinOns = $this->JoinOns;
       $retValue->ToColumnName = $this->ToColumnName;
       return $retValue;
-    }
+    } // Clone()
 
     // ---------------
-    // Properties
+    // Properties - LJCJoinOn
 
     /// <summary>The Boolean Operator value.</summary>
     public string $BooleanOperator;
@@ -605,7 +618,7 @@
 
     /// <summary>The 'To' column name.</summary>
     public string $ToColumnName;
-  }
+  } // LJCJoinOn
 
   // ***************
   /// <summary>Represents a collection of LJCJoin objects.</summary>
@@ -629,7 +642,7 @@
       $item = new LJCJoinOn($fromColumnName, $toColumnName);
       $retValue = $this->AddObject($item , $key);
       return $retValue;
-    }
+    } // Add()
 
     // Adds an object and key value.
     /// <include path='items/AddObject/*' file='Doc/LJCJoinOns.xml'/>
@@ -641,7 +654,7 @@
       }
       $retValue = $this->AddItem($item, $key);
       return $retValue;
-    }
+    } // AddObject()
 
     /// <summary>Creates an object clone.</summary>
     public function Clone() : self
@@ -653,14 +666,14 @@
       }
       unset($item);
       return $retValue;
-    }
+    } // Clone()
 
     // Get the item by Key value.
     // Obsolete: Use Retrieve().
     public function Get($key, bool $throwError = true) : ?LJCJoinOn
     {
       return $this.Retrieve($key,$throwError);
-    }
+    } // Get()
 
     /// <summary>Get the item by Key value.</summary>
     /// <include path='items/Get/*' file='Doc/LJCJoinOns.xml'/>
@@ -668,6 +681,6 @@
     {
       $retValue = $this->RetrieveItem($key, $throwError);
       return $retValue;
-    }
-  }
+    } // Retrieve()
+  } // LJCJoinOns
 ?>

@@ -3,9 +3,29 @@
   // Licensed under the MIT License.
   // LJCDataManagerLib.php
   declare(strict_types=1);
-  $webCommonPath = "c:/inetpub/wwwroot/LJCPHPCommon";
-  require_once "$webCommonPath/LJCDBAccessLib.php";
-  require_once "$webCommonPath/LJCTextLib.php";
+  // Must refer to exact same file in codeline.
+  include_once "LJCDBAccessLib.php";
+  include_once "LJCTextLib.php";
+
+  // Classes
+  // LJCDBAccessLib
+  //   LJCConnectionValues
+  //   LJCDbAccess
+  //   LJCDbColumn
+  //   LJCDbColumns
+  //   LJCJoin
+  //   LJCJoins
+  //   LJCJoinOn
+  //   LJCJoinOns
+  // LJCTextLib
+  //   LJCStringBuilder
+  //   LJCHTMLTableColumn
+  //   LJCHTMLWriter
+  //   LJCWriter
+  //   LJCDebugWriter
+  // File
+  //   LJCDataManager
+  //   LJCSQLBuilder
 
   /// <summary>The PDO Data Manager Library</summary>
   /// LibName: LJCDataManagerLib
@@ -27,10 +47,10 @@
       $this->Joins = null;
       $this->OrderByNames = null;
       $this->SQL = null;
-    }
+    } // __construct()
 
     // ---------------
-    // Public Data Methods
+    // Public Data Methods - LJCDataManager
 
     // Adds the record for the provided values.
     /// <include path='items/Add/*' file='Doc/LJCDataManager.xml'/>
@@ -42,7 +62,7 @@
         , $dataColumns);
       $retValue = $this->DbAccess->Execute($this->SQL);
       return $retValue;
-    }
+    } // Add()
   
     // Deletes the records for the provided values.
     /// <include path='items/Delete/*' file='Doc/LJCDataManager.xml'/>
@@ -57,7 +77,7 @@
       $this->SQL = LJCSQLBuilder::CreateDelete($this->TableName, $keyColumns);
       $retValue = $this->DbAccess->Execute($this->SQL);
       return $retValue;
-    }
+    } // Delete()
 
     // Loads the records for the provided values.
     /// <include path='items/Load/*' file='Doc/LJCDataManager.xml'/>
@@ -72,7 +92,7 @@
       $this->SQL .= LJCSQLBuilder::GetOrderBy($this->OrderByNames);
       $retValue = $this->DbAccess->Load($this->SQL);
       return $retValue;
-    }
+    } // Load()
 
     // Retrieves the record for the provided values.
     /// <include path='items/Retrieve/*' file='Doc/LJCDataManager.xml'/>
@@ -87,7 +107,7 @@
       $this->SQL .= LJCSQLBuilder::GetOrderBy($this->OrderByNames);
       $retValue = $this->DbAccess->Retrieve($this->SQL);
       return $retValue;
-    }
+    } // Retrieve()
 
     // Updates the records for the provided values.
     /// <include path='items/Update/*' file='Doc/LJCDataManager.xml'/>
@@ -104,7 +124,7 @@
         , $dataColumns);
       $retValue = $this->DbAccess->Execute($this->SQL);
       return $retValue;
-    }
+    } // Update()
 
     // Executes an Add, Delete or Update SQL statement.
     /// <include path='items/SQLExecute/*' file='Doc/LJCDataManager.xml'/>
@@ -113,7 +133,7 @@
       $this->SQL = $sql;
       $retValue = $this->DbAccess->Execute($this->SQL);
       return $retValue;
-    }
+    } // SQLExecute()
 
     // Executes a Select SQL statement.
     /// <include path='items/SQLLoad/*' file='Doc/LJCDataManager.xml'/>
@@ -122,7 +142,7 @@
       $this->SQL = $sql;
       $retValue = $this->DbAccess->Load($this->SQL);
       return $retValue;
-    }
+    } // SQLLoad()
 
     // Executes a Select SQL statement.
     /// <include path='items/SQLRetrieve/*' file='Doc/LJCDataManager.xml'/>
@@ -131,10 +151,10 @@
       $this->SQL = $sql;
       $retValue = $this->DbAccess->Retrieve($this->SQL);
       return $retValue;
-    }
+    } // SQLRetrieve()
 
     // ---------------
-    // Public Methods
+    // Public Methods - LJCDataManager
 
     // Creates an array of Data Objects from a Data Result rows array.
     /// <include path='items/CreateDataCollection/*' file='Doc/LJCDataManager.xml'/>
@@ -154,7 +174,7 @@
         $values = $collection->GetValues();
       }
       return $retValue;
-    }
+    } // CreateDataCollection()
 
     // Populates a Data Object with values from a Data Result row.
     /// <include path='items/CreateDataObject/*' file='Doc/LJCDataManager.xml'/>
@@ -165,7 +185,7 @@
       $this->SetData($this->SchemaColumns, $dataObject, $row);
       $this->CreateJoinData($retValue, $row);
       return $retValue;
-    }
+    } // CreateDataObject()
 
     // Populates a Data Object with Join values from a Data Result row.
     private function CreateJoinData($dataObject, array $row)
@@ -177,7 +197,7 @@
           $this->SetData($join->Columns, $dataObject, $row);
         }
       }
-    }
+    } // CreateJoinData()
 
     // Sets Data Object values from the Data Result row.
     private function SetData(LJCDbColumns $columns, $dataObject, array $row)
@@ -208,10 +228,10 @@
           }
         }
       }
-    }
+    } // SetData()
 
     // ---------------
-    // Public Properties
+    // Public Properties - LJCDataManager
 
     /// <summary>The DbAccess object.</summary>
     public LJCDbAccess $DbAccess;
@@ -248,7 +268,7 @@
       $retValue = "delete from $tableName \r\n";
       $retValue .= self::WhereClause($tableName,$keyColumns);
       return $retValue;
-    }
+    } // CreateDelete()
 
     // Creates a Select SQL statement.
     /// <include path='items/CreateInsert/*' file='Doc/LJCSQLBuilder.xml'/>
@@ -260,7 +280,7 @@
       $retValue .= " values \r\n" . self::SQLValueColumns($dataColumns, false
         , true);
       return $retValue;
-    }
+    } // CreateInsert()
 
     // Creates a Select SQL statement.
     /// <include path='items/CreateSelect/*' file='Doc/LJCSQLBuilder.xml'/>
@@ -282,7 +302,7 @@
       $retValue .= self::GetJoinStatement($tableName, $joins);
       $retValue .= self::WhereClause($tableName, $keyColumns);
       return $retValue;
-    }
+    } // CreateSelect()
 
     // Creates an Update SQL statement.
     /// <include path='items/CreateUpdate/*' file='Doc/LJCSQLBuilder.xml'/>
@@ -293,7 +313,7 @@
       $retValue .= self::SQLValueColumns($dataColumns, true);
       $retValue .= self::WhereClause($tableName, $keyColumns);
       return $retValue;
-    }
+    } // CreateUpdate()
 
     // Get the JoinOn statements.
     /// <include path='items/GetJoinOns/*' file='Doc/LJCSQLBuilder.xml'/>
@@ -352,7 +372,7 @@
       }
       $retValue = $builder->ToString();
       return $retValue;
-    }
+    } // GetJoinOns()
 
     /// <summary>Creates the join statement.</summary>
     /// <include path='items/GetJoinStatement/*' file='Doc/LJCSQLBuilder.xml'/>
@@ -380,7 +400,7 @@
         $retValue = $builder->ToString();
       }
       return $retValue;
-    }
+    } // GetJoinStatement()
 
     // Get the full join table string.
     /// <include path='items/GetJoinTableString/*' file='Doc/LJCSQLBuilder.xml'/>
@@ -402,7 +422,7 @@
       $builder->AppendLine(" ");
       $retValue = $builder->ToString();
       return $retValue;
-    }
+    } // GetJoinTableString()
 
     // Creates an OrderBy clause.
     /// <include path='items/GetOrderBy/*' file='Doc/LJCSQLBuilder.xml'/>
@@ -430,7 +450,7 @@
         }
       }
       return $retValue;
-    }
+    } // GetOrderBy()
 
     // Creates the columns for a Select SQL statement.
     /// <include path='items/SQLColumns/*' file='Doc/LJCSQLBuilder.xml'/>
@@ -468,7 +488,7 @@
         $retValue .= " )\r\n";
       }
       return $retValue;
-    }
+    } // SQLColumns()
 
     // Creates the Join columns for a Select SQL statement.
     /// <include path='items/SQLJoinColumns/*' file='Doc/LJCSQLBuilder.xml'/>
@@ -500,7 +520,7 @@
         }
       }
       return $retValue;
-    }
+    } // SQLJoinColumns()
 
     // Creates the value columns for an Update SQL statement.
     /// <include path='items/SQLValueColumns/*' file='Doc/LJCSQLBuilder.xml'/>
@@ -559,10 +579,10 @@
         $retValue .= " )\r\n";
       }
       return $retValue;
-    }
+    } // SQLValueColumns()
 
     // ---------------
-    // Private Static Functions
+    // Private Static Functions - LJCSQLBuilder
 
     // Qualify with the table name or alias unless already qualified.
     // <include path='items/GetQualifiedColumnName/*' file='Doc/LJCSQLBuilder.xml'/>
@@ -602,7 +622,7 @@
         $retValue = "$tableName.$columnName";
       }
       return $retValue;
-    }
+    } // GetQualifiedColumnName()
 
     // Creates the Where clause.
     private static function WhereClause(string $tableName
@@ -645,6 +665,6 @@
         }
       }
       return $retValue;
-    }
+    } // WhereClause()
   }  // LJCSQLBuilder
 ?>

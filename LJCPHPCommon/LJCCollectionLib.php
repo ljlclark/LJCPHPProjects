@@ -4,6 +4,12 @@
   // LJCCollectionLib.php
   declare(strict_types=1);
 
+  // Classes
+  // File
+  //   LJCCollectionBase
+
+  // #02 Correct Syntac - 5/1/25
+
   /// <summary>Contains Classes to represent a Collection.</summary>
   /// LibName: LJCCollectionLib
 
@@ -34,7 +40,7 @@
         $this->Items[$key] = $item;
       }
       return $retValue;
-    }
+    } // AddItem()
 
     // Remove the item by Key value.
     /// <include path='items/Remove/*' file='Doc/LJCCollectionBase.xml'/>
@@ -53,29 +59,30 @@
       {
         unset($this->Items[$key]);
       }
-    }
+    } // DeleteItem()
 
     // Get the item by Key value.
     /// <include path='items/GetItem/*' file='Doc/LJCCollectionBase.xml'/>
     // Obsolete: Use RetrieveItem().
     protected function GetItem($key, bool $throwError = true)
     {
-      return RetrieveItem($key, $throwError);
-    }
+      // *** Change *** #02
+      return $this->RetrieveItem($key, $throwError);
+    } // GetItem()
 
     /// <summary>Gets an indexed array of keys.</summary>
     /// <returns>The indexed keys array.</returns>
     public function GetKeys() : array
     {
       return array_keys($this->Items);
-    }
+    } // GetKeys()
 
     /// <summary>Gets an indexed array of objects.</summary>
     /// <returns>The indexed values array.</returns>
     public function GetValues() : array
     {
       return array_values($this->Items);
-    }
+    } // GetValues()
 
     // Indicates if a key already exists.
     /// <include path='items/HasKey/*' file='Doc/LJCCollectionBase.xml'/>
@@ -83,18 +90,18 @@
     {
       //return array_key_exists($key, $this->Items);
       return isset($this->Items[$key]);
-    }
+    } // HasKey()
 
     // Remove the item by Key value.
     // Obsolete: Use DeleteItem().
     public function Remove($key, bool $throwError = true) : void
     {
       DeleteItem($key, $throwError);
-    }
+    } // Remove()
 
     // Get the item by Key value.
     /// <include path='items/GetItem/*' file='Doc/LJCCollectionBase.xml'/>
-    protected function RetrieveItem($key, bool $throwError = true)
+    private function RetrieveItem($key, bool $throwError = true)
     {
       $retValue = null;
 
@@ -112,28 +119,28 @@
         $retValue = $this->Items[$key];
       }
       return $retValue;
-    }
+    } // RetrieveItem()
 
     // ----------------------
-    // Implementation Methods
+    // Implementation Methods - LJCCollectionBase
 
     /// <summary>Allows Count(object).</summary>
     /// <returns>The element count.</returns>
     public function count() : int
     {
       return count($this->Items);
-    }
+    } // count()
 
     /// <summary>Allows foreach()</summary>
     public function getIterator() : Traversable
     {
       return new ArrayIterator($this->Items);
-    }
+    } // getIterator()
 
     // ------------------
-    // Class Data
+    // Class Data - LJCCollectionBase
 
     /// <summary>The elements array.</summary>
     protected array $Items = [];
-  }
+  } // LJCCollectionBase
 ?>
