@@ -1,8 +1,10 @@
 <?php
   // LJCGenDataXMLLib.php
   declare(strict_types=1);
-  $devPath = "c:/Users/Les/Documents/Visual Studio 2022/LJCPHPProjects";
-  require_once "$devPath/LJCPHPCommon/LJCTextLib.php";
+  $path = "../..";
+  // Must refer to exact same file everywhere in codeline.
+  require_once "$path/LJCPHPCommon/LJCTextLib.php";
+  require_once "$path/GenDoc/GenDataLib/LJCDebugLib.php";
 
   // Contains Classes to generate GenData XML.
   /// <include path='items/LJCGenDataXMLLib/*' file='Doc/LJCGenDataXMLLib.xml'/>
@@ -12,6 +14,19 @@
   /// <include path='items/LJCGenDataXML/*' file='Doc/LJCGenDataXML.xml'/>
   class LJCGenDataXML
   {
+    // ---------------
+    // Constructors
+
+    /// <summary>Initializes an object instance.</summary>
+    public function __construct()
+    {
+      // Instantiate properties with Pascal case.
+      $isEnabled = false;
+      $this->Debug = new LJCDebug("LJCDocGenDataXMLLib", "LJCGenDataXML"
+        , $isEnabled);
+      $this->Debug->IncludePrivate = true;
+    }
+
     // ---------------
     // Common GenData XML Methods - LJCGenDataXML
 

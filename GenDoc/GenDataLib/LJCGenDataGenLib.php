@@ -1,10 +1,12 @@
 <?php
   // LJCGenDataGenLib.php
   declare(strict_types=1);
-  $devPath = "c:/Users/Les/Documents/Visual Studio 2022/LJCPHPProjects";
-  require_once "$devPath/LJCPHPCommon/LJCTextLib.php";
-  require_once "$devPath/GenTextLib/LJCGenTextLib.php";
-  require_once "$devPath/GenDoc/GenDataLib/LJCGenDataXMLLib.php";
+  $path = "../..";
+  // Must refer to exact same file everywhere in codeline.
+  require_once "$path/LJCPHPCommon/LJCTextLib.php";
+  require_once "$path/GenTextLib/LJCGenTextLib.php";
+  require_once "$path/GenDoc/GenDataLib/LJCGenDataXMLLib.php";
+  require_once "$path/GenDoc/GenDataLib/LJCDebug.php";
 
   // Contains classes to create GenData from DocData.
   /// <include path='items/LJCGenDataGenLib/*' file='Doc/LJCGenDataGenLib.xml'/>
@@ -40,8 +42,18 @@
     /// <summary>Initializes an object instance.</summary>
     public function __construct()
     {
+      // Instantiate properties with Pascal case.
+      $isEnabled = false;
+      $this->Debug = new LJCDebug("LJCDocDataGenLib", "LJCGenDataGen"
+        , $isEnabled);
+      $this->Debug->IncludePrivate = true;
+
       $this->HTMLPath = "../../../WebSitesDev/CodeDoc/LJCPHPCodeDoc/HTML";
       LJCCommon::MkDir($this->HTMLPath);
+
+      $this->DebugWriter = null;
+      // Create DebugWriter if writing debug data.
+      //$this->DebugWriter = new LJCDebugWriter("LJCGenDataGen");
     }
     
     // ---------------
@@ -52,10 +64,12 @@
     public function CreateLibXMLString(string $docXMLString, string $codeFileSpec
       , bool $writeXML = false, string $outputPath = null) : string
     {
+      $this->Debug->WriteStartText("CreateLibXMLString");
       $retValue = null;
 
       // GenData XML file name same as source file with .xml extension.
       $fileName = LJCCommon::GetFileName($codeFileSpec) . ".xml";
+      $this->Debug("fileName = $fileName");
       // Start Testing
       $docDataFile = LJCDocDataFile::DeserializeString($docXMLString);
       $retValue = $this->CreateLibString($docDataFile, $fileName);
@@ -72,8 +86,9 @@
         $htmlFileName = LJCCommon::GetFileName($codeFileSpec);
         $this->WriteHTML($htmlText, $htmlPath, $htmlFileName);
       }
-
       $this->CreateClassesXML($docDataFile, $writeXML, $outputPath);
+
+      $this->Debug->AddIndent(-1);
       return $retValue;
     }
 
@@ -810,12 +825,12 @@
     private function GetHTMLText(string $sectionsXMLString
       , string $templateFileName) : string
     {
-      global $devPath;
+      global $dev;
       $retValue = null;
 
       if ($sectionsXMLString != null)
       {
-        $templateFileSpec = "$devPath/GenDoc/GenDataLib/Templates/$templateFileName";
+        $templateFileSpec = "$dev/GenDoc/GenDataLib/Templates/$templateFileName";
         $sections = LJCSections::DeserializeString($sectionsXMLString);
         $genText = new LJCGenText();
         $retValue = $genText->ProcessTemplate($templateFileSpec, $sections);
@@ -831,6 +846,15 @@
       $fileSpec = "$htmlPath/$fileName" . ".html";
       LJCWriter::WriteFile($htmlText, $fileSpec);
     }
+
+    // Writes the debug value.
+    private function Debug(string $text, bool $addLine = true) : void
+    {
+      if (isset($this->DebugWriter))
+      {
+        $this->DebugWriter->Debug($text, $addLine);
+      }
+    } // Debug()
 
     // The path for HTML output.
     public string $HTMLPath;
