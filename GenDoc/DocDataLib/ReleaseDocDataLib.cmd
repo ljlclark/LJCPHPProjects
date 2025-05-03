@@ -8,7 +8,7 @@ set toPath=%1%
 call ..\..\MkDir.cmd %toPath%\
 copy *.php %toPath%
 copy ReadMe*.txt %toPath%
-copy Release*.cmd %toPath%
+copy *.cmd %toPath%
 
 set toPath=%1%\Doc
 call ..\..\MkDir.cmd %toPath%\

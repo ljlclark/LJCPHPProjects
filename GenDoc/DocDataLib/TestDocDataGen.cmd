@@ -1,1 +1,2 @@
-php TestDocDataGen.php > Test.log
+rem php TestDocDataGen.php > Test.log
+php TestDocDataGen.php
