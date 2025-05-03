@@ -6,9 +6,9 @@ if %1%. == . goto Error
 
 set toPath=%1%
 call ../../MkDir.cmd %toPath%\
-copy GenCodeDocFiles.cmd %toPath%
 copy *.php %toPath%
 copy ReadMe*.txt %toPath%
+copy *.cmd %toPath%
 
 goto Exit
 :Error

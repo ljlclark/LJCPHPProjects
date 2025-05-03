@@ -2,9 +2,10 @@
   // Copyright (c) Lester J. Clark 2022 - All Rights Reserved
   // LJCGenTextSectionLib.php
   declare(strict_types=1);
-  $devPath = "c:/Users/Les/Documents/Visual Studio 2022/LJCPHPProjects";
-  require_once "$devPath/LJCPHPCommon/LJCTextLib.php";
-  require_once "$devPath/LJCPHPCommon/LJCDBAccessLib.php";
+  $path = "../..";
+  require_once "$path/LJCPHPCommon/LJCTextLib.php";
+  require_once "$path/LJCPHPCommon/LJCDBAccessLib.php";
+  include_once "$path/GenDoc/DocDataLib/LJCDebugLib.php";
 
   // The utility to generate text from a template and custom data.
   // The GenText Section Library
@@ -149,6 +150,12 @@
     /// <include path='items/construct/*' file='Doc/LJCDirective.xml'/>
     public function __construct(string $type, string $name)
     {
+      // Instantiate properties with Pascal case.
+      $isEnabled = false;
+      $this->Debug = new LJCDebug("LJCGenTextSectionLib", "LJCDirective"
+        , $isEnabled);
+      $this->Debug->IncludePrivate = true;
+
       $this->Type = $type;
       $this->Name = trim($name);
     }
@@ -156,36 +163,45 @@
     // Checks if directive ID = IfBegin.
     public function IsIfBegin() : bool
     {
+      $this->Debug->WriteStartText("IsIfBegin");
       $retValue = false;
 
       if ("#ifbegin" == strtolower($this->ID))
       {
         $retValue = true;
       }
+
+      $this->Debug->AddIndent(-1);
       return $retValue;
     }
 
     // Checks if directive ID = SectionBegin.
     public function IsSectionBegin() : bool
     {
+      $this->Debug->WriteStartText("IsSectionBegin");
       $retValue = false;
 
       if ("#sectionbegin" == strtolower($this->ID))
       {
         $retValue = true;
       }
+
+      $this->Debug->AddIndent(-1);
       return $retValue;
     }
 
     // Checks if directive ID = SectionEnd.
     public function IsSectionEnd() : bool
     {
+      $this->Debug->WriteStartText("IsSectionEnd");
       $retValue = false;
 
       if ("#sectionend" == strtolower($this->ID))
       {
         $retValue = true;
       }
+
+      $this->Debug->AddIndent(-1);
       return $retValue;
     }
 
@@ -208,6 +224,12 @@
     /// <param name="$name">The Section name.</param>.
     public function __construct(string $name)
     {
+      // Instantiate properties with Pascal case.
+      $isEnabled = false;
+      $this->Debug = new LJCDebug("LJCGenTextSectionLib", "LJCSection"
+        , $isEnabled);
+      $this->Debug->IncludePrivate = true;
+
       $this->Name = trim($name);
       $this->RepeatItems = [];
     }
@@ -215,11 +237,15 @@
     /// <summary>Creates a copy of the current object.</summary>
     public function Clone() : self
     {
+      $this->Debug->WriteStartText("Clone");
+
       $retValue = new self($this->Name);
       $retValue->Begin = $this->Begin;
       $retValue->CurrentItem = $this->CurrentItem;
       $retValue->RepeatItems = $this->RepeatItems;
       $retValue->Name = $this->Name;
+
+      $this->Debug->AddIndent(-1);
       return $retValue;
     }
 
@@ -398,6 +424,18 @@
       $writer->FWriteLine("</".$rootName.">");
       fclose($stream);
     }
+    // ---------------
+    // Constructors
+
+    /// <summary>Initializes an object instance.</summary>
+    public function __construct()
+    {
+      // Instantiate properties with Pascal case.
+      $isEnabled = false;
+      $this->Debug = new LJCDebug("LJCGenTextSectionLib", "LJCSections"
+        , $isEnabled);
+      $this->Debug->IncludePrivate = true;
+    }
 
     // ----------------------
     // *** Collection Methods ***
@@ -405,12 +443,16 @@
     /// <summary>Creates an object clone.</summary>
     public function Clone() : self
     {
+      $this->Debug->WriteStartText("Clone");
       $retValue = new self();
+
       foreach ($this->Items as $key => $item)
       {
         $retValue->Add($item);
       }
       unset($item);
+
+      $this->Debug->AddIndent(-1);
       return $retValue;
     }
 
@@ -442,6 +484,8 @@
     /// <include path='items/Add/*' file='Doc/LJCSections.xml'/>
     public function Add(LJCSection $item, $key = null) : void
     {
+      $this->Debug->WriteStartText("Add");
+
       if (null === $key)
       {
         $this->Items[] = $item;
@@ -454,12 +498,15 @@
         }
         $this->Items[$key] = $item;
       }
+
+      $this->Debug->AddIndent(-1);
     }
 
     // Get the item by Key value.
     /// <include path='items/Get/*' file='Doc/LJCSections.xml'/>
     public function Retrieve($key, bool $showError = true) : ?LJCSection
     {
+      $this->Debug->WriteStartText("Retrieve");
       $retValue = null;
 
       $success = true;
@@ -475,6 +522,8 @@
       {
         $retValue = $this->Items[$key];
       }
+
+      $this->Debug->AddIndent(-1);
       return $retValue;
     }
 
@@ -482,11 +531,15 @@
     /// <param name="$key">The element key.</param>
     public function Remove($key) : void
     {
+      $this->Debug->WriteStartText("Remove");
+
       if (false == $this->HasKey($key))
       {
         throw new Exception("Key: {$key} was not found.");
       }
       unset($this->Items[$key]);
+
+      $this->Debug->AddIndent(-1);
     }
 
     // ----------------------
@@ -519,6 +572,12 @@
     /// <param name="$name">The Item name.</param>
     public function __construct(string $name)
     {
+      // Instantiate properties with Pascal case.
+      $isEnabled = false;
+      $this->Debug = new LJCDebug("LJCGenTextSectionLib", "LJCItem"
+        , $isEnabled);
+      $this->Debug->IncludePrivate = true;
+
       $this->Name = trim($name);
       $this->Replacements = new LJCReplacements();
     }
@@ -526,9 +585,13 @@
     /// <summary>Creates a Clone of the current object.</summary>
     public function Clone() : self
     {
+      $this->Debug->WriteStartText("Clone");
+
       $retValue = new self($this->Name);
       $retValue->Replacements = $this->Replacements;
       $retValue->RootName = $this->RootName;
+
+      $this->Debug->AddIndent(-1);
       return $retValue;
     }
 
@@ -554,6 +617,12 @@
     /// <param name="$value">The Replacement value.</param>
     public function __construct(string $name, string $value)
     {
+      // Instantiate properties with Pascal case.
+      $isEnabled = false;
+      $this->Debug = new LJCDebug("LJCGenTextSectionLib", "LJCReplacement"
+        , $isEnabled);
+      $this->Debug->IncludePrivate = true;
+
       $this->Name = trim($name);
       $this->Value = $value;
     }
@@ -561,8 +630,12 @@
     /// <summary>Creates a Clone of the current object.</summary>
     public function Clone() : self
     {
+      $this->Debug->WriteStartText("Clone");
+
       $retValue = new self($this->Name, $this->Value);
       $retValue->RootName = $this->RootName;
+
+      $this->Debug->AddIndent(-1);
       return $retValue;
     }
 
@@ -583,18 +656,35 @@
   // Represents a collection of Replacement objects.
   class LJCReplacements implements IteratorAggregate, \Countable
   {
+    // ---------------
+    // Constructors
+
+    /// <summary>Initializes an object instance.</summary>
+    public function __construct()
+    {
+      // Instantiate properties with Pascal case.
+      $isEnabled = false;
+      $this->Debug = new LJCDebug("LJCGenTextSectionLib", "LJCReplacements"
+        , $isEnabled);
+      $this->Debug->IncludePrivate = true;
+    }
+
     // ----------------------
     // *** Collection Methods ***
 
     // Creates an object clone.
     public function Clone() : self
     {
+      $this->Debug->WriteStartText("Clone");
       $retValue = new self();
+
       foreach ($this->Items as $key => $item)
       {
         $retValue->Add($item);
       }
       unset($item);
+
+      $this->Debug->AddIndent(-1);
       return $retValue;
     }
 
@@ -610,6 +700,8 @@
     // Adds an object and key value.
     public function Add(LJCReplacement $item, $key = null) : void
     {
+      $this->Debug->WriteStartText("Add");
+
       if (null === $key)
       {
         $this->Items[] = $item;
@@ -622,21 +714,28 @@
         }
         $this->Items[$key] = $item;
       }
+
+      $this->Debug->AddIndent(-1);
     }
 
     // Delete the item by Key value.
     public function Delete($key) : void
     {
+      $this->Debug->WriteStartText("Delete");
+
       if (false == $this->HasKey($key))
       {
         throw new Exception("Key: {$key} was not found.");
       }
       unset($this->Items[$key]);
+
+      $this->Debug->AddIndent(-1);
     }
 
     // Get the item by Key value.
     public function Retrieve($key, bool $showError = true) : ?LJCReplacement
     {
+      $this->Debug->WriteStartText("Retrieve");
       $retValue = null;
 
       $success = true;
@@ -652,6 +751,8 @@
       {
         $retValue = $this->Items[$key];
       }
+
+      $this->Debug->AddIndent(-1);
       return $retValue;
     }
 

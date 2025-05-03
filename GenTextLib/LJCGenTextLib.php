@@ -2,11 +2,12 @@
   // Copyright (c) Lester J. Clark 2022 - All Rights Reserved
   // LJCGenTextLib.php
   declare(strict_types=1);
-  $webCommonPath = "c:/inetpub/wwwroot/LJCPHPCommon";
-  $devPath = "c:/Users/Les/Documents/Visual Studio 2022/LJCPHPProjects";
-  require_once "$devPath/LJCPHPCommon/LJCCommonLib.php";
-  require_once "$devPath/LJCPHPCommon/LJCTextLib.php";
-  require_once "$devPath/GenTextLib/LJCGenTextSectionLib.php";
+  $path = "../..";
+  // Must refer to exact same file everywhere in codeline.
+  require_once "$path/LJCPHPCommon/LJCCommonLib.php";
+  require_once "$path/LJCPHPCommon/LJCTextLib.php";
+  include_once "$path/GenDoc/DocDataLib/LJCDebugLib.php";
+  require_once "LJCGenTextSectionLib.php";
 
   // The utility to generate text from a template and custom GenData.
   /// <include path='items/LJCGenTextLib/*' file='Doc/LJCGenTextLib.xml'/>
@@ -21,11 +22,14 @@
     /// <param name="$debugFileSuffix">The data file specification.</param>
     public function __construct(?string $debugFileSuffix = "GenData")
     {
+      // Instantiate properties with Pascal case.
+      $isEnabled = false;
+      $this->Debug = new LJCDebug("LJCGenTextLib", "LJCGenText"
+        , $isEnabled);
+      $this->Debug->IncludePrivate = true;
+
       $this->ActiveSections = [];
       $this->CurrentSection = null;
-
-      $this->DebugWriter = null;
-      //$this->DebugWriter = new LJCDebugWriter("GenData");
     }  // construct()
 
     // ---------------
@@ -36,13 +40,17 @@
     public function ProcessTemplate(string $templateFileSpec
       , LJCSections $sections) : ?string
     {
+      $this->Debug->WriteStartText("ProcessTemplate");
       $retValue = null;
 
+      // Instantiate properties with Pascal case.
       $this->Sections = $sections;
       $this->CurrentSection = null;
       $this->ActiveSections = [];
       $builder = new LJCStringBuilder();
 
+      // **********
+      $this->Debug->Write("templateFileSpec = $templateFileSpec");
       $this->Stream = fopen($templateFileSpec, "r+");
       while(false == feof($this->Stream))
       {
@@ -75,6 +83,8 @@
       }
       fclose($this->Stream);
       $retValue = $builder->ToString();
+
+      $this->Debug->AddIndent(-1);
       return $retValue;
     }  // ProcessTemplate()
 
@@ -86,6 +96,7 @@
     private function ManageSections(int $prevLineBegin, int $itemIndex)
       : ?LJCDirective
     {
+      $this->Debug->WritePrivateStartText("ManageSections");
       $retValue = null;
 
       if (null == $this->Line)
@@ -151,7 +162,9 @@
             $this->Line = null;
             break;
         }
-      }  // if ($retValue != null)
+      } // if ($retValue != null)
+
+      $this->Debug->AddIndent(-1);
       return $retValue;
     }  // ManageSections()
 
@@ -159,6 +172,7 @@
     private function ProcessIfDirectives(LJCDirective $directive
       , string $saveLine) : bool
     {
+      $this->Debug->WritePrivateStartText("ProcessIfDirectives");
       $retValue = $this->DoOutput;
 
       switch (strtolower($directive->Type))
@@ -215,12 +229,16 @@
           $retValue = true;
           break;
       }
+
+      $this->Debug->AddIndent(-1);
       return $retValue;
     }  // ProcessDirective()
 
     // Processes the Replacement items.
     private function ProcessReplacements() : void
     {
+      $this->Debug->WritePrivateStartText("ProcessReplacements");
+
       // Start with most recent.
       $outerBreak = false;
       $count = count($this->ActiveSections);
@@ -251,11 +269,14 @@
           }
         }
       }
+
+      $this->Debug->AddIndent(-1);
     }  // ProcessReplacements()
 
     // Processes the current Section.
     private function ProcessSection() : ?string
     {
+      $this->Debug->WritePrivateStartText("ProcessSection");
       $retValue = null;
 
       if (null == $this->CurrentSection)
@@ -323,6 +344,8 @@
         }  // while(true)
       }
       $retValue = $builder->ToString();
+
+      $this->Debug->AddIndent(-1);
       return $retValue;
     }  // ProcessSection()
 
@@ -330,6 +353,7 @@
     private function GetReplacement(string $line, string $replacementName)
       : ?LJCReplacement
     {
+      $this->Debug->WritePrivateStartText("GetReplacement");
       $retValue = null;
 
       // Start with most recent.
@@ -357,12 +381,15 @@
           }
         }
       }
+
+      $this->Debug->AddIndent(-1);
       return $retValue;
     }  // GetReplacement()
 
     // Resets the Stream position to the beginning of the Section.
     private function ResetPosition(LJCDirective $directive, int $itemIndex) : bool
     {
+      $this->Debug->WritePrivateStartText("ResetPosition");
       $retValue = false;
 
       if ($directive != null && "#sectionend" == strtolower($directive->Type))
@@ -381,24 +408,18 @@
           }
         }
       }
+
+      $this->Debug->AddIndent(-1);
       return $retValue;
     }
 
     // ---------------
     // Private Write Helper Methods
 
-    // Writes the debug value.
-    private function Debug(string $text, bool $addLine = true) : void
-    {
-      if (isset($this->DebugWriter))
-      {
-        $this->DebugWriter->Debug($text, $addLine);
-      }
-    }
-
     // Indicates if it is a SectionBegin or SectionEnd directive.
     private function IsBeginOrEnd(?LJCDirective $directive) : bool
     {
+      $this->Debug->WritePrivateStartText("IsBeginOrEnd");
       $retValue = false;
 
       if ($directive != null)
@@ -410,6 +431,8 @@
           $retValue = true;
         }
       }
+
+      $this->Debug->AddIndent(-1);
       return $retValue;
     }
 
