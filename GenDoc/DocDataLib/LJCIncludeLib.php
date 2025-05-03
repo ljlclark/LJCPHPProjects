@@ -3,9 +3,12 @@
   // Licensed under the MIT License.
   // LJCIncludeLib.php
   declare(strict_types=1);
-  $devPath = "../External";
-  include_once "$devPath/LJCCommonLib.php";
-  include_once "$devPath/LJCGenTextSectionLib.php";
+  $path = "../..";
+  // Must refer to exact same file everywhere in codeline.
+  include_once "$path/LJCPHPCommon/LJCCommonLib.php";
+  include_once "$path/LJCPHPCommon/LJCTextLib.php";
+  include_once "$path/GenTextLib/LJCGenTextSectionLib.php";
+  include_once "LJCDebugLib.php";
 
   // Classes
   // LJCCommonLib
@@ -28,6 +31,7 @@
 
   // Main Call Tree
   // SetComments() public
+  //   SetIncludeValues()
   //   GetComment()
 
   // ***************
@@ -42,15 +46,15 @@
     public function __construct()
     {
       // Instantiate properties with Pascal case.
-      $this->DebugClass = "LJCIncludeLib.LJCInclude";
+      $isEnabled = false;
+      $this->Debug = new LJCDebug("LJCIncludeLib", "LJCInclude"
+        , $isEnabled);
+      $this->Debug->IncludePrivate = true;
 
       $this->Comments = null;
       $this->LibName = null;
       $this->XMLFile = null;
-
       $this->CurrentTagName = null;
-      $this->DebugWriter = null;
-      $this->DebugWriter = new LJCDebugWriter("IncludeLib");
     } // __construct()
 
     // ---------------
@@ -61,8 +65,10 @@
     public function SetComments(string $includeLine, string $codeFileSpec)
       : void
     {
-      $loc = "$this->DebugClass.SetComments";
+      $this->Debug->WriteStartText("SetComments");
 
+      // **********
+      $this->Debug->Write("includeLine = $includeLine");
       // Sets LibName, XMLFile and itemTag.
       if ($this->SetIncludeValues($includeLine, $codeFileSpec, $itemTag))
       {
@@ -121,6 +127,8 @@
           }
         }
       }
+
+      $this->Debug->AddIndent(-1);
     } // SetComments();
 
     // ---------------
@@ -129,7 +137,7 @@
     // Gets the comment for the specified code line.
     private function GetComment(string $line) : ?string
     {
-      $loc = "$this->DebugClass.GetComment";
+      $this->Debug->WritePrivateStartText("GetComment");
       $retValue = null;
 
       $beginTag = $this->GetLineBeginTag($line);
@@ -187,12 +195,15 @@
           $this->Comments[] = $retValue;
         }
       }
+
+      $this->Debug->AddIndent(-1);
       return $retValue;
     } // GetComment()
 
     // Gets the begin tag.
     private  function GetLineBeginTag(string $line) : ?string
     {
+      $this->Debug->WritePrivateStartText("GetLineBeginTag");
       $retValue = null;
 
       $beginTag = LJCCommon::GetDelimitedString($line, "<", ">");
@@ -200,12 +211,15 @@
       {
         $retValue = "<$beginTag>";								
       }
+
+      $this->Debug->AddIndent(-1);
       return $retValue;
     } // GetLineBeginTag()
 
     // Gets the end tag.
     private function GetLineEndTag(string $line) : ?string
     {
+      $this->Debug->WritePrivateStartText("GetLineEndTag");
       $retValue = null;
 
       $endTag = LJCCommon::GetDelimitedString($line, "</", ">");
@@ -213,12 +227,15 @@
       {
         $retValue = "</$endTag>";								
       }
+
+      $this->Debug->AddIndent(-1);
       return $retValue;
     } // GetLineEndTag()
 
     // Checks for an invalid end comment tag.
     private function InvalidCommentEndTag(?string $comment) : bool
     {
+      $this->Debug->WritePrivateStartText("InvalidCommentEndTag");
       $retValue = false;
 
       if ($comment != null)
@@ -232,12 +249,15 @@
           $retValue = true;
         }
       }
+
+      $this->Debug->AddIndent(-1);
       return $retValue;
     } // InvalidCommentEndTag()
 
     // Checks for a valid comment tag.
     private function IsCommentTag(?string $tag) : bool
     {
+      $this->Debug->WritePrivateStartText("IsCommentTag");
       $retValue = false;
 
       if ($tag != null)
@@ -254,12 +274,16 @@
             break;
         }
       }
+
+      $this->Debug->AddIndent(-1);
       return $retValue;
     } // IsCommentTag()
 
     // Replaces tabs with spaces and removes extra leading spaces
     private function LTrimXMLComment(string $comment) : string
     {
+      $this->Debug->WritePrivateStartText("LTrimXMLComment");
+
       // Convert comment tabs to spaces.
       $retValue = str_replace("\t", "  ", $comment);
 
@@ -272,6 +296,8 @@
       {
         $retValue = "///" . substr($retValue, $count + 3);
       }
+
+      $this->Debug->AddIndent(-1);
       return $retValue;
     } // LTrimXMLComment()
 
@@ -279,11 +305,14 @@
     private function SetIncludeValues(string $includeLine, string $codeFileSpec
       , ?string &$itemTag) : bool
     {
-      $loc = "$this->DebugClass.SetIncludeValues():\r\n";
+      $this->Debug->WritePrivateStartText("SetIncludeValues");
       $retValue = true;
 
       $itemTag = null;
       $this->LibName = LJCCommon::GetFileName($codeFileSpec);
+      // **********
+      $this->Debug->Write("codeFileSpec = $codeFileSpec");
+      $this->Debug->Write("LibName = $this->LibName");
       $this->Comments = [];
       $xmlPath = LJCCommon::GetDelimitedString($includeLine, "path='", "'");
       if (null == $xmlPath)
@@ -300,30 +329,29 @@
           $retValue = false;
         }
 
+        // **********
+        $this->Debug->Write("codeFileSpec = $codeFileSpec");
         // Add code file path to doc file path to create XML file spec.
         $fileSpecPath = LJCCommon::GetFileSpecPath($codeFileSpec);
+        // **********
+        $this->Debug->Write("fileSpecPath = $fileSpecPath");
         // *** Change *** #01
-        //$this->XMLFile = "$fileSpecPath/$this->XMLFile";
-        $this->XMLFile = "$this->XMLFile";
+        $this->XMLFile = "$fileSpecPath/$this->XMLFile";
+        //$this->XMLFile = "$this->XMLFile";
       }
+
+      $this->Debug->AddIndent(-1);
       return $retValue;
     } // SetIncludeValues()
 
     // ---------------
     // Private Output Methods
 
-    // Writes a Debug value.
-    private function Debug(string $text, bool $addLine = true) : void
-    {
-      if (isset($this->DebugWriter))
-      {
-        $this->DebugWriter->Debug($text, $addLine);
-      }
-    } // Debug()
-
     // Writes an output line.
     private function Output($text = null, $value = null)
     {
+      $this->Debug->WritePrivateStartText("Output");
+
       $lib = "";
       //$lib = "LJCCommonLib";
       if ("" == $lib
@@ -337,6 +365,8 @@
         }
         LJCWriter::WriteLine("");
       }
+
+      $this->Debug->AddIndent(-1);
     } // Output()
 
     // ---------------

@@ -2,12 +2,13 @@
   // Copyright(c) Lester J. Clark and Contributors.
   // Licensed under the MIT License.
   // LJCDocDtaGen.php
-include_once "LJCDocDataGenLib.php";
+  // Must refer to exact same file everywhere in codeline.
+  include_once "LJCDocDataGenLib.php";
 
-// LJCDocDataGenLib
-//   LJCDocDataGen
+  // LJCDocDataGenLib
+  //   LJCDocDataGen
  
-$docDataGen = new LJCDocDataGen();
-$xmlString = $docDataGen->CreateDocDataXMLString("LJCDocDataGenLib.php", true);
-echo($xmlString);
+  $docDataGen = new LJCDocDataGen();
+  $xmlString = $docDataGen->CreateDocDataXMLString("LJCDocDataGenLib.php", true);
+  echo($xmlString);
 ?>

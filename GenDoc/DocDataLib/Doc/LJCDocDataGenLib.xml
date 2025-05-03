@@ -6,9 +6,7 @@
 			Contains Classes to create DocData XML from a PHP source file.
 		</summary>
 		<remarks>
-      A DocData XML file contains the source code XML comment data.&lt;br /&gt;
-      &lt;br /&gt;
-      Contains classes for these functions:&lt;br /&gt;
+			Contains classes for these functions:&lt;br /&gt;
 			- Extract XML Comments from a PHP File&lt;br /&gt;
 			- Extract XML Comments from Include XML files
 		</remarks>

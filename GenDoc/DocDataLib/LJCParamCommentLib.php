@@ -17,6 +17,19 @@
   class LJCParamComment
   {
     // ---------------
+    // Constructors
+
+    /// <summary>Initializes an object instance.</summary>
+    public function __construct()
+    {
+      // Instantiate properties with Pascal case.
+      $isEnabled = false;
+      $this->Debug = new LJCDebug("LJCParamCommentLib", "LJCParamComment"
+        , $isEnabled);
+      $this->Debug->IncludePrivate = true;
+    }
+
+    // ---------------
     // Public Methods
 
     /// <summary>Creates a Param object from a param XML comment.</summary>
@@ -24,6 +37,7 @@
     /// <returns>The Param object.</returns>
     public function GetParam(string $paramLine) : ?LJCDocDataParam
     {
+      $this->Debug->WriteStartText("GetParam");
       $retValue = null;
 
       if ($paramLine != null)
@@ -32,6 +46,8 @@
         $summary = LJCCommon::GetDelimitedString($paramLine, ">", "</");
         $retValue = new LJCDocDataParam($name, $summary);
       }
+
+      $this->Debug->AddIndent(-1);
       return $retValue;
     } // GetParam()
   }
