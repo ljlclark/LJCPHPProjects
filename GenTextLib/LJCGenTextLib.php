@@ -49,7 +49,7 @@
       $this->ActiveSections = [];
       $builder = new LJCStringBuilder();
 
-      // **********
+      // *****
       $this->Debug->Write("templateFileSpec = $templateFileSpec");
       $this->Stream = fopen($templateFileSpec, "r+");
       while(false == feof($this->Stream))

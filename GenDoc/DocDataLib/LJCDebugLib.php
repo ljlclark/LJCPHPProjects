@@ -31,6 +31,8 @@
       $this->DebugFullName = $fullName;
       $this->IncludePrivate = false;
       $this->IndentCount = 0;
+
+      // Creates Writer if true.
       $this->setEnabled($isEnabled);
     }
 
