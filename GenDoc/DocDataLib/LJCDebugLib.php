@@ -135,7 +135,6 @@
     public function WriteIndentCount()
     {
       $indentCount = strval($this->getIndentCount());
-      $this->Debug->Write("IndentCount = $indentCount", false);
     }
 
     // ---------------

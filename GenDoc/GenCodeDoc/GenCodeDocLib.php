@@ -85,8 +85,6 @@
             break;
         }
         $fileSpec .= trim($tokens[1]);
-        // **********
-        $this->Debug->Write("fileSpec = $fileSpec");
 
         $docXMLString = $this->DocDataGen->CreateDocDataXMLString($fileSpec
           , $writeDocDataXML);

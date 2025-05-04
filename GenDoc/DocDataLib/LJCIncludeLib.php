@@ -23,7 +23,7 @@
   // File
   //   LJCInclude
 
-  // #01 Correct XMLFileName - 5/1/25
+  // #01 Correct XMLFileName - 5/4/25
 
   // Contains Classes to retrieve data from include XML files.
   /// <include path='items/LJCIncludeLib/*' file='Doc/LJCIncludeLib.xml'/>
@@ -67,8 +67,6 @@
     {
       $this->Debug->WriteStartText("SetComments");
 
-      // **********
-      $this->Debug->Write("includeLine = $includeLine");
       // Sets LibName, XMLFile and itemTag.
       if ($this->SetIncludeValues($includeLine, $codeFileSpec, $itemTag))
       {
@@ -310,9 +308,6 @@
 
       $itemTag = null;
       $this->LibName = LJCCommon::GetFileName($codeFileSpec);
-      // **********
-      $this->Debug->Write("codeFileSpec = $codeFileSpec");
-      $this->Debug->Write("LibName = $this->LibName");
       $this->Comments = [];
       $xmlPath = LJCCommon::GetDelimitedString($includeLine, "path='", "'");
       if (null == $xmlPath)
@@ -329,15 +324,14 @@
           $retValue = false;
         }
 
-        // **********
-        $this->Debug->Write("codeFileSpec = $codeFileSpec");
         // Add code file path to doc file path to create XML file spec.
         $fileSpecPath = LJCCommon::GetFileSpecPath($codeFileSpec);
-        // **********
-        $this->Debug->Write("fileSpecPath = $fileSpecPath");
-        // *** Change *** #01
-        $this->XMLFile = "$fileSpecPath/$this->XMLFile";
-        //$this->XMLFile = "$this->XMLFile";
+        // *** Begin *** #01
+        if ($fileSpecPath != "")
+        {
+          $this->XMLFile = "$fileSpecPath/$this->XMLFile";
+        }
+        // *** End   *** #01
       }
 
       $this->Debug->AddIndent(-1);

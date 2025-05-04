@@ -192,7 +192,9 @@
     /// <include path='items/GetFileSpecPath/*' file='Doc/LJCCommon.xml'/>
     public static function GetFileSpecPath(string $fileSpec) : string
     {
-      $retValue = $fileSpec;
+      // *** Change *** 5/4/25
+      //$retValue = $fileSpec;
+      $retValue = "";
 
       $length = LJCCommon::StrRPos($fileSpec, "/");
       if ($length >= 0)

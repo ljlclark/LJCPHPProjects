@@ -210,8 +210,6 @@
       if ("<include" == $beginTag)
       {
         $isSimpleComment = false;
-        // **********
-        $this->Debug->Write("CodeFileSpec = $this->CodeFileSpec");
         $this->IncludeFile->SetComments($line, $this->CodeFileSpec);
 
         // Process the include comment lines through SetComment().
