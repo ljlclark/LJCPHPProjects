@@ -51,7 +51,7 @@ LJCDocDataGenLib - Contains Classes to generate DocData XML strings and
                    optionally files.
                    The files are generated to ..\XMLDocData if the $writeXML
                    property is set to 'true' in class LJCDocDataGen, method
-                   CreateDocXMLString().
+                   CreateDocDataXMLString().
 
   Included Classes:
   LJCDocDataLib - Contains Classes to represent DocData and for Serialization
@@ -80,3 +80,9 @@ LJCDocDataGenLib - Contains Classes to generate DocData XML strings and
 
   LJCParamCommentLib - The LJCParamComment object represents the Param XML
                        Comments.
+
+  TestDocDataGen.cmd - The command program that runs the TestDocDataGen.php
+                       program.
+
+  TestDocDataGen.php - A test program to generate the test DocData XML for file
+                       LJCDocDataGenLib.php.

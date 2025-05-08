@@ -6,7 +6,7 @@
   $path = "../..";
   // Must refer to exact same file everywhere in codeline.
   include_once "$path/LJCPHPCommon/LJCCommonLib.php";
-  require_once "$path/LJCPHPCommon/LJCTextLib.php";
+  include_once "$path/LJCPHPCommon/LJCTextLib.php";
   include_once "$path/LJCPHPCommon/LJCCollectionLib.php";
   include_once "LJCDebugLib.php";
 

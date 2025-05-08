@@ -9,6 +9,7 @@
   //   LJCDocDataGen
  
   $docDataGen = new LJCDocDataGen();
-  $xmlString = $docDataGen->CreateDocDataXMLString("LJCDocDataGenLib.php", true);
+  $xmlString = $docDataGen->CreateDocDataXMLString("LJCDocDataGenLib.php"
+    , true);
   echo($xmlString);
 ?>
