@@ -825,12 +825,12 @@
     private function GetHTMLText(string $sectionsXMLString
       , string $templateFileName) : string
     {
-      global $dev;
+      global $path;
       $retValue = null;
 
       if ($sectionsXMLString != null)
       {
-        $templateFileSpec = "$dev/GenDoc/GenDataLib/Templates/$templateFileName";
+        $templateFileSpec = "$path/GenDoc/GenDataLib/Templates/$templateFileName";
         $sections = LJCSections::DeserializeString($sectionsXMLString);
         $genText = new LJCGenText();
         $retValue = $genText->ProcessTemplate($templateFileSpec, $sections);
