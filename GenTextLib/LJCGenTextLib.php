@@ -4,10 +4,10 @@
   declare(strict_types=1);
   $path = "../..";
   // Must refer to exact same file everywhere in codeline.
-  require_once "$path/LJCPHPCommon/LJCCommonLib.php";
-  require_once "$path/LJCPHPCommon/LJCTextLib.php";
+  include_once "$path/LJCPHPCommon/LJCCommonLib.php";
+  include_once "$path/LJCPHPCommon/LJCTextLib.php";
   include_once "$path/GenDoc/DocDataLib/LJCDebugLib.php";
-  require_once "LJCGenTextSectionLib.php";
+  include_once "LJCGenTextSectionLib.php";
 
   // The utility to generate text from a template and custom GenData.
   /// <include path='items/LJCGenTextLib/*' file='Doc/LJCGenTextLib.xml'/>

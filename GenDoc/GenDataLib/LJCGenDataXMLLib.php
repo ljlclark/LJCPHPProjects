@@ -4,7 +4,7 @@
   $path = "../..";
   // Must refer to exact same file everywhere in codeline.
   require_once "$path/LJCPHPCommon/LJCTextLib.php";
-  require_once "$path/GenDoc/GenDataLib/LJCDebugLib.php";
+  require_once "$path/GenDoc/DocDataLib/LJCDebugLib.php";
 
   // Contains Classes to generate GenData XML.
   /// <include path='items/LJCGenDataXMLLib/*' file='Doc/LJCGenDataXMLLib.xml'/>

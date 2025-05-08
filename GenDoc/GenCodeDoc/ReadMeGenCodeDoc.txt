@@ -11,7 +11,7 @@ GenCodeDocFiles - Calls GenCodeDoc->CreateXML() for each PHP File where HTML
 
     GenCodeDoc->CreateXML()
      For each specified PHP Source file it calls
-     LJCDocDataGen->CreateDocXMLString() to create the DocXML string.
+     LJCDocDataGen->CreateDocDataXMLString() to create the DocXML string.
 
      The DocXML string is passed to LJCGenDataGen->CreateLibXMLString() to
      create the GenXML string.

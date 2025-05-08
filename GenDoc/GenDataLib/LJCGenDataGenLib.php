@@ -6,7 +6,7 @@
   require_once "$path/LJCPHPCommon/LJCTextLib.php";
   require_once "$path/GenTextLib/LJCGenTextLib.php";
   require_once "$path/GenDoc/GenDataLib/LJCGenDataXMLLib.php";
-  require_once "$path/GenDoc/GenDataLib/LJCDebug.php";
+  require_once "$path/GenDoc/DocDataLib/LJCDebugLib.php";
 
   // Contains classes to create GenData from DocData.
   /// <include path='items/LJCGenDataGenLib/*' file='Doc/LJCGenDataGenLib.xml'/>
