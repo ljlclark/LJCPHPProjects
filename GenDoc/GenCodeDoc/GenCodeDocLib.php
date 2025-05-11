@@ -3,13 +3,11 @@
   // Licensed under the MIT License.
   // GenCodeDocLib.php
   declare(strict_types=1);
-  $path = "../..";
   // Must refer to exact same file everywhere in codeline.
-  require_once "$path/LJCPHPCommon/LJCTextLib.php";
-  require_once "$path/GenDoc/DocDataLib/LJCDocDataGenLib.php";
-  include_once "$path/GenDoc/DocDataLib/LJCDebugLib.php";
-  require_once "$path/GenDoc/GenDataLib/LJCGenDataGenLib.php";
+  require_once "../../LJCPHPCommon/LJCTextLib.php";
   include_once "../DocDataLib/LJCDebugLib.php";
+  require_once "../DocDataLib/LJCDocDataGenLib.php";
+  require_once "../GenDataLib/LJCGenDataGenLib.php";
 
   // Classes
   // File
@@ -38,8 +36,10 @@
       $this->Debug = new LJCDebug("GenCodeDocLib", "GenCodeDoc"
         , "w", $enabled);
       $this->Debug->IncludePrivate = true;
-
+      
+      // GenDoc/DocDataLib/LJCDocDataGenLib.php
       $this->DocDataGen = new LJCDocDataGen();
+      //GenDoc/GenDataLib/LJCGenDataGenLib.php
       $this->GenDataGen = new LJCGenDataGen();
     } // __construct()
 
@@ -66,7 +66,7 @@
     {
       $this->Debug->WriteStartText("CreateFilePages");
 
-      global $path;
+      //global $path;
       $writeDocDataXML = false;
       $writeGenDataXML = false;
 
@@ -76,9 +76,9 @@
         switch ($tokens[0])
         {
           case "path":
-            // *** Change *** 5/2/25
+            // *** Change *** 5/11/25
             //$fileSpec = "$devPath";
-            $fileSpec = "$path";
+            $fileSpec = "../../";
             break;
           default:
             $fileSpec = $tokens[0];

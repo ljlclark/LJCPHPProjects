@@ -22,8 +22,8 @@
       $this->EndIndex = $endIndex;
     }
 
-    // Creates a Clone of the current object.
-    /// <include path='items/Clone/*' file='../CommonDoc/PHPDataClass.xml'/>
+    // <summary>Creates a Clone of the current object.</summary>
+    // <include path='items/Clone/*' file='../CommonDoc/PHPDataClass.xml'/>
     public function Clone() : self
     {
       $retValue = new self($this->BeginIndex, $this->EndIndex);

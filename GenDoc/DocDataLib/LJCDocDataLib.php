@@ -65,7 +65,7 @@
       // Instantiate properties with Pascal case.
       $isEnabled = false;
       $this->Debug = new LJCDebug("LJCDocDataLib", "LJCDocDataClass"
-        , $isEnabled);
+        , "w", $isEnabled);
       $this->Debug->IncludePrivate = true;
 
       $this->Code = null;
@@ -79,8 +79,7 @@
     // ---------------
     // Public Methods - LJCDocDataClass
 
-    // Creates a Clone of the current object.
-    /// <include path='items/Clone/*' file='../../CommonDoc/PHPDataClass.xml'/>
+    /// <summary>Creates a Clone of the current object.</summary>
     public function Clone() : self
     {
       $this->Debug->WriteStartText("Clone");
@@ -127,11 +126,11 @@
       // Instantiate properties with Pascal case.
       $isEnabled = false;
       $this->Debug = new LJCDebug("LJCDocDataLib", "LJCDocDataClasses"
-        , $isEnabled);
+        , "w", $isEnabled);
       $this->Debug->IncludePrivate = true;
     } // __construct
 
-    /// <summary>Creates an object clone.</summary>
+    /// <summary>Creates a clone of the current object.</summary>
     public function Clone() : self
     {
       $this->Debug->WriteStartText("Clone");
@@ -150,8 +149,8 @@
     // ---------------
     // Public Methods - LJCDocDataClasses
 
-    // Adds an object and key value.
-    /// <include path='items/AddObject/*' file='../../CommonDoc/PHPCollection.xml'/>
+    // <summary>Adds an object and key value.</summary>
+    // <include path='items/AddObject/*' file='../../CommonDoc/PHPCollection.xml'/>
     public function AddObject(LJCDocDataClass $item, $key = null)
       : ?LJCDocDataClass
     {
@@ -167,8 +166,8 @@
       return $retValue;
     } // AddObject()
 
-    // Get the item by Key value.
-    /// <include path='items/Get/*' file='../../CommonDoc/PHPCollection.xml'/>
+    // <summary>Get the item by Key value.</summary>
+    // <include path='items/Get/*' file='../../CommonDoc/PHPCollection.xml'/>
     public function Get($key, bool $throwError = true) : ?LJCDocDataClass
     {
       $this->Debug->WriteStartText("Get");
@@ -424,8 +423,7 @@
     // ---------------
     // Public Methods - LJCDocDataFile
 
-    // Creates a Clone of the current object.
-    /// <include path='items/Clone/*' file='../../CommonDoc/PHPDataClass.xml'/>
+    /// <summary>Creates a Clone of the current object.</summary>
     public function Clone() : self
     {
       $this->Debug->WriteStartText("Clone");
@@ -621,7 +619,7 @@
       // Instantiate properties with Pascal case.
       $isEnabled = false;
       $this->Debug = new LJCDebug("LJCDocDataLib", "LJCDocDataMethod"
-        , $isEnabled);
+        , "w", $isEnabled);
       $this->Debug->IncludePrivate = true;
 
       $this->Code = null;
@@ -636,8 +634,7 @@
     // ---------------
     // Public Methods - LJCDocDataMethod
 
-    // Creates a Clone of the current object.
-    /// <include path='items/Clone/*' file='../../CommonDoc/PHPDataClass.xml'/>
+    /// <summary>Creates a Clone of the current object.</summary>
     public function Clone() : self
     {
       $this->Debug->WriteStartText("Clone");
@@ -688,11 +685,11 @@
       // Instantiate properties with Pascal case.
       $isEnabled = false;
       $this->Debug = new LJCDebug("LJCDocDataLib", "LJCDocDataMethods"
-        , $isEnabled);
+        , "w", $isEnabled);
       $this->Debug->IncludePrivate = true;
     }
 
-    /// <summary>Creates an object clone.</summary>
+    /// <summary>Creates a clone of the current object.</summary>
     public function Clone() : self
     {
       $this->Debug->WriteStartText("Clone");
@@ -711,8 +708,8 @@
     // ---------------
     // Public Methods - LJCDocDataMethods
 
-    // Adds an object and key value.
-    /// <include path='items/AddObject/*' file='../../CommonDoc/PHPCollection.xml'/>
+    // <summary>Adds an object and key value.</summary>
+    // <include path='items/AddObject/*' file='../../CommonDoc/PHPCollection.xml'/>
     public function AddObject(LJCDocDataMethod $item, $key = null)
       : ?LJCDocDataMethod
     {
@@ -728,8 +725,8 @@
       return $retValue;
     } // AddObject()
 
-    // Get the item by Key value.
-    /// <include path='items/Get/*' file='../../CommonDoc/PHPCollection.xml'/>
+    // <summary>Get the item by Key value.</summary>
+    // <include path='items/Get/*' file='../../CommonDoc/PHPCollection.xml'/>
     public function Get($key, bool $throwError = true) : ?LJCDocDataMethod
     {
       $this->Debug->WriteStartText("Get");
@@ -755,15 +752,14 @@
       // Instantiate properties with Pascal case.
       $isEnabled = false;
       $this->Debug = new LJCDebug("LJCDocDataLib", "LJCDocDataParam"
-        , $isEnabled);
+        , "w", $isEnabled);
       $this->Debug->IncludePrivate = true;
 
       $this->Name = $name;
       $this->Summary = $summary;
     } // __construct()
 
-    // Creates a Clone of the current object.
-    /// <include path='items/Clone/*' file='../../CommonDoc/PHPDataClass.xml'/>
+    /// <summary>Creates a Clone of the current object.</summary>
     public function Clone() : self
     {
       $this->Debug->WriteStartText("Clone");
@@ -801,7 +797,7 @@
       $this->Debug->IncludePrivate = true;
     } // __construct()
 
-    /// <summary>Creates an object clone.</summary>
+    /// <summary>Creates a clone of the current object.</summary>
     public function Clone() : self
     {
       $this->Debug->WriteStartText("Clone");
@@ -820,8 +816,8 @@
     // ---------------
     // Public Methods - LJCDocDataParams
 
-    // Adds an object and key value.
-    /// <include path='items/AddObject/*' file='../../CommonDoc/PHPCollection.xml'/>
+    /// <summary>Adds an object and key value.</summary>
+    // <include path='items/AddObject/*' file='../../CommonDoc/PHPCollection.xml'/>
     public function AddObject(LJCDocDataParam $item, $key = null)
       : ?LJCDocDataParam
     {
@@ -837,8 +833,8 @@
       return $retValue;
     } // AddObject()
 
-    // Get the item by Key value.
-    /// <include path='items/Get/*' file='../../CommonDoc/PHPCollection.xml'/>
+    /// <summary>Get the item by Key value.</summary>
+    // <include path='items/Get/*' file='../../CommonDoc/PHPCollection.xml'/>
     public function Get($key, bool $throwError = true) : ?LJCDocDataParam
     {
       $this->Debug->WriteStartText("Get");
@@ -865,7 +861,7 @@
       // Instantiate properties with Pascal case.
       $isEnabled = false;
       $this->Debug = new LJCDebug("LJCDocDataLib", "LJCDocDataProperty"
-        , $isEnabled);
+        , "w", $isEnabled);
       $this->Debug->IncludePrivate = true;
 
       $this->Name = $name;
@@ -875,8 +871,7 @@
       $this->Syntax = null;
     } // __construct()
 
-    // Creates a Clone of the current object.
-    /// <include path='items/Clone/*' file='../../CommonDoc/PHPDataClass.xml'/>
+    /// <summary>Creates a Clone of the current object.</summary>
     public function Clone() : self
     {
       $this->Debug->WriteStartText("Clone");
@@ -920,12 +915,11 @@
       // Instantiate properties with Pascal case.
       $isEnabled = false;
       $this->Debug = new LJCDebug("LJCDocDataLib", "LJCDocDataProperties"
-        , $isEnabled);
+        , "w", $isEnabled);
       $this->Debug->IncludePrivate = true;
     }
 
-    // Creates an object clone.
-    /// <include path='items/Clone/*' file='../../CommonDoc/PHPCollection.xml'/>
+    /// <summary>Creates a clone of the current object.</summary>
     public function Clone() : self
     {
       $this->Debug->WriteStartText("Clone");
@@ -944,8 +938,8 @@
     // ---------------
     // Public Methods - LJCDocDataProperties
 
-    // Adds an object and key value.
-    /// <include path='items/AddObject/*' file='../../CommonDoc/PHPCollection.xml'/>
+    // <summary>Adds an object and key value.</summary>
+    // <include path='items/AddObject/*' file='../../CommonDoc/PHPCollection.xml'/>
     public function AddObject(LJCDocDataProperty $item, $key = null)
       : ?LJCDocDataProperty
     {
@@ -961,8 +955,8 @@
       return $retValue;
     } // AddObject()
 
-    // Get the item by Key value.
-    /// <include path='items/Get/*' file='../../CommonDoc/PHPCollection.xml'/>
+    // <summary>Get the item by Key value.</summary>
+    // <include path='items/Get/*' file='../../CommonDoc/PHPCollection.xml'/>
     public function Get($key, bool $throwError = true) : ?LJCDocDataProperty
     {
       $this->Debug->WriteStartText("Get");

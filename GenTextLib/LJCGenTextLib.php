@@ -31,7 +31,7 @@
     public function __construct(?string $debugFileSuffix = "GenData")
     {
       // Instantiate properties with Pascal case.
-      $enabled = true;
+      $enabled = false;
       $this->Debug = new LJCDebug("LJCGenTextLib", "LJCGenText"
         , "w", $enabled);
       $this->Debug->IncludePrivate = true;
@@ -48,7 +48,7 @@
     public function ProcessTemplate(string $templateFileSpec
       , LJCSections $sections) : ?string
     {
-      $this->Debug->WriteStartText("ProcessTemplate");
+      //$this->Debug->WriteStartText("ProcessTemplate");
       $retValue = null;
 
       // Instantiate properties with Pascal case.
@@ -57,8 +57,6 @@
       $this->ActiveSections = [];
       $builder = new LJCStringBuilder();
 
-      // *****
-      $this->Debug->Write("templateFileSpec = $templateFileSpec");
       $this->Stream = fopen($templateFileSpec, "r+");
       while(false == feof($this->Stream))
       {
@@ -92,7 +90,7 @@
       fclose($this->Stream);
       $retValue = $builder->ToString();
 
-      $this->Debug->AddIndent(-1);
+      //$this->Debug->AddIndent(-1);
       return $retValue;
     }  // ProcessTemplate()
 
@@ -104,7 +102,7 @@
     private function ManageSections(int $prevLineBegin, int $itemIndex)
       : ?LJCDirective
     {
-      $this->Debug->WritePrivateStartText("ManageSections");
+      //$this->Debug->WritePrivateStartText("ManageSections");
       $retValue = null;
 
       if (null == $this->Line)
@@ -112,14 +110,9 @@
         return $retValue;				
       }
 
-      //$retValue = LJCDirective::Find($this->Line);
       $retValue = LJCDirective::GetDirective($this->Line, "<!--");
       if ($retValue != null)
       {
-        // *****
-        $this->Debug->Write("Line = $this->Line");
-        $this->Debug->Write("retValue.Name = $retValue->Name");
-        $this->Debug->Write("retValue.Type = $retValue->Type");
         switch (strtolower($retValue->Type))
         {
           case "#sectionbegin":
@@ -175,9 +168,10 @@
             $this->Line = null;
             break;
         }
+
       } // if ($retValue != null)
 
-      $this->Debug->AddIndent(-1);
+      //$this->Debug->AddIndent(-1);
       return $retValue;
     }  // ManageSections()
 
@@ -185,7 +179,7 @@
     private function ProcessIfDirectives(LJCDirective $directive
       , string $saveLine) : bool
     {
-      $this->Debug->WritePrivateStartText("ProcessIfDirectives");
+      //$this->Debug->WritePrivateStartText("ProcessIfDirectives");
       $retValue = $this->DoOutput;
 
       switch (strtolower($directive->Type))
@@ -243,7 +237,7 @@
           break;
       }
 
-      $this->Debug->AddIndent(-1);
+      //$this->Debug->AddIndent(-1);
       return $retValue;
     }  // ProcessDirective()
 
@@ -366,7 +360,7 @@
     private function GetReplacement(string $line, string $replacementName)
       : ?LJCReplacement
     {
-      $this->Debug->WritePrivateStartText("GetReplacement");
+      //$this->Debug->WritePrivateStartText("GetReplacement");
       $retValue = null;
 
       // Start with most recent.
@@ -395,14 +389,14 @@
         }
       }
 
-      $this->Debug->AddIndent(-1);
+      //$this->Debug->AddIndent(-1);
       return $retValue;
     }  // GetReplacement()
 
     // Resets the Stream position to the beginning of the Section.
     private function ResetPosition(LJCDirective $directive, int $itemIndex) : bool
     {
-      $this->Debug->WritePrivateStartText("ResetPosition");
+      //$this->Debug->WritePrivateStartText("ResetPosition");
       $retValue = false;
 
       if ($directive != null && "#sectionend" == strtolower($directive->Type))
@@ -422,7 +416,7 @@
         }
       }
 
-      $this->Debug->AddIndent(-1);
+      //$this->Debug->AddIndent(-1);
       return $retValue;
     }
 
@@ -432,7 +426,7 @@
     // Indicates if it is a SectionBegin or SectionEnd directive.
     private function IsBeginOrEnd(?LJCDirective $directive) : bool
     {
-      $this->Debug->WritePrivateStartText("IsBeginOrEnd");
+      //$this->Debug->WritePrivateStartText("IsBeginOrEnd");
       $retValue = false;
 
       if ($directive != null)
@@ -445,7 +439,7 @@
         }
       }
 
-      $this->Debug->AddIndent(-1);
+      //$this->Debug->AddIndent(-1);
       return $retValue;
     }
 

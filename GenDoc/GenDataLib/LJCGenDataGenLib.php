@@ -51,7 +51,7 @@
       $this->HTMLPath = "../../../WebSitesDev/CodeDoc/LJCPHPCodeDoc/HTML";
       LJCCommon::MkDir($this->HTMLPath);
 
-      $this->DebugWriter = null;
+      //$this->DebugWriter = null;
       // Create DebugWriter if writing debug data.
       //$this->DebugWriter = new LJCDebugWriter("LJCGenDataGen");
     }
@@ -69,7 +69,7 @@
 
       // GenData XML file name same as source file with .xml extension.
       $fileName = LJCCommon::GetFileName($codeFileSpec) . ".xml";
-      $this->Debug("fileName = $fileName");
+      $this->Debug->Write("fileName = $fileName");
       // Start Testing
       $docDataFile = LJCDocDataFile::DeserializeString($docXMLString);
       $retValue = $this->CreateLibString($docDataFile, $fileName);
@@ -848,13 +848,13 @@
     }
 
     // Writes the debug value.
-    private function Debug(string $text, bool $addLine = true) : void
-    {
-      if (isset($this->DebugWriter))
-      {
-        $this->DebugWriter->Debug($text, $addLine);
-      }
-    } // Debug()
+    //private function Debug(string $text, bool $addLine = true) : void
+    //{
+    //  if (isset($this->DebugWriter))
+    //  {
+    //    $this->DebugWriter->Debug($text, $addLine);
+    //  }
+    //} // Debug()
 
     // The path for HTML output.
     public string $HTMLPath;

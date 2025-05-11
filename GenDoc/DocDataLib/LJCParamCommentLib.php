@@ -25,7 +25,7 @@
       // Instantiate properties with Pascal case.
       $isEnabled = false;
       $this->Debug = new LJCDebug("LJCParamCommentLib", "LJCParamComment"
-        , $isEnabled);
+        , "w", $isEnabled);
       $this->Debug->IncludePrivate = true;
     }
 
