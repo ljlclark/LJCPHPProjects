@@ -2,18 +2,27 @@
   // Copyright (c) Lester J. Clark 2022 - All Rights Reserved
   // LJCGenTextSectionLib.php
   declare(strict_types=1);
-  $path = "../..";
-  require_once "$path/LJCPHPCommon/LJCTextLib.php";
-  require_once "$path/LJCPHPCommon/LJCDBAccessLib.php";
-  include_once "$path/GenDoc/DocDataLib/LJCDebugLib.php";
+  require_once "../../LJCPHPCommon/LJCTextLib.php";
+  require_once "../../LJCPHPCommon/LJCDBAccessLib.php";
+  include_once "../../GenDoc/DocDataLib/LJCDebugLib.php";
+  // LJCTextLib: LJCWriter
+  // LJCDbAccessLib: LJCDbColumn, LJCDbColumns
+  // LJCDebugLib: LJCDebug
 
-  // The utility to generate text from a template and custom data.
+  // The data classes for representing GenData XML.
   // The GenText Section Library
   /// <include path='items/LJCGenTextSectionLib/*' file='Doc/LJCGenTextSectionLib.xml'/>
   /// LibName: LJCGenTextSectionLib
+  // LJCDirective
+  // LJCSection, LJCSections
+  // LJCItem
+  // LJCReplacement, LJCReplacements
 
   // ***************
   // Represents a template Directive.
+  // Static: GetDirective(), IsDirective(), IfElse(), IfEnd()
+  //   , SectionBegin(), SectionEnd()
+  // Public: IsIfBegin(), IsSectionBegin(), IsSectionEnd()
   /// <include path='items/LJCDirective/*' file='Doc/LJCDirective.xml'/>
   class LJCDirective
   {
@@ -23,6 +32,16 @@
     public static function GetDirective(string $line
       , string $commentChars) : ?LJCDirective
     {
+      $enabled = false;
+      if ($enabled)
+      {
+        $writer = new LJCWriter("LJCDirective.txt", "a");
+        $writer->FWriteLine("GetDirective()");
+      }
+
+      // ToDo: Why not doing append?
+      //$debug = new LJCDebug("", "LJCDirective", "a");
+      //$debug->WriteStartText("GetDirective");
       $values = [];
       $retValue = null;
 
@@ -38,7 +57,8 @@
           if (count($values) > 0)
           {
             // The directive identifier.
-            $retValue->ID = $values[1];
+            // *** Change *** 5/11/25
+            $retValue->Type = $values[1];
           }
           if (count($values) > 2)
           {
@@ -49,6 +69,12 @@
             $retValue->Value = $values[3];
           }
         }
+      }
+      if ($enabled
+        && isset($writer))
+      {
+        $writer->FClose();
+        //$debug->Close();
       }
       return $retValue;
     }
@@ -151,9 +177,9 @@
     public function __construct(string $type, string $name)
     {
       // Instantiate properties with Pascal case.
-      $isEnabled = false;
+      $enabled = false;
       $this->Debug = new LJCDebug("LJCGenTextSectionLib", "LJCDirective"
-        , $isEnabled);
+        , "w", $enabled);
       $this->Debug->IncludePrivate = true;
 
       $this->Type = $type;
@@ -217,6 +243,7 @@
 
   // ***************
   // Represents a template Section.
+  // Clone()
   /// <include path='items/LJCSection/*' file='Doc/LJCSection.xml'/>
   class LJCSection
   {
@@ -225,9 +252,9 @@
     public function __construct(string $name)
     {
       // Instantiate properties with Pascal case.
-      $isEnabled = false;
+      $enabled = false;
       $this->Debug = new LJCDebug("LJCGenTextSectionLib", "LJCSection"
-        , $isEnabled);
+        , "w", $enabled);
       $this->Debug->IncludePrivate = true;
 
       $this->Name = trim($name);
@@ -264,9 +291,14 @@
 
   // ***************
   // Represents a collection of Section objects.
+  // Static: CreateColumnData(), CreateSections(), AddReplacement()
+  // Collection Static: Deserialize(), DeserializeString(), Serialize()
+  // Collection: Clone(), GetKeys(), GetValues(), HasKey()
+  // Data: Add(), Retrieve(), Remove()
   /// <include path='items/LJCSections/*' file='Doc/LJCSections.xml'/>
   class LJCSections implements IteratorAggregate, \Countable
   {
+
     // ------------------------
     // Static Functions
 
@@ -431,9 +463,9 @@
     public function __construct()
     {
       // Instantiate properties with Pascal case.
-      $isEnabled = false;
+      $enabled = false;
       $this->Debug = new LJCDebug("LJCGenTextSectionLib", "LJCSections"
-        , $isEnabled);
+        , "w", $enabled);
       $this->Debug->IncludePrivate = true;
     }
 
@@ -565,6 +597,8 @@
   }
 
   // ***************
+  // Represents a Section Item.
+  // Clone()
   /// <summary>Represents a Section Item.</summary>
   class LJCItem
   {
@@ -573,9 +607,9 @@
     public function __construct(string $name)
     {
       // Instantiate properties with Pascal case.
-      $isEnabled = false;
+      $enabled = false;
       $this->Debug = new LJCDebug("LJCGenTextSectionLib", "LJCItem"
-        , $isEnabled);
+        , "w", $enabled);
       $this->Debug->IncludePrivate = true;
 
       $this->Name = trim($name);
@@ -609,6 +643,8 @@
   }
 
   // ***************
+  // Represents Item Replacements.
+  // Clone()
   /// <summary>Represents Item Replacements.</summary>
   class LJCReplacement
   {
@@ -618,9 +654,9 @@
     public function __construct(string $name, string $value)
     {
       // Instantiate properties with Pascal case.
-      $isEnabled = false;
+      $enabled = false;
       $this->Debug = new LJCDebug("LJCGenTextSectionLib", "LJCReplacement"
-        , $isEnabled);
+        , "w", $enabled);
       $this->Debug->IncludePrivate = true;
 
       $this->Name = trim($name);
@@ -654,6 +690,8 @@
 
   // ***************
   // Represents a collection of Replacement objects.
+  // Collection: Clone(), HasKey()
+  // Data: Add(), Delete(), Retrieve()
   class LJCReplacements implements IteratorAggregate, \Countable
   {
     // ---------------
@@ -663,9 +701,9 @@
     public function __construct()
     {
       // Instantiate properties with Pascal case.
-      $isEnabled = false;
+      $enabled = false;
       $this->Debug = new LJCDebug("LJCGenTextSectionLib", "LJCReplacements"
-        , $isEnabled);
+        , "w", $enabled);
       $this->Debug->IncludePrivate = true;
     }
 

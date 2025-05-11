@@ -6,15 +6,11 @@
   $path = "../..";
   // Must refer to exact same file everywhere in codeline.
   include_once "$path/LJCPHPCommon/LJCTextLib.php";
-
-  // Classes
-  // File
-  //   LJCDebug
+  // LJCTextLib: LJCDebugWriter
 
   // Contains classes for debugging.
   /// LibName: LJCDebugLib
-
-  // ***************
+  //  LJCDebug
   /// <summary>Provides methods for debugging.</summary>
   class LJCDebug
   {
@@ -23,14 +19,21 @@
 
     /// <summary>Initializes a class instance.</summary>
     public function __construct(string $debugLibName, string $debugClassName
-      , bool $isEnabled = true)
+      , string $mode = "w", bool $isEnabled = true)
     {
       // Instantiate properties with Pascal case.
       $this->DebugClassName = $debugClassName;
-      $fullName = "$debugLibName.$debugClassName";
+      $fullName = "";
+      if (trim($debugLibName) != "")
+      {
+        $fullName = "$debugLibName.";
+      }
+      $fullName .= $debugClassName;
       $this->DebugFullName = $fullName;
+      $this->Enabled = false;
       $this->IncludePrivate = false;
       $this->IndentCount = 0;
+      $this->Mode = $mode;
 
       // Creates Writer if true.
       $this->setEnabled($isEnabled);
@@ -38,6 +41,14 @@
 
     // ---------------
     // Start Text Methods - LJCDebug
+
+    public function Close()
+    {
+      if (isset($this->Writer))
+      {
+        $this->Writer->Close();
+      }
+    }
 
     /// <summary>Writes the private debug section start text.</summary>
     public function WritePrivateStartText($startName, $addIndent = true
@@ -155,7 +166,7 @@
       if ($isEnabled
         && !isset($this->Writer))
       {
-        $this->Writer = new LJCDebugWriter($this->DebugClassName);
+        $this->Writer = new LJCDebugWriter($this->DebugClassName, $this->Mode);
       }
     }
 

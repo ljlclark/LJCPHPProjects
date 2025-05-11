@@ -5,11 +5,11 @@
   declare(strict_types=1);
   // Must refer to exact same file in codeline.
   include_once "LJCCollectionLib.php";
-
-  // Classes
   // LJCCollectionLib
   //   LJCCollectionBase
-  // File
+
+  /// <summary>The PDO Data Access Library</summary>
+  /// LibName: LJCDBAccessLib
   //   LJCConnectionValues
   //   LJCDbAccess
   //   LJCDbColumn
@@ -18,9 +18,6 @@
   //   LJCJoins
   //   LJCJoinOn
   //   LJCJoinOns
-
-  /// <summary>The PDO Data Access Library</summary>
-  /// LibName: LJCDBAccessLib
 
   // ***************
   /// <summary>Contains the Connection values.</summary>

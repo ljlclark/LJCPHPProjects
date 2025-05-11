@@ -5,21 +5,18 @@
   declare(strict_types=1);
   // Must refer to exact same file in codeline.
   include_once "LJCCommonLib.php";
-  
-  // Classes
-  // LJCCommonLib
-  //   LJCCommon
-  // File
-  //   LJCStringBuilder
-  //   LJCHTMLTableColumn
-  //   LJCHTMLWriter
-  //   LJCWriter
-  //   LJCDebugWriter
+  // LJCCommonLib: LJCCommon
 
   /// <summary>The Common Text Output Class Library</summary>
   /// LibName: LJCTextLib
+  // LJCStringBuilder
+  // LJCHTMLTableColumn
+  // LJCHTMLWriter, LJCWriter, LJCDebugWriter
 
   // ***************
+  // Represents a built string value.
+  // Append(), AppendLine(), AppendTags()
+  // Length(), ToString()
   /// <summary>Represents a built string value.</summary>
   class LJCStringBuilder
   {
@@ -150,6 +147,8 @@
   } // LJCHTMLTableColumn
 
   // ***************
+  // Contains HTML output methods.
+  // WriteHeader(), WriteRow(), WriteAttribute()
   /// <summary>Contains HTML output methods.</summary> 
   class LJCHTMLWriter
   {
@@ -205,6 +204,8 @@
 
   // ***************
   // Contains console and file output methods.
+  // Static: Run(), Write(), WriteAll(), WriteFile(), WriteLine() 
+  // Public: FWrite(), FWriteLine()
   /// <include path='items/LJCWriter/*' file='Doc/LJCWriter.xml'/>
   class LJCWriter
   {
@@ -271,10 +272,9 @@
     {
       if ($text != null)
       {
-        $stream = fopen($fileSpec, "w");
-        $writer = new self($stream);
+        $writer = new self($fileSpec, "w");
         $writer->FWrite($text);
-        fclose($stream);
+        $writer->FClose();
       }
     } // WriteFile()
 
@@ -292,13 +292,19 @@
 
     /// <summary>Initializes an object instance.</summary>
     /// <param name="$stream">The stream object.</param>
-    public function __construct($stream)
+    public function __construct(string $fileName, string $mode)
     {
+      $stream = fopen($fileName, $mode);
       $this->Stream = $stream;
     } // __construct()
 
     // ---------------
     // Public Methods - LJCWriter
+
+    public function FClose()
+    {
+      fclose($this->Stream);
+    }
 
     // Writes file text with indents.
     /// <include path='items/FWrite/*' file='Doc/LJCWriter.xml'/>
@@ -320,21 +326,28 @@
 
     // ---------------
     // Class Data
+
+    private bool $Enabled;
     private $Stream;
   } // LJCWriter
 
   // ***************
+  // Contains Debug output methods.
+  // Debug()
   /// <summary>Contains Debug output methods.</summary>
   class LJCDebugWriter
   {
     // ---------------
     // Constructors
 
-    public function __construct(string $locName)
+    public function __construct(string $locName, $mode = "w")
     {
-      $fileName = LJCCommon::GetDebugFileName("Debug", $locName);
-      $outputStream = fopen($fileName, "w");
-      $this->DebugWriter = new LJCWriter($outputStream);
+      $fileName = $locName . "txt";
+      if ($mode = "w")
+      {
+        $fileName = LJCCommon::GetDebugFileName("Debug", $locName);
+      }
+      $this->DebugWriter = new LJCWriter($fileName, $mode);
     } // __construct()
 
     // ---------------
@@ -357,6 +370,12 @@
         }
       }
     } // Debug()
+
+    // Close the stream.
+    public function Close()
+    {
+      $this->DebugWriter->FClose();
+    }
 
     // The DebugWriter value.
     private ?LJCWriter $DebugWriter;

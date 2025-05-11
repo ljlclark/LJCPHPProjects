@@ -8,12 +8,20 @@
   include_once "$path/LJCPHPCommon/LJCTextLib.php";
   include_once "$path/GenDoc/DocDataLib/LJCDebugLib.php";
   include_once "LJCGenTextSectionLib.php";
+  // LJCCommonLib: LJCCommon
+  // LJCTextLib: LJCStringBuilder
+  // LJCDebugLib: LJCDebug
 
   // The utility to generate text from a template and custom GenData.
   /// <include path='items/LJCGenTextLib/*' file='Doc/LJCGenTextLib.xml'/>
   /// LibName: LJCGenTextLib
+  // LJCGenText
 
   // ***************
+  // The GenText text generator class.
+  // Public: ProcessTemplate()
+  // Private: ManageSections(), ProcessIfDirectives()
+  //   , ProcessReplacements(), ProcessSection()
   /// <summary>The GenText text generator class.</summary>
   /// <remarks>Main Function: ProcessTemplate()</remarks>
   class LJCGenText
@@ -23,9 +31,9 @@
     public function __construct(?string $debugFileSuffix = "GenData")
     {
       // Instantiate properties with Pascal case.
-      $isEnabled = false;
+      $enabled = true;
       $this->Debug = new LJCDebug("LJCGenTextLib", "LJCGenText"
-        , $isEnabled);
+        , "w", $enabled);
       $this->Debug->IncludePrivate = true;
 
       $this->ActiveSections = [];
@@ -104,19 +112,24 @@
         return $retValue;				
       }
 
-      $retValue = LJCDirective::Find($this->Line);
+      //$retValue = LJCDirective::Find($this->Line);
+      $retValue = LJCDirective::GetDirective($this->Line, "<!--");
       if ($retValue != null)
       {
+        // *****
+        $this->Debug->Write("Line = $this->Line");
+        $this->Debug->Write("retValue.Name = $retValue->Name");
+        $this->Debug->Write("retValue.Type = $retValue->Type");
         switch (strtolower($retValue->Type))
         {
           case "#sectionbegin":
-            $section = $this->Sections->Get($retValue->Name, false);
+            $section = $this->Sections->Retrieve($retValue->Name, false);
             if ($section != null)
             {
               // Set CurrentSection if Section Data exists.
               $this->CurrentSection = $section;
 
-              if (count($this->CurrentSection->Items) > 1
+              if (count($this->CurrentSection->RepeatItems) > 1
                 && null == $this->CurrentSection->Begin)
               {
                 $this->CurrentSection->Begin = $prevLineBegin;
@@ -132,12 +145,12 @@
             $activeSectionsCount = count($this->ActiveSections);
             if ($activeSectionsCount > 0)
             {
-              $section = $this->Sections->Get($retValue->Name, false);							
+              $section = $this->Sections->Retrieve($retValue->Name, false);							
               if ($section != null)
               {
                 // Only pop active section if there is Section data
                 // and if there are no more items.
-                $count = count($this->CurrentSection->Items);
+                $count = count($this->CurrentSection->RepeatItems);
                 if ($itemIndex >= $count - 1)
                 {
                   $section = array_pop($this->ActiveSections);
@@ -289,7 +302,7 @@
       // Process Items
       $getLine = false;
       $prevLineBegin =  0;
-      $items = $this->CurrentSection->Items;
+      $items = $this->CurrentSection->RepeatItems;
       $itemCount = count($items);
 
       for ($itemIndex = 0; $itemIndex < $itemCount; $itemIndex++)
@@ -399,7 +412,7 @@
         // Only reset position if there are more items.
         if ($this->CurrentSection != null)
         {
-          $count = count($this->CurrentSection->Items);
+          $count = count($this->CurrentSection->RepeatItems);
           if ($itemIndex < $count - 1)
           {
             $begin = $this->CurrentSection->Begin;

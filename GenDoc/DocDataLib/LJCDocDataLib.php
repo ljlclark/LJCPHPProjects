@@ -409,9 +409,9 @@
     public function __construct(string $name, ?string $summary = null)
     {
       // Instantiate properties with Pascal case.
-      $isEnabled = false;
+      $enabled = false;
       $this->Debug = new LJCDebug("LJCDocDataLib", "LJCDocDataFile"
-        , $isEnabled);
+        , "w",  $enabled);
       $this->Debug->IncludePrivate = true;
 
       $this->Classes = null;
@@ -795,9 +795,9 @@
     public function __construct()
     {
       // Instantiate properties with Pascal case.
-      $isEnabled = false;
+      $enabled = false;
       $this->Debug = new LJCDebug("LJCDocDataLib", "LJCDocDataParams"
-        , $isEnabled);
+        , "w",  $enabled);
       $this->Debug->IncludePrivate = true;
     } // __construct()
 

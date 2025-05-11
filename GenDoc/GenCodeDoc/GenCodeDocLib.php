@@ -34,9 +34,9 @@
     public function __construct()
     {
       // Instantiate properties with Pascal case.
-      $isEnabled = false;
+      $enabled = false;
       $this->Debug = new LJCDebug("GenCodeDocLib", "GenCodeDoc"
-        , $isEnabled);
+        , "w", $enabled);
       $this->Debug->IncludePrivate = true;
 
       $this->DocDataGen = new LJCDocDataGen();

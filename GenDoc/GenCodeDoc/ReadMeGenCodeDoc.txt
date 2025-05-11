@@ -1,6 +1,6 @@
 ReadMeGenCodeDoc.txt
 
-The project contains classes to generate HTML files for specific PHP Source
+The project contains classes to generate HTML "Doc" files for specific PHP Source
 files.
 
 GenCodeDocFiles - Calls GenCodeDoc->CreateXML() for each PHP File where HTML
@@ -14,7 +14,7 @@ GenCodeDocFiles - Calls GenCodeDoc->CreateXML() for each PHP File where HTML
      LJCDocDataGen->CreateDocDataXMLString() to create the DocXML string.
 
      The DocXML string is passed to LJCGenDataGen->CreateLibXMLString() to
-     create the GenXML string.
+     create the GenData XML string.
  
-     The data from the GenXML string and the appropriate Text Template are
+     The data from the GenData XML string and the appropriate Text Template are
      passed to LJCGenText->ProcessTemplate() method to generate the HTML file.
