@@ -12,4 +12,7 @@
   $xmlString = $docDataGen->CreateDocDataXMLString("LJCDocDataGenLib.php"
     , true);
   echo($xmlString);
+  $xmlString = $docDataGen->CreateDocDataXMLString("LJCGenCodeDocLib.php"
+    , true);
+  echo($xmlString);
 ?>

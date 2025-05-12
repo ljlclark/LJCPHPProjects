@@ -12,8 +12,10 @@
   // LJCDocDataGenLib: LJCDocDataGen
   // LJCGenDataGenLib: LJCGenDataGen
 
-  // Contains classes to generate HTML doc for files listed
-  // in GenCodeSourceFileList.txt 
+  /// <summary>
+  ///   Contains classes to generate HTML doc for files listed
+  ///   in GenCodeSourceFileList.txt.
+  /// </summary>
   /// LibName: GenCodeDocLib
   // GenCodeDoc
 
