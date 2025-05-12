@@ -3,34 +3,27 @@
   // Licensed under the MIT License.
   // LJCCommentsLib.php
   declare(strict_types=1);
-  $path = "../..";
   // Must refer to exact same file everywhere in codeline.
-  include_once "$path/LJCPHPCommon/LJCCommonLib.php";
-  include_once "$path/GenTextLib/LJCGenTextSectionLib.php";
+  // Path: LJCPHPProjectsDev/GenDoc/DocDataLib
+  include_once "../../LJCPHPCommon/LJCCommonLib.php";
+  include_once "../../GenTextLib/LJCGenTextSectionLib.php";
   include_once "LJCDebugLib.php";
   include_once "LJCIncludeLib.php";
   include_once "LJCParamCommentLib.php";
-
-  // Classes
-  // LJCCommonLib
-  //   LJCCommon
-  // LJCGenTextSectionLib
-  //   LJCDirective
-  //   LJCSection
-  //   LJCSections
-  //   LJCItem
-  //   LJCReplacement
-  //   LJCReplacements
-  // LJCIncludeLib
-  //   LJCInclude
-  // LJCParamCommentLib
-  //   LJCParamComment
-  // File
-  //   LJCComments
+  // LJCCommonLib: LJCCommon
+  // LJCGenTextSectionLib: LJCDirective, LJCSection, LJCSections
+  //   , LJCItem, LJCReplacement, LJCReplacements
+  // LJCDebugLib: LJCDebug
+  // LJCIncludeLib: LJCInclude
+  // LJCParamCommentLib: LJCParamComment
 
   // Contains Classes to parse code XML comments.
   /// <include path='items/LJCCommentsLib/*' file='Doc/LJCCommentsLib.xml'/>
   /// LibName: LJCCommentsLib
+  // LJCComments
+
+  // Calling Code
+  // LJCDocDataGenLib.php
 
   // Main Call Tree
   // SetComment() public
@@ -39,6 +32,7 @@
   
   // ***************
   // Provides methods to parse code XML comment values.
+  // Public: ClearComments(), SetComment()
   /// <include path='items/LJCComments/*' file='Doc/LJCComments.xml'/>
   class LJCComments
   {

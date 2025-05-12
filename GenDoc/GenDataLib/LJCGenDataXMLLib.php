@@ -3,14 +3,21 @@
   declare(strict_types=1);
   $path = "../..";
   // Must refer to exact same file everywhere in codeline.
-  require_once "$path/LJCPHPCommon/LJCTextLib.php";
-  require_once "$path/GenDoc/DocDataLib/LJCDebugLib.php";
+  // Path: LJCPHPProjectsDev/GenDoc/GenDataLib
+  include_once "$path/LJCPHPCommon/LJCTextLib.php";
+  include_once "$path/GenDoc/DocDataLib/LJCDebugLib.php";
+  // LJCCommonLib: LJCCommon
+  // LJCDebugLib: LJCDebug
 
   // Contains Classes to generate GenData XML.
   /// <include path='items/LJCGenDataXMLLib/*' file='Doc/LJCGenDataXMLLib.xml'/>
   /// LibName: LJCGenDataXMLLib
+  // LJCGenDataXML
 
+  // ***************
   // Provides methods for creating GenData XML text.
+  // Static: ItemBegin(), ItemEnd(), Replacement()
+  //   , SectionBegin(), SectionEnd(), XMLHead()
   /// <include path='items/LJCGenDataXML/*' file='Doc/LJCGenDataXML.xml'/>
   class LJCGenDataXML
   {

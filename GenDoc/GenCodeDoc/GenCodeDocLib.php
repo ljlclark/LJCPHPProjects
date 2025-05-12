@@ -4,17 +4,18 @@
   // GenCodeDocLib.php
   declare(strict_types=1);
   // Must refer to exact same file everywhere in codeline.
-  require_once "../../LJCPHPCommon/LJCTextLib.php";
+  // Path: LJCPHPProjectsDev/GenDoc/GenCodeDoc
   include_once "../DocDataLib/LJCDebugLib.php";
-  require_once "../DocDataLib/LJCDocDataGenLib.php";
-  require_once "../GenDataLib/LJCGenDataGenLib.php";
-
-  // Classes
-  // File
-  //   GenCodeDoc
+  include_once "../DocDataLib/LJCDocDataGenLib.php";
+  include_once "../GenDataLib/LJCGenDataGenLib.php";
+  // LJCDebugLib: LJCDebug
+  // LJCDocDataGenLib: LJCDocDataGen
+  // LJCGenDataGenLib: LJCGenDataGen
 
   // Contains classes to generate HTML doc for files listed
   // in GenCodeSourceFileList.txt 
+  /// LibName: GenCodeDocLib
+  // GenCodeDoc
 
   // Calling Code
   // GenCodeDocFiles.php
@@ -26,6 +27,11 @@
   //     LJCGenDataGen->CreateLibXMLString()
 
   // ***************
+  // Generates HTML doc for files in GenCodeSourceFileList.txt 
+  // Public: CreateFromList(), CreateFilePages()
+  /// <summary>
+  ///   Generates HTML doc for files in GenCodeSourceFileList.txt
+  /// </summary>
   class GenCodeDoc
   {
     /// <summary>Initializes an object instance.</summary>
@@ -37,9 +43,7 @@
         , "w", $enabled);
       $this->Debug->IncludePrivate = true;
       
-      // GenDoc/DocDataLib/LJCDocDataGenLib.php
       $this->DocDataGen = new LJCDocDataGen();
-      //GenDoc/GenDataLib/LJCGenDataGenLib.php
       $this->GenDataGen = new LJCGenDataGen();
     } // __construct()
 

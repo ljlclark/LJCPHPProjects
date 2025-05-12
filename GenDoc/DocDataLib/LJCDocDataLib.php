@@ -3,36 +3,24 @@
   // Licensed under the MIT License.-->
   // LJCDocDataLib.php
   declare(strict_types=1);
-  $path = "../..";
   // Must refer to exact same file everywhere in codeline.
-  include_once "$path/LJCPHPCommon/LJCCommonLib.php";
-  include_once "$path/LJCPHPCommon/LJCTextLib.php";
-  include_once "$path/LJCPHPCommon/LJCCollectionLib.php";
+  // Path: LJCPHPProjectsDev/GenDoc/DocDataLib
+  include_once "../../LJCPHPCommon/LJCCommonLib.php";
+  include_once "../../LJCPHPCommon/LJCTextLib.php";
+  include_once "../../LJCPHPCommon/LJCCollectionLib.php";
   include_once "LJCDebugLib.php";
-
-  // Classes
-  // LJCCommonLib
-  //   LJCCommon
-  // LJCTextLib
-  //   LJCStringBuilder
-  //   LJCHTMLTableColumn
-  //   LJCHTMLWriter
-  //   LJCWriter
-  //   LJCDebugWriter
-  // File
-  //   LJCDocDataClass
-  //   LJCDocDataClasses
-  //   LJCDocDataFile
-  //   LJCDocDataMethod
-  //   LJCDocDataMethods
-  //   LJCDocDataParam
-  //   LJCDocDataParams
-  //   LJCDocDataProperty
-  //   LJCDocDataProperties
+  // LJCCommonLib: LJCCommon
+  // LJCTextLib: LJCStringBuilder, LJCWriter
+  // LJCCollectionLib: LJCCollectionBase
+  // LJCDebugLib: LJCDebug
 
   // Contains Classes to represent DocData.
   /// <include path='items/LJCDocDataLib/*' file='Doc/LJCDocDataLib.xml'/>
   /// LibName: LJCDocDataLib
+  //  LJCDocDataClass, LJCDocDataClasses LJCDocDataFile
+  //  LJCDocDataMethod, LJCDocDataMethods
+  //  LJCDocDataParam, LJCDocDataParams
+  //  LJCDocDataProperty, LJCDocDataProperties
 
   // Main Object Graph
   // LJCDocDataFile
@@ -52,6 +40,7 @@
   //   LJCCollectionLib.php
 
   // ***************
+  // Public: Clone()
   /// <summary>Represents a DocData Class.</summary>
   class LJCDocDataClass
   {
@@ -117,6 +106,7 @@
   } // LJCDocDataClass
 
   // ***************
+  // Public: Clone(), AddObject(), Get()
   /// <summary>Represents a collection of objects.</summary>
   class LJCDocDataClasses extends LJCCollectionBase
   {
@@ -181,6 +171,8 @@
 
   // ***************
   // Represents a DocData Lib File.
+  // Static: Deserialize(), DeserializeString(), GetProperties()
+  // Public: Clone(), Serialize(), SerializeString()
   /// <include path='items/LJCDocDataFile/*' file='Doc/LJCDocDataFile.xml'/>
   class LJCDocDataFile
   {
@@ -605,6 +597,7 @@
   } // LJCDocDataFile
 
   // ***************
+  // Public: Clone()
   /// <summary>Represents a DocData Function.</summary>
   class LJCDocDataMethod
   {
@@ -674,6 +667,7 @@
   } // LJCDocDataMethod
 
   // ***************
+  // Public: Clone(), AddObject(), Get()
   /// <summary>Represents a collection of objects.</summary>
   class LJCDocDataMethods extends LJCCollectionBase
   {
@@ -739,6 +733,7 @@
   } // LJCDocDataMethods
 
   // ***************
+  // Public: Clone()
   /// <summary>Represents a DocData Parameter.</summary>
   class LJCDocDataParam
   {
@@ -781,6 +776,7 @@
   } // LJCDocDataParam
 
   // ***************
+  // Public: Clone(), AddObject(), Get()
   /// <summary>Represents a collection of objects.</summary>
   class LJCDocDataParams extends LJCCollectionBase
   {
@@ -847,6 +843,7 @@
   } // LJCDocDataParams
 
   // ***************
+  // Public: Clone()
   /// <summary>Represents a DocData Property.</summary>
   class LJCDocDataProperty
   {
@@ -903,6 +900,7 @@
   } // LJCDocDataProperty
 
   // ***************
+  // Public: Clone(), AddObject(), Get()
   /// <summary>Represents a collection of objects.</summary>
   class LJCDocDataProperties extends LJCCollectionBase
   {

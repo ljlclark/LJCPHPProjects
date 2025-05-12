@@ -1,16 +1,24 @@
 <?php
   // LJCGenDataGenLib.php
   declare(strict_types=1);
-  $path = "../..";
   // Must refer to exact same file everywhere in codeline.
-  require_once "$path/LJCPHPCommon/LJCTextLib.php";
-  require_once "$path/GenTextLib/LJCGenTextLib.php";
-  require_once "$path/GenDoc/GenDataLib/LJCGenDataXMLLib.php";
-  require_once "$path/GenDoc/DocDataLib/LJCDebugLib.php";
+  // Path: LJCPHPProjectsDev/GenDoc/GenDataLib
+  include_once "../../LJCPHPCommon/LJCTextLib.php";
+  include_once "../../GenTextLib/LJCGenTextLib.php";
+  include_once "../../GenDoc/GenDataLib/LJCGenDataXMLLib.php";
+  include_once "../../GenDoc/DocDataLib/LJCDebugLib.php";
+  // LJCCommonLib: LJCCommon
+  // LJCGenTtextLib: 
+  // LJCGenDataXMLLib:
+  // LJCDebugLib: LJCDebug
 
-  // Contains classes to create GenData from DocData.
+  // Contains classes to create GenData and HTML Doc from DocData.
   /// <include path='items/LJCGenDataGenLib/*' file='Doc/LJCGenDataGenLib.xml'/>
   /// LibName: LJCGenDataGenLib
+  // LJCGenDataGen
+
+  // Calling Code
+  // GenCodeDocLib.php
 
   // Main Call Tree
   // CreateLibXML() public
@@ -35,7 +43,8 @@
   //           OutputPropertySpec()
 
   // ***************
-  // Provides methods to generate GenData XML files.
+  // Provides methods to generate GenData XML files and HTML Doc.
+  // Public: CreateLibXMLString()
   /// <include path='items/LJCGenDataGen/*' file='Doc/LJCGenDataGen.xml'/>
   class LJCGenDataGen
   {
@@ -825,12 +834,13 @@
     private function GetHTMLText(string $sectionsXMLString
       , string $templateFileName) : string
     {
-      global $path;
       $retValue = null;
 
       if ($sectionsXMLString != null)
       {
-        $templateFileSpec = "$path/GenDoc/GenDataLib/Templates/$templateFileName";
+        // Relative to calling program directory.
+        // Path: LJCPHPProjectsDev/GenDoc/GenCodeDocLib
+        $templateFileSpec = "../GenDataLib/Templates/$templateFileName";
         $sections = LJCSections::DeserializeString($sectionsXMLString);
         $genText = new LJCGenText();
         $retValue = $genText->ProcessTemplate($templateFileSpec, $sections);

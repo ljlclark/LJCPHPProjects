@@ -3,31 +3,24 @@
   // Licensed under the MIT License.
   // LJCIncludeLib.php
   declare(strict_types=1);
-  $path = "../..";
   // Must refer to exact same file everywhere in codeline.
-  include_once "$path/LJCPHPCommon/LJCCommonLib.php";
-  include_once "$path/LJCPHPCommon/LJCTextLib.php";
-  include_once "$path/GenTextLib/LJCGenTextSectionLib.php";
+  // Path: LJCPHPProjectsDev/GenDoc/DocDataLib
+  include_once "../../LJCPHPCommon/LJCCommonLib.php";
+  include_once "../../LJCPHPCommon/LJCTextLib.php";
+  include_once "../../GenTextLib/LJCGenTextSectionLib.php";
   include_once "LJCDebugLib.php";
-
-  // Classes
-  // LJCCommonLib
-  //   LJCCommon
-  // LJCGenTextSectionLib
-  //   LJCDirective
-  //   LJCSection
-  //   LJCSections
-  //   LJCItem
-  //   LJCReplacement
-  //   LJCReplacements
-  // File
-  //   LJCInclude
+  // LJCCommonLib: LJCCommon
+  // LJCTextLib: LJCWriter
+  // LJCGenTextSectionLib: LJCDirective, LJCSection, LJCSections, LJCItem
+  //   , LJCReplacement, LJCReplacements
+  // LJCDebugLib: LJCDebug
 
   // #01 Correct XMLFileName - 5/4/25
 
   // Contains Classes to retrieve data from include XML files.
   /// <include path='items/LJCIncludeLib/*' file='Doc/LJCIncludeLib.xml'/>
   /// LibName: LJCIncludeLib
+  //  LJCInclude
 
   // Main Call Tree
   // SetComments() public
@@ -36,6 +29,7 @@
 
   // ***************
   // Retrieves the Include file XML comment values.
+  // Public: SetComments()
   /// <include path='items/LJCInclude/*' file='Doc/LJCInclude.xml'/>
   class LJCInclude
   {

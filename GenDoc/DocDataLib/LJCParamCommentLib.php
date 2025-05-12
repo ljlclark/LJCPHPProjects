@@ -7,12 +7,10 @@
   // Contains Classes to manage param comments.
   /// <include path='items/LJCParamCommentLib/*' file='Doc/LJCParamCommentLib.xml'/>
   /// LibName: LJCParamCommentLib
-
-  // Classes
-  // File
-  //   LJCParamComment
+  // LJCParamComment
 
   // ***************
+  // GetParam()
   /// <summary>Handles param comments.</summary>
   class LJCParamComment
   {

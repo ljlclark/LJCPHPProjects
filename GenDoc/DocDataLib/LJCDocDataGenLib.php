@@ -3,21 +3,24 @@
   // Licensed under the MIT License.
   // LJCDocDataGenLib.php
   declare(strict_types=1);
-  $path = "../..";
   // Must refer to exact same file everywhere in codeline.
-  include_once "$path/LJCPHPCommon/LJCCommonLib.php";
-  include_once "$path/LJCPHPCommon/LJCTextLib.php";
+  // Path: LJCPHPProjectsDev/GenDoc/DocDataLib
+  include_once "../../LJCPHPCommon/LJCCommonLib.php";
+  include_once "../../LJCPHPCommon/LJCTextLib.php";
   include_once "LJCDebugLib.php";
   include_once "LJCDocDataLib.php";
   include_once "LJCCommentsLib.php";
-
-  // Classes
-  // File
-  //   LJCDocDataGen
+  // LJCCommonLib: LJCCommon
+  // LJCTextLib: LJCWriter
+  // LJCDebugLib: LJCDebug
+  // LJCDocDataLib: LJCDocDataClass, LJCDocDataClasses, LJCDocDataFile
+  //   , LJCDocDataMethod, LJCDocDataMethods, LJCDocDataParam, LJCDocDataParams
+  // LJCCommentsLib: LJCComments
 
   // Contains Classes to generate DocData XML strings and optionally files.
   /// <include path='items/LJCDocDataGenLib/*' file='Doc/LJCDocDataGenLib.xml'/>
   /// LibName: LJCDocDataGenLib
+  //  LJCDocDataGen
 
   // Calling Code
   // TestDocDataGen.php
@@ -42,6 +45,8 @@
   //   DocOutputFileSpec() public
 
   // ***************
+  // Provides methods to generate DocData XML files from a code file.
+  // Public: CreateDocDataXMLString(), ProcessCode
   /// <summary>
   ///		Provides methods to generate DocData XML files from a code file.
   /// </summary>

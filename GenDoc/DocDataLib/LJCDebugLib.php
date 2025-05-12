@@ -3,14 +3,20 @@
   // Licensed under the MIT License.
   // LJCDebugLib.php
   declare(strict_types=1);
-  $path = "../..";
   // Must refer to exact same file everywhere in codeline.
-  include_once "$path/LJCPHPCommon/LJCTextLib.php";
+  // Path: LJCPHPProjectsDev/GenDoc/DocDataLib
+  include_once "../../LJCPHPCommon/LJCTextLib.php";
   // LJCTextLib: LJCDebugWriter
 
   // Contains classes for debugging.
   /// LibName: LJCDebugLib
   //  LJCDebug
+
+  // ***************
+  // Provides methods for debugging.
+  // Public: Close(), WritePrivateStartText(), WriteStartText()
+  //  , WritePrivate, Write(), AddIndent(), IndentString(), WriteIndentCount()
+  //  , getIndentCount(), setEnabled
   /// <summary>Provides methods for debugging.</summary>
   class LJCDebug
   {
