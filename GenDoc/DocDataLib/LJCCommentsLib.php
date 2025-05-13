@@ -28,6 +28,7 @@
   // Main Call Tree
   // SetComment() public
   //   GetComment()
+  //     LJCInclude.SetComments()
   //   SaveComment()
   
   // ***************
@@ -43,8 +44,8 @@
     public function __construct()
     {
       // Instantiate properties with Pascal case.
-      $enabled = false;
-      $this->Debug = new LJCDebug("LJCDocDataGenLib", "LJCDocDataGen"
+      $enabled = true;
+      $this->Debug = new LJCDebug("LJCCommentsLib", "LJCComments"
         , "w",  $enabled);
       $this->Debug->IncludePrivate = true;
 
@@ -74,7 +75,7 @@
     /// <summary>Clears the XML comments.</summary>
     public function ClearComments() : void
     {
-      $this->Debug->WriteStartText("ClearComments");
+      //$this->Debug->WriteStartText("ClearComments");
 
       $this->ClearComment("code");
       $this->ClearComment("include");
@@ -83,7 +84,7 @@
       $this->ClearComment("returns");
       $this->ClearComment("summary");
 
-      $this->Debug->AddIndent(-1);
+      //$this->Debug->AddIndent(-1);
     } // ClearComments()
 
     // Sets the XML comment value.
@@ -142,7 +143,7 @@
     // Clears the comments for the specified comment tag.
     private function ClearComment(?string $tagName = null) : void
     {
-      $this->Debug->WritePrivateStartText("ClearComment");
+      //$this->Debug->WritePrivateStartText("ClearComment");
 
       if (null == $tagName)
       {
@@ -180,7 +181,7 @@
         }
       }
 
-      $this->Debug->AddIndent(-1);
+      //$this->Debug->AddIndent(-1);
     } // ClearComment()
 
     // Gets the comment for the current comment tag.
@@ -204,11 +205,17 @@
       if ("<include" == $beginTag)
       {
         $isSimpleComment = false;
+        // *****
+        $this->Debug->Write(__LINE__." line = $line");
         $this->IncludeFile->SetComments($line, $this->CodeFileSpec);
+        // *****
+        $this->Debug->Write(__LINE__." CodeFileSpec = $this->CodeFileSpec");
 
         // Process the include comment lines through SetComment().
         foreach ($this->IncludeFile->Comments as $comment)
         {
+          // *****
+          $this->Debug->Write(__LINE__." <include comment = $comment");
           $this->SetComment($comment);
         }
 
@@ -223,7 +230,15 @@
       {
         $isSimpleComment = false;
         $paramComment = new LJCParamComment();
+        // *****
+        foreach ($this->Params as $temp)
+        {
+          $this->Debug->Write(__LINE__." param.Name = $temp->Name");
+        }
         $param = $paramComment->GetParam($line);
+        // *****
+        $this->Debug->Write(__LINE__." line = $line");
+        $this->Debug->Write(__LINE__." param.Name = $param->Name");
         $this->Params->AddObject($param);
       }
 
@@ -246,7 +261,7 @@
     // Saves the comment for the current comment tag.
     private function SaveComment(?string $comment) : void
     {
-      $this->Debug->WriteStartText("SaveComment");
+      //$this->Debug->WriteStartText("SaveComment");
 
       switch ($this->CurrentTagName)
       {
@@ -271,7 +286,7 @@
           break;
       }
 
-      $this->Debug->AddIndent(-1);
+      //$this->Debug->AddIndent(-1);
     } // SaveComment()
 
     // ---------------
@@ -280,7 +295,7 @@
     // Returns the current or other BeginTag found in the line.
     private function GetBeginTagName(string $line) : ?string
     {
-      $this->Debug->WritePrivateStartText("GetBeginTagName");
+      //$this->Debug->WritePrivateStartText("GetBeginTagName");
       $retValue = null;
       
       if ($this->CurrentTagName != null)
@@ -297,14 +312,14 @@
         }
       }
 
-      $this->Debug->AddIndent(-1);
+      //$this->Debug->AddIndent(-1);
       return $retValue;
     } // GetBeginTagName()
 
     // Gets the BeginTag for the specified comment tag.
     private function GetBeginTag(?string $tagName = null) : ?string
     {
-      $this->Debug->WritePrivateStartText("GetBeginTag");
+      //$this->Debug->WritePrivateStartText("GetBeginTag");
       $retValue = null;
 
       if (null == $tagName)
@@ -317,14 +332,14 @@
         $retValue = $this->BeginTags[$tagName];
       }
 
-      $this->Debug->AddIndent(-1);
+      //$this->Debug->AddIndent(-1);
       return $retValue;
     } // GetBeginTag()
 
     // Gets the EndTag for the specified or current comment tag.
     private function GetEndTag(?string $tagName = null) : ?string
     {
-      $this->Debug->WritePrivateStartText("GetEndTag");
+      //$this->Debug->WritePrivateStartText("GetEndTag");
       $retValue = null;
 
       if (null == $tagName)
@@ -337,14 +352,14 @@
         $retValue = $this->EndTags[$tagName];
       }
 
-      $this->Debug->AddIndent(-1);
+      //$this->Debug->AddIndent(-1);
       return $retValue;
     } // GetEndTag()
 
     // Gets the BeginTag length for the specified or current comment tag.
     private function GetLengthBeginTag(?string $tagName = null) : int
     {
-      $this->Debug->WritePrivateStartText("GetLengthBeginTag");
+      //$this->Debug->WritePrivateStartText("GetLengthBeginTag");
       $retValue = 0;
 
       if (null == $tagName)
@@ -358,14 +373,14 @@
         $retValue = strlen($value);
       }
 
-      $this->Debug->AddIndent(-1);
+      //$this->Debug->AddIndent(-1);
       return $retValue;
     } // GetLengthBeginTag()
 
     // Gets the EndTag length for the specified or current comment tag.
     private function GetLengthEndTag(?string $tagName = null) : int
     {
-      $this->Debug->WritePrivateStartText("GetLengthEndTag");
+      //$this->Debug->WritePrivateStartText("GetLengthEndTag");
       $retValue = 0;
 
       if (null == $tagName)
@@ -382,14 +397,14 @@
         }
       }
 
-      $this->Debug->AddIndent(-1);
+      //$this->Debug->AddIndent(-1);
       return $retValue;
     } // GetLengthEndTag()
 
     // Indicates if the lines has a current EndTag.
     private function HasCurrentEndTag(string $line) : bool
     {
-      $this->Debug->WritePrivateStartText("HasCurrentEndTag");
+      //$this->Debug->WritePrivateStartText("HasCurrentEndTag");
       $retValue = false;
 
       $endTag = $this->GetEndTag();
@@ -399,7 +414,7 @@
         $retValue = true;
       }
 
-      $this->Debug->AddIndent(-1);
+      //$this->Debug->AddIndent(-1);
       return $retValue;
     } // HasCurrentEndTag()
 
@@ -407,7 +422,7 @@
     private function SetCommentTags() : void
     {
       // Instantiate properties with Pascal case.
-      $this->Debug->WritePrivateStartText("SetCommentTags");
+      //$this->Debug->WritePrivateStartText("SetCommentTags");
 
       $this->BeginTags["code"] = "<code>";
       $this->BeginTags["include"] = "<include";
@@ -421,7 +436,7 @@
       $this->EndTags["returns"] = "</returns>";
       $this->EndTags["summary"] = "</summary>";
 
-      $this->Debug->AddIndent(-1);
+      //$this->Debug->AddIndent(-1);
     } // GetCommentTag()
 
     // ---------------
@@ -431,7 +446,7 @@
     private function Output($text = null, $value = null)
     {
       // Instantiate properties with Pascal case.
-      $this->Debug->WritePrivateStartText("Output");
+      //$this->Debug->WritePrivateStartText("Output");
 
       $lib = "";
       //$lib = "LJCCommonLib";
@@ -447,7 +462,7 @@
         LJCWriter::WriteLine("");
       }
 
-      $this->Debug->AddIndent(-1);
+      //$this->Debug->AddIndent(-1);
     } // Output()
 
     // ---------------

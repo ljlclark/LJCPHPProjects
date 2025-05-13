@@ -114,7 +114,7 @@
     public function __construct()
     {
       // Instantiate properties with Pascal case.
-      $isEnabled = false;
+      $isEnabled = true;
       $this->Debug = new LJCDebug("LJCDocDataLib", "LJCDocDataClasses"
         , "w", $isEnabled);
       $this->Debug->IncludePrivate = true;
@@ -150,6 +150,8 @@
       {
         $key = $item->ID;
       }
+      // *****
+      $this->Debug->Write(__LINE__." key = $key");
       $retValue = $this->AddItem($item, $key);
 
       $this->Debug->AddIndent(-1);
@@ -162,7 +164,7 @@
     {
       $this->Debug->WriteStartText("Get");
 
-      $retValue = $this->GetItem($key, $throwError);
+      $retValue = $this->RetrieveItem($key, $throwError);
 
       $this->Debug->AddIndent(-1);
       return $retValue;
@@ -677,7 +679,7 @@
     public function __construct()
     {
       // Instantiate properties with Pascal case.
-      $isEnabled = false;
+      $isEnabled = true;
       $this->Debug = new LJCDebug("LJCDocDataLib", "LJCDocDataMethods"
         , "w", $isEnabled);
       $this->Debug->IncludePrivate = true;
@@ -713,6 +715,8 @@
       {
         $key = $item->ID;
       }
+      // *****
+      $this->Debug->Write(__LINE__." key = $key");
       $retValue = $this->AddItem($item, $key);
 
       $this->Debug->AddIndent(-1);
@@ -725,7 +729,7 @@
     {
       $this->Debug->WriteStartText("Get");
 
-      $retValue = $this->GetItem($key, $throwError);
+      $retValue = $this->RetrieveItem($key, $throwError);
 
       $this->Debug->AddIndent(-1);
       return $retValue;
@@ -787,7 +791,7 @@
     public function __construct()
     {
       // Instantiate properties with Pascal case.
-      $enabled = false;
+      $enabled = true;
       $this->Debug = new LJCDebug("LJCDocDataLib", "LJCDocDataParams"
         , "w",  $enabled);
       $this->Debug->IncludePrivate = true;
@@ -823,6 +827,12 @@
       {
         $key = $item->Name;
       }
+      // *****
+      //foreach ($param in $this)
+      //{
+      //  $this->Debug->Write(__LINE__." key = $param.Name");
+      //}
+      $this->Debug->Write(__LINE__." key = $key");
       $retValue = $this->AddItem($item, $key);
 
       $this->Debug->AddIndent(-1);
@@ -835,7 +845,7 @@
     {
       $this->Debug->WriteStartText("Get");
 
-      $retValue = $this->GetItem($key, $throwError);
+      $retValue = $this->RetrieveItem($key, $throwError);
 
       $this->Debug->AddIndent(-1);
       return $retValue;
@@ -911,7 +921,7 @@
     public function __construct()
     {
       // Instantiate properties with Pascal case.
-      $isEnabled = false;
+      $isEnabled = true;
       $this->Debug = new LJCDebug("LJCDocDataLib", "LJCDocDataProperties"
         , "w", $isEnabled);
       $this->Debug->IncludePrivate = true;
@@ -947,6 +957,8 @@
       {
         $key = $item->ID;
       }
+      // *****
+      $this->Debug->Write(__LINE__." key = $key");
       $retValue = $this->AddItem($item, $key);
 
       $this->Debug->AddIndent(-1);
@@ -959,7 +971,7 @@
     {
       $this->Debug->WriteStartText("Get");
 
-      $retValue = $this->GetItem($key, $throwError);
+      $retValue = $this->RetrieveItem($key, $throwError);
 
       $this->Debug->AddIndent(-1);
       return $retValue;

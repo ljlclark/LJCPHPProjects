@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<!-- Copyright (c) Lester J. Clark and Contributors. -->
+<!-- Licensed under the MIT License.-->
+<!-- ReadMeLJCPHPProjects.html -->
+<html lang='en' xmlns='http://www.w3.org/1999/xhtml'>
+<head>
+  <title>LJC PHP Projects Readme</title>
+  <meta charset='utf-8' />
+  <meta name='author' content='Lester J. Clark' />
+  <meta name='viewport' content='width=device-width initial-scale=1' />
+  <link rel='stylesheet' type='text/css' href='CSS/CodeDoc.css' />
+</head>
+<body style="background: #F0F5FF">
+  <div class="page">
+    <br />
+    <div id='Header'>
+      <div id='Title'>LJC PHP Projects Readme</div>
+    </div>
+    <br />
+    <div class="Text">
+      <h4>PHP Codelines</h4>
+      <p>
+        A PHP Codeline consists of a root folder and subfolders. The code in
+        these folders use only the code in their codeline and do not refer to
+        code outside of their codeline except for third-party software.
+      </p>
+      <p>
+        Usually codelines are grouped together under a main path. The main path
+        could be something like "C:\Users\User\Documents\Visual Studio 2022". In
+        this case the main IDE used is Visual Studio which creates the root
+        folder "Projects" in this main folder. So the PHP codelines can be
+        created here also.
+      </p>
+      <h4>LJCPHPProjects Codeline</h4>
+      <p>
+        This is the main codeline and is under source control online in GitHub
+        at <a href="https://github.com/ljlclark/LJCPHPProjects">
+          https://github.com/ljlclark/LJCPHPProjects
+        </a>. Local code in this codeline can be commited to GitHub.
+      </p>
+      <h4>LJCPHPProjectsDev Codeline</h4>
+      <p>
+        This is the development codeline. Development work is done here and then
+        promoted (backed up) to the main codeline LJCPHPProjects.
+      </p>
+      <h4>LJC PHP Projects</h4>
+      <p>
+        A Project is defined as a collection of files that all work together for
+        a primary purpose. They are usually all located together in a single
+        folder. This folder will often contain a command file (.cmd) which is
+        the entry point for the stand-alone utility program or test program.
+      </p>
+      <h4>Project Groups</h4>
+      <p>
+        A Project Group is several projects that work together for a common
+        purpose. Project Groups are organized under a group or "solution" folder
+        and may represent a utility or a reusable code module.
+      </p>
+      <!--  -->
+      <p>
+        <b>GenDoc</b> - Reads XML Comments from PHP source code and generates
+        HTML Documentation.
+      </p>
+      <div class="indent1">GenDoc - Project Group</div>
+      <br />
+      <div class="indent2">DocDataLib - Generate DocData XML</div>
+      <div class="indent3">LJCCommentsLib.php</div>
+      <div class="indent3">LJCDocDataGenLib.php</div>
+      <div class="indent3">LJCDocDataLib.php</div>
+      <div class="indent3">LJCIncludeLib.php</div>
+      <div class="indent3">LJCParamCommentLib.php</div>
+      <div class="indent3">ReadMeDocDataLib.txt</div>
+      <div class="indent3">TestDocDataGen.cmd</div>
+      <div class="indent3">TestDocDataGen.php</div>
+      <br />
+      <div class="indent2">
+        GenCodeDoc - Program to Generate HTML Code Documentation from Individual
+        Files
+      </div>
+      <div class="indent2">Uses: DocDataLib, GenDataLib and GenTextLib</div>
+      <div class="indent3">GenCodeDocFiles.cmd</div>
+      <div class="indent3">GenCodeDocFiles.php</div>
+      <div class="indent3">GenCodeDocLib.php</div>
+      <div class="indent3">GenCodeSourceFileList.txt</div>
+      <div class="indent3">ReadMeGenCodeDoc.txt</div>
+      <br />
+      <div class="indent2">GenDataLib - Generate GenData XML</div>
+      <div class="indent3">LJCGenDataGenLib.php</div>
+      <div class="indent3">LJCGenDataXMLLib.php</div>
+      <div class="indent3">ReadMeGenDataLib.txt</div>
+      <!--  -->
+      <p><b>GenTextLib</b> - Generates Text from GenData XML and Text Templates</p>
+      <div class="indent1">GenTextLib - Project Folder</div>
+      <div class="indent2">LJCGenTextLib.php</div>
+      <div class="indent2">LJCGenTextSectionLib.php</div>
+      <div class="indent2">TextGenLib.cmd</div>
+      <div class="indent2">TextGenLib.php</div>
+      <!--  -->
+      <p><b>Common</b> PHP Classes</p>
+      <div class="indent1">LJCPHPCommon - Root Folder</div>
+      <div class="indent2">LJCCollectionLib.php</div>
+      <div class="indent2">LJCCommonLib.php</div>
+      <div class="indent2">LJCDataManagerLib.php</div>
+      <div class="indent2">LJCDbAccessLib.php</div>
+      <div class="indent2">LJCTextLib.php</div>
+      <!--  -->
+      <p><b>TextReader</b> - Reads Lines from a Text File as column data.</p>
+      <div class="indent1">TextReader - Project Folder</div>
+      <div class="indent2">LJCTextRangesLib.php</div>
+      <div class="indent2">LJCTextReaderLib.php</div>
+      <div class="indent2">TestData.txt</div>
+      <div class="indent2">TextReader.cmd</div>
+      <div class="indent2">TextReader.php</div>
+      <!--  -->
+      <p><b>CodeDoc</b> - HTML Code Documentation</p>
+      <div class="indent1">LJCPHPCodeDoc - Root Folder</div>
+      <div class="indent2">CodeDoc.css</div>
+      <div class="indent2">index.html</div>
+      <div class="indent2">LJCPHPCodeDoc.html - Opening iframe Page</div>
+      <div class="indent2">
+        (Other CodeDoc Lib iframe pages and folders with Class pages)
+      </div>
+      <div class="indent2">ReadMeLJCPHPCodeDoc.txt</div>
+    </div>
+    <br />
+    <div class="SmallText">
+      Copyright &copy; Lester J. Clark and Contributors.<br />
+      Licensed under the MIT License.
+    </div>
+  </div>
+</body>
+</html>

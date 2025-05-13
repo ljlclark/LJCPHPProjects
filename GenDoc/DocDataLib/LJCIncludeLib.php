@@ -40,7 +40,7 @@
     public function __construct()
     {
       // Instantiate properties with Pascal case.
-      $enabled = false;
+      $enabled = true;
       $this->Debug = new LJCDebug("LJCIncludeLib", "LJCInclude"
         , "w", $enabled);
       $this->Debug->IncludePrivate = true;
@@ -59,7 +59,7 @@
     public function SetComments(string $includeLine, string $codeFileSpec)
       : void
     {
-      //$this->Debug->WriteStartText("SetComments");
+      $this->Debug->WriteStartText("SetComments");
 
       // Sets LibName, XMLFile and itemTag.
       if ($this->SetIncludeValues($includeLine, $codeFileSpec, $itemTag))
@@ -120,7 +120,7 @@
         }
       }
 
-      //$this->Debug->AddIndent(-1);
+      $this->Debug->AddIndent(-1);
     } // SetComments();
 
     // ---------------
@@ -129,7 +129,7 @@
     // Gets the comment for the specified code line.
     private function GetComment(string $line) : ?string
     {
-      //$this->Debug->WritePrivateStartText("GetComment");
+      $this->Debug->WritePrivateStartText("GetComment");
       $retValue = null;
 
       $beginTag = $this->GetLineBeginTag($line);
@@ -188,7 +188,7 @@
         }
       }
 
-      //$this->Debug->AddIndent(-1);
+      $this->Debug->AddIndent(-1);
       return $retValue;
     } // GetComment()
 
