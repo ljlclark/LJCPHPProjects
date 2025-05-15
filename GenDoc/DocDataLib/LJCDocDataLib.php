@@ -723,8 +723,6 @@
       {
         $key = $item->ID;
       }
-      // *****
-      $this->Debug->Write(__LINE__." key = $key");
       $retValue = $this->AddItem($item, $key);
 
       $this->Debug->EndMethod($enabled);
@@ -801,7 +799,7 @@
     {
       // Instantiate properties with Pascal case.
       $this->Debug = new LJCDebug("LJCDocDataLib", "LJCDocDataParams"
-        , "w",  false);
+        , "w", false);
       $this->Debug->IncludePrivate = true;
     } // __construct()
 
@@ -837,12 +835,6 @@
       {
         $key = $item->Name;
       }
-      // *****
-      //foreach ($param in $this)
-      //{
-      //  $this->Debug->Write(__LINE__." key = $param.Name");
-      //}
-      $this->Debug->Write(__LINE__." key = $key");
       $retValue = $this->AddItem($item, $key);
 
       $this->Debug->EndMethod($enabled);
@@ -969,8 +961,6 @@
       {
         $key = $item->ID;
       }
-      // *****
-      $this->Debug->Write(__LINE__." key = $key");
       $retValue = $this->AddItem($item, $key);
 
       $this->Debug->EndMethod($enabled);

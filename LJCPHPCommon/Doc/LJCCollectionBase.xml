@@ -47,7 +47,19 @@
 		 }
 		</code>
 	</AddItem>
-	<GetItem>
+  <DeleteItem>
+    <summary>Remove the item by Key value.</summary>
+    <param name="$key">The element key.</param>
+    <param name="$throwError">Indicates if an error should be thrown if the key is not found.</param>
+    <code>
+      $webCommonPath = "c:/inetpub/wwwroot/LJCPHPCommon";
+      require_once "$webCommonPath/LJCCollectionLib.php";
+
+      // $collection extends LJCCollectionBase
+      $collection->Remove("KeyName");
+    </code>
+  </DeleteItem>
+  <RetrieveItem>
 		<summary>Get the item by Key value.</summary>
 		<param name="$key">The element key.</param>
 		<param name="$throwError">Indicates if an error should be thrown if the key is not found.</param>
@@ -63,7 +75,7 @@
 			 return $retValue;
 		 }
 		</code>
-	</GetItem>
+	</RetrieveItem>
 	<HasKey>
 		<summary>Indicates if a key already exists.</summary>
 		<param name="$key">The element key.</param>
@@ -79,15 +91,4 @@
 		 }
 		</code>
 	</HasKey>
-	<Remove>
-		<summary>Remove the item by Key value.</summary>
-		<param name="$key">The element key.</param>
-		<param name="$throwError">Indicates if an error should be thrown if the key is not found.</param>
-		<code>$webCommonPath = "c:/inetpub/wwwroot/LJCPHPCommon";
-		 require_once "$webCommonPath/LJCCollectionLib.php";
-
-		 // $collection extends LJCCollectionBase
-		 $collection->Remove("KeyName");
-		</code>
-	</Remove>
 </items>

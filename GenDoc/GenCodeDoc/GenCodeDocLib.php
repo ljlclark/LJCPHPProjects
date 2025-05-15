@@ -40,9 +40,8 @@
     public function __construct()
     {
       // Instantiate properties with Pascal case.
-      $enabled = false;
       $this->Debug = new LJCDebug("GenCodeDocLib", "GenCodeDoc"
-        , "w", $enabled);
+        , "w", false);
       $this->Debug->IncludePrivate = true;
       
       $this->DocDataGen = new LJCDocDataGen();
@@ -52,7 +51,8 @@
     /// <summary>Creates CodeDoc pages from source file list.</summary>
     public function CreateFromList()
     {
-      $this->Debug->WriteStartText("CreateFromList");
+      $enabled = false;
+      $this->Debug->BeginMethod("CreateFromList", $enabled);
 
       // Gets the list of files to read.
       $sourceFileListSpec = "GenCodeSourceFileList.txt";
@@ -63,14 +63,15 @@
         $this->CreateFilePages($line);
       }
 
-      $this->Debug->AddIndent(-1);
+      $this->Debug->EndMethod($enabled);
     }
 
     /// <summary>Create the HTML files.</summary>
     /// <param name="$fileSpecLine">The source file spec.</param>
     public function CreateFilePages($fileSpecLine) : void
     {
-      $this->Debug->WriteStartText("CreateFilePages");
+      $enabled = false;
+      $this->Debug->BeginMethod("CreateFilePages", $enabled);
 
       //global $path;
       $writeDocDataXML = false;
@@ -101,7 +102,7 @@
         }
       }
 
-      $this->Debug->AddIndent(-1);
+      $this->Debug->EndMethod($enabled);
     }
 
     // The Generate DocData XML object.

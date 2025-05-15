@@ -28,9 +28,8 @@
     public function __construct()
     {
       // Instantiate properties with Pascal case.
-      $isEnabled = false;
       $this->Debug = new LJCDebug("LJCDocGenDataXMLLib", "LJCGenDataXML"
-        , $isEnabled);
+        , false);
       $this->Debug->IncludePrivate = true;
     }
 

@@ -52,17 +52,12 @@
     public function __construct()
     {
       // Instantiate properties with Pascal case.
-      $enabled = false;
       $this->Debug = new LJCDebug("LJCDocDataGenLib", "LJCGenDataGen"
-        , "w", $enabled);
+        , "w", false);
       $this->Debug->IncludePrivate = true;
 
       $this->HTMLPath = "../../../WebSitesDev/CodeDoc/LJCPHPCodeDoc/HTML";
       LJCCommon::MkDir($this->HTMLPath);
-
-      //$this->DebugWriter = null;
-      // Create DebugWriter if writing debug data.
-      //$this->DebugWriter = new LJCDebugWriter("LJCGenDataGen");
     }
     
     // ---------------
@@ -73,7 +68,8 @@
     public function CreateLibXMLString(string $docXMLString, string $codeFileSpec
       , bool $writeXML = false, string $outputPath = null) : string
     {
-      $this->Debug->WriteStartText("CreateLibXMLString");
+      $enabled = false;
+      $this->Debug->BeginMethod("CreateLibXMLString", $enabled);
       $retValue = null;
 
       // GenData XML file name same as source file with .xml extension.
@@ -97,7 +93,7 @@
       }
       $this->CreateClassesXML($docDataFile, $writeXML, $outputPath);
 
-      $this->Debug->AddIndent(-1);
+      $this->Debug->EndMethod($enabled);
       return $retValue;
     }
 
@@ -856,15 +852,6 @@
       $fileSpec = "$htmlPath/$fileName" . ".html";
       LJCWriter::WriteFile($htmlText, $fileSpec);
     }
-
-    // Writes the debug value.
-    //private function Debug(string $text, bool $addLine = true) : void
-    //{
-    //  if (isset($this->DebugWriter))
-    //  {
-    //    $this->DebugWriter->Debug($text, $addLine);
-    //  }
-    //} // Debug()
 
     // The path for HTML output.
     public string $HTMLPath;

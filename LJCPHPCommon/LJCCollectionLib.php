@@ -64,15 +64,6 @@
 
     // Get the item by Key value.
     /// <include path='items/GetItem/*' file='Doc/LJCCollectionBase.xml'/>
-    // Obsolete: Use RetrieveItem().
-    //protected function GetItem($key, bool $throwError = true)
-    //{
-    //  // *** Change *** #02
-    //  return $this->RetrieveItem($key, $throwError);
-    //} // GetItem()
-
-    // Get the item by Key value.
-    /// <include path='items/GetItem/*' file='Doc/LJCCollectionBase.xml'/>
     protected function RetrieveItem($key, bool $throwError = true)
     {
       $retValue = null;

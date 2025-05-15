@@ -45,7 +45,7 @@
     {
       // Instantiate properties with Pascal case.
       $this->Debug = new LJCDebug("LJCCommentsLib", "LJCComments"
-        , "w",  true);
+        , "w",  false);
       $this->Debug->IncludePrivate = true;
 
       $this->CurrentTagName = null;
@@ -58,7 +58,7 @@
 
       $this->BeginTags = null;
       $this->CodeFileSpec = null;
-      $this->DebugWriter = null;
+      //$this->DebugWriter = null;
       $this->EndTags = null;
       $this->IncludeFile = null;
       $this->IsContinue = false;
@@ -189,7 +189,7 @@
     // Gets the comment for the current comment tag.
     private function GetComment(string $line) : ?string
     {
-      $enabled = true;
+      $enabled = false;
       $this->Debug->BeginPrivateMethod("GetComment", $enabled);
       $retValue = null;
 
@@ -209,14 +209,10 @@
       {
         $isSimpleComment = false;
         $this->IncludeFile->SetComments($line, $this->CodeFileSpec);
-        // *****
-        $this->Debug->Write(__LINE__." CodeFileSpec = $this->CodeFileSpec");
 
         // Process the include comment lines through SetComment().
         foreach ($this->IncludeFile->Comments as $comment)
         {
-          // *****
-          $this->Debug->Write(__LINE__." <include comment = $comment");
           $this->SetComment($comment);
         }
 
@@ -231,15 +227,7 @@
       {
         $isSimpleComment = false;
         $paramComment = new LJCParamComment();
-        // *****
-        foreach ($this->Params as $temp)
-        {
-          $this->Debug->Write(__LINE__." param.Name = $temp->Name");
-        }
         $param = $paramComment->GetParam($line);
-        // *****
-        $this->Debug->Write(__LINE__." line = $line");
-        $this->Debug->Write(__LINE__." param.Name = $param->Name");
         $this->Params->AddObject($param);
       }
 
