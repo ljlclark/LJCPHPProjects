@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<!-- Copyright (c) Lester J. Clark and Contributors. -->
+<!-- Licensed under the MIT License.-->
+<!-- ReadMeGenDoc.html -->
+<html lang='en' xmlns='http://www.w3.org/1999/xhtml'>
+<head>
+  <title>LJC GenDoc Readme</title>
+  <meta charset='utf-8' />
+  <meta name='author' content='Lester J. Clark' />
+  <meta name='viewport' content='width=device-width initial-scale=1' />
+  <link rel='stylesheet' type='text/css' href='../CSS/CodeDoc.css' />
+  <style>
+    .start {
+      align-content: start;
+    }
+  </style>
+</head>
+<body style="background: #F0F5FF">
+  <div class="page">
+    <br />
+    <div id='Header'>
+      <div id='Title'>LJC GenDoc Readme</div>
+    </div>
+    <br />
+    <div class="Text">
+      <h4>PHP GenDoc</h4>
+      <p>
+        The GenDoc app generates HTML documentation from PHP source file XML
+        comments. It also uses external XML Comment files which are referenced
+        by source file "include" XML comments.
+      </p>
+      <p>
+        The GenDoc project group has three projects:
+      </p>
+      <div class="indent1"><b>GenCodeDoc</b></div>
+      <div class="indent2">
+        <p>
+          Calls DocDataLib and GenDataLib for each PHP file to generate the
+          CodeDoc HTML files.
+        </p>
+        <div class="indent1">
+          <table>
+            <tr>
+              <td class="start">GenCodeDocFiles.cmd</td>
+              <td>The example command file.</td>
+            </tr>
+            <tr>
+              <td class="start">GenCodeDocFiles.php</td>
+              <td>The example program entry file.</td>
+            </tr>
+            <tr>
+              <td class="start">GenCodeDocLib.php</td>
+              <td>
+                The library file which contains the GenCodeDoc
+                class.<br />
+                Uses: DocDataLib, GenDataLib and GenTextLib.
+              </td>
+            </tr>
+            <tr class="start">
+              <td>GenCodeSourceFileList.txt</td>
+              <td>
+                The list of PHP files for which HTML
+                Documentation will be generated.
+              </td>
+            </tr>
+            <tr>
+              <td class="start">
+                <a href="GenCodeDoc/ReadMeGenCodeDoc.html">ReadMeGenCodeDoc</a>
+              </td>
+              <td>The GenCodeDoc ReadMe file.</td>
+            </tr>
+          </table>
+        </div>
+      </div>
+      <br />
+      <div class="indent1"><b>DocDataLib</b></div>
+      <div class="indent2">
+        <p>
+          Creates the DocData XML from a PHP source file.
+        </p>
+        <div class="indent1">
+          <table>
+            <tr>
+              <td class="start">TestDocDataGen.cmd</td>
+              <td>The example command file.</td>
+            </tr>
+            <tr>
+              <td class="start">TestDocDataGen.php</td>
+              <td>The example program entry file.</td>
+            </tr>
+            <tr>
+              <td class="start">DocDataGenLib.php</td>
+              <td>
+                Contains classes to generate DocData XML strings and optionally
+                files.
+              </td>
+            </tr>
+            <tr>
+              <td class="start">DocDataLib.php</td>
+              <td>Contains classes to represent DocData.</td>
+            </tr>
+            <tr>
+              <td class="start">LJCIncludeLib.php</td>
+              <td>
+                Parses code XML Comments from a referenced Include file.
+              </td>
+            </tr>
+            <tr>
+              <td class="start">LJCCommentsLib.php</td>
+              <td>Parses the code XML Comments</td>
+            </tr>
+            <tr>
+              <td class="start">LJCParamCommentLib.php</td>
+              <td>Parses the &lt;param&gt; XML Comments.</td>
+            </tr>
+            <tr>
+              <td class="start">
+                <a href="DocDataLib/ReadMeDocDataLib.html">ReadMeDocDataLib</a>
+              </td>
+              <td>The DocDataLib ReadMe file.</td>
+            </tr>
+          </table>
+        </div>
+      </div>
+      <br />
+      <div class="indent1"><b>GenDataLib</b></div>
+      <div class="indent2">
+        <p>
+          Creates the GenData XML from a DocData XML file. Also creates the
+          HTML files by combining the GenData and an HTML Text Template.
+        </p>
+        <div class="indent1">
+          <table>
+            <tr>
+              <td class="start">LJCGenDataGenLib.php</td>
+              <td>
+                Contains Classes to generate GenData XML strings and optionally
+                files.
+              </td>
+            </tr>
+            <tr>
+              <td class="start">LJCGenDataXMLLib.php</td>
+              <td>
+                Contains the LJCGenDataXML class for generating static GenData
+                XML text.
+              </td>
+            </tr>
+            <tr>
+              <td class="start">
+                <a href="GenDataLib/ReadMeGenDataLib.html">ReadMeGenDataLib</a>
+              </td>
+              <td>The GenDataLib ReadMe file.</td>
+            </tr>
+          </table>
+        </div> <!-- indent1 -->
+      </div> <!-- indent2 -->
+      <br />
+    </div> <!-- Text -->
+  </div> <!-- page -->
+</body>
+</html>

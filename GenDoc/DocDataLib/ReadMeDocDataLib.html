@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<!-- Copyright (c) Lester J. Clark and Contributors. -->
+<!-- Licensed under the MIT License.-->
+<!-- ReadMeDocDataLib.html -->
+<html lang='en' xmlns='http://www.w3.org/1999/xhtml'>
+<head>
+  <title>LJC DocDataLib Readme</title>
+  <meta charset='utf-8' />
+  <meta name='author' content='Lester J. Clark' />
+  <meta name='viewport' content='width=device-width initial-scale=1' />
+  <link rel='stylesheet' type='text/css' href='../../CSS/CodeDoc.css' />
+  <style>
+    .start {
+      align-content: start;
+    }
+  </style>
+</head>
+<body style="background: #F0F5FF">
+  <div class="page">
+    <br />
+    <div id='Header'>
+      <div id='Title'>LJC DocDataLib Readme</div>
+    </div>
+    <div class="Text">
+      <h4>PHP GenCodeDoc</h4>
+      <p>
+        This project contains classes to generate DocData XML.
+      </p>
+      <p>
+        DocData XML is generated from the PHP source files.
+      </p>
+      <p>
+        The DocData XML is intended to contain the XML Comments based on the PHP file
+        structure of Classes, Methods and Properties.
+      </p>
+      <p>
+        This is a standard layout of the PHP file structure and XML Comments that are
+        in the DocData XML. These elements and values can be used for additional
+        processing.
+      </p>
+      <pre>
+  &lt;LJCDocDataFile&gt;
+    &lt;Name /&gt;
+    &lt;Summary /&gt;
+    &lt;Remarks /&gt;
+    &lt;Classes&gt;
+      &lt;Class&gt;
+        &lt;Name /&gt;
+        &lt;Summary /&gt;
+        &lt;Remarks /&gt;
+        &lt;Methods&gt;
+          &lt;Method&gt;
+            &lt;Name /&gt;
+            &lt;Summary /&gt;
+            &lt;Params&gt;
+              &lt;Param&gt;
+              &lt;Name /&gt;
+              &lt;Summary /&gt;
+              &lt;Param&gt;
+            &lt;/Params&gt;
+            &lt;Remarks /&gt;
+            &lt;Returns /&gt;
+            &lt;Syntax /&gt;
+            &lt;Code /&gt;
+          &lt;/Method&gt;
+        &lt;/Methods&gt;
+        &lt;Properties&gt;
+          &lt;Property&gt;
+            &lt;Name /&gt;
+            &lt;Summary /&gt;
+            &lt;Syntax /&gt;
+          &lt;/Property&gt;
+        &lt;/Properties&gt;
+      &lt;/Class&gt;
+    &lt;/Classes&gt;
+  &lt;/LJCDocDataFile&gt;</pre>
+      <div class="indent1">
+        <table>
+          <tr>
+            <td class="start">LJCDocDataGenLib.php</td>
+            <td>
+              Contains Classes to generate DocData XML strings and
+              optionally files.
+              <br />
+              The files are generated to ..\XMLDocData if the $writeXML
+              property is set to 'true' in class LJCDocDataGen, method
+              CreateDocDataXMLString().
+            </td>
+          </tr>
+          <tr>
+            <td class="start">LJCDocDataLib.php</td>
+            <td>
+              Contains Classes to represent DocData and for Serialization
+              and Deserialization.
+            </td>
+          </tr>
+        </table>
+      </div>
+      <pre>
+      Main Object Graph
+      LJCDocDataFile
+        LJCDocDataClasses
+          LJCDocDataClass
+            LJCDocDataMethods
+              LJCDocDataMethod
+                LJCDocDataParams
+                  LJCDocDataParam
+            LJCDocDataProperties
+              LJCDocDataProperty
+        LJCDocDataMethods</pre>
+      <div class="indent1">
+        <table>
+          <tr>
+            <td class="start">LJCCommentsLib.php</td>
+            <td>
+              The LJCComments object parses the code XML Comments and holds
+              them for the next generation point. A generation point is the
+              start of a File, Class, Method or Property.
+            </td>
+          </tr>
+          <tr>
+            <td class="start">LJCIncludeLib.php</td>
+            <td>
+              The LJCInclude object parses the include XML Comments from a
+              referenced Include file. After the XML Comments are parsed for
+              that generation point, they are copied to the LJCComments object.
+            </td>
+          </tr>
+          <tr>
+            <td class="start">LJCParamCommentLib.php</td>
+            <td>
+              The LJCParamComment object represents the Param XML Comments.
+            </td>
+          </tr>
+          <tr>
+            <td class="start">TestDocDataGen.cmd</td>
+            <td>
+              The command program that runs the TestDocDataGen.php program.
+            </td>
+          </tr>
+          <tr>
+            <td class="start">TestDocDataGen.php</td>
+            <td>
+              A test program to generate the test DocData XML for file
+              LJCDocDataGenLib.php.
+            </td>
+          </tr>
+        </table>
+      </div> <!-- indent1 -->
+      <br />
+    </div> <!-- Text -->
+  </div> <!-- page -->
+</body>
+</html>

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<!-- Copyright (c) Lester J. Clark and Contributors. -->
+<!-- Licensed under the MIT License.-->
+<!-- ReadMeGenCodeDoc.html -->
+<html lang='en' xmlns='http://www.w3.org/1999/xhtml'>
+<head>
+  <title>LJC GenCodeDoc Readme</title>
+  <meta charset='utf-8' />
+  <meta name='author' content='Lester J. Clark' />
+  <meta name='viewport' content='width=device-width initial-scale=1' />
+  <link rel='stylesheet' type='text/css' href='../../CSS/CodeDoc.css' />
+  <style>
+    .start {
+      align-content: start;
+    }
+  </style>
+</head>
+<body style="background: #F0F5FF">
+  <div class="page">
+    <br />
+    <div id='Header'>
+      <div id='Title'>LJC GenCodeDoc Readme</div>
+    </div>
+    <div class="Text">
+      <h4>PHP GenCodeDoc</h4>
+      <p>
+        This project contains classes to generate HTML Documentation files for
+        specific PHP Source files.
+      </p>
+      <div class="indent1">
+        <table>
+          <tr>
+            <td class="start">GenCodeDocFiles.cmd</td>
+            <td>The example command file.</td>
+          </tr>
+          <tr>
+            <td class="start">GenCodeDocFiles.php</td>
+            <td>
+              The example program entry file. It calls GenCodeDoc->CreateXML()
+              for each PHP File where HTML CodeDoc will be generated.
+            </td>
+          </tr>
+          <tr>
+            <td class="start">GenCodeDocLib.php</td>
+            <td>
+              Contains classes to generate the XML and HTML files.
+              <br />
+              Method GenCodeDoc->CreateXML()<br />
+              For each specified PHP Source file it calls
+              LJCDocDataGen->CreateDocDataXMLString() to create the DocXML
+              string.
+              <br />
+              The DocXML string is passed to LJCGenDataGen->CreateLibXMLString()
+              to create the GenData XML string.
+              <br />
+              The data from the GenData XML string and the appropriate Text
+              Template are passed to LJCGenText->ProcessTemplate() method to
+              generate the HTML file.
+            </td>
+          </tr>
+        </table>
+      </div> <!-- indent1 -->
+      <br />
+    </div> <!-- Text -->
+  </div> <!-- page -->
+</body>
+</html>

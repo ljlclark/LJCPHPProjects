@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<!-- Copyright (c) Lester J. Clark and Contributors. -->
+<!-- Licensed under the MIT License.-->
+<!-- ReadMeGenDataLib.html -->
+<html lang='en' xmlns='http://www.w3.org/1999/xhtml'>
+<head>
+  <title>LJC GenDataLib Readme</title>
+  <meta charset='utf-8' />
+  <meta name='author' content='Lester J. Clark' />
+  <meta name='viewport' content='width=device-width initial-scale=1' />
+  <link rel='stylesheet' type='text/css' href='../../CSS/CodeDoc.css' />
+  <style>
+    .start {
+      align-content: start;
+    }
+  </style>
+</head>
+<body style="background: #F0F5FF">
+  <div class="page">
+    <br />
+    <div id='Header'>
+      <div id='Title'>LJC GenDataLib Readme</div>
+    </div>
+    <div class="Text">
+      <h4>PHP GenCodeDoc</h4>
+      <p>
+        This project contains classes to generate GenData XML and CodeDoc HTML
+        files.
+      </p>
+      <p>
+        GenData XML data is generated from the DocData XML data.
+      </p>
+      <p>
+        The GenData XML is intended to display the XML Comments based on the Text
+        Template that will be used. The Text Section and Replacement names must match
+        those expected by the Template.
+      </p>
+      <p>
+        This is the standard layout for the GenData XML files.
+      </p>
+      <pre>
+  &lt;Data xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"&gt;
+    &lt;Sections&gt;
+      &lt;Section&gt;
+        &lt;Begin /&gt;
+        &lt;Name&gt;Main&lt;/Name&gt;
+        &lt;Items&gt;
+          &lt;Item&gt;
+            &lt;Replacements&gt;
+              &lt;Replacement&gt;
+                &lt;Name&gt;&lt;/Name&gt;
+                &lt;Value&gt;&lt;/Value&gt;
+                &lt;Replacement&gt;
+                  &lt;Replacements&gt;
+                    &lt;Item&gt;
+                      &lt;Items&gt;
+                        &lt;Section&gt;
+                          &lt;Sections&gt;
+  &lt;/Data&gt;</pre>
+      <p>
+        The number and names of sections, items and replacements depends on the GenData
+        from the PHP files and the HTML Template that is used.
+      </p>
+      <div class="indent1">
+        <table>
+          <tr>
+            <td class="start">LJCGenDataGenLib.php</td>
+            <td>
+              Contains Classes to generate GenData XML strings and optionally
+              files.
+              <br />
+              The files are generated to ..\XMLGenData if the $writeXML
+              property is set to 'true' in class LJCGenDataGen, method
+              CreateLibXMLString().
+              <br />
+              Uses the LJCGenTextLib class LJCGenText to generate the
+              CodeDoc HTML files from the GenDoc XML and HTML Text
+              Templates.
+            </td>
+          </tr>
+          <tr>
+            <td class="start">LJCGenDataXMLLib</td>
+            <td>
+              The LJCGenDataXML class contains static methods for
+              generating static GenData XML text such as beginning
+              or ending an Item element, etc.
+            </td>
+          </tr>
+        </table>
+      </div>
+      <p>
+        In this implementation there is a GenData XML file created for each PHP file,
+        Class, Method/Function and Property.
+      </p>
+      <p>
+        An HTML page is generated for each GenData XML file and the corresponding HTML
+        Text Template. The templates are in the Templates subfolder.
+      </p>
+      <div class="indent1">
+        <table>
+          <tr>
+            <td class="start">PHP File</td>
+            <td>LibTemplate.html</td>
+          </tr>
+          <tr>
+            <td class="start">Class</td>
+            <td>ClassTemplate.html</td>
+          </tr>
+          <tr>
+            <td class="start">Method</td>
+            <td>FunctionTemplate.html</td>
+          </tr>
+          <tr>
+            <td class="start">Property</td>
+            <td>PropertyTemplate.html</td>
+          </tr>
+        </table>
+      </div>
+      <p>
+        The PHP HTML files are output to the folder "DocPages".
+      </p>
+      <p>
+        A subfolder is created for each class. This folder contains the Class
+        HTML, Methods HTML and Properties HTML files. The Methods and Properties
+        HTML names are prefixed with the Class name to prevent overwriting items
+        with the same name.
+      </p>
+      <br />
+    </div> <!-- Text -->
+  </div> <!-- page -->
+</body>
+</html>
