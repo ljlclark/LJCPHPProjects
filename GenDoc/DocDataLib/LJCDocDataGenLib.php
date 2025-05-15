@@ -10,6 +10,7 @@
   include_once "LJCDebugLib.php";
   include_once "LJCDocDataLib.php";
   include_once "LJCCommentsLib.php";
+  // The used classes:
   // LJCCommonLib: LJCCommon
   // LJCTextLib: LJCWriter
   // LJCDebugLib: LJCDebug
@@ -20,13 +21,14 @@
   // Contains Classes to generate DocData XML strings and optionally files.
   /// <include path='items/LJCDocDataGenLib/*' file='Doc/LJCDocDataGenLib.xml'/>
   /// LibName: LJCDocDataGenLib
+  // The contained classes:
   //  LJCDocDataGen
 
-  // Calling Code
+  // Calling Code:
   // TestDocDataGen.php
   // GenCodeDoc->CreateFilePages()
   //
-  // Main Call Tree
+  // Main Call Tree:
   // CreateDocDataXMLString() public
   //   ProcessCode() public
   //     LineProcessed()
@@ -46,7 +48,7 @@
 
   // ***************
   // Provides methods to generate DocData XML files from a code file.
-  // Public: CreateDocDataXMLString(), ProcessCode
+  // Public: CreateDocDataXMLString(), ProcessCode()
   /// <summary>
   ///		Provides methods to generate DocData XML files from a code file.
   /// </summary>
@@ -80,6 +82,7 @@
     } // GetFunctionName()
 
     // Gets the Property Name if present. 
+    // <include path='items/GetPropertyName/*' file='Doc/LJCDocDataGen.xml'/>
     private static function GetPropertyName(array $tokens) : ?string
     {
       $retValue = null;
@@ -123,6 +126,7 @@
     } // ScrubFunctionName
 
     // Gets the Property Name from the property token.
+    // <include path='items/ScrubPropertyName/*' file='Doc/LJCDocDataGen.xml'/>
     private static function ScrubPropertyName(string $propertyToken) : string
     {
       $length = strlen($propertyToken);
@@ -159,13 +163,15 @@
     // Public Methods - LJCDocDataGen
 
     // Creates and writes the DocData XML.
-    /// <include path='items/CreateDocXMLString/*' file='Doc/LJCDocDataGen.xml'/>
-    public function CreateDocDataXMLString(string $codeFileSpec, bool $writeXML = false
-      , string $outputPath = null) : ?string
+    /// <include path='items/CreateDocDataXMLString/*' file='Doc/LJCDocDataGen.xml'/>
+    public function CreateDocDataXMLString(string $codeFileSpec
+      , bool $writeXML = false, string $outputPath = null) : ?string
     {
-      $this->Debug->WriteStartText("CreateDocDataXMLString");
+      $enabled = false;
+      $this->Debug->BeginMethod("CreateDocDataXMLString", $enabled);
       $retValue = null;
 
+      // Populate Library(File) XMLComment values.
       $this->LibName = LJCCommon::GetFileName($codeFileSpec);
       $this->Comments->LibName = $this->LibName;
       $this->DocDataFile = new LJCDocDataFile($this->LibName);
@@ -177,7 +183,7 @@
         LJCWriter::WriteFile($retValue, $outputFileSpec);
       }
 
-      $this->Debug->AddIndent(-1);
+      $this->Debug->EndMethod($enabled);
       return $retValue;
     } // CreateDocDataXMLString()
 
@@ -185,7 +191,8 @@
     /// <include path='items/ProcessCode/*' file='Doc/LJCDocDataGen.xml'/>
     public function ProcessCode(string $codeFileSpec) : ?string
     {
-      $this->Debug->WriteStartText("ProcessCode");
+      $enabled = false;
+      $this->Debug->BeginMethod("ProcessCode", $enabled);
       $retValue = null;
 
       $success = true;
@@ -231,7 +238,7 @@
         $retValue = $this->DocDataFile->SerializeToString(null);
       }
 
-      $this->Debug->AddIndent(-1);
+      $this->Debug->EndMethod($enabled);
       return $retValue;
     } // ProcessCode()
 
@@ -243,7 +250,8 @@
     private function DocOutputFileSpec(string $codeFileSpec
       , string $outputPath = null) : string
     {
-      $this->Debug->WritePrivateStartText("DocOutputFileSpec");
+      $enabled = false;
+      $this->Debug->BeginPrivateMethod("DocOutputFileSpec", $enabled);
       $retValue = null;
 
       if (null == $outputPath)
@@ -254,14 +262,15 @@
       $fileName = LJCCommon::GetFileName($codeFileSpec) . ".xml";
       $retValue = "$outputPath/$fileName";
 
-      $this->Debug->AddIndent(-1);
+      $this->Debug->EndMethod($enabled);
       return $retValue;
     } // DocOutputFileSpec()
 
     // Indicates if the Syntax eligible statement is continued.
     private function IsSyntaxContinue(string $line) : bool
     {
-      $this->Debug->WritePrivateStartText("IsSyntaxContinue");
+      $enabled = false;
+      $this->Debug->BeginPrivateMethod("IsSyntaxContinue", $enabled);
       $retValue = false;
 
       $trimLine = trim($line);
@@ -280,23 +289,24 @@
         $retValue = true;
       }
 
-      $this->Debug->AddIndent(-1);
+      $this->Debug->EndMethod($enabled);
       return $retValue;
     } // IsSyntaxContinue()
 
     // Process XML Comment or Skip Null line and Comment Line.
     private function LineProcessed(?string $line, string $codeFileSpec) : bool
     {
-      $this->Debug->WritePrivateStartText("LineProcessed");
-      $retValue = false;
+      $enabled = false;
+      $this->Debug->BeginPrivateMethod("LineProcessed", $enabled);
+      $retProcessed = false;
 
       $trimLine = trim($line);
       if (null == $trimLine)
       {
-        $retValue = true;
+        $retProcessed = true;
       }
 
-      if (false == $retValue)
+      if (false == $retProcessed)
       {
         $position = LJCCommon::StrPos($trimLine, "///");
         if (0 == $position)
@@ -307,36 +317,37 @@
             if ("LibName:" == $tokens[1])
             {
               $this->ProcessLib();
-              $retValue = true;
+              $retProcessed = true;
             }
           }
 
-          if (false == $retValue)
+          if (false == $retProcessed)
           {
             // Sets the line XML Comment values or Include file values.
             $this->Comments->SetComment($line, $codeFileSpec);
-            $retValue = true;
+            $retProcessed = true;
           }
         }
       }
 
-      if (false == $retValue)
+      if (false == $retProcessed)
       {
         $position = LJCCommon::StrPos($trimLine, "//");
         if (0 == $position)
         {
-          $retValue = true;
+          $retProcessed = true;
         }
       }
 
-      $this->Debug->AddIndent(-1);
-      return $retValue;
+      $this->Debug->EndMethod($enabled);
+      return $retProcessed;
     } // LineProcessed()
 
     // Process the Class XML data.
     private function ProcessClass() : void
     {
-      $this->Debug->WritePrivateStartText("ProcessClass");
+      $enabled = false;
+      $this->Debug->BeginPrivateMethod("ProcessClass", $enabled);
 
       $classes = $this->DocDataFile->Classes;
       if (null == $classes)
@@ -355,13 +366,14 @@
 
       $this->Comments->ClearComments();
 
-      $this->Debug->AddIndent(-1);
+      $this->Debug->EndMethod($enabled);
     } // ProcessClass()
 
     // Process the Function XML data.
     private function ProcessFunction() : void
     {
-      $this->Debug->WritePrivateStartText("ProcessFunction");
+      $enabled = false;
+      $this->Debug->BeginPrivateMethod("ProcessFunction", $enabled);
 
       $classes = $this->DocDataFile->Classes;
       $class = $classes->Get($this->ClassName);
@@ -385,14 +397,15 @@
 
       $this->Comments->ClearComments();
 
-      $this->Debug->AddIndent(-1);
+      $this->Debug->EndMethod($enabled);
     } // ProcessFunction()
 
     // Processes the Class, Function or Property.
     // $tokens - The array of line tokens.
     private function ProcessItem(array $tokens) : void
     {
-      $this->Debug->WritePrivateStartText("ProcessItem");
+      $enabled = false;
+      $this->Debug->BeginPrivateMethod("ProcessItem", $enabled);
 
       $isFunction = false;
       switch(strtolower($tokens[0]))
@@ -435,13 +448,14 @@
         $this->ProcessFunction();
       }
 
-      $this->Debug->AddIndent(-1);
+      $this->Debug->EndMethod($enabled);
     } // ProcessItem()
 
     // Process the Lib XML data.
     private function ProcessLib() : void
     {
-      $this->Debug->WritePrivateStartText("ProcessLib");
+      $enabled = false;
+      $this->Debug->BeginPrivateMethod("ProcessLib", $enabled);
 
       $docDataFile = $this->DocDataFile;
       $docDataFile->Summary = $this->Comments->Summary;
@@ -449,13 +463,14 @@
 
       $this->Comments->ClearComments();
 
-      $this->Debug->AddIndent(-1);
+      $this->Debug->EndMethod($enabled);
     } // ProcessLib()
 
     // Process the Property XML data.
     private function ProcessProperty() : void
     {
-      $this->Debug->WritePrivateStartText("ProcessProperty");
+      $enabled = false;
+      $this->Debug->BeginPrivateMethod("ProcessProperty", $enabled);
 
       $classes = $this->DocDataFile->Classes;
       $class = $classes->Get($this->ClassName);
@@ -476,13 +491,14 @@
 
       $this->Comments->ClearComments();
 
-      $this->Debug->AddIndent(-1);
+      $this->Debug->EndMethod($enabled);
     } // ProcessProperty()
 
     // Sets the Syntax value for a function.
     private function SetFunctionSyntax() : void
     {
-      $this->Debug->WritePrivateStartText("SetFunctionSyntax");
+      $enabled = false;
+      $this->Debug->BeginPrivateMethod("SetFunctionSyntax", $enabled);
 
       $trimLine = trim($this->Line);
       $this->Syntax = htmlspecialchars($trimLine);
@@ -503,13 +519,14 @@
         }
       }
 
-      $this->Debug->AddIndent(-1);
+      $this->Debug->EndMethod($enabled);
     } // SetFunctionSyntax()
 
     // Writes an output line.
     private function Output($text = null, $value = null)
     {
-      $this->Debug->WritePrivateStartText("Output");
+      $enabled = false;
+      $this->Debug->BeginPrivateMethod("Output", $enabled);
 
       $lib = "";
       //$lib = "LJCCommonLib";
@@ -535,7 +552,7 @@
         LJCWriter::WriteLine("");
       }
 
-      $this->Debug->AddIndent(-1);
+      $this->Debug->EndMethod($enabled);
     } // Output()
 
     // ---------------

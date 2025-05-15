@@ -40,9 +40,8 @@
     public function __construct()
     {
       // Instantiate properties with Pascal case.
-      $enabled = true;
       $this->Debug = new LJCDebug("LJCIncludeLib", "LJCInclude"
-        , "w", $enabled);
+        , "w", false);
       $this->Debug->IncludePrivate = true;
 
       $this->Comments = null;
@@ -54,12 +53,13 @@
     // ---------------
     // Public Methods - LJCInclude
 
-    // Sets the comments from the specified include file.
+    // Sets the XML comments from the specified include file.
     /// <include path='items/SetComments/*' file='Doc/LJCInclude.xml'/>
     public function SetComments(string $includeLine, string $codeFileSpec)
       : void
     {
-      $this->Debug->WriteStartText("SetComments");
+      $enabled = false;
+      $this->Debug->BeginMethod("SetComments", $enabled);
 
       // Sets LibName, XMLFile and itemTag.
       if ($this->SetIncludeValues($includeLine, $codeFileSpec, $itemTag))
@@ -120,7 +120,7 @@
         }
       }
 
-      $this->Debug->AddIndent(-1);
+      $this->Debug->EndMethod($enabled);
     } // SetComments();
 
     // ---------------
@@ -129,7 +129,8 @@
     // Gets the comment for the specified code line.
     private function GetComment(string $line) : ?string
     {
-      $this->Debug->WritePrivateStartText("GetComment");
+      $enabled = false;
+      $this->Debug->BeginPrivateMethod("GetComment", $enabled);
       $retValue = null;
 
       $beginTag = $this->GetLineBeginTag($line);
@@ -180,7 +181,7 @@
 
       if ($retValue != null)
       {
-        // Left Trim and Save comment.
+        // Left Trim and Save potentially partial comment.
         $retValue = $this->LTrimXMLComment($retValue);
         if (false === $this->InvalidCommentEndTag($retValue))
         {
@@ -188,14 +189,15 @@
         }
       }
 
-      $this->Debug->AddIndent(-1);
+      $this->Debug->EndMethod($enabled);
       return $retValue;
     } // GetComment()
 
     // Gets the begin tag.
     private  function GetLineBeginTag(string $line) : ?string
     {
-      //$this->Debug->WritePrivateStartText("GetLineBeginTag");
+      $enabled = false;
+      $this->Debug->BeginPrivateMethod("GetLineBeginTag", $enabled);
       $retValue = null;
 
       $beginTag = LJCCommon::GetDelimitedString($line, "<", ">");
@@ -204,14 +206,15 @@
         $retValue = "<$beginTag>";								
       }
 
-      //$this->Debug->AddIndent(-1);
+      $this->Debug->EndMethod($enabled);
       return $retValue;
     } // GetLineBeginTag()
 
     // Gets the end tag.
     private function GetLineEndTag(string $line) : ?string
     {
-      //$this->Debug->WritePrivateStartText("GetLineEndTag");
+      $enabled = false;
+      $this->Debug->BeginPrivateMethod("GetLineEndTag", $enabled);
       $retValue = null;
 
       $endTag = LJCCommon::GetDelimitedString($line, "</", ">");
@@ -220,14 +223,15 @@
         $retValue = "</$endTag>";								
       }
 
-      //$this->Debug->AddIndent(-1);
+      $this->Debug->EndMethod($enabled);
       return $retValue;
     } // GetLineEndTag()
 
     // Checks for an invalid end comment tag.
     private function InvalidCommentEndTag(?string $comment) : bool
     {
-      //$this->Debug->WritePrivateStartText("InvalidCommentEndTag");
+      $enabled = false;
+      $this->Debug->BeginPrivateMethod("InvalidCommentEndTag", $enabled);
       $retValue = false;
 
       if ($comment != null)
@@ -242,14 +246,15 @@
         }
       }
 
-      //$this->Debug->AddIndent(-1);
+      $this->Debug->EndMethod($enabled);
       return $retValue;
     } // InvalidCommentEndTag()
 
     // Checks for a valid comment tag.
     private function IsCommentTag(?string $tag) : bool
     {
-      //$this->Debug->WritePrivateStartText("IsCommentTag");
+      $enabled = false;
+      $this->Debug->BeginPrivateMethod("IsCommentTag", $enabled);
       $retValue = false;
 
       if ($tag != null)
@@ -267,14 +272,15 @@
         }
       }
 
-      //$this->Debug->AddIndent(-1);
+      $this->Debug->EndMethod($enabled);
       return $retValue;
     } // IsCommentTag()
 
     // Replaces tabs with spaces and removes extra leading spaces
     private function LTrimXMLComment(string $comment) : string
     {
-      //$this->Debug->WritePrivateStartText("LTrimXMLComment");
+      $enabled = false;
+      $this->Debug->BeginPrivateMethod("LTrimXMLComment", $enabled);
 
       // Convert comment tabs to spaces.
       $retValue = str_replace("\t", "  ", $comment);
@@ -289,15 +295,16 @@
         $retValue = "///" . substr($retValue, $count + 3);
       }
 
-      //$this->Debug->AddIndent(-1);
+      $this->Debug->EndMethod($enabled);
       return $retValue;
     } // LTrimXMLComment()
 
-    // Sets the Class include file values: LibName, XMLFile and itemTag.
+    // Sets the Class include file values: LibName, XMLFile.
     private function SetIncludeValues(string $includeLine, string $codeFileSpec
       , ?string &$itemTag) : bool
     {
-      //$this->Debug->WritePrivateStartText("SetIncludeValues");
+      $enabled = false;
+      $this->Debug->BeginPrivateMethod("SetIncludeValues", $enabled);
       $retValue = true;
 
       $itemTag = null;
@@ -321,15 +328,15 @@
         // Add code file path to doc file path to create XML file spec.
         $fileSpecPath = LJCCommon::GetFileSpecPath($codeFileSpec);
         // *** Begin *** #01
+        // ToDo: This is causing problems?
         if ($fileSpecPath != "")
         {
-          // ToDo: This is causing problems?
           $this->XMLFile = "$fileSpecPath/$this->XMLFile";
         }
         // *** End   *** #01
       }
 
-      //$this->Debug->AddIndent(-1);
+      $this->Debug->EndMethod($enabled);
       return $retValue;
     } // SetIncludeValues()
 
@@ -339,7 +346,8 @@
     // Writes an output line.
     private function Output($text = null, $value = null)
     {
-      //$this->Debug->WritePrivateStartText("Output");
+      $enabled = false;
+      $this->Debug->BeginPrivateMethod("Output", $enabled);
 
       $lib = "";
       //$lib = "LJCCommonLib";
@@ -355,7 +363,7 @@
         LJCWriter::WriteLine("");
       }
 
-      //$this->Debug->AddIndent(-1);
+      $this->Debug->EndMethod($enabled);
     } // Output()
 
     // ---------------

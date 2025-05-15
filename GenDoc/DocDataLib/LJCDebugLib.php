@@ -128,6 +128,37 @@
     }
 
     // ---------------
+    // Method Begin and End Methods - LJCDebug
+
+    /// <summary>Begin the method comments.</summary>
+    public function BeginMethod(string $methodName
+    , bool $enable)
+    {
+      if ($enable)
+      {
+        $this->WriteStartText($methodName);
+      }
+    }
+
+    /// <summary>Begin the method comments.</summary>
+    public function BeginPrivateMethod(string $methodName, bool $enable)
+    {
+      if ($enable)
+      {
+        $this->WritePrivateStartText($methodName);
+      }
+    }
+
+    /// <summary>End the method comments.</summary>
+    public function EndMethod(bool $enabled)
+    {
+      if ($enabled)
+      {
+        $this->AddIndent(-1);
+      }
+    }
+
+    // ---------------
     // Other Methods - LJCDebug
 
     /// <summary>Add a value to the IndentCount.</summary>

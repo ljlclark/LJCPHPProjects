@@ -21,9 +21,8 @@
     public function __construct()
     {
       // Instantiate properties with Pascal case.
-      $isEnabled = false;
       $this->Debug = new LJCDebug("LJCParamCommentLib", "LJCParamComment"
-        , "w", $isEnabled);
+        , "w", false);
       $this->Debug->IncludePrivate = true;
     }
 
@@ -35,7 +34,8 @@
     /// <returns>The Param object.</returns>
     public function GetParam(string $paramLine) : ?LJCDocDataParam
     {
-      $this->Debug->WriteStartText("GetParam");
+      $enabled = false;
+      $this->Debug->BeginMethod("GetParam", $enabled);
       $retValue = null;
 
       if ($paramLine != null)
@@ -45,7 +45,7 @@
         $retValue = new LJCDocDataParam($name, $summary);
       }
 
-      $this->Debug->AddIndent(-1);
+      $this->Debug->EndMethod($enabled);
       return $retValue;
     } // GetParam()
   }

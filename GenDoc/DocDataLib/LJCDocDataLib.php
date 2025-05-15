@@ -52,9 +52,8 @@
     public function __construct(string $name, ?string $summary = null)
     {
       // Instantiate properties with Pascal case.
-      $isEnabled = false;
       $this->Debug = new LJCDebug("LJCDocDataLib", "LJCDocDataClass"
-        , "w", $isEnabled);
+        , "w", false);
       $this->Debug->IncludePrivate = true;
 
       $this->Code = null;
@@ -71,7 +70,8 @@
     /// <summary>Creates a Clone of the current object.</summary>
     public function Clone() : self
     {
-      $this->Debug->WriteStartText("Clone");
+      $enabled = false;
+      $this->Debug->BeginMethod("Clone", $enabled);
 
       $retValue = new self($this->Name, $this->Summary);
       $retValue->Code = $this->Code;
@@ -79,7 +79,7 @@
       $retValue->Properties = $this->Properties;
       $retValue->Remarks = $this->Remarks;
 
-      $this->Debug->AddIndent(-1);
+      $this->Debug->EndMethod($enabled);
       return $retValue;
     } // Clone()
 
@@ -114,16 +114,16 @@
     public function __construct()
     {
       // Instantiate properties with Pascal case.
-      $isEnabled = true;
       $this->Debug = new LJCDebug("LJCDocDataLib", "LJCDocDataClasses"
-        , "w", $isEnabled);
+        , "w", false);
       $this->Debug->IncludePrivate = true;
     } // __construct
 
     /// <summary>Creates a clone of the current object.</summary>
     public function Clone() : self
     {
-      $this->Debug->WriteStartText("Clone");
+      $enabled = false;
+      $this->Debug->BeginMethod("Clone", $enabled);
 
       $retValue = new self();
       foreach ($this->Items as $key => $item)
@@ -132,7 +132,7 @@
       }
       unset($item);
 
-      $this->Debug->AddIndent(-1);
+      $this->Debug->EndMethod($enabled);
       return $retValue;
     } // Clone()
 
@@ -144,7 +144,8 @@
     public function AddObject(LJCDocDataClass $item, $key = null)
       : ?LJCDocDataClass
     {
-      $this->Debug->WriteStartText("AddObject");
+      $enabled = false;
+      $this->Debug->BeginMethod("AddObject", $enabled);
 
       if (null == $key)
       {
@@ -154,7 +155,7 @@
       $this->Debug->Write(__LINE__." key = $key");
       $retValue = $this->AddItem($item, $key);
 
-      $this->Debug->AddIndent(-1);
+      $this->Debug->EndMethod($enabled);
       return $retValue;
     } // AddObject()
 
@@ -162,11 +163,12 @@
     // <include path='items/Get/*' file='../../CommonDoc/PHPCollection.xml'/>
     public function Get($key, bool $throwError = true) : ?LJCDocDataClass
     {
-      $this->Debug->WriteStartText("Get");
+      $enabled = false;
+      $this->Debug->BeginMethod("Get", $enabled);
 
       $retValue = $this->RetrieveItem($key, $throwError);
 
-      $this->Debug->AddIndent(-1);
+      $this->Debug->EndMethod($enabled);
       return $retValue;
     } // Get()
   } // LJCDocDataClasses
@@ -402,9 +404,8 @@
     public function __construct(string $name, ?string $summary = null)
     {
       // Instantiate properties with Pascal case.
-      $enabled = false;
       $this->Debug = new LJCDebug("LJCDocDataLib", "LJCDocDataFile"
-        , "w",  $enabled);
+        , "w",  false);
       $this->Debug->IncludePrivate = true;
 
       $this->Classes = null;
@@ -420,13 +421,14 @@
     /// <summary>Creates a Clone of the current object.</summary>
     public function Clone() : self
     {
-      $this->Debug->WriteStartText("Clone");
+      $enabled = false;
+      $this->Debug->BeginMethod("Clone", $enabled);
 
       $retValue = new self($this->Name, $this->Summary);
       $retValue->Classes = $this->Classes;
       $retValue->Functions = $this->Functions;
 
-      $this->Debug->AddIndent(-1);
+      $this->Debug->EndMethod($enabled);
       return $retValue;
     } // Clone()
 
@@ -434,7 +436,8 @@
     /// <include path='items/Serialize/*' file='Doc/LJCDocDataFile.xml'/>
     public function Serialize(string $xmlFileSpec) : void
     {
-      $this->Debug->WriteStartText("Serialize");
+      $enabled = false;
+      $this->Debug->BeginMethod("Serialize", $enabled);
 
       $docDataXML = $this->SerializeToString();
       $stream = fopen($xmlFileSpec, "w");
@@ -442,14 +445,15 @@
       $this->Writer->FWrite($docDataXML);
       fclose($stream);
 
-      $this->Debug->AddIndent(-1);
+      $this->Debug->EndMethod($enabled);
     } // Serialize()
 
     // Creates the serialized XML string.
     /// <include path='items/SerializeToString/*' file='Doc/LJCDocDataFile.xml'/>
     public function SerializeToString($xmlFileName = null) : string
     {
-      $this->Debug->WriteStartText("SerializeToString");
+      $enabled = false;
+      $this->Debug->BeginMethod("SerializeToString", $enabled);
       $builder = new LJCStringBuilder();
 
       // Possible Common code.
@@ -488,7 +492,7 @@
       }
       $builder->AppendLine("</LJCDocDataFile>");
 
-      $this->Debug->AddIndent(-1);
+      $this->Debug->EndMethod($enabled);
       return $builder->ToString();
     } // SerializeToString()
     
@@ -499,7 +503,8 @@
     private function CreateMethods(LJCDocDataClass $class, int $indent)
       : ?string
     {
-      $this->Debug->WritePrivateStartText("CreateMethods");
+      $enabled = false;
+      $this->Debug->BeginPrivateMethod("CreateMethods", $enabled);
       $builder = new LJCStringBuilder();
 
       if ($class->Methods != null && count($class->Methods) > 0)
@@ -521,7 +526,7 @@
         $builder->AppendLine("</Methods>", $indent);
       }
 
-      $this->Debug->AddIndent(-1);
+      $this->Debug->EndMethod($enabled);
       return $builder->ToString();
     } // CreateMethods()
 
@@ -529,7 +534,8 @@
     private function CreateParams(?LJCDocDataParams $params, int $indent)
       : ?string
     {
-      $this->Debug->WritePrivateStartText("CreateParams");
+      $enabled = false;
+      $this->Debug->BeginPrivateMethod("CreateParams", $enabled);
       $builder = new LJCStringBuilder();
 
       if ($params != null && count($params) > 0)
@@ -545,7 +551,7 @@
         $builder->AppendLine("</Params>", $indent);
       }
 
-      $this->Debug->AddIndent(-1);
+      $this->Debug->EndMethod($enabled);
       return $builder->ToString();
     } // CreateParams()
 
@@ -553,7 +559,8 @@
     private function CreateProperties(LJCDocDataClass $class, int $indent)
       : ?string
     {
-      $this->Debug->WritePrivateStartText("CreateProperties");
+      $enabled = false;
+      $this->Debug->BeginPrivateMethod("CreateProperties", $enabled);
       $builder = new LJCStringBuilder();
 
       if ($class->Properties != null && count($class->Properties) > 0)
@@ -572,7 +579,7 @@
         $builder->AppendLine("</Properties>", $indent);
       }
 
-      $this->Debug->AddIndent(-1);
+      $this->Debug->EndMethod($enabled);
       return $builder->ToString();
     } // CreateProperties()
 
@@ -612,9 +619,8 @@
       , ?string $returns = null)
     {
       // Instantiate properties with Pascal case.
-      $isEnabled = false;
       $this->Debug = new LJCDebug("LJCDocDataLib", "LJCDocDataMethod"
-        , "w", $isEnabled);
+        , "w", false);
       $this->Debug->IncludePrivate = true;
 
       $this->Code = null;
@@ -632,14 +638,15 @@
     /// <summary>Creates a Clone of the current object.</summary>
     public function Clone() : self
     {
-      $this->Debug->WriteStartText("Clone");
+      $enabled = false;
+      $this->Debug->BeginMethod("Clone", $enabled);
 
       $retValue = new self($this->Name, $this->Summary, $this->Returns);
       $retValue->Code = $this->Code;
       $retValue->Params = $this->Params;
       $retValue->Remarks = $this->Remarks;
 
-      $this->Debug->AddIndent(-1);
+      $this->Debug->EndMethod($enabled);
       return $retValue;
     } // Clone()
 
@@ -679,16 +686,16 @@
     public function __construct()
     {
       // Instantiate properties with Pascal case.
-      $isEnabled = true;
       $this->Debug = new LJCDebug("LJCDocDataLib", "LJCDocDataMethods"
-        , "w", $isEnabled);
+        , "w", false);
       $this->Debug->IncludePrivate = true;
     }
 
     /// <summary>Creates a clone of the current object.</summary>
     public function Clone() : self
     {
-      $this->Debug->WriteStartText("Clone");
+      $enabled = false;
+      $this->Debug->BeginMethod("Clone", $enabled);
 
       $retValue = new self();
       foreach ($this->Items as $key => $item)
@@ -697,7 +704,7 @@
       }
       unset($item);
 
-      $this->Debug->AddIndent(-1);
+      $this->Debug->EndMethod($enabled);
       return $retValue;
     } // Clone()
 
@@ -709,7 +716,8 @@
     public function AddObject(LJCDocDataMethod $item, $key = null)
       : ?LJCDocDataMethod
     {
-      $this->Debug->WriteStartText("AddObject");
+      $enabled = false;
+      $this->Debug->BeginMethod("AddObject", $enabled);
 
       if (null == $key)
       {
@@ -719,7 +727,7 @@
       $this->Debug->Write(__LINE__." key = $key");
       $retValue = $this->AddItem($item, $key);
 
-      $this->Debug->AddIndent(-1);
+      $this->Debug->EndMethod($enabled);
       return $retValue;
     } // AddObject()
 
@@ -727,11 +735,12 @@
     // <include path='items/Get/*' file='../../CommonDoc/PHPCollection.xml'/>
     public function Get($key, bool $throwError = true) : ?LJCDocDataMethod
     {
-      $this->Debug->WriteStartText("Get");
+      $enabled = false;
+      $this->Debug->BeginMethod("Get", $enabled);
 
       $retValue = $this->RetrieveItem($key, $throwError);
 
-      $this->Debug->AddIndent(-1);
+      $this->Debug->EndMethod($enabled);
       return $retValue;
     } // Get()
   } // LJCDocDataMethods
@@ -749,9 +758,8 @@
     public function __construct(string $name, ?string $summary = null)
     {
       // Instantiate properties with Pascal case.
-      $isEnabled = false;
       $this->Debug = new LJCDebug("LJCDocDataLib", "LJCDocDataParam"
-        , "w", $isEnabled);
+        , "w", false);
       $this->Debug->IncludePrivate = true;
 
       $this->Name = $name;
@@ -761,11 +769,12 @@
     /// <summary>Creates a Clone of the current object.</summary>
     public function Clone() : self
     {
-      $this->Debug->WriteStartText("Clone");
+      $enabled = false;
+      $this->Debug->StartMethod("Clone", $enabled);
 
       $retValue = new self($this->Name, $this->Summary);
 
-      $this->Debug->AddIndent(-1);
+      $this->Debug->EndMethod($enabled);
       return $retValue;
     } // Clone()
 
@@ -791,16 +800,16 @@
     public function __construct()
     {
       // Instantiate properties with Pascal case.
-      $enabled = true;
       $this->Debug = new LJCDebug("LJCDocDataLib", "LJCDocDataParams"
-        , "w",  $enabled);
+        , "w",  false);
       $this->Debug->IncludePrivate = true;
     } // __construct()
 
     /// <summary>Creates a clone of the current object.</summary>
     public function Clone() : self
     {
-      $this->Debug->WriteStartText("Clone");
+      $enabled = false;
+      $this->Debug->BeginMethod("Clone", $enabled);
 
       $retValue = new self();
       foreach ($this->Items as $key => $item)
@@ -809,7 +818,7 @@
       }
       unset($item);
 
-      $this->Debug->AddIndent(-1);
+      $this->Debug->EndMethod($enabled);
       return $retValue;
     } // Clone()
 
@@ -821,7 +830,8 @@
     public function AddObject(LJCDocDataParam $item, $key = null)
       : ?LJCDocDataParam
     {
-      $this->Debug->WriteStartText("AddObject");
+      $enabled = false;
+      $this->Debug->BeginMethod("AddObject", $enabled);
 
       if (null == $key)
       {
@@ -835,7 +845,7 @@
       $this->Debug->Write(__LINE__." key = $key");
       $retValue = $this->AddItem($item, $key);
 
-      $this->Debug->AddIndent(-1);
+      $this->Debug->EndMethod($enabled);
       return $retValue;
     } // AddObject()
 
@@ -843,11 +853,12 @@
     // <include path='items/Get/*' file='../../CommonDoc/PHPCollection.xml'/>
     public function Get($key, bool $throwError = true) : ?LJCDocDataParam
     {
-      $this->Debug->WriteStartText("Get");
+      $enabled = false;
+      $this->Debug->BeginMethod("Get", $enabled);
 
       $retValue = $this->RetrieveItem($key, $throwError);
 
-      $this->Debug->AddIndent(-1);
+      $this->Debug->EndMethod($enabled);
       return $retValue;
     } // Get()
   } // LJCDocDataParams
@@ -866,9 +877,8 @@
       , ?string $returns = null)
     {
       // Instantiate properties with Pascal case.
-      $isEnabled = false;
       $this->Debug = new LJCDebug("LJCDocDataLib", "LJCDocDataProperty"
-        , "w", $isEnabled);
+        , "w", false);
       $this->Debug->IncludePrivate = true;
 
       $this->Name = $name;
@@ -881,12 +891,13 @@
     /// <summary>Creates a Clone of the current object.</summary>
     public function Clone() : self
     {
-      $this->Debug->WriteStartText("Clone");
+      $enabled = false;
+      $this->Debug->BeginMethod("Clone", $enabled);
 
       $retValue = new self($this->Name, $this->Summary, $this->Returns);
       $retValue->Remarks = $this->Remarks;
 
-      $this->Debug->AddIndent(-1);
+      $this->Debug->EndMethod($enabled);
       return $retValue;
     } // Clone()
 
@@ -921,16 +932,16 @@
     public function __construct()
     {
       // Instantiate properties with Pascal case.
-      $isEnabled = true;
       $this->Debug = new LJCDebug("LJCDocDataLib", "LJCDocDataProperties"
-        , "w", $isEnabled);
+        , "w", false);
       $this->Debug->IncludePrivate = true;
     }
 
     /// <summary>Creates a clone of the current object.</summary>
     public function Clone() : self
     {
-      $this->Debug->WriteStartText("Clone");
+      $enabled = false;
+      $this->Debug->BeginMethod("Clone", $enabled);
 
       $retValue = new self();
       foreach ($this->Items as $key => $item)
@@ -939,7 +950,7 @@
       }
       unset($item);
 
-      $this->Debug->AddIndent(-1);
+      $this->Debug->EndMethod($enabled);
       return $retValue;
     } // Clone()
 
@@ -951,7 +962,8 @@
     public function AddObject(LJCDocDataProperty $item, $key = null)
       : ?LJCDocDataProperty
     {
-      $this->Debug->WriteStartText("AddObject");
+      $enabled = false;
+      $this->Debug->BeginMethod("AddObject", $enabled);
 
       if (null == $key)
       {
@@ -961,7 +973,7 @@
       $this->Debug->Write(__LINE__." key = $key");
       $retValue = $this->AddItem($item, $key);
 
-      $this->Debug->AddIndent(-1);
+      $this->Debug->EndMethod($enabled);
       return $retValue;
     } // AddObject()
 
@@ -969,11 +981,12 @@
     // <include path='items/Get/*' file='../../CommonDoc/PHPCollection.xml'/>
     public function Get($key, bool $throwError = true) : ?LJCDocDataProperty
     {
-      $this->Debug->WriteStartText("Get");
+      $enabled = false;
+      $this->Debug->BeginMethod("Get", $enabled);
 
       $retValue = $this->RetrieveItem($key, $throwError);
 
-      $this->Debug->AddIndent(-1);
+      $this->Debug->EndMethod($enabled);
       return $retValue;
     } // Get()
   } // LJCDocDataProperties
