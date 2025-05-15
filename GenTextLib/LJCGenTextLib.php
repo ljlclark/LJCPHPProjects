@@ -2,11 +2,10 @@
   // Copyright (c) Lester J. Clark 2022 - All Rights Reserved
   // LJCGenTextLib.php
   declare(strict_types=1);
-  $path = "../..";
   // Must refer to exact same file everywhere in codeline.
-  include_once "$path/LJCPHPCommon/LJCCommonLib.php";
-  include_once "$path/LJCPHPCommon/LJCTextLib.php";
-  include_once "$path/GenDoc/DocDataLib/LJCDebugLib.php";
+  include_once "../../LJCPHPCommon/LJCDebugLib.php";
+  include_once "../../LJCPHPCommon/LJCCommonLib.php";
+  include_once "../../LJCPHPCommon/LJCTextLib.php";
   include_once "LJCGenTextSectionLib.php";
   // LJCCommonLib: LJCCommon
   // LJCTextLib: LJCStringBuilder

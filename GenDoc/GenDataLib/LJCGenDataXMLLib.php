@@ -1,11 +1,10 @@
 <?php
   // LJCGenDataXMLLib.php
   declare(strict_types=1);
-  $path = "../..";
   // Must refer to exact same file everywhere in codeline.
   // Path: LJCPHPProjectsDev/GenDoc/GenDataLib
-  include_once "$path/LJCPHPCommon/LJCTextLib.php";
-  include_once "$path/GenDoc/DocDataLib/LJCDebugLib.php";
+  include_once "../../LJCPHPCommon/LJCDebugLib.php";
+  include_once "../../LJCPHPCommon/LJCTextLib.php";
   // LJCCommonLib: LJCCommon
   // LJCDebugLib: LJCDebug
 

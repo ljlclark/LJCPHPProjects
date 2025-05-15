@@ -5,9 +5,9 @@
   declare(strict_types=1);
   // Must refer to exact same file everywhere in codeline.
   // Path: LJCPHPProjectsDev/GenDoc/DocDataLib
+  include_once "../../LJCPHPCommon/LJCDebugLib.php";
   include_once "../../LJCPHPCommon/LJCCommonLib.php";
   include_once "../../GenTextLib/LJCGenTextSectionLib.php";
-  include_once "LJCDebugLib.php";
   include_once "LJCIncludeLib.php";
   include_once "LJCParamCommentLib.php";
   // LJCCommonLib: LJCCommon

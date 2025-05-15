@@ -44,8 +44,8 @@
     } // AddItem()
 
     // Remove the item by Key value.
-    /// <include path='items/Remove/*' file='Doc/LJCCollectionBase.xml'/>
-    public function DeleteItem($key, bool $throwError = true) : void
+    /// <include path='items/DeleteItem/*' file='Doc/LJCCollectionBase.xml'/>
+    protected function DeleteItem($key, bool $throwError = true) : void
     {
       $success = true;
       if (false == $this->HasKey($key))
@@ -63,7 +63,7 @@
     } // DeleteItem()
 
     // Get the item by Key value.
-    /// <include path='items/GetItem/*' file='Doc/LJCCollectionBase.xml'/>
+    /// <include path='items/RetrieveItem/*' file='Doc/LJCCollectionBase.xml'/>
     protected function RetrieveItem($key, bool $throwError = true)
     {
       $retValue = null;
@@ -112,28 +112,6 @@
     {
       DeleteItem($key, $throwError);
     } // Remove()
-
-    // Get the item by Key value.
-    /// <include path='items/GetItem/*' file='Doc/LJCCollectionBase.xml'/>
-    //private function RetrieveItem($key, bool $throwError = true)
-    //{
-    //  $retValue = null;
-
-    //  $success = true;
-    //  if (false == $this->HasKey($key))
-    //  {
-    //    $success = false;
-    //    if ($throwError)
-    //    {
-    //      throw new Exception("Key: '$key' was not found.");
-    //    }
-    //  }
-    //  if ($success)
-    //  {
-    //    $retValue = $this->Items[$key];
-    //  }
-    //  return $retValue;
-    //} // RetrieveItem()
 
     // ----------------------
     // Implementation Methods - LJCCollectionBase

@@ -3,10 +3,10 @@
   declare(strict_types=1);
   // Must refer to exact same file everywhere in codeline.
   // Path: LJCPHPProjectsDev/GenDoc/GenDataLib
+  include_once "../../LJCPHPCommon/LJCDebugLib.php";
   include_once "../../LJCPHPCommon/LJCTextLib.php";
   include_once "../../GenTextLib/LJCGenTextLib.php";
   include_once "../../GenDoc/GenDataLib/LJCGenDataXMLLib.php";
-  include_once "../../GenDoc/DocDataLib/LJCDebugLib.php";
   // LJCCommonLib: LJCCommon
   // LJCGenTtextLib: 
   // LJCGenDataXMLLib:

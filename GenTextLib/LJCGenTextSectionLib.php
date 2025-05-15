@@ -2,9 +2,9 @@
   // Copyright (c) Lester J. Clark 2022 - All Rights Reserved
   // LJCGenTextSectionLib.php
   declare(strict_types=1);
+  include_once "../../LJCPHPCommon/LJCDebugLib.php";
   require_once "../../LJCPHPCommon/LJCTextLib.php";
   require_once "../../LJCPHPCommon/LJCDBAccessLib.php";
-  include_once "../../GenDoc/DocDataLib/LJCDebugLib.php";
   // LJCTextLib: LJCWriter
   // LJCDbAccessLib: LJCDbColumn, LJCDbColumns
   // LJCDebugLib: LJCDebug
