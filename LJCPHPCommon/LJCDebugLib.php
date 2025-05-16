@@ -131,8 +131,7 @@
     // Method Begin and End Methods - LJCDebug
 
     /// <summary>Begin the method comments.</summary>
-    public function BeginMethod(string $methodName
-    , bool $enable)
+    public function BeginMethod(string $methodName, bool $enable = true)
     {
       if ($enable)
       {
@@ -141,7 +140,7 @@
     }
 
     /// <summary>Begin the method comments.</summary>
-    public function BeginPrivateMethod(string $methodName, bool $enable)
+    public function BeginPrivateMethod(string $methodName, bool $enable = true)
     {
       if ($enable)
       {
@@ -150,7 +149,7 @@
     }
 
     /// <summary>End the method comments.</summary>
-    public function EndMethod(bool $enabled)
+    public function EndMethod(bool $enabled = true)
     {
       if ($enabled)
       {

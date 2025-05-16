@@ -6,14 +6,9 @@
   include_once "LJCDocDataGenLib.php";
   // LJCDocDataGenLib: LJCDocDataGen
  
+  $writeXML = true;
   $docDataGen = new LJCDocDataGen();
-  $xmlString = $docDataGen->CreateDocDataXMLString("LJCDocDataGenLib.php"
-    , true);
-  echo($xmlString);
-  $xmlString = $docDataGen->CreateDocDataXMLString("LJCGenCodeDocLib.php"
-    , true);
-  echo($xmlString);
-  $xmlString = $docDataGen->CreateDocDataXMLString("LJCDocDataLib.php"
-    , true);
+  $xmlString = $docDataGen->CreateDocDataXMLString("../GenCodeDoc/GenCodeDocLib.php"
+    , $writeXML);
   echo($xmlString);
 ?>

@@ -102,6 +102,8 @@
     private function CreateLibString(LJCDocDataFile $docDataFile
       , string $fileName)	: ?string
     {
+      $enabled = false;
+      $this->Debug->BeginPrivateMethod("CreateLibString", $enabled);
       $retValue = null;
 
       $builder = new LJCStringBuilder();
@@ -164,6 +166,8 @@
       $indent--;
       $builder->AppendLine("</Data>", $indent);
       $retValue = $builder->ToString();
+
+      $this->Debug->EndMethod($enabled);
       return $retValue;
     }  // CreateLibString()
 
@@ -171,6 +175,8 @@
     // <include path='items/CreateLibClassString/*' file='Doc/LJCGenDataGen.xml'/>
     private function CreateLibClassString(LJCDocDataFile $docDataFile) : ?string
     {
+      $enabled = false;
+      $this->Debug->BeginPrivateMethod("CreateLibClassString", $enabled);
       $retValue = null;
 
       $classes = $docDataFile->Classes;
@@ -213,6 +219,8 @@
         $builder->Append($value);
         $retValue = $builder->ToString();
       }
+
+      $this->Debug->EndMethod($enabled);
       return $retValue;
     }
 
@@ -221,6 +229,8 @@
     private function OutputLibSpec(string $codeFileSpec
       , string $outputPath = null) : string
     {
+      $enabled = false;
+      $this->Debug->BeginPrivateMethod("OutputLibSpec", $enabled);
       $retValue = null;
 
       if (null == $outputPath)
@@ -230,6 +240,8 @@
       LJCCommon::MkDir($outputPath);
       $fileName = LJCCommon::GetFileName($codeFileSpec) . ".xml";
       $retValue = "$outputPath/$fileName";
+
+      $this->Debug->EndMethod($enabled);
       return $retValue;
     }
     
@@ -241,6 +253,8 @@
     private function CreateClassString(LJCDocDataClass $class
       , string $fileName, string $libName) : string
     {
+      $enabled = false;
+      $this->Debug->BeginPrivateMethod("CreateClassString", $enabled);
       $retValue = null;
 
       $builder = new LJCStringBuilder();
@@ -325,6 +339,8 @@
       $indent--;
       $builder->AppendLine("</Data>", $indent);
       $retValue = $builder->ToString();
+
+      $this->Debug->EndMethod($enabled);
       return $retValue;
     }  // CreateClassString()
 
@@ -332,6 +348,8 @@
     // <include path='items/CreateClassMethodString/*' file='Doc/LJCGenDataGen.xml'/>
     private function CreateClassMethodString(LJCDocDataClass $class) : ?string
     {
+      $enabled = false;
+      $this->Debug->BeginPrivateMethod("CreateClassMethhodString", $enabled);
       $retValue = null;
 
       $methods = $class->Methods;
@@ -374,12 +392,16 @@
         $builder->Append($value);
         $retValue = $builder->ToString();
       }
+
+      $this->Debug->EndMethod($enabled);
       return $retValue;
     }  // CreateClassMethodString()
 
     // Creates a Class Methods section GenData XML string.
     private function CreateClassPropertyString(LJCDocDataClass $class) : ?string
     {
+      $enabled = false;
+      $this->Debug->BeginPrivateMethod("CreateClassPropertyString", $enabled);
       $retValue = null;
 
       $properties = $class->Properties;
@@ -422,6 +444,8 @@
         $builder->Append($value);
         $retValue = $builder->ToString();
       }
+
+      $this->Debug->EndMethod($enabled);
       return $retValue;
     }
 
@@ -430,6 +454,9 @@
     private function CreateClassesXML(LJCDocDataFile $docDataFile
       , bool $writeXML = true, string $outputPath = null) : void
     {
+      $enabled = false;
+      $this->Debug->BeginPrivateMethod("CreateClassesXML", $enabled);
+
       $libName = $docDataFile->Name;
       $classes = $docDataFile->Classes;
       if ($classes != null)
@@ -439,6 +466,8 @@
           $this->CreateClassXML($class, $libName, $writeXML, $outputPath);
         }
       }
+
+      $this->Debug->EndMethod($enabled);
     }
 
     // Creates a Class GenData XML string and optional file.
@@ -446,6 +475,8 @@
     private function CreateClassXML(LJCDocDataClass $class, string $libName
       , bool $writeXML = true, string $outputPath = null)	: string
     {
+      $enabled = false;
+      $this->Debug->BeginPrivateMethod("CreateClassXML", $enabled);
       $retValue = null;
 
       $fileName = $class->Name . ".xml";
@@ -466,6 +497,8 @@
 
       $this->CreateMethodsXML($class, $libName, $writeXML);
       $this->CreatePropertiesXML($class, $libName, $writeXML);
+
+      $this->Debug->EndMethod($enabled);
       return $retValue;
     }
 
@@ -474,6 +507,8 @@
     private function OutputClassSpec(LJCDocDataClass $class
       , string $outputPath = null) : string
     {
+      $enabled = false;
+      $this->Debug->BeginPrivateMethod("OutputClassSpec", $enabled);
       $retValue = null;
 
       $name = $class->Name;
@@ -484,6 +519,8 @@
       LJCCommon::MkDir($outputPath);
       $fileName = LJCCommon::GetFileName($name) . ".xml";
       $retValue = "$outputPath/$fileName";
+
+      $this->Debug->EndMethod($enabled);
       return $retValue;
     }
 
@@ -495,6 +532,8 @@
     private function CreateMethodString(LJCDocDataClass $class
       , LJCDocDataMethod $method, string $fileName, string $libName) : ?string
     {
+      $enabled = false;
+      $this->Debug->BeginPrivateMethod("CreateMethodString", $enabled);
       $retValue = null;
 
       $builder = new LJCStringBuilder();
@@ -576,6 +615,8 @@
       $indent--;
       $builder->AppendLine("</Data>", $indent);
       $retValue = $builder->ToString();
+
+      $this->Debug->EndMethod($enabled);
       return $retValue;
     }  // CreateMethodString()
 
@@ -583,6 +624,8 @@
     // <param name="$method">The Method object.</param>
     private function CreateMethodParamString(LJCDocDataMethod $method) : ?string
     {
+      $enabled = false;
+      $this->Debug->BeginPrivateMethod("CreateMethodParamString", $enabled);
       $retValue = null;
 
       $params = $method->Params;
@@ -625,6 +668,8 @@
         $builder->Append($value);
         $retValue = $builder->ToString();
       }
+
+      $this->Debug->EndMethod($enabled);
       return $retValue;
     }
 
@@ -633,6 +678,9 @@
     private function CreateMethodsXML(LJCDocDataClass $class, string $libName
       , bool $writeXML = true, string $outputPath = null) : void
     {
+      $enabled = false;
+      $this->Debug->BeginPrivateMethod("CreateMethodsXML", $enabled);
+
       $methods = $class->Methods;
       if ($methods != null)
       {
@@ -641,6 +689,8 @@
           $this->CreateMethodXML($class, $method, $libName, $writeXML, $outputPath);
         }
       }
+
+      $this->Debug->EndMethod($enabled);
     }
 
     // Creates a Method GenData XML string and optional file.
@@ -649,6 +699,8 @@
       , LJCDocDataMethod $method, string $libName, bool $writeXML = false
       , string $outputPath = null) : string
     {
+      $enabled = false;
+      $this->Debug->BeginPrivateMethod("CreateMethodXML", $enabled);
       $retValue = null;
 
       $fileName = $method->Name;
@@ -667,6 +719,8 @@
         $htmlFileName = "$class->Name$method->Name";
         $this->WriteHTML($htmlText, $htmlPath, $htmlFileName);
       }
+
+      $this->Debug->EndMethod($enabled);
       return $retValue;
     }
   
@@ -675,6 +729,8 @@
     private function OutputMethodSpec(LJCDocDataClass $class
       , LJCDocDataMethod $method, string $outputPath = null) : string
     {
+      $enabled = false;
+      $this->Debug->BeginPrivateMethod("OutputMethodSpec", $enabled);
       $retValue = null;
 
       $name = $class->Name;
@@ -685,6 +741,8 @@
       LJCCommon::MkDir($outputPath);
       $fileName = $method->Name . ".xml";
       $retValue = "$outputPath/$fileName";
+
+      $this->Debug->EndMethod($enabled);
       return $retValue;
     }
 
@@ -697,6 +755,8 @@
       , LJCDocDataProperty $property, string $fileName, string $libName)
         : ?string
     {
+      $enabled = false;
+      $this->Debug->BeginPrivateMethod("CreatePropertyString", $enabled);
       $retValue = null;
 
       $builder = new LJCStringBuilder();
@@ -759,6 +819,8 @@
       $indent--;
       $builder->AppendLine("</Data>", $indent);
       $retValue = $builder->ToString();
+
+      $this->Debug->EndMethod($enabled);
       return $retValue;
     }
 
@@ -767,6 +829,9 @@
     private function CreatePropertiesXML(LJCDocDataClass $class, string $libName
       , bool $writeXML = true, string $outputPath = null) : void
     {
+      $enabled = false;
+      $this->Debug->BeginPrivateMethod("CreatePropertiesXML", $enabled);
+
       $properties = $class->Properties;
       if ($properties != null)
       {
@@ -775,6 +840,8 @@
           $this->CreatePropertyXML($class, $property, $libName, $writeXML, $outputPath);
         }
       }
+
+      $this->Debug->EndMethod($enabled);
     }
 
     // Creates a Method GenData XML string and optional file.
@@ -783,6 +850,9 @@
       , LJCDocDataProperty $property, string $libName, bool $writeXML = false
       , string $outputPath = null) : string
     {
+      $enabled = false;
+      $this->Debug->BeginPrivateMethod("CreatePropertyXML", $enabled);
+
       $retValue = null;
 
       $fileName = $property->Name . ".xml";
@@ -802,6 +872,8 @@
         $htmlFileName = "$class->Name$property->Name";
         $this->WriteHTML($htmlText, $htmlPath, $htmlFileName);
       }
+
+      $this->Debug->EndMethod($enabled);
       return $retValue;
     }
   
@@ -810,6 +882,8 @@
     private function OutputPropertySpec(LJCDocDataClass $class
       , LJCDocDataProperty $property, string $outputPath = null) : string
     {
+      $enabled = false;
+      $this->Debug->BeginPrivateMethod("OutputPropertySpec", $enabled);
       $retValue = null;
 
       $name = $class->Name;
@@ -820,6 +894,8 @@
       LJCCommon::MkDir($outputPath);
       $fileName = $property->Name . ".xml";
       $retValue = "$outputPath/$fileName";
+
+      $this->Debug->EndMethod($enabled);
       return $retValue;
     }
 
@@ -830,6 +906,8 @@
     private function GetHTMLText(string $sectionsXMLString
       , string $templateFileName) : string
     {
+      $enabled = false;
+      $this->Debug->BeginPrivateMethod("GetHTMLText", $enabled);
       $retValue = null;
 
       if ($sectionsXMLString != null)
@@ -841,6 +919,8 @@
         $genText = new LJCGenText();
         $retValue = $genText->ProcessTemplate($templateFileSpec, $sections);
       }
+
+      $this->Debug->EndMethod($enabled);
       return $retValue;
     }
 
@@ -848,9 +928,14 @@
     private function WriteHTML(string $htmlText, string $htmlPath
       , string $fileName) : void
     {
+      $enabled = false;
+      $this->Debug->BeginPrivateMethod("WriteHTML", $enabled);
+
       LJCCommon::MkDir($htmlPath);
       $fileSpec = "$htmlPath/$fileName" . ".html";
       LJCWriter::WriteFile($htmlText, $fileSpec);
+
+      $this->Debug->EndMethod($enabled);
     }
 
     // The path for HTML output.

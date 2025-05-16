@@ -47,7 +47,6 @@
   //   DocOutputFileSpec() public
 
   // ***************
-  // Provides methods to generate DocData XML files from a code file.
   // Public: CreateDocDataXMLString(), ProcessCode()
   /// <summary>
   ///		Provides methods to generate DocData XML files from a code file.
@@ -145,7 +144,7 @@
     {
       // Instantiate properties with Pascal case.
       $this->Debug = new LJCDebug("LJCDocDataGenLib", "LJCDocDataGen"
-        , "w", false);
+        , "w", true);
       $this->Debug->IncludePrivate = true;
 
       $this->ClassName = null;
@@ -172,6 +171,13 @@
 
       // Populate Library(File) XMLComment values.
       $this->LibName = LJCCommon::GetFileName($codeFileSpec);
+      // ***** Begin
+      if ("LJCDocDataGenLib" == $this->LibName
+        || "GenCodeDocLib" == $this->LibName)
+      {
+        $writeXML = true;
+      }
+      // ***** End
       $this->Comments->LibName = $this->LibName;
       $this->DocDataFile = new LJCDocDataFile($this->LibName);
 
@@ -198,6 +204,9 @@
       if (false == file_exists($codeFileSpec))
       {
         $success = false;
+        $this->Debug->BeginMethod("ProcessCode");
+        $this->Debug->Write(__LINE__." $codeFileSpec was not found.");
+        $this->Debug->EndMethod();
       }
       if ($success)
       {
@@ -205,6 +214,9 @@
         if (null == $this->InputStream)
         {
           $success = false;
+          $this->Debug->BeginMethod("ProcessCode");
+          $this->Debug->Write(__LINE__." Unable to open $codeFileSpec.");
+          $this->Debug->EndMethod();
         }
       }
       if ($success)
@@ -245,7 +257,7 @@
     // Private Methods - LJCDocDataGen
 
     // Creates the DocData XML output file spec.
-    // <include path='items/DocOutputFileSpec/*' file='Doc/LJCGenDataXML.xml'/>
+    /// <include path='items/DocOutputFileSpec/*' file='Doc/LJCDocDataGen.xml'/>
     private function DocOutputFileSpec(string $codeFileSpec
       , string $outputPath = null) : string
     {

@@ -140,7 +140,7 @@
     // Public Methods - LJCDocDataClasses
 
     // <summary>Adds an object and key value.</summary>
-    // <include path='items/AddObject/*' file='../../CommonDoc/PHPCollection.xml'/>
+    /// <include path='items/AddObject/*' file='../../CommonDoc/PHPCollection.xml'/>
     public function AddObject(LJCDocDataClass $item, $key = null)
       : ?LJCDocDataClass
     {
@@ -160,7 +160,7 @@
     } // AddObject()
 
     // <summary>Get the item by Key value.</summary>
-    // <include path='items/Get/*' file='../../CommonDoc/PHPCollection.xml'/>
+    /// <include path='items/Get/*' file='../../CommonDoc/PHPCollection.xml'/>
     public function Get($key, bool $throwError = true) : ?LJCDocDataClass
     {
       $enabled = false;
@@ -454,8 +454,8 @@
     {
       $enabled = false;
       $this->Debug->BeginMethod("SerializeToString", $enabled);
-      $builder = new LJCStringBuilder();
 
+      $builder = new LJCStringBuilder();
       // Possible Common code.
       $builder->AppendLine("<?xml version=\"1.0\"?>");
       $builder->Append("<!-- Copyright (c) Lester J. Clark 2022 -");
@@ -505,8 +505,8 @@
     {
       $enabled = false;
       $this->Debug->BeginPrivateMethod("CreateMethods", $enabled);
-      $builder = new LJCStringBuilder();
 
+      $builder = new LJCStringBuilder();
       if ($class->Methods != null && count($class->Methods) > 0)
       {
 
@@ -536,8 +536,8 @@
     {
       $enabled = false;
       $this->Debug->BeginPrivateMethod("CreateParams", $enabled);
-      $builder = new LJCStringBuilder();
 
+      $builder = new LJCStringBuilder();
       if ($params != null && count($params) > 0)
       {
         $builder->AppendLine("<Params>", $indent);
@@ -561,8 +561,8 @@
     {
       $enabled = false;
       $this->Debug->BeginPrivateMethod("CreateProperties", $enabled);
-      $builder = new LJCStringBuilder();
 
+      $builder = new LJCStringBuilder();
       if ($class->Properties != null && count($class->Properties) > 0)
       {
         $builder->AppendLine("<Properties>", $indent);
@@ -683,6 +683,7 @@
     // ---------------
     // Constructors
 
+    /// <summary>Initializes an object instance.</summary>
     public function __construct()
     {
       // Instantiate properties with Pascal case.
@@ -712,7 +713,7 @@
     // Public Methods - LJCDocDataMethods
 
     // <summary>Adds an object and key value.</summary>
-    // <include path='items/AddObject/*' file='../../CommonDoc/PHPCollection.xml'/>
+    /// <include path='items/AddObject/*' file='../../CommonDoc/PHPCollection.xml'/>
     public function AddObject(LJCDocDataMethod $item, $key = null)
       : ?LJCDocDataMethod
     {
@@ -730,7 +731,7 @@
     } // AddObject()
 
     // <summary>Get the item by Key value.</summary>
-    // <include path='items/Get/*' file='../../CommonDoc/PHPCollection.xml'/>
+    /// <include path='items/Get/*' file='../../CommonDoc/PHPCollection.xml'/>
     public function Get($key, bool $throwError = true) : ?LJCDocDataMethod
     {
       $enabled = false;
@@ -824,7 +825,7 @@
     // Public Methods - LJCDocDataParams
 
     /// <summary>Adds an object and key value.</summary>
-    // <include path='items/AddObject/*' file='../../CommonDoc/PHPCollection.xml'/>
+    /// <include path='items/AddObject/*' file='../../CommonDoc/PHPCollection.xml'/>
     public function AddObject(LJCDocDataParam $item, $key = null)
       : ?LJCDocDataParam
     {
@@ -842,7 +843,7 @@
     } // AddObject()
 
     /// <summary>Get the item by Key value.</summary>
-    // <include path='items/Get/*' file='../../CommonDoc/PHPCollection.xml'/>
+    /// <include path='items/Get/*' file='../../CommonDoc/PHPCollection.xml'/>
     public function Get($key, bool $throwError = true) : ?LJCDocDataParam
     {
       $enabled = false;
@@ -950,7 +951,7 @@
     // Public Methods - LJCDocDataProperties
 
     // <summary>Adds an object and key value.</summary>
-    // <include path='items/AddObject/*' file='../../CommonDoc/PHPCollection.xml'/>
+    /// <include path='items/AddObject/*' file='../../CommonDoc/PHPCollection.xml'/>
     public function AddObject(LJCDocDataProperty $item, $key = null)
       : ?LJCDocDataProperty
     {
@@ -968,7 +969,7 @@
     } // AddObject()
 
     // <summary>Get the item by Key value.</summary>
-    // <include path='items/Get/*' file='../../CommonDoc/PHPCollection.xml'/>
+    /// <include path='items/Get/*' file='../../CommonDoc/PHPCollection.xml'/>
     public function Get($key, bool $throwError = true) : ?LJCDocDataProperty
     {
       $enabled = false;
