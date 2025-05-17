@@ -107,64 +107,64 @@
       $retValue = null;
 
       $builder = new LJCStringBuilder();
-      $builder->Append(LJCGenDataXML::XMLHead($fileName));
+      $builder->Text(LJCGenDataXML::XMLHead($fileName));
 
       // Sections and Section Begin Lines.
       $indent = 1;
-      $builder->AppendLine("<Sections>", $indent);
+      $builder->Line("<Sections>", $indent);
       $indent++;
       $value = LJCGenDataXML::SectionBegin("Main", $indent);
-      $builder->Append($value);
+      $builder->Text($value);
 
       // Items Begin Lines
       $indent += 2;
       $value = LJCGenDataXML::ItemBegin("Main", $indent);
-      $builder->Append($value);
+      $builder->Text($value);
       $indent++;
 
       // Replacements
       $text = $docDataFile->Summary;
       $value = LJCGenDataXML::Replacement("_FileSummary_", $text, $indent);
-      $builder->Append($value);
+      $builder->Text($value);
 
       $classes = $docDataFile->Classes;
       if ($classes != null)
       {
         $text = (string)count($classes);
         $value = LJCGenDataXML::Replacement("_ItemCount_", $text, $indent);
-        $builder->Append($value);
+        $builder->Text($value);
       }
 
       $text = $docDataFile->Name;
       $value = LJCGenDataXML::Replacement("_LibName_", $text, $indent);
-      $builder->Append($value);
+      $builder->Text($value);
 
       $text = "LJCPHPCodeDoc.html";
       $value = LJCGenDataXML::Replacement("_ProjectListFile_", $text, $indent);
-      $builder->Append($value);
+      $builder->Text($value);
 
       $text = $docDataFile->Remarks;
       $value = LJCGenDataXML::Replacement("_Remarks_", $text, $indent);
-      $builder->Append($value);
+      $builder->Text($value);
 
       // Items End Lines				
       $value = LJCGenDataXML::ItemEnd($indent);
-      $builder->Append($value);
+      $builder->Text($value);
 
       // Section End Lines
       $indent -= 2;
       $value = LJCGenDataXML::SectionEnd($indent);
-      $builder->Append($value);
+      $builder->Text($value);
 
       // Class Section			
       $value = $this->CreateLibClassString($docDataFile);
-      $builder->Append($value);
+      $builder->Text($value);
 
       // Sections and File End Lines
       $indent -= 2;
-      $builder->AppendLine("</Sections>", $indent);
+      $builder->Line("</Sections>", $indent);
       $indent--;
-      $builder->AppendLine("</Data>", $indent);
+      $builder->Line("</Data>", $indent);
       $retValue = $builder->ToString();
 
       $this->Debug->EndMethod($enabled);
@@ -187,7 +187,7 @@
         // Section Begin Lines.
         $indent = 2;
         $value = LJCGenDataXML::SectionBegin("Class", $indent);
-        $builder->Append($value);
+        $builder->Text($value);
 
         $indent += 2;
         foreach ($classes as $class)
@@ -195,28 +195,28 @@
           // Items Begin Lines
           $text = $class->Name;
           $value = LJCGenDataXML::ItemBegin($text, $indent);
-          $builder->Append($value);
+          $builder->Text($value);
           $indent++;
 
           // Replacements
           $text = $class->Name;
           $value = LJCGenDataXML::Replacement("_ClassName_", $text, $indent);
-          $builder->Append($value);
+          $builder->Text($value);
 
           $text = $class->Summary;
           $value = LJCGenDataXML::Replacement("_ClassSummary_", $text, $indent);
-          $builder->Append($value);
+          $builder->Text($value);
 
           // Items End Lines				
           $value = LJCGenDataXML::ItemEnd($indent);
-          $builder->Append($value);
+          $builder->Text($value);
           $indent--;
         }
 
         // Section End Lines
         $indent--;
         $value = LJCGenDataXML::SectionEnd($indent);
-        $builder->Append($value);
+        $builder->Text($value);
         $retValue = $builder->ToString();
       }
 
@@ -258,36 +258,36 @@
       $retValue = null;
 
       $builder = new LJCStringBuilder();
-      $builder->Append(LJCGenDataXML::XMLHead($fileName));
+      $builder->Text(LJCGenDataXML::XMLHead($fileName));
 
       // Sections and Section Begin Lines.
       $indent = 1;
-      $builder->AppendLine("<Sections>", $indent);
+      $builder->Line("<Sections>", $indent);
       $indent++;
       $value = LJCGenDataXML::SectionBegin("Class", $indent);
-      $builder->Append($value);
+      $builder->Text($value);
 
       // Items Begin Lines
       $indent += 2;
       $value = LJCGenDataXML::ItemBegin("Class", $indent);
-      $builder->Append($value);
+      $builder->Text($value);
       $indent++;
 
       $text = htmlspecialchars($class->Code);
       $value = LJCGenDataXML::Replacement("_Code_", $text, $indent);
-      $builder->Append($value);
+      $builder->Text($value);
 
       $value = LJCGenDataXML::Replacement("_LibName_", $libName, $indent);
-      $builder->Append($value);
+      $builder->Text($value);
 
       // Replacements
       $text = $class->Name;
       $value = LJCGenDataXML::Replacement("_ClassName_", $text, $indent);
-      $builder->Append($value);
+      $builder->Text($value);
 
       $text = $class->Summary;
       $value = LJCGenDataXML::Replacement("_ClassSummary_", $text, $indent);
-      $builder->Append($value);
+      $builder->Text($value);
 
       $properties = $class->Properties;
       if ($properties != null)
@@ -296,7 +296,7 @@
         {
           $value = LJCGenDataXML::Replacement("_HasProperties_", (string)true
             , $indent);
-          $builder->Append($value);
+          $builder->Text($value);
         }
       }
 
@@ -305,39 +305,39 @@
       {
         $text = (string)count($methods);
         $value = LJCGenDataXML::Replacement("_ItemCount_", $text, $indent);
-        $builder->Append($value);
+        $builder->Text($value);
       }
 
       $text = $class->Remarks;
       $value = LJCGenDataXML::Replacement("_Remarks_", $text, $indent);
-      $builder->Append($value);
+      $builder->Text($value);
 
       $text = "class $class->Name";
       $value = LJCGenDataXML::Replacement("_Syntax_", $text, $indent);
-      $builder->Append($value);
+      $builder->Text($value);
 
       // Items End Lines				
       $value = LJCGenDataXML::ItemEnd($indent);
-      $builder->Append($value);
+      $builder->Text($value);
 
       // Section End Lines
       $indent -= 2;
       $value = LJCGenDataXML::SectionEnd($indent);
-      $builder->Append($value);
+      $builder->Text($value);
 
       // Method Section			
       $value = $this->CreateClassMethodString($class);
-      $builder->Append($value);
+      $builder->Text($value);
 
       // Properties Section			
       $value = $this->CreateClassPropertyString($class);
-      $builder->Append($value);
+      $builder->Text($value);
 
       // Sections and File End Lines
       $indent -= 2;
-      $builder->AppendLine("</Sections>", $indent);
+      $builder->Line("</Sections>", $indent);
       $indent--;
-      $builder->AppendLine("</Data>", $indent);
+      $builder->Line("</Data>", $indent);
       $retValue = $builder->ToString();
 
       $this->Debug->EndMethod($enabled);
@@ -360,7 +360,7 @@
         // Section Begin Lines.
         $indent = 2;
         $value = LJCGenDataXML::SectionBegin("Function", $indent);
-        $builder->Append($value);
+        $builder->Text($value);
 
         $indent += 2;
         foreach ($methods as $method)
@@ -368,28 +368,28 @@
           // Items Begin Lines
           $text = $method->Name;
           $value = LJCGenDataXML::ItemBegin($text, $indent);
-          $builder->Append($value);
+          $builder->Text($value);
           $indent++;
 
           // Replacements
           $text = $method->Name;
           $value = LJCGenDataXML::Replacement("_FunctionName_", $text, $indent);
-          $builder->Append($value);
+          $builder->Text($value);
 
           $text = $method->Summary;
           $value = LJCGenDataXML::Replacement("_FunctionSummary_", $text, $indent);
-          $builder->Append($value);
+          $builder->Text($value);
 
           // Items End Lines				
           $value = LJCGenDataXML::ItemEnd($indent);
-          $builder->Append($value);
+          $builder->Text($value);
           $indent--;
         }
 
         // Section End Lines
         $indent--;
         $value = LJCGenDataXML::SectionEnd($indent);
-        $builder->Append($value);
+        $builder->Text($value);
         $retValue = $builder->ToString();
       }
 
@@ -412,7 +412,7 @@
         // Section Begin Lines.
         $indent = 2;
         $value = LJCGenDataXML::SectionBegin("Property", $indent);
-        $builder->Append($value);
+        $builder->Text($value);
 
         $indent += 2;
         foreach ($properties as $property)
@@ -420,28 +420,28 @@
           // Items Begin Lines
           $text = $property->Name;
           $value = LJCGenDataXML::ItemBegin($text, $indent);
-          $builder->Append($value);
+          $builder->Text($value);
           $indent++;
 
           // Replacements
           $text = $property->Name;
           $value = LJCGenDataXML::Replacement("_PropertyName_", $text, $indent);
-          $builder->Append($value);
+          $builder->Text($value);
 
           $text = $property->Summary;
           $value = LJCGenDataXML::Replacement("_PropertySummary_", $text, $indent);
-          $builder->Append($value);
+          $builder->Text($value);
 
           // Items End Lines				
           $value = LJCGenDataXML::ItemEnd($indent);
-          $builder->Append($value);
+          $builder->Text($value);
           $indent--;
         }
 
         // Section End Lines
         $indent--;
         $value = LJCGenDataXML::SectionEnd($indent);
-        $builder->Append($value);
+        $builder->Text($value);
         $retValue = $builder->ToString();
       }
 
@@ -537,38 +537,38 @@
       $retValue = null;
 
       $builder = new LJCStringBuilder();
-      $builder->Append(LJCGenDataXML::XMLHead($fileName));
+      $builder->Text(LJCGenDataXML::XMLHead($fileName));
 
       // Sections and Section Begin Lines.
       $indent = 1;
-      $builder->AppendLine("<Sections>", $indent);
+      $builder->Line("<Sections>", $indent);
       $indent++;
       $value = LJCGenDataXML::SectionBegin("Function", $indent);
-      $builder->Append($value);
+      $builder->Text($value);
 
       // Items Begin Lines
       $indent += 2;
       $text = $method->Name;
       $value = LJCGenDataXML::ItemBegin($text, $indent);
-      $builder->Append($value);
+      $builder->Text($value);
       $indent++;
 
       // Replacements
       $text = $method->Name;
       $value = LJCGenDataXML::Replacement("_FunctionName_", $text, $indent);
-      $builder->Append($value);
+      $builder->Text($value);
 
       $text = $method->Summary;
       $value = LJCGenDataXML::Replacement("_FunctionSummary_", $text, $indent);
-      $builder->Append($value);
+      $builder->Text($value);
 
       $text = $class->Name;
       $value = LJCGenDataXML::Replacement("_ClassName_", $text, $indent);
-      $builder->Append($value);
+      $builder->Text($value);
 
       $text = $method->Code;
       $value = LJCGenDataXML::Replacement("_Code_", $text, $indent);
-      $builder->Append($value);
+      $builder->Text($value);
 
       $params = $method->Params;
       if ($params != null)
@@ -577,43 +577,43 @@
         {
           $value = LJCGenDataXML::Replacement("_HasParameters_", (string)true
             , $indent);
-          $builder->Append($value);
+          $builder->Text($value);
         }
       }
 
       $value = LJCGenDataXML::Replacement("_LibName_", $libName, $indent);
-      $builder->Append($value);
+      $builder->Text($value);
 
       $text = $method->Remarks;
       $value = LJCGenDataXML::Replacement("_Remarks_", $text, $indent);
-      $builder->Append($value);
+      $builder->Text($value);
 
       $text = $method->Returns;
       $value = LJCGenDataXML::Replacement("_Returns_", $text, $indent);
-      $builder->Append($value);
+      $builder->Text($value);
 
       $text = htmlspecialchars($method->Syntax);
       $value = LJCGenDataXML::Replacement("_Syntax_", $text, $indent);
-      $builder->Append($value);
+      $builder->Text($value);
 
       // Items End Lines				
       $value = LJCGenDataXML::ItemEnd($indent);
-      $builder->Append($value);
+      $builder->Text($value);
 
       // Section End Lines
       $indent -= 2;
       $value = LJCGenDataXML::SectionEnd($indent);
-      $builder->Append($value);
+      $builder->Text($value);
 
       // Parameters Section			
       $value = $this->CreateMethodParamString($method);
-      $builder->Append($value);
+      $builder->Text($value);
 
       // Sections and File End Lines
       $indent -= 2;
-      $builder->AppendLine("</Sections>", $indent);
+      $builder->Line("</Sections>", $indent);
       $indent--;
-      $builder->AppendLine("</Data>", $indent);
+      $builder->Line("</Data>", $indent);
       $retValue = $builder->ToString();
 
       $this->Debug->EndMethod($enabled);
@@ -636,7 +636,7 @@
         // Section Begin Lines.
         $indent = 2;
         $value = LJCGenDataXML::SectionBegin("Parameters", $indent);
-        $builder->Append($value);
+        $builder->Text($value);
 
         $indent += 2;
         foreach ($params as $param)
@@ -644,28 +644,28 @@
           // Items Begin Lines
           $text = $param->Name;
           $value = LJCGenDataXML::ItemBegin($text, $indent);
-          $builder->Append($value);
+          $builder->Text($value);
           $indent++;
 
           // Replacements
           $text = $param->Name;
           $value = LJCGenDataXML::Replacement("_ParamName_", $text, $indent);
-          $builder->Append($value);
+          $builder->Text($value);
 
           $text = $param->Summary;
           $value = LJCGenDataXML::Replacement("_ParamSummary_", $text, $indent);
-          $builder->Append($value);
+          $builder->Text($value);
 
           // Items End Lines				
           $value = LJCGenDataXML::ItemEnd($indent);
-          $builder->Append($value);
+          $builder->Text($value);
           $indent--;
         }
 
         // Section End Lines
         $indent--;
         $value = LJCGenDataXML::SectionEnd($indent);
-        $builder->Append($value);
+        $builder->Text($value);
         $retValue = $builder->ToString();
       }
 
@@ -760,64 +760,64 @@
       $retValue = null;
 
       $builder = new LJCStringBuilder();
-      $builder->Append(LJCGenDataXML::XMLHead($fileName));
+      $builder->Text(LJCGenDataXML::XMLHead($fileName));
 
       // Sections and Section Begin Lines.
       $indent = 1;
-      $builder->AppendLine("<Sections>", $indent);
+      $builder->Line("<Sections>", $indent);
       $indent++;
       $value = LJCGenDataXML::SectionBegin("Property", $indent);
-      $builder->Append($value);
+      $builder->Text($value);
 
       // Items Begin Lines
       $indent += 2;
       $text = $property->Name;
       $value = LJCGenDataXML::ItemBegin($text, $indent);
-      $builder->Append($value);
+      $builder->Text($value);
       $indent++;
 
       // Replacements
       $text = $class->Name;
       $value = LJCGenDataXML::Replacement("_ClassName_", $text, $indent);
-      $builder->Append($value);
+      $builder->Text($value);
 
       $value = LJCGenDataXML::Replacement("_LibName_", $libName, $indent);
-      $builder->Append($value);
+      $builder->Text($value);
 
       $text = $property->Name;
       $value = LJCGenDataXML::Replacement("_PropertyName_", $text, $indent);
-      $builder->Append($value);
+      $builder->Text($value);
 
       $text = $property->Summary;
       $value = LJCGenDataXML::Replacement("_PropertySummary_", $text, $indent);
-      $builder->Append($value);
+      $builder->Text($value);
 
       $text = $property->Remarks;
       $value = LJCGenDataXML::Replacement("_Remarks_", $text, $indent);
-      $builder->Append($value);
+      $builder->Text($value);
 
       $text = $property->Returns;
       $value = LJCGenDataXML::Replacement("_Returns_", $text, $indent);
-      $builder->Append($value);
+      $builder->Text($value);
 
       $text = $property->Syntax;
       $value = LJCGenDataXML::Replacement("_Syntax_", $text, $indent);
-      $builder->Append($value);
+      $builder->Text($value);
 
       // Items End Lines				
       $value = LJCGenDataXML::ItemEnd($indent);
-      $builder->Append($value);
+      $builder->Text($value);
 
       // Section End Lines
       $indent -= 2;
       $value = LJCGenDataXML::SectionEnd($indent);
-      $builder->Append($value);
+      $builder->Text($value);
 
       // Sections and File End Lines
       $indent -= 2;
-      $builder->AppendLine("</Sections>", $indent);
+      $builder->Line("</Sections>", $indent);
       $indent--;
-      $builder->AppendLine("</Data>", $indent);
+      $builder->Line("</Data>", $indent);
       $retValue = $builder->ToString();
 
       $this->Debug->EndMethod($enabled);

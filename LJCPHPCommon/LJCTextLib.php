@@ -31,33 +31,9 @@
 
     // ---------------
     // Public Methods - LJCStringBuilder
-    /// <include path='items/Append/*' file='Doc/LJCStringBuilder.xml'/>
-    public function Append(?string $text, int $indent = 0
-      , bool $addBreak = false)
-    {
-      $this->Text($text, $indent, $addBreak);
-    }
 
     // Appends a text line with indents.
-    /// <include path='items/AppendLine/*' file='Doc/LJCStringBuilder.xml'/>
-    public function AppendLine(?string $text, int $indent = 0
-      , bool $addBreak = false)
-    {
-      $this->Line($text, $indent, $addBreak);
-    } // AppendLine()
-
-    // Appends a text line with begin tag, end tag and indents.
-    /// <include path='items/AppendTags/*' file='Doc/LJCStringBuilder.xml'/>
-    public function AppendTags(string $tag, ?string $text, int $indent
-      , bool $addBreak = false)
-    {
-      if ($text != null)
-      {
-        $this->Line("<$tag>$text</$tag>", $indent, $addBreak);
-      }
-    } // AppendTags()
-
-    // Appends a text line with indents.
+    /// <include path='items/Line/*' file='Doc/LJCStringBuilder.xml'/>
     public function Line(?string $text, int $indent = 0
       , bool $addBreak = false)
     {
@@ -66,6 +42,7 @@
     } // Line()
 
     // Appends text with indents.
+    /// <include path='items/Text/*' file='Doc/LJCStringBuilder.xml'/>
     public function Text(?string $text, int $indent = 0
       , bool $addBreak = false)
     {
@@ -93,6 +70,7 @@
     } // Text()
 
     // Appends a text line with begin tag, end tag and indents.
+    /// <include path='items/Tags/*' file='Doc/LJCStringBuilder.xml'/>
     public function Tags(string $tag, ?string $text, int $indent
       , bool $addBreak = false)
     {

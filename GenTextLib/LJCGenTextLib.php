@@ -80,11 +80,11 @@
         {
           $writeLine = false;
           $lines = $this->ProcessSection();
-          $builder->Append($lines);
+          $builder->Text($lines);
         }
         if ($writeLine)
         {
-          $builder->Append($this->Line);
+          $builder->Text($this->Line);
         }
       }
       fclose($this->Stream);
@@ -323,7 +323,7 @@
               {
                 // Recursive processing of nested section.
                 $lines = $this->ProcessSection();
-                $builder->Append($lines);
+                $builder->Text($lines);
                 $prevLineBegin = ftell($this->Stream);
                 continue;
               }
@@ -346,7 +346,7 @@
             {
               $this->ProcessReplacements($item);
             }
-            $builder->Append($this->Line);
+            $builder->Text($this->Line);
           }
         }  // while(true)
       }

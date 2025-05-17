@@ -42,10 +42,10 @@
       $retValue = null;
 
       $builder = new LJCStringBuilder();
-      $builder->AppendLine("<Item>", $indent);
+      $builder->Line("<Item>", $indent);
       $indent++;
-      $builder->AppendTags("Name", $name, $indent);
-      $builder->AppendLine("<Replacements>", $indent);
+      $builder->Tags("Name", $name, $indent);
+      $builder->Line("<Replacements>", $indent);
       $retValue = $builder->ToString();
       return $retValue;
     }
@@ -57,9 +57,9 @@
       $retValue = null;
 
       $builder = new LJCStringBuilder();
-      $builder->AppendLine("</Replacements>", $indent);
+      $builder->Line("</Replacements>", $indent);
       $indent--;
-      $builder->AppendLine("</Item>", $indent);		
+      $builder->Line("</Item>", $indent);		
       $retValue = $builder->ToString();
       return $retValue;
     }
@@ -75,12 +75,12 @@
       {
         $builder = new LJCStringBuilder();
         $indent++;
-        $builder->AppendLine("<Replacement>", $indent);
+        $builder->Line("<Replacement>", $indent);
         $indent++;
-        $builder->AppendTags("Name", $name, $indent);
-        $builder->AppendTags("Value", $value, $indent);
+        $builder->Tags("Name", $name, $indent);
+        $builder->Tags("Value", $value, $indent);
         $indent--;
-        $builder->AppendLine("</Replacement>", $indent);
+        $builder->Line("</Replacement>", $indent);
         $retValue = $builder->ToString();
       }
       return $retValue;
@@ -93,11 +93,11 @@
       $retValue = null;
 
       $builder = new LJCStringBuilder();
-      $builder->AppendLine("<Section>", $indent);
+      $builder->Line("<Section>", $indent);
       $indent++;
-      $builder->AppendLine("<Begin/>", $indent);
-      $builder->AppendTags("Name", $name, $indent);
-      $builder->AppendLine("<Items>", $indent);
+      $builder->Line("<Begin/>", $indent);
+      $builder->Tags("Name", $name, $indent);
+      $builder->Line("<Items>", $indent);
       $retValue = $builder->ToString();
       return $retValue;
     }
@@ -109,9 +109,9 @@
       $retValue = null;
 
       $builder = new LJCStringBuilder();
-      $builder->AppendLine("</Items>", $indent);				
+      $builder->Line("</Items>", $indent);				
       $indent--;
-      $builder->AppendLine("</Section>", $indent);				
+      $builder->Line("</Section>", $indent);				
       $retValue = $builder->ToString();
       return $retValue;
     }
@@ -126,17 +126,17 @@
 
       $builder = new LJCStringBuilder();
 
-      $builder->AppendLine("<?xml version=\"1.0\"?>");
-      $builder->Append("<!-- Copyright (c) Lester J. Clark &years -");
-      $builder->AppendLine(" All Rights Reserved -->");
+      $builder->Line("<?xml version=\"1.0\"?>");
+      $builder->Text("<!-- Copyright (c) Lester J. Clark &years -");
+      $builder->Line(" All Rights Reserved -->");
       if (null != $xmlFileName)
       {
-        $builder->AppendLine("<!-- $xmlFileName -->");
+        $builder->Line("<!-- $xmlFileName -->");
       }
-      $builder->Append("<$rootName xmlns:xsd=");
-      $builder->AppendLine("'http://www.w3.org/2001/XMLSchema'");
-      $builder->Append("  xmlns:xsi=");
-      $builder->AppendLine("'http://www.w3.org/2001/XMLSchema-instance'>");
+      $builder->Text("<$rootName xmlns:xsd=");
+      $builder->Line("'http://www.w3.org/2001/XMLSchema'");
+      $builder->Text("  xmlns:xsi=");
+      $builder->Line("'http://www.w3.org/2001/XMLSchema-instance'>");
       $retValue = $builder->ToString();
       return $retValue;
     }
