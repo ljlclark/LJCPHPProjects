@@ -31,16 +31,49 @@
 
     // ---------------
     // Public Methods - LJCStringBuilder
-
-    // Appends text with indents.
     /// <include path='items/Append/*' file='Doc/LJCStringBuilder.xml'/>
     public function Append(?string $text, int $indent = 0
+      , bool $addBreak = false)
+    {
+      $this->Text($text, $indent, $addBreak);
+    }
+
+    // Appends a text line with indents.
+    /// <include path='items/AppendLine/*' file='Doc/LJCStringBuilder.xml'/>
+    public function AppendLine(?string $text, int $indent = 0
+      , bool $addBreak = false)
+    {
+      $this->Line($text, $indent, $addBreak);
+    } // AppendLine()
+
+    // Appends a text line with begin tag, end tag and indents.
+    /// <include path='items/AppendTags/*' file='Doc/LJCStringBuilder.xml'/>
+    public function AppendTags(string $tag, ?string $text, int $indent
+      , bool $addBreak = false)
+    {
+      if ($text != null)
+      {
+        $this->Line("<$tag>$text</$tag>", $indent, $addBreak);
+      }
+    } // AppendTags()
+
+    // Appends a text line with indents.
+    public function Line(?string $text, int $indent = 0
+      , bool $addBreak = false)
+    {
+      $this->Text($text, $indent, $addBreak);
+      $this->Text("\r\n");
+    } // Line()
+
+    // Appends text with indents.
+    public function Text(?string $text, int $indent = 0
       , bool $addBreak = false)
     {
       $this->InitValue();
       if ($indent > 0)
       {
-        $this->StringValue .= str_repeat("\t", $indent);
+        //$this->StringValue .= str_repeat("\t", $indent);
+        $this->StringValue .= str_repeat("  ", $indent);
       }
 
       if ($addBreak)
@@ -57,27 +90,17 @@
         }
       }
       $this->StringValue .= $text;
-    } // Append()
-
-    // Appends a text line with indents.
-    /// <include path='items/AppendLine/*' file='Doc/LJCStringBuilder.xml'/>
-    public function AppendLine(?string $text, int $indent = 0
-      , bool $addBreak = false)
-    {
-      $this->Append($text, $indent, $addBreak);
-      $this->Append("\r\n");
-    } // AppendLine()
+    } // Text()
 
     // Appends a text line with begin tag, end tag and indents.
-    /// <include path='items/AppendTags/*' file='Doc/LJCStringBuilder.xml'/>
-    public function AppendTags(string $tag, ?string $text, int $indent
+    public function Tags(string $tag, ?string $text, int $indent
       , bool $addBreak = false)
     {
       if ($text != null)
       {
-        $this->AppendLine("<$tag>$text</$tag>", $indent, $addBreak);
+        $this->Line("<$tag>$text</$tag>", $indent, $addBreak);
       }
-    } // AppendTags()
+    } // Tags()
 
     /// <summary>Gets the current builder string length.</summary>
     public function Length() : int

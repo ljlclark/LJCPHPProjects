@@ -151,8 +151,6 @@
       {
         $key = $item->ID;
       }
-      // *****
-      $this->Debug->Write(__LINE__." key = $key");
       $retValue = $this->AddItem($item, $key);
 
       $this->Debug->EndMethod($enabled);
@@ -458,40 +456,40 @@
       $builder = new LJCStringBuilder();
 
       // Possible Common code.
-      $builder->AppendLine("<?xml version=\"1.0\"?>");
-      $builder->Append("<!-- Copyright (c) Lester J. Clark 2022 -");
-      $builder->AppendLine(" All Rights Reserved -->");
+      $builder->Line("<?xml version=\"1.0\"?>");
+      $builder->Line("<!-- Copyright (c) Lester J. Clark and Contributors. -->");
+      $builder->Line("<!-- Licensed under the MIT License. -->");
       if (null != $xmlFileName)
       {
-        $builder->AppendLine("<!-- $xmlFileName -->");
+        $builder->Line("<!-- $xmlFileName -->");
       }
-      $builder->Append("<LJCDocDataFile xmlns:xsd=");
-      $builder->AppendLine("'http://www.w3.org/2001/XMLSchema'");
-      $builder->Append("  xmlns:xsi=");
-      $builder->AppendLine("'http://www.w3.org/2001/XMLSchema-instance'>");
+      $builder->Text("<LJCDocDataFile xmlns:xsd=");
+      $builder->Line("'http://www.w3.org/2001/XMLSchema'");
+      $builder->Text("  xmlns:xsi=");
+      $builder->Line("'http://www.w3.org/2001/XMLSchema-instance'>");
 
       $indent = 1;
-      $builder->AppendTags("Name", $this->Name, $indent);
-      $builder->AppendTags("Summary", $this->Summary, $indent);
-      $builder->AppendTags("Remarks", $this->Remarks, $indent);
+      $builder->Tags("Name", $this->Name, $indent);
+      $builder->Tags("Summary", $this->Summary, $indent);
+      $builder->Tags("Remarks", $this->Remarks, $indent);
 
       if ($this->Classes != null)
       {
-        $builder->AppendLine("<Classes>", $indent);
+        $builder->Line("<Classes>", $indent);
         foreach ($this->Classes as $class)
         {
-          $builder->AppendLine("<Class>", $indent + 1);
-          $builder->AppendTags("Name", $class->Name, $indent + 2);
-          $builder->AppendTags("Summary", $class->Summary, $indent + 2);
-          $builder->AppendTags("Remarks", $class->Remarks, $indent + 2);
-          $builder->Append($this->CreateMethods($class, $indent + 2));
-          $builder->Append($this->CreateProperties($class, $indent + 2));
-          $builder->AppendTags("Code", $class->Code, $indent + 2);
-          $builder->AppendLine("</Class>", $indent + 1);
+          $builder->Line("<Class>", $indent + 1);
+          $builder->Tags("Name", $class->Name, $indent + 2);
+          $builder->Tags("Summary", $class->Summary, $indent + 2);
+          $builder->Tags("Remarks", $class->Remarks, $indent + 2);
+          $builder->Text($this->CreateMethods($class, $indent + 2));
+          $builder->Text($this->CreateProperties($class, $indent + 2));
+          $builder->Tags("Code", $class->Code, $indent + 2);
+          $builder->Line("</Class>", $indent + 1);
         }
-        $builder->AppendLine("</Classes>", $indent);
+        $builder->Line("</Classes>", $indent);
       }
-      $builder->AppendLine("</LJCDocDataFile>");
+      $builder->Line("</LJCDocDataFile>");
 
       $this->Debug->EndMethod($enabled);
       return $builder->ToString();
@@ -511,20 +509,20 @@
       if ($class->Methods != null && count($class->Methods) > 0)
       {
 
-        $builder->AppendLine("<Methods>", $indent);
+        $builder->Line("<Methods>", $indent);
         foreach ($class->Methods as $method)
         {
-          $builder->AppendLine("<Method>", $indent + 1);
-          $builder->AppendTags("Name", $method->Name, $indent + 2);
-          $builder->AppendTags("Summary", $method->Summary, $indent + 2);
-          $builder->Append($this->CreateParams($method->Params, $indent + 2));
-          $builder->AppendTags("Returns", $method->Returns, $indent + 2);
-          $builder->AppendTags("Remarks", $method->Remarks, $indent + 2);
-          $builder->AppendTags("Syntax", $method->Syntax, $indent + 2);
-          $builder->AppendTags("Code", $method->Code, $indent + 2);
-          $builder->AppendLine("</Method>", $indent + 1);
+          $builder->Line("<Method>", $indent + 1);
+          $builder->Tags("Name", $method->Name, $indent + 2);
+          $builder->Tags("Summary", $method->Summary, $indent + 2);
+          $builder->Text($this->CreateParams($method->Params, $indent + 2));
+          $builder->Tags("Returns", $method->Returns, $indent + 2);
+          $builder->Tags("Remarks", $method->Remarks, $indent + 2);
+          $builder->Tags("Syntax", $method->Syntax, $indent + 2);
+          $builder->Tags("Code", $method->Code, $indent + 2);
+          $builder->Line("</Method>", $indent + 1);
         }
-        $builder->AppendLine("</Methods>", $indent);
+        $builder->Line("</Methods>", $indent);
       }
 
       $this->Debug->EndMethod($enabled);
@@ -541,15 +539,15 @@
       $builder = new LJCStringBuilder();
       if ($params != null && count($params) > 0)
       {
-        $builder->AppendLine("<Params>", $indent);
+        $builder->Line("<Params>", $indent);
         foreach ($params as $param)
         {
-          $builder->AppendLine("<Param>", $indent + 1);
-          $builder->AppendTags("Name", $param->Name, $indent + 2);
-          $builder->AppendTags("Summary", $param->Summary, $indent + 2);
-          $builder->AppendLine("</Param>", $indent + 1);
+          $builder->Line("<Param>", $indent + 1);
+          $builder->Tags("Name", $param->Name, $indent + 2);
+          $builder->Tags("Summary", $param->Summary, $indent + 2);
+          $builder->Line("</Param>", $indent + 1);
         }
-        $builder->AppendLine("</Params>", $indent);
+        $builder->Line("</Params>", $indent);
       }
 
       $this->Debug->EndMethod($enabled);
@@ -566,18 +564,18 @@
       $builder = new LJCStringBuilder();
       if ($class->Properties != null && count($class->Properties) > 0)
       {
-        $builder->AppendLine("<Properties>", $indent);
+        $builder->Line("<Properties>", $indent);
         foreach ($class->Properties as $property)
         {
-          $builder->AppendLine("<Property>", $indent + 1);
-          $builder->AppendTags("Name", $property->Name, $indent + 2);
-          $builder->AppendTags("Summary", $property->Summary, $indent + 2);
-          $builder->AppendTags("Returns", $property->Returns, $indent + 2);
-          $builder->AppendTags("Remarks", $property->Remarks, $indent + 2);
-          $builder->AppendTags("Syntax", $property->Syntax, $indent + 2);
-          $builder->AppendLine("</Property>", $indent + 1);
+          $builder->Line("<Property>", $indent + 1);
+          $builder->Tags("Name", $property->Name, $indent + 2);
+          $builder->Tags("Summary", $property->Summary, $indent + 2);
+          $builder->Tags("Returns", $property->Returns, $indent + 2);
+          $builder->Tags("Remarks", $property->Remarks, $indent + 2);
+          $builder->Tags("Syntax", $property->Syntax, $indent + 2);
+          $builder->Line("</Property>", $indent + 1);
         }
-        $builder->AppendLine("</Properties>", $indent);
+        $builder->Line("</Properties>", $indent);
       }
 
       $this->Debug->EndMethod($enabled);
