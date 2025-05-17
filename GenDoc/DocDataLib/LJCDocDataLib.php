@@ -456,6 +456,7 @@
       $this->Debug->BeginMethod("SerializeToString", $enabled);
 
       $builder = new LJCStringBuilder();
+
       // Possible Common code.
       $builder->AppendLine("<?xml version=\"1.0\"?>");
       $builder->Append("<!-- Copyright (c) Lester J. Clark 2022 -");

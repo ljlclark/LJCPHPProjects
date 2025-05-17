@@ -1,22 +1,22 @@
-devPath /LJCPHPCommon/LJCCollectionLib.php
-devPath /LJCPHPCommon/LJCCommonLib.php
-devPath /LJCPHPCommon/LJCDataManagerLib.php
-devPath /LJCPHPCommon/LJCDBAccessLib.php
-devPath /LJCPHPCommon/LJCTextLib.php
+../../LJCPHPCommon/LJCCollectionLib.php
+../../LJCPHPCommon/LJCCommonLib.php
+../../LJCPHPCommon/LJCDataManagerLib.php
+../../LJCPHPCommon/LJCDBAccessLib.php
+../../LJCPHPCommon/LJCTextLib.php
 
-devPath /GenTextLib/LJCGenTextLib.php
-devPath /GenTextLib/LJCGenTextSectionLib.php
+../../GenTextLib/LJCGenTextLib.php
+../../GenTextLib/LJCGenTextSectionLib.php
 
-devPath /GenDoc/DocDataLib/LJCCommentsLib.php
-devPath /GenDoc/DocDataLib/LJCDocDataGenLib.php
-devPath /GenDoc/DocDataLib/LJCDocDataLib.php
-devPath /GenDoc/DocDataLib/LJCIncludeLib.php
-devPath /GenDoc/DocDataLib/LJCParamCommentLib.php
+../../GenDoc/DocDataLib/LJCCommentsLib.php
+../../GenDoc/DocDataLib/LJCDocDataGenLib.php
+../../GenDoc/DocDataLib/LJCDocDataLib.php
+../../GenDoc/DocDataLib/LJCIncludeLib.php
+../../GenDoc/DocDataLib/LJCParamCommentLib.php
 
-devPath /GenDoc/GenCodeDoc/GenCodeDocLib.php
+../../GenDoc/GenCodeDoc/GenCodeDocLib.php
 
-devPath /GenDoc/GenDataLib/LJCGenDataGenLib.php
-devPath /GenDoc/GenDataLib/LJCGenDataXMLLib.php
+../../GenDoc/GenDataLib/LJCGenDataGenLib.php
+../../GenDoc/GenDataLib/LJCGenDataXMLLib.php
 
-devPath /TextReader/LJCTextReaderLib.php
-devPath /TextReader/LJCTextRangesLib.php
+../../TextReader/LJCTextReaderLib.php
+../../TextReader/LJCTextRangesLib.php

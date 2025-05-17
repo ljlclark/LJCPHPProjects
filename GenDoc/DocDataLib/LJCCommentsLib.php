@@ -200,7 +200,7 @@
       $positionBegin = LJCCommon::StrPos($line, $beginTag);
       if ($positionBegin < 0)
       {
-        // No BeginTag so set for start of comment.
+        // No BeginTag so set parse for start of comment.
         $beginTag = "///";
       }
 
@@ -239,6 +239,8 @@
           // No EndTag so do not remove cr/lf.
           $rTrim = false;
         }
+
+        // Get to end of string if endTag is null.
         $retValue = LJCCommon::GetDelimitedString($line, $beginTag, $endTag
           , false, $rTrim);
       }

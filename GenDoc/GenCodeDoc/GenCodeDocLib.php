@@ -8,6 +8,7 @@
   include_once "../../LJCPHPCommon/LJCDebugLib.php";
   include_once "../DocDataLib/LJCDocDataGenLib.php";
   include_once "../GenDataLib/LJCGenDataGenLib.php";
+  include_once "../../GenTextLib/TextGenLib.php";
   // LJCDebugLib: LJCDebug
   // LJCDocDataGenLib: LJCDocDataGen
   // LJCGenDataGenLib: LJCGenDataGen
@@ -73,26 +74,12 @@
       $enabled = false;
       $this->Debug->BeginMethod("CreateFilePages", $enabled);
 
-      //global $path;
       $writeDocDataXML = false;
       $writeGenDataXML = false;
 
-      $tokens = LJCCommon::GetTokens($fileSpecLine);
-      if (count($tokens) > 1)
+      $fileSpec = trim($fileSpecLine);
+      if (TextGenLib::HasValue($fileSpec))
       {
-        switch ($tokens[0])
-        {
-          case "path":
-            // *** Change *** 5/11/25
-            //$fileSpec = "$devPath";
-            $fileSpec = "../../";
-            break;
-          default:
-            $fileSpec = $tokens[0];
-            break;
-        }
-        $fileSpec .= trim($tokens[1]);
-
         $docXMLString = $this->DocDataGen->CreateDocDataXMLString($fileSpec
           , $writeDocDataXML);
         if ($docXMLString != null)

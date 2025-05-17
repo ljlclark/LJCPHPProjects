@@ -225,7 +225,7 @@
         {
           $this->Line = (string)fgets($this->InputStream);
 
-          // Process Lib or XML Comment. Skips Null line and Comment Line.
+          // Process Lib, XML Comment, empty line and Comment Line.
           if ($this->LineProcessed($this->Line, $codeFileSpec))
           {
             continue;

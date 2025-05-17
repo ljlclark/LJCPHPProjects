@@ -1,0 +1,72 @@
+-----
+Class LJCDocDataGenLib.LJCDocDataGen
+
+Method CreateDocDataXMLString()
+Calls ProcessCode()
+If writeXML == true:
+  Creates a .txt file spec from codeFileSpec.
+  Writes the XML string to a file.
+
+Method ProcessCode(codeFileSpec])
+Opens the source file.
+Reads and passes each line to LineProcessed().
+
+Method LineProcessed(line)
+If the line is empty, no processing is performed.
+If the line is an XML Comment line.
+  If the second token if "LibName:"
+    Calls ProcessLib() to save the parsed XML Comments in the Comments object
+    to the DocDataFile object.
+  else
+    calls LJCComments.SetComment() to parse the XML Comment.
+If the line is a code comment, no processing is performed.
+Returns true if line was processed; otherwise false.
+Return to ProcessCode()
+
+-----
+Class LJCCommentsLib.LJCComments
+
+Method SetComment(line)
+If the IsContinue property is true:
+  Sets CurrentTagName property to the parsed begin tag name.
+  If not "param", clears the internal comments.
+  Calls GetComment() to parse the comment text.
+  If CurrentTagName is not null:
+    Calls SaveComment() to copy comments to DocData objects.
+    If line does not have end tag:
+      Set IsContinue = true;
+else
+  If line does not have end tag:
+    Set IsContinue == false
+  Call GetComment() to parse the comment text.
+  Call SaveComment() to copy comments to LJCDocData objects.
+Returns to LineProcessed()
+
+Method GetComment(line)
+If beginTag == "<include":
+  Sets isSimpleComment to false.
+  Calls LJCInclude.SetComments(line).
+  Copies LJCInclude.Comments to Comments using SetComment().
+  Trims trailing white space.
+  Sets CurrentTagName to null to indicate that the comment is complete.
+
+If beginTag == "<param":
+  Sets isSimpleComment to false.
+  Calls LJCParamComment.GetParam() to get LJCDocDataParam object.
+  Adds object to Params.
+
+If isSimpleComment:
+  If not HasCurrentEndTag():
+    Does not trim trailing white space.
+  Parse the comment text.
+Returns the comment text.
+Returns to SetComment()
+
+Method SaveComment(comment)
+Copies comment to LJCDocData objects by CurrentTagName.
+
+-----
+Class LJCIncludeLib.LJCInclude
+
+-----
+Class LJCParamCommentLib.LJCParamComment

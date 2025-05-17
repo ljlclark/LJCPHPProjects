@@ -2,8 +2,7 @@
   // Copyright (c) Lester J. Clark 2022 - All Rights Reserved
   // TextGenLib.php
   declare(strict_types=1);
-  $path = "../..";
-  include_once "$path/GenDoc/DocDataLib/LJCDebugLib.php";
+  include_once "../../LJCPHPCommon/LJCDebugLib.php";
   require_once "LJCGenTextSectionLib.php";
 
   // Generate output text from a template and data.
