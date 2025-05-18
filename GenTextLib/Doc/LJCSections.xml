@@ -139,7 +139,30 @@
 	</Serialize>
 	
 	<!-- Public Methods -->
-	<Add>
+  <HasKey>
+    <summary>Indicates if a key already exists.</summary>
+    <param name="$key">The element key.</param>
+    <returns>True if the key already exists, otherwise false.</returns>
+    <code>
+      // Must refer to exact same file everywhere in codeline.
+      // Path: LJCPHPProjectsDev/GenDoc/LJCDocDataLib
+      require_once "../../GenTextLib/LJCGenTextSectionLib.php";
+
+      $sections = new LJCSections();
+      $key = "SectionName";
+      if ($sections->HasKey($key))
+      {
+      throw new Exception("Key: {$key} already in use.");
+      }
+      else
+      {
+      $section = new LJCSection($key);
+      }
+    </code>
+  </HasKey>
+
+  <!-- Data Methods -->
+  <Add>
 		<summary>Adds an object and key value.</summary>
 		<param name="$item">The object to be added to the collection.</param>
 		<param name="$key">The element key.</param>
@@ -154,7 +177,7 @@
       $sections->Add($section, $section->Name);
     </code>
 	</Add>
-	<Get>
+	<Retrieve>
 		<summary>Get the item by Key value.</summary>
 		<param name="$key">The element key.</param>
 		<param name="$throwError">Indicates if an error should be thrown if the key is not found.</param>
@@ -168,28 +191,7 @@
       $section = new LJCSection("SectionName");
       $sections->Add($section, $section->Name);
 
-      $section = LJCSections->Get("SectionName");
+      $section = LJCSections->Retrieve("SectionName");
     </code>
-	</Get>
-	<HasKey>
-		<summary>Indicates if a key already exists.</summary>
-		<param name="$key">The element key.</param>
-		<returns>True if the key already exists, otherwise false.</returns>
-		<code>
-      // Must refer to exact same file everywhere in codeline.
-      // Path: LJCPHPProjectsDev/GenDoc/LJCDocDataLib
-      require_once "../../GenTextLib/LJCGenTextSectionLib.php";
-
-      $sections = new LJCSections();
-      $key = "SectionName";
-      if ($sections->HasKey($key))
-      {
-        throw new Exception("Key: {$key} already in use.");
-      }
-      else
-      {
-        $section = new LJCSection($key);
-      }
-    </code>
-	</HasKey>
+	</Retrieve>
 </items>

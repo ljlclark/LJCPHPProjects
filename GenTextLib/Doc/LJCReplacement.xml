@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright (c) Lester J. Clark 2022 - All Rights Reserved -->
+<!-- LJCReplacement.xml -->
+<items>
+  <construct>
+    <summary>Initializes an object instance with the provided values.</summary>
+    <param name="$name">The Replacement name.</param>
+    <param name="$value">The Replacement value.</param>
+  </construct>
+</items>

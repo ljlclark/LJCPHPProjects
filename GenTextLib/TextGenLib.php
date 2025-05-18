@@ -8,7 +8,12 @@
   // Generate output text from a template and data.
   class TextGenLib
   {
-    // Check for text.
+    // Check for text. (Move to LJCCommon)
+    /// <summary>Check for text.</summary>
+    /// <param name="$items"></param>
+    /// <returns>
+    ///   true if the collection/array has items; otherwise false;
+    /// </returns>
     public static function HasItems($items) : bool
     {
       $retValue = false;
@@ -21,7 +26,12 @@
       return $retValue;
     }
 
-    // Check for text.
+    // Check for text. (Move to LJCCommon)
+    /// <summary>Check for text.</summary>
+    /// <param name="$text"></param>
+    /// <returns>
+    ///   true if the text has other than white space; otherwise false;
+    /// </returns>
     public static function HasValue($text) : bool
     {
       $retValue = false;
@@ -40,7 +50,7 @@
       echo("*** $context: $value\r\n");
     }
 
-    // Initializes an object instance.
+    /// <summary>Initializes an object instance.</summary>
     public function __construct()
     {
       // Instantiate properties with Pascal case.
@@ -61,10 +71,15 @@
     // Main Processing Methods
 
     // Generate the Output text.
+    /// <summary>Generate the Output text.</summary>
+    /// <param name="$sections"></param>
+    /// <param name=$templateLines></param>
+    /// <returns>The generated HTML document text.</returns>
     public function TextGen(LJCSections $sections, array $templateLines)
       : string
     {
-      $this->Debug->WriteStartText("TextGen");
+      $enabled = false;
+      $this->Debug->BeginMethod("TextGen", $enabled);
 
       $this->Sections = $sections;
       $this->Lines = $templateLines;
@@ -99,15 +114,19 @@
         $this->AddOutput($line);
       }
 
-      $this->Debug->AddIndent(-1);
+      $this->Debug->EndMethod($enabled);
       return $this->Output;
     }
 
     // Process the #IfBegin LJCDirective.
+    /// <summary>Process the #IfBegin LJCDirective.</summary>
+    /// <param name="$directive"></param>
+    /// <param name="$replacements"></param>
     private function DoIf(LJCDirective $directive, LJCReplacements $replacements
       , int &$lineIndex) : void
     {
-      $this->Debug->WritePrivateStartText("DoIf");
+      $enabled = false;
+      $this->Debug->BeginPrivateMethod("DoIf", $enabled);
 
       // Check replacement value against LJCDirective value.
       $success = true;
@@ -167,13 +186,14 @@
         }
       }
 
-      $this->Debug->AddIndent(-1);
+      $this->Debug->EndMethod($enabled);
     }
 
     // Process the RepeatItems.
     private function DoItems(LJCSection $section, int &$lineIndex) : void
     {
-      $this->Debug->WritePrivateStartText("DoItems");
+      $enabled = false;
+      $this->Debug->BeginPrivateMethod("DoItems", $enabled);
 
       $success = true;
       $items = $section->RepeatItems;
@@ -260,13 +280,14 @@
         }
       }
 
-      $this->Debug->AddIndent(-1);
+      $this->Debug->EndMethod($enabled);
     }
 
     // If not directive, process replacements and add to output.
     private function DoOutput(LJCReplacements $replacements, string $line) : void
     {
-      $this->Debug->WritePrivateStartText("DoOutput");
+      $enabled = false;
+      $this->Debug->BeginPrivateMethod("DoOutput", $enabled);
 
       if (!LJCDirective::IsDirective($line, $this->CommentChars))
       {
@@ -321,13 +342,14 @@
         }
       }
 
-      $this->Debug->AddIndent(-1);
+      $this->Debug->EndMethod($enabled);
     }
 
     // 
     public function Matches(string $text) : array
     {
-      $this->Debug->WriteStartText("Matches");
+      $enabled = falses;
+      $this->Debug->WriteStartText("Matches", $enabled);
 
       $retValue = [];
 
@@ -352,14 +374,15 @@
         }
       }
 
-      $this->Debug->AddIndent(-1);
+      $this->Debug->EndMethod($enabled);
       return $retValue;
     }
 
     // Skips to the end of the current section.
     private function SkipSection(int $lineIndex) : int
     {
-      $this->Debug->WriteStartText("SkipSection");
+      $enabled = false;
+      $this->Debug->BeginPrivateMethod("SkipSection", $enabled);
       $retValue = $lineIndex;
 
       // Skip to end of section.
@@ -373,7 +396,7 @@
         }
       }
 
-      $this->Debug->AddIndent(-1);
+      $this->Debug->EndMethod($enabled);
       return $retValue;
     }
 
@@ -383,7 +406,8 @@
     // Add current replacements to Active array.
     private function AddActive(LJCItem $item) : void
     {
-      $this->Debug->WritePrivateStartText("AddActive");
+      $enabled = false;
+      $this->Debug->BeginPrivateMethod("AddActive", $enabled);
 
       if (TextGenLib::HasItems($item->Replacements))
       {
@@ -391,13 +415,14 @@
         //array_push($this->ActiveReplacements, $item=>Replacements);
       }
 
-      $this->Debug->AddIndent(-1);
+      $this->Debug->EndMethod($enabled);
     }
 
     // Add the line to the output.
     private function AddOutput(string $line) : void
     {
-      $this->Debug->WritePrivateStartText("AddOutput");
+      $enabled = false;
+      $this->Debug->BeginPrivateMethod("AddOutput", $enabled);
 
       if (strlen($this->Output) > 0)
       {
@@ -405,25 +430,27 @@
       }
       $this->Output .= $line;
 
-      $this->Debug->AddIndent(-1);
+      $this->Debug->EndMethod($enabled);
     }
 
     // Gets the begin section.
     private function GetBeginSection(string $line) : LJCSection
     {
-      $this->Debug->WritePrivateStartText("GetBeginSection");
+      $enabled = false;
+      $this->Debug->BeginPrivateMethod("GetBeginSection", $enabled);
 
       $directive = LJCDirective::GetDirective($line, $this->CommentChars);
       $retValue = $this->Sections->Retrieve($directive->Name);
 
-      $this->Debug->AddIndent(-1);
+      $this->Debug->EndMethod($enabled);
       return $retValue;
     }
 
     // Sets the configuration values.
     private function IsConfig(string $line) : bool
     {
-      $this->Debug->WritePrivateStartText("IsConfig");
+      $enabled = false;
+      $this->Debug->BeginPrivateMethod("IsConfig", $enabled);
       $retValue = false;
 
       // Sets the configuration.
@@ -449,17 +476,21 @@
         }
       }
 
-      $this->Debug->AddIndent(-1);
+      $this->Debug->EndMethod($enabled);
       return $retValue;
     }
 
     // Remove Replacements that are no longer active.
     private function RemoveActive() : void
     {
+      $enabled = false;
+      $this->Debug->BeginPrivateMethod("RemoveActive", $enabled);
+
       if (TextGenLib::HasItems($this->ActiveReplacements))
       {
         array_pop($this->ActiveReplacements);
       }
+      $this->Debug->EndMethod($enabled);
     }
 
     // ---------------

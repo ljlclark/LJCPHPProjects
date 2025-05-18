@@ -53,28 +53,69 @@
 			are optional and help to identify which #IfBegin is ending.
 		</remarks>
 	</LJCDirective>
-	<Find>
-		<summary>Find any Directives in a line.</summary>
-		<param name="$line">The text line.</param>
-		<returns>The Directive object or null.</returns>
-		<code>
+  <GetDirective>
+    <summary>Checks line for directive.</summary>
+    <param name="$line">The text line.</param>
+    <param name="$commentChars">The line comment chars.</param>
+    <returns>The LJCDirective object or null.</returns>
+    <code>
       // Must refer to exact same file everywhere in codeline.
       // Path: LJCPHPProjectsDev/GenDoc/LJCDocDataLib
       require_once "../../GenTextLib/LJCGenTextSectionLib.php";
 
       $line = "  // #SectionBegin Class
-      $directive = LJCDirective::Find($line);
+      $commentChars = "//";
+      $directive = LJCDirective::GetDirective($line, $commentChars);
     </code>
-	</Find>
-	<construct>
-		<summary> Initializes an object instance.</summary>
-		<param name="$type">The Directive Type.</param>
-		<param name="$name">The Directive name.</param>
-		<code>
-			$webCommonPath = "c:/inetpub/wwwroot/LJCPHPCommon";
-			require_once "$webCommonPath/LJCGenTextSectionLib.php";
+  </GetDirective>
+  <IsDirective>
+    <summary>Checks if the line has a directive.</summary>
+    <param name="$line">The text line.</param>
+    <param name="$commentChars">The line comment chars.</param>
+    <returns>true if a directive; otherwise false;</returns>
+  </IsDirective>
+  <IfElse>
+    <summary>Checks if directive ID = IfElse.</summary>
+    <param name="$line">The text line.</param>
+    <param name="$commentChars">The line comment chars.</param>
+  </IfElse>
+  <IfEnd>
+    <summary>Checks if directive ID = IfEnd.</summary>
+    <param name="$line">The text line.</param>
+    <param name="$commentChars">The line comment chars.</param>
+  </IfEnd>
+  <SectionBegin>
+    <summary>Checks if directive ID = SectionBegin.</summary>
+    <param name="$line">The text line.</param>
+    <param name="$commentChars">The line comment chars.</param>
+  </SectionBegin>
+  <SectionEnd>
+    <summary>Checks if directive ID = SectionEnd.</summary>
+    <param name="$line">The text line.</param>
+    <param name="$commentChars">The line comment chars.</param>
+  </SectionEnd>
+  <IsIfBegin>
+    <summary>Checks if directive ID = IfBegin.</summary>
+    <returns>true for "IfBegin"; otherwise false.</returns>
+  </IsIfBegin>
+  <construct>
+    <summary> Initializes an object instance.</summary>
+    <param name="$type">The Directive Type.</param>
+    <param name="$name">The Directive name.</param>
+    <code>
+      // Must refer to exact same file everywhere in codeline.
+      // Path: LJCPHPProjectsDev/GenDoc/LJCDocDataLib
+      require_once "../../GenTextLib/LJCGenTextSectionLib.php";
 
-			$directive = new LJCDirective("SectionBegin", "Class");
-		</code>
-	</construct>
+      $directive = new LJCDirective("SectionBegin", "Class");
+    </code>
+  </construct>
+  <IsSectionBegin>
+    <summary>Checks if directive ID = SectionBegin.</summary>
+    <returns>true if "SectionBegin"; otherwise false;</returns>
+  </IsSectionBegin>
+  <IsSectionEnd>
+    <summary>Checks if directive ID = SectionEnd.</summary>
+    <returns>true if "SectionEnd"; otherwise false.</returns>
+  </IsSectionEnd>
 </items>

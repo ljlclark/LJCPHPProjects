@@ -27,9 +27,8 @@
   /// <include path='items/LJCDirective/*' file='Doc/LJCDirective.xml'/>
   class LJCDirective
   {
-    /// <summary>
-    /// Checks line for directive and returns the directive object.
-    /// </summary>
+    // Checks line for directive.
+    /// <include path='items/GetDirective/*' file='Doc/LJCGenTextSectionLib.xml'/>
     public static function GetDirective(string $line
       , string $commentChars) : ?LJCDirective
     {
@@ -80,7 +79,8 @@
       return $retValue;
     }
 
-    /// <summary>Checks if the line has a directive.</summary>
+    // Checks if the line has a directive.
+    /// <include path='items/IsDirective/*' file='Doc/LJCGenTextSectionLib.xml'/>
     public static function IsDirective(string $line
       , string $commentChars) : bool
     {
@@ -105,7 +105,8 @@
       return $retValue;
     }
 
-    // Checks if directive ID = IfElses.
+    // Checks if directive ID = IfElse.
+    /// <include path='items/IfElse/*' file='Doc/LJCGenTextSectionLib.xml'/>
     public static function IfElse(string $line, string $commentChars)
       : bool
     {
@@ -123,6 +124,7 @@
     }
 
     // Checks if directive ID = IfEnd.
+    /// <include path='items/IfEnd/*' file='Doc/LJCGenTextSectionLib.xml'/>
     public static function IfEnd(string $line, string $commentChars)
       : bool
     {
@@ -140,6 +142,7 @@
     }
 
     // Checks if directive ID = SectionBegin.
+    /// <include path='items/SectionBegin/*' file='Doc/LJCGenTextSectionLib.xml'/>
     public static function SectionBegin(string $line, string $commentChars)
       : bool
     {
@@ -157,6 +160,7 @@
     }
 
     // Checks if directive ID = SectionEnd.
+    /// <include path='items/SectionEnd/*' file='Doc/LJCGenTextSectionLib.xml'/>
     public static function SectionEnd(string $line, string $commentChars)
       : bool
     {
@@ -178,9 +182,8 @@
     public function __construct(string $type, string $name)
     {
       // Instantiate properties with Pascal case.
-      $enabled = false;
       $this->Debug = new LJCDebug("LJCGenTextSectionLib", "LJCDirective"
-        , "w", $enabled);
+        , "w", false);
       $this->Debug->IncludePrivate = true;
 
       $this->Type = $type;
@@ -188,9 +191,11 @@
     }
 
     // Checks if directive ID = IfBegin.
+    /// <include path='items/IsIfBegin/*' file='Doc/LJCDirective.xml'/>
     public function IsIfBegin() : bool
     {
-      $this->Debug->WriteStartText("IsIfBegin");
+      $enabled = false;
+      $this->Debug->BeginMethod("IsIfBegin", $enabled);
       $retValue = false;
 
       if ("#ifbegin" == strtolower($this->ID))
@@ -198,14 +203,16 @@
         $retValue = true;
       }
 
-      $this->Debug->AddIndent(-1);
+      $this->Debug->EndMethod($enabled);
       return $retValue;
     }
 
     // Checks if directive ID = SectionBegin.
+    /// <include path='items/IsSectionBegin/*' file='Doc/LJCDirective.xml'/>
     public function IsSectionBegin() : bool
     {
-      $this->Debug->WriteStartText("IsSectionBegin");
+      $enabled = false;
+      $this->Debug->BeginMethod("IsSectionBegin", $enabled);
       $retValue = false;
 
       if ("#sectionbegin" == strtolower($this->ID))
@@ -213,14 +220,16 @@
         $retValue = true;
       }
 
-      $this->Debug->AddIndent(-1);
+      $this->Debug->EndMethod($enabled);
       return $retValue;
     }
 
     // Checks if directive ID = SectionEnd.
+    /// <include path='items/IsSectionEnd/*' file='Doc/LJCDirective.xml'/>
     public function IsSectionEnd() : bool
     {
-      $this->Debug->WriteStartText("IsSectionEnd");
+      $enabled = false;
+      $this->Debug->BeginMethod("IsSectionEnd", $enabled);
       $retValue = false;
 
       if ("#sectionend" == strtolower($this->ID))
@@ -228,7 +237,7 @@
         $retValue = true;
       }
 
-      $this->Debug->AddIndent(-1);
+      $this->Debug->EndMethod($enabled);
       return $retValue;
     }
 
@@ -253,9 +262,8 @@
     public function __construct(string $name)
     {
       // Instantiate properties with Pascal case.
-      $enabled = false;
       $this->Debug = new LJCDebug("LJCGenTextSectionLib", "LJCSection"
-        , "w", $enabled);
+        , "w", false);
       $this->Debug->IncludePrivate = true;
 
       $this->Name = trim($name);
@@ -263,9 +271,11 @@
     }
 
     /// <summary>Creates a copy of the current object.</summary>
+    /// <returns>The cloned object.</returns>
     public function Clone() : self
     {
-      $this->Debug->WriteStartText("Clone");
+      $enabled = false;
+      $this->Debug->BeginMethod("Clone", $enabled);
 
       $retValue = new self($this->Name);
       $retValue->Begin = $this->Begin;
@@ -273,7 +283,7 @@
       $retValue->RepeatItems = $this->RepeatItems;
       $retValue->Name = $this->Name;
 
-      $this->Debug->AddIndent(-1);
+      $this->Debug->EndMethod($enabled);
       return $retValue;
     }
 
@@ -464,9 +474,8 @@
     public function __construct()
     {
       // Instantiate properties with Pascal case.
-      $enabled = false;
       $this->Debug = new LJCDebug("LJCGenTextSectionLib", "LJCSections"
-        , "w", $enabled);
+        , "w", false);
       $this->Debug->IncludePrivate = true;
     }
 
@@ -474,9 +483,11 @@
     // *** Collection Methods ***
 
     /// <summary>Creates an object clone.</summary>
+    /// <returns>The cloned object.</returns>
     public function Clone() : self
     {
-      $this->Debug->WriteStartText("Clone");
+      $enabled = false;
+      $this->Debug->BeginMethod("Clone", $enabled);
       $retValue = new self();
 
       foreach ($this->Items as $key => $item)
@@ -485,7 +496,7 @@
       }
       unset($item);
 
-      $this->Debug->AddIndent(-1);
+      $this->Debug->EndMethod($enabled);
       return $retValue;
     }
 
@@ -608,9 +619,8 @@
     public function __construct(string $name)
     {
       // Instantiate properties with Pascal case.
-      $enabled = false;
       $this->Debug = new LJCDebug("LJCGenTextSectionLib", "LJCItem"
-        , "w", $enabled);
+        , "w", false);
       $this->Debug->IncludePrivate = true;
 
       $this->Name = trim($name);
@@ -618,15 +628,17 @@
     }
 
     /// <summary>Creates a Clone of the current object.</summary>
+    /// <returns>The cloned object.</returns>
     public function Clone() : self
     {
-      $this->Debug->WriteStartText("Clone");
+      $enabled = false;
+      $this->Debug->BeginMethod("Clone", $enabled);
 
       $retValue = new self($this->Name);
       $retValue->Replacements = $this->Replacements;
       $retValue->RootName = $this->RootName;
 
-      $this->Debug->AddIndent(-1);
+      $this->Debug->EndMethod($enabled);
       return $retValue;
     }
 
@@ -650,14 +662,12 @@
   class LJCReplacement
   {
     // Initializes an object instance with the provided values.
-    /// <param name="$name">The Replacement name.</param>
-    /// <param name="$value">The Replacement value.</param>
+    /// <include path='items/construct/*' file='Doc/LJCSections.xml'/>
     public function __construct(string $name, string $value)
     {
       // Instantiate properties with Pascal case.
-      $enabled = false;
       $this->Debug = new LJCDebug("LJCGenTextSectionLib", "LJCReplacement"
-        , "w", $enabled);
+        , "w", false);
       $this->Debug->IncludePrivate = true;
 
       $this->Name = trim($name);
@@ -665,14 +675,16 @@
     }
 
     /// <summary>Creates a Clone of the current object.</summary>
+    /// <returns>The cloned object.</returns>
     public function Clone() : self
     {
-      $this->Debug->WriteStartText("Clone");
+      $enabled = false;
+      $this->Debug->BeginMethod("Clone", $enabled);
 
       $retValue = new self($this->Name, $this->Value);
       $retValue->RootName = $this->RootName;
 
-      $this->Debug->AddIndent(-1);
+      $this->Debug->EndMethod($enabled);
       return $retValue;
     }
 
@@ -702,9 +714,8 @@
     public function __construct()
     {
       // Instantiate properties with Pascal case.
-      $enabled = false;
       $this->Debug = new LJCDebug("LJCGenTextSectionLib", "LJCReplacements"
-        , "w", $enabled);
+        , "w", false);
       $this->Debug->IncludePrivate = true;
     }
 
@@ -714,7 +725,8 @@
     // Creates an object clone.
     public function Clone() : self
     {
-      $this->Debug->WriteStartText("Clone");
+      $enabled = false;
+      $this->Debug->BeginMethod("Clone", $enabled);
       $retValue = new self();
 
       foreach ($this->Items as $key => $item)
@@ -723,11 +735,12 @@
       }
       unset($item);
 
-      $this->Debug->AddIndent(-1);
+      $this->Debug->EndMethod($enabled);
       return $retValue;
     }
 
     // Indicates if a key already exists.
+    /// <include path='items/HasKey/*' file='Doc/LJCReplacements.xml'/>
     public function HasKey($key) : bool
     {
       return isset($this->Items[$key]);
@@ -737,6 +750,7 @@
     // *** Data Methods ***
 
     // Adds an object and key value.
+    /// <include path='items/Add/*' file='Doc/LJCReplacements.xml'/>
     public function Add(LJCReplacement $item, $key = null) : void
     {
       $this->Debug->WriteStartText("Add");
@@ -757,7 +771,8 @@
       $this->Debug->AddIndent(-1);
     }
 
-    // Delete the item by Key value.
+    /// <summary>Delete the item by Key value.</summary>
+    /// <param name="$key"></param>
     public function Delete($key) : void
     {
       $this->Debug->WriteStartText("Delete");
@@ -772,6 +787,7 @@
     }
 
     // Get the item by Key value.
+    /// <include path='items/Retrieve/*' file='Doc/LJCReplacements.xml'/>
     public function Retrieve($key, bool $showError = true) : ?LJCReplacement
     {
       $this->Debug->WriteStartText("Retrieve");

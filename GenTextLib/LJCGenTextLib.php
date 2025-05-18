@@ -31,9 +31,8 @@
     public function __construct(?string $debugFileSuffix = "GenData")
     {
       // Instantiate properties with Pascal case.
-      $enabled = false;
       $this->Debug = new LJCDebug("LJCGenTextLib", "LJCGenText"
-        , "w", $enabled);
+        , "w", false);
       $this->Debug->IncludePrivate = true;
 
       $this->ActiveSections = [];
@@ -48,7 +47,8 @@
     public function ProcessTemplate(string $templateFileSpec
       , LJCSections $sections) : ?string
     {
-      //$this->Debug->WriteStartText("ProcessTemplate");
+      $enabled = false;
+      $this->Debug->BeginMethod("ProcessTemplate", $enabled);
       $retValue = null;
 
       // Instantiate properties with Pascal case.
@@ -90,7 +90,7 @@
       fclose($this->Stream);
       $retValue = $builder->ToString();
 
-      //$this->Debug->AddIndent(-1);
+      $this->Debug->EndMethod($enabled);
       return $retValue;
     }  // ProcessTemplate()
 
@@ -102,7 +102,8 @@
     private function ManageSections(int $prevLineBegin, int $itemIndex)
       : ?LJCDirective
     {
-      //$this->Debug->WritePrivateStartText("ManageSections");
+      $enabled = false;
+      $this->Debug->BeginPrivateMethod("ManageSections", $enabled);
       $retValue = null;
 
       if (null == $this->Line)
@@ -171,7 +172,7 @@
 
       } // if ($retValue != null)
 
-      //$this->Debug->AddIndent(-1);
+      $this->Debug->EndMethod($enabled);
       return $retValue;
     }  // ManageSections()
 
@@ -179,7 +180,8 @@
     private function ProcessIfDirectives(LJCDirective $directive
       , string $saveLine) : bool
     {
-      //$this->Debug->WritePrivateStartText("ProcessIfDirectives");
+      $enabled = false;
+      $this->Debug->BeginPrivateMethod("ProcessIfDirectives", $enabled);
       $retValue = $this->DoOutput;
 
       switch (strtolower($directive->Type))
@@ -237,14 +239,15 @@
           break;
       }
 
-      //$this->Debug->AddIndent(-1);
+      $this->Debug->EndMethod($enabled);
       return $retValue;
     }  // ProcessDirective()
 
     // Processes the Replacement items.
     private function ProcessReplacements() : void
     {
-      $this->Debug->WritePrivateStartText("ProcessReplacements");
+      $enabled = false;
+      $this->Debug->BeginPrivateMethod("ProcessReplacements", $enabled);
 
       // Start with most recent.
       $outerBreak = false;
@@ -277,13 +280,14 @@
         }
       }
 
-      $this->Debug->AddIndent(-1);
+      $this->Debug->EndMethod($enabled);
     }  // ProcessReplacements()
 
     // Processes the current Section.
     private function ProcessSection() : ?string
     {
-      $this->Debug->WritePrivateStartText("ProcessSection");
+      $enabled = false;
+      $this->Debug->BeginPrivateMethod("ProcessSection", $enabled);
       $retValue = null;
 
       if (null == $this->CurrentSection)
@@ -352,7 +356,7 @@
       }
       $retValue = $builder->ToString();
 
-      $this->Debug->AddIndent(-1);
+      $this->Debug->EndMethod($enabled);
       return $retValue;
     }  // ProcessSection()
 
@@ -360,7 +364,8 @@
     private function GetReplacement(string $line, string $replacementName)
       : ?LJCReplacement
     {
-      //$this->Debug->WritePrivateStartText("GetReplacement");
+      $enabled = false;
+      $this->Debug->BeginPrivateMethod("GetReplacement", $enabled);
       $retValue = null;
 
       // Start with most recent.
@@ -389,14 +394,15 @@
         }
       }
 
-      //$this->Debug->AddIndent(-1);
+      $this->Debug->EndMethod($enabled);
       return $retValue;
     }  // GetReplacement()
 
     // Resets the Stream position to the beginning of the Section.
     private function ResetPosition(LJCDirective $directive, int $itemIndex) : bool
     {
-      //$this->Debug->WritePrivateStartText("ResetPosition");
+      $enabled = false;
+      $this->Debug->BeginPrivateMethod("ResetPosition", $enabled);
       $retValue = false;
 
       if ($directive != null && "#sectionend" == strtolower($directive->Type))
@@ -416,7 +422,7 @@
         }
       }
 
-      //$this->Debug->AddIndent(-1);
+      $this->Debug->EndMethod($enabled);
       return $retValue;
     }
 
@@ -426,7 +432,8 @@
     // Indicates if it is a SectionBegin or SectionEnd directive.
     private function IsBeginOrEnd(?LJCDirective $directive) : bool
     {
-      //$this->Debug->WritePrivateStartText("IsBeginOrEnd");
+      $enabled = false;
+      $this->Debug->BeginPrivateMethod("IsBeginOrEnd", $enabled);
       $retValue = false;
 
       if ($directive != null)
@@ -439,7 +446,7 @@
         }
       }
 
-      //$this->Debug->AddIndent(-1);
+      $this->Debug->EndMethod($enabled);
       return $retValue;
     }
 

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright (c) Lester J. Clark 2022 - All Rights Reserved -->
+<!-- LJCReplacements.xml -->
+<items>
+  <HasKey>
+    <summary>Indicates if a key already exists.</summary>
+    <param name="$key">The element key.</param>
+    <returns>True if the key already exists, otherwise false.</returns>
+    <code>
+      // Must refer to exact same file everywhere in codeline.
+      // Path: LJCPHPProjectsDev/GenDoc/LJCDocDataLib
+      require_once "../../GenTextLib/LJCGenTextSectionLib.php";
+
+      $replacements = new LJCReplacements();
+      $key = "ReplacementName";
+      if ($sections->HasKey($key))
+      {
+        throw new Exception("Key: {$key} already in use.");
+      }
+      else
+      {
+        $section = new LJCReplacement($key);
+      }
+    </code>
+  </HasKey>
+
+  <!-- Data Methods -->
+  <Add>
+    <summary>Adds an object and key value.</summary>
+    <param name="$item">The object to be added to the collection.</param>
+    <param name="$key">The element key.</param>
+    <returns>The added item.</returns>
+    <code>
+      // Must refer to exact same file everywhere in codeline.
+      // Path: LJCPHPProjectsDev/GenDoc/LJCDocDataLib
+      require_once "../../GenTextLib/LJCGenTextSectionLib.php";
+
+      $replacements = new LJCReplacements();
+      $replacement = new LJCReplacement("ReplacementName");
+      $replacements->Add($replacement, $replacement->Name);
+    </code>
+  </Add>
+  <Retrieve>
+    <summary>Get the item by Key value.</summary>
+    <param name="$key">The element key.</param>
+    <param name="$throwError">Indicates if an error should be thrown if the key is not found.</param>
+    <returns>The object with the matching key value.</returns>
+    <code>
+      // Must refer to exact same file everywhere in codeline.
+      // Path: LJCPHPProjectsDev/GenDoc/LJCDocDataLib
+      require_once "../../GenTextLib/LJCGenTextSectionLib.php";
+
+      $replacements = new LJCReplacements();
+      $replacement = new LJCReplacement("ReplacementName");
+      $replacements->Add($replacement, $replacement->Name);
+
+      $replacement = LJCReplacements->Retrieve("ReplacementName");
+    </code>
+  </Retrieve>
+</items>
