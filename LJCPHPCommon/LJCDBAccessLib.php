@@ -4,6 +4,7 @@
   // LJCDBAccessLib.php
   declare(strict_types=1);
   // Must refer to exact same file in codeline.
+  include_once "LJCDebugLib.php";
   include_once "LJCCollectionLib.php";
   // LJCCollectionLib
   //   LJCCollectionBase
@@ -28,6 +29,10 @@
     public function __construct(string $dbServer
       , string $dbName, string $userID, string $password)
     {
+      $this->Debug = new LJCDebug("LJCDBAccessLib", "LJCConnectionValues"
+        , "w", false);
+      $this->Debug->IncludePrivate = true;
+
       $this->DbServer = $dbServer;
       $this->DbName = $dbName;
       $this->UserID = $userID;
@@ -75,6 +80,10 @@
     /// <include path='items/construct/*' file='Doc/LJCDbAccess.xml'/>
     public function __construct(LJCConnectionValues $connectionValues)
     {
+      $this->Debug = new LJCDebug("LJCDBAccessLib", "LJCDbAccess"
+        , "w", false);
+      $this->Debug->IncludePrivate = true;
+
       $this->SetConnectionValues($connectionValues->DbServer
         , $connectionValues->DbName, $connectionValues->UserID
         , $connectionValues->Password);
@@ -87,6 +96,8 @@
     /// <include path='items/Execute/*' file='Doc/LJCDbAccess.xml'/>
     public function Execute(string $sql) : int
     {
+      $enabled = false;
+      $this->Debug->BeginMethod("Execute", $enabled);
       $retValue = 0;
 
       $connection = $this->GetConnection();
@@ -98,6 +109,8 @@
         $retValue = $statement->rowCount();
         $connection = null;
       }
+
+      $this->Debug->EndMethod($enabled);
       return $retValue;
     } // Execute()
 
@@ -105,6 +118,8 @@
     /// <include path='items/Load/*' file='Doc/LJCDbAccess.xml'/>
     public function Load(string $sql) : ?array
     {
+      $enabled = false;
+      $this->Debug->BeginMethod("Load", $enabled);
       $retValue = null;
 
       $connection = $this->GetConnection();
@@ -117,6 +132,8 @@
         }
         $connection = null;
       }
+
+      $this->Debug->EndMethod($enabled);
       return $retValue;
     } // Load()
 
@@ -124,6 +141,8 @@
     /// <include path='items/Retrieve/*' file='Doc/LJCDbAccess.xml'/>
     public function Retrieve(string $sql) : ?array
     {
+      $enabled = false;
+      $this->Debug->BeginMethod("Retrieve", $enabled);
       $retValue = null;
 
       $rows = $this->Load($sql);
@@ -131,6 +150,8 @@
       {
         $retValue = $rows[0];
       }
+
+      $this->Debug->EndMethod($enabled);
       return $retValue;
     } // Retrieve()
 
@@ -141,6 +162,8 @@
     /// <include path='items/GetConnection/*' file='Doc/LJCDbAccess.xml'/>
     public function GetConnection()
     {
+      $enabled = false;
+      $this->Debug->BeginMethod("GetConnection", $enabled);
       $retValue = null;
 
       $values = $this->ConnectionValues;
@@ -155,6 +178,8 @@
         $retValue = null;
         Writer::WriteLine("Connection failed: ".$e->getMessage());
       }
+
+      $this->Debug->EndMethod($enabled);
       return $retValue;
     } // GetConnection()
 
@@ -163,6 +188,8 @@
     public function LoadTableSchema(string $dbName, string $tableName)
       : ?LJCDbColumns
     {
+      $enabled = false;
+      $this->Debug->BeginMethod("LoadTableSchema", $enabled);
       $retValue = null;
 
       $sql = "SELECT table_schema, table_name, column_name, column_default"
@@ -180,6 +207,8 @@
         }
       }
       $this->Connection = null;
+
+      $this->Debug->EndMethod($enabled);
       return $retValue;
     } // LoadTableSchema()
 
@@ -188,8 +217,13 @@
     public function SetConnectionValues(string $dbServer, string $dbName
       , string $userID, string $password)
     {
+      $enabled = false;
+      $this->Debug->BeginMethod("SetConnectionValues", $enabled);
+
       $this->ConnectionValues = new LJCConnectionValues($dbServer, $dbName
         , $userID, $password);
+
+      $this->Debug->EndMethod($enabled);
     } // SetConnectionValues()
 
     // ---------------
@@ -199,6 +233,8 @@
     // <include path='items/GetTableSchema/*' file='Doc/LJCDbAccess.xml'/>
     private function GetTableSchema(array $row) : LJCDbColumn
     {
+      $enabled = false;
+      $this->Debug->BeginPrivateMethod("GetTableSchema", $enabled);
       $retValue = new LJCDbColumn("");
 
       $retValue->AllowDbNull = (bool)self::GetValue($row, "IS_NULLABLE");
@@ -211,6 +247,8 @@
       $retValue->PropertyName = self::GetValue($row, "COLUMN_NAME");
       $retValue->RenameAs = null;
       $retValue->Value = null;
+
+      $this->Debug->EndMethod($enabled);
       return $retValue;
     } // GetTableSchema()
 
@@ -249,6 +287,10 @@
       , ?string $renameAs = null, string $dataTypeName = "string"
       , ?string $value = null)
     {
+      $this->Debug = new LJCDebug("LJCDBAccessLib", "LJCDbColumn"
+        , "w", false);
+      $this->Debug->IncludePrivate = true;
+
       $this->AllowDbNull = false;
       $this->AutoIncrement = false;
       $this->ColumnName = $columnName;
@@ -270,7 +312,10 @@
     /// <summary>Creates an object clone.</summary>
     public function Clone() : self
     {
+      $enabled = false;
+      $this->Debug->BeginMethod("Clone", $enabled);
       $retValue = new self();
+
       $retValue->AllowDbNull = $this->AllowDbNull;
       $retValue->AutoIncrement = $this->AutoIncrement;
       $retValue->ColumnName = $this->ColumnName;
@@ -283,6 +328,8 @@
       $retValue->Value = $this->Value;
       $retValue->WhereBoolOperator = $this->WhereBoolOperator;
       $retValue->WhereCompareOperator = $this->WhereCompareOperator;
+
+      $this->Debug->EndMethod($enabled);
       return $retValue;
     } // Clone()
 
@@ -331,6 +378,14 @@
   /// <include path='items/LJCDbColumns/*' file='Doc/LJCDbColumns.xml'/>
   class LJCDbColumns extends LJCCollectionBase
   {
+    // Initializes a class instance.
+    public function __construct()
+    {
+      $this->Debug = new LJCDebug("LJCDBAccessLib", "LJCDbColumns"
+        , "w", false);
+      $this->Debug->IncludePrivate = true;
+    } // __construct()
+
     // ---------------
     // Public Methods
 
@@ -340,6 +395,8 @@
       , ?string $renameAs = null, string $dataTypeName = "string"
       , ?string $value = null, $key = null) : ?LJCDbColumn
     {
+      $enabled = false;
+      $this->Debug->BeginMethod("Add", $enabled);
       $retValue = null;
 
       if (null == $propertyName)
@@ -354,6 +411,8 @@
       $item = new LJCDbColumn($columnName, $propertyName, $renameAs
         , $dataTypeName, $value);
       $retValue = $this->AddObject($item , $key);
+
+      $this->Debug->EndMethod($enabled);
       return $retValue;
     } // Add()
 
@@ -361,23 +420,33 @@
     /// <include path='items/AddObject/*' file='Doc/LJCDbColumns.xml'/>
     public function AddObject(LJCDbColumn $item, $key = null) : ?LJCDbColumn
     {
+      $enabled = false;
+      $this->Debug->BeginMethod("AddObject", $enabled);
+
       if (null == $key)
       {
         $key = $item->PropertyName;
       }
       $retValue = $this->AddItem($item, $key);
+
+      $this->Debug->EndMethod($enabled);
       return $retValue;
     } // AddObject()
 
     /// <summary>Creates an object clone.</summary>
     public function Clone() : self
     {
+      $enabled = false;
+      $this->Debug->BeginMethod("Clone", $enabled);
+
       $retValue = new self();
       foreach ($this->Items as $key => $item)
       {
         $retValue->AddObject($item);
       }
       unset($item);
+
+      $this->Debug->EndMethod($enabled);
       return $retValue;
     } // Clone()
 
@@ -392,6 +461,8 @@
     /// <include path='items/GetColumns/*' file='Doc/LJCDbColumns.xml'/>
     public function GetColumns(array $propertyNames = null) : self
     {
+      $enabled = false;
+      $this->Debug->BeginMethod("GetColumns", $enabled);
       $retValue = null;
 
       if (null == $propertyNames)
@@ -409,6 +480,8 @@
           }
         }
       }
+
+      $this->Debug->EndMethod($enabled);
       return $retValue;
     } // GetColumns()
 
@@ -417,6 +490,9 @@
     public function MapNames(string $columnName, ?string $propertyName = null
       , ?string $renameAs = null, ?string $caption = null)
     {
+      $enabled = false;
+      $this->Debug->BeginMethod("MapNames", $enabled);
+
       $dbColumn = $this->Get($columnName);
       if ($dbColumn != null)
       {
@@ -433,13 +509,19 @@
           $dbColumn->Caption = $caption;
         }
       }
+
+      $this->Debug->EndMethod($enabled);
     } // MapNames()
 
     // Get the item by Key value.
     /// <include path='items/Get/*' file='Doc/LJCDbColumns.xml'/>
     public function Retrieve($key, bool $throwError = true) : ?LJCDbColumn
     {
+      $enabled = false;
+      $this->Debug->BeginMethod("Retrieve", $enabled);
       $retValue = $this->RetrieveItem($key, $throwError);
+
+      $this->Debug->EndMethod($enabled);
       return $retValue;
     } // Retrieve()
 
@@ -448,12 +530,17 @@
     public function SetWhereOperators($key, string $compareOperator
       ,  string $boolOperator = "and") : void
     {
+      $enabled = false;
+      $this->Debug->BeginMethod("SetWhereOperator", $enabled);
+
       $item = $this->Get($key);
       if ($item != null)
       {
         $item->WhereBoolOperator = $boolOperator;
         $item->WhereCompareOperator = $compareOperator;
       }
+
+      $this->Debug->EndMethod($enabled);
     } // SetWhereOperators()
   }  // LJCDbColumns
 
@@ -465,6 +552,10 @@
     /// <include path='items/construct/*' file='Doc/LJCJoin.xml'/>
     public function __construct(string $tableName, ?string $tableAlias = null)
     {
+      $this->Debug = new LJCDebug("LJCDBAccessLib", "LJCJoin"
+        , "w", false);
+      $this->Debug->IncludePrivate = true;
+
       $this->Columns = new LJCDbColumns();
       $this->JoinOns = new LJCJoinOns();
       $this->JoinType = "left";
@@ -476,12 +567,17 @@
     /// <summary>Creates an object clone.</summary>
     public function Clone() : self
     {
+      $enabled = false;
+      $this->Debug->BeginMethod("Clone", $enabled);
+
       $retValue = new self();
       $retValue->LJCDbColumns = $this->LJCDbColumns->Clone();
       $retValue->JoinOns = $this->JoinOns->Clone();
       $retValue->JoinType = $this->JoinType;
       $retValue->TableAlias = $this->TableAlias;
       $retValue->TableName = $this->TableName;
+
+      $this->Debug->EndMethod($enabled);
       return $retValue;
     } // Clone()
 
@@ -511,6 +607,14 @@
   /// <summary>Represents a collection of LJCJoin objects.</summary>
   class LJCJoins extends LJCCollectionBase
   {
+    // Initializes a class instance.
+    public function __construct()
+    {
+      $this->Debug = new LJCDebug("LJCDBAccessLib", "LJCJoins"
+        , "w", false);
+      $this->Debug->IncludePrivate = true;
+    } // __construct()
+
     // ---------------
     // Public Methods
 
@@ -519,6 +623,8 @@
     public function Add(string $tableName, string $tableAlias = null
       , $key = null) : ?LJCJoin
     {
+      $enabled = false;
+      $this->Debug->BeginMethod("Add", $enabled);
       $retValue = null;
 
       if (null == $key)
@@ -528,6 +634,8 @@
 
       $item = new LJCJoin($tableName, $tableAlias);
       $retValue = $this->AddObject($item , $key);
+
+      $this->Debug->EndMethod($enabled);
       return $retValue;
     } // Add()
 
@@ -535,23 +643,33 @@
     /// <include path='items/AddObject/*' file='Doc/LJCJoins.xml'/>
     public function AddObject(LJCJoin $item, $key = null) : ?LJCJoin
     {
+      $enabled = false;
+      $this->Debug->BeginMethod("AddObject", $enabled);
+
       if (null == $key)
       {
         $key = $item->TableName;
       }
       $retValue = $this->AddItem($item, $key);
+
+      $this->Debug->EndMethod($enabled);
       return $retValue;
     } // AddObject()
 
     /// <summary>Creates an object clone.</summary>
     public function Clone() : self
     {
+      $enabled = false;
+      $this->Debug->BeginMethod("Clone", $enabled);
       $retValue = new self();
+
       foreach ($this->Items as $key => $item)
       {
         $retValue->AddObject($item);
       }
       unset($item);
+
+      $this->Debug->EndMethod($enabled);
       return $retValue;
     } // Clone()
 
@@ -566,7 +684,11 @@
     /// <include path='items/Get/*' file='Doc/LJCJoins.xml'/>
     public function Retrieve($key, bool $throwError = true) : ?LJCJoin
     {
+      $enabled = false;
+      $this->Debug->BeginMethod("Retrieve", $enabled);
       $retValue = $this->RetrieveItem($key, $throwError);
+
+      $this->Debug->EndMethod($enabled);
       return $retValue;
     } // Retrieve()
   } // LJCJoins
@@ -579,6 +701,10 @@
     /// <include path='items/construct/*' file='Doc/LJCJoinOn.xml'/>
     public function __construct(string $fromColumnName, string $toColumnName)
     {
+      $this->Debug = new LJCDebug("LJCDBAccessLib", "LJCJoinOn"
+        , "w", false);
+      $this->Debug->IncludePrivate = true;
+
       $this->BooleanOperator = "and";
       $this->FromColumnName = $fromColumnName;
       $this->JoinOnOperator = "=";
@@ -589,12 +715,17 @@
     /// <summary>Creates an object clone.</summary>
     public function Clone() : self
     {
+      $enabled = false;
+      $this->Debug->BeginMethod("Clone", $enabled);
       $retValue = new self();
+
       $retValue->BooleanOperator = $this->BooleanOperator;
       $retValue->FromColumnName = $this->FromColumnName;
       $retValue->JoinOnOperator = $this->JoinOnOperator;
       $retValue->JoinOns = $this->JoinOns;
       $retValue->ToColumnName = $this->ToColumnName;
+
+      $this->Debug->EndMethod($enabled);
       return $retValue;
     } // Clone()
 
@@ -621,6 +752,14 @@
   /// <summary>Represents a collection of LJCJoin objects.</summary>
   class LJCJoinOns extends LJCCollectionBase
   {
+    // Initializes a class instance.
+    public function __construct()
+    {
+      $this->Debug = new LJCDebug("LJCDBAccessLib", "LJCJoinOns"
+        , "w", false);
+      $this->Debug->IncludePrivate = true;
+    } // __construct()
+
     // ---------------
     // Public Methods
 
@@ -629,6 +768,8 @@
     public function Add(string $fromColumnName, string $toColumnName
       , $key = null) : ?LJCJoinOn
     {
+      $enabled = false;
+      $this->Debug->BeginMethod("Add", $enabled);
       $retValue = null;
 
       if (null == $key)
@@ -638,6 +779,8 @@
 
       $item = new LJCJoinOn($fromColumnName, $toColumnName);
       $retValue = $this->AddObject($item , $key);
+
+      $this->Debug->EndMethod($enabled);
       return $retValue;
     } // Add()
 
@@ -645,23 +788,33 @@
     /// <include path='items/AddObject/*' file='Doc/LJCJoinOns.xml'/>
     public function AddObject(LJCJoinOn $item, $key = null) : ?LJCJoinOn
     {
+      $enabled = false;
+      $this->Debug->BeginMethod("AddObject", $enabled);
+
       if (null == $key)
       {
         $key = $item->FromColumnName;
       }
       $retValue = $this->AddItem($item, $key);
+
+      $this->Debug->EndMethod($enabled);
       return $retValue;
     } // AddObject()
 
     /// <summary>Creates an object clone.</summary>
     public function Clone() : self
     {
+      $enabled = false;
+      $this->Debug->BeginMethod("Clone", $enabled);
       $retValue = new self();
+
       foreach ($this->Items as $key => $item)
       {
         $retValue->AddObject($item);
       }
       unset($item);
+
+      $this->Debug->EndMethod($enabled);
       return $retValue;
     } // Clone()
 
@@ -676,7 +829,12 @@
     /// <include path='items/Get/*' file='Doc/LJCJoinOns.xml'/>
     public function Retrieve($key, bool $throwError = true) : ?LJCJoinOn
     {
+      $enabled = false;
+      $this->Debug->BeginMethod("Retrieve", $enabled);
+
       $retValue = $this->RetrieveItem($key, $throwError);
+
+      $this->Debug->EndMethod($enabled);
       return $retValue;
     } // Retrieve()
   } // LJCJoinOns
