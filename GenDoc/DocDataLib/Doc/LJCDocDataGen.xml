@@ -6,32 +6,43 @@
 		<remarks>Generates the DocData XML strings and optionally XML files.</remarks>
 	</LJCDocDataGen>
 	
-	<!-- Public Static Functions -->
-	<GetFunctionName>
+	<!-- Private Static Functions -->
+  <GetFunctionName>
 		<summary>Sets the Function Name if present.</summary>
 		<param name="$tokens">The line tokens.</param>
 		<returns>The function name or null if not found.</returns>
 	</GetFunctionName>
-	<ScrubFunctionName>
+  <GetPropertyName>
+    <summary>Sets the Property Name if present.</summary>
+    <param name="$tokens">The line tokens.</param>
+    <returns>The property name or null if not found.</returns>
+  </GetPropertyName>
+  <ScrubFunctionName>
 		<summary>Gets the Function Name from the function token.</summary>
 		<param name="$functionToken">The raw parsed function token.</param>
 		<returns>The scrubbed function name.</returns>
 	</ScrubFunctionName>
-	
-	<!-- Public Methods -->
-	<CreateDocXMLString>
+  <ScrubPropertyName>
+    <summary>Gets the Property Name from the property token.</summary>
+    <param name="$propertyToken">The raw parsed property token.</param>
+    <returns>The scrubbed property name.</returns>
+  </ScrubPropertyName>
+
+  <!-- Public Methods -->
+	<CreateDocDataXMLString>
 		<summary>Creates and optionally writes the DocData XML.</summary>
 		<param name="$codeFileSpec">The code file specification.</param>
 		<param name="$writeXML">Indicates if the XML file is to be written.</param>
 		<param name="$outputPath">The output path.</param>
 		<returns>The DocData XML string.</returns>
 		<code>
-			require_once "LJCDocDataGenLib.php";
-			
-			$docDataGen = new LJCDocDataGen();
-			$xmlString = $docDataGen->CreateDocXMLString("SourceFile.php");
-		</code>
-	</CreateDocXMLString>
+      // Path: LJCPHPProjectsDev/GenDoc/DocDataLib
+      require_once "LJCDocDataGenLib.php";
+
+      $docDataGen = new LJCDocDataGen();
+      $xmlString = $docDataGen->CreateDocDataXMLString("SourceFile.php");
+    </code>
+	</CreateDocDataXMLString>
 	<ProcessCode>
 		<summary>Generates the Doc data for the file.</summary>
 		<param name="$codeFileSpec">The code file spec.</param>

@@ -28,19 +28,20 @@
 		<param name="$className">The Class name.</param>
 		<returns>The sections array.</returns>
 		<code>
-			$webCommonPath = "c:/inetpub/wwwroot/LJCPHPCommon";
-			require_once "$webCommonPath/LJCDBAccessLib.php";
-			require_once "$webCommonPath/LJCGenTextSectionLib.php";
+      // Must refer to exact same file everywhere in codeline.
+      // Path: LJCPHPProjectsDev/GenDoc/LJCDocDataLib
+      require_once "../../LJCPHPCommon/LJCDBAccessLib.php";
+      require_once "../../GenTextLib/LJCGenTextSectionLib.php";
 
-			$dbAccess = new LJCDbAccess($connectionValues);
+      $dbAccess = new LJCDbAccess($connectionValues);
 
-			$tableName = "TableName";
-			$dbColumns = $dbAccess->LoadTableSchema($database, $tableName);
+      $tableName = "TableName";
+      $dbColumns = $dbAccess->LoadTableSchema($database, $tableName);
 
-			// $sections is an LJCSections object.
-			$sections = LJCSections::CreateColumnData($dbColumns, $tableName
-				, "ClassName");
-		</code>
+      // $sections is an LJCSections object.
+      $sections = LJCSections::CreateColumnData($dbColumns, $tableName
+      , "ClassName");
+    </code>
 	</CreateColumnData>
 	<AddReplacement>
 		<summary> Adds a Replacement to an Item.</summary>
@@ -48,17 +49,18 @@
 		<param name="$name">The Replacement name.</param>
 		<param name="$value">The Replacement value.</param>
 		<code>
-			$webCommonPath = "c:/inetpub/wwwroot/LJCPHPCommon";
-			require_once "$webCommonPath/LJCGenTextSectionLib.php";
+      // Must refer to exact same file everywhere in codeline.
+      // Path: LJCPHPProjectsDev/GenDoc/LJCDocDataLib
+      require_once "../../GenTextLib/LJCGenTextSectionLib.php";
 
-			$sections = new LJCSections();
-			$section = new LJCSection("SectionName");
-			$sections->Add($section, $section->Name);
-		 
-			$item = new LJCItem("ItemName");
-			$section->Items[] = $item;
-			$sections::AddReplacement($item, "_ClassName_", "ClassName");
-		</code>
+      $sections = new LJCSections();
+      $section = new LJCSection("SectionName");
+      $sections->Add($section, $section->Name);
+
+      $item = new LJCItem("ItemName");
+      $section->Items[] = $item;
+      $sections::AddReplacement($item, "_ClassName_", "ClassName");
+    </code>
 	</AddReplacement>
 	<Deserialize>
 		<summary>Deserializes the data from a Sections XML file.</summary>
@@ -89,35 +91,38 @@
 				&amp;lt;/Sections&amp;gt;
 			&amp;lt;/Data&amp;gt;
 
-			$webCommonPath = "c:/inetpub/wwwroot/LJCPHPCommon";
-			require_once "$webCommonPath/LJCGenTextSectionLib.php";
+      // Must refer to exact same file everywhere in codeline.
+      // Path: LJCPHPProjectsDev/GenDoc/LJCDocDataLib
+      require_once "../../GenTextLib/LJCGenTextSectionLib.php";
 
-			// $sections is an LJCSections object.
-			$sections = LJCSections::Deserialize("Sections.xml");
-		</code>
+      // $sections is an LJCSections object.
+      $sections = LJCSections::Deserialize("Sections.xml");
+    </code>
 	</Deserialize>
 	<DeserializeString>
 		<summary>Deserializes the data from a Sections XML string.</summary>
 		<param name="$xmlString">The XMLDoc node.</param>
 		<returns>The Sections object.</returns>
 		<code>
-			$webCommonPath = "c:/inetpub/wwwroot/LJCPHPCommon";
-			require_once "$webCommonPath/LJCGenTextSectionLib.php";
+      // Must refer to exact same file everywhere in codeline.
+      // Path: LJCPHPProjectsDev/GenDoc/LJCDocDataLib
+      require_once "../../GenTextLib/LJCGenTextSectionLib.php";
 
-			$sections = LJCSections::DeserializeString($xmlstring);
-		</code>
+      $sections = LJCSections::DeserializeString($xmlstring);
+    </code>
 	</DeserializeString>
 	<CreateSections>
 		<summary>Creates the Section data from an XMLDoc node.</summary>
 		<param name="$xmlElement">The root Element.</param>
 		<returns>The sections array.</returns>
 		<code>
-			$webCommonPath = "c:/inetpub/wwwroot/LJCPHPCommon";
-			require_once "$webCommonPath/LJCGenTextSectionLib.php";
+      // Must refer to exact same file everywhere in codeline.
+      // Path: LJCPHPProjectsDev/GenDoc/LJCDocDataLib
+      require_once "../../GenTextLib/LJCGenTextSectionLib.php";
 
-			$xmlElement = simplexml_load_file("Sections.xml");
-			$sections = LJCSections::CreateSections($xmlElement);		 
-		</code>
+      $xmlElement = simplexml_load_file("Sections.xml");
+      $sections = LJCSections::CreateSections($xmlElement);
+    </code>
 	</CreateSections>
 	<Serialize>
 		<summary>Serializes the data to an XML file.</summary>
@@ -125,11 +130,12 @@
 		<param name="$sections">The sections array.</param>
 		<param name="$rootName">The XML root name.</param>
 		<code>
-			$webCommonPath = "c:/inetpub/wwwroot/LJCPHPCommon";
-			require_once "$webCommonPath/LJCGenTextSectionLib.php";
+      // Must refer to exact same file everywhere in codeline.
+      // Path: LJCPHPProjectsDev/GenDoc/LJCDocDataLib
+      require_once "../../GenTextLib/LJCGenTextSectionLib.php";
 
-			LJCSections::Serialize("Sections.xml", $sections);		 
-		</code>
+      LJCSections::Serialize("Sections.xml", $sections);
+    </code>
 	</Serialize>
 	
 	<!-- Public Methods -->
@@ -139,13 +145,14 @@
 		<param name="$key">The element key.</param>
 		<returns>The added item.</returns>
 		<code>
-			$webCommonPath = "c:/inetpub/wwwroot/LJCPHPCommon";
-			require_once "$webCommonPath/LJCGenTextSectionLib.php";
+      // Must refer to exact same file everywhere in codeline.
+      // Path: LJCPHPProjectsDev/GenDoc/LJCDocDataLib
+      require_once "../../GenTextLib/LJCGenTextSectionLib.php";
 
-			$sections = new LJCSections();
-			$section = new LJCSection("SectionName");
-			$sections->Add($section, $section->Name);
-		</code>
+      $sections = new LJCSections();
+      $section = new LJCSection("SectionName");
+      $sections->Add($section, $section->Name);
+    </code>
 	</Add>
 	<Get>
 		<summary>Get the item by Key value.</summary>
@@ -153,34 +160,36 @@
 		<param name="$throwError">Indicates if an error should be thrown if the key is not found.</param>
 		<returns>The object with the matching key value.</returns>
 		<code>
-			$webCommonPath = "c:/inetpub/wwwroot/LJCPHPCommon";
-			require_once "$webCommonPath/LJCGenTextSectionLib.php";
+      // Must refer to exact same file everywhere in codeline.
+      // Path: LJCPHPProjectsDev/GenDoc/LJCDocDataLib
+      require_once "../../GenTextLib/LJCGenTextSectionLib.php";
 
-			$sections = new LJCSections();
-			$section = new LJCSection("SectionName");
-			$sections->Add($section, $section->Name);
-		 
-			$section = LJCSections->Get("SectionName");
-		</code>
+      $sections = new LJCSections();
+      $section = new LJCSection("SectionName");
+      $sections->Add($section, $section->Name);
+
+      $section = LJCSections->Get("SectionName");
+    </code>
 	</Get>
 	<HasKey>
 		<summary>Indicates if a key already exists.</summary>
 		<param name="$key">The element key.</param>
 		<returns>True if the key already exists, otherwise false.</returns>
 		<code>
-			$webCommonPath = "c:/inetpub/wwwroot/LJCPHPCommon";
-			require_once "$webCommonPath/LJCGenTextSectionLib.php";
+      // Must refer to exact same file everywhere in codeline.
+      // Path: LJCPHPProjectsDev/GenDoc/LJCDocDataLib
+      require_once "../../GenTextLib/LJCGenTextSectionLib.php";
 
-			$sections = new LJCSections();
-			$key = "SectionName";
-			if ($sections->HasKey($key))
-			{
-				throw new Exception("Key: {$key} already in use.");
-			}
-			else
-			{
-				$section = new LJCSection($key);
-			}
-		</code>
+      $sections = new LJCSections();
+      $key = "SectionName";
+      if ($sections->HasKey($key))
+      {
+        throw new Exception("Key: {$key} already in use.");
+      }
+      else
+      {
+        $section = new LJCSection($key);
+      }
+    </code>
 	</HasKey>
 </items>

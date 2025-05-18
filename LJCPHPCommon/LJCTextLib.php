@@ -255,6 +255,7 @@
     } // Write()
 
     // Writes text with indents.
+    /// <include path='items/WriteAll/*' file='Doc/LJCWriter.xml'/>
     public static function WriteAll(array $lines, bool $addCRLF = true)
     {
       foreach ($lines as $line)

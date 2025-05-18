@@ -58,12 +58,13 @@
 		<param name="$line">The text line.</param>
 		<returns>The Directive object or null.</returns>
 		<code>
-			$webCommonPath = "c:/inetpub/wwwroot/LJCPHPCommon";
-			require_once "$webCommonPath/LJCGenTextSectionLib.php";
+      // Must refer to exact same file everywhere in codeline.
+      // Path: LJCPHPProjectsDev/GenDoc/LJCDocDataLib
+      require_once "../../GenTextLib/LJCGenTextSectionLib.php";
 
-			$line = "  // #SectionBegin Class
-			$directive = LJCDirective::Find($line);
-		</code>
+      $line = "  // #SectionBegin Class
+      $directive = LJCDirective::Find($line);
+    </code>
 	</Find>
 	<construct>
 		<summary> Initializes an object instance.</summary>

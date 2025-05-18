@@ -12,10 +12,11 @@
 		<summary>Creates a Clone of the current object.</summary>
 		<returns>The cloned object.</returns>
 		<code>
-			require_once "LJCDocDataLib.php";
+      // Path: LJCPHPProjectsDev/GenDoc/DocDataLib
+      require_once "LJCDocDataLib.php";
 
-			$docDataClass = new LJCDocDataClass("ClassName", "Summary Text");
-			$newDocDataClass = $docDataClass->Clone();
-		</code>
+      $docDataClass = new LJCDocDataClass("ClassName", "Summary Text");
+      $newDocDataClass = $docDataClass->Clone();
+    </code>
 	</Clone>
 </items>

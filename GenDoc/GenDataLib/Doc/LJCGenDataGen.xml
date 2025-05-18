@@ -52,18 +52,18 @@
 		<param name="$writeXML">Indicates if the XML file is to be written.</param>
 		<param name="$outputPath">The output path.</param>
 		<code>
-			$devPath = "c:/Users/Les/Documents/Visual Studio 2022/LJCPHPProjects";
-			require_once "$devPath/GenDoc/GenDataLib/LJCGenDataGenLib.php";
-			require_once "$devPath/GenDoc/GenDataLib/LJCGenDataGenLib.php";
+      // Path: LJCPHPProjectsDev/GenDoc/GenDataLib
+      require_once "../../GenDoc/DocDataLib/LJCDocDataGenLib.php";
+      require_once "LJCGenDataGenLib.php";
 
-			$docDataGen = new LJCDocDataGen();
-			$genDataGen = new LJCGenDAtaGen();
+      $docDataGen = new LJCDocDataGen();
+      $genDataGen = new LJCGenDataGen();
 
-			$fileSpec = "SourceFile.php";
-			$docXMLString = $this->DocDataGen->CreateDocXMLString($fileSpec);
-			$genXMLString = $this->GenDataGen->CreateLibXMLString($docXMLString
-				, $fileSpec);
-		</code>
+      $fileSpec = "SourceFile.php";
+      $docXMLString = $this->DocDataGen->CreateDocXMLString($fileSpec);
+      $genXMLString = $this->GenDataGen->CreateLibXMLString($docXMLString
+      , $fileSpec);
+    </code>
 	</CreateLibXMLString>
 	<!-- Private -->
 	<CreateLibClassString>

@@ -16,9 +16,10 @@
 		<param name="$line">The code line.</param>
 		<param name="$codeFileSpec">The code file spec.</param>
 		<code>
-			require_once "LJCCommentsLib.php";
+      // Path: LJCPHPProjectsDev/GenDoc/DocDataLib
+      require_once "LJCCommentsLib.php";
 
-			$line = "/// &amp;lt;summary&amp;gt;A summary comment.&amp;lt;/summary&amp;gt;";
+      $line = "/// &amp;lt;summary&amp;gt;A summary comment.&amp;lt;/summary&amp;gt;";
 			$comments = new LJCComments();
 			$comments->SetComment($line, "SourceFile.php");
 			$summary = $comments->Summary;

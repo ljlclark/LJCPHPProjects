@@ -64,11 +64,12 @@
 		<param name="$xmlString">The XML string.</param>
 		<returns>The LJCDocDataFile object.</returns>
 		<code>
-			require_once "LJCDocDataLib.php";
+      // Path: LJCPHPProjectsDev/GenDoc/DocDataLib
+      require_once "LJCDocDataLib.php";
 
-			$xmlString = readfile("DocData.xml");
-			$docDataFile = LJCDocDataFile::DeserializeString($xmlString);
-		</code>
+      $xmlString = readfile("DocData.xml");
+      $docDataFile = LJCDocDataFile::DeserializeString($xmlString);
+    </code>
 	</DeserializeString>
 	<GetProperties>
 		<summary>Deserialize Properties from the Class node.</summary>
@@ -81,18 +82,20 @@
 		<summary>Writes the serialized XML.</summary>
 		<param name="$xmlFileSpec">The source XML file specification.</param>
 		<code>
-			require_once "LJCDocDataLib.php";
-			
-			$docDataFile = LJCDocDataFile::Deserialize("DocData.xml");
-			$docDataFile->Serialize("NewDocData.xml");
-		</code>
+      // Path: LJCPHPProjectsDev/GenDoc/DocDataLib
+      require_once "LJCDocDataLib.php";
+
+      $docDataFile = LJCDocDataFile::Deserialize("DocData.xml");
+      $docDataFile->Serialize("NewDocData.xml");
+    </code>
 	</Serialize>
 	<SerializeToString>
 		<code>
-			require_once "LJCDocDataLib.php";
+      // Path: LJCPHPProjectsDev/GenDoc/DocDataLib
+      require_once "LJCDocDataLib.php";
 
-			$docDataFile = LJCDocDataFile::Deserialize("DocData.xml");
-			$xmlString = $docDataFile->SerializeToString();
-		</code>
+      $docDataFile = LJCDocDataFile::Deserialize("DocData.xml");
+      $xmlString = $docDataFile->SerializeToString();
+    </code>
 	</SerializeToString>
 </items>

@@ -19,10 +19,11 @@
 		<param name="$line">The code line.</param>
 		<param name="$codeFileSpec">The Code File spec.</param>
 		<code>
-			require_once "LJCIncludeLib.php";
+      // Path: LJCPHPProjectsDev/GenDoc/DocDataLib
+      require_once "LJCIncludeLib.php";
 
-			$includeFile = new LJCInclude();
-			$line = "/// &amp;lt;include path='items/SetComment/*' file='Doc/LJCComments.xml'/&amp;gt;"
+      $includeFile = new LJCInclude();
+      $line = "/// &amp;lt;include path='items/SetComment/*' file='Doc/LJCComments.xml'/&amp;gt;"
 			$includeFile->SetComments($line, "SourceFile.php");
 			foreach ($includeFile->Comments as $comment)
 			{

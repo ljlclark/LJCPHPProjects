@@ -31,18 +31,20 @@
 		<param name="$item">The object to be added to the collection.</param>
 		<param name="$key">The element key.</param>
 		<returns>The added item.</returns>
-		<code>$webCommonPath = "c:/inetpub/wwwroot/LJCPHPCommon";
-		 require_once "$webCommonPath/LJCCollectionLib.php";
+		<code>
+      // Must refer to exact same file everywhere in codeline.
+      // Path: LJCPHPProjectsDev/GenDoc/LJCDocDataLib
+      require_once "../../LJCPHPCommon/LJCCollectionLib.php";
 
-		 // Add to class that extends LJCCollectionBase
-		 // Adds an object and key value.
-		 public function AddObject(ObjectItem $item, $key = null)
-		 {
-			 if (null == $key)
-			 {
-				 $key = $item->Name;
-			 }
-			 $retValue = $this->&lt;b&gt;AddItem&lt;/b&gt;($item, $key);
+      // Add to class that extends LJCCollectionBase
+      // Adds an object and key value.
+      public function AddObject(ObjectItem $item, $key = null)
+      {
+        if (null == $key)
+        {
+          $key = $item->Name;
+        }
+        $retValue = $this->&lt;b&gt;AddItem&lt;/b&gt;($item, $key);
 			 return $retValue;
 		 }
 		</code>
@@ -52,8 +54,9 @@
     <param name="$key">The element key.</param>
     <param name="$throwError">Indicates if an error should be thrown if the key is not found.</param>
     <code>
-      $webCommonPath = "c:/inetpub/wwwroot/LJCPHPCommon";
-      require_once "$webCommonPath/LJCCollectionLib.php";
+      // Must refer to exact same file everywhere in codeline.
+      // Path: LJCPHPProjectsDev/GenDoc/LJCDocDataLib
+      require_once "../../LJCPHPCommon/LJCCollectionLib.php";
 
       // $collection extends LJCCollectionBase
       $collection->Remove("KeyName");
@@ -64,31 +67,35 @@
 		<param name="$key">The element key.</param>
 		<param name="$throwError">Indicates if an error should be thrown if the key is not found.</param>
 		<returns>The object with the matching key value.</returns>
-		<code>$webCommonPath = "c:/inetpub/wwwroot/LJCPHPCommon";
-		 require_once "$webCommonPath/LJCCollectionLib.php";
+		<code>
+      // Must refer to exact same file everywhere in codeline.
+      // Path: LJCPHPProjectsDev/GenDoc/LJCDocDataLib
+      require_once "../../LJCPHPCommon/LJCCollectionLib.php";
 
-		 // Add to class that extends LJCCollectionBase
-		 // Get the item by Key value.
-		 public function Get($key)
-		 {
-			 $retValue = $this->&lt;b&gt;GetItem&lt;/b&gt;($key, $throwError);
-			 return $retValue;
-		 }
+      // Add to class that extends LJCCollectionBase
+      // Get the item by Key value.
+      public function Get($key)
+      {
+        $retValue = $this->&lt;b&gt;GetItem&lt;/b&gt;($key, $throwError);
+			   return $retValue;
+  	  }
 		</code>
 	</RetrieveItem>
 	<HasKey>
 		<summary>Indicates if a key already exists.</summary>
 		<param name="$key">The element key.</param>
 		<returns>True if the key already exists, otherwise false.</returns>
-		<code>$webCommonPath = "c:/inetpub/wwwroot/LJCPHPCommon";
-		 require_once "$webCommonPath/LJCCollectionLib.php";
+		<code>
+      // Must refer to exact same file everywhere in codeline.
+      // Path: LJCPHPProjectsDev/GenDoc/LJCDocDataLib
+      require_once "../../LJCPHPCommon/LJCCollectionLib.php";
 
-		 // $collection extends LJCCollectionBase
-		 $key = "KeyName";
-		 if ($collection->HasKey($key))
-		 {
-			 throw new Exception("Key: {$key} already in use.");
-		 }
+		  // $collection extends LJCCollectionBase
+		  $key = "KeyName";
+		  if ($collection->HasKey($key))
+		  {
+		 	 throw new Exception("Key: {$key} already in use.");
+		  }
 		</code>
 	</HasKey>
 </items>

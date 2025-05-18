@@ -8,17 +8,18 @@
 		<param name="$key">The element key.</param>
 		<returns>The added item.</returns>
 		<code>
-			$webCommonPath = "c:/inetpub/wwwroot/LJCPHPCommon";
-			require_once "$webCommonPath/LJCCollectionLib.php";
+      // Must refer to exact same file everywhere in codeline.
+      // Path: LJCPHPProjectsDev/GenDoc/LJCDocDataLib
+      require_once "../../LJCPHPCommon/LJCCollectionLib.php";
 
-			// Adds an object and key value.
-			public function AddObject(ObjectItem $item, $key = null)
-			{
-				if (null == $key)
-				{
-					$key = $item->Name;
-				}
-				$retValue = $this->&lt;b&gt;AddItem&lt;/b&gt;($item, $key);
+      // Adds an object and key value.
+      public function AddObject(ObjectItem $item, $key = null)
+      {
+        if (null == $key)
+        {
+          $key = $item->Name;
+        }
+        $retValue = $this->&lt;b&gt;AddItem&lt;/b&gt;($item, $key);
 				return $retValue;
 			}
 		</code>
@@ -29,14 +30,15 @@
 		<param name="$throwError">Indicates if an error should be thrown if the key is not found.</param>
 		<returns>The object with the matching key value.</returns>
 		<code>
-			$webCommonPath = "c:/inetpub/wwwroot/LJCPHPCommon";
-			require_once "$webCommonPath/LJCCollectionLib.php";
+      // Must refer to exact same file everywhere in codeline.
+      // Path: LJCPHPProjectsDev/GenDoc/LJCDocDataLib
+      require_once "../../LJCPHPCommon/LJCCollectionLib.php";
 
-			// Get the item by Key value.
-			public function Get($key)
-			{
-				$retValue = $this->&lt;b&gt;GetItem&lt;/b&gt;($key, $throwError);
-				return $retValue;
+      // Get the item by Key value.
+      public function Get($key)
+      {
+        $retValue = $this->&lt;b&gt;GetItem&lt;/b&gt;($key, $throwError);
+		    return $retValue;
 			}
 		</code>
 	</GetItem>
