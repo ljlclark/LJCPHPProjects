@@ -4,8 +4,8 @@
   // LJCDebugLib.php
   declare(strict_types=1);
   // Must refer to exact same file everywhere in codeline.
-  // Path: LJCPHPProjectsDev/GenDoc/DocDataLib
-  include_once "../../LJCPHPCommon/LJCTextLib.php";
+  include_once "LJCTextLib.php";
+
   // LJCTextLib: LJCDebugWriter
 
   // Contains classes for debugging.

@@ -1,15 +1,23 @@
 <?php
-  // Copyright (c) Lester J. Clark 2022 - All Rights Reserved
+  // Copyright(c) Lester J. Clark and Contributors.
+  // Licensed under the MIT License.-->
   // LJCTextReaderLib.php
   declare(strict_types=1);
-  $devPath = "c:/Users/Les/Documents/Visual Studio 2022/LJCPHPProjects";
-  require_once "$devPath/LJCPHPCommon/LJCCollectionLib.php";
-  require_once "$devPath/LJCPHPCommon/LJCDbAccessLib.php";
-  require_once "$devPath/LJCPHPCommon/LJCTextLib.php";
-  require_once "LJCTextRangesLib.php";
+  // Must refer to exact same file everywhere in codeline.
+  // Path: Codeline/TextReader
+  include_once "../LJCPHPCommon/LJCCollectionLib.php";
+  include_once "../LJCPHPCommon/LJCDbAccessLib.php";
+  include_once "../LJCPHPCommon/LJCDebugLib.php";
+  include_once "../LJCPHPCommon/LJCTextLib.php";
+  include_once "LJCTextRangesLib.php";
+  // LJCCollectionLib: LJCCollectionBase
+  // LJCDbAccessLib: LJCDbColumn, LJCDbColumns
+  // LJCCommonLib: LJCCommon
+  // LJCDebugLib: LJCDebug
 
   /// <summary>The PHP Text Reader Class Library</summary>
   /// LibName: LJCTextReaderLib
+  //  LJCTextReader
 
   // ***************
   // Contains methods to read text files and parse into fields.
@@ -20,6 +28,11 @@
     /// <include path='items/construct/*' file='Doc/LJCTextReader.xml'/>
     public function __construct(string $fileSpec)
     {
+      // Instantiate properties with Pascal case.
+      $this->Debug = new LJCDebug("LJCTextReaderLib", "LJCTextReader"
+        , "w", false);
+      $this->Debug->IncludePrivate = true;
+
       if (false == file_exists($fileSpec))
       {
         throw new Exception("Input file '$fileSpec' was not found.");
@@ -38,12 +51,15 @@
       $this->ValueDelimiter = "\"";
 
       $this->DebugWriter = new LJCDebugWriter("TextReader");
-    }
+    } // __construct()
 
     // Set the configuration after the delimiters have been set.
     /// <include path='items/SetConfig/*' file='Doc/LJCTextReader.xml'/>
     public function SetConfig(string $configXMLSpec = null)
     {
+      $enabled = false;
+      $this->Debug->BeginMethod("SetConfig", $enabled);
+
       $this->ConfigXMLSpec = $configXMLSpec;
       $this->TextRanges = new LJCTextRanges($this->FieldDelimiter
         , $this->ValueDelimiter);
@@ -64,6 +80,8 @@
       {
         $this->FieldCount = count($this->FieldNames);
       }
+
+      $this->Debug->EndMethod($enabled);
     }  // SetConfig()
 
     // ---------------
@@ -72,6 +90,9 @@
     /// <summary>Clears the field values.</summary>
     public function Clear() : void
     {
+      $enabled = false;
+      $this->Debug->BeginMethod("Clear", $enabled);
+
       $valuesLength = count($this->FieldValues);
       if ($valuesLength > 0)
       {
@@ -81,12 +102,17 @@
           $this->FieldValues[$name] = null;
         }
       }
+
+      $this->Debug->EndMethod($enabled);
     }  // Clear()
 
     /// <summary>Populates a DataObject from the field values.</summary>
     /// <param name="$dataObject">The DataObject.</param>
     public function FillDataObject($dataObject)
     {
+      $enabled = false;
+      $this->Debug->BeginMethod("FillDataObject", $enabled);
+
       $dbColumns = $this->DbColumns;
       if (null != $dbColumns && count($dbColumns) > 0)
       {
@@ -100,18 +126,24 @@
           }
         }
       }
-    }
+
+      $this->Debug->EndMethod($enabled);
+    } // FillDataObject()
 
     // Gets the field value.
     /// <include path='items/GetString/*' file='Doc/LJCTextReader.xml'/>
     public function GetString(string $fieldName) : string
     {
+      $enabled = false;
+      $this->Debug->BeginMethod("GetString", $enabled);
       $retValue = null;
 
       if (isset($this->FieldValues[$fieldName]))
       {
         $retValue = $this->FieldValues[$fieldName];
       }
+
+      $this->Debug->EndMethod($enabled);
       return $retValue;
     }  // GetString()
 
@@ -119,13 +151,15 @@
     /// <returns>True if the line was read, otherwise false.</returns>
     public function Read() : bool
     {
+      $enabled = false;
+      $this->Debug->BeginMethod("Read", $enabled);
       $retValue = false;
 
       $this->Clear();
       if (false == feof($this->InputStream))
       {
         $line = (string)fgets($this->InputStream);
-        $values = $this->TextRanges->Split($line);
+        $values = $this->TextRanges->SplitRanges($line);
 
         // Skip Config line if configured with XML file.
         if ($this->IsFirstRead
@@ -157,6 +191,8 @@
           $retValue = true;
         }
       }
+
+      $this->Debug->EndMethod($enabled);
       return $retValue;
     }  // Read()
 
@@ -166,6 +202,9 @@
     // Configures the fields from the first line of the input file.
     private function ConfigFromFirstLine()
     {
+      $enabled = false;
+      $this->Debug->BeginPrivateMethod("ConfigFromFirstLine", $enabled);
+
       // First line must have the configuration.
       if (feof($this->InputStream))
       {
@@ -176,11 +215,16 @@
 
       $names = explode($this->FieldDelimiter, $line);
       $this->SetFieldNames($names);
-    }
+
+      $this->Debug->EndMethod($enabled);
+    } // ConfigFromFirstLine()
 
     // Configures the fields from an XML file.
     private function ConfigFromXMLFile(string $configXMLSpec)
     {
+      $enabled = false;
+      $this->Debug->BeginPrivateMethod("ConfigFromXMLFile", $enabled);
+
       // Must have a configuration XML file.
       if (false == file_exists($configXMLSpec))
       {
@@ -192,23 +236,32 @@
         $name = $dbColumn->PropertyName;
         $this->FieldNames[] = $name;
       }
-    }
+
+      $this->Debug->EndMethod($enabled);
+    } // ConfigFromXMLFile()
 
     // Checks if the line is a Config line.
     private function IsConfig($names)
     {
+      $enabled = false;
+      $this->Debug->BeginPrivateMethod("IsConfig", $enabled);
       $retValue = false;
 
       if ("Config" == $names[0])
       {
         $retValue = true;
       }
+
+      $this->Debug->EndMethod($enabled);
       return $retValue;
-    }
+    } // IsConfig()
 
     // Sets the field names from the Config line.
     private function SetFieldNames(array $names)
     {
+      $enabled = false;
+      $this->Debug->BeginPrivateMethod("SetFieldNames", $enabled);
+
       if ($this->IsConfig($names))
       {
         $this->DbColumns = new LJCDbColumns();
@@ -226,12 +279,16 @@
       {
         throw new Exception("First line configuration was not found.");
       }
-    }
+
+      $this->Debug->EndMethod($enabled);
+    } // SetFieldNames()
 
     // Remove the trailing cr/lf or lf without removing anything else.
     // <include path='items/TrimCrLf/*' file='Doc/LJCTextReader.xml'/>
     private function TrimCrLf(string $text) : string
     {
+      $enabled = false;
+      $this->Debug->BeginPrivateMethod("TrimCrLf", $enabled);
       $retValue = $text;
 
       if (null != $retValue)
@@ -257,14 +314,10 @@
           }
         }
       }
+
+      $this->Debug->EndMethod($enabled);
       return $retValue;
     }  // TrimCrLf()
-
-    // Output the debug value.
-    private function Debug(string $text, bool $addLine = true) : void
-    {
-      $this->DebugWriter->Debug($text, $addLine);
-    }
 
     // ---------------
     // Properties - LJCTextReader

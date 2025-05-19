@@ -1,1 +1,1 @@
-php.exe TextReader.php fileSpec=%1 > TextReader.txt
+php.exe TextReader.php fileSpec=%1

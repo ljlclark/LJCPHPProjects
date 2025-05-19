@@ -43,6 +43,12 @@
       return $retValue;
     } // AddItem()
 
+    // <summary>Clears the collection items.</summary>
+    protected function ClearItems()
+    {
+      $this->Items = [];
+    }
+
     // Remove the item by Key value.
     /// <include path='items/DeleteItem/*' file='Doc/LJCCollectionBase.xml'/>
     protected function DeleteItem($key, bool $throwError = true) : void

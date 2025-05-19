@@ -144,7 +144,7 @@
     {
       // Instantiate properties with Pascal case.
       $this->Debug = new LJCDebug("LJCDocDataGenLib", "LJCDocDataGen"
-        , "w", false);
+        , "w", true);
       $this->Debug->IncludePrivate = true;
 
       $this->ClassName = null;

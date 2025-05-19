@@ -18,6 +18,49 @@
     // ---------------
     // Static Functions
 
+    /// <summary>Gets the relative path for a codeline.</summary>
+    /// <param name="$codeline">The codeline name.</param>
+    public static function RelativePrefix(string $codeline)
+    {
+      $retText = "";
+
+      $cwd = getcwd();
+      $folders = explode("\\", $cwd);
+      $count = count($folders);
+      $found = false;
+      for ($index = 0; $index < $count; $index++)
+      {
+        $folder = $folders[$index];
+        if ($found)
+        {
+          $retText .= "../";
+        }
+        if ($folder == $codeline)
+        {
+          $found = true;
+        }
+      }
+      $retText = substr($retText, 0, strlen($retText) - 1);
+      return $retText;
+    }
+
+    // Returns a scrubbed external value.
+    /// <include path='items/Scrub/*' file='Doc/LJCCommon.xml'/>
+    public static function Scrub(string $text) : string
+    {
+      $retValue = trim($text);
+      $retValue = stripslashes($retValue);
+      $retValue = htmlspecialchars($retValue);
+      return $retValue;
+    } // Scrub()
+
+    /// <summary>Splits a string on whitespace.</summary>
+    public static function Split(string $text) : array
+    {
+      $retValues = preg_split("/[\s,]+/", $text, 0, PREG_SPLIT_NO_EMPTY);
+      return $retValues;
+    }
+
     // Gets the first index for the search value.
     /// <include path='items/StrPos/*' file='Doc/LJCCommon.xml'/>
     public static function StrPos(?string $text, ?string $find
@@ -246,15 +289,5 @@
         mkdir($folder);
       }
     } // MkDir()
-
-    // Returns a scrubbed external value.
-    /// <include path='items/Scrub/*' file='Doc/LJCCommon.xml'/>
-    public static function Scrub(string $text) : string
-    {
-      $retValue = trim($text);
-      $retValue = stripslashes($retValue);
-      $retValue = htmlspecialchars($retValue);
-      return $retValue;
-    } // Scrub()
   } // LJCCommon
 ?>

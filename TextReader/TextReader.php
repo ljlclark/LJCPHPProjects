@@ -1,9 +1,11 @@
 <?php
-  // Copyright (c) Lester J. Clark 2022 - All Rights Reserved
+  // Copyright(c) Lester J. Clark and Contributors.
+  // Licensed under the MIT License.-->
   // TextReader.php
   declare(strict_types=1);
-  $devPath = "c:/Users/Les/Documents/Visual Studio 2022/LJCPHPProjects";
-  require_once "$devPath/LJCPHPCommon/LJCDBAccessLib.php";
+  // Must refer to exact same file everywhere in codeline.
+  // Path: LJCPHPProjectsDev/TextReader
+  require_once "../LJCPHPCommon/LJCDBAccessLib.php";
   require_once "LJCTextReaderLib.php";
 
   // Get parameters.

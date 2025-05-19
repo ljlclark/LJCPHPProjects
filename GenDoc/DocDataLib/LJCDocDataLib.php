@@ -72,8 +72,8 @@
     {
       $enabled = false;
       $this->Debug->BeginMethod("Clone", $enabled);
-
       $retValue = new self($this->Name, $this->Summary);
+
       $retValue->Code = $this->Code;
       $retValue->Methods = $this->Methods;
       $retValue->Properties = $this->Properties;
@@ -124,8 +124,8 @@
     {
       $enabled = false;
       $this->Debug->BeginMethod("Clone", $enabled);
-
       $retValue = new self();
+
       foreach ($this->Items as $key => $item)
       {
         $retValue->AddObject($item);
@@ -139,7 +139,7 @@
     // ---------------
     // Public Methods - LJCDocDataClasses
 
-    // <summary>Adds an object and key value.</summary>
+    // Adds an object and key value.
     /// <include path='items/AddObject/*' file='../../CommonDoc/PHPCollection.xml'/>
     public function AddObject(LJCDocDataClass $item, $key = null)
       : ?LJCDocDataClass

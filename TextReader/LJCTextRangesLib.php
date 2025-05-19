@@ -1,16 +1,23 @@
 <?php
-  // Copyright (c) Lester J. Clark 2022 - All Rights Reserved
+  // Copyright(c) Lester J. Clark and Contributors.
+  // Licensed under the MIT License.-->
   // LJCTextRangesLib.php
   declare(strict_types=1);
-  $devPath = "c:/Users/Les/Documents/Visual Studio 2022/LJCPHPProjects";
-  require_once "$devPath/LJCPHPCommon/LJCCollectionLib.php";
-  require_once "$devPath/LJCPHPCommon/LJCCommonLib.php";
-  require_once "$devPath/LJCPHPCommon/LJCTextLib.php";
+  // Must refer to exact same file everywhere in codeline.
+  // Path: Codeline/TextReader
+  include_once "../LJCPHPCommon/LJCCollectionLib.php";
+  include_once "../LJCPHPCommon/LJCCommonLib.php";
+  include_once "../LJCPHPCommon/LJCDebugLib.php";
+  // LJCCollectionLib: LJCCollectionBase
+  // LJCCommonLib: LJCCommon
+  // LJCDebugLib: LJCDebug
 
   /// <summary>The PHP Text Ranges Class Library</summary>
   /// LibName: LJCTextRangesLib
+  //  LJCTextRange, LJCTextRanges
 
   // ***************
+  // Public: Clone()
   /// <summary>Represents the text range.</summary>
   class LJCTextRange
   {
@@ -18,17 +25,26 @@
     /// <include path='items/construct/*' file='Doc/LJCTextRange.xml'/>
     public function __construct(int $beginIndex, int $endIndex)
     {
+      // Instantiate properties with Pascal case.
+      $this->Debug = new LJCDebug("LJCTextRangesLib", "LJCTextRang"
+        , "w", false);
+      $this->Debug->IncludePrivate = true;
+
       $this->BeginIndex = $beginIndex;
       $this->EndIndex = $endIndex;
-    }
+    } // __construct()
 
     // <summary>Creates a Clone of the current object.</summary>
     // <include path='items/Clone/*' file='../CommonDoc/PHPDataClass.xml'/>
     public function Clone() : self
     {
+      $enabled = false;
+      $this->Debug->BeginMethod("Clone", $enabled);
       $retValue = new self($this->BeginIndex, $this->EndIndex);
+
+      $this->Debug->EndMethod($enabled);
       return $retValue;
-    }
+    } // Clone()
 
     // ---------------
     // Properties - LJCTextRange
@@ -41,6 +57,8 @@
   }  // LJCTextRange
 
   // ***************
+  // Public: Clone(), Add(), AddObject(), Get(), IsInValue(), SetRanges()
+  //   , SplitRanges() 
   /// <summary>Represents a collection of LJCTextRange objects.</summary>
   class LJCTextRanges extends LJCCollectionBase
   {
@@ -49,24 +67,32 @@
     public function __construct(string $fieldDelimiter = ","
       , string $valueDelimiter = "\"")
     {
+      // Instantiate properties with Pascal case.
+      $this->Debug = new LJCDebug("LJCTextRangesLib", "LJCTextRanges"
+        , "w", false);
+      $this->Debug->IncludePrivate = true;
+
       $this->FieldDelimiter = $fieldDelimiter;
       $this->ValueDelimiter = $valueDelimiter;
-
-      $this->DebugWriter = new LJCDebugWriter("LJCTextRanges");
-    }
+    } // __construct()
 
     /// <summary>Creates an object clone.</summary>
     /// <returns>The cloned item.</returns>
     public function Clone() : self
     {
+      $enabled = false;
+      $this->Debug->BeginMethod("Clone", $enabled);
       $retValue = new self();
+
       foreach ($this->Items as $key => $item)
       {
         $retValue->AddObject($item);
       }
       unset($item);
+
+      $this->Debug->EndMethod($enabled);
       return $retValue;
-    }
+    } // Clone()
 
     // ---------------
     // Public Collection Methods - LJCTextRanges
@@ -76,6 +102,8 @@
     public function Add(int $beginIndex, int $endIndex, $key = null)
       : ?LJCTextRange
     {
+      $enabled = false;
+      $this->Debug->BeginMethod("Add", $enabled);
       $retValue = null;
 
       if (null == $key)
@@ -85,28 +113,39 @@
 
       $item = new LJCTextRange($beginIndex, $endIndex);
       $retValue = $this->AddObject($item , $key);
+
+      $this->Debug->EndMethod($enabled);
       return $retValue;
-    }
+    } // Add()
 
     // Adds an object and key value.
     /// <include path='items/AddObject/*' file='Doc/LJCTextRanges.xml'/>
     public function AddObject(LJCTextRange $item, $key = null) : ?LJCTextRange
     {
+      $enabled = false;
+      $this->Debug->BeginMethod("AddObject", $enabled);
+
       if (null == $key)
       {
         $key = strval($item->BeginIndex);
       }
       $retValue = $this->AddItem($item, $key);
+
+      $this->Debug->EndMethod($enabled);
       return $retValue;
-    }
+    } // AddObject()
 
     // Get the item by Key value.
     /// <include path='items/Get/*' file='Doc/LJCTextRanges.xml'/>
     public function Get($key, bool $throwError = true) : ?LJCTextRange
     {
+      $enabled = false;
+      $this->Debug->BeginMethod("Get", $enabled);
       $retValue = $this->GetItem($key, $throwError);
+
+      $this->Debug->EndMethod($enabled);
       return $retValue;
-    }
+    } // Get()
 
     // ---------------
     // Public Other Methods - LJCTextRanges
@@ -115,6 +154,8 @@
     /// <include path='items/IsInValue/*' file='Doc/LJCTextRanges.xml'/>
     public function IsInValue(int $index) : bool
     {
+      $enabled = false;
+      $this->Debug->BeginMethod("IsInValue", $enabled);
       $retValue = false;
 
       foreach ($this->Items as $value)
@@ -125,16 +166,20 @@
           break;
         }
       }
+
+      $this->Debug->EndMethod($enabled);
       return $retValue;
-    }
+    } // IsInValue()
 
     // Sets value ranges and returns true if a range was defined.
     /// <include path='items/SetRanges/*' file='Doc/LJCTextRanges.xml'/>
     public function SetRanges(string $text) : bool
     {
+      $enabled = false;
+      $this->Debug->BeginMethod("SetRanges", $enabled);
       $retValue = false;
 
-      $this->Clear();
+      $this->ClearItems();
 
       // Search for beginning of first value.
       $currentIndex = 0;
@@ -166,13 +211,17 @@
         $beginIndex = LJCCommon::StrPos($text, $this->ValueDelimiter
           , $currentIndex);
       }
+
+      $this->Debug->EndMethod($enabled);
       return $retValue;
     }  // SetRanges()
 
     // Splits a line of text on the delimiters not enclosed in a value.
-    /// <include path='items/Split/*' file='Doc/LJCTextRanges.xml'/>
-    public function Split(string $line) : array
+    /// <include path='items/SplitRanges/*' file='Doc/LJCTextRanges.xml'/>
+    public function SplitRanges(string $line) : array
     {
+      $enabled = false;
+      $this->Debug->BeginMethod("SplitRanges", $enabled);
       $retValue = [];
 
       if (false == $this->SetRanges($line))
@@ -241,16 +290,21 @@
           $beginIndex = $currentIndex;
         }
       }
+
+      $this->Debug->EndMethod($enabled);
       return $retValue;
-    }  // Split()
+    }  // SplitRanges()
 
     // ---------------
     // Private Methods - LJCTextRanges
 
     // Removes only the leading blanks not other whitespace.
-    // <include path='items/Split/*' file='Doc/LJCTextRanges.xml'/>
+    // <include path='items/RemoveLeadingBlanks/*' file='Doc/LJCTextRanges.xml'/>
     private function RemoveLeadingBlanks(string $text) : string
     {
+      $enabled = false;
+      $this->Debug->BeginPrivateMethod("RemoveLeadingBlanks", $enabled);
+
       $length = strlen($text);
       if($length > 1)
       {
@@ -263,14 +317,18 @@
           }
         }
       }
+
+      $this->Debug->EndMethod($enabled);
       return $text;
-    }
+    } // RemoveLeadingBlanks()
 
     // A field value must be immediately followed by the field delimiter
     // or be at the end of the string to be a valid value.
     // Otherwise it contains an embeded value delimiter.
     private function VerifyValue(string $text, int $endIndex) : bool
     {
+      $enabled = false;
+      $this->Debug->BeginPrivateMethod("VerifyValue", $enabled);
       $retValue = false;
 
       // Verify ending of value.
@@ -293,14 +351,10 @@
       {
         $beginIndex = $verifyIndex;
       }
+
+      $this->Debug->EndMethod($enabled);
       return $retValue;
     }  // VerifyValue()
-
-    // Output the debug value.
-    private function Debug(string $text, bool $addLine = true) : void
-    {
-      $this->DebugWriter->Debug($text, $addLine);
-    }
 
     // ---------------
     // Properties

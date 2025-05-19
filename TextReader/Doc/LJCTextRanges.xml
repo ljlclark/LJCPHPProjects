@@ -43,13 +43,13 @@
 		<param name="$text">The text value.</param>
 		<returns>True if there are ranges, otherwise false.</returns>
 	</SetRanges>
-	<Split>
+	<SplitRanges>
 		<summary>
 			Splits a line of text on the delimiters not enclosed in a value.
 		</summary>
 		<param name="$line">The line text value.</param>
 		<returns>An array of text values.</returns>
-	</Split>
+	</SplitRanges>
 	
 	<!-- Private Methods -->
 	<RemoveLeadingBlanks>
