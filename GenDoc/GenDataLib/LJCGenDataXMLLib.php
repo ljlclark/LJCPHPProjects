@@ -1,4 +1,6 @@
 <?php
+  // Copyright (c) Lester J. Clark and Contributors.
+  // Licensed under the MIT License.
   // LJCGenDataXMLLib.php
   declare(strict_types=1);
   // Must refer to exact same file everywhere in codeline.
@@ -39,6 +41,10 @@
     /// <include path='items/ItemBegin/*' file='Doc/LJCGenDataXML.xml'/>
     public static function ItemBegin(string $name, int $indent) : string
     {
+      $debug = new LJCDebug("LJCGenDataXMLLib", "LJCGenDataXML"
+       , "w", false);
+      $enabled = false;
+      $debug->BeginMethod("ItemBegin", $enabled);
       $retValue = null;
 
       $builder = new LJCStringBuilder();
@@ -47,6 +53,8 @@
       $builder->Tags("Name", $name, $indent);
       $builder->Line("<Replacements>", $indent);
       $retValue = $builder->ToString();
+
+      $debug->EndMethod($enabled);
       return $retValue;
     }
 
@@ -54,6 +62,10 @@
     /// <include path='items/ItemEnd/*' file='Doc/LJCGenDataXML.xml'/>
     public static function ItemEnd(int $indent) : string
     {
+      $debug = new LJCDebug("LJCGenDataXMLLib", "LJCGenDataXML"
+       , "w", false);
+      $enabled = false;
+      $debug->BeginMethod("ItemEnd", $enabled);
       $retValue = null;
 
       $builder = new LJCStringBuilder();
@@ -61,6 +73,8 @@
       $indent--;
       $builder->Line("</Item>", $indent);		
       $retValue = $builder->ToString();
+
+      $debug->EndMethod($enabled);
       return $retValue;
     }
 
@@ -69,6 +83,10 @@
     public static function Replacement(string $name, ?string $value
       , int $indent) : ?string
     {
+      $debug = new LJCDebug("LJCGenDataXMLLib", "LJCGenDataXML"
+       , "w", false);
+      $enabled = false;
+      $debug->BeginMethod("Replacement", $enabled);
       $retValue = null;
 
       if ($value != null)
@@ -83,6 +101,8 @@
         $builder->Line("</Replacement>", $indent);
         $retValue = $builder->ToString();
       }
+
+      $debug->EndMethod($enabled);
       return $retValue;
     }
 
@@ -90,6 +110,10 @@
     /// <include path='items/SectionBegin/*' file='Doc/LJCGenDataXML.xml'/>
     public static function SectionBegin(string $name, int $indent) : string
     {
+      $debug = new LJCDebug("LJCGenDataXMLLib", "LJCGenDataXML"
+       , "w", false);
+      $enabled = false;
+      $debug->BeginMethod("SectionBegin", $enabled);
       $retValue = null;
 
       $builder = new LJCStringBuilder();
@@ -99,6 +123,8 @@
       $builder->Tags("Name", $name, $indent);
       $builder->Line("<Items>", $indent);
       $retValue = $builder->ToString();
+
+      $debug->EndMethod($enabled);
       return $retValue;
     }
 
@@ -106,6 +132,10 @@
     /// <include path='items/SectionEnd/*' file='Doc/LJCGenDataXML.xml'/>
     public static function SectionEnd(int $indent) : string
     {
+      $debug = new LJCDebug("LJCGenDataXMLLib", "LJCGenDataXML"
+       , "w", false);
+      $enabled = false;
+      $debug->BeginMethod("SectionEnd", $enabled);
       $retValue = null;
 
       $builder = new LJCStringBuilder();
@@ -113,6 +143,8 @@
       $indent--;
       $builder->Line("</Section>", $indent);				
       $retValue = $builder->ToString();
+
+      $debug->EndMethod($enabled);
       return $retValue;
     }
 
@@ -122,6 +154,10 @@
     public static function XMLHead(string $xmlFileName, string $rootName = "Data"
       , string $years = "2022") : string
     {
+      $debug = new LJCDebug("LJCGenDataXMLLib", "LJCGenDataXML"
+       , "w", false);
+      $enabled = false;
+      $debug->BeginMethod("XMLHead", $enabled);
       $retValue = null;
 
       $builder = new LJCStringBuilder();
@@ -138,6 +174,8 @@
       $builder->Text("  xmlns:xsi=");
       $builder->Line("'http://www.w3.org/2001/XMLSchema-instance'>");
       $retValue = $builder->ToString();
+
+      $debug->EndMethod($enabled);
       return $retValue;
     }
   }

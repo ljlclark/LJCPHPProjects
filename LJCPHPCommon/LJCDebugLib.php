@@ -1,22 +1,22 @@
 <?php
-  // Copyright(c) Lester J. Clark and Contributors.
+  // Copyright (c) Lester J. Clark and Contributors.
   // Licensed under the MIT License.
   // LJCDebugLib.php
   declare(strict_types=1);
-  // Must refer to exact same file everywhere in codeline.
+  // Path: Codeline/LJCPHPCommon
   include_once "LJCTextLib.php";
-
   // LJCTextLib: LJCDebugWriter
 
   // Contains classes for debugging.
   /// LibName: LJCDebugLib
-  //  LJCDebug
+  //  Classes: LJCDebug
 
   // ***************
   // Provides methods for debugging.
-  // Public: Close(), WritePrivateStartText(), WriteStartText()
-  //  , WritePrivate, Write(), AddIndent(), IndentString(), WriteIndentCount()
-  //  , getIndentCount(), setEnabled
+  // Methods: BeginMethod(), BeginPrivateMethod(), Close(), EndMethod()
+  //   , WritePrivateStartText(), WriteStartText(), WritePrivate, Write()
+  //   , AddIndent(), IndentString(), WriteIndentCount()
+  //   , getIndentCount(), setEnabled()
   /// <summary>Provides methods for debugging.</summary>
   class LJCDebug
   {
@@ -25,7 +25,7 @@
 
     /// <summary>Initializes a class instance.</summary>
     public function __construct(string $debugLibName, string $debugClassName
-      , string $mode = "w", bool $isEnabled = true)
+      , string $mode = "w", bool $isEnabled = false)
     {
       // Instantiate properties with Pascal case.
       $this->DebugClassName = $debugClassName;
@@ -48,11 +48,39 @@
     // ---------------
     // Start Text Methods - LJCDebug
 
+    /// <summary>Begin the method comments.</summary>
+    public function BeginMethod(string $methodName, bool $enable = true)
+    {
+      if ($enable)
+      {
+        $this->WriteStartText($methodName);
+      }
+    }
+
+    /// <summary>Begin the method comments.</summary>
+    public function BeginPrivateMethod(string $methodName, bool $enable = true)
+    {
+      if ($enable)
+      {
+        $this->WritePrivateStartText($methodName);
+      }
+    }
+
+    /// <summary>Closes the writer.</summary>
     public function Close()
     {
       if (isset($this->Writer))
       {
         $this->Writer->Close();
+      }
+    }
+
+    /// <summary>End the method comments.</summary>
+    public function EndMethod(bool $enabled = true)
+    {
+      if ($enabled)
+      {
+        $this->AddIndent(-1);
       }
     }
 
@@ -124,36 +152,6 @@
         }
         $line .= $text;
         $this->Writer->Debug($line, $newLine);
-      }
-    }
-
-    // ---------------
-    // Method Begin and End Methods - LJCDebug
-
-    /// <summary>Begin the method comments.</summary>
-    public function BeginMethod(string $methodName, bool $enable = true)
-    {
-      if ($enable)
-      {
-        $this->WriteStartText($methodName);
-      }
-    }
-
-    /// <summary>Begin the method comments.</summary>
-    public function BeginPrivateMethod(string $methodName, bool $enable = true)
-    {
-      if ($enable)
-      {
-        $this->WritePrivateStartText($methodName);
-      }
-    }
-
-    /// <summary>End the method comments.</summary>
-    public function EndMethod(bool $enabled = true)
-    {
-      if ($enabled)
-      {
-        $this->AddIndent(-1);
       }
     }
 

@@ -1,27 +1,32 @@
 <?php
-  // Copyright(c) Lester J. Clark and Contributors.
+  // Copyright (c) Lester J. Clark and Contributors.
   // Licensed under the MIT License.
   // LJCCommonLib.php
   declare(strict_types=1);
-
-  // Classes
-  // File
-  //   LJCCommon
+  // Path: Codeline/LJCPHPCommon
 
   /// <summary>The Common PHP Class Library</summary>
   /// LibName: LJCCommonLib
+  // Classes: LJCCommon
 
   // ***************
+  // Static: RelativePrefix(), Scrub(), Split(), StrPos(), StrRPos(), GetBool()
+  //   , GetDebugFileName(), GetDelimitedString(), GetFileName()
+  //   , GetFileSpecPath(), GetIndexedDebugFileName(), GetTokens(), MkDir()
   /// <summary>Contains common functions.</summary>
   class LJCCommon
   {
     // ---------------
     // Static Functions
 
-    /// <summary>Gets the relative path for a codeline.</summary>
+    // Gets the relative path for a codeline.
     /// <param name="$codeline">The codeline name.</param>
     public static function RelativePrefix(string $codeline)
     {
+      $debug = new LJCDebug("LJCCommonLib", "LJCCommon"
+       , "w", false);
+      $enabled = false;
+      $debug->BeginMethod("RelativePrefix", $enabled);
       $retText = "";
 
       $cwd = getcwd();
@@ -41,6 +46,8 @@
         }
       }
       $retText = substr($retText, 0, strlen($retText) - 1);
+
+      $debug->EndMethod($enabled);
       return $retText;
     }
 
@@ -268,6 +275,7 @@
     /// <summary>Get string tokens.</summary>
     /// <param name="$text">The string value.</param>
     /// <param name="$splitString">The split string value.</param>
+    /// <returns>The split string array.</returns>
     public static function GetTokens(string $text, ?string $splitString = null)
       : array
     {
@@ -280,7 +288,7 @@
       return $retValue;
     } // GetTokens()
 
-    /// <summary>Creates the specified folder if it does not already exist.</summary>
+    // Creates the specified folder if it does not already exist.
     /// <param name="$folder">The folder name.</param>
     public static function MkDir(string $folder)
     {

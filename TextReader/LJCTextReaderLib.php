@@ -1,9 +1,8 @@
 <?php
-  // Copyright(c) Lester J. Clark and Contributors.
+  // Copyright (c) Lester J. Clark and Contributors.
   // Licensed under the MIT License.-->
   // LJCTextReaderLib.php
   declare(strict_types=1);
-  // Must refer to exact same file everywhere in codeline.
   // Path: Codeline/TextReader
   include_once "../LJCPHPCommon/LJCCollectionLib.php";
   include_once "../LJCPHPCommon/LJCDbAccessLib.php";
@@ -14,6 +13,7 @@
   // LJCDbAccessLib: LJCDbColumn, LJCDbColumns
   // LJCCommonLib: LJCCommon
   // LJCDebugLib: LJCDebug
+  // LJCTextRangesLib: LJCTextRange, LJCTextRanges
 
   /// <summary>The PHP Text Reader Class Library</summary>
   /// LibName: LJCTextReaderLib
@@ -21,6 +21,7 @@
 
   // ***************
   // Contains methods to read text files and parse into fields.
+  // SetFieldConfig(), Clear(), FillDataObject(), GetString(), Read()
   /// <include path='items/LJCTextReader/*' file='Doc/LJCTextReader.xml'/>
   class LJCTextReader
   {
@@ -49,13 +50,11 @@
       $this->IsFirstRead = true;
       $this->ValueCount = 0;
       $this->ValueDelimiter = "\"";
-
-      $this->DebugWriter = new LJCDebugWriter("TextReader");
     } // __construct()
 
-    // Set the configuration after the delimiters have been set.
-    /// <include path='items/SetConfig/*' file='Doc/LJCTextReader.xml'/>
-    public function SetConfig(string $configXMLSpec = null)
+    // Set the field configuration.
+    /// <include path='items/SetFieldConfig/*' file='Doc/LJCTextReader.xml'/>
+    public function SetFieldConfig(string $configXMLSpec = null)
     {
       $enabled = false;
       $this->Debug->BeginMethod("SetConfig", $enabled);
@@ -87,7 +86,7 @@
     // ---------------
     // Public Methods - LJCTextReader
 
-    /// <summary>Clears the field values.</summary>
+    /// <summary>Clears the FieldValues property.</summary>
     public function Clear() : void
     {
       $enabled = false;
@@ -180,7 +179,7 @@
             if ($valueLength > $index)
             {
               $name = $this->FieldNames[$index];
-              $value = $this->TrimCrLf($values[$index]);
+              $value = $this->TrimNewline($values[$index]);
               if (null != $value)
               {
                 $this->FieldValues[$name] = $value;
@@ -267,7 +266,7 @@
         $this->DbColumns = new LJCDbColumns();
         foreach ($names as $name)
         {
-          $name = $this->TrimCrLf($name);
+          $name = $this->TrimNewline($name);
           if ("Config" != $name)
           {
             $this->DbColumns->Add($name);
@@ -283,12 +282,12 @@
       $this->Debug->EndMethod($enabled);
     } // SetFieldNames()
 
-    // Remove the trailing cr/lf or lf without removing anything else.
-    // <include path='items/TrimCrLf/*' file='Doc/LJCTextReader.xml'/>
-    private function TrimCrLf(string $text) : string
+    // Remove the trailing newline without removing anything else.
+    // <include path='items/TrimNewline/*' file='Doc/LJCTextReader.xml'/>
+    private function TrimNewline(string $text) : string
     {
       $enabled = false;
-      $this->Debug->BeginPrivateMethod("TrimCrLf", $enabled);
+      $this->Debug->BeginPrivateMethod("TrimNewline", $enabled);
       $retValue = $text;
 
       if (null != $retValue)
@@ -317,7 +316,7 @@
 
       $this->Debug->EndMethod($enabled);
       return $retValue;
-    }  // TrimCrLf()
+    }  // TrimNewline()
 
     // ---------------
     // Properties - LJCTextReader

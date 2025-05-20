@@ -1,38 +1,28 @@
 <?php
-  // Copyright(c) Lester J. Clark and Contributors.
+  // Copyright (c) Lester J. Clark and Contributors.
   // Licensed under the MIT License.
   // LJCDataManagerLib.php
   declare(strict_types=1);
-  // Must refer to exact same file in codeline.
+  // Path: Codeline/LJCPHPCommon
   include_once "LJCDebugLib.php";
   include_once "LJCDBAccessLib.php";
   include_once "LJCTextLib.php";
-
-  // Classes
-  // LJCDBAccessLib
-  //   LJCConnectionValues
-  //   LJCDbAccess
-  //   LJCDbColumn
-  //   LJCDbColumns
-  //   LJCJoin
-  //   LJCJoins
-  //   LJCJoinOn
-  //   LJCJoinOns
-  // LJCTextLib
-  //   LJCStringBuilder
-  //   LJCHTMLTableColumn
-  //   LJCHTMLWriter
-  //   LJCWriter
-  //   LJCDebugWriter
-  // File
-  //   LJCDataManager
-  //   LJCSQLBuilder
+  // LJCDBAccessLib: LJCConnectionValues, LJCDbAccess
+  //   , LJCDbColumn, LJCDbColumns
+  //   , LJCJoin, LJCJoins
+  //   , LJCJoinOn, LJCJoinOns
+  // LJCTextLib: LJCStringBuilder, LJCHTMLTableColumn, LJCHTMLWriter, LJCWriter
+  //   , LJCDebugWriter
 
   /// <summary>The PDO Data Manager Library</summary>
   /// LibName: LJCDataManagerLib
+  //  Classes: LJCDataManager, LJCSQLBuilder
 
   // ***************
   // Provides Standard DB Table methods.
+  // Methods: Add(), Delete(), Load(), Retrieve(), Update()
+  //   , SQLExecute(), SQLLoad(), SQLRetrieve()
+  //   , CreateDataCollection(), CreateDataObject()
   /// <include path='items/LJCDataManager/*' file='Doc/LJCDataManager.xml'/>
   class LJCDataManager
   {
@@ -308,6 +298,9 @@
 
   // ***************
   // Provides functions for creating SQL statements.
+  // Static: CreateDelete(), CreateInsert(), CreateSelect(), CreateUpdate()
+  //   , GetJoinOns(), GetJoinStatement(), GetJoinTableString(), GetOrderBy()
+  //   , SqlColumns(), SQLJoinColumns(), SQLValueColumns() 
   /// <include path='items/LJCSQLBuilder/*' file='Doc/LJCSQLBuilder.xml'/>
   class LJCSQLBuilder
   {
@@ -428,7 +421,7 @@
       return $retValue;
     } // GetJoinOns()
 
-    /// <summary>Creates the join statement.</summary>
+    // Creates the join statement.
     /// <include path='items/GetJoinStatement/*' file='Doc/LJCSQLBuilder.xml'/>
     public static function GetJoinStatement(string $tableName
       , ?LJCJoins $joins) : ?string

@@ -1,22 +1,20 @@
 <?php
-  // Copyright(c) Lester J. Clark and Contributors.
+  // Copyright (c) Lester J. Clark and Contributors.
   // Licensed under the MIT License.
   // LJCTextLib.php
   declare(strict_types=1);
-  // Must refer to exact same file in codeline.
+  // Path: Codeline/LJCPHPCommon
   include_once "LJCCommonLib.php";
   // LJCCommonLib: LJCCommon
 
   /// <summary>The Common Text Output Class Library</summary>
   /// LibName: LJCTextLib
-  // LJCStringBuilder
-  // LJCHTMLTableColumn
-  // LJCHTMLWriter, LJCWriter, LJCDebugWriter
+  //  Classes: LJCStringBuilder, LJCHTMLTableColumn, LJCHTMLWriter, LJCWriter
+  //    , LJCDebugWriter
 
   // ***************
   // Represents a built string value.
-  // Append(), AppendLine(), AppendTags()
-  // Length(), ToString()
+  // Methods: Line(), Text(), Tags(), Length(), ToString()
   /// <summary>Represents a built string value.</summary>
   class LJCStringBuilder
   {
@@ -152,6 +150,10 @@
     public function __construct(string $columnName, string $headingName = null
       , string $style = null, string $width = null)
     {
+      $this->Debug = new LJCDebug("LJCTextLib", "LJCHTMLTableColumn"
+        , "w", false);
+      $this->Debug->IncludePrivate = true;
+
       $this->ColumnName = $columnName;
       $this->HeadingName = $headingName;
       if (null == $headingName)
@@ -177,7 +179,7 @@
 
   // ***************
   // Contains HTML output methods.
-  // WriteHeader(), WriteRow(), WriteAttribute()
+  // Static: WriteHeader(), WriteRow(), WriteAttribute()
   /// <summary>Contains HTML output methods.</summary> 
   class LJCHTMLWriter
   {
@@ -234,7 +236,7 @@
   // ***************
   // Contains console and file output methods.
   // Static: Run(), Write(), WriteAll(), WriteFile(), WriteLine() 
-  // Public: FWrite(), FWriteLine()
+  // Methods: FClose(), FWrite(), FWriteLine()
   /// <include path='items/LJCWriter/*' file='Doc/LJCWriter.xml'/>
   class LJCWriter
   {
@@ -335,6 +337,7 @@
     // ---------------
     // Public Methods - LJCWriter
 
+    /// <summary>Closes the stream.</summary>
     public function FClose()
     {
       fclose($this->Stream);
@@ -372,7 +375,7 @@
 
   // ***************
   // Contains Debug output methods.
-  // Debug()
+  // Methods: Close(), Debug()
   /// <summary>Contains Debug output methods.</summary>
   class LJCDebugWriter
   {
@@ -396,6 +399,12 @@
     // ---------------
     // Public Methods - LJCDebugWriter
 
+    /// <summary>Close the stream.</summary>
+    public function Close()
+    {
+      $this->DebugWriter->FClose();
+    }
+
     /// <summary>Writes a Debug output line.</summary>
     /// <param name="$text"></param>
     /// <param name="$addLine"></param>
@@ -418,12 +427,6 @@
 
       $this->Debug->EndMethod($enabled);
     } // Debug()
-
-    // Close the stream.
-    public function Close()
-    {
-      $this->DebugWriter->FClose();
-    }
 
     // The DebugWriter value.
     private ?LJCWriter $DebugWriter;

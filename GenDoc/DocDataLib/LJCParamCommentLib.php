@@ -1,5 +1,5 @@
 <?php
-  // Copyright(c) Lester J. Clark and Contributors.
+  // Copyright (c) Lester J. Clark and Contributors.
   // Licensed under the MIT License.
   // ParamCommentLib.php
   declare(strict_types=1);

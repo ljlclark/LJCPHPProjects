@@ -1,9 +1,8 @@
 <?php
-  // Copyright(c) Lester J. Clark and Contributors.
+  // Copyright (c) Lester J. Clark and Contributors.
   // Licensed under the MIT License.-->
   // LJCTextRangesLib.php
   declare(strict_types=1);
-  // Must refer to exact same file everywhere in codeline.
   // Path: Codeline/TextReader
   include_once "../LJCPHPCommon/LJCCollectionLib.php";
   include_once "../LJCPHPCommon/LJCCommonLib.php";
@@ -34,8 +33,8 @@
       $this->EndIndex = $endIndex;
     } // __construct()
 
-    // <summary>Creates a Clone of the current object.</summary>
-    // <include path='items/Clone/*' file='../CommonDoc/PHPDataClass.xml'/>
+    // Creates a Clone of the current object.
+    /// <include path='items/Clone/*' file='../CommonDoc/PHPDataClass.xml'/>
     public function Clone() : self
     {
       $enabled = false;
@@ -148,7 +147,7 @@
     } // Get()
 
     // ---------------
-    // Public Other Methods - LJCTextRanges
+    // Public Methods - LJCTextRanges
 
     // Determines if a delimiter is in a text value.
     /// <include path='items/IsInValue/*' file='Doc/LJCTextRanges.xml'/>
@@ -322,9 +321,8 @@
       return $text;
     } // RemoveLeadingBlanks()
 
-    // A field value must be immediately followed by the field delimiter
-    // or be at the end of the string to be a valid value.
-    // Otherwise it contains an embeded value delimiter.
+    // Verify value does not contain an embeded delimiter.
+    // <include path='items/VerifyValue/*' file='Doc/LJCTextRanges.xml'/>
     private function VerifyValue(string $text, int $endIndex) : bool
     {
       $enabled = false;

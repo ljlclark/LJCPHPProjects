@@ -1,9 +1,8 @@
 <?php
-  // Copyright(c) Lester J. Clark and Contributors.
+  // Copyright (c) Lester J. Clark and Contributors.
   // Licensed under the MIT License.
   // LJCDocDataGenLib.php
   declare(strict_types=1);
-  // Must refer to exact same file everywhere in codeline.
   // Path: LJCPHPProjectsDev/GenDoc/DocDataLib
   include_once "../../LJCPHPCommon/LJCDebugLib.php";
   include_once "../../LJCPHPCommon/LJCCommonLib.php";
@@ -60,6 +59,10 @@
     // <include path='items/GetFunctionName/*' file='Doc/LJCDocDataGen.xml'/>
     private static function GetFunctionName(array $tokens)	: ?string
     {
+      $debug = new LJCDebug("LJCGenTextSectionLib", "LJCDocDataGen"
+       , "w", false);
+      $enabled = false;
+      $debug->BeginMethod("GetFunctionName", $enabled);
       $retValue = null;
 
       if ("static" == $tokens[1]
@@ -77,6 +80,8 @@
         // Function definition is "modifier function functionName";
         $retValue = self::ScrubFunctionName($tokens[2]);
       }
+
+      $debug->EndMethod($enabled);
       return $retValue;
     } // GetFunctionName()
 
@@ -84,6 +89,10 @@
     // <include path='items/GetPropertyName/*' file='Doc/LJCDocDataGen.xml'/>
     private static function GetPropertyName(array $tokens) : ?string
     {
+      $debug = new LJCDebug("LJCGenTextSectionLib", "LJCDocDataGen"
+       , "w", false);
+      $enabled = false;
+      $debug->BeginMethod("GetPropertyName", $enabled);
       $retValue = null;
 
       if ("$" == substr($tokens[1], 0, 1))
@@ -98,6 +107,8 @@
           $retValue = self::ScrubPropertyName($tokens[2]);
         }
       }
+
+      $debug->EndMethod($enabled);
       return $retValue;
     }  // GetPropertyName()
 
@@ -105,6 +116,10 @@
     // <include path='items/ScrubFunctionName/*' file='Doc/LJCDocDataGen.xml'/>
     private static function ScrubFunctionName(string $functionToken) : string
     {
+      $debug = new LJCDebug("LJCGenTextSectionLib", "LJCDocDataGen"
+       , "w", false);
+      $enabled = false;
+      $debug->BeginMethod("ScrubFunctionName", $enabled);
       $retValue = $functionToken;
 
       $position = LJCCommon::StrPos($retValue, "construct(");
@@ -121,6 +136,8 @@
         $length -= $length - $position;
         $retValue = substr($retValue, 0, $length);
       }
+
+      $debug->EndMethod($enabled);
       return $retValue;
     } // ScrubFunctionName
 
@@ -144,7 +161,7 @@
     {
       // Instantiate properties with Pascal case.
       $this->Debug = new LJCDebug("LJCDocDataGenLib", "LJCDocDataGen"
-        , "w", true);
+        , "w", false);
       $this->Debug->IncludePrivate = true;
 
       $this->ClassName = null;

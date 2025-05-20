@@ -1,24 +1,20 @@
 <?php
-  // Copyright(c) Lester J. Clark and Contributors.
+  // Copyright (c) Lester J. Clark and Contributors.
   // Licensed under the MIT License.
   // LJCDBAccessLib.php
   declare(strict_types=1);
-  // Must refer to exact same file in codeline.
-  include_once "LJCDebugLib.php";
+  // Path: Codeline/LJCPHPCommon
   include_once "LJCCollectionLib.php";
-  // LJCCollectionLib
-  //   LJCCollectionBase
+  include_once "LJCDebugLib.php";
+  // LJCCollectionLib: LJCCollectionBase
+  // LJCDebugLib: LJCDebug
 
   /// <summary>The PDO Data Access Library</summary>
   /// LibName: LJCDBAccessLib
-  //   LJCConnectionValues
-  //   LJCDbAccess
-  //   LJCDbColumn
-  //   LJCDbColumns
-  //   LJCJoin
-  //   LJCJoins
-  //   LJCJoinOn
-  //   LJCJoinOns
+  //  Classes: LJCConnectionValues, LJCDbAccess
+  //    , LJCDbColumn, LJCDbColumns
+  //    , LJCJoin, LJCJoins
+  //    , LJCJoinOn, LJCJoinOns
 
   // ***************
   /// <summary>Contains the Connection values.</summary>
@@ -56,7 +52,10 @@
   }  // LJCConnectionValues
 
   // ***************
-  // <summary>Provides standard PDO Data Access.</summary>
+  // Provides standard PDO Data Access.
+  // Static: GetValue()
+  // Methods: Execute(), Load(), Retrieve(), GetConnection(), LoadTableSchema()
+  //   , SetConnectionValues()
   /// <include path='items/LJCDbAccess/*' file='Doc/LJCDbAccess.xml'/>
   class LJCDbAccess
   {
@@ -258,6 +257,8 @@
 
   // ***************
   // Represents a DB Column definition.
+  // Static: GetDataType()
+  // Methods: Clone()
   /// <include path='items/LJCDbColumn/*' file='Doc/LJCDbColumn.xml'/>
   class LJCDbColumn
   {
@@ -375,10 +376,12 @@
 
   // ***************
   // Represents a collection of LJCDbColumn objects.
+  // Methods: Add(), AddObject(), Clone(), Get(), GetColumns(), MapNames()
+  //   , Retrieve(), SetWhereOperators()
   /// <include path='items/LJCDbColumns/*' file='Doc/LJCDbColumns.xml'/>
   class LJCDbColumns extends LJCCollectionBase
   {
-    // Initializes a class instance.
+    /// <summary>Initializes a class instance.</summary>
     public function __construct()
     {
       $this->Debug = new LJCDebug("LJCDBAccessLib", "LJCDbColumns"
@@ -545,6 +548,7 @@
   }  // LJCDbColumns
 
   // ***************
+  // Method: Clone()
   /// <summary>Represents a SQL Join.</summary>
   class LJCJoin
   {
@@ -604,10 +608,11 @@
   } // LJCJoin
 
   // ***************
+  // Methods: Add(), AddObject(), Clone(), Retrieve()
   /// <summary>Represents a collection of LJCJoin objects.</summary>
   class LJCJoins extends LJCCollectionBase
   {
-    // Initializes a class instance.
+    /// <summary>Initializes a class instance.</summary>
     public function __construct()
     {
       $this->Debug = new LJCDebug("LJCDBAccessLib", "LJCJoins"
@@ -618,7 +623,7 @@
     // ---------------
     // Public Methods
 
-    /// <summary>Creates an object and adds it to the collection.</summary>
+    // Creates an object and adds it to the collection.
     /// <include path='items/Add/*' file='Doc/LJCJoins.xml'/>
     public function Add(string $tableName, string $tableAlias = null
       , $key = null) : ?LJCJoin
@@ -639,7 +644,7 @@
       return $retValue;
     } // Add()
 
-    /// <summary>Adds an object and key value.</summary>
+    // Adds an object and key value.
     /// <include path='items/AddObject/*' file='Doc/LJCJoins.xml'/>
     public function AddObject(LJCJoin $item, $key = null) : ?LJCJoin
     {
@@ -680,7 +685,7 @@
       return $this->Retrieve($key, $throwError);
     } // Get()
 
-    /// <summary>Get the item by Key value.</summary>
+    // Get the item by Key value.
     /// <include path='items/Get/*' file='Doc/LJCJoins.xml'/>
     public function Retrieve($key, bool $throwError = true) : ?LJCJoin
     {
@@ -694,10 +699,11 @@
   } // LJCJoins
 
   // ***************
+  // Methods: Clone()
   /// <summary>Represents a SQL JoinOn.</summary>
   class LJCJoinOn
   {
-    /// <summary>Initializes a class instance.</summary>
+    // Initializes a class instance.
     /// <include path='items/construct/*' file='Doc/LJCJoinOn.xml'/>
     public function __construct(string $fromColumnName, string $toColumnName)
     {
@@ -749,10 +755,11 @@
   } // LJCJoinOn
 
   // ***************
+  // Methods: Add(), AddObject(), Retrieve()
   /// <summary>Represents a collection of LJCJoin objects.</summary>
   class LJCJoinOns extends LJCCollectionBase
   {
-    // Initializes a class instance.
+    /// <summary>Initializes a class instance.</summary>
     public function __construct()
     {
       $this->Debug = new LJCDebug("LJCDBAccessLib", "LJCJoinOns"
@@ -825,7 +832,7 @@
       return $this.Retrieve($key,$throwError);
     } // Get()
 
-    /// <summary>Get the item by Key value.</summary>
+    // Get the item by Key value.
     /// <include path='items/Get/*' file='Doc/LJCJoinOns.xml'/>
     public function Retrieve($key, bool $throwError = true) : ?LJCJoinOn
     {

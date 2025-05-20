@@ -1,9 +1,8 @@
 <?php
-  // Copyright(c) Lester J. Clark and Contributors.
+  // Copyright (c) Lester J. Clark and Contributors.
   // Licensed under the MIT License.
   // LJCIncludeLib.php
   declare(strict_types=1);
-  // Must refer to exact same file everywhere in codeline.
   // Path: LJCPHPProjectsDev/GenDoc/DocDataLib
   include_once "../../LJCPHPCommon/LJCDebugLib.php";
   include_once "../../LJCPHPCommon/LJCCommonLib.php";

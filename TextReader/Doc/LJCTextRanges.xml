@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<!-- Copyright (c) Lester J. Clark 2022 - All Rights Reserved -->
+<!-- Copyright (c) Lester J. Clark and Contributors. -->
+<!-- Licensed under the MIT License. -->
 <!-- LJCTextRanges.xml -->
 <items>
 	<!-- Class -->
@@ -32,7 +33,7 @@
 		<returns>The specified TextRange item.</returns>
 	</Get>
 
-	<!-- Public Other Methods -->
+	<!-- Public Methods -->
 	<IsInValue>
 		<summary>Determines if a delimiter is in a text value.</summary>
 		<param name="$index">The delimiter index.</param>
@@ -58,4 +59,14 @@
 		<returns>The left trimmed text.</returns>
 		<remarks>Potential Common function?</remarks>
 	</RemoveLeadingBlanks>
+  <VerifyValue>
+    <summary>Verify value does not contain an embeded delimiter.</summary>
+    <param name="$text"></param>
+    <param name="$endIndex"></param>
+    <remarks>
+      A field value must be immediately followed by the field delimiter or be at
+      the end of the string to be a valid value. Otherwise it contains an
+      embeded value delimiter.
+    </remarks>
+  </VerifyValue>
 </items>

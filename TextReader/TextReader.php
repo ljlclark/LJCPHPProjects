@@ -1,20 +1,29 @@
 <?php
-  // Copyright(c) Lester J. Clark and Contributors.
+  // Copyright (c) Lester J. Clark and Contributors.
   // Licensed under the MIT License.-->
   // TextReader.php
   declare(strict_types=1);
-  // Must refer to exact same file everywhere in codeline.
-  // Path: LJCPHPProjectsDev/TextReader
-  require_once "../LJCPHPCommon/LJCDBAccessLib.php";
+  // Path: Codeline/TextReader
   require_once "LJCTextReaderLib.php";
+  // LJCTextReaderLib: LJCTextReader
+
+  /// <summary>The LJCTextReader test program.</summary>
+  /// LibName: TextReader
+
+  // Instantiate properties with Pascal case.
+  $Debug = new LJCDebug("TextReader", "Main"
+    , "w", false);
+  $Debug->IncludePrivate = true;
+  $enabled = false;
+  $Debug->BeginMethod("SetConfig", $enabled);
 
   // Get parameters.
   parse_str(implode('&', array_slice($argv, 1)), $args);
   $fileSpec = $args["fileSpec"];
 
   $textReader = new LJCTextReader($fileSpec);
-  //$textReader->SetConfig("test.xml");
-  $textReader->SetConfig();
+  //$textReader->SetFieldConfig("test.xml");
+  $textReader->SetFieldConfig();
 
   while ($textReader->Read())
   {
@@ -27,6 +36,8 @@
       echo "$name->LastName\r\n";
     }
   }
+
+  $Debug->EndMethod($enabled);
 
   class Name
   {

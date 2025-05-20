@@ -32,6 +32,11 @@
     public static function GetDirective(string $line
       , string $commentChars) : ?LJCDirective
     {
+      $debug = new LJCDebug("LJCGenTextSectionLib", "LJCDirective"
+       , "w", false);
+      $enabled = false;
+      $debug->BeginMethod("GetDirective", $enabled);
+
       $enabled = false;
       if ($enabled)
       {
@@ -76,6 +81,8 @@
         $writer->FClose();
         //$debug->Close();
       }
+
+      $debug->EndMethod($enabled);
       return $retValue;
     }
 
@@ -318,6 +325,11 @@
     public static function CreateColumnData(LJCDbColumns $dbColumns
       , string $tableName, string $className = null) : LJCSections
     {
+      $debug = new LJCDebug("LJCGenTextSectionLib", "LJCSections"
+       , "w", false);
+      $enabled = false;
+      $debug->BeginMethod("CreateColumnData", $enabled);
+
       if ($className == null)
       {
         $className = $tableName;
@@ -347,8 +359,10 @@
         }
         self::AddReplacement($Item, "_PropertyName_", $propertyName);
       }
+
+      $debug->EndMethod($enabled);
       return $sections;
-    }
+    } // CreateColumnData()
 
     // Adds a Replacement to an Item.
     /// <include path='items/AddReplacement/*' file='Doc/LJCSections.xml'/>
@@ -363,29 +377,47 @@
     /// <include path='items/Deserialize/*' file='Doc/LJCSections.xml'/>
     public static function Deserialize(string $xmlFileSpec) : LJCSections
     {
+      $debug = new LJCDebug("LJCGenTextSectionLib", "LJCSections"
+       , "w", false);
+      $enabled = false;
+      $debug->BeginMethod("Deserialize", $enabled);
+      $retValue = null;
       $retValue = null;
 
       $xmlElement = simplexml_load_file($xmlFileSpec);
       $retValue = self::CreateSections($xmlElement);
+
+      $debug->EndMethod($enabled);
       return $retValue;
-    }
+    } // Deserialize()
 
     // Deserializes the data from a Sections XML string.
     /// <include path='items/DeserializeString/*' file='Doc/LJCSections.xml'/>
     public static function DeserializeString(string $xmlString) : LJCSections
     {
+      $debug = new LJCDebug("LJCGenTextSectionLib", "LJCSections"
+       , "w", false);
+      $enabled = false;
+      $debug->BeginMethod("DeserializeString", $enabled);
       $retValue = null;
 
       $xmlElement = simplexml_load_string($xmlString);
       $retValue = self::CreateSections($xmlElement);
+
+      $debug->EndMethod($enabled);
       return $retValue;
-    }
+    } // DeserializeString()
 
     // Creates the Section data from an XMLDoc node.
     /// <include path='items/CreateSections/*' file='Doc/LJCSections.xml'/>
     public static function CreateSections(SimpleXMLElement $xmlElement)
       : LJCSections
     {
+      $debug = new LJCDebug("LJCGenTextSectionLib", "LJCSections"
+       , "w", false);
+      $enabled = false;
+      $debug->BeginMethod("CreateSections", $enabled);
+
       $sections = new LJCSections();
       if ($xmlElement)
       {
@@ -421,6 +453,8 @@
           }
         }
       }
+
+      $debug->EndMethod($enabled);
       return $sections;	
     }
 
@@ -429,6 +463,11 @@
     public static function Serialize(string $xmlFile, LJCSections $sections
       , string $rootName) : void
     {
+      $debug = new LJCDebug("LJCGenTextSectionLib", "LJCSections"
+       , "w", false);
+      $enabled = false;
+      $debug->BeginMethod("Serialize", $enabled);
+
       $stream = fopen($xmlFile, "w");
       $writer = new LJCWriter($stream);
       $writer->FWriteLine("<?xml version=\"1.0\"?>");
@@ -466,6 +505,8 @@
       $writer->FWriteLine("</Sections>", 1);
       $writer->FWriteLine("</".$rootName.">");
       fclose($stream);
+
+      $debug->EndMethod($enabled);
     }
     // ---------------
     // Constructors

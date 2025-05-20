@@ -1,21 +1,20 @@
 <?php
-  // Copyright(c) Lester J. Clark and Contributors.
+  // Copyright (c) Lester J. Clark and Contributors.
   // Licensed under the MIT License.
   // LJCCollectionLib.php
   declare(strict_types=1);
-
-  // Classes
-  // File
-  //   LJCCollectionBase
+  // Path: Codeline/LJCPHPCommon
 
   // #02 Correct Syntac - 5/1/25
 
   /// <summary>Contains Classes to represent a Collection.</summary>
   /// LibName: LJCCollectionLib
+  // Classes: LJCCollectionBase
 
   // ***************
   // Represents a Collection of objects.
-  // Protected: AddItem(), DeleteItem(), 
+  // Protected: AddItem(), ClearItems(), DeleteItem(), RetrieveItem() 
+  // Methods: GetKeys(), GetValues(), HasKey(), Count()
   /// <include path='items/LJCCollectionBase/*' file='Doc/LJCCollectionBase.xml'/>
   class LJCCollectionBase implements IteratorAggregate, Countable
   {

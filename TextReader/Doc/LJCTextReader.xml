@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<!-- Copyright (c) Lester J. Clark 2022 - All Rights Reserved -->
+<!-- Copyright (c) Lester J. Clark and Contributors. -->
+<!-- Licensed under the MIT License. -->
 <!-- LJCTextReader.xml -->
 <items>
 	<LJCTextReader>
@@ -15,14 +16,15 @@
 		</summary>
 		<param name="$fileSpec">The text file specification.</param>
 	</construct>
-	<SetConfig>
+	<SetFieldConfig>
 		<summary>
-			Set the configuration.
+			Set the field configuration.
 		</summary>
 		<remarks>
-			This must be called after the delimiters have been set.
+			This must be called after the FieldDelimiter and ValueDelimiter values
+      have been set.
 		</remarks>
-	</SetConfig>
+	</SetFieldConfig>
 
 	<!-- Public Methods -->
 	<GetString>
@@ -30,12 +32,14 @@
 		<param name="$fieldName">The field name.</param>
 		<returns>The field value as a string.</returns>
 	</GetString>
-	<TrimCrLf>
+  
+  <!-- Private Methods -->
+	<TrimNewline>
 		<summary>
-			Remove the trailing cr/lf or lf without removing anything else.
+			Remove the trailing newline without removing anything else.
 		</summary>
 		<param name="$value">The text value.</param>
 		<returns>The trimmed text.</returns>
 		<remarks>Potential Common function?</remarks>
-	</TrimCrLf>
+	</TrimNewline>
 </items>
