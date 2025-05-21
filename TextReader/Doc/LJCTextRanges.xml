@@ -26,12 +26,12 @@
 		<param name="$key">The optional key value.</param>
 		<returns>The added TextRange item.</returns>
 	</AddObject>
-	<Get>
-		<summary>Get the item by Key value.</summary>
+  <Retrieve>
+		<summary>Retrieves the item by Key value.</summary>
 		<param name="$key">The item key.</param>
 		<param name="$throwError">Indicates if an error should be thrown.</param>
 		<returns>The specified TextRange item.</returns>
-	</Get>
+	</Retrieve>
 
 	<!-- Public Methods -->
 	<IsInValue>

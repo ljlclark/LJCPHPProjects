@@ -32,9 +32,9 @@
 		<param name="$key">The element key.</param>
 		<returns>The added item.</returns>
 		<code>
-      // Must refer to exact same file everywhere in codeline.
-      // Path: LJCPHPProjectsDev/GenDoc/LJCDocDataLib
-      require_once "../../LJCPHPCommon/LJCCollectionLib.php";
+      include_once "LJCRoot.php";
+      $prefix = RelativePrefix();
+      include_once "$prefix/LJCPHPCommon/LJCCollectionLib.php";
 
       // Add to class that extends LJCCollectionBase
       // Adds an object and key value.
@@ -54,9 +54,9 @@
     <param name="$key">The element key.</param>
     <param name="$throwError">Indicates if an error should be thrown if the key is not found.</param>
     <code>
-      // Must refer to exact same file everywhere in codeline.
-      // Path: LJCPHPProjectsDev/GenDoc/LJCDocDataLib
-      require_once "../../LJCPHPCommon/LJCCollectionLib.php";
+      include_once "LJCRoot.php";
+      $prefix = RelativePrefix();
+      include_once "$prefix/LJCPHPCommon/LJCCollectionLib.php";
 
       // $collection extends LJCCollectionBase
       $collection->Remove("KeyName");
@@ -68,16 +68,16 @@
 		<param name="$throwError">Indicates if an error should be thrown if the key is not found.</param>
 		<returns>The object with the matching key value.</returns>
 		<code>
-      // Must refer to exact same file everywhere in codeline.
-      // Path: LJCPHPProjectsDev/GenDoc/LJCDocDataLib
-      require_once "../../LJCPHPCommon/LJCCollectionLib.php";
+      include_once "LJCRoot.php";
+      $prefix = RelativePrefix();
+      include_once "$prefix/LJCPHPCommon/LJCCollectionLib.php";
 
       // Add to class that extends LJCCollectionBase
-      // Get the item by Key value.
-      public function Get($key)
+      // Retrieves the item by Key value.
+      public function Retrieve($key)
       {
-        $retValue = $this->&lt;b&gt;GetItem&lt;/b&gt;($key, $throwError);
-			   return $retValue;
+        $retValue = $this->&lt;b&gt;RetrieveItem&lt;/b&gt;($key, $throwError);
+			  return $retValue;
   	  }
 		</code>
 	</RetrieveItem>
@@ -86,9 +86,9 @@
 		<param name="$key">The element key.</param>
 		<returns>True if the key already exists, otherwise false.</returns>
 		<code>
-      // Must refer to exact same file everywhere in codeline.
-      // Path: LJCPHPProjectsDev/GenDoc/LJCDocDataLib
-      require_once "../../LJCPHPCommon/LJCCollectionLib.php";
+      include_once "LJCRoot.php";
+      $prefix = RelativePrefix();
+      include_once "$prefix/LJCPHPCommon/LJCCollectionLib.php";
 
 		  // $collection extends LJCCollectionBase
 		  $key = "KeyName";

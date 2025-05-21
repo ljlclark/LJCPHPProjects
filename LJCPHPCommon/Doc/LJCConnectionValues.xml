@@ -10,15 +10,15 @@
 		<param name="$userID">The user name.</param>
 		<param name="$password">The user Password.</param>
 		<code>
-      // Must refer to exact same file everywhere in codeline.
-      // Path: LJCPHPProjectsDev/GenDoc/LJCDocDataLib
-      require_once "../../LJCPHPCommon/LJCDBAccessLib.php";
+      include_once "LJCRoot.php";
+      $prefix = RelativePrefix();
+      include_once "$prefix/LJCPHPCommon/LJCDBAccessLib.php";
 
-		  $database = "DatabaseName";
-		  $userID = "UserID";
-		  $password = "Password":
-		  $connectionValues = new LJCConnectionValues("localhost", $database, $userID
-			  , $password);
-		</code>
+      $database = "DatabaseName";
+      $userID = "UserID";
+      $password = "Password":
+      $connectionValues = new LJCConnectionValues("localhost", $database, $userID
+      , $password);
+    </code>
 	</construct>
 </items>

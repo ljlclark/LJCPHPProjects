@@ -16,8 +16,9 @@
 		<param name="$line">The code line.</param>
 		<param name="$codeFileSpec">The code file spec.</param>
 		<code>
-      // Path: LJCPHPProjectsDev/GenDoc/DocDataLib
-      require_once "LJCCommentsLib.php";
+      include_once "LJCRoot.php";
+      $prefix = RelativePrefix();
+      include_once "$prefix/GenDoc/DocDataLib/LJCCommentsLib.php";
 
       $line = "/// &amp;lt;summary&amp;gt;A summary comment.&amp;lt;/summary&amp;gt;";
 			$comments = new LJCComments();

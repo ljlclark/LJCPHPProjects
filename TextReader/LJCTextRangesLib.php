@@ -134,17 +134,17 @@
       return $retValue;
     } // AddObject()
 
-    // Get the item by Key value.
+    // Retrieves the item by Key value.
     /// <include path='items/Get/*' file='Doc/LJCTextRanges.xml'/>
-    public function Get($key, bool $throwError = true) : ?LJCTextRange
+    public function Retrieve($key, bool $throwError = true) : ?LJCTextRange
     {
       $enabled = false;
-      $this->Debug->BeginMethod("Get", $enabled);
+      $this->Debug->BeginMethod("Retrieve", $enabled);
       $retValue = $this->GetItem($key, $throwError);
 
       $this->Debug->EndMethod($enabled);
       return $retValue;
-    } // Get()
+    } // Retrieve()
 
     // ---------------
     // Public Methods - LJCTextRanges

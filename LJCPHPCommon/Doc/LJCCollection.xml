@@ -8,8 +8,9 @@
 		<param name="$key">The element key.</param>
 		<returns>The added item.</returns>
 		<code>
-      // Path: LJCPHPProjectsDev/GenDoc/LJCDocDataLib
-      require_once "../../LJCPHPCommon/LJCCollectionLib.php";
+      include_once "LJCRoot.php";
+      $prefix = RelativePrefix();
+      include_once "$prefix/LJCPHPCommon/LJCCollectionLib.php";
 
       // Adds an object and key value.
       public function AddObject(ObjectItem $item, $key = null)
@@ -34,13 +35,14 @@
 		<param name="$throwError">Indicates if an error should be thrown if the key is not found.</param>
 		<returns>The object with the matching key value.</returns>
 		<code>
-      // Path: LJCPHPProjectsDev/GenDoc/LJCDocDataLib
-      require_once "../../LJCPHPCommon/LJCCollectionLib.php";
+      include_once "LJCRoot.php";
+      $prefix = RelativePrefix();
+      include_once "$prefix/LJCPHPCommon/LJCCollectionLib.php";
 
       // Get the item by Key value.
-      public function Get($key)
+      public function Retrieve($key)
       {
-        $retValue = $this->&lt;b&gt;GetItem&lt;/b&gt;($key, $throwError);
+        $retValue = $this->&lt;b&gt;RetrieveItem&lt;/b&gt;($key, $throwError);
 		    return $retValue;
 			}
 		</code>

@@ -52,9 +52,10 @@
 		<param name="$writeXML">Indicates if the XML file is to be written.</param>
 		<param name="$outputPath">The output path.</param>
 		<code>
-      // Path: LJCPHPProjectsDev/GenDoc/GenDataLib
-      require_once "../../GenDoc/DocDataLib/LJCDocDataGenLib.php";
-      require_once "LJCGenDataGenLib.php";
+      include_once "LJCRoot.php";
+      $prefix = RelativePrefix();
+      include_once "$prefix/GenDoc/DocDataLib/LJCDocDataGenLib.php";
+      include_once "$prefix/GenDoc/GenDataLib/LJCGenDataGenLib.php";
 
       $docDataGen = new LJCDocDataGen();
       $genDataGen = new LJCGenDataGen();
@@ -62,7 +63,7 @@
       $fileSpec = "SourceFile.php";
       $docXMLString = $this->DocDataGen->CreateDocXMLString($fileSpec);
       $genXMLString = $this->GenDataGen->CreateLibXMLString($docXMLString
-      , $fileSpec);
+        , $fileSpec);
     </code>
 	</CreateLibXMLString>
 	<!-- Private -->

@@ -23,9 +23,9 @@
 			Returns null if the element does not exist.
 		</remarks>
 		<code>
-      // Must refer to exact same file everywhere in codeline.
-      // Path: LJCPHPProjectsDev/GenDoc/LJCDocDataLib
-      require_once "../../LJCPHPCommon/LJCDBAccessLib.php";
+      include_once "LJCRoot.php";
+      $prefix = RelativePrefix();
+      include_once "$prefix/LJCPHPCommon/LJCDBAccessLib.php";
 
 		  // See constructor for how to create $connectionValues.
 		  $dbAccess = new LJCDbAccess($connectionValues);
@@ -43,9 +43,9 @@
 		<summary>Initializes a class instance.</summary>
 		<param name="$connectionValues">The Connection values.</param>
 		<code>
-      // Must refer to exact same file everywhere in codeline.
-      // Path: LJCPHPProjectsDev/GenDoc/LJCDocDataLib
-      require_once "../../LJCPHPCommon/LJCDBAccessLib.php";
+      include_once "LJCRoot.php";
+      $prefix = RelativePrefix();
+      include_once "$prefix/LJCPHPCommon/LJCDBAccessLib.php";
 
 		  $database = "DatabaseName";
 		  $userID = "UserID";
@@ -62,9 +62,9 @@
 		<param name="$sql">The SQL statement.</param>
 		<returns>The count of affected records.</returns>
 		<code>
-      // Must refer to exact same file everywhere in codeline.
-      // Path: LJCPHPProjectsDev/GenDoc/LJCDocDataLib
-      require_once "../../LJCPHPCommon/LJCDBAccessLib.php";
+      include_once "LJCRoot.php";
+      $prefix = RelativePrefix();
+      include_once "$prefix/LJCPHPCommon/LJCDBAccessLib.php";
 
 		  // See constructor for how to create $connectionValues.
 		  $dbAccess = new LJCDbAccess($connectionValues);
@@ -79,9 +79,9 @@
 		<param name="$sql">The SQL statement.</param>
 		<returns>An array of data records.</returns>
 		<code>
-      // Must refer to exact same file everywhere in codeline.
-      // Path: LJCPHPProjectsDev/GenDoc/LJCDocDataLib
-      require_once "../../LJCPHPCommon/LJCDBAccessLib.php";
+      include_once "LJCRoot.php";
+      $prefix = RelativePrefix();
+      include_once "$prefix/LJCPHPCommon/LJCDBAccessLib.php";
 
 		  // See constructor for how to create $connectionValues.
 		  $dbAccess = new LJCDbAccess($connectionValues);
@@ -96,9 +96,9 @@
 		<param name="$sql">The SQL statement.</param>
 		<returns>An array of record columns.</returns>
 		<code>
-      // Must refer to exact same file everywhere in codeline.
-      // Path: LJCPHPProjectsDev/GenDoc/LJCDocDataLib
-      require_once "../../LJCPHPCommon/LJCDBAccessLib.php";
+      include_once "LJCRoot.php";
+      $prefix = RelativePrefix();
+      include_once "$prefix/LJCPHPCommon/LJCDBAccessLib.php";
 
 		  // See constructor for how to create $connectionValues.
 		  $dbAccess = new LJCDbAccess($connectionValues);
@@ -114,9 +114,9 @@
 		<summary>Creates the PDO connection.</summary>
 		<returns>The PDO connection object.</returns>
 		<code>
-      // Must refer to exact same file everywhere in codeline.
-      // Path: LJCPHPProjectsDev/GenDoc/LJCDocDataLib
-      require_once "../../LJCPHPCommon/LJCDBAccessLib.php";
+      include_once "LJCRoot.php";
+      $prefix = RelativePrefix();
+      include_once "$prefix/LJCPHPCommon/LJCDBAccessLib.php";
 
 		  // See constructor for how to create $connectionValues.
 		  $dbAccess = new LJCDbAccess($connectionValues);
@@ -134,9 +134,9 @@
 		<param name="$tableName">The Table name.</param>
 		<returns>A DbColumns collection of column definitions.</returns>
 		<code>
-      // Must refer to exact same file everywhere in codeline.
-      // Path: LJCPHPProjectsDev/GenDoc/LJCDocDataLib
-      require_once "../../LJCPHPCommon/LJCDBAccessLib.php";
+      include_once "LJCRoot.php";
+      $prefix = RelativePrefix();
+      include_once "$prefix/LJCPHPCommon/LJCDBAccessLib.php";
 
 		  // See constructor for how to create $connectionValues.
 		  $dbAccess = new LJCDbAccess($connectionValues);
@@ -156,9 +156,9 @@
 		<param name="$userID">The user name.</param>
 		<param name="$password">The user Password.</param>
 		<code>
-      // Must refer to exact same file everywhere in codeline.
-      // Path: LJCPHPProjectsDev/GenDoc/LJCDocDataLib
-      require_once "../../LJCPHPCommon/LJCDBAccessLib.php";
+      include_once "LJCRoot.php";
+      $prefix = RelativePrefix();
+      include_once "$prefix/LJCPHPCommon/LJCDBAccessLib.php";
 
 		  // See constructor for how to create $connectionValues.
 		  $dbAccess = new LJCDbAccess($connectionValues);

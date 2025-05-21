@@ -9,8 +9,9 @@
     <param name="$indent">The number of tabs to add to the line beginning.</param>
     <param name="$addBreak">Adds an HTML break before the cr/lf.</param>
     <code>
-      // Path: LJCPHPProjectsDev/LJCPHPCommon
-      require_once "LJCTextLib.php";
+      include_once "LJCRoot.php";
+      $prefix = RelativePrefix();
+      include_once "$prefix/LJCPHPCommon/LJCTextLib.php";
 
       $builder = new StringBuilder();
       $builder->AppendLine("First");
@@ -28,8 +29,9 @@
 		<param name="$indent">The number of tabs to add to the line beginning.</param>
 		<param name="$addBreak">Adds an HTML break before the cr/lf.</param>
 		<code>
-      // Path: LJCPHPProjectsDev/LJCPHPCommon
-      require_once "LJCTextLib.php";
+      include_once "LJCRoot.php";
+      $prefix = RelativePrefix();
+      include_once "$prefix/LJCPHPCommon/LJCTextLib.php";
 
       $builder = new StringBuilder();
       $builder->Append("First ");
@@ -46,8 +48,9 @@
 		<param name="$indent">The number of tabs to add to the line beginning.</param>
 		<param name="$addBreak">Adds an HTML break before the cr/lf.</param>
 		<code>
-      // Path: LJCPHPProjectsDev/LJCPHPCommon
-      require_once "LJCTextLib.php";
+      include_once "LJCRoot.php";
+      $prefix = RelativePrefix();
+      include_once "$prefix/LJCPHPCommon/LJCTextLib.php";
 
       $builder = new StringBuilder();
       $builder->AppendTags("First", "FirstValue", 0, true);
@@ -55,8 +58,8 @@
 
       // $text =
       // &amp;lt;First&amp;gt;FirstValue&amp;lt;/First&amp;gt;&amp;lt;br /&amp;gt;
-		 //   &amp;lt;Second&amp;gt;SecondValue&amp;lt;/Second&amp;gt;&amp;lt;br /&amp;gt;
-		 $text = $builder->ToString();
+		  //   &amp;lt;Second&amp;gt;SecondValue&amp;lt;/Second&amp;gt;&amp;lt;br /&amp;gt;
+		  $text = $builder->ToString();
 		</code>
 	</Tags>
 </items>

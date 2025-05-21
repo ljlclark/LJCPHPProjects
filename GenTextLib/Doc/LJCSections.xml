@@ -28,10 +28,10 @@
 		<param name="$className">The Class name.</param>
 		<returns>The sections array.</returns>
 		<code>
-      // Must refer to exact same file everywhere in codeline.
-      // Path: LJCPHPProjectsDev/GenDoc/LJCDocDataLib
-      require_once "../../LJCPHPCommon/LJCDBAccessLib.php";
-      require_once "../../GenTextLib/LJCGenTextSectionLib.php";
+      include_once "LJCRoot.php";
+      $prefix = RelativePrefix();
+      include_once "$prefix/LJCPHPCommon/LJCDBAccessLib.php";
+      include_once "$prefix/GenTextLib/LJCGenTextSectionLib.php";
 
       $dbAccess = new LJCDbAccess($connectionValues);
 
@@ -49,9 +49,9 @@
 		<param name="$name">The Replacement name.</param>
 		<param name="$value">The Replacement value.</param>
 		<code>
-      // Must refer to exact same file everywhere in codeline.
-      // Path: LJCPHPProjectsDev/GenDoc/LJCDocDataLib
-      require_once "../../GenTextLib/LJCGenTextSectionLib.php";
+      include_once "LJCRoot.php";
+      $prefix = RelativePrefix();
+      include_once "$prefix/GenTextLib/LJCGenTextSectionLib.php";
 
       $sections = new LJCSections();
       $section = new LJCSection("SectionName");
@@ -91,9 +91,9 @@
 				&amp;lt;/Sections&amp;gt;
 			&amp;lt;/Data&amp;gt;
 
-      // Must refer to exact same file everywhere in codeline.
-      // Path: LJCPHPProjectsDev/GenDoc/LJCDocDataLib
-      require_once "../../GenTextLib/LJCGenTextSectionLib.php";
+      include_once "LJCRoot.php";
+      $prefix = RelativePrefix();
+      include_once "$prefix/GenTextLib/LJCGenTextSectionLib.php";
 
       // $sections is an LJCSections object.
       $sections = LJCSections::Deserialize("Sections.xml");
@@ -104,9 +104,9 @@
 		<param name="$xmlString">The XMLDoc node.</param>
 		<returns>The Sections object.</returns>
 		<code>
-      // Must refer to exact same file everywhere in codeline.
-      // Path: LJCPHPProjectsDev/GenDoc/LJCDocDataLib
-      require_once "../../GenTextLib/LJCGenTextSectionLib.php";
+      include_once "LJCRoot.php";
+      $prefix = RelativePrefix();
+      include_once "$prefix/GenTextLib/LJCGenTextSectionLib.php";
 
       $sections = LJCSections::DeserializeString($xmlstring);
     </code>
@@ -116,9 +116,9 @@
 		<param name="$xmlElement">The root Element.</param>
 		<returns>The sections array.</returns>
 		<code>
-      // Must refer to exact same file everywhere in codeline.
-      // Path: LJCPHPProjectsDev/GenDoc/LJCDocDataLib
-      require_once "../../GenTextLib/LJCGenTextSectionLib.php";
+      include_once "LJCRoot.php";
+      $prefix = RelativePrefix();
+      include_once "$prefix/GenTextLib/LJCGenTextSectionLib.php";
 
       $xmlElement = simplexml_load_file("Sections.xml");
       $sections = LJCSections::CreateSections($xmlElement);
@@ -130,9 +130,9 @@
 		<param name="$sections">The sections array.</param>
 		<param name="$rootName">The XML root name.</param>
 		<code>
-      // Must refer to exact same file everywhere in codeline.
-      // Path: LJCPHPProjectsDev/GenDoc/LJCDocDataLib
-      require_once "../../GenTextLib/LJCGenTextSectionLib.php";
+      include_once "LJCRoot.php";
+      $prefix = RelativePrefix();
+      include_once "$prefix/GenTextLib/LJCGenTextSectionLib.php";
 
       LJCSections::Serialize("Sections.xml", $sections);
     </code>
@@ -144,19 +144,19 @@
     <param name="$key">The element key.</param>
     <returns>True if the key already exists, otherwise false.</returns>
     <code>
-      // Must refer to exact same file everywhere in codeline.
-      // Path: LJCPHPProjectsDev/GenDoc/LJCDocDataLib
-      require_once "../../GenTextLib/LJCGenTextSectionLib.php";
+      include_once "LJCRoot.php";
+      $prefix = RelativePrefix();
+      include_once "$prefix/GenTextLib/LJCGenTextSectionLib.php";
 
       $sections = new LJCSections();
       $key = "SectionName";
       if ($sections->HasKey($key))
       {
-      throw new Exception("Key: {$key} already in use.");
+        throw new Exception("Key: {$key} already in use.");
       }
       else
       {
-      $section = new LJCSection($key);
+        $section = new LJCSection($key);
       }
     </code>
   </HasKey>
@@ -168,9 +168,9 @@
 		<param name="$key">The element key.</param>
 		<returns>The added item.</returns>
 		<code>
-      // Must refer to exact same file everywhere in codeline.
-      // Path: LJCPHPProjectsDev/GenDoc/LJCDocDataLib
-      require_once "../../GenTextLib/LJCGenTextSectionLib.php";
+      include_once "LJCRoot.php";
+      $prefix = RelativePrefix();
+      include_once "$prefix/GenTextLib/LJCGenTextSectionLib.php";
 
       $sections = new LJCSections();
       $section = new LJCSection("SectionName");
@@ -183,9 +183,9 @@
 		<param name="$throwError">Indicates if an error should be thrown if the key is not found.</param>
 		<returns>The object with the matching key value.</returns>
 		<code>
-      // Must refer to exact same file everywhere in codeline.
-      // Path: LJCPHPProjectsDev/GenDoc/LJCDocDataLib
-      require_once "../../GenTextLib/LJCGenTextSectionLib.php";
+      include_once "LJCRoot.php";
+      $prefix = RelativePrefix();
+      include_once "$prefix/GenTextLib/LJCGenTextSectionLib.php";
 
       $sections = new LJCSections();
       $section = new LJCSection("SectionName");

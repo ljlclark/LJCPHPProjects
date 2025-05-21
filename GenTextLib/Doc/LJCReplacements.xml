@@ -7,9 +7,9 @@
     <param name="$key">The element key.</param>
     <returns>True if the key already exists, otherwise false.</returns>
     <code>
-      // Must refer to exact same file everywhere in codeline.
-      // Path: LJCPHPProjectsDev/GenDoc/LJCDocDataLib
-      require_once "../../GenTextLib/LJCGenTextSectionLib.php";
+      include_once "LJCRoot.php";
+      $prefix = RelativePrefix();
+      include_once "$prefix/GenTextLib/LJCGenTextSectionLib.php";
 
       $replacements = new LJCReplacements();
       $key = "ReplacementName";
@@ -31,9 +31,9 @@
     <param name="$key">The element key.</param>
     <returns>The added item.</returns>
     <code>
-      // Must refer to exact same file everywhere in codeline.
-      // Path: LJCPHPProjectsDev/GenDoc/LJCDocDataLib
-      require_once "../../GenTextLib/LJCGenTextSectionLib.php";
+      include_once "LJCRoot.php";
+      $prefix = RelativePrefix();
+      include_once "$prefix/GenTextLib/LJCGenTextSectionLib.php";
 
       $replacements = new LJCReplacements();
       $replacement = new LJCReplacement("ReplacementName");
@@ -46,9 +46,9 @@
     <param name="$throwError">Indicates if an error should be thrown if the key is not found.</param>
     <returns>The object with the matching key value.</returns>
     <code>
-      // Must refer to exact same file everywhere in codeline.
-      // Path: LJCPHPProjectsDev/GenDoc/LJCDocDataLib
-      require_once "../../GenTextLib/LJCGenTextSectionLib.php";
+      include_once "LJCRoot.php";
+      $prefix = RelativePrefix();
+      include_once "$prefix/GenTextLib/LJCGenTextSectionLib.php";
 
       $replacements = new LJCReplacements();
       $replacement = new LJCReplacement("ReplacementName");

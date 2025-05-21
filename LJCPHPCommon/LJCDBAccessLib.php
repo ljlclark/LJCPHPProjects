@@ -454,13 +454,6 @@
       return $retValue;
     } // Clone()
 
-    // Get the item by Key value.
-    // Obsolete: Use Retrieve().
-    public function Get($key, bool $throwError = true) : ?LJCDbColumn
-    {
-      return $this->Retrieve($key, $throwError);
-    } // Get()
-
     // Get the column definitions that match the property names.
     /// <include path='items/GetColumns/*' file='Doc/LJCDbColumns.xml'/>
     public function GetColumns(array $propertyNames = null) : self
@@ -517,8 +510,8 @@
       $this->Debug->EndMethod($enabled);
     } // MapNames()
 
-    // Get the item by Key value.
-    /// <include path='items/Get/*' file='Doc/LJCDbColumns.xml'/>
+    // Retrieves the item by Key value.
+    /// <include path='items/Retrieve/*' file='Doc/LJCDbColumns.xml'/>
     public function Retrieve($key, bool $throwError = true) : ?LJCDbColumn
     {
       $enabled = false;
@@ -679,15 +672,8 @@
       return $retValue;
     } // Clone()
 
-    // Get the item by Key value.
-    // Obsolete: Use Retrieve().
-    public function Get($key, bool $throwError = true) : ?LJCJoin
-    {
-      return $this->Retrieve($key, $throwError);
-    } // Get()
-
-    // Get the item by Key value.
-    /// <include path='items/Get/*' file='Doc/LJCJoins.xml'/>
+    // Retrieves the item by Key value.
+    /// <include path='items/Retrieve/*' file='Doc/LJCJoins.xml'/>
     public function Retrieve($key, bool $throwError = true) : ?LJCJoin
     {
       $enabled = false;
@@ -826,15 +812,8 @@
       return $retValue;
     } // Clone()
 
-    // Get the item by Key value.
-    // Obsolete: Use Retrieve().
-    public function Get($key, bool $throwError = true) : ?LJCJoinOn
-    {
-      return $this.Retrieve($key,$throwError);
-    } // Get()
-
-    // Get the item by Key value.
-    /// <include path='items/Get/*' file='Doc/LJCJoinOns.xml'/>
+    // Retrieves the item by Key value.
+    /// <include path='items/Retrieve/*' file='Doc/LJCJoinOns.xml'/>
     public function Retrieve($key, bool $throwError = true) : ?LJCJoinOn
     {
       $enabled = false;

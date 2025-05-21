@@ -36,8 +36,9 @@
 		<param name="$outputPath">The output path.</param>
 		<returns>The DocData XML string.</returns>
 		<code>
-      // Path: LJCPHPProjectsDev/GenDoc/DocDataLib
-      require_once "LJCDocDataGenLib.php";
+      include_once "LJCRoot.php";
+      $prefix = RelativePrefix();
+      include_once "$prefix/GenDoc/DocDataLib/LJCDocDataGenLib.php";
 
       $docDataGen = new LJCDocDataGen();
       $xmlString = $docDataGen->CreateDocDataXMLString("SourceFile.php");

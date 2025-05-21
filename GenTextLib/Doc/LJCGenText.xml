@@ -8,10 +8,10 @@
 		<param name="$templateFileSpec">The template file.</param>
 		<param name="$sections">The data sections.</param>
 		<code>
-      // Must refer to exact same file everywhere in codeline.
-      // Path: LJCPHPProjectsDev/GenDoc/LJCDocDataLib
-      require_once "../../LJCGenTextLib.php";
-      require_once "../../LJCGenTextSectionLib.php";
+      include_once "LJCRoot.php";
+      $prefix = RelativePrefix();
+      include_once "$prefix/GenTextLib/LJCGenTextLib.php";
+      include_once "$prefix/GenTextLib/LJCGenTextSectionLib.php";
 
       // $sections is an LJCSections object.
       $sections = LJCSections::Deserialize("Sections.xml");

@@ -59,9 +59,9 @@
     <param name="$commentChars">The line comment chars.</param>
     <returns>The LJCDirective object or null.</returns>
     <code>
-      // Must refer to exact same file everywhere in codeline.
-      // Path: LJCPHPProjectsDev/GenDoc/LJCDocDataLib
-      require_once "../../GenTextLib/LJCGenTextSectionLib.php";
+      include_once "LJCRoot.php";
+      $prefix = RelativePrefix();
+      include_once "$prefix/GenTextLib/LJCGenTextSectionLib.php";
 
       $line = "  // #SectionBegin Class
       $commentChars = "//";
@@ -103,9 +103,9 @@
     <param name="$type">The Directive Type.</param>
     <param name="$name">The Directive name.</param>
     <code>
-      // Must refer to exact same file everywhere in codeline.
-      // Path: LJCPHPProjectsDev/GenDoc/LJCDocDataLib
-      require_once "../../GenTextLib/LJCGenTextSectionLib.php";
+      include_once "LJCRoot.php";
+      $prefix = RelativePrefix();
+      include_once "$prefix/GenTextLib/LJCGenTextSectionLib.php";
 
       $directive = new LJCDirective("SectionBegin", "Class");
     </code>

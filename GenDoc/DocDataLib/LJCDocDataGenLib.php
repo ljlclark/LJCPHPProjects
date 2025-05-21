@@ -405,7 +405,8 @@
       $this->Debug->BeginPrivateMethod("ProcessFunction", $enabled);
 
       $classes = $this->DocDataFile->Classes;
-      $class = $classes->Get($this->ClassName);
+      //$class = $classes->Get($this->ClassName);
+      $class = $classes->Retrieve($this->ClassName);
       $methods = $class->Methods;
       if (null == $methods)
       {
@@ -502,7 +503,8 @@
       $this->Debug->BeginPrivateMethod("ProcessProperty", $enabled);
 
       $classes = $this->DocDataFile->Classes;
-      $class = $classes->Get($this->ClassName);
+      //$class = $classes->Get($this->ClassName);
+      $class = $classes->Retrieve($this->ClassName);
       $properties = $class->Properties;
       if (null == $properties)
       {

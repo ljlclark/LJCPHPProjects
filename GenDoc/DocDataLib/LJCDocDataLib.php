@@ -106,7 +106,7 @@
   } // LJCDocDataClass
 
   // ***************
-  // Public: Clone(), AddObject(), Get()
+  // Public: Clone(), AddObject(), Retrieve()
   /// <summary>Represents a collection of objects.</summary>
   class LJCDocDataClasses extends LJCCollectionBase
   {
@@ -157,18 +157,18 @@
       return $retValue;
     } // AddObject()
 
-    // <summary>Get the item by Key value.</summary>
-    /// <include path='items/Get/*' file='../../CommonDoc/PHPCollection.xml'/>
-    public function Get($key, bool $throwError = true) : ?LJCDocDataClass
+    // <summary>Retrieves the item by Key value.</summary>
+    /// <include path='items/Retrieve/*' file='../../CommonDoc/PHPCollection.xml'/>
+    public function Retrieve($key, bool $throwError = true) : ?LJCDocDataClass
     {
       $enabled = false;
-      $this->Debug->BeginMethod("Get", $enabled);
+      $this->Debug->BeginMethod("Retrieve", $enabled);
 
       $retValue = $this->RetrieveItem($key, $throwError);
 
       $this->Debug->EndMethod($enabled);
       return $retValue;
-    } // Get()
+    } // Retrieve()
   } // LJCDocDataClasses
 
   // ***************
@@ -675,7 +675,7 @@
   } // LJCDocDataMethod
 
   // ***************
-  // Public: Clone(), AddObject(), Get()
+  // Public: Clone(), AddObject(), Retrieve()
   /// <summary>Represents a collection of objects.</summary>
   class LJCDocDataMethods extends LJCCollectionBase
   {
@@ -729,18 +729,18 @@
       return $retValue;
     } // AddObject()
 
-    // <summary>Get the item by Key value.</summary>
-    /// <include path='items/Get/*' file='../../CommonDoc/PHPCollection.xml'/>
-    public function Get($key, bool $throwError = true) : ?LJCDocDataMethod
+    // <summary>Retrieves the item by Key value.</summary>
+    /// <include path='items/Retrieve/*' file='../../CommonDoc/PHPCollection.xml'/>
+    public function Retrieve($key, bool $throwError = true) : ?LJCDocDataMethod
     {
       $enabled = false;
-      $this->Debug->BeginMethod("Get", $enabled);
+      $this->Debug->BeginMethod("Retrieve", $enabled);
 
       $retValue = $this->RetrieveItem($key, $throwError);
 
       $this->Debug->EndMethod($enabled);
       return $retValue;
-    } // Get()
+    } // Retrieve()
   } // LJCDocDataMethods
 
   // ***************
@@ -787,7 +787,7 @@
   } // LJCDocDataParam
 
   // ***************
-  // Public: Clone(), AddObject(), Get()
+  // Public: Clone(), AddObject(), Retrieve()
   /// <summary>Represents a collection of objects.</summary>
   class LJCDocDataParams extends LJCCollectionBase
   {
@@ -841,18 +841,18 @@
       return $retValue;
     } // AddObject()
 
-    /// <summary>Get the item by Key value.</summary>
-    /// <include path='items/Get/*' file='../../CommonDoc/PHPCollection.xml'/>
-    public function Get($key, bool $throwError = true) : ?LJCDocDataParam
+    /// <summary>Retrieves the item by Key value.</summary>
+    /// <include path='items/Retrieve/*' file='../../CommonDoc/PHPCollection.xml'/>
+    public function Retrieve($key, bool $throwError = true) : ?LJCDocDataParam
     {
       $enabled = false;
-      $this->Debug->BeginMethod("Get", $enabled);
+      $this->Debug->BeginMethod("Retrieve", $enabled);
 
       $retValue = $this->RetrieveItem($key, $throwError);
 
       $this->Debug->EndMethod($enabled);
       return $retValue;
-    } // Get()
+    } // Retrieve()
   } // LJCDocDataParams
 
   // ***************
@@ -913,7 +913,7 @@
   } // LJCDocDataProperty
 
   // ***************
-  // Public: Clone(), AddObject(), Get()
+  // Public: Clone(), AddObject(), Retrieve()
   /// <summary>Represents a collection of objects.</summary>
   class LJCDocDataProperties extends LJCCollectionBase
   {
@@ -967,17 +967,17 @@
       return $retValue;
     } // AddObject()
 
-    // <summary>Get the item by Key value.</summary>
-    /// <include path='items/Get/*' file='../../CommonDoc/PHPCollection.xml'/>
-    public function Get($key, bool $throwError = true) : ?LJCDocDataProperty
+    // <summary>Retrieves the item by Key value.</summary>
+    /// <include path='items/Retrieve/*' file='../../CommonDoc/PHPCollection.xml'/>
+    public function Retrieve($key, bool $throwError = true) : ?LJCDocDataProperty
     {
       $enabled = false;
-      $this->Debug->BeginMethod("Get", $enabled);
+      $this->Debug->BeginMethod("Retrieve", $enabled);
 
       $retValue = $this->RetrieveItem($key, $throwError);
 
       $this->Debug->EndMethod($enabled);
       return $retValue;
-    } // Get()
+    } // Retrieve()
   } // LJCDocDataProperties
 ?>

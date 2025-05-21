@@ -18,9 +18,9 @@
 			simply tested for success $index &gt;= 0 or failure $index &lt; 0.
 		</remarks>
 		<code>
-      // Must refer to exact same file everywhere in codeline.
-      // Path: LJCPHPProjectsDev/GenDoc/LJCDocDataLib
-      require_once "../../LJCPHPCommon/LJCCollectionLib.php";
+      include_once "LJCRoot.php";
+      $prefix = RelativePrefix();
+      include_once "$prefix/LJCPHPCommon/LJCCollectionLib.php";
 
 		  // $index = 5
 		  $index = LJCCommon::StrPos("This here.", "Here");
@@ -44,9 +44,9 @@
 			This alternative for PHP strpos() always returns an integer.
 		</remarks>
 		<code>
-      // Must refer to exact same file everywhere in codeline.
-      // Path: LJCPHPProjectsDev/GenDoc/LJCDocDataLib
-      require_once "../../LJCPHPCommon/LJCCollectionLib.php";
+      include_once "LJCRoot.php";
+      $prefix = RelativePrefix();
+      include_once "$prefix/LJCPHPCommon/LJCCollectionLib.php";
 
 		  // $index = 13
 		  $index = LJCCommon::StrRPos("This here is here.", "Here");
@@ -90,9 +90,9 @@
 			or not found.
 		</remarks>
 		<code>
-      // Must refer to exact same file everywhere in codeline.
-      // Path: LJCPHPProjectsDev/GenDoc/LJCDocDataLib
-      require_once "../../LJCPHPCommon/LJCCollectionLib.php";
+      include_once "LJCRoot.php";
+      $prefix = RelativePrefix();
+      include_once "$prefix/LJCPHPCommon/LJCCollectionLib.php";
 
 		  // $text = "here"
 		  $text = LJCCommon::GetDelimitedString("This | here |.", "|", "|");
@@ -109,9 +109,9 @@
 			Includes to the end of the string if the "." is not found.
 		</remarks>
 		<code>
-      // Must refer to exact same file everywhere in codeline.
-      // Path: LJCPHPProjectsDev/GenDoc/LJCDocDataLib
-      require_once "../../LJCPHPCommon/LJCCollectionLib.php";
+      include_once "LJCRoot.php";
+      $prefix = RelativePrefix();
+      include_once "$prefix/LJCPHPCommon/LJCCollectionLib.php";
 
 		  // $text = "File"
 		  $text = LJCCommon::GetFileName("../Folder/File.txt");
@@ -125,9 +125,9 @@
 			Parses to the last "/".
 		</remarks>
 		<code>
-      // Must refer to exact same file everywhere in codeline.
-      // Path: LJCPHPProjectsDev/GenDoc/LJCDocDataLib
-      require_once "../../LJCPHPCommon/LJCCollectionLib.php";
+      include_once "LJCRoot.php";
+      $prefix = RelativePrefix();
+      include_once "$prefix/LJCPHPCommon/LJCCollectionLib.php";
 
 		  // $text = "../Folder"
 		  $text = LJCCommon::GetFileSpecPath("../Folder/File.txt");
@@ -149,9 +149,9 @@
 			index value of 1.
 		</remarks>
 		<code>
-      // Must refer to exact same file everywhere in codeline.
-      // Path: LJCPHPProjectsDev/GenDoc/LJCDocDataLib
-      require_once "../../LJCPHPCommon/LJCCollectionLib.php";
+      include_once "LJCRoot.php";
+      $prefix = RelativePrefix();
+      include_once "$prefix/LJCPHPCommon/LJCCollectionLib.php";
 
 		  // $debugFileSpec = "Debug\SourceFile1.txt"
 		  $debugFileSpec = LJCCommon::GetIndexedDebugFileName("Debug"
@@ -167,9 +167,9 @@
 			entities.
 		</remarks>
 		<code>
-      // Must refer to exact same file everywhere in codeline.
-      // Path: LJCPHPProjectsDev/GenDoc/LJCDocDataLib
-      require_once "../../LJCPHPCommon/LJCCollectionLib.php";
+      include_once "LJCRoot.php";
+      $prefix = RelativePrefix();
+      include_once "$prefix/LJCPHPCommon/LJCCollectionLib.php";
 
 		  // $text = "&amp;amp;lt;tag&amp;amp;gt;"
 		  $text = LJCCommon::Scrub(" &amp;lt;/tag&amp;gt; ");
@@ -181,9 +181,9 @@
 		<param name="$value">The session value.</param>
 		<returns>The session value.</returns>
 		<code>
-      // Must refer to exact same file everywhere in codeline.
-      // Path: LJCPHPProjectsDev/GenDoc/LJCDocDataLib
-      require_once "../../LJCPHPCommon/LJCCollectionLib.php";
+      include_once "LJCRoot.php";
+      $prefix = RelativePrefix();
+      include_once "$prefix/LJCPHPCommon/LJCCollectionLib.php";
 
 		  // $dbServer = "localhost"
 		  $dbServer = LJCCommon::SetSessionValue("dbServer", "localhost");

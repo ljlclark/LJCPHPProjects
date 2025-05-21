@@ -30,16 +30,16 @@
 		<param name="$connectionValues">The DB Connection values.</param>
 		<param name="$tableName">The table name.</param>
 		<code>
-      // Must refer to exact same file everywhere in codeline.
-      // Path: LJCPHPProjectsDev/GenDoc/LJCDocDataLib
-      require_once "../../LJCPHPCommon/LJCDataManagerLib.php";
-      require_once "../../LJCPHPCommon/LJCDBAccessLib.php";
+      include_once "LJCRoot.php";
+      $prefix = RelativePrefix();
+      include_once "$prefix/LJCPHPCommon/LJCDataManagerLib.php";
+      include_once "$prefix/LJCPHPCommon/LJCDBAccessLib.php";
 
       $database = "DatabaseName";
       $userID = "UserID";
       $password = "Password":
       $connectionValues = new LJCConnectionValues("localhost", $database, $userID
-       , $password);
+        , $password);
 
       $tableName = "TableName";
       $manager = new LJCDataManager($connectionValues, $tableName);
@@ -56,10 +56,10 @@
 			parameter to insert a record into the database.
 		</remarks>
 		<code>
-      // Must refer to exact same file everywhere in codeline.
-      // Path: LJCPHPProjectsDev/GenDoc/LJCDocDataLib
-      require_once "../../LJCPHPCommon/LJCDataManagerLib.php";
-      require_once "../../LJCPHPCommon/LJCDBAccessLib.php";
+      include_once "LJCRoot.php";
+      $prefix = RelativePrefix();
+      include_once "$prefix/LJCPHPCommon/LJCDataManagerLib.php";
+      include_once "$prefix/LJCPHPCommon/LJCDBAccessLib.php";
 
 		  // See constructor for how to create $connectionValues.
 		  $tableName = "TableName";
@@ -94,10 +94,10 @@
 			or the Delete will not be executed.
 		</remarks>
 		<code>
-      // Must refer to exact same file everywhere in codeline.
-      // Path: LJCPHPProjectsDev/GenDoc/LJCDocDataLib
-      require_once "../../LJCPHPCommon/LJCDataManagerLib.php";
-      require_once "../../LJCPHPCommon/LJCDBAccessLib.php";
+      include_once "LJCRoot.php";
+      $prefix = RelativePrefix();
+      include_once "$prefix/LJCPHPCommon/LJCDataManagerLib.php";
+      include_once "$prefix/LJCPHPCommon/LJCDBAccessLib.php";
 
 		  // See constructor for how to create $connectionValues.
 		  $tableName = "TableName";
@@ -128,10 +128,10 @@
 			null.
 		</remarks>
 		<code>
-      // Must refer to exact same file everywhere in codeline.
-      // Path: LJCPHPProjectsDev/GenDoc/LJCDocDataLib
-      require_once "../../LJCPHPCommon/LJCDataManagerLib.php";
-      require_once "../../LJCPHPCommon/LJCDBAccessLib.php";
+      include_once "LJCRoot.php";
+      $prefix = RelativePrefix();
+      include_once "$prefix/LJCPHPCommon/LJCDataManagerLib.php";
+      include_once "$prefix/LJCPHPCommon/LJCDBAccessLib.php";
 
 		  // See constructor for how to create $connectionValues.
 		  $tableName = "TableName";
@@ -165,10 +165,10 @@
 			null.
 		</remarks>
 		<code>
-      // Must refer to exact same file everywhere in codeline.
-      // Path: LJCPHPProjectsDev/GenDoc/LJCDocDataLib
-      require_once "../../LJCPHPCommon/LJCDataManagerLib.php";
-      require_once "../../LJCPHPCommon/LJCDBAccessLib.php";
+      include_once "LJCRoot.php";
+      $prefix = RelativePrefix();
+      include_once "$prefix/LJCPHPCommon/LJCDataManagerLib.php";
+      include_once "$prefix/LJCPHPCommon/LJCDBAccessLib.php";
 
 		  // See constructor for how to create $connectionValues.
 		  $tableName = "TableName";
@@ -206,10 +206,10 @@
 			or the Update will not be executed.
 		</remarks>
 		<code>
-      // Must refer to exact same file everywhere in codeline.
-      // Path: LJCPHPProjectsDev/GenDoc/LJCDocDataLib
-      require_once "../../LJCPHPCommon/LJCDataManagerLib.php";
-      require_once "../../LJCPHPCommon/LJCDBAccessLib.php";
+      include_once "LJCRoot.php";
+      $prefix = RelativePrefix();
+      include_once "$prefix/LJCPHPCommon/LJCDataManagerLib.php";
+      include_once "$prefix/LJCPHPCommon/LJCDBAccessLib.php";
 
 		  // See constructor for how to create $connectionValues.
 		  $tableName = "TableName";
@@ -273,9 +273,9 @@
 			The DataObject must supply a Clone() method.
 		</remarks>
 		<code>
-      // Must refer to exact same file everywhere in codeline.
-      // Path: LJCPHPProjectsDev/GenDoc/LJCDocDataLib
-      require_once "../../LJCPHPCommon/LJCDataManagerLib.php";
+      include_once "LJCRoot.php";
+      $prefix = RelativePrefix();
+      include_once "$prefix/LJCPHPCommon/LJCDataManagerLib.php";
 
 		  // See constructor for how to create $connectionValues.
 		  $manager = new LJCDataManager($connectionValues, "TableName");
@@ -311,9 +311,9 @@
 			property names in the DataObject.
 		</remarks>
 		<code>
-      // Must refer to exact same file everywhere in codeline.
-      // Path: LJCPHPProjectsDev/GenDoc/LJCDocDataLib
-      require_once "../../LJCPHPCommon/LJCDBAccessLib.php";
+      include_once "LJCRoot.php";
+      $prefix = RelativePrefix();
+      include_once "$prefix/LJCPHPCommon/LJCDBAccessLib.php";
 
 		  // See constructor for how to create $connectionValues.
 		  $manager = new LJCDataManager($connectionValues, "TableName");

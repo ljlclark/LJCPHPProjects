@@ -54,7 +54,9 @@
 		<param name="$xmlFileSpec">The source XML file specification.</param>
 		<returns>The LJCDocDataFile object.</returns>
 		<code>
-			require_once "LJCDocDataLib.php";
+      include_once "LJCRoot.php";
+      $prefix = RelativePrefix();
+			include_once "$prefix/GenDoc/DocDataLib/LJCDocDataLib.php";
 
 			$docDataFile = LJCDocDataFile::Deserialize("DocData.xml");
 		</code>
@@ -64,8 +66,9 @@
 		<param name="$xmlString">The XML string.</param>
 		<returns>The LJCDocDataFile object.</returns>
 		<code>
-      // Path: LJCPHPProjectsDev/GenDoc/DocDataLib
-      require_once "LJCDocDataLib.php";
+      include_once "LJCRoot.php";
+      $prefix = RelativePrefix();
+			include_once "$prefix/GenDoc/DocDataLib/LJCDocDataLib.php";
 
       $xmlString = readfile("DocData.xml");
       $docDataFile = LJCDocDataFile::DeserializeString($xmlString);
@@ -82,8 +85,9 @@
 		<summary>Writes the serialized XML.</summary>
 		<param name="$xmlFileSpec">The source XML file specification.</param>
 		<code>
-      // Path: LJCPHPProjectsDev/GenDoc/DocDataLib
-      require_once "LJCDocDataLib.php";
+      include_once "LJCRoot.php";
+      $prefix = RelativePrefix();
+			include_once "$prefix/GenDoc/DocDataLib/LJCDocDataLib.php";
 
       $docDataFile = LJCDocDataFile::Deserialize("DocData.xml");
       $docDataFile->Serialize("NewDocData.xml");
@@ -91,8 +95,9 @@
 	</Serialize>
 	<SerializeToString>
 		<code>
-      // Path: LJCPHPProjectsDev/GenDoc/DocDataLib
-      require_once "LJCDocDataLib.php";
+      include_once "LJCRoot.php";
+      $prefix = RelativePrefix();
+			include_once "$prefix/GenDoc/DocDataLib/LJCDocDataLib.php";
 
       $docDataFile = LJCDocDataFile::Deserialize("DocData.xml");
       $xmlString = $docDataFile->SerializeToString();
