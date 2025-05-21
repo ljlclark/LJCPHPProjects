@@ -40,7 +40,7 @@ If the IsContinue property is true then
     If line does not have end tag:
       Set IsContinue = true;
 else
-  If line does not have end tag then
+  If line does not have an end tag then
     Set IsContinue == false
   Call GetComment() to parse the comment text.
   Call SaveComment() to copy comments to LJCDocData objects.
@@ -74,7 +74,39 @@ Copies comment to LJCDocData objects by CurrentTagName.
 *****
 Class LJCIncludeLib.LJCInclude
 
-Method SetComment()
+-----
+Method SetComments()
+If successfull call to SetIncludeValues()
+ - to parse itemTag, XMLFile and create codeFileSpec then
+  Read each line of XMLFile
+    Start processing when an item tag is found.
+      Parse endTag.
+      If isContinue is false then
+        Parse CurrentTagName from begin tag.
+        If line does not have an endTag then
+          Set isContinue = true.
+      else
+        If there is an endTag then
+          Set isContinue = false.
+        Call GetComment() to parse the comment text.
+  Returns to LJCComment.GetComment().
+
+-----
+Method GetComment()
+If no begin tag then
+  Set parse to beginning of the line.
+If CurrentTagName == "<code>" then
+  Trim trailing newline.
+Parse the comment text.
+Build an XML Comment.
+Call LTrimXMLComment() to left trim comment.
+
+-----
+Method LTrimXMLComment()
+Converts tags to spaces
+If at least 6 leading spaces then
+  Trim left 6 spaces.
+Returns to GetComment().
 
 *****
 Class LJCParamCommentLib.LJCParamComment
