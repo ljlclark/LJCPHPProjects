@@ -3,12 +3,13 @@
   // Licensed under the MIT License.
   // LJCCommentsLib.php
   declare(strict_types=1);
-  // Path: LJCPHPProjectsDev/GenDoc/DocDataLib
-  include_once "../../LJCPHPCommon/LJCDebugLib.php";
-  include_once "../../LJCPHPCommon/LJCCommonLib.php";
-  include_once "../../GenTextLib/LJCGenTextSectionLib.php";
-  include_once "LJCIncludeLib.php";
-  include_once "LJCParamCommentLib.php";
+  include_once "LJCRoot.php";
+  $prefix = RelativePrefix();
+  include_once "$prefix/LJCPHPCommon/LJCDebugLib.php";
+  include_once "$prefix/LJCPHPCommon/LJCCommonLib.php";
+  include_once "$prefix/GenTextLib/LJCGenTextSectionLib.php";
+  include_once "$prefix/GenDoc/DocDataLib/LJCIncludeLib.php";
+  include_once "$prefix/GenDoc/DocDataLib/LJCParamCommentLib.php";
   // LJCCommonLib: LJCCommon
   // LJCGenTextSectionLib: LJCDirective, LJCSection, LJCSections
   //   , LJCItem, LJCReplacement, LJCReplacements

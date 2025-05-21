@@ -3,8 +3,9 @@
   // Licensed under the MIT License.
   // LJCDebugLib.php
   declare(strict_types=1);
-  // Path: Codeline/LJCPHPCommon
-  include_once "LJCTextLib.php";
+  include_once "LJCRoot.php";
+  $prefix = RelativePrefix();
+  include_once "$prefix/LJCPHPCommon/LJCTextLib.php";
   // LJCTextLib: LJCDebugWriter
 
   // Contains classes for debugging.

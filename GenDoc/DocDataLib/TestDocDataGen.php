@@ -1,9 +1,10 @@
 <?php
-  // Copyright(c) Lester J. Clark and Contributors.
+  // Copyright (c) Lester J. Clark and Contributors.
   // Licensed under the MIT License.
   // TestDocDataGen.php
-  // Must refer to exact same file everywhere in codeline.
-  include_once "LJCDocDataGenLib.php";
+  include_once "LJCRoot.php";
+  $prefix = RelativePrefix();
+  include_once "$prefix/GenDoc/DocDataLib/LJCDocDataGenLib.php";
   // LJCDocDataGenLib: LJCDocDataGen
  
   $writeXML = true;

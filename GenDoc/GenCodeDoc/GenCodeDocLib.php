@@ -3,12 +3,12 @@
   // Licensed under the MIT License.
   // GenCodeDocLib.php
   declare(strict_types=1);
-  // Must refer to exact same file everywhere in codeline.
-  // Path: LJCPHPProjectsDev/GenDoc/GenCodeDoc
-  include_once "../../LJCPHPCommon/LJCDebugLib.php";
-  include_once "../DocDataLib/LJCDocDataGenLib.php";
-  include_once "../GenDataLib/LJCGenDataGenLib.php";
-  include_once "../../GenTextLib/TextGenLib.php";
+  include_once "LJCRoot.php";
+  $prefix = RelativePrefix();
+  include_once "$prefix/LJCPHPCommon/LJCDebugLib.php";
+  include_once "$prefix/GenDoc/DocDataLib/LJCDocDataGenLib.php";
+  include_once "$prefix/GenDoc/GenDataLib/LJCGenDataGenLib.php";
+  include_once "$prefix/GenTextLib/TextGenLib.php";
   // LJCDebugLib: LJCDebug
   // LJCDocDataGenLib: LJCDocDataGen
   // LJCGenDataGenLib: LJCGenDataGen

@@ -2,12 +2,12 @@
   // Copyright (c) Lester J. Clark 2022 - All Rights Reserved
   // LJCGenTextLib.php
   declare(strict_types=1);
-  // Must refer to exact same file everywhere in codeline.
-  // Path: LJCPHPProjectsDev/GenDoc/LJCDocDataLib
-  include_once "../../LJCPHPCommon/LJCDebugLib.php";
-  include_once "../../LJCPHPCommon/LJCCommonLib.php";
-  include_once "../../LJCPHPCommon/LJCTextLib.php";
-  include_once "LJCGenTextSectionLib.php";
+  include_once "LJCRoot.php";
+  $prefix = RelativePrefix();
+  include_once "$prefix/LJCPHPCommon/LJCDebugLib.php";
+  include_once "$prefix/LJCPHPCommon/LJCCommonLib.php";
+  include_once "$prefix/LJCPHPCommon/LJCTextLib.php";
+  include_once "$prefix/GenTextLib/LJCGenTextSectionLib.php";
   // LJCCommonLib: LJCCommon
   // LJCTextLib: LJCStringBuilder
   // LJCDebugLib: LJCDebug

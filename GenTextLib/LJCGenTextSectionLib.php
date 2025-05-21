@@ -2,10 +2,11 @@
   // Copyright (c) Lester J. Clark 2022 - All Rights Reserved
   // LJCGenTextSectionLib.php
   declare(strict_types=1);
-  // Path: LJCPHPProjectsDev/GenDoc/LJCDocDataLib
-  include_once "../../LJCPHPCommon/LJCDebugLib.php";
-  require_once "../../LJCPHPCommon/LJCTextLib.php";
-  require_once "../../LJCPHPCommon/LJCDBAccessLib.php";
+  include_once "LJCRoot.php";
+  $prefix = RelativePrefix();
+  include_once "$prefix/LJCPHPCommon/LJCDebugLib.php";
+  require_once "$prefix/LJCPHPCommon/LJCTextLib.php";
+  require_once "$prefix/LJCPHPCommon/LJCDBAccessLib.php";
   // LJCTextLib: LJCWriter
   // LJCDbAccessLib: LJCDbColumn, LJCDbColumns
   // LJCDebugLib: LJCDebug

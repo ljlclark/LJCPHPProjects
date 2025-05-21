@@ -3,9 +3,10 @@
   // Licensed under the MIT License.
   // LJCDBAccessLib.php
   declare(strict_types=1);
-  // Path: Codeline/LJCPHPCommon
-  include_once "LJCCollectionLib.php";
-  include_once "LJCDebugLib.php";
+  include_once "LJCRoot.php";
+  $prefix = RelativePrefix();
+  include_once "$prefix/LJCPHPCommon/LJCCollectionLib.php";
+  include_once "$prefix/LJCPHPCommon/LJCDebugLib.php";
   // LJCCollectionLib: LJCCollectionBase
   // LJCDebugLib: LJCDebug
 

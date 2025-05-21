@@ -3,7 +3,6 @@
   // Licensed under the MIT License.
   // LJCCollectionLib.php
   declare(strict_types=1);
-  // Path: Codeline/LJCPHPCommon
 
   // #02 Correct Syntac - 5/1/25
 
@@ -67,7 +66,7 @@
       }
     } // DeleteItem()
 
-    // Get the item by Key value.
+    // Retrieves the item by Key value.
     /// <include path='items/RetrieveItem/*' file='Doc/LJCCollectionBase.xml'/>
     protected function RetrieveItem($key, bool $throwError = true)
     {
@@ -110,13 +109,6 @@
       //return array_key_exists($key, $this->Items);
       return isset($this->Items[$key]);
     } // HasKey()
-
-    // Remove the item by Key value.
-    // Obsolete: Use DeleteItem().
-    public function Remove($key, bool $throwError = true) : void
-    {
-      DeleteItem($key, $throwError);
-    } // Remove()
 
     // ----------------------
     // Implementation Methods - LJCCollectionBase

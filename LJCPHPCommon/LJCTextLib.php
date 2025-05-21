@@ -3,8 +3,11 @@
   // Licensed under the MIT License.
   // LJCTextLib.php
   declare(strict_types=1);
-  // Path: Codeline/LJCPHPCommon
-  include_once "LJCCommonLib.php";
+  include_once "LJCRoot.php";
+  $prefix = RelativePrefix();
+  include_once "$prefix/LJCPHPCommon/LJCDebugLib.php";
+  include_once "$prefix/LJCPHPCommon/LJCCommonLib.php";
+  // LJCDebugLib: LJCDebug
   // LJCCommonLib: LJCCommon
 
   /// <summary>The Common Text Output Class Library</summary>

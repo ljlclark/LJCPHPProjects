@@ -3,12 +3,13 @@
   // Licensed under the MIT License.
   // LJCDocDataGenLib.php
   declare(strict_types=1);
-  // Path: LJCPHPProjectsDev/GenDoc/DocDataLib
-  include_once "../../LJCPHPCommon/LJCDebugLib.php";
-  include_once "../../LJCPHPCommon/LJCCommonLib.php";
-  include_once "../../LJCPHPCommon/LJCTextLib.php";
-  include_once "LJCDocDataLib.php";
-  include_once "LJCCommentsLib.php";
+  include_once "LJCRoot.php";
+  $prefix = RelativePrefix();
+  include_once "$prefix/LJCPHPCommon/LJCDebugLib.php";
+  include_once "$prefix/LJCPHPCommon/LJCCommonLib.php";
+  include_once "$prefix/LJCPHPCommon/LJCTextLib.php";
+  include_once "$prefix/GenDoc/DocDataLib/LJCDocDataLib.php";
+  include_once "$prefix/GenDoc/DocDataLib/LJCCommentsLib.php";
   // The used classes:
   // LJCCommonLib: LJCCommon
   // LJCTextLib: LJCWriter

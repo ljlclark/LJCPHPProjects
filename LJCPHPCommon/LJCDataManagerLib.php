@@ -3,10 +3,11 @@
   // Licensed under the MIT License.
   // LJCDataManagerLib.php
   declare(strict_types=1);
-  // Path: Codeline/LJCPHPCommon
-  include_once "LJCDebugLib.php";
-  include_once "LJCDBAccessLib.php";
-  include_once "LJCTextLib.php";
+  include_once "LJCRoot.php";
+  $prefix = RelativePrefix();
+  include_once "$prefix/LJCPHPCommon/LJCDebugLib.php";
+  include_once "$prefix/LJCPHPCommon/LJCDBAccessLib.php";
+  include_once "$prefix/GenTextLib/TextGenLib.php";
   // LJCDBAccessLib: LJCConnectionValues, LJCDbAccess
   //   , LJCDbColumn, LJCDbColumns
   //   , LJCJoin, LJCJoins
