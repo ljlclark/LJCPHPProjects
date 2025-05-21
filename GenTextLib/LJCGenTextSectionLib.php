@@ -97,7 +97,7 @@
       $directive = self::GetDirective($line, $commentChars);
       if ($directive != null)
       {
-        $lowerName = strtolower($directive->ID);
+        $lowerName = strtolower($directive->Name);
         if ("#commentchars" == $lowerName 
           || "#placeholderbegin" == $lowerName
           || "#placeholderend" == $lowerName
@@ -223,7 +223,7 @@
       $this->Debug->BeginMethod("IsSectionBegin", $enabled);
       $retValue = false;
 
-      if ("#sectionbegin" == strtolower($this->ID))
+      if ("#sectionbegin" == strtolower($this->Name))
       {
         $retValue = true;
       }
@@ -469,8 +469,7 @@
       $enabled = false;
       $debug->BeginMethod("Serialize", $enabled);
 
-      $stream = fopen($xmlFile, "w");
-      $writer = new LJCWriter($stream);
+      $writer = new LJCWriter($xmlFile, "w");
       $writer->FWriteLine("<?xml version=\"1.0\"?>");
       $writer->FWriteLine("<".$rootName.">");
 
@@ -505,10 +504,11 @@
 
       $writer->FWriteLine("</Sections>", 1);
       $writer->FWriteLine("</".$rootName.">");
-      fclose($stream);
+      $writer->FClose();
 
       $debug->EndMethod($enabled);
     }
+
     // ---------------
     // Constructors
 

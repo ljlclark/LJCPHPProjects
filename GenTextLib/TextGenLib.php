@@ -2,8 +2,10 @@
   // Copyright (c) Lester J. Clark 2022 - All Rights Reserved
   // TextGenLib.php
   declare(strict_types=1);
-  include_once "../../LJCPHPCommon/LJCDebugLib.php";
-  require_once "LJCGenTextSectionLib.php";
+  include_once "LJCRoot.php";
+  $prefix = RelativePrefix();
+  include_once "$prefix/LJCPHPCommon/LJCDebugLib.php";
+  require_once "$prefix/GenTextLib/LJCGenTextSectionLib.php";
 
   // Generate output text from a template and data.
   class TextGenLib
@@ -56,7 +58,7 @@
       // Instantiate properties with Pascal case.
       $isEnabled = false;
       $this->Debug = new LJCDebug("TextGenLib", "TextGenLib"
-        , $isEnabled);
+        , "w", $isEnabled);
       $this->Debug->IncludePrivate = true;
 
       $this->CommentChars = "//";
