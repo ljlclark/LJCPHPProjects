@@ -4,8 +4,6 @@
   // LJCCollectionLib.php
   declare(strict_types=1);
 
-  // #02 Correct Syntac - 5/1/25
-
   /// <summary>Contains Classes to represent a Collection.</summary>
   /// LibName: LJCCollectionLib
   // Classes: LJCCollectionBase
@@ -41,11 +39,11 @@
       return $retValue;
     } // AddItem()
 
-    // <summary>Clears the collection items.</summary>
+    /// <summary>Clears the collection items.</summary>
     protected function ClearItems()
     {
       $this->Items = [];
-    }
+    } // ClearItems()
 
     // Remove the item by Key value.
     /// <include path='items/DeleteItem/*' file='Doc/LJCCollectionBase.xml'/>
