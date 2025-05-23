@@ -6,6 +6,7 @@
   $prefix = RelativePrefix();
   include_once "$prefix/LJCPHPCommon/LJCDebugLib.php";
   require_once "$prefix/LJCPHPCommon/LJCTextLib.php";
+  require_once "$prefix/LJCPHPCommon/LJCTextFileLib.php";
   require_once "$prefix/LJCPHPCommon/LJCDBAccessLib.php";
   // LJCTextLib: LJCWriter
   // LJCDbAccessLib: LJCDbColumn, LJCDbColumns
@@ -469,7 +470,7 @@
       $enabled = false;
       $debug->BeginMethod("Serialize", $enabled);
 
-      $writer = new LJCWriter($xmlFile, "w");
+      $writer = new LJCFileWriter($xmlFile, "w");
       $writer->FWriteLine("<?xml version=\"1.0\"?>");
       $writer->FWriteLine("<".$rootName.">");
 

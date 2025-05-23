@@ -7,7 +7,9 @@
   $prefix = RelativePrefix();
   include_once "$prefix/LJCPHPCommon/LJCDebugLib.php";
   include_once "$prefix/LJCPHPCommon/LJCCommonLib.php";
+  include_once "$prefix/LJCPHPCommon/LJCCommonFileLib.php";
   include_once "$prefix/LJCPHPCommon/LJCTextLib.php";
+  include_once "$prefix/LJCPHPCommon/LJCTextFileLib.php";
   include_once "$prefix/GenDoc/DocDataLib/LJCDocDataLib.php";
   include_once "$prefix/GenDoc/DocDataLib/LJCCommentsLib.php";
   // The used classes:
@@ -203,7 +205,7 @@
       if ($writeXML)
       {
         $outputFileSpec = $this->DocOutputFileSpec($codeFileSpec, $outputPath);
-        LJCWriter::WriteFile($retValue, $outputFileSpec);
+        LJCFileWriter::WriteFile($retValue, $outputFileSpec);
       }
 
       $this->Debug->EndMethod($enabled);
@@ -287,7 +289,7 @@
       {
         $outputPath = "../XMLDocData";
       }
-      LJCCommon::MkDir($outputPath);
+      LJCCommonFile::MkDir($outputPath);
       $fileName = LJCCommon::GetFileName($codeFileSpec) . ".xml";
       $retValue = "$outputPath/$fileName";
 

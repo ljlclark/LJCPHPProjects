@@ -5,15 +5,11 @@
   declare(strict_types=1);
   include_once "LJCRoot.php";
   $prefix = RelativePrefix();
-  include_once "$prefix/LJCPHPCommon/LJCDebugLib.php";
   include_once "$prefix/LJCPHPCommon/LJCDBAccessLib.php";
-  include_once "$prefix/GenTextLib/TextGenLib.php";
   // LJCDBAccessLib: LJCConnectionValues, LJCDbAccess
   //   , LJCDbColumn, LJCDbColumns
   //   , LJCJoin, LJCJoins
   //   , LJCJoinOn, LJCJoinOns
-  // LJCTextLib: LJCStringBuilder, LJCHTMLTableColumn, LJCHTMLWriter, LJCWriter
-  //   , LJCDebugWriter
 
   /// <summary>The PDO Data Manager Library</summary>
   /// LibName: LJCDataManagerLib
@@ -31,10 +27,6 @@
     /// <include path='items/construct/*' file='Doc/LJCDataManager.xml'/>
     public function __construct($connectionValues, string $tableName)
     {
-      $this->Debug = new LJCDebug("LJCDataManagerLib", "LJCDataManager"
-        , "w", false);
-      $this->Debug->IncludePrivate = true;
-
       $this->DbAccess= new LJCDbAccess($connectionValues);
       $this->TableName = $tableName;
       $dbName= $connectionValues->DbName;
@@ -52,15 +44,11 @@
     /// <include path='items/Add/*' file='Doc/LJCDataManager.xml'/>
     public function Add(LJCDbColumns $dataColumns) : int
     {
-      $enabled = false;
-      $this->Debug->BeginMethod("Add", $enabled);
       $retValue = 0;
       
       $this->SQL = LJCSQLBuilder::CreateInsert($this->TableName
         , $dataColumns);
       $retValue = $this->DbAccess->Execute($this->SQL);
-
-      $this->Debug->EndMethod($enabled);
       return $retValue;
     } // Add()
   
@@ -68,8 +56,6 @@
     /// <include path='items/Delete/*' file='Doc/LJCDataManager.xml'/>
     public function Delete(LJCDbColumns $keyColumns) : int
     {
-      $enabled = false;
-      $this->Debug->BeginMethod("Delete", $enabled);
       $retValue = 0;
       
       if (null == $keyColumns || 0 == count($keyColumns))
@@ -78,8 +64,6 @@
       }
       $this->SQL = LJCSQLBuilder::CreateDelete($this->TableName, $keyColumns);
       $retValue = $this->DbAccess->Execute($this->SQL);
-
-      $this->Debug->EndMethod($enabled);
       return $retValue;
     } // Delete()
 
@@ -88,8 +72,6 @@
     public function Load(?LJCDbColumns $keyColumns, array $propertyNames = null
       , LJCJoins $joins = null)	: ?array
     {
-      $enabled = false;
-      $this->Debug->BeginMethod("Load", $enabled);
       $retValue = null;
       
       $this->Joins = $joins;
@@ -105,8 +87,6 @@
     public function Retrieve(LJCDbColumns $keyColumns
       , array $propertyNames = null, LJCJoins $joins = null) : ?array
     {
-      $enabled = false;
-      $this->Debug->BeginMethod("Retrieve", $enabled);
       $retValue = null;
 
       $this->Joins = $joins;
@@ -114,8 +94,6 @@
         , $this->SchemaColumns, $keyColumns, $propertyNames, $joins);
       $this->SQL .= LJCSQLBuilder::GetOrderBy($this->OrderByNames);
       $retValue = $this->DbAccess->Retrieve($this->SQL);
-
-      $this->Debug->EndMethod($enabled);
       return $retValue;
     } // Retrieve()
 
@@ -124,8 +102,6 @@
     public function Update(LJCDbColumns $keyColumns, LJCDbColumns $dataColumns)
       : int
     {
-      $enabled = false;
-      $this->Debug->BeginMethod("Update", $enabled);
       $retValue = 0;
       
       if (null == $keyColumns || 0 == count($keyColumns))
@@ -135,8 +111,6 @@
       $this->SQL = LJCSQLBuilder::CreateUpdate($this->TableName, $keyColumns
         , $dataColumns);
       $retValue = $this->DbAccess->Execute($this->SQL);
-
-      $this->Debug->EndMethod($enabled);
       return $retValue;
     } // Update()
 
@@ -144,13 +118,8 @@
     /// <include path='items/SQLExecute/*' file='Doc/LJCDataManager.xml'/>
     public function SQLExecute(string $sql) : int
     {
-      $enabled = false;
-      $this->Debug->BeginMethod("SQLExecute", $enabled);
-
       $this->SQL = $sql;
       $retValue = $this->DbAccess->Execute($this->SQL);
-
-      $this->Debug->EndMethod($enabled);
       return $retValue;
     } // SQLExecute()
 
@@ -158,13 +127,8 @@
     /// <include path='items/SQLLoad/*' file='Doc/LJCDataManager.xml'/>
     public function SQLLoad() : ?array
     {
-      $enabled = false;
-      $this->Debug->BeginMethod("SQLLoad", $enabled);
-
       $this->SQL = $sql;
       $retValue = $this->DbAccess->Load($this->SQL);
-
-      $this->Debug->EndMethod($enabled);
       return $retValue;
     } // SQLLoad()
 
@@ -172,13 +136,8 @@
     /// <include path='items/SQLRetrieve/*' file='Doc/LJCDataManager.xml'/>
     public function SQLRetrieve() : ?array
     {
-      $enabled = false;
-      $this->Debug->BeginMethod("SQLRetrieve", $enabled);
-
       $this->SQL = $sql;
       $retValue = $this->DbAccess->Retrieve($this->SQL);
-
-      $this->Debug->EndMethod($enabled);
       return $retValue;
     } // SQLRetrieve()
 
@@ -190,8 +149,6 @@
     public function CreateDataCollection(object $collection
       , object $dataObject, array $rows)
     {
-      $enabled = false;
-      $this->Debug->BeginMethod("CreateDataCollection", $enabled);
       $retValue = $collection;
 
       if ($rows != null && count($rows) > 0)
@@ -204,8 +161,6 @@
         }
         $values = $collection->GetValues();
       }
-
-      $this->Debug->EndMethod($enabled);
       return $retValue;
     } // CreateDataCollection()
 
@@ -213,23 +168,16 @@
     /// <include path='items/CreateDataObject/*' file='Doc/LJCDataManager.xml'/>
     public function CreateDataObject($dataObject, array $row)
     {
-      $enabled = false;
-      $this->Debug->BeginMethod("CreateDataObject", $enabled);
       $retValue = $dataObject;
 
       $this->SetData($this->SchemaColumns, $dataObject, $row);
       $this->CreateJoinData($retValue, $row);
-
-      $this->Debug->EndMethod($enabled);
       return $retValue;
     } // CreateDataObject()
 
     // Populates a Data Object with Join values from a Data Result row.
     private function CreateJoinData($dataObject, array $row)
     {
-      $enabled = false;
-      $this->Debug->BeginPrivateMethod("CreateJoinData", $enabled);
-
       if ($this->Joins != null && count($this->Joins) > 0)
       {
         foreach ($this->Joins as $join)
@@ -237,15 +185,11 @@
           $this->SetData($join->Columns, $dataObject, $row);
         }
       }
-      $this->Debug->EndMethod($enabled);
     } // CreateJoinData()
 
     // Sets Data Object values from the Data Result row.
     private function SetData(LJCDbColumns $columns, $dataObject, array $row)
     {
-      $enabled = false;
-      $this->Debug->BeginPrivateMethod("SetData", $enabled);
-
       if ($columns != null && count($columns) > 0)
       {
         foreach ($columns as $column)
@@ -272,7 +216,6 @@
           }
         }
       }
-      $this->Debug->EndMethod($enabled);
     } // SetData()
 
     // ---------------

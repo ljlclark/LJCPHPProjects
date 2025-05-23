@@ -10,8 +10,7 @@
 
   // ***************
   // Static: Scrub(), Split(), StrPos(), StrRPos(), GetBool()
-  //   , GetDebugFileName(), GetDelimitedString(), GetFileName()
-  //   , GetFileSpecPath(), GetIndexedDebugFileName(), GetTokens(), MkDir()
+  //   GetDelimitedString(), GetFileName(), GetFileSpecPath(), GetTokens()
   /// <summary>Contains common functions.</summary>
   class LJCCommon
   {
@@ -136,17 +135,6 @@
       return $retValue;
     } // GetBool()
 
-    // Gets the Debug file name.
-    /// <include path='items/GetDebugFileName/*' file='Doc/LJCCommon.xml'/>
-    public static function GetDebugFileName(string $folder, string $fileName)
-      : string
-    {
-      $retValue = "$folder/$fileName.txt";
-
-      self::MkDir($folder);
-      return $retValue;
-    } // GetDebugFileName()
-
     // Gets the string between the delimiters.
     /// <include path='items/GetDelimitedString/*' file='Doc/LJCCommon.xml'/>
     public static function GetDelimitedString(string $text, string $beginDelimiter
@@ -221,24 +209,6 @@
       return $retValue;
     } // GetFileSpecPath()
 
-    // Gets the indexed Debug file name.
-    /// <include path='items/GetIndexedDebugFileName/*' file='Doc/LJCCommon.xml'/>
-    public static function GetIndexedDebugFileName(string $folder
-      , string $fileName)	: string
-    {
-      $retValue = "$folder/$fileName.txt";
-
-      self::MkDir($folder);
-
-      $index = 1;
-      while (file_exists($retValue))
-      {
-        $index++;
-        $retValue = "$folder/$fileName$index.txt";
-      }
-      return $retValue;
-    } // GetIndexedDebugFileName()
-
     /// <summary>Get string tokens.</summary>
     /// <param name="$text">The string value.</param>
     /// <param name="$splitString">The split string value.</param>
@@ -254,15 +224,5 @@
       $retValue = preg_split($splitString, $trimLine, 0, PREG_SPLIT_NO_EMPTY);
       return $retValue;
     } // GetTokens()
-
-    // Creates the specified folder if it does not already exist.
-    /// <param name="$folder">The folder name.</param>
-    public static function MkDir(string $folder)
-    {
-      if (false == file_exists($folder))
-      {
-        mkdir($folder);
-      }
-    } // MkDir()
   } // LJCCommon
 ?>

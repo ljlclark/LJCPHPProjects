@@ -5,15 +5,12 @@
   declare(strict_types=1);
   include_once "LJCRoot.php";
   $prefix = RelativePrefix();
-  include_once "$prefix/LJCPHPCommon/LJCDebugLib.php";
   include_once "$prefix/LJCPHPCommon/LJCCommonLib.php";
-  // LJCDebugLib: LJCDebug
   // LJCCommonLib: LJCCommon
 
   /// <summary>The Common Text Output Class Library</summary>
   /// LibName: LJCTextLib
   //  Classes: LJCStringBuilder, LJCHTMLTableColumn, LJCHTMLWriter, LJCWriter
-  //    , LJCDebugWriter
 
   // ***************
   // Represents a built string value.
@@ -27,10 +24,6 @@
     /// <summary>Initializes a class instance.</summary>
     public function __construct()
     {
-      $this->Debug = new LJCDebug("LJCTextLib", "LJCStringBuilder"
-        , "w", false);
-      $this->Debug->IncludePrivate = true;
-
       $this->StringValue = null;
     } // __construct()
 
@@ -42,13 +35,8 @@
     public function Line(?string $text, int $indent = 0
       , bool $addBreak = false)
     {
-      $enabled = false;
-      $this->Debug->BeginMethod("Line", $enabled);
-
       $this->Text($text, $indent, $addBreak);
       $this->Text("\r\n");
-
-      $this->Debug->EndMethod($enabled);
     } // Line()
 
     // Appends text with indents.
@@ -56,9 +44,6 @@
     public function Text(?string $text, int $indent = 0
       , bool $addBreak = false)
     {
-      $enabled = false;
-      $this->Debug->BeginMethod("Text", $enabled);
-
       $this->InitValue();
       if ($indent > 0)
       {
@@ -80,8 +65,6 @@
         }
       }
       $this->StringValue .= $text;
-
-      $this->Debug->EndMethod($enabled);
     } // Text()
 
     // Appends a text line with begin tag, end tag and indents.
@@ -89,22 +72,15 @@
     public function Tags(string $tag, ?string $text, int $indent
       , bool $addBreak = false)
     {
-      $enabled = false;
-      $this->Debug->BeginMethod("Tags", $enabled);
-
       if ($text != null)
       {
         $this->Line("<$tag>$text</$tag>", $indent, $addBreak);
       }
-
-      $this->Debug->EndMethod($enabled);
     } // Tags()
 
     /// <summary>Gets the current builder string length.</summary>
     public function Length() : int
     {
-      $enabled = false;
-      $this->Debug->BeginMethod("Length", $enabled);
       $retValue = 0;
 
       $text = $this->ToString();
@@ -112,8 +88,6 @@
       {
         $retValue = strlen($text);
       }
-
-      $this->Debug->EndMethod($enabled);
       return $retValue;
     } // Length()
 
@@ -126,15 +100,10 @@
     // Initializes built string value.
     private function InitValue()
     {
-      $enabled = false;
-      $this->Debug->BeginMethod("InitValue", $enabled);
-
       if (null == $this->StringValue)
       {
         $this->StringValue = "";
       }
-
-      $this->Debug->EndMethod($enabled);
     } // InitValue()
 
     // The built string value.
@@ -153,10 +122,6 @@
     public function __construct(string $columnName, string $headingName = null
       , string $style = null, string $width = null)
     {
-      $this->Debug = new LJCDebug("LJCTextLib", "LJCHTMLTableColumn"
-        , "w", false);
-      $this->Debug->IncludePrivate = true;
-
       $this->ColumnName = $columnName;
       $this->HeadingName = $headingName;
       if (null == $headingName)
@@ -238,8 +203,7 @@
 
   // ***************
   // Contains console and file output methods.
-  // Static: Run(), Write(), WriteAll(), WriteFile(), WriteLine() 
-  // Methods: FClose(), FWrite(), FWriteLine()
+  // Static: Run(), Write(), WriteAll(), WriteLine() 
   /// <include path='items/LJCWriter/*' file='Doc/LJCWriter.xml'/>
   class LJCWriter
   {
@@ -301,18 +265,6 @@
       }
     } // WriteAll()
 
-    // <summary>Writes an XML file.</summary>
-    /// <include path='items/WriteFile/*' file='Doc/LJCWriter.xml'/>
-    public static function WriteFile(string $text, string $fileSpec)
-    {
-      if ($text != null)
-      {
-        $writer = new self($fileSpec, "w");
-        $writer->FWrite($text);
-        $writer->FClose();
-      }
-    } // WriteFile()
-
     // Writes a text line with indents.
     /// <include path='items/WriteLine/*' file='Doc/LJCWriter.xml'/>
     public static function WriteLine(?string $text, int $indentCount = 0
@@ -321,117 +273,5 @@
       self::Write($text, $indentCount, $addBreak);
       echo "\r\n";
     } // WriteLine()
-
-    // ---------------
-    // Constructors - LJCWriter
-
-    /// <summary>Initializes an object instance.</summary>
-    /// <param name="$stream">The stream object.</param>
-    public function __construct(string $fileName, string $mode)
-    {
-      $this->Debug = new LJCDebug("LJCTextLib", "LJCWriter"
-        , "w", false);
-      $this->Debug->IncludePrivate = true;
-
-      $stream = fopen($fileName, $mode);
-      $this->Stream = $stream;
-    } // __construct()
-
-    // ---------------
-    // Public Methods - LJCWriter
-
-    /// <summary>Closes the stream.</summary>
-    public function FClose()
-    {
-      fclose($this->Stream);
-    }
-
-    // Writes file text with indents.
-    /// <include path='items/FWrite/*' file='Doc/LJCWriter.xml'/>
-    public function FWrite(string $text, int $indentCount = 0)
-    {
-      $enabled = false;
-      $this->Debug->BeginMethod("FWrite", $enabled);
-
-      if ($indentCount > 0)
-      {
-        fwrite($this->Stream, str_repeat("\t", $indentCount));
-      }
-      fwrite($this->Stream, "$text");
-
-      $this->Debug->EndMethod($enabled);
-    } // FWrite()
-
-    // Writes a file text line with indents.
-    /// <include path='items/FWriteLine/*' file='Doc/LJCWriter.xml'/>
-    public function FWriteLine(string $text, int $indentCount = 0)
-    {
-      $this->FWrite("$text\r\n", $indentCount);
-    } // FWriteLine()
-
-    // ---------------
-    // Class Data
-
-    private bool $Enabled;
-    private $Stream;
   } // LJCWriter
-
-  // ***************
-  // Contains Debug output methods.
-  // Methods: Close(), Debug()
-  /// <summary>Contains Debug output methods.</summary>
-  class LJCDebugWriter
-  {
-    // ---------------
-    // Constructors
-
-    public function __construct(string $locName, $mode = "w")
-    {
-      $this->Debug = new LJCDebug("LJCTextLib", "LJCDebugWriter"
-        , "w", false);
-      $this->Debug->IncludePrivate = true;
-
-      $fileName = $locName . "txt";
-      if ($mode = "w")
-      {
-        $fileName = LJCCommon::GetDebugFileName("Debug", $locName);
-      }
-      $this->DebugWriter = new LJCWriter($fileName, $mode);
-    } // __construct()
-
-    // ---------------
-    // Public Methods - LJCDebugWriter
-
-    /// <summary>Close the stream.</summary>
-    public function Close()
-    {
-      $this->DebugWriter->FClose();
-    }
-
-    /// <summary>Writes a Debug output line.</summary>
-    /// <param name="$text"></param>
-    /// <param name="$addLine"></param>
-    public function Debug(string $text, bool $addLine = true) : void
-    {
-      $enabled = false;
-      $this->Debug->BeginMethod("Debug", $enabled);
-
-      if ($this->DebugWriter != null)
-      {
-        if ($addLine)
-        {
-          $this->DebugWriter->FWriteLine("$text");
-        }
-        else
-        {
-          $this->DebugWriter->FWrite("$text");
-        }
-      }
-
-      $this->Debug->EndMethod($enabled);
-    } // Debug()
-
-    // The DebugWriter value.
-    private ?LJCWriter $DebugWriter;
-  } // LJCDebugWriter
 ?>

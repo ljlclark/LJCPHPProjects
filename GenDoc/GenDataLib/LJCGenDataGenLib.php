@@ -4,6 +4,7 @@
   include_once "LJCRoot.php";
   $prefix = RelativePrefix();
   include_once "$prefix/LJCPHPCommon/LJCDebugLib.php";
+  include_once "$prefix/LJCPHPCommon/LJCCommonFileLib.php";
   include_once "$prefix/LJCPHPCommon/LJCTextLib.php";
   include_once "$prefix/GenTextLib/LJCGenTextLib.php";
   include_once "$prefix/GenDoc/GenDataLib/LJCGenDataXMLLib.php";
@@ -57,7 +58,7 @@
       $this->Debug->IncludePrivate = true;
 
       $this->HTMLPath = "../../../WebSitesDev/CodeDoc/LJCPHPCodeDoc/HTML";
-      LJCCommon::MkDir($this->HTMLPath);
+      LJCCommonFile::MkDir($this->HTMLPath);
     }
     
     // ---------------
@@ -931,9 +932,9 @@
       $enabled = false;
       $this->Debug->BeginPrivateMethod("WriteHTML", $enabled);
 
-      LJCCommon::MkDir($htmlPath);
+      LJCCommonFile::MkDir($htmlPath);
       $fileSpec = "$htmlPath/$fileName" . ".html";
-      LJCWriter::WriteFile($htmlText, $fileSpec);
+      LJCFileWriter::WriteFile($htmlText, $fileSpec);
 
       $this->Debug->EndMethod($enabled);
     }
