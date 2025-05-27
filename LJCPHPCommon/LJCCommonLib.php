@@ -17,6 +17,24 @@
     // ---------------
     // Static Functions
 
+    // Check for text. (Move to LJCCommon)
+    /// <summary>Check for text.</summary>
+    /// <param name="$text"></param>
+    /// <returns>
+    ///   true if the text has other than white space; otherwise false;
+    /// </returns>
+    public static function HasValue($text) : bool
+    {
+      $retValue = false;
+
+      if ($text != null
+        && strlen(trim($text)) > 0)
+      {
+        $retValue = true;
+      }
+      return $retValue;
+    }
+
     // Returns a scrubbed external value.
     /// <include path='items/Scrub/*' file='Doc/LJCCommon.xml'/>
     public static function Scrub(string $text) : string
@@ -112,14 +130,17 @@
       return $retValue;
     } // StrRPos()
 
-    /// <summary>Returns a text value as boolean.</summary>
-    public static function GetBool(?string $text) : bool
+    /// <summary>Returns a text value as int.</summary>
+    // *** Change *** 5/25/25
+    public static function GetBool(?string $text) : int
     {
-      $retValue = true;
+      //$retValue = true;
+      $retValue = 1;
 
       if (null == $text)
       {
-        $retValue = false;
+        //$retValue = false;
+        $retValue = 0;
       }
       else
       {
@@ -128,7 +149,8 @@
           case "false":
           case "":
           case "0":
-            $retValue = false;
+            //$retValue = false;
+            $retValue = 0;
             break;
         }
       }
