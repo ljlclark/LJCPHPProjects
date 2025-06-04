@@ -125,7 +125,7 @@
     }
 
     /// <summary>Indicates if the builder has text.</summary>
-    /// <returns>1 if true; otherwise 0;</returns>
+    /// <returns>true if builder has text; otherwise false.</returns>
     public function HasText() : bool
     {
       $retValue = false;
@@ -208,10 +208,10 @@
           }
           $isFirst = false;
 
-          $hb.AddText(" {$htmlAttrib->Name}");
+          $hb.AddText(" {$attrib->Name}");
           if ($this->HasValue($attrib->Value))
           {
-            $hb->AddText("=\"{$htmlAttrib->Value}\"");
+            $hb->AddText("=\"{$attrib->Value}\"");
           }
         }
         $retText = $hb->ToString();
@@ -238,7 +238,8 @@
     /// <include path='items/GetIndentString/*' file='Doc/LJCHTMLBuilder.xml'/>
     public function GetIndentString() : string
     {
-      $retValue = str_repeat("  ", $this->IndentCount);
+      //$retValue = str_repeat("  ", $this->IndentCount);
+      $retValue = str_repeat(" ", $this->IndentLength());
       return $retValue;
     }
 
@@ -516,12 +517,13 @@
     public function GetLink(string $fileName, LJCTextState $textState) : string
     {
       $NoIndent = false;
+
       $hb = new LJCHTMLBuilder($textState);
 
       $attribs = new LJCAttributes();
       $attribs.Add("rel", "stylesheet");
       $attribs.Add("type", "text/css");
-      $attribs.Add("href", fileName);
+      $attribs.Add("href", $fileName);
       $createText = $hb->GetCreate("link", null, $textState, $attribs
         , isEmpty: true);
       $hb->Text($createText, $NoIndent);
@@ -536,6 +538,7 @@
       , LJCTextState $textState) : string
     {
       $NoIndent = false;
+
       $hb = new LJCHTMLBuilder($textState);
 
       $attribs = new LJCAttributes();
@@ -556,6 +559,7 @@
       , string $charSet = "utf-8") : string
     {
       $NoIndent = false;
+
       $hb = new LJCHTMLBuilder($textState);
 
       $attribs = new LJCAttributes();
@@ -586,6 +590,7 @@
       : string
     {
       $NoIndent = false;
+
       $hb = new LJCHTMLBuilder($textState);
 
       $attribs = new LJCAttributes();
@@ -624,6 +629,7 @@
       , array $copyright = null, string $fileName = null) : string
     {
       $NoIndent = false;
+
       $hb = new LJCHTMLBuilder($textState);
 
       $hb->Text("<!DOCTYPE html>");
@@ -657,6 +663,7 @@
     public function GetHTMLEnd(LJCTextState $textState) : string
     {
       $NoIndent = false;
+
       $hb = new LJCHTMLBuilder($textState);
 
       $text = $hb->GetEnd("body", $textState, $NoIndent);
@@ -720,7 +727,7 @@
       , int $cellPadding = 2, string $className = null, string $id = null)
       : LJCAttributes
     {
-      $retAttribs = Attribs(className, id);
+      $retAttribs = Attribs(className, $id);
       $retAttribs.Add("border", strval($border));
       $retAttribs.Add("cellspacing", strval($cellSpacing));
       $retAttribs.Add("cellpadding", strval($cellPadding));
@@ -734,6 +741,7 @@
     private function AddSyncIndent(LJCHTMLBuilder $hb, LJCTextState $state
       , int $value = 1)
     {
+      $this->AddIndent($value);
       $hb->AddIndent($value);
       $state->IndentCount += $value;
     }
@@ -765,6 +773,12 @@
       return $retValue;
     }
 
+    // Gets the current indent length.
+    private function IndentLength() : int
+    {
+      return $this->IndentCount * $this->IndentCharCount;
+    }
+
     // Gets the text length if not null.
     // Move to LJCCommon?
     private function TextLength(string $text) : int
@@ -784,7 +798,6 @@
       if ($textState != null)
       {
         $this->IndentCount = $textState->IndentCount;
-        $this->NewIndentCount = $textState->ChildIndentCount;
       }
     }
 
