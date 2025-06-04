@@ -4,7 +4,7 @@
 <items>
 	<WriteHeader>
 		<summary>Writes an HTML table header row.</summary>
-		<param name="$columns">The column definitions.</param>
+		<param name="$columns">The array of LJCHTMLTableColumn objects.</param>
 		<param name="$width">The column width.</param>
 	</WriteHeader>
 	<WriteRow>

@@ -18,7 +18,7 @@
   /// <summary>Represents a built string value.</summary>
   class LJCStringBuilder
   {
-    // ---------------
+    // ----------
     // Constructors
 
     /// <summary>Initializes a class instance.</summary>
@@ -27,7 +27,7 @@
       $this->StringValue = null;
     } // __construct()
 
-    // ---------------
+    // ----------
     // Public Methods - LJCStringBuilder
 
     // Appends a text line with indents.
@@ -156,29 +156,34 @@
 
     // Writes an HTML table header row.
     /// <include path='items/WriteHeader/*' file='Doc/LJCHTMLWriter.xml'/>
-    public static function WriteHeader($columns, $width = null)
+    public static function WriteHeader($columns)
     {
-      LJCWriter::WriteLine("<thead>", 1);
-      LJCWriter::Write("<tr>", 2);
+      //LJCWriter::WriteLine("<thead>", 1);
+      LJCWriter::WriteLine("<tr>", 1);
+
+      // Array of LJCHTMLTableColumn objects.
       foreach ($columns as $column)
       {
-        LJCWriter::Write("<th");
+        LJCWriter::Write("<th", 2);
         self::WriteAttribute("style", $column->Style);
         self::WriteAttribute("width", $column->Width);
-        LJCWriter::Write(">$column->HeadingName</th>");
+        LJCWriter::Write(">");
+        LJCWriter::WriteLine("$column->HeadingName</th>");
       }	
-      LJCWriter::WriteLine("</tr>");
-      LJCWriter::WriteLine("</thead>", 1);
+      LJCWriter::WriteLine("</tr>", 1);
+      //LJCWriter::WriteLine("</thead>", 1);
     } // WriteHeader()
 
     // Writes an HTML table data row.
     /// <include path='items/WriteRow/*' file='Doc/LJCHTMLWriter.xml'/>
     public static function WriteRow($dataObject, $columns)
     {
-      LJCWriter::Write("<tr>", 2);
+      LJCWriter::WriteLine("<tr>", 1);
+
+      // Array of LJCHTMLTableColumn objects.
       foreach ($columns as $column)
       {
-        LJCWriter::Write("<td");
+        LJCWriter::Write("<td", 2);
         self::WriteAttribute("style", $column->Style);
         self::WriteAttribute("width", $column->Width);
         $columnName = $column->ColumnName;
@@ -186,9 +191,9 @@
         // Get value with property that matches columnName.
         $value = (string)$dataObject->$columnName;
 
-        LJCWriter::Write(">$value</td>");
+        LJCWriter::WriteLine(">$value</td>");
       }
-      LJCWriter::WriteLine("</tr>");
+      LJCWriter::WriteLine("</tr>", 1);
     } // WriteRow()
 
     // Writes the style property values.
@@ -230,7 +235,7 @@
       }
       if ($indentCount > 0)
       {
-        echo(str_repeat("\t", $indentCount));
+        echo(str_repeat("  ", $indentCount));
       }
   
       if ($addBreak)
