@@ -391,7 +391,7 @@
     /// <include path='items/GetCreate/*' file='Doc/LJCHTMLBuilder.xml'/>
     public function GetCreate(string $name, string $text
       , LJCTextState $textState, LJCAttributes $attribs = null
-      , bool $addIndent = true, bool $childIndent = true, bool $isEmpty = true
+      , bool $addIndent = true, bool $childIndent = true, bool $isEmpty = false
       , bool $close = true) : string
     {
       $textState->ChildIndentCount = 0; // ?
