@@ -52,6 +52,9 @@
       {
         $this->AddIndent($textState->IndentCount);
       }
+      $this->LineLength = 0;
+      $this->LineLimit = 80;
+      $this->WrapEnabled = false;
     } // __construct()
 
     // ----------
@@ -200,6 +203,7 @@
         {
           if (!$isFirst)
           {
+            // Wrap line for large attribute value.
             if ($this->HasValue($attrib->Value)
               && strlen($attrib->Value) > 35)
             {
@@ -238,7 +242,6 @@
     /// <include path='items/GetIndentString/*' file='Doc/LJCHTMLBuilder.xml'/>
     public function GetIndentString() : string
     {
-      //$retValue = str_repeat("  ", $this->IndentCount);
       $retValue = str_repeat(" ", $this->IndentLength());
       return $retValue;
     }
@@ -286,6 +289,74 @@
           }
           $retText .= $text;
         }
+
+        if ($this->WrapEnabled)
+        {
+          $retText = $this->GetWrapped($retText);
+        }
+      }
+      return $retText;
+    }
+
+    // Appends added text and new wrapped line if combined line > LineLimit.
+    /// <include path='items/GetWrapped/*' file='Doc/HTMLBuilder.xml'/>
+    public function GetWrapped(string $text) : string
+    {
+      $retText = $text;
+
+      $buildText = "";
+      $workText = $text;
+      $totalLength = $this->LineLength + $this->TextLength($workText);
+      if ($totalLength < $this->LineLimit)
+      {
+        // No wrap.
+        $this->LineLength += $this->TextLength($text);
+      }
+
+      while ($totalLength > $this->LineLimit)
+      {
+        // Index where text can be added to the current line
+        // and the remainder is wrapped.
+        $wrapIndex = $this->WrapIndex($workText);
+        if ($wrapIndex > -1)
+        {
+          // Adds leading space if line exists and wrapIndex > 0.
+          $addText = $this->GetAddText($retText, $wrapIndex);
+          $buildText += "{$addText}\r\n";
+
+          // Next text up to LineLimit - prepend length without leading space.
+          $wrapText = $this->WrapText($workText, $wrapIndex);
+          // *** Different than TextBuilder ***
+          $indentString = $this->GetIndentString();
+          $lineText = "{$indentString}{$wrapText}";
+          $LineLength = strlen($lineText);
+          $buildText += $lineText;
+
+          // End loop unless there is more text.
+          $totalLength = 0;
+
+          // Get index of next section.
+          $nextIndex = $wrapIndex + strlen($wrapText);
+          if (!str_starts_with($workText, ","))
+          {
+            // Adjust for removed leading space.
+            $nextIndex++;
+          }
+
+          // Get next work text if available.
+          if ($nextIndex < strlen($workText))
+          {
+            $tempText = substr($workText, $nextIndex);
+            $workText = $tempText;
+            $totalLength = $this->LineLength + $this->TextLength($workText);
+          }
+        }
+      }
+
+      if ($buildText != null
+        && strlen($buildText) > 0)
+      {
+        $retText = $buildText;
       }
       return $retText;
     }
@@ -299,11 +370,9 @@
       , LJCAttributes $attribs = null, bool $addIndent = true
       , bool $childIndent = true) : string
     {
-      $NoIndent = false;
-
       $createText = $this->GetBegin($name, $textState, $attribs, $addIndent
         , $childIndent);
-      $this->Text($createText, $NoIndent);
+      $this->Text($createText, false);
 
       // Use AddChildIndent after beginning an element.
       $this->AddChildIndent($createText, $textState);
@@ -320,12 +389,10 @@
       , bool $childIndent = true, bool $isEmpty = false, bool $close = true)
       : string
     {
-      $NoIndent = false;
-
       // Adds the indent string.
       $createText = $this->GetCreate($name, $text, $textState, $htmlAttribs
         , $addIndent, $childIndent, $isEmpty, $close);
-      $this->Text($createText, $NoIndent);
+      $this->Text($createText, false);
       if (!$close)
       {
         // Use AddChildIndent after beginning an element.
@@ -342,10 +409,8 @@
     public function End(string $name, LJCTextState $textState
       , bool $addIndent = true) : string
     {
-      $NoIndent = false;
-
       $createText = $this->GetEnd($name, $textState, $addIndent);
-      $this->Text($createText, $NoIndent);
+      $this->Text($createText, false);
 
       // Append Method
       $this->UpdateState($textState);
@@ -361,12 +426,11 @@
       , LJCAttributes $attribs = null, bool $addIndent = true
       , bool $childIndent = true) : string
     {
-      $NoIndent = false;
       $hb = new LJCHTMLBuilder($textState);
 
       $createText = $this->GetCreate($name, "", $textState, $attribs
         , $addIndent, $childIndent, close: false);
-      $hb->Text($createText, $NoIndent);
+      $hb->Text($createText, false);
 
       // Only use AddChildIndent() if additional text is added in this method.
       $retValue = $hb->ToString();
@@ -409,14 +473,21 @@
       $hb->AddText(">");
 
       // Content is added if not an empty element.
+      $isWrapped = false;
       if (!$isEmpty)
       {
-        $hb->AddText($text);
+        $content = $this->Content($text, $textState, $isEmpty, $isWrapped);
+        $hb->AddText($content);
       }
 
       // Close the element.
       if ($close)
       {
+        if ($isWrapped)
+        {
+          $hb->Line();
+          $hb->AddText($this->GetIndentString());
+        }
         $hb->AddText("</{$name}>");
       }
 
@@ -453,10 +524,8 @@
     /// <include path='items/Link/*' file='Doc/LJCHTMLBuilder.xml'/>
     public function Link(string $fileName, LJCTextState $textState) : string
     {
-      $NoIndent = false;
-
       $createText = $this->GetLink($fileName, $textState);
-      $this->Text($createText, $NoIndent);
+      $this->Text($createText, false);
 
       // Append Method
       $this->UpdateState($textState);
@@ -468,10 +537,8 @@
     public function Meta(string $name, string $content, LJCTextState $textState)
       : string
     {
-      $NoIndent = false;
-
       $createText = $this->GetMeta($name, $content, $textState);
-      $this->Text($createText, $NoIndent);
+      $this->Text($createText, false);
 
       // Append Method
       $this->UpdateState($textState);
@@ -484,11 +551,9 @@
       , string $description = null, string $keywords = null
       , string $charSet = "utf-8") : string
     {
-      $NoIndent = false;
-
       $createText = $this->GetMetas($author, $textState, $description, $keywords
         , $charSet);
-      $this->Text($createText, $NoIndent);
+      $this->Text($createText, false);
 
       // Append Method
       $this->UpdateState($textState);
@@ -499,10 +564,8 @@
     /// <include path='items/Script/*' file='Doc/LJCHTMLBuilder.xml'/>
     public function Script(string $fileName, LJCTextState $textState) : string
     {
-      $NoIndent = false;
-
       $createText = $this->GetScript($fileName, $textState);
-      $this->Text($createText, $NoIndent);
+      $this->Text($createText, false);
 
       // Append Method
       $this->UpdateState($textState);
@@ -516,8 +579,6 @@
     /// <include path='items/GetLink/*' file='Doc/LJCHTMLBuilder.xml'/>
     public function GetLink(string $fileName, LJCTextState $textState) : string
     {
-      $NoIndent = false;
-
       $hb = new LJCHTMLBuilder($textState);
 
       $attribs = new LJCAttributes();
@@ -526,7 +587,7 @@
       $attribs.Add("href", $fileName);
       $createText = $hb->GetCreate("link", null, $textState, $attribs
         , isEmpty: true);
-      $hb->Text($createText, $NoIndent);
+      $hb->Text($createText, false);
 
       $retValue = $hb->ToString();
       return $retValue;
@@ -537,8 +598,6 @@
     public function GetMeta(string $name, string $content
       , LJCTextState $textState) : string
     {
-      $NoIndent = false;
-
       $hb = new LJCHTMLBuilder($textState);
 
       $attribs = new LJCAttributes();
@@ -546,7 +605,7 @@
       $attribs.Add("content", $content);
       $createText = $hb->GetCreate("meta", null, $textState, $attribs
         , isEmpty: true);
-      $hb->Text($createText, $NoIndent);
+      $hb->Text($createText, false);
 
       $retValue = $hb->ToString();
       return $retValue;
@@ -558,15 +617,13 @@
       , string $description = null, string $keywords = null
       , string $charSet = "utf-8") : string
     {
-      $NoIndent = false;
-
       $hb = new LJCHTMLBuilder($textState);
 
       $attribs = new LJCAttributes();
       $attribs.Add("charset", $charSet);
       $createText = $hb->GetCreate("meta", null, $textState, $attribs
         , isEmpty: true);
-      $hb->Text($createText, $NoIndent);
+      $hb->Text($createText, false);
 
       if ($this->HasValue($description))
       {
@@ -589,14 +646,12 @@
     public function GetScript(string $fileName, LJCTextState $textState)
       : string
     {
-      $NoIndent = false;
-
       $hb = new LJCHTMLBuilder($textState);
 
       $attribs = new LJCAttributes();
       $attribs.Add("src", $fileName);
       $createText = $hb->GetCreate("script", null, $textState, $attribs);
-      $hb->Text($createText, $NoIndent);
+      $hb->Text($createText, false);
 
       $retValue = $hb->ToString();
       return $retValue;
@@ -610,10 +665,8 @@
     public function HTMLBegin(LJCTextState $textState
       , array $copyright = null, string $fileName = null) : string
     {
-      $NoIndent = false;
-
       $retValue = $this->GetHTMLBegin($textState, $copyright, $fileName);
-      $this->Text($retValue, $NoIndent);
+      $this->Text($retValue, false);
 
       // Append Method
       $this->UpdateState($textState);
@@ -628,8 +681,6 @@
     public function GetHTMLBegin(LJCTextState $textState
       , array $copyright = null, string $fileName = null) : string
     {
-      $NoIndent = false;
-
       $hb = new LJCHTMLBuilder($textState);
 
       $hb->Text("<!DOCTYPE html>");
@@ -647,11 +698,11 @@
 
       $startAttribs = $hb->StartAttribs();
       $createText = $hb->GetBegin("html", $textState, $startAttribs
-        , $NoIndent);
-      $hb->Text($createText, $NoIndent);
+        , false);
+      $hb->Text($createText, false);
 
-      $createText = $hb->GetBegin("head", $textState, null, $NoIndent);
-      $hb->Text($createText, self::NoIndent);
+      $createText = $hb->GetBegin("head", $textState, null, false);
+      $hb->Text($createText, false);
 
       // Only use AddChildIndent() if additional text is added in this method.
       $retValue = $hb->ToString();
@@ -662,15 +713,13 @@
     /// <include path='items/GetHTMLEnd/*' file='Doc/LJCHTMLBuilder.xml'/>
     public function GetHTMLEnd(LJCTextState $textState) : string
     {
-      $NoIndent = false;
-
       $hb = new LJCHTMLBuilder($textState);
 
-      $text = $hb->GetEnd("body", $textState, $NoIndent);
-      $hb->Text($text, $NoIndent);
+      $text = $hb->GetEnd("body", $textState, false);
+      $hb->Text($text, false);
 
-      $text = $hb->GetEnd("html", $textState, $NoIndent);
-      $hb->Text($text, $NoIndent);
+      $text = $hb->GetEnd("html", $textState, false);
+      $hb->Text($text, false);
       $this->AddSyncIndent($hb, $textState);
 
       $retValue = $hb->ToString();
@@ -746,6 +795,49 @@
       $state->IndentCount += $value;
     }
 
+    // Creates the content text.
+    private function Content(string $text, LJCTextState $textState, bool $isEmpty
+      , bool &$isWrapped) : string
+    {
+      $retValue = "";
+
+      // Add text content.
+      $isWrapped = false;
+      if (!$isEmpty
+        && $this->HasValue($text))
+      {
+        if (strlen($text) > 80 - $this->IndentLength)
+        {
+          $isWrapped = true;
+          $retValue .= "\r\n";
+          $this->AddSyncIndent($this, $textState);
+          $textValue = $this->GetText($text);
+          $retValue .= $textValue;
+          $this->AddSyncIndent($this, $textState, -1);
+          $retValue .= "\r\n";
+          $this->LineLength = 0;
+        }
+        else
+        {
+          $retValue .= $text;
+        }
+      }
+      return $retValue;
+    }
+
+    // Gets the text to add to the existing line.
+    private function GetAddText(string $text, int $addLength) : string
+    {
+      $retText = substr($text, 0, $addLength);
+      if ($this->LineLength > 0
+        && $addLength > 0)
+      {
+        // Add a leading space.
+        $retText = " {$retText}";
+      }
+      return $retText;
+    }
+
     // Checks for array elements.
     // Move to LJCCommon?
     private function HasElements($array) : bool
@@ -801,17 +893,90 @@
       }
     }
 
+    // Calculates the index at which to wrap the text.
+    private function WrapIndex(string $text) : int
+    {
+      $retIndex = -1;
+
+      $totalLength = $this->LineLength + $this->TextLength(text);
+      if ($totalLength > $this->LineLimit)
+      {
+        // Length of additional characters that fit in LineLimit.
+        // Only get up to next LineLimit length;
+        $currentLength = $this->LineLength;
+        if ($currentLength > $this->LineLimit)
+        {
+          $currentLength = $this->LineLimit;
+        }
+        $wrapLength = $this->LineLimit - $currentLength;
+
+        // *** Different than TextBuilder ***
+        // Get wrap point in allowed length.
+        // Wrap on a space.
+        $retIndex = LJCCommon::StrRPos($text, " ", $wrapLength);
+        if (-1 == $retIndex)
+        {
+          // Wrap index not found; Wrap at new text.
+          $retIndex = 0;
+        }
+      }
+      return $retIndex;
+    }
+
+    // Get next text up to LineLimit without leading space.
+    private function WrapText(string $text, int $wrapIndex) : string
+    {
+      $retText;
+
+      $nextLength = strlen(text) - $wrapIndex;
+
+      // Leave room for prepend text.
+      // *** Different than TextBuilder ***
+      if ($nextLength <= $this->LineLimit - $this->IndentLength)
+      {
+        // Get text at the wrap index.
+        $retText = substr($text, $wrapIndex, $nextLength);
+        if (str_starts_with($retText, " "))
+        {
+          // Remove leading space.
+          $retText = substr($retText, 1);
+        }
+      }
+      else
+      {
+        // Get text from next section.
+        $startIndex = $wrapIndex;
+        $tempText = substr($text, startIndex);
+        if (str_starts_with($tempText, " "))
+        {
+          $tempText = substr($tempText, 1);
+          $startIndex++;
+        }
+        // *** Different than TextBuilder ***
+        $nextLength = $this->LineLimit - $this->IndentLength;
+        $nextLength = LJCCommon::StrRPos($tempText, " ", $nextLength);
+        $retText = substr($text, $startIndex, $nextLength);
+      }
+      return $retText;
+    }
+
     // ----------
     // Properties
 
     // <summary>The indent character count.</summary>
     public int $IndentCharCount;
 
-    // The current indent count.
-    private int $IndentCount;
+    public bool $WrapEnabled;
 
     // The built string value.
     private ?string $BuilderValue;
+
+    // The current indent count.
+    private int $IndentCount;
+
+    private int $LineLength;
+
+    private int $LineLimit;
   }
 
   // ********************
