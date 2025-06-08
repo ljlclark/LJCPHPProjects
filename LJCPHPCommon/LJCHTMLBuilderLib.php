@@ -5,8 +5,10 @@
   declare(strict_types=1);
   include_once "LJCRoot.php";
   $prefix = RelativePrefix();
+  include_once "$prefix/LJCPHPCommon/LJCCollectionLib.php";
   include_once "$prefix/LJCPHPCommon/LJCCommonLib.php";
   include_once "$prefix/LJCPHPCommon/LJCTextLib.php";
+  // LJCCollectionLib: LJCCollectionBase
   // LJCCommonLib: LJCCommon
   // LJCTextLib: LJCWriter
 
@@ -37,8 +39,6 @@
   /// <include path='items/LJCHTMLBuilder/*' file='Doc/LJCHTMLBuilder.xml'/>
   class LJCHTMLBuilder
   {
-    const NoIndent = false;
-
     // ----------
     // Constructors
 
@@ -74,7 +74,7 @@
     /// <include path='items/AddChildIndent/*' file='Doc/LJCHTMLBuilder.xml'/>
     public function AddChildIndent(string $createText, LJCTextState $textState)
     {
-      if ($this->HasValue($createText)
+      if (LJCCommon::HasValue($createText)
         && $textState->ChildIndentCount > 0)
       {
         $this->AddIndent($textState->ChildIndentCount);
@@ -104,7 +104,7 @@
       if (strlen($this->BuilderValue) > 0)
       {
         $length = strlen($this->BuilderValue);
-        if ('\n' == $this->BuilderValue[$length - 1])
+        if ("\n" == $this->BuilderValue[$length - 1])
         {
           $retValue = true;
         }
@@ -156,7 +156,7 @@
     /// <include path='items/AddText/*' file='Doc/LJCHTMLBuilder.xml'/>
     public function AddText(string $text)
     {
-      if ($this->HasValue($text))
+      if (LJCCommon::HasValue($text))
       {
         $this->BuilderValue .= $text;
       }
@@ -164,7 +164,7 @@
 
     // Adds a potentially indented text line to the builder.
     /// <include path='items/Line/*' file='Doc/LJCHTMLBuilder.xml'/>
-    public function Line(string $text = null, bool $addIndent = true
+    public function Line(?string $text = null, bool $addIndent = true
       , bool $allowNewLine = true) : string
     {
       $retText = $this->GetLine($text, $addIndent, $allowNewLine);
@@ -178,7 +178,7 @@
       , bool $allowNewLine = true) : string
     {
       $retText = $this->GetText($text, $addIndent, $allowNewLine);
-      if ($this->HasValue($retText))
+      if (LJCCommon::HasValue($retText))
       {
         $this->BuilderValue .= $retText;
       }
@@ -195,16 +195,17 @@
     {
       $retText = "";
 
-      if ($this->HasElements($attribs))
+      // *** Next Line *** Change
+      if (LJCCommon::HasItems($attribs))
       {
-        $hb = new LJCHTMLBuilder(textState);
+        $hb = new LJCHTMLBuilder($textState);
         $isFirst = true;
         foreach ($attribs as $attrib)
         {
           if (!$isFirst)
           {
             // Wrap line for large attribute value.
-            if ($this->HasValue($attrib->Value)
+            if (LJCCommon::HasValue($attrib->Value)
               && strlen($attrib->Value) > 35)
             {
               $hb->AddText("\r\n{$GetIndentString()}");
@@ -212,8 +213,8 @@
           }
           $isFirst = false;
 
-          $hb.AddText(" {$attrib->Name}");
-          if ($this->HasValue($attrib->Value))
+          $hb->AddText(" {$attrib->Name}");
+          if (LJCCommon::HasValue($attrib->Value))
           {
             $hb->AddText("=\"{$attrib->Value}\"");
           }
@@ -258,7 +259,7 @@
 
     // Gets the potentially indented text.
     /// <include path='items/GetText/*' file='Doc/LJCHTMLBuilder.xml'/>
-    public function GetText(string $text, bool $addIndent = true
+    public function GetText(?string $text, bool $addIndent = true
       , bool $allowNewLine = true) : string
     {
       $retText = "";
@@ -269,7 +270,7 @@
         $retText = "\r\n";
       }
 
-      if ($this->HasValue($text))
+      if (LJCCommon::HasValue($text))
       {
         $retText .= $text;
 
@@ -322,7 +323,7 @@
         {
           // Adds leading space if line exists and wrapIndex > 0.
           $addText = $this->GetAddText($retText, $wrapIndex);
-          $buildText += "{$addText}\r\n";
+          $buildText .= "{$addText}\r\n";
 
           // Next text up to LineLimit - prepend length without leading space.
           $wrapText = $this->WrapText($workText, $wrapIndex);
@@ -330,7 +331,7 @@
           $indentString = $this->GetIndentString();
           $lineText = "{$indentString}{$wrapText}";
           $LineLength = strlen($lineText);
-          $buildText += $lineText;
+          $buildText .= $lineText;
 
           // End loop unless there is more text.
           $totalLength = 0;
@@ -684,14 +685,14 @@
       $hb = new LJCHTMLBuilder($textState);
 
       $hb->Text("<!DOCTYPE html>");
-      if ($this->HasElements($copyright))
+      if (LJCCommon::HasElements($copyright))
       {
         foreach ($copyright as $line)
         {
           $hb->Text("<!-- {$line} -->");
         }
       }
-      if ($this->HasValue($fileName))
+      if (LJCCommon::HasValue($fileName))
       {
         $hb->Text("<!-- {$fileName} -->");
       }
@@ -804,7 +805,7 @@
       // Add text content.
       $isWrapped = false;
       if (!$isEmpty
-        && $this->HasValue($text))
+        && LJCCommon::HasValue($text))
       {
         if (strlen($text) > 80 - $this->IndentLength)
         {
@@ -838,33 +839,6 @@
       return $retText;
     }
 
-    // Checks for array elements.
-    // Move to LJCCommon?
-    private function HasElements($array) : bool
-    {
-      $retValue = false;
-
-      if (is_array($array)
-        && count($array) > 0)
-      {
-        $retValue = true;
-      }
-      return $retValue;
-    }
-
-    // Checks for a text value.
-    // Move to LJCCommon?
-    private function HasValue(string $text) : bool
-    {
-      $retValue = false;
-
-      if ($this->TextLength($text) > 0)
-      {
-        $retValue = true;
-      }
-      return $retValue;
-    }
-
     // Gets the current indent length.
     private function IndentLength() : int
     {
@@ -873,7 +847,7 @@
 
     // Gets the text length if not null.
     // Move to LJCCommon?
-    private function TextLength(string $text) : int
+    private function TextLength(?string $text) : int
     {
       $retLength = 0;
 
@@ -898,7 +872,7 @@
     {
       $retIndex = -1;
 
-      $totalLength = $this->LineLength + $this->TextLength(text);
+      $totalLength = $this->LineLength + $this->TextLength($text);
       if ($totalLength > $this->LineLimit)
       {
         // Length of additional characters that fit in LineLimit.
@@ -928,11 +902,11 @@
     {
       $retText;
 
-      $nextLength = strlen(text) - $wrapIndex;
+      $nextLength = strlen($text) - $wrapIndex;
 
       // Leave room for prepend text.
       // *** Different than TextBuilder ***
-      if ($nextLength <= $this->LineLimit - $this->IndentLength)
+      if ($nextLength <= $this->LineLimit - $this->IndentLength())
       {
         // Get text at the wrap index.
         $retText = substr($text, $wrapIndex, $nextLength);
@@ -994,15 +968,37 @@
 
   // ********************
   // Methods:
-  /// <summary>Represents a collection of node attributes.</summary>
-  class LJCAttributes
+  /// <summary>Represents a collection of node or element attributes.</summary>
+  class LJCAttributes extends LJCCollectionBase
   {
-    public function Add(string $name, string $value = null)
+    // Creates an object and adds it to the collection.
+    public function Add(string $name, string $value = null, $key = null)
+      : ?LJCAttribute
     {
-      $items[] = new LJCAttribute($name, $value);
+      $retValue = null;
+
+      if (null == $key)
+      {
+        $key = $name;
+      }
+
+      $item = new LJCAttribute($name, $value);
+      $retValue = $this->AddObject($item, $key);
+      return $retValue;
     }
 
-    public array $Items;
+    // Adds an object and key value.
+    public function AddObject(LJCAttribute $item, $key = null) : ?LJCAttribute
+    {
+      if (null == $key)
+      {
+        $key = $item->Name;
+      }
+      $retValue = $this->AddItem($item, $key);
+      return $retValue;
+    }// AddObject()
+
+    //public array $Items;
   }
 
   // ********************

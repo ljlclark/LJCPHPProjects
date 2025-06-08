@@ -17,118 +17,11 @@
     // ---------------
     // Static Functions
 
-    // Check for text. (Move to LJCCommon)
-    /// <summary>Check for text.</summary>
-    /// <param name="$text"></param>
-    /// <returns>
-    ///   true if the text has other than white space; otherwise false;
-    /// </returns>
-    public static function HasValue($text) : bool
+    // Display debug text.
+    public static function Debug(int $lineNumber, string $text)
     {
-      $retValue = false;
-
-      if ($text != null
-        && strlen(trim($text)) > 0)
-      {
-        $retValue = true;
-      }
-      return $retValue;
+      echo("\r\n".$lineNumber."{$text}");
     }
-
-    // Returns a scrubbed external value.
-    /// <include path='items/Scrub/*' file='Doc/LJCCommon.xml'/>
-    public static function Scrub(string $text) : string
-    {
-      $retValue = trim($text);
-      $retValue = stripslashes($retValue);
-      $retValue = htmlspecialchars($retValue);
-      return $retValue;
-    } // Scrub()
-
-    /// <summary>Splits a string on whitespace.</summary>
-    public static function Split(string $text) : array
-    {
-      $retValues = preg_split("/[\s,]+/", $text, 0, PREG_SPLIT_NO_EMPTY);
-      return $retValues;
-    }
-
-    // Gets the first index for the search value.
-    /// <include path='items/StrPos/*' file='Doc/LJCCommon.xml'/>
-    public static function StrPos(?string $text, ?string $find
-      , int $start = 0, bool $exact = false) : int
-    {
-      $retValue = -1;
-
-      $isFound = false;
-      if ($text != null && $find !=null)
-      {
-        $index = stripos($text, $find, $start);
-        if ($exact)
-        {
-          $index = strpos($text, $find, $start);
-        }
-
-        // strpos and stripos are inconsistant.
-        // if not found: == null and >= 0 are true.
-        if ($index === 0)
-        {
-          // if first index: === 0, == null and >= 0 are true. 
-          $isFound = true;
-        }
-        else
-        {
-          // if not first index: != null and >= 0 are true. 
-          if ($index != null && $index >= 0)
-          {
-            $isFound = true;
-          }
-        }
-        if ($isFound)
-        {
-          $retValue = $index;
-        }
-      }
-      return $retValue;
-    } // StrPos()
-
-    // Gets the last index for the search value.
-    /// <include path='items/StrRPos/*' file='Doc/LJCCommon.xml'/>
-    public static function StrRPos(?string $text, ?string $find
-      , int $start = 0, bool $exact = false) : int
-    {
-      $retValue = -1;
-
-      $isFound = false;
-      if ($text != null && $find !=null)
-      {
-        $index = strripos($text, $find, $start);
-        if ($exact)
-        {
-          $index = strrpos($text, $find, $start);
-        }
-
-        // strrpos and strripos are inconsistant.
-        // if not found: == null and >= 0 are true.
-        if ($index === 0)
-        {
-          // if first index: === 0, == null and >= 0 are true. 
-          $isFound = true;
-        }
-        else
-        {
-          // if not first index: != null and >= 0 are true. 
-          if ($index != null && $index >= 0)
-          {
-            $isFound = true;
-          }
-        }
-        if ($isFound)
-        {
-          $retValue = $index;
-        }
-      }
-      return $retValue;
-    } // StrRPos()
 
     /// <summary>Returns a text value as int.</summary>
     // *** Change *** 5/25/25
@@ -246,5 +139,143 @@
       $retValue = preg_split($splitString, $trimLine, 0, PREG_SPLIT_NO_EMPTY);
       return $retValue;
     } // GetTokens()
+
+    // Checks for array elements.
+    public static function HasElements($array) : bool
+    {
+      $retValue = false;
+
+      if (is_array($array)
+        && count($array) > 0)
+      {
+        $retValue = true;
+      }
+      return $retValue;
+    }
+
+    // Checks for array elements.
+    public static function HasItems($collection) : bool
+    {
+      $retValue = false;
+
+      if (isset($collection)
+        && count($collection) > 0)
+      {
+        $retValue = true;
+      }
+      return $retValue;
+    }
+
+    /// <summary>Check for text.</summary>
+    /// <param name="$text"></param>
+    /// <returns>
+    ///   true if the text has other than white space; otherwise false;
+    /// </returns>
+    public static function HasValue($text) : bool
+    {
+      $retValue = false;
+
+      if ($text != null
+        && strlen(trim($text)) > 0)
+      {
+        $retValue = true;
+      }
+      return $retValue;
+    }
+
+    // Returns a scrubbed external value.
+    /// <include path='items/Scrub/*' file='Doc/LJCCommon.xml'/>
+    public static function Scrub(string $text) : string
+    {
+      $retValue = trim($text);
+      $retValue = stripslashes($retValue);
+      $retValue = htmlspecialchars($retValue);
+      return $retValue;
+    } // Scrub()
+
+    /// <summary>Splits a string on whitespace.</summary>
+    public static function Split(string $text) : array
+    {
+      $retValues = preg_split("/[\s,]+/", $text, 0, PREG_SPLIT_NO_EMPTY);
+      return $retValues;
+    }
+
+    // Gets the first index for the search value.
+    /// <include path='items/StrPos/*' file='Doc/LJCCommon.xml'/>
+    public static function StrPos(?string $text, ?string $find
+      , int $start = 0, bool $exact = false) : int
+    {
+      $retValue = -1;
+
+      $isFound = false;
+      if ($text != null && $find !=null)
+      {
+        $index = stripos($text, $find, $start);
+        if ($exact)
+        {
+          $index = strpos($text, $find, $start);
+        }
+
+        // strpos and stripos are inconsistant.
+        // if not found: == null and >= 0 are true.
+        if ($index === 0)
+        {
+          // if first index: === 0, == null and >= 0 are true. 
+          $isFound = true;
+        }
+        else
+        {
+          // if not first index: != null and >= 0 are true. 
+          if ($index != null && $index >= 0)
+          {
+            $isFound = true;
+          }
+        }
+        if ($isFound)
+        {
+          $retValue = $index;
+        }
+      }
+      return $retValue;
+    } // StrPos()
+
+    // Gets the last index for the search value.
+    /// <include path='items/StrRPos/*' file='Doc/LJCCommon.xml'/>
+    public static function StrRPos(?string $text, ?string $find
+      , int $start = 0, bool $exact = false) : int
+    {
+      $retValue = -1;
+
+      $isFound = false;
+      if ($text != null && $find !=null)
+      {
+        $index = strripos($text, $find, $start);
+        if ($exact)
+        {
+          $index = strrpos($text, $find, $start);
+        }
+
+        // strrpos and strripos are inconsistant.
+        // if not found: == null and >= 0 are true.
+        if ($index === 0)
+        {
+          // if first index: === 0, == null and >= 0 are true. 
+          $isFound = true;
+        }
+        else
+        {
+          // if not first index: != null and >= 0 are true. 
+          if ($index != null && $index >= 0)
+          {
+            $isFound = true;
+          }
+        }
+        if ($isFound)
+        {
+          $retValue = $index;
+        }
+      }
+      return $retValue;
+    } // StrRPos()
   } // LJCCommon
 ?>
