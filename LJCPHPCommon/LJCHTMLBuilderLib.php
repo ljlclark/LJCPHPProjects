@@ -198,7 +198,6 @@
     {
       $retText = "";
 
-      // *** Next Line *** Change
       if (LJCCommon::HasItems($attribs))
       {
         $hb = new LJCHTMLBuilder($textState);
@@ -306,7 +305,7 @@
     }
 
     // Appends added text and new wrapped line if combined line > LineLimit.
-    /// <include path='items/GetWrapped/*' file='Doc/HTMLBuilder.xml'/>
+    /// <include path='items/GetWrapped/*' file='Doc/LJCHTMLBuilder.xml'/>
     public function GetWrapped(string $text) : string
     {
       $lineLength = $this->LineLength;
@@ -770,7 +769,7 @@
     }
 
     // Creates the HTML element attributes.
-    /// <include path='items/StartAttribs/*' file='Doc/HTMLBuilder.xml'/>
+    /// <include path='items/StartAttribs/*' file='Doc/LJCHTMLBuilder.xml'/>
     public function StartAttribs() : LJCAttributes
     {
       $retAttribs = new LJCAttributes();

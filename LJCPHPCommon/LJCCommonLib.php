@@ -241,18 +241,25 @@
 
     // Gets the last index for the search value.
     /// <include path='items/StrRPos/*' file='Doc/LJCCommon.xml'/>
-    public static function StrRPos(?string $text, ?string $find
-      , int $start = 0, bool $exact = false) : int
+    public static function StrRPos(?string $text, ?string $find, int $length
+      , bool $exact = false) : int
     {
       $retValue = -1;
 
       $isFound = false;
       if ($text != null && $find !=null)
       {
-        $index = strripos($text, $find, $start);
+        // *** Add ***
+        $value = substr($text, 0, $length + 1);
+        // *** Change ***
+        //$index = strripos($text, $find, $start);
+        $index = strripos($value, $find);
+        // *** End   ***
         if ($exact)
         {
-          $index = strrpos($text, $find, $start);
+          // *** Change ***
+          //$index = strrpos($text, $find, $start);
+          $index = strrpos($value, $find);
         }
 
         // strrpos and strripos are inconsistant.
