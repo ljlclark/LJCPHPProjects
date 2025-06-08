@@ -74,11 +74,13 @@
     /// <include path='items/AddChildIndent/*' file='Doc/LJCHTMLBuilder.xml'/>
     public function AddChildIndent(string $createText, LJCTextState $textState)
     {
+      $childIndentCount = $textState->ChildIndentCount;
+
       if (LJCCommon::HasValue($createText)
-        && $textState->ChildIndentCount > 0)
+        && $childIndentCount > 0)
       {
-        $this->AddIndent($textState->ChildIndentCount);
-        $textState->IndentCount += $textState->ChildIndentCount;
+        $this->AddIndent($childIndentCount);
+        $textState->IndentCount += $childIndentCount;
         $textState->ChildIndentCount = 0;
       }
     }
@@ -99,12 +101,13 @@
     /// <include path='items/EndsWithNewLine/*' file='Doc/LJCHTMLBuilder.xml'/>
     public function EndsWithNewLine() : bool
     {
+      $builderValue = $this->BuilderValue;
       $retValue = false;
 
-      if (strlen($this->BuilderValue) > 0)
+      if (strlen($builderValue) > 0)
       {
-        $length = strlen($this->BuilderValue);
-        if ("\n" == $this->BuilderValue[$length - 1])
+        $length = strlen($builderValue);
+        if ("\n" == $builderValue[$length - 1])
         {
           $retValue = true;
         }
@@ -202,21 +205,24 @@
         $isFirst = true;
         foreach ($attribs as $attrib)
         {
+          $name = $attrib->Name;
+          $value = $attrib->Value;
+
           if (!$isFirst)
           {
             // Wrap line for large attribute value.
-            if (LJCCommon::HasValue($attrib->Value)
-              && strlen($attrib->Value) > 35)
+            if (LJCCommon::HasValue($value)
+              && strlen($value) > 35)
             {
               $hb->AddText("\r\n{$GetIndentString()}");
             }
           }
           $isFirst = false;
 
-          $hb->AddText(" {$attrib->Name}");
-          if (LJCCommon::HasValue($attrib->Value))
+          $hb->AddText(" {$name}");
+          if (LJCCommon::HasValue($value))
           {
-            $hb->AddText("=\"{$attrib->Value}\"");
+            $hb->AddText("=\"{$value}\"");
           }
         }
         $retText = $hb->ToString();
@@ -303,18 +309,20 @@
     /// <include path='items/GetWrapped/*' file='Doc/HTMLBuilder.xml'/>
     public function GetWrapped(string $text) : string
     {
+      $lineLength = $this->LineLength;
+      $lineLimit = $this->LineLimit;
       $retText = $text;
 
       $buildText = "";
       $workText = $text;
-      $totalLength = $this->LineLength + $this->TextLength($workText);
-      if ($totalLength < $this->LineLimit)
+      $totalLength = $lineLength + $this->TextLength($workText);
+      if ($totalLength < $lineLimit)
       {
         // No wrap.
         $this->LineLength += $this->TextLength($text);
       }
 
-      while ($totalLength > $this->LineLimit)
+      while ($totalLength > $lineLimit)
       {
         // Index where text can be added to the current line
         // and the remainder is wrapped.
@@ -330,7 +338,7 @@
           // *** Different than TextBuilder ***
           $indentString = $this->GetIndentString();
           $lineText = "{$indentString}{$wrapText}";
-          $LineLength = strlen($lineText);
+          $this->LineLength = strlen($lineText);
           $buildText .= $lineText;
 
           // End loop unless there is more text.
@@ -349,7 +357,7 @@
           {
             $tempText = substr($workText, $nextIndex);
             $workText = $tempText;
-            $totalLength = $this->LineLength + $this->TextLength($workText);
+            $totalLength = $lineLength + $this->TextLength($workText);
           }
         }
       }
@@ -511,7 +519,7 @@
     {
       $hb = new LJCHTMLBuilder($textState);
 
-      $this->AddSyncIndent($this, $textState, -1);
+      $this->AddSyncIndent($hb, $textState, -1);
       $hb->Text("</{$name}>", $addIndent);
 
       $retElement = $hb->ToString();
@@ -765,10 +773,10 @@
     /// <include path='items/StartAttribs/*' file='Doc/HTMLBuilder.xml'/>
     public function StartAttribs() : LJCAttributes
     {
-      $retAttributes = new LJCAttributes();
-      $retAttributes->Add("lang", "en");
-      $retAttributes->Add("xmlns", "http://www.w3.org/1999/xhtml");
-      return $retAttributes;
+      $retAttribs = new LJCAttributes();
+      $retAttribs->Add("lang", "en");
+      $retAttribs->Add("xmlns", "http://www.w3.org/1999/xhtml");
+      return $retAttribs;
     }
 
     // Gets common table attributes.
@@ -777,7 +785,7 @@
       , int $cellPadding = 2, string $className = null, string $id = null)
       : LJCAttributes
     {
-      $retAttribs = Attribs(className, $id);
+      $retAttribs = $this->Attribs(className, $id);
       $retAttribs.Add("border", strval($border));
       $retAttribs.Add("cellspacing", strval($cellSpacing));
       $retAttribs.Add("cellpadding", strval($cellPadding));
