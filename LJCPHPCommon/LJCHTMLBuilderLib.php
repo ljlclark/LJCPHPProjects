@@ -8,6 +8,7 @@
   include_once "$prefix/LJCPHPCommon/LJCCollectionLib.php";
   include_once "$prefix/LJCPHPCommon/LJCCommonLib.php";
   include_once "$prefix/LJCPHPCommon/LJCTextLib.php";
+  include_once "$prefix/LJCPHPCommon/LJCDbAccessLib.php";
   // LJCCollectionLib: LJCCollectionBase
   // LJCCommonLib: LJCCommon
   // LJCTextLib: LJCWriter
@@ -398,7 +399,7 @@
       : string
     {
       // Adds the indent string.
-      $createText = $this->GetCreate($name, $text, $textState, $htmlAttribs
+      $createText = $this->GetCreate($name, $text, $textState, $attribs
         , $addIndent, $childIndent, $isEmpty, $close);
       $this->Text($createText, false);
       if (!$close)
@@ -757,13 +758,13 @@
       : LJCAttributes
     {
       $retAttribs = new LJCAttributes();
-      if ($this->HasValue($id))
+      if (LJCCommon::HasValue($id))
       {
-        $retAttribs.Add("id", $id);
+        $retAttribs->Add("id", $id);
       }
-      if ($this->HasValue($className))
+      if (LJCCommon::HasValue($className))
       {
-        $this->retAttribs.Add("class", $className);
+        $this->retAttribs->Add("class", $className);
       }
       return $retAttribs;
     }
@@ -784,10 +785,10 @@
       , int $cellPadding = 2, string $className = null, string $id = null)
       : LJCAttributes
     {
-      $retAttribs = $this->Attribs(className, $id);
-      $retAttribs.Add("border", strval($border));
-      $retAttribs.Add("cellspacing", strval($cellSpacing));
-      $retAttribs.Add("cellpadding", strval($cellPadding));
+      $retAttribs = $this->Attribs($className, $id);
+      $retAttribs->Add("border", strval($border));
+      $retAttribs->Add("cellspacing", strval($cellSpacing));
+      $retAttribs->Add("cellpadding", strval($cellPadding));
       return $retAttribs;
     }
 
@@ -814,7 +815,7 @@
       if (!$isEmpty
         && LJCCommon::HasValue($text))
       {
-        if (strlen($text) > 80 - $this->IndentLength)
+        if (strlen($text) > 80 - $this->IndentLength())
         {
           $isWrapped = true;
           $retValue .= "\r\n";
@@ -1004,6 +1005,15 @@
       $retValue = $this->AddItem($item, $key);
       return $retValue;
     }// AddObject()
+
+    // Gets an item by key.
+    public function Retrieve($key)
+    {
+      $retValue = null;
+
+      $retValue = $this->RetrieveItem($key);
+      return $retValue;
+    }
 
     //public array $Items;
   }
