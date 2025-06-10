@@ -284,5 +284,17 @@
       }
       return $retValue;
     } // StrRPos()
+
+    // Writes the test compare text.
+    public static function WriteCompare(string $methodName, string $result, string $compare)
+    {
+      if ($result != $compare)
+      {
+        echo("\r\n{$methodName}\r\n");
+        echo("$result\r\n");
+        echo(" !=\r\n");
+        echo("$compare\r\n");
+      }
+    }
   } // LJCCommon
 ?>

@@ -1,27 +1,17 @@
 <?php
   // Copyright (c) Lester J. Clark and Contributors.
   // Licensed under the MIT License.
-  // LJCHTMLBuilderLib.php
+  // LJCHTMLObjectTableLib.php
   declare(strict_types=1);
   include_once "LJCRoot.php";
   $prefix = RelativePrefix();
   include_once "$prefix/LJCPHPCommon/LJCCommonLib.php";
   include_once "$prefix/LJCPHPCommon/LJCHTMLBuilderLib.php";
-  include_once "$prefix/LJCPHPCommon/LJCDbAccessLib.php";
   // LJCCommonLib: LJCCommon
-  // LJCHTMLBuilderLib: LJCHTMLBuilder, LJCAttribute, LJCAttributes
-  //   , LJCTextBuilder
-  // LJCDbAccessLib: LJCDbColumn, LJCDbColumns
+  // LJCHTMLBuilderLib: LJCHTMLBuilder
 
-  // Contains methods to create HTML document sections.
-  class LJCHTMLSection
-  {
-    // ----------
-    // Methods
-  }
-
-  // Contains methods to create an HTML Table.
-  class LJCHTMLTable
+  // Contains methods to create an object HTML Table.
+  class LJCHTMLObjectTable
   {
     // ----------
     // Methods
@@ -34,7 +24,7 @@
 
       if (LJCCommon::HasItems($dataItems))
       {
-        $hb = new LJCHTMLBuilder();
+        $hb = new LJCHTMLBuilder($textState);
 
         $hb->Begin("tr", $textState);
         $dataItem = self::GetFirstItem($dataItems);
@@ -93,7 +83,7 @@
 
       if (LJCCommon::HasItems($dataItems))
       {
-        $hb = new LJCHTMLBuilder();
+        $hb = new LJCHTMLBuilder($textState);
 
         $count = 0;
         foreach ($dataItems as $dataItem)
