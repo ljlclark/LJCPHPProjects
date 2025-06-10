@@ -20,7 +20,7 @@
     // Display debug text.
     public static function Debug(int $lineNumber, string $text)
     {
-      echo("\r\n".$lineNumber."{$text}");
+      echo("\r\n$lineNumber {$text}");
     }
 
     /// <summary>Returns a text value as int.</summary>
@@ -288,6 +288,15 @@
     // Writes the test compare text.
     public static function WriteCompare(string $methodName, string $result, string $compare)
     {
+      if (!self::HasValue($result))
+      {
+        $result = "No Result";
+      }
+      if (!self::HasValue($compare))
+      {
+        $compare = "No Compare";
+      }
+
       if ($result != $compare)
       {
         echo("\r\n{$methodName}\r\n");

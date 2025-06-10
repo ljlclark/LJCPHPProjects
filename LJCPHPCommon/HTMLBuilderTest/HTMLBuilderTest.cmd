@@ -1,2 +1,2 @@
-php HTMLBuilderTest.php > HTMLBuilderOutput.html
+php HTMLBuilderTest.php > HTMLBuilderOutput.log
 call ParseError.cmd

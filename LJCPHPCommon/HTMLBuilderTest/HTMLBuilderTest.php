@@ -1,41 +1,39 @@
 <?php
   // Copyright (c) Lester J. Clark and Contributors.
   // Licensed under the MIT License.
-  // HTMLBuilderLib.php
+  // HTMLBuilderTest.php
   declare(strict_types=1);
   include_once "LJCRoot.php";
   $prefix = RelativePrefix();
   include_once "$prefix/LJCPHPCommon/LJCCommonLib.php";
   include_once "$prefix/LJCPHPCommon/LJCHTMLBuilderLib.php";
-  include_once "$prefix/LJCPHPCommon/LJCHTMLObjectTableLib.php";
   // LJCCommonLib: LJCCommon
-  // LJCHTMLBuilderLib: LJCHTMLBuilder, LJCAttribute, LJCAttributes
-  //   , LJCTextState
-  // LJCHTMLObjectTableLib: LJCHTMLObjectTable
+  // LJCHTMLBuilderLib: LJCHTMLBuilder, LJCAttributes, LJCTextState
 
   /// <summary>The Common Text Output Class Library</summary>
-  /// LibName: LJCHTMLBuilderLib
-  //  Classes: LJCHTMLBuilder, LJCAttribute, LJCAttributes
+  /// LibName: HTMLBuilderTest
 
   $testBuilder = new TestHTMLBuilder();
   $testBuilder->Run();
 
   // ********************
   // Methods: 
-  /// <summary>Represents a built string value.</summary>
+  /// <summary>The LJCHTMLBuilder tests.</summary>
   /// <include path='items/LJCHTMLBuilder/*' file='Doc/LJCHTMLBuilder.xml'/>
   class TestHTMLBuilder
   {
+    /// <summary>Runs the LJCHTMLBuilder tests.</summary>
     public static function Run()
     {
       echo("\r\n");
-      echo("*** HTMLBuilder ***");
+      echo("*** LJCHTMLBuilder ***");
 
       // Methods
       self::AddChildIndent();
       self::AddIndent();
       self::EndsWithNewLine();
       self::StartWithNewLine();
+      self::HasText();
 
       // Text Methods
       self::AddLine();
@@ -48,11 +46,20 @@
       self::GetLine();
       self::GetText();
       self::GetWrapped();
+
+      // Element Methods
+      self::Begin();
+      self::Create();
+      self::End();
+      self::GetBegin();
+      self::GetCreate();
+      self::GetEnd();
     }
 
     // --------------------
     // Methods
 
+    // Adds the new (child) indents.
     private static function AddChildIndent()
     {
       // Root Method Begin
@@ -64,6 +71,26 @@
       LJCCommon::WriteCompare("AddChildIndent()", $result, $compare);
     }
 
+    // The custom begin Element method.
+    private static function CustomBegin(string $name, LJCTextState $textState
+      , Attributes $attribs = null, bool $addIndent = true
+      , bool $childIndent = true) : string
+    {
+      // Defaults: IndentCharCount = 2, LineLimit = 80, WrapEnabled = false.
+      $hb = new LJCHTMLBuilder($textState);
+
+      $createText = $hb->GetBegin($name, $textState, $attribs, $addIndent
+        , $childIndent);
+      $hb->Text($createText, false);
+
+      // Use AddChildIndent after beginning an element.
+      $hb->AddChildIndent($createText, $textState);
+
+      $result = $hb->ToString();
+      return $result;
+    }
+
+    // Changes the IndentCount by the provided value.
     private static function AddIndent()
     {
       // Defaults: IndentCharCount = 2, LineLimit = 80, WrapEnabled = false.
@@ -100,6 +127,7 @@
       LJCCommon::WriteCompare("AddIndent()", $result, $compare);
     }
 
+    // Indicates if the builder text ends with a newline.
     private static function EndsWithNewLine()
     {
       $hb = new LJCHTMLBuilder();
@@ -118,6 +146,7 @@
       return $retValue;
     }
 
+    // Checks if text can start with a newline.
     private static function StartWithNewLine()
     {
       $hb = new LJCHTMLBuilder();
@@ -136,9 +165,15 @@
       return $retValue;
     }
 
+    // Indicates if the builder has text.
+    private static function HasText()
+    {
+    }
+
     // --------------------
     // Text Methods
 
+    // Appends a text line without modification.
     private static function AddLine()
     {
       // Defaults: IndentCharCount = 2, LineLimit = 80, WrapEnabled = false.
@@ -158,6 +193,7 @@
       LJCCommon::WriteCompare("AddLine()", $result, $compare);
     }
 
+    // Appends text without modification.
     private static function AddText()
     {
       $hb = new LJCHTMLBuilder();
@@ -171,6 +207,7 @@
       LJCCommon::WriteCompare("AddText()", $result, $compare);
     }
 
+    // Appends a potentially indented text line to the builder.
     private static function Line()
     {
       $hb = new LJCHTMLBuilder();
@@ -201,6 +238,7 @@
       LJCCommon::WriteCompare("Line()", $result, $compare);
     }
 
+    // Appends the potentially indented text.
     private static function Text()
     {
       // Defaults: IndentCharCount = 2, LineLimit = 80, WrapEnabled = false.
@@ -228,6 +266,7 @@
       LJCCommon::WriteCompare("Text()", $result, $compare);
     }
 
+    // Gets the attributes text.
     private static function GetAttribs()
     {
       // Root Method Begin
@@ -249,6 +288,7 @@
       LJCCommon::WriteCompare("GetAttribs()", $result, $compare);
     }
 
+    // Gets a new potentially indented line.
     private static function GetIndented()
     {
       // Defaults: IndentCharCount = 2, LineLimit = 80, WrapEnabled = false.
@@ -272,6 +312,7 @@
       LJCCommon::WriteCompare("GetIndented()", $result, $compare);
     }
 
+    // Gets the current indent string.
     private static function GetIndentString()
     {
       // Defaults: IndentCharCount = 2, LineLimit = 80, WrapEnabled = false.
@@ -290,6 +331,7 @@
       LJCCommon::WriteCompare("GetIndentString()", $result, $compare);
     }
 
+    // Gets a modified text line.
     private static function GetLine()
     {
       // Defaults: IndentCharCount = 2, LineLimit = 80, WrapEnabled = false.
@@ -321,6 +363,7 @@
       LJCCommon::WriteCompare("GetLine()", $result, $compare);
     }
 
+    // Gets the potentially indented text.
     private static function GetText()
     {
       // Defaults: IndentCharCount = 2, LineLimit = 80, WrapEnabled = false.
@@ -349,6 +392,7 @@
       LJCCommon::WriteCompare("GetText()", $result, $compare);
     }
 
+    // Appends added text and new wrapped line if combined line > LineLimit.
     private static function GetWrapped()
     {
       // Defaults: IndentCharCount = 2, LineLimit = 80, WrapEnabled = false.
@@ -375,22 +419,34 @@
     // --------------------
     // Element Methods
 
-    private static function CustomBegin(string $name, LJCTextState $textState
-      , Attributes $attribs = null, bool $addIndent = true
-      , bool $childIndent = true) : string
+    // Appends the element begin tag.
+    private static function Begin()
     {
-      // Defaults: IndentCharCount = 2, LineLimit = 80, WrapEnabled = false.
-      $hb = new LJCHTMLBuilder($textState);
+    }
 
-      $createText = $hb->GetBegin($name, $textState, $attribs, $addIndent
-        , $childIndent);
-      $hb->Text($createText, false);
+    // Appends an element.
+    private static function Create()
+    {
+    }
 
-      // Use AddChildIndent after beginning an element.
-      $hb->AddChildIndent($createText, $textState);
+    // Appends the element end tag.
+    private static function End()
+    {
+    }
 
-      $result = $hb->ToString();
-      return $result;
+    // Gets the element begin tag.
+    private static function GetBegin()
+    {
+    }
+
+    // Gets the element text.
+    private static function GetCreate()
+    {
+    }
+
+    // Gets the element end tag.
+    private static function GetEnd()
+    {
     }
   }
 ?>

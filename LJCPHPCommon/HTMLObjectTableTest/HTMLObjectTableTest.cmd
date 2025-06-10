@@ -1,2 +1,2 @@
-php HTMLObjectTableTest.php > HTMLObjectTableOutput.html
+php HTMLObjectTableTest.php > HTMLObjectTableOutput.log
 call ParseError.cmd

@@ -8,14 +8,14 @@
   include_once "$prefix/LJCPHPCommon/LJCCollectionLib.php";
   include_once "$prefix/LJCPHPCommon/LJCCommonLib.php";
   include_once "$prefix/LJCPHPCommon/LJCTextLib.php";
-  include_once "$prefix/LJCPHPCommon/LJCDbAccessLib.php";
+  //include_once "$prefix/LJCPHPCommon/LJCDbAccessLib.php";
   // LJCCollectionLib: LJCCollectionBase
   // LJCCommonLib: LJCCommon
   // LJCTextLib: LJCWriter
 
   /// <summary>The Common Text Output Class Library</summary>
   /// LibName: LJCHTMLBuilderLib
-  //  Classes: LJCHTMLBuilder, LJCAttribute, LJCAttributes
+  //  Classes: LJCHTMLBuilder, LJCAttribute, LJCAttributes, LJCTextState
 
   // ********************
   // Methods: ToString(), AddChildIndent(), AddIndent(), EndsWithNewLine()
@@ -147,7 +147,7 @@
     // ----------
     // Append Text Methods
     
-    // Adds a text line without modification.
+    // Appends a text line without modification.
     /// <include path='items/AddLine/*' file='Doc/LJCHTMLBuilder.xml'/>
     public function AddLine(string $text = null) : string
     {
@@ -156,7 +156,7 @@
       return $retText;
     }
 
-    // Adds text without modification.
+    // Appends text without modification.
     /// <include path='items/AddText/*' file='Doc/LJCHTMLBuilder.xml'/>
     public function AddText(string $text)
     {
@@ -166,7 +166,7 @@
       }
     }
 
-    // Adds a potentially indented text line to the builder.
+    // Appends a potentially indented text line to the builder.
     /// <include path='items/Line/*' file='Doc/LJCHTMLBuilder.xml'/>
     public function Line(?string $text = null, bool $addIndent = true
       , bool $allowNewLine = true) : string
@@ -176,7 +176,7 @@
       return $retText;
     }
 
-    // Adds the potentially indented text.
+    // Appends the potentially indented text.
     /// <include path='items/Text/*' file='Doc/LJCHTMLBuilder.xml'/>
     public function Text(string $text, bool $addIndent = true
       , bool $allowNewLine = true) : string
@@ -446,20 +446,6 @@
       return $retValue;
     }
 
-    // Gets beginning of style selector.
-    /// <include path='items/GetBeginSelector/*' file='Doc/LJCHTMLBuilder.xml'/>
-    public function GetBeginSelector(string $selectorName, LJCTextState $textState)
-      : string
-    {
-      $hb = new LJCHTMLBuilder($textState);
-
-      $hb->Text($selectorName);
-      $hb->AddText(" {");
-
-      $retValue = $hb->ToString();
-      return $retValue;
-    }
-
     // Gets the element text.
     /// <include path='items/GetCreate/*' file='Doc/LJCHTMLBuilder.xml'/>
     public function GetCreate(string $name, string $text
@@ -524,232 +510,6 @@
 
       $retElement = $hb->ToString();
       return $retElement;
-    }
-
-    // ----------
-    // Append Create Element
-
-    // Appends a <link> element for a style sheet.
-    /// <include path='items/Link/*' file='Doc/LJCHTMLBuilder.xml'/>
-    public function Link(string $fileName, LJCTextState $textState) : string
-    {
-      $createText = $this->GetLink($fileName, $textState);
-      $this->Text($createText, false);
-
-      // Append Method
-      $this->UpdateState($textState);
-      return $createText;
-    }
-
-    // Appends a <meta> element.
-    /// <include path='items/Meta/*' file='Doc/LJCHTMLBuilder.xml'/>
-    public function Meta(string $name, string $content, LJCTextState $textState)
-      : string
-    {
-      $createText = $this->GetMeta($name, $content, $textState);
-      $this->Text($createText, false);
-
-      // Append Method
-      $this->UpdateState($textState);
-      return $createText;
-    }
-
-    // Appends common <meta> elements.
-    /// <include path='items/Metas/*' file='Doc/LJCHTMLBuilder.xml'/>
-    public function Metas(string $author, LJCTextState $textState
-      , string $description = null, string $keywords = null
-      , string $charSet = "utf-8") : string
-    {
-      $createText = $this->GetMetas($author, $textState, $description, $keywords
-        , $charSet);
-      $this->Text($createText, false);
-
-      // Append Method
-      $this->UpdateState($textState);
-      return $createText;
-    }
-
-    // Appends a <script> element for a style sheet.
-    /// <include path='items/Script/*' file='Doc/LJCHTMLBuilder.xml'/>
-    public function Script(string $fileName, LJCTextState $textState) : string
-    {
-      $createText = $this->GetScript($fileName, $textState);
-      $this->Text($createText, false);
-
-      // Append Method
-      $this->UpdateState($textState);
-      return $createText;
-    }
-
-    // ----------
-    // Get Create Element
-
-    // Gets the <link> element for a style sheet.
-    /// <include path='items/GetLink/*' file='Doc/LJCHTMLBuilder.xml'/>
-    public function GetLink(string $fileName, LJCTextState $textState) : string
-    {
-      $hb = new LJCHTMLBuilder($textState);
-
-      $attribs = new LJCAttributes();
-      $attribs->Add("href", $fileName);
-      $attribs->Add("rel", "stylesheet");
-      // Arg 2 different than HTMLBuilder.cs.
-      $createText = $hb->GetCreate("link", "", $textState, $attribs
-        , isEmpty: true);
-      $hb->Text($createText, false);
-
-      $retValue = $hb->ToString();
-      return $retValue;
-    }
-
-    // Gets a <meta> element.
-    /// <include path='items/GetMeta/*' file='Doc/LJCHTMLBuilder.xml'/>
-    public function GetMeta(string $name, string $content
-      , LJCTextState $textState) : string
-    {
-      $hb = new LJCHTMLBuilder($textState);
-
-      $attribs = new LJCAttributes();
-      $attribs->Add("name", $name);
-      $attribs->Add("content", $content);
-      // Arg 2 different than HTMLBuilder.cs.
-      $createText = $hb->GetCreate("meta", "", $textState, $attribs
-        , isEmpty: true);
-      $hb->Text($createText, false);
-
-      $retValue = $hb->ToString();
-      return $retValue;
-    }
-
-    // Gets common <meta> elements.
-    /// <include path='items/GetMetas/*' file='Doc/LJCHTMLBuilder.xml'/>
-    public function GetMetas(string $author, LJCTextState $textState
-      , string $description = null, string $keywords = null
-      , string $charSet = "utf-8") : string
-    {
-      $hb = new LJCHTMLBuilder($textState);
-
-      $attribs = new LJCAttributes();
-      $attribs->Add("charset", $charSet);
-      // Arg 2 different than HTMLBuilder.cs.
-      $createText = $hb->GetCreate("meta", "", $textState, $attribs
-        , isEmpty: true);
-      $hb->Text($createText, false);
-
-      if (LJCCommon::HasValue($description))
-      {
-        $hb->Meta("description", $description, $textState);
-      }
-      if (LJCCommon::HasValue($keywords))
-      {
-        $hb->Meta("keywords", $keywords, $textState);
-      }
-      $hb->Meta("author", $author, $textState);
-      $content = "width=device-width initial-scale=1";
-      $hb->Meta("viewport", $content, $textState);
-
-      $retValue = $hb->ToString();
-      return $retValue;
-    }
-
-    // Gets the <script> element.
-    /// <include path='items/GetScript/*' file='Doc/LJCHTMLBuilder.xml'/>
-    public function GetScript(string $fileName, LJCTextState $textState)
-      : string
-    {
-      $hb = new LJCHTMLBuilder($textState);
-
-      $attribs = new LJCAttributes();
-      $attribs->Add("src", $fileName);
-      // Arg 2 different than HTMLBuilder.cs.
-      $createText = $hb->GetCreate("script", "", $textState, $attribs);
-      $hb->Text($createText, false);
-
-      $retValue = $hb->ToString();
-      return $retValue;
-    }
-
-    // ----------
-    // Append HTML Methods
-
-    // Creates the HTML beginning up to and including <head>.
-    /// <include path='items/HTMLBegin/*' file='Doc/LJCHTMLBuilder.xml'/>
-    public function HTMLBegin(LJCTextState $textState
-      , array $copyright = null, string $fileName = null) : string
-    {
-      $retValue = $this->GetHTMLBegin($textState, $copyright, $fileName);
-      $this->Text($retValue, false);
-
-      // Append Method
-      $this->UpdateState($textState);
-      return $retValue;
-    }
-
-    // ----------
-    // Get HTML Methods
-
-    // Gets the HTML beginning up to <head>.
-    /// <include path='items/GetHTMLBegin/*' file='Doc/LJCHTMLBuilder.xml'/>
-    public function GetHTMLBegin(LJCTextState $textState
-      , array $copyright = null, string $fileName = null) : string
-    {
-      $hb = new LJCHTMLBuilder($textState);
-
-      $hb->Text("<!DOCTYPE html>");
-      if (LJCCommon::HasElements($copyright))
-      {
-        foreach ($copyright as $line)
-        {
-          $hb->Text("<!-- {$line} -->");
-        }
-      }
-      if (LJCCommon::HasValue($fileName))
-      {
-        $hb->Text("<!-- {$fileName} -->");
-      }
-
-      $startAttribs = $hb->StartAttribs();
-      $createText = $hb->GetBegin("html", $textState, $startAttribs
-        , false);
-      $hb->Text($createText, false);
-
-      $createText = $hb->GetBegin("head", $textState, null, false);
-      $hb->Text($createText, false);
-
-      // Only use AddChildIndent() if additional text is added in this method.
-      $retValue = $hb->ToString();
-      return $retValue;
-    }
-
-    // Gets the HTML end <body> and <html>.
-    /// <include path='items/GetHTMLEnd/*' file='Doc/LJCHTMLBuilder.xml'/>
-    public function GetHTMLEnd(LJCTextState $textState) : string
-    {
-      $hb = new LJCHTMLBuilder($textState);
-
-      $text = $hb->GetEnd("body", $textState, false);
-      $hb->Text($text, false);
-
-      $text = $hb->GetEnd("html", $textState, false);
-      $hb->Text($text, false);
-      $this->AddSyncIndent($hb, $textState);
-
-      $retValue = $hb->ToString();
-      return $retValue;
-    }
-
-    // Gets the main HTML Head elements.
-    /// <include path='items/GetHTMLHead/*' file='Doc/LJCHTMLBuilder.xml'/>
-    public function GetHTMLHead(LJCTextState $textState, string $title = null
-      , string $author = null, string $description = null) : string
-    {
-      $hb = new LJCHTMLBuilder($textState);
-
-      $hb->Create("title", $title, $textState, childIndent: false);
-      $hb.Metas($author, $textState, $description);
-
-      $retValue = $hb->ToString();
-      return $retValue;
     }
 
     // ----------
