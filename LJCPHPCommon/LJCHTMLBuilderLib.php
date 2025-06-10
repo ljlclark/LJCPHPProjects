@@ -26,13 +26,7 @@
   //   , GetText()
   //
   // Append Element: Begin(), Create(), End()
-  // Get Element: GetBegin(), GetBeginSelector(), GetCreate(), GetEnd()
-  //
-  // Append Create Element: Link(), Meta(), Metas(), Script()
-  // Get Create Element: GetLink(), GetMeta(), GetMetas(), GetScript()
-  //
-  // Append HTML: HTMLBegin()
-  // Get HTML: GetHTMLBegin(), GetHTMLEnd(), GetHTMLHead()
+  // Get Element: GetBegin(), GetCreate(), GetEnd()
   //
   // Get Attrib: Attribs(), StartAttribs(), TableAttribs()
   //

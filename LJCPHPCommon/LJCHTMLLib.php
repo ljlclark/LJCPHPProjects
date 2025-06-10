@@ -48,7 +48,6 @@
       // Arg 2 different than HTMLBuilder.cs.
       $createText = $hb->GetCreate("meta", "", $textState, $attribs
         , isEmpty: true);
-      LJCCommon::Debug(__line__, $createText);
       $hb->Text($createText, false);
 
       $retValue = $hb->ToString();
@@ -73,21 +72,17 @@
       if (LJCCommon::HasValue($description))
       {
         $createText = self::GetMeta("description", $description, $textState);
-        LJCCommon::Debug(__line__, $createText);
         $hb->Text($createText, false);
       }
       if (LJCCommon::HasValue($keywords))
       {
         $createText = self::GetMeta("keywords", $keywords, $textState);
-        LJCCommon::Debug(__line__, $createText);
         $hb->Text($createText, false);
       }
       $createText = self::GetMeta("author", $author, $textState);
       $hb->Text($createText, false);
-      LJCCommon::Debug(__line__, $createText);
       $content = "width=device-width initial-scale=1";
       $createText = self::GetMeta("viewport", $content, $textState);
-      LJCCommon::Debug(__line__, $createText);
       $hb->Text($createText, false);
 
       $retValue = $hb->ToString();

@@ -62,7 +62,6 @@
     // Adds the new (child) indents.
     private static function AddChildIndent()
     {
-      // Root Method Begin
       $textState = new LJCTextState();
 
       $result = self::CustomBegin("body", $textState);
@@ -76,7 +75,6 @@
       , Attributes $attribs = null, bool $addIndent = true
       , bool $childIndent = true) : string
     {
-      // Defaults: IndentCharCount = 2, LineLimit = 80, WrapEnabled = false.
       $hb = new LJCHTMLBuilder($textState);
 
       $createText = $hb->GetBegin($name, $textState, $attribs, $addIndent
@@ -93,7 +91,6 @@
     // Changes the IndentCount by the provided value.
     private static function AddIndent()
     {
-      // Defaults: IndentCharCount = 2, LineLimit = 80, WrapEnabled = false.
       $hb = new LJCHTMLBuilder();
 
       // Example Method:
@@ -101,21 +98,9 @@
       // Adds 1 indent by default.
       $hb->AddIndent();
 
-      // Adds text without modification.
       $hb->AddText("This text is not indented.");
-
-      // Starts the text with a newline if the builder already has text
-      // and param allowNewLine = true and builder text does not end with
-      // a newline.
-      // The text begins with the current indent string if param
-      // addIndent = true.
-      // Defaults: addIndent = true, allowNewLine = true.
       $hb->Text("This text is indented.");
-
-      // No Indent
       $hb->Text("Not indented.", false);
-
-      // Do not start a newline.
       $hb->AddText(" No start with newline.");
       $result = $hb->ToString();
 
@@ -132,6 +117,7 @@
     {
       $hb = new LJCHTMLBuilder();
 
+      // Example Method:
       $retValue = $hb->EndsWithNewLine();
       $result = strval($retValue);
       if ("" == $result)
@@ -151,6 +137,7 @@
     {
       $hb = new LJCHTMLBuilder();
 
+      // Example Method:
       $retValue = $hb->StartWithNewLine(true);
       $result = strval($retValue);
       if ("" == $result)
@@ -168,6 +155,19 @@
     // Indicates if the builder has text.
     private static function HasText()
     {
+      $textState = new LJCTextState();
+      $hb = new LJCHTMLBuilder($textState);
+
+      // Example Method:
+      $result = $hb->HasText();
+      $result = strval($result);
+      if ("" == $result)
+      {
+        $result = "False";
+      }
+
+      $compare = "False";
+      LJCCommon::WriteCompare("HasText()", $result, $compare);
     }
 
     // --------------------
@@ -176,11 +176,9 @@
     // Appends a text line without modification.
     private static function AddLine()
     {
-      // Defaults: IndentCharCount = 2, LineLimit = 80, WrapEnabled = false.
       $hb = new LJCHTMLBuilder();
 
       // Example Method:
-      // Adds text that ends with a newline.
       $hb->AddLine("This is an appended line.");
 
       $hb->AddText(":");
@@ -199,7 +197,6 @@
       $hb = new LJCHTMLBuilder();
 
       // Example Method:
-      // Adds text without modification.
       $hb->AddText("This is some appended text.");
       $result = $hb->ToString();
 
@@ -213,8 +210,6 @@
       $hb = new LJCHTMLBuilder();
 
       $hb->Text("This is an appended line.");
-
-      // The builder keeps track of the current number of indents.
       $hb->AddIndent();
 
       // Example Method:
@@ -241,12 +236,9 @@
     // Appends the potentially indented text.
     private static function Text()
     {
-      // Defaults: IndentCharCount = 2, LineLimit = 80, WrapEnabled = false.
       $hb = new LJCHTMLBuilder();
 
       $hb->Text("This is an appended line.");
-
-      // The builder keeps track of the current number of indents.
       $hb->AddIndent();
 
       // Example Method:
@@ -269,10 +261,7 @@
     // Gets the attributes text.
     private static function GetAttribs()
     {
-      // Root Method Begin
       $textState = new LJCTextState();
-
-      // Defaults: IndentCharCount = 2, LineLimit = 80, WrapEnabled = false.
       $hb = new LJCHTMLBuilder($textState);
 
       $attribs = new LJCAttributes();
@@ -291,14 +280,12 @@
     // Gets a new potentially indented line.
     private static function GetIndented()
     {
-      // Defaults: IndentCharCount = 2, LineLimit = 80, WrapEnabled = false.
       $hb = new LJCHTMLBuilder();
 
       // Example Method:
       $result = $hb->GetIndented("This text is NOT indented.");
       $hb->AddText($result);
 
-      // The builder keeps track of the current number of indents.
       $hb->AddIndent(2);
       $hb->AddLine();
       $result = $hb->GetIndented("This text is indented.");
@@ -315,14 +302,13 @@
     // Gets the current indent string.
     private static function GetIndentString()
     {
-      // Defaults: IndentCharCount = 2, LineLimit = 80, WrapEnabled = false.
       $hb = new LJCHTMLBuilder();
 
-      $hb->AddIndent(1);
+      $hb->AddIndent();
 
       // Example Method:
-      $result = $hb->GetIndentString();
-      $hb->Text($result, false);
+      $text = $hb->GetIndentString();
+      $hb->Text($text, false);
 
       $hb->AddText("  :");
       $result = $hb->ToString();
@@ -334,12 +320,9 @@
     // Gets a modified text line.
     private static function GetLine()
     {
-      // Defaults: IndentCharCount = 2, LineLimit = 80, WrapEnabled = false.
       $hb = new LJCHTMLBuilder();
 
       $hb->AddText("This is an appended line.");
-
-      // The builder keeps track of the current number of indents.
       $hb->AddIndent();
 
       // Example Method:
@@ -366,12 +349,9 @@
     // Gets the potentially indented text.
     private static function GetText()
     {
-      // Defaults: IndentCharCount = 2, LineLimit = 80, WrapEnabled = false.
       $hb = new LJCHTMLBuilder();
 
       $hb->Text("This is an appended line.");
-
-      // The builder keeps track of the current number of indents.
       $hb->AddIndent();
 
       // Example Method:
@@ -395,17 +375,15 @@
     // Appends added text and new wrapped line if combined line > LineLimit.
     private static function GetWrapped()
     {
-      // Defaults: IndentCharCount = 2, LineLimit = 80, WrapEnabled = false.
       $hb = new LJCHTMLBuilder();
       $hb->WrapEnabled = true;
 
       // Example Method:
-      $b = new LJCHTMLBuilder();
-      $b->AddText("Now is the time for all good men to come to the aid of their");
-      $b->AddText(" country.");
-      $b->AddText(" Now is the time for all good men to come to the aid of their");
-      $b->AddText(" country.");
-      $text = $b->ToString();
+      $hb->AddText("Now is the time for all good men to come to the aid of their");
+      $hb->AddText(" country.");
+      $hb->AddText(" Now is the time for all good men to come to the aid of their");
+      $hb->AddText(" country.");
+      $text = $hb->ToString();
       $result = $hb->GetWrapped($text);
 
       $b = new LJCHTMLBuilder();
@@ -413,7 +391,7 @@
       $b->AddLine(" their country. Now is the");
       $b->AddText("time for all good men to come to the aid of their country.");
       $compare = $b->ToString();
-      LJCCommon::WriteCompare("GetGetWrapped()", $result, $compare);
+      LJCCommon::WriteCompare("GetWrapped()", $result, $compare);
     }
 
     // --------------------
@@ -422,31 +400,94 @@
     // Appends the element begin tag.
     private static function Begin()
     {
+      $textState = new LJCTextState();
+      $hb = new LJCHTMLBuilder($textState);
+
+      // Example Method:
+      $hb->Begin("body", $textState);
+      $result = $hb->ToString();
+
+      $b = new LJCHTMLBuilder();
+      $b->AddText("<body>");
+      $compare = $b->ToString();
+      LJCCommon::WriteCompare("Begin()", $result, $compare);
     }
 
     // Appends an element.
     private static function Create()
     {
+      $textState = new LJCTextState();
+      $hb = new LJCHTMLBuilder($textState);
+
+      // Example Method:
+      $hb->Create("p", "", $textState);
+      $result = $hb->ToString();
+
+      $b = new LJCHTMLBuilder();
+      $b->AddText("<p></p>");
+      $compare = $b->ToString();
+      LJCCommon::WriteCompare("Create()", $result, $compare);
     }
 
     // Appends the element end tag.
     private static function End()
     {
+      $textState = new LJCTextState();
+      $hb = new LJCHTMLBuilder($textState);
+
+      // Example Method:
+      $hb->End("p", $textState);
+      $result = $hb->ToString();
+
+      $b = new LJCHTMLBuilder();
+      $b->AddText("</p>");
+      $compare = $b->ToString();
+      LJCCommon::WriteCompare("End()", $result, $compare);
     }
 
     // Gets the element begin tag.
     private static function GetBegin()
     {
+      $textState = new LJCTextState();
+      $hb = new LJCHTMLBuilder($textState);
+
+      // Example Method:
+      $result = $hb->GetBegin("body", $textState);
+
+      $b = new LJCHTMLBuilder();
+      $b->AddText("<body>");
+      $compare = $b->ToString();
+      LJCCommon::WriteCompare("GetBegin()", $result, $compare);
     }
 
     // Gets the element text.
     private static function GetCreate()
     {
+      $textState = new LJCTextState();
+      $hb = new LJCHTMLBuilder($textState);
+
+      // Example Method:
+      $result = $hb->GetCreate("p", "", $textState);
+
+      $b = new LJCHTMLBuilder();
+      $b->AddText("<p></p>");
+      $compare = $b->ToString();
+      LJCCommon::WriteCompare("GetCreate()", $result, $compare);
     }
 
     // Gets the element end tag.
     private static function GetEnd()
     {
+      $textState = new LJCTextState();
+      $hb = new LJCHTMLBuilder($textState);
+
+      // Example Method:
+      $result = $hb->GetEnd("p", $textState);
+
+      $b = new LJCHTMLBuilder();
+      $b->AddText("</p>");
+      $compare = $b->ToString();
+      LJCCommon::WriteCompare("GetEnd()", $result, $compare);
     }
   }
 ?>

@@ -45,8 +45,8 @@
         [ "Name" => "border", "Value" => "1" ],
         [ "Name" => "cellspacing", "Value" => "2" ],
       ];
-
       $propertyNames = self::GetPropertyNames();
+
       $result = LJCHTMLObjectTable::DataHtml($dataItems, $propertyNames, $textState);
       $compare = self::GetTableCompare();
       LJCCommon::WriteCompare("GetTable()", $result, $compare);
@@ -58,8 +58,8 @@
       $dataItems = new LJCAttributes();
       $dataItems->Add("border", "1");
       $dataItems->Add("cellspacing", "2");
-
       $propertyNames = self::GetPropertyNames();
+
       $result = LJCHTMLObjectTable::DataHtml($dataItems, $propertyNames, $textState);
       $compare = self::GetTableCompare();
       LJCCommon::WriteCompare("GetTable()", $result, $compare);
@@ -71,8 +71,8 @@
       $dataItems = [];
       $dataItems[] = new LJCAttribute("border", "1");
       $dataItems[] = new LJCAttribute("cellspacing", "2");
-
       $propertyNames = self::GetPropertyNames();
+
       $result = LJCHTMLObjectTable::DataHtml($dataItems, $propertyNames, $textState);
       $compare = self::GetTableCompare();
       LJCCommon::WriteCompare("GetTable()", $result, $compare);
