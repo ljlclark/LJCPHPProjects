@@ -160,7 +160,6 @@
 
     private static function AddText()
     {
-      // Defaults: IndentCharCount = 2, LineLimit = 80, WrapEnabled = false.
       $hb = new LJCHTMLBuilder();
 
       // Example Method:
@@ -174,7 +173,6 @@
 
     private static function Line()
     {
-      // Defaults: IndentCharCount = 2, LineLimit = 80, WrapEnabled = false.
       $hb = new LJCHTMLBuilder();
 
       $hb->Text("This is an appended line.");

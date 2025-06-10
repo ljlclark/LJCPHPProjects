@@ -591,10 +591,10 @@
       $hb = new LJCHTMLBuilder($textState);
 
       $attribs = new LJCAttributes();
-      $attribs.Add("rel", "stylesheet");
-      $attribs.Add("type", "text/css");
-      $attribs.Add("href", $fileName);
-      $createText = $hb->GetCreate("link", null, $textState, $attribs
+      $attribs->Add("href", $fileName);
+      $attribs->Add("rel", "stylesheet");
+      // Arg 2 different than HTMLBuilder.cs.
+      $createText = $hb->GetCreate("link", "", $textState, $attribs
         , isEmpty: true);
       $hb->Text($createText, false);
 
@@ -610,9 +610,10 @@
       $hb = new LJCHTMLBuilder($textState);
 
       $attribs = new LJCAttributes();
-      $attribs.Add("name", $name);
-      $attribs.Add("content", $content);
-      $createText = $hb->GetCreate("meta", null, $textState, $attribs
+      $attribs->Add("name", $name);
+      $attribs->Add("content", $content);
+      // Arg 2 different than HTMLBuilder.cs.
+      $createText = $hb->GetCreate("meta", "", $textState, $attribs
         , isEmpty: true);
       $hb->Text($createText, false);
 
@@ -629,20 +630,21 @@
       $hb = new LJCHTMLBuilder($textState);
 
       $attribs = new LJCAttributes();
-      $attribs.Add("charset", $charSet);
-      $createText = $hb->GetCreate("meta", null, $textState, $attribs
+      $attribs->Add("charset", $charSet);
+      // Arg 2 different than HTMLBuilder.cs.
+      $createText = $hb->GetCreate("meta", "", $textState, $attribs
         , isEmpty: true);
       $hb->Text($createText, false);
 
-      if ($this->HasValue($description))
+      if (LJCCommon::HasValue($description))
       {
         $hb->Meta("description", $description, $textState);
       }
-      if ($this->HasValue($keywords))
+      if (LJCCommon::HasValue($keywords))
       {
         $hb->Meta("keywords", $keywords, $textState);
       }
-      $hb.Meta("author", $author, $textState);
+      $hb->Meta("author", $author, $textState);
       $content = "width=device-width initial-scale=1";
       $hb->Meta("viewport", $content, $textState);
 
@@ -658,8 +660,9 @@
       $hb = new LJCHTMLBuilder($textState);
 
       $attribs = new LJCAttributes();
-      $attribs.Add("src", $fileName);
-      $createText = $hb->GetCreate("script", null, $textState, $attribs);
+      $attribs->Add("src", $fileName);
+      // Arg 2 different than HTMLBuilder.cs.
+      $createText = $hb->GetCreate("script", "", $textState, $attribs);
       $hb->Text($createText, false);
 
       $retValue = $hb->ToString();
