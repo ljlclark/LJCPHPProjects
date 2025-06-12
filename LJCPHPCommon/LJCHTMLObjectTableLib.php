@@ -15,7 +15,11 @@
   //  Classes: LJCHTMLObjectTable
 
   // ********************
-  // Methods: DataHeadings(), DataHTML(), DataRows()
+  // Methods:
+  // ArrayArrayHeadings(), ArrayArrayHTML(), ArrayArrayRows()
+  // CollectionHeadings(), CollectionHTML(), CollectionRows()
+  // ObjectArrayHeadings(), ObjectArrayHTML(), ObjectArrayRows()
+  // ResultHeadings(), ResultHTML(), ResultRows()
   //
   /// <summary>Provides methods to create an object HTML Table.</summary>
   class LJCHTMLObjectTable
@@ -333,7 +337,6 @@
           if (array_key_exists($propertyName, $dataItem))
           {
             $value = $dataItem[$propertyName];
-            // *** Change ***
             $hb->Create("td", strval($value), $textState);
           }
         }
@@ -392,7 +395,6 @@
           {
             // Using variable name for object property.
             $value = $dataItem->$propertyName;
-            // *** Change ***
             $hb->Create("td", strval($value), $textState);
           }
         }

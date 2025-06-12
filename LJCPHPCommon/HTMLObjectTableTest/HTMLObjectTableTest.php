@@ -91,18 +91,12 @@
 	    $password = "Unifies1";
       $connectionValues = new LJCConnectionValues("localhost", $database, $userID
         , $password);
-      $tableName = "City";
+      //$tableName = "Region";
+      $tableName = "Province";
+      //$tableName = "City";
+      //$tableName = "CitySection";
       $manager = new LJCDataManager($connectionValues, $tableName);
 
-      $keyColumns =
-      [
-      ];
-      $propertyNames =
-      [
-        "Name",
-        "Description",
-      ];
-      //$rows = $manager->Load(propertyNames: $propertyNames);
       // Retrieves all column values.
       $rows = $manager->Load();
 
