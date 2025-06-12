@@ -1,16 +1,23 @@
 <?php
   // Copyright (c) Lester J. Clark and Contributors.
   // Licensed under the MIT License.
-  // LJCHTMLSectionLib.php
+  // LJCHTMLLib.php
   declare(strict_types=1);
   include_once "LJCRoot.php";
   $prefix = RelativePrefix();
   include_once "$prefix/LJCPHPCommon/LJCHTMLBuilderLib.php";
+  // LJCHTMLBuilderLib: LJCHTMLBuilder, LJCAttributes, LJCTextState
 
   /// <summary>The HTML Section Class Library</summary>
   /// LibName: LJCHTMLLib
   //  Classes: LJCHTML
 
+  // ********************
+  // Methods:
+  // Create Element: GetLink(), GetMeta(), GetMetas(), GetBeginSelector()
+  //   , GetScript()
+  // HTML: GetHTMLBegin(), GetHTMLEnd(), GetHTMLHead()
+  //
   /// <summary>Provides methods for creating HTML sections.</summary>
   class LJCHTML
   {

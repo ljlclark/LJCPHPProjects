@@ -1,0 +1,1 @@
+php TestHTMLWriter.php > Output.log

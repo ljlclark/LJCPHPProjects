@@ -719,7 +719,6 @@
   }
 
   // ********************
-  // Methods:
   /// <summary>Represents a node attribute.</summary>
   class LJCAttribute
   {
@@ -732,7 +731,7 @@
   }
 
   // ********************
-  // Methods:
+  // Methods: Add(), AddObject(), Retrieve()
   /// <summary>Represents a collection of node or element attributes.</summary>
   class LJCAttributes extends LJCCollectionBase
   {

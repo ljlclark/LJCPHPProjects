@@ -5,8 +5,10 @@
   declare(strict_types=1);
   include_once "LJCRoot.php";
   $prefix = RelativePrefix();
+  include_once "$prefix/LJCPHPCommon/LJCCommonLib.php";
   include_once "$prefix/LJCPHPCommon/LJCHTMLBuilderLib.php";
   include_once "$prefix/LJCPHPCommon/LJCHTMLObjectTableLib.php";
+  // LJCCommonLib: LJCCommon
   // LJCHTMLBuilderLib: LJCHTMLBuilder, LJCAttribute, LJCAttributes
   //   , LJCTextState
   // LJCHTMLObjectTableLib: LJCHTMLObjectTable
@@ -19,7 +21,6 @@
   $testBuilder->Run();
 
   // ********************
-  // Methods: 
   /// <summary>Represents a built string value.</summary>
   /// <include path='items/LJCHTMLBuilder/*' file='Doc/LJCHTMLBuilder.xml'/>
   class TestHTMLObjectTable
@@ -33,10 +34,11 @@
       self::GetArraysTable($textState);
       self::GetCollectionTable($textState);
       self::GetObjectsTable($textState);
+      self::GetResultsTable($textState);
     }
 
     // --------------------
-    // Methods
+    // Static Methods
 
     // Get Array data table.
     private static function GetArraysTable(LJCTextState $textState)
@@ -47,9 +49,10 @@
       ];
       $propertyNames = self::GetPropertyNames();
 
-      $result = LJCHTMLObjectTable::DataHtml($dataItems, $propertyNames, $textState);
+      $result = LJCHTMLObjectTable::ArrayArrayHtml($dataItems, $propertyNames
+        , $textState);
       $compare = self::GetTableCompare();
-      LJCCommon::WriteCompare("GetTable()", $result, $compare);
+      LJCCommon::WriteCompare("GetArraysTable()", $result, $compare);
     }
 
     // Get Collection data table.
@@ -60,9 +63,10 @@
       $dataItems->Add("cellspacing", "2");
       $propertyNames = self::GetPropertyNames();
 
-      $result = LJCHTMLObjectTable::DataHtml($dataItems, $propertyNames, $textState);
+      $result = LJCHTMLObjectTable::CollectionHtml($dataItems, $propertyNames
+        , $textState);
       $compare = self::GetTableCompare();
-      LJCCommon::WriteCompare("GetTable()", $result, $compare);
+      LJCCommon::WriteCompare("GetCollectionTable()", $result, $compare);
     }
 
     // Get Object Array data table.
@@ -73,10 +77,28 @@
       $dataItems[] = new LJCAttribute("cellspacing", "2");
       $propertyNames = self::GetPropertyNames();
 
-      $result = LJCHTMLObjectTable::DataHtml($dataItems, $propertyNames, $textState);
+      $result = LJCHTMLObjectTable::ObjectArrayHtml($dataItems, $propertyNames
+        , $textState);
       $compare = self::GetTableCompare();
-      LJCCommon::WriteCompare("GetTable()", $result, $compare);
+      LJCCommon::WriteCompare("GetObjectsTable()", $result, $compare);
     }
+
+    private static function GetResultsTable(LJCTextState $textState)
+    {
+      $rows = [
+        [ "Name" => "border", "Value" => "1" ],
+        [ "Name" => "cellspacing", "Value" => "2" ],
+      ];
+      $propertyNames = self::GetPropertyNames();
+
+      $result = LJCHTMLObjectTable::ResultHtml($rows, $propertyNames
+        , $textState);
+      $compare = self::GetTableCompare();
+      LJCCommon::WriteCompare("GetResultTable()", $result, $compare);
+    }
+
+    // --------------------
+    // Static Support Methods
 
     // Get test property names.
     private static function GetPropertyNames()
