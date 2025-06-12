@@ -6,6 +6,7 @@
   include_once "LJCRoot.php";
   $prefix = RelativePrefix();
   include_once "$prefix/LJCPHPCommon/LJCCommonLib.php";
+  include_once "$prefix/LJCPHPCommon/LJCDataManagerLib.php";
   include_once "$prefix/LJCPHPCommon/LJCHTMLBuilderLib.php";
   include_once "$prefix/LJCPHPCommon/LJCHTMLObjectTableLib.php";
   // LJCCommonLib: LJCCommon
@@ -85,14 +86,28 @@
 
     private static function GetResultsTable(LJCTextState $textState)
     {
-      $rows = [
-        [ "Name" => "border", "Value" => "1" ],
-        [ "Name" => "cellspacing", "Value" => "2" ],
-      ];
-      $propertyNames = self::GetPropertyNames();
+	    $database = "TestData";
+	    $userID = "root";
+	    $password = "Unifies1";
+      $connectionValues = new LJCConnectionValues("localhost", $database, $userID
+        , $password);
+      $tableName = "City";
+      $manager = new LJCDataManager($connectionValues, $tableName);
 
-      $result = LJCHTMLObjectTable::ResultHtml($rows, $propertyNames
-        , $textState);
+      $keyColumns =
+      [
+      ];
+      $propertyNames =
+      [
+        "Name",
+        "Description",
+      ];
+      //$rows = $manager->Load(propertyNames: $propertyNames);
+      // Retrieves all column values.
+      $rows = $manager->Load();
+
+      $displayPropertyNames = $manager->PropertyNames();
+      $result = LJCHTMLObjectTable::ResultHtml($rows, $textState, $displayPropertyNames);
       $compare = self::GetTableCompare();
       LJCCommon::WriteCompare("GetResultTable()", $result, $compare);
     }

@@ -392,7 +392,7 @@
 
     // Get the column definitions that match the property names.
     /// <include path='items/GetColumns/*' file='Doc/LJCDbColumns.xml'/>
-    public function GetColumns(array $propertyNames = null) : self
+    public function Columns(array $propertyNames = null) : self
     {
       $retValue = null;
 
@@ -436,6 +436,19 @@
         }
       }
     } // MapNames()
+
+    // Creates a PropertyNames list from the data definition.
+    // *** Add ***
+    public function PropertyNames()
+    {
+      $retValue = [];
+
+      foreach ($this as $dbColumn)
+      {
+        $retValue[] = $dbColumn->PropertyName;
+      }
+      return $retValue;
+    }
 
     // Retrieves the item by Key value.
     /// <include path='items/Retrieve/*' file='Doc/LJCDbColumns.xml'/>

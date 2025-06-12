@@ -32,8 +32,7 @@
       if (LJCCommon::HasElements($dataItems))
       {
         $dataItem = $dataItems[0];
-        $retValue = self::ArrayHeadings($dataItem, $propertyNames
-          , $textState);
+        $retValue = self::ArrayHeadings($dataItem, $textState, $propertyNames);
       }
       return $retValue;
     }
@@ -78,7 +77,7 @@
           {
             break;
           }
-          $text = self::ArrayRow($dataItem, $propertyNames, $textState);
+          $text = self::ArrayRow($dataItem, $textState, $propertyNames);
           $hb->Text($text, false);
         }
         $retValue = $hb->ToString();
@@ -162,71 +161,6 @@
     }
 
     // ----------
-    // Static Data Table Functions
-
-    // Create table headings from result rows.
-    public static function ResultHeadings(array $rows, array $propertyNames
-      , LJCTextState $textState): string
-    {
-      $retValue = null;
-
-      if (LJCCommon::HasElements($rows))
-      {
-        $row = $rows[0];
-        $retValue = self::ArrayHeadings($row, $propertyNames, $textState);
-      }
-      return $retValue;
-    }
-
-    // Create an HTML table from result rows.
-    public static function ResultHTML(array $rows, array $propertyNames
-      , LJCTextState $textState, int $maxRows = 0): string
-    {
-      $retValue = null;
-
-      if (LJCCommon::HasElements($rows))
-      {
-        $hb = new LJCHTMLBuilder($textState);
-
-        $attribs = $hb->TableAttribs();
-        $hb->Begin("table", $textState, $attribs);
-        $text = self::ResultHeadings($rows, $propertyNames, $textState);
-        $hb->Text($text, false);
-        $text = self::ResultRows($rows, $propertyNames, $textState
-          , $maxRows);
-        $hb->Text($text, false);
-        $hb->End("table", $textState);
-        $retValue = $hb->ToString();
-      }
-      return $retValue;
-    }
-
-    // Create table rows from result rows.
-    public static function ResultRows(array $rows, array $propertyNames
-      , LJCTextState $textState, int $maxRows = 0): string
-    {
-      $retValue = null;
-
-      if (LJCCommon::HasElements($rows))
-      {
-        $hb = new LJCHTMLBuilder($textState);
-
-        $count = 0;
-        foreach ($rows as $row)
-        {
-          if (self::EndRetrieve($maxRows, $count))
-          {
-            break;
-          }
-          $text = self::ArrayRow($row, $propertyNames, $textState);
-          $hb->Text($text, false);
-        }
-        $retValue = $hb->ToString();
-      }
-      return $retValue;
-    }
-
-    // ----------
     // Static ObjectArray Functions
 
     // Create table headings from an ObjectArray Data Object.
@@ -295,11 +229,76 @@
       return $retValue;
     }
 
+    // ----------
+    // Static Data Table Functions
+
+    // Create table headings from result rows.
+    public static function ResultHeadings(array $rows, LJCTextState $textState
+      , array $propertyNames): string
+    {
+      $retValue = null;
+
+      if (LJCCommon::HasElements($rows))
+      {
+        $row = $rows[0];
+        $retValue = self::ArrayHeadings($row, $textState, $propertyNames);
+      }
+      return $retValue;
+    }
+
+    // Create an HTML table from result rows.
+    public static function ResultHTML(array $rows, LJCTextState $textState
+      , array $propertyNames, int $maxRows = 0): string
+    {
+      $retValue = null;
+
+      if (LJCCommon::HasElements($rows))
+      {
+        $hb = new LJCHTMLBuilder($textState);
+
+        $attribs = $hb->TableAttribs();
+        $hb->Begin("table", $textState, $attribs);
+        $text = self::ResultHeadings($rows, $textState, $propertyNames);
+        $hb->Text($text, false);
+        $text = self::ResultRows($rows, $textState, $propertyNames
+          , $maxRows);
+        $hb->Text($text, false);
+        $hb->End("table", $textState);
+        $retValue = $hb->ToString();
+      }
+      return $retValue;
+    }
+
+    // Create table rows from result rows.
+    public static function ResultRows(array $rows, LJCTextState $textState
+      , array $propertyNames, int $maxRows = 0): string
+    {
+      $retValue = null;
+
+      if (LJCCommon::HasElements($rows))
+      {
+        $hb = new LJCHTMLBuilder($textState);
+
+        $count = 0;
+        foreach ($rows as $row)
+        {
+          if (self::EndRetrieve($maxRows, $count))
+          {
+            break;
+          }
+          $text = self::ArrayRow($row, $textState, $propertyNames);
+          $hb->Text($text, false);
+        }
+        $retValue = $hb->ToString();
+      }
+      return $retValue;
+    }
+
     // --------------------
     // Static Support Methods
 
     private static function ArrayHeadings(array $dataItem
-      , array $propertyNames, LJCTextState $textState): string
+      , LJCTextState $textState, array $propertyNames): string
     {
       $retValue = null;
 
@@ -320,8 +319,8 @@
       return $retValue;
     }
 
-    private static function ArrayRow(array $dataItem, array $propertyNames
-      , LJCTextState $textState)
+    private static function ArrayRow(array $dataItem, LJCTextState $textState
+      , array $propertyNames)
     {
       $retValue = null;
 
@@ -334,7 +333,8 @@
           if (array_key_exists($propertyName, $dataItem))
           {
             $value = $dataItem[$propertyName];
-            $hb->Create("td", $value, $textState);
+            // *** Change ***
+            $hb->Create("td", strval($value), $textState);
           }
         }
         $hb->End("tr", $textState);
@@ -392,7 +392,8 @@
           {
             // Using variable name for object property.
             $value = $dataItem->$propertyName;
-            $hb->Create("td", $value, $textState);
+            // *** Change ***
+            $hb->Create("td", strval($value), $textState);
           }
         }
         $hb->End("tr", $textState);

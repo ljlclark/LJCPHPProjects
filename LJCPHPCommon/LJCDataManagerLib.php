@@ -69,11 +69,17 @@
 
     // Loads the records for the provided values.
     /// <include path='items/Load/*' file='Doc/LJCDataManager.xml'/>
-    public function Load(?LJCDbColumns $keyColumns, array $propertyNames = null
-      , LJCJoins $joins = null)	: ?array
+    public function Load(?LJCDbColumns $keyColumns = null, ?array $propertyNames = null
+      , ?LJCJoins $joins = null)	: ?array
     {
       $retValue = null;
       
+      // *** Begin *** Add
+      if (null == $propertyNames)
+      {
+        $propertyNames = $this->PropertyNames(); 
+      }
+      // *** End   *** Add
       $this->Joins = $joins;
       $this->SQL = LJCSQLBuilder::CreateSelect($this->TableName
         , $this->SchemaColumns, $keyColumns, $propertyNames, $joins);
@@ -89,6 +95,12 @@
     {
       $retValue = null;
 
+      // *** Begin *** Add
+      if (null == $propertyNames)
+      {
+        $propertyNames = $this->PropertyNames(); 
+      }
+      // *** End   *** Add
       $this->Joins = $joins;
       $this->SQL = LJCSQLBuilder::CreateSelect($this->TableName
         , $this->SchemaColumns, $keyColumns, $propertyNames, $joins);
@@ -140,6 +152,20 @@
       $retValue = $this->DbAccess->Retrieve($this->SQL);
       return $retValue;
     } // SQLRetrieve()
+
+    // Get the column definitions that match the property names.
+    public function Columns(array $propertyNames = null): DbColumns
+    {
+      $retValue = $this->SchemaColumns->Columns($propertyNames);
+      return $retValue;
+    }
+
+    // Creates a PropertyNames list from the data definition.
+    public function PropertyNames(): array
+    {
+      $retNames = $this->SchemaColumns->PropertyNames();
+      return $retNames;
+    }
 
     // ---------------
     // Public Methods - LJCDataManager
@@ -283,7 +309,7 @@
       $sqlColumns = $schemaColumns;
       if ($propertyNames != null)
       {
-        $sqlColumns = $schemaColumns->GetColumns($propertyNames);
+        $sqlColumns = $schemaColumns->Columns($propertyNames);
       }
 
       $retValue = "select\r\n";
