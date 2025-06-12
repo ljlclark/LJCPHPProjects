@@ -1,35 +1,39 @@
 <?php
   // Copyright (c) Lester J. Clark and Contributors.
   // Licensed under the MIT License.
-  // HTMLObjectTableTest.php
+  // HTMLTableTest.php
   declare(strict_types=1);
   include_once "LJCRoot.php";
   $prefix = RelativePrefix();
   include_once "$prefix/LJCPHPCommon/LJCCommonLib.php";
   include_once "$prefix/LJCPHPCommon/LJCDataManagerLib.php";
   include_once "$prefix/LJCPHPCommon/LJCHTMLBuilderLib.php";
-  include_once "$prefix/LJCPHPCommon/LJCHTMLObjectTableLib.php";
+  include_once "$prefix/LJCPHPCommon/LJCHTMLTableLib.php";
   // LJCCommonLib: LJCCommon
+  // LJCDataManagerLib: LJCConnectionValues, LJCDataManager
   // LJCHTMLBuilderLib: LJCHTMLBuilder, LJCAttribute, LJCAttributes
   //   , LJCTextState
-  // LJCHTMLObjectTableLib: LJCHTMLObjectTable
+  // LJCHTMLTableLib: LJCHTMLTable
 
-  /// <summary>The HTML Object Table test class library</summary>
-  /// LibName: LJCHTMLObjectTableLib
-  //  Classes: TestHTMLObjectTable
+  /// <summary>The HTML Table test class library</summary>
+  /// LibName: HTMLTableTest
+  //  Classes: TestHTMLTable
 
-  $testBuilder = new TestHTMLObjectTable();
+  $testBuilder = new TestHTMLTable();
   $testBuilder->Run();
 
   // ********************
+  // Methods: Run(), GetArraysTable(), GetCollectionTable(), GetObjectsTable()
+  //   , GetResultsTable()
+  //
   /// <summary>Represents a built string value.</summary>
   /// <include path='items/LJCHTMLBuilder/*' file='Doc/LJCHTMLBuilder.xml'/>
-  class TestHTMLObjectTable
+  class TestHTMLTable
   {
     public static function Run()
     {
       echo("\r\n");
-      echo("*** LJCHTMLObjectTable ***");
+      echo("*** LJCHTMLTable ***");
 
       $textState = new LJCTextState();
       self::GetArraysTable($textState);
@@ -50,7 +54,7 @@
       ];
       $propertyNames = self::GetPropertyNames();
 
-      $result = LJCHTMLObjectTable::ArrayArrayHtml($dataItems, $propertyNames
+      $result = LJCHTMLTable::ArrayArrayHtml($dataItems, $propertyNames
         , $textState);
       $compare = self::GetTableCompare();
       LJCCommon::WriteCompare("GetArraysTable()", $result, $compare);
@@ -64,7 +68,7 @@
       $dataItems->Add("cellspacing", "2");
       $propertyNames = self::GetPropertyNames();
 
-      $result = LJCHTMLObjectTable::CollectionHtml($dataItems, $propertyNames
+      $result = LJCHTMLTable::CollectionHtml($dataItems, $propertyNames
         , $textState);
       $compare = self::GetTableCompare();
       LJCCommon::WriteCompare("GetCollectionTable()", $result, $compare);
@@ -78,7 +82,7 @@
       $dataItems[] = new LJCAttribute("cellspacing", "2");
       $propertyNames = self::GetPropertyNames();
 
-      $result = LJCHTMLObjectTable::ObjectArrayHtml($dataItems, $propertyNames
+      $result = LJCHTMLTable::ObjectArrayHtml($dataItems, $propertyNames
         , $textState);
       $compare = self::GetTableCompare();
       LJCCommon::WriteCompare("GetObjectsTable()", $result, $compare);
@@ -101,13 +105,13 @@
       $rows = $manager->Load();
 
       $displayPropertyNames = $manager->PropertyNames();
-      $result = LJCHTMLObjectTable::ResultHtml($rows, $textState, $displayPropertyNames);
+      $result = LJCHTMLTable::ResultHtml($rows, $textState, $displayPropertyNames);
       $compare = self::GetTableCompare();
       LJCCommon::WriteCompare("GetResultTable()", $result, $compare);
     }
 
     // --------------------
-    // Static Support Methods
+    // Static Private Methods
 
     // Get test property names.
     private static function GetPropertyNames()

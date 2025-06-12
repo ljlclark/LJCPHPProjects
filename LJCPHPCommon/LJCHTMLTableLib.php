@@ -1,7 +1,7 @@
 <?php
   // Copyright (c) Lester J. Clark and Contributors.
   // Licensed under the MIT License.
-  // LJCHTMLObjectTableLib.php
+  // LJCHTMLTableLib.php
   declare(strict_types=1);
   include_once "LJCRoot.php";
   $prefix = RelativePrefix();
@@ -11,8 +11,8 @@
   // LJCHTMLBuilderLib: LJCHTMLBuilder
 
   /// <summary>The HTML Object Table Class Library</summary>
-  /// LibName: LJCHTMLObjectTableLib
-  //  Classes: LJCHTMLObjectTable
+  /// LibName: LJCHTMLTableLib
+  //  Classes: LJCHTMLTable
 
   // ********************
   // Methods:
@@ -22,7 +22,7 @@
   // ResultHeadings(), ResultHTML(), ResultRows()
   //
   /// <summary>Provides methods to create an object HTML Table.</summary>
-  class LJCHTMLObjectTable
+  class LJCHTMLTable
   {
     // ----------
     // Static ArrayArray Functions
