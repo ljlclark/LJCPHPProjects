@@ -29,9 +29,10 @@
     {
       $retValue = null;
 
-      if (LJCCommon::HasItems($dataItems))
+      if (LJCCommon::HasElements($dataItems))
       {
-        $retValue = self::ArrayHeadings($dataItems, $propertyNames
+        $dataItem = $dataItems[0];
+        $retValue = self::ArrayHeadings($dataItem, $propertyNames
           , $textState);
       }
       return $retValue;
@@ -171,7 +172,8 @@
 
       if (LJCCommon::HasElements($rows))
       {
-        $retValue = self::ArrayHeadings($rows, $propertyNames, $textState);
+        $row = $rows[0];
+        $retValue = self::ArrayHeadings($row, $propertyNames, $textState);
       }
       return $retValue;
     }
@@ -296,28 +298,24 @@
     // --------------------
     // Static Support Methods
 
-    private static function ArrayHeadings(array $dataItems
+    private static function ArrayHeadings(array $dataItem
       , array $propertyNames, LJCTextState $textState): string
     {
       $retValue = null;
 
-      if (LJCCommon::HasElements($dataItems))
+      if (LJCCommon::HasElements($dataItem))
       {
-        $dataItem = $dataItems[0];
-        if (LJCCommon::HasElements($dataItem))
+        $hb = new LJCHTMLBuilder($textState);
+        $hb->Begin("tr", $textState);
+        foreach ($propertyNames as $propertyName)
         {
-          $hb = new LJCHTMLBuilder($textState);
-          $hb->Begin("tr", $textState);
-          foreach ($propertyNames as $propertyName)
+          if (array_key_exists($propertyName, $dataItem))
           {
-            if (array_key_exists($propertyName, $dataItem))
-            {
-              $hb->Create("th", $propertyName, $textState);
-            }
+            $hb->Create("th", $propertyName, $textState);
           }
-          $hb->End("tr", $textState);
-          $retValue = $hb->ToString();
         }
+        $hb->End("tr", $textState);
+        $retValue = $hb->ToString();
       }
       return $retValue;
     }
