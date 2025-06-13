@@ -203,17 +203,17 @@
     // Gets the first index for the search value.
     /// <include path='items/StrPos/*' file='Doc/LJCCommon.xml'/>
     public static function StrPos(?string $text, ?string $find
-      , int $start = 0, bool $exact = false) : int
+      , int $startIndex = 0, bool $exact = false) : int
     {
       $retValue = -1;
 
       $isFound = false;
       if ($text != null && $find !=null)
       {
-        $index = stripos($text, $find, $start);
+        $index = stripos($text, $find, $startIndex);
         if ($exact)
         {
-          $index = strpos($text, $find, $start);
+          $index = strpos($text, $find, $startIndex);
         }
 
         // strpos and stripos are inconsistant.
@@ -241,16 +241,21 @@
 
     // Gets the last index for the search value.
     /// <include path='items/StrRPos/*' file='Doc/LJCCommon.xml'/>
-    public static function StrRPos(?string $text, ?string $find, int $length
+    public static function StrRPos(?string $text, ?string $find, int $startIndex = 0
       , bool $exact = false) : int
     {
       $retValue = -1;
 
       $isFound = false;
-      if ($text != null && $find !=null)
+      if ($text != null
+        && $find !=null)
       {
         // *** Add ***
-        $value = substr($text, 0, $length + 1);
+        $value = $text;
+        if ($length > 0)
+        {
+          $value = substr($text, 0, $startIndex + 1);
+        }
         // *** Change ***
         //$index = strripos($text, $find, $start);
         $index = strripos($value, $find);

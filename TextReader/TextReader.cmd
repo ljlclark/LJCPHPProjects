@@ -1,1 +1,2 @@
-php.exe TextReader.php fileSpec=%1 > TextReader.txt
+del php_errors.log
+php.exe TextReader.php fileSpec=InputValues.txt > TextReader.txt

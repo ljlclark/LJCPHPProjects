@@ -1,1 +1,1 @@
-php TestHTMLWriter.php > Output.log
+php TestHTMLWriter.php > TestHTMLWriterOutput.log

@@ -3,6 +3,7 @@
 ../../LJCPHPCommon/LJCDataManagerLib.php
 ../../LJCPHPCommon/LJCDBAccessLib.php
 ../../LJCPHPCommon/LJCTextLib.php
+../../LJCPHPCommon/LJCHTMLTableLib.php
 
 ../../GenTextLib/LJCGenTextLib.php
 ../../GenTextLib/LJCGenTextSectionLib.php
