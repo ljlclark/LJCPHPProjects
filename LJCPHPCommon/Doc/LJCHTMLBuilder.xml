@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!-- Copyright(c) Lester J. Clark and Contributors. -->
 <!-- Licensed under the MIT License. -->
-<!-- HTMLBuilder.xml -->
+<!-- LJCHTMLBuilder.xml -->
 <items>
   <LJCHTMLBuilder>
     <summary>
-      Provides methods for creating HTML text.
+      Represents a built string value.
     </summary>
     <remarks>
       The LJCHTMLBuilder class is designed for creating HTML text. It is similar
@@ -98,107 +98,99 @@
     <summary>
       Changes the IndentCount by the provided value.
     </summary>
-    <param name="increment">
+    <param name="$increment">
       The amount to increment or decrement the indent count.
     </param>
     <returns>The current indent count.</returns>
-    <example>
-      <code>
-        // Defaults: IndentCharCount = 2, LineLimit = 80, WrapEnabled = false.
-        var hb = new HTMLBuilder();
+    <code>
+      // Defaults: IndentCharCount = 2, LineLimit = 80, WrapEnabled = false.
+      $hb = new LJCHTMLBuilder();
 
-        // Example Method:
-        // The builder keeps track of the current number of indents.
-        // Adds 1 indent by default.
-        hb.AddIndent();
+      // Example Method:
+      // The builder keeps track of the current number of indents.
+      // Adds 1 indent by default.
+      $hb-&gt;AddIndent();
 
-        // Adds text without modification.
-        hb.AddText("This text is not indented.");
+      // Adds text without modification.
+      $hb-&gt;AddText("This text is not indented.");
 
-        // Starts the text with a newline if the builder already has text
-        // and param allowNewLine = true and builder text does not end with
-        // a newline.
-        // The text begins with the current indent string if param
-        // addIndent = true.
-        // Defaults: addIndent = true, allowNewLine = true.
-        hb.Text("This text is indented.");
+      // Starts the text with a newline if the builder already has text
+      // and param allowNewLine = true and builder text does not end with
+      // a newline.
+      // The text begins with the current indent string if param
+      // addIndent = true.
+      // Defaults: addIndent = true, allowNewLine = true.
+      $hb-&gt;Text("This text is indented.");
 
-        // No Indent
-        var NoIndent = false;
-        hb.Text("Not indented.", NoIndent);
+      // No Indent
+      $hb-&gt;Text("Not indented.", false);
 
-        // Do not start a newline.
-        var NoNewLine = false;
-        hb.Text(" No start with newline.", NoIndent, NoNewLine);
-        var result = hb.ToString();
+      // Do not start a newline.
+      $hb-&gt;Text(" No start with newline.", false, false);
+      $result = hb-&gt;ToString();
 
-        // result:
-        // This text is not indented.
-        //   This text is indented.
-        // Not indented. No start with newline.
-      </code>
-    </example>
+      // result:
+      // This text is not indented.
+      //   This text is indented.
+      // Not indented. No start with newline.
+    </code>
   </AddIndent>
   <!-- Append Text Methods (4) -->
   <AddLine>
     <summary>
       Adds a text line without modification.
     </summary>
-    <param name="text">The add text.</param>
+    <param name="$text">The add text.</param>
     <returns>The added text line.</returns>
     <remarks>
       AddLine() is an "Append" method. It adds the unmodified text line to the
       builder.
     </remarks>
-    <example>
-      <code>
-        // Defaults: IndentCharCount = 2, LineLimit = 80, WrapEnabled = false.
-        var hb = new HTMLBuilder();
+    <code>
+      // Defaults: IndentCharCount = 2, LineLimit = 80, WrapEnabled = false.
+      $hb = new LJCHTMLBuilder();
 
-        // Example Method:
-        // Adds text that ends with a newline.
-        hb.AddLine("This is an appended line.");
+      // Example Method:
+      // Adds text that ends with a newline.
+      $hb-&gt;AddLine("This is an appended line.");
 
-        hb.AddText(":");
-        var result = hb.ToString();
+      $hb-&gt;AddText(":");
+      $result = $hb-&gt;ToString();
 
-        // result:
-        // This is an appended line.
-        // :
-      </code>
-    </example>
+      // result:
+      // This is an appended line.
+      // :
+    </code>
   </AddLine>
   <AddText>
     <summary>
       Adds text without modification.
     </summary>
-    <param name="text">The add text.</param>
+    <param name="$text">The add text.</param>
     <returns>The added text.</returns>
     <remarks>
       AddText() is an "Append" method. It adds the unmodified text to the builder.
     </remarks>
-    <example>
-      <code>
-        // Defaults: IndentCharCount = 2, LineLimit = 80, WrapEnabled = false.
-        var hb = new HTMLBuilder();
+    <code>
+      // Defaults: IndentCharCount = 2, LineLimit = 80, WrapEnabled = false.
+      $hb = new LJCHTMLBuilder();
 
-        // Example Method:
-        // Adds text without modification.
-        hb.AddText("This is some appended text.");
-        var result = hb.ToString();
+      // Example Method:
+      // Adds text without modification.
+      $hb-&gt;AddText("This is some appended text.");
+      $result = $hb-&gt;ToString();
 
-        // result:
-        // This is some appended text.
-      </code>
-    </example>
+      // result:
+      // This is some appended text.
+    </code>
   </AddText>
   <Line>
     <summary>
       Adds a modified text line to the builder.
     </summary>
-    <param name="text">The add text.</param>
-    <param name="addIndent">Indicates if the element can be indented.</param>
-    <param name="allowNewLine">Indicates if a new line can be added.</param>
+    <param name="$text">The add text.</param>
+    <param name="$addIndent">Indicates if the element can be indented.</param>
+    <param name="$allowNewLine">Indicates if a new line can be added.</param>
     <returns>The potentially indented and wrapped new text value.</returns>
     <remarks>
       Line() is an "Append" method. It creates the text with GetText() and adds
@@ -206,43 +198,41 @@
       &lt;br /&gt;
       Line() works the same as Text() except it appends a new line.
     </remarks>
-    <example>
-      <code>
-        // Defaults: IndentCharCount = 2, LineLimit = 80, WrapEnabled = false.
-        var hb = new HTMLBuilder();
+    <code>
+      // Defaults: IndentCharCount = 2, LineLimit = 80, WrapEnabled = false.
+      $hb = new LJCHTMLBuilder();
 
-        hb.Text("This is an appended line.");
+      $hb-&gt;Text("This is an appended line.");
 
-        // The builder keeps track of the current number of indents.
-        hb.AddIndent();
+      // The builder keeps track of the current number of indents.
+      $hb-&gt;AddIndent();
 
-        // Example Method:
-        // Starts the text with a newline if the builder already has text
-        // and param allowNewLine = true and builder text does not end with
-        // a newline.
-        // The text begins with the current indent string if param
-        // addIndent = true.
-        // Ends the text with a newline.
-        // Defaults: addIndent = true, allowNewLine = true.
-        hb.Line();
+      // Example Method:
+      // Starts the text with a newline if the builder already has text
+      // and param allowNewLine = true and builder text does not end with
+      // a newline.
+      // The text begins with the current indent string if param
+      // addIndent = true.
+      // Ends the text with a newline.
+      // Defaults: addIndent = true, allowNewLine = true.
+      $hb-&gt;Line();
 
-        hb.Text("This is an indented line.");
-        var result = hb.ToString();
+      $hb-&gt;Text("This is an indented line.");
+      $result = $hb-&gt;ToString();
 
-        // result:
-        // This is an appended line.
-        //
-        //   This is an indented line.
-      </code>
-    </example>
+      // result:
+      // This is an appended line.
+      //
+      //   This is an indented line.
+    </code>
   </Line>
   <Text>
     <summary>
       Adds modified text to the builder.
     </summary>
-    <param name="text">The add text.</param>
-    <param name="addIndent">Indicates if the element can be indented.</param>
-    <param name="allowNewLine">Indicates if a new line can be added.</param>
+    <param name="$text">The add text.</param>
+    <param name="$addIndent">Indicates if the element can be indented.</param>
+    <param name="$allowNewLine">Indicates if a new line can be added.</param>
     <returns>The potentially indented and wrapped new text value.</returns>
     <remarks>
       Text() is an "Append" method. It creates the text with GetText() and adds
@@ -252,31 +242,29 @@
       because the the indent has already been added with the "GetText"
       method.
     </remarks>
-    <example>
-      <code>
-        // Defaults: IndentCharCount = 2, LineLimit = 80, WrapEnabled = false.
-        var hb = new HTMLBuilder();
+    <code>
+      // Defaults: IndentCharCount = 2, LineLimit = 80, WrapEnabled = false.
+      $hb = new LJCHTMLBuilder();
 
-        hb.Text("This is an appended line.");
+      $hb-&gt;Text("This is an appended line.");
 
-        // The builder keeps track of the current number of indents.
-        hb.AddIndent();
+      // The builder keeps track of the current number of indents.
+      $hb-&gt;AddIndent();
 
-        // Example Method:
-        // Starts the text with a newline if the builder already has text
-        // and param allowNewLine = true and builder text does not end with
-        // a newline.
-        // The text begins with the current indent string if param
-        // addIndent = true.
-        // Defaults: addIndent = true, allowNewLine = true.
-        hb.Text("This is an indented line.");
-        var result = hb.ToString();
+      // Example Method:
+      // Starts the text with a newline if the builder already has text
+      // and param allowNewLine = true and builder text does not end with
+      // a newline.
+      // The text begins with the current indent string if param
+      // addIndent = true.
+      // Defaults: addIndent = true, allowNewLine = true.
+      $hb-&gt;Text("This is an indented line.");
+      $result = $hb-&gt;ToString();
 
-        // result:
-        // This is an appended line.
-        //   This is an indented line.
-      </code>
-    </example>
+      // result:
+      // This is an appended line.
+      //   This is an indented line.
+    </code>
   </Text>
   <!-- Get Text Methods (8) -->
   <EndsWithNewLine>
@@ -286,42 +274,38 @@
     <returns>
       true if builder text ends with a newline; otherwise false.
     </returns>
-    <example>
-      <code>
-        var hb = new HTMLBuilder();
+    <code>
+      $hb = new LJCHTMLBuilder();
 
-        bool retValue = hb.EndsWithNewLine();
-        var result = retValue.ToString();
+      $retValue = $hb-&gt;EndsWithNewLine();
+      $result = $retValue-&gt;ToString();
 
-        // result:
-        // False
-      </code>
-    </example>
+      // result:
+      // False
+    </code>
   </EndsWithNewLine>
   <StartWithNewLine>
     <summary>
       Allow text to start with a newline.
     </summary>
-    <param name="allowNewLine">Indicates if a new line can be added.</param>
+    <param name="$allowNewLine">Indicates if a new line can be added.</param>
     <returns>true if allowed to start with a newline; otherwise false.</returns>
-    <example>
-      <code>
-        var hb = new HTMLBuilder();
+    <code>
+      $hb = new LJCHTMLBuilder();
 
-        bool retValue = hb.StartWithNewLine(true);
-        var result = retValue.ToString();
+      $retValue = hb-&gt;StartWithNewLine(true);
+      $result = retValue-&gt;ToString();
 
-        // result:
-        // False
-      </code>
-    </example>
+      // result:
+      // False
+    </code>
   </StartWithNewLine>
   <GetAttribs>
     <summary>
       Gets the attributes text.
     </summary>
-    <param name="htmlAttribs">The attributes collection.</param>
-    <param name="textState">The current text state values.</param>
+    <param name="$htmlAttribs">The attributes collection.</param>
+    <param name="$textState">The current text state values.</param>
     <returns>The attributes text.</returns>
     <remarks>
       The returned text does not end with a new line. This allows for additions
@@ -329,87 +313,79 @@
       Begin, Create and End text will start with a new line if the builder text
       already has a value.&lt;br /&gt;
     </remarks>
-    <example>
-      <code>
-        // Root Method Begin
-        var textState = new TextState();
+    <code>
+      // Root Method Begin
+      $textState = new TextState();
 
-        // Defaults: IndentCharCount = 2, LineLimit = 80, WrapEnabled = false.
-        var hb = new HTMLBuilder(textState);
+      // Defaults: IndentCharCount = 2, LineLimit = 80, WrapEnabled = false.
+      $hb = new LJCHTMLBuilder(textState);
 
-        var attribs = new Attributes()
-        {
-        { "class", "Selector" },
-        };
-        hb.Begin("div", textState, attribs);
-        hb.End("div", textState);
-        var result = hb.ToString();
+      $attribs = new LJCAttributes();
+      $attribs->Add("class", "Selector");
+      $hb-&gt;Begin("div", $textState, $attribs);
+      $hb-&gt;End("div", $textState);
+      $result = $hb-&gt;ToString();
 
-        // result:
-        // &amp;lt;div class="Selector"&amp;gt;
-        // &amp;lt;div&amp;gt;
-      </code>
-    </example>
+      // result:
+      // &amp;lt;div class="Selector"&amp;gt;
+      // &amp;lt;div&amp;gt;
+    </code>
   </GetAttribs>
   <GetIndented>
     <summary>
       Gets a new potentially indented line.
     </summary>
-    <param name="text">The add text.</param>
+    <param name="$text">The add text.</param>
     <returns>The potentially indented new text value.</returns>
-    <example>
-      <code>
-        // Defaults: IndentCharCount = 2, LineLimit = 80, WrapEnabled = false.
-        var hb = new HTMLBuilder();
+    <code>
+      // Defaults: IndentCharCount = 2, LineLimit = 80, WrapEnabled = false.
+      $hb = new LJCHTMLBuilder();
 
-        // Example Method:
-        var result = hb.GetIndented("This text is NOT indented.");
-        hb.AddText(result);
+      // Example Method:
+      $result = hb-&gt;GetIndented("This text is NOT indented.");
+      $hb-&gt;AddText($result);
 
-        // The builder keeps track of the current number of indents.
-        hb.AddIndent(2);
-        hb.AddLine();
-        result = hb.GetIndented("This text is indented.");
-        hb.AddText(result);
-        result = hb.ToString();
+      // The builder keeps track of the current number of indents.
+      $hb-&gt;AddIndent(2);
+      $hb-&gt;AddLine();
+      $result = $hb-&gt;GetIndented("This text is indented.");
+      $hb-&gt;AddText($result);
+      $result = $hb-&gt;ToString();
 
-        // result:
-        // This text is NOT indented.
-        //     This text is indented.
-      </code>
-    </example>
+      // result:
+      // This text is NOT indented.
+      //     This text is indented.
+    </code>
   </GetIndented>
   <GetIndentString>
     <summary>
       Returns the current indent string.
     </summary>
     <returns>The current indent string.</returns>
-    <example>
-      <code>
-        // Defaults: IndentCharCount = 2, LineLimit = 80, WrapEnabled = false.
-        var hb = new HTMLBuilder();
+    <code>
+      // Defaults: IndentCharCount = 2, LineLimit = 80, WrapEnabled = false.
+      $hb = new LJCHTMLBuilder();
 
-        hb.AddIndent(1);
+      $hb-&gt;AddIndent(1);
 
-        // Example Method:
-        var result = hb.GetIndentString();
-        hb.AddText(result);
+      // Example Method:
+      $result = hb-&gt;GetIndentString();
+      $hb-&gt;AddText($result);
 
-        hb.AddText(":");
-        result = hb.ToString();
+      $hb-&gt;AddText(":");
+      $result = hb-&gt;ToString();
 
-        // result:
-        //   :
-      </code>
-    </example>
+      // result:
+      //   :
+    </code>
   </GetIndentString>
   <GetLine>
     <summary>
       Gets a modified text line.
     </summary>
-    <param name="text">The text value.</param>
-    <param name="addIndent">Indicates if the element can be indented.</param>
-    <param name="allowNewLine">Indicates if a new line can be added.</param>
+    <param name="$text">The text value.</param>
+    <param name="$addIndent">Indicates if the element can be indented.</param>
+    <param name="$allowNewLine">Indicates if a new line can be added.</param>
     <returns>The potentially indented and wrapped new text value.</returns>
     <remarks>
       GetLine() is a "GetString" method. It creates and returns the potentially
@@ -426,44 +402,42 @@
       line length is greater than LineLimit.&lt;br /&gt;
       GetLine() works the same as GetText() except it appends a new line.
     </remarks>
-    <example>
-      <code>
-        // Defaults: IndentCharCount = 2, LineLimit = 80, WrapEnabled = false.
-        var hb = new HTMLBuilder();
+    <code>
+      // Defaults: IndentCharCount = 2, LineLimit = 80, WrapEnabled = false.
+      $hb = new LJCHTMLBuilder();
 
-        hb.AddText("This is an appended line.");
+      $hb-&gt;AddText("This is an appended line.");
 
-        // The builder keeps track of the current number of indents.
-        hb.AddIndent();
+      // The builder keeps track of the current number of indents.
+      $hb-&gt;AddIndent();
 
-        // Example Method:
-        // Starts the text with a newline if the builder already has text
-        // and param allowNewLine = true and builder text does not end with
-        // a newline.
-        // The text begins with the current indent string if param
-        // addIndent = true.
-        // Ends the text with a newline.
-        // Defaults: addIndent = true, allowNewLine = true.
-        var text = hb.GetLine();
-        hb.AddText(text);
+      // Example Method:
+      // Starts the text with a newline if the builder already has text
+      // and param allowNewLine = true and builder text does not end with
+      // a newline.
+      // The text begins with the current indent string if param
+      // addIndent = true.
+      // Ends the text with a newline.
+      // Defaults: addIndent = true, allowNewLine = true.
+      $text = $hb-&gt;GetLine();
+      $hb-&gt;AddText($text);
 
-        hb.Text(":");
-        var result = hb.ToString();
+      $hb-&gt;Text(":");
+      $result = hb-&gt;ToString();
 
-        // result:
-        // This is an appended line.
-        //
-        // :
-      </code>
-    </example>
+      // result:
+      // This is an appended line.
+      //
+      // :
+    </code>
   </GetLine>
   <GetText>
     <summary>
       Gets potentially indented and wrapped text.
     </summary>
-    <param name="text">The text value.</param>
-    <param name="addIndent">Indicates if the element can be indented.</param>
-    <param name="allowNewLine">Indicates if a new line can be added.</param>
+    <param name="$text">The text value.</param>
+    <param name="$addIndent">Indicates if the element can be indented.</param>
+    <param name="$allowNewLine">Indicates if a new line can be added.</param>
     <returns>The potentially indented and wrapped new text value.</returns>
     <remarks>
       GetText() is a "GetString" method. It creates and returns the potentially
@@ -478,42 +452,40 @@
       Wraps the text with a newline if the WrapEnabled parameter is true and the
       line length is greater than LineLimit.
     </remarks>
-    <example>
-      <code>
-        // Defaults: IndentCharCount = 2, LineLimit = 80, WrapEnabled = false.
-        var hb = new HTMLBuilder();
+    <code>
+      // Defaults: IndentCharCount = 2, LineLimit = 80, WrapEnabled = false.
+      $hb = new LJCHTMLBuilder();
 
-        hb.Text("This is an appended line.");
+      $hb-&gt;Text("This is an appended line.");
 
-        // The builder keeps track of the current number of indents.
-        hb.AddIndent();
+      // The builder keeps track of the current number of indents.
+      $hb-&gt;AddIndent();
 
-        // Example Method:
-        // Starts the text with a newline if the builder already has text
-        // and param allowNewLine = true and builder text does not end with
-        // a newline.
-        // The text begins with the current indent string if param
-        // addIndent = true.
-        // Defaults: addIndent = true, allowNewLine = true.
-        var text = hb.GetText("This is an indented line.");
-        hb.AddText(text);
-        var result = hb.ToString();
+      // Example Method:
+      // Starts the text with a newline if the builder already has text
+      // and param allowNewLine = true and builder text does not end with
+      // a newline.
+      // The text begins with the current indent string if param
+      // addIndent = true.
+      // Defaults: addIndent = true, allowNewLine = true.
+      $text = $hb-&gt;GetText("This is an indented line.");
+      $hb-&gt;AddText($text);
+      $result = $hb-&gt;ToString();
 
-        // result:
-        // This is an appended line.
-        //   This is an indented line.
-      </code>
-    </example>
+      // result:
+      // This is an appended line.
+      //   This is an indented line.
+    </code>
   </GetText>
   <!-- Append Element Methods (7) -->
   <Begin>
     <summary>
       Appends the element begin tag.
     </summary>
-    <param name="name">The element name.</param>
-    <param name="textState">The current text state values.</param>
-    <param name="attribs">The element attributes.</param>
-    <param name="addIndent">
+    <param name="$name">The element name.</param>
+    <param name="$textState">The current text state values.</param>
+    <param name="$attribs">The element attributes.</param>
+    <param name="$addIndent">
       Indicates if the element can be indented.
     </param>
     <param name="childIndent">
@@ -528,43 +500,41 @@
       The added text will start with a new line if the builder text already has
       a value.
     </remarks>
-    <example>
-      <code>
-        // Root Method Begin
-        var textState = new TextState();
+    <code>
+      // Root Method Begin
+      $textState = new LJCTextState();
 
-        // Defaults: IndentCharCount = 2, LineLimit = 80, WrapEnabled = false.
-        var hb = new HTMLBuilder(textState);
+      // Defaults: IndentCharCount = 2, LineLimit = 80, WrapEnabled = false.
+      $hb = new LJCHTMLBuilder($textState);
 
-        var attribs = hb.StartAttribs();
+      $attribs = $hb-&gt;StartAttribs();
 
-        // Example Method:
-        // Starts the text with a newline if the builder already has text
-        // and param allowNewLine = true and builder text does not end with
-        // a newline.
-        // The text begins with the current indent string if param
-        // addIndent = true.
-        // Defaults: addIndent = true, allowNewLine = true.
-        hb.Begin("html", textState, attribs);
+      // Example Method:
+      // Starts the text with a newline if the builder already has text
+      // and param allowNewLine = true and builder text does not end with
+      // a newline.
+      // The text begins with the current indent string if param
+      // addIndent = true.
+      // Defaults: addIndent = true, allowNewLine = true.
+      $hb-&gt;Begin("html", $textState, $attribs);
 
-        hb.End("html", textState);
-        var result = hb.ToString();
+      $hb-&gt;End("html", $textState);
+      $result = $hb-&gt;ToString();
 
-        // result:
-        // &amp;lt;html lang=\"en\" xmlns=\"http://www.w3.org/1999/xhtml\"&amp;gt;
-        // &amp;lt;/html&amp;gt;
-      </code>
-    </example>
+      // result:
+      // &amp;lt;html lang=\"en\" xmlns=\"http://www.w3.org/1999/xhtml\"&amp;gt;
+      // &amp;lt;/html&amp;gt;
+    </code>
   </Begin>
   <Create>
     <summary>
       Appends an element.
     </summary>
-    <param name="name">The element name.</param>
-    <param name="text">The element content text.</param>
-    <param name="textState">The current text state values.</param>
-    <param name="htmlAttribs">The element attributes.</param>
-    <param name="addIndent">
+    <param name="$name">The element name.</param>
+    <param name="$text">The element content text.</param>
+    <param name="$textState">The current text state values.</param>
+    <param name="$htmlAttribs">The element attributes.</param>
+    <param name="$addIndent">
       Indicates if the element can be indented.
     </param>
     <param name="childIndent">
@@ -581,32 +551,30 @@
       The added text will start with a new line if the builder text already has
       a value.
     </remarks>
-    <example>
-      <code>
-        // Root Method Begin
-        var textState = new TextState();
+    <code>
+      // Root Method Begin
+      $textState = new LJCTextState();
 
-        // Defaults: IndentCharCount = 2, LineLimit = 80, WrapEnabled = false.
-        var hb = new HTMLBuilder(textState);
+      // Defaults: IndentCharCount = 2, LineLimit = 80, WrapEnabled = false.
+      $hb = new LJCHTMLBuilder($textState);
 
-        // Example Method:
-        var attribs = hb.StartAttribs();
-        // Defaults: close = true.
-        hb.Create("html", null, textState, attribs);
-        var result = hb.ToString();
+      // Example Method:
+      $attribs = $hb-&gt;StartAttribs();
+      // Defaults: close = true.
+      $hb-&gt;Create("html", null, $textState, $attribs);
+      $result = $hb-&gt;ToString();
 
-        // result:
-        // &amp;lt;html lang=\"en\" xmlns=\"http://www.w3.org/1999/xhtml\"&amp;gt;&amp;lt;html&amp;gt;
-      </code>
-    </example>
+      // result:
+      // &amp;lt;html lang=\"en\" xmlns=\"http://www.w3.org/1999/xhtml\"&amp;gt;&amp;lt;html&amp;gt;
+    </code>
   </Create>
   <End>
     <summary>
       Appends the element end tag.
     </summary>
-    <param name="name">The element name.</param>
-    <param name="textState">The current text state values.</param>"
-    <param name="addIndent">
+    <param name="$name">The element name.</param>
+    <param name="$textState">The current text state values.</param>"
+    <param name="$addIndent">
       Indicates if the element can be indented.
     </param>
     <returns>The added element end tag.</returns>
@@ -618,178 +586,70 @@
       The added text will start with a new line if the builder text already has
       a value.
     </remarks>
-    <example>
-      <code>
-        // Root Method Begin
-        var textState = new TextState();
+    <code>
+      // Root Method Begin
+      $textState = new LJCTextState();
 
-        // Defaults: IndentCharCount = 2, LineLimit = 80, WrapEnabled = false.
-        var hb = new HTMLBuilder(textState);
+      // Defaults: IndentCharCount = 2, LineLimit = 80, WrapEnabled = false.
+      $hb = new LJCHTMLBuilder($textState);
 
-        // Example Method:
-        var result = hb.GetEnd("html", textState);
+      // Example Method:
+      $result = $hb-&gt;GetEnd("html", $textState);
 
-        // result:
-        // &amp;lt;/html&amp;gt;
-      </code>
-    </example>
+      // result:
+      // &amp;lt;/html&amp;gt;
+    </code>
   </End>
-  <Link>
-    <summary>
-      Appends a &amp;lt;link&amp;gt; element for a style sheet.
-    </summary>
-    <param name="fileName">The CSS file name.</param>
-    <param name="textState">The current text state values.</param>
-    <returns>The added &lt;link&gt; element.</returns>
-    <example>
-      <code>
-        // Root Method Begin
-        var textState = new TextState();
-
-        // Defaults: IndentCharCount = 2, LineLimit = 80, WrapEnabled = false.
-        var hb = new HTMLBuilder(textState);
-
-        // Example Method:
-        hb.Link("File.css", textState);
-        var result = hb.ToString();
-
-        // result:
-        // &amp;lt;link rel="stylesheet" type="text/css" href=File.css /&amp;gt;
-      </code>
-    </example>
-  </Link>
-  <Meta>
-    <summary>
-      Appends a &amp;lt;meta&amp;gt; element.
-    </summary>
-    <param name="name">The name value.</param>
-    <param name="content">The content value.</param>
-    <param name="textState">The current text state values.</param>
-    <returns>The added &amp;lt;meta&amp;gt; element.</returns>
-    <example>
-      <code>
-        // Root Method Begin
-        var textState = new TextState();
-
-        // Defaults: IndentCharCount = 2, LineLimit = 80, WrapEnabled = false.
-        var hb = new HTMLBuilder(textState);
-
-        // Example Method:
-        var content = "width=device-width initial-scale=1";
-        hb.Meta("viewport", content, textState);
-        var result = hb.ToString();
-
-        // result:
-        // &amp;lt;meta name="viewport" content="width=device-width initial-scale=1" /&amp;gt;
-      </code>
-    </example>
-  </Meta>
-  <Metas>
-    <summary>
-      Appends common &amp;lt;meta&amp;gt; elements.
-    </summary>
-    <param name="author">The author.</param>
-    <param name="textState">The current text state values.</param>
-    <param name="description">The description.</param>
-    <param name="keywords">The keywords.</param>
-    <param name="charSet">The charset value.</param>
-    <returns>The added &amp;lt;meta&amp;gt; elements.</returns>
-    <example>
-      <code>
-        // Root Method Begin
-        var textState = new TextState();
-
-        // Defaults: IndentCharCount = 2, LineLimit = 80, WrapEnabled = false.
-        var hb = new HTMLBuilder(textState);
-
-        // Example Method:
-        hb.Metas("Mr. Smith", textState, "The Description");
-        var result = hb.ToString();
-
-        // result:
-        // &amp;lt;meta charset="utf-8" /&amp;gt;
-        // &amp;lt;meta name="description" content="The Description" /&amp;gt;
-        // &amp;lt;meta name="author" content="Mr. Smith" /&amp;gt;
-        // &amp;lt;meta name="viewport" content="width=device-width initial-scale=1" /&amp;gt;
-      </code>
-    </example>
-  </Metas>
-  <Script>
-    <summary>
-      Appends a &amp;lt;script&amp;gt; element.
-    </summary>
-    <param name="fileName">The script file name.</param>
-    <param name="textState">The current text state values.</param>
-    <returns>The added &amp;lt;script&amp;gt; element.</returns>
-    <example>
-      <code>
-        // Root Method Begin
-        var textState = new TextState();
-
-        // Defaults: IndentCharCount = 2, LineLimit = 80, WrapEnabled = false.
-        var hb = new HTMLBuilder(textState);
-
-        // Example Method:
-        hb.Script("File.js", textState);
-        var result = hb.ToString();
-
-        // result:
-        // &amp;lt;script src="File.js"&amp;gt;&amp;lt;&amp;gt;
-      </code>
-    </example>
-  </Script>
   <!-- Get Element Methods (9) -->
   <AddChildIndent>
     <summary>
       Adds the new (child) indents.
     </summary>
-    <param name="createText">The previously created text.</param>
-    <param name="textState">The TextState object.</param>
+    <param name="$createText">The previously created text.</param>
+    <param name="$textState">The TextState object.</param>
     <remarks>
       Adds an indent for following child elements.&lt;br /&gt;
-      The indent will only be added if the createText length > 0 and the
-      textState.ChildIndentCount > 0.
+      The indent will only be added if the createText length &gt; 0 and the
+      textState.ChildIndentCount &gt; 0.
     </remarks>
-    <example>
-      <code>
-        // Root Method Begin
-        var textState = new TextState();
+    <code>
+      // Root Method Begin
+      $textState = new LJCTextState();
 
-        var result = CustomBegin("body", textState);
+      $result = self::CustomBegin("body", $textState);
 
-        // result:
-        // &amp;lt;body&amp;gt;
+      // result:
+      // &amp;lt;body&amp;gt;
 
-        private static string CustomBegin(string name, TextState textState
-        , Attributes attribs = null, bool addIndent = true
-        , bool childIndent = true)
-        {
+      private static string CustomBegin(string $name, LJCTextState $textState
+      , LJCAttributes $attribs = null, bool $addIndent = true
+      , bool $childIndent = true)
+      {
         // Defaults: IndentCharCount = 2, LineLimit = 80, WrapEnabled = false.
-        var hb = new HTMLBuilder(textState);
+        $hb = new LJCHTMLBuilder($textState);
 
-        var createText = hb.GetBegin(name, textState, attribs, addIndent
-        , childIndent);
+        $createText = hb-&gt;GetBegin(name, $textState, $attribs, $addIndent
+          , $childIndent);
         // Use NoIndent after a "GetText" method.
-        hb.Text(createText, NoIndent);
+        $hb-&gt;Text($createText, $NoIndent);
         // Use AddChildIndent after beginning an element.
-        hb.AddChildIndent(createText, textState);
-        var result = hb.ToString();
+        $hb-&gt;AddChildIndent($createText, $textState);
+        $result = $hb-&gt;ToString();
 
         // Append Method
-        //hb.UpdateState(textState);
+        //hb-&gt;UpdateState($textState);
         return result;
-        }
-      </code>
-    </example>
+      }
+    </code>
   </AddChildIndent>
   <GetBegin>
     <summary>
       Gets the element begin tag.
     </summary>
-    <param name="name">The element name.</param>
-    <param name="textState">The current text state values.</param>
-    <param name="htmlAttribs">The element attributes.</param>
-    <param name="addIndent">
+    <param name="$name">The element name.</param>
+    <param name="$textState">The current text state values.</param>
+    <param name="$htmlAttribs">The element attributes.</param>
+    <param name="$addIndent">
       Indicates if the element can be indented.
     </param>
     <param name="childIndent">
@@ -804,66 +664,35 @@
       because the the indent has already been added with the "GetText"
       method.
     </remarks>
-    <example>
-      <code>
-        // Root Method Begin
-        var textState = new TextState();
+    <code>
+      // Root Method Begin
+      $textState = new LJCTextState();
 
-        // Defaults: IndentCharCount = 2, LineLimit = 80, WrapEnabled = false.
-        var hb = new HTMLBuilder();
+      // Defaults: IndentCharCount = 2, LineLimit = 80, WrapEnabled = false.
+      $hb = new LJCHTMLBuilder();
 
-        // Example Method:
-        // Starts the text with a newline if the builder already has text
-        // and param allowNewLine = true and builder text does not end with
-        // a newline.
-        // The text begins with the current indent string if param
-        // addIndent = true.
-        // Defaults: addIndent = true, allowNewLine = true.
-        var result = hb.GetBegin("body", textState);
+      // Example Method:
+      // Starts the text with a newline if the builder already has text
+      // and param allowNewLine = true and builder text does not end with
+      // a newline.
+      // The text begins with the current indent string if param
+      // addIndent = true.
+      // Defaults: addIndent = true, allowNewLine = true.
+      $result = $hb-&gt;GetBegin("body", $textState);
 
-        // result:
-        // &amp;lt;body&amp;gt;
-      </code>
-    </example>
+      // result:
+      // &amp;lt;body&amp;gt;
+    </code>
   </GetBegin>
-  <GetBeginSelector>
-    <summary>
-      Gets beginning of style selector.
-    </summary>
-    <param name="selectorName">The selector name.</param>
-    <param name="textState">The current text state values.</param>
-    <returns>The style selector beginning.</returns>
-    <example>
-      <code>
-        // Root Method Begin
-        var textState = new TextState();
-
-        // Defaults: IndentCharCount = 2, LineLimit = 80, WrapEnabled = false.
-        var hb = new HTMLBuilder();
-
-        // Example Method:
-        // Starts the text with a newline if the builder already has text
-        // and param allowNewLine = true and builder text does not end with
-        // a newline.
-        // The text begins with the current indent string if param
-        // addIndent = true.
-        // Defaults: addIndent = true, allowNewLine = true.
-        var result = hb.GetBeginSelector("tr", textState);
-
-        // result:
-        // tr {
-      </code>
-    </example>
-  </GetBeginSelector>
   <GetCreate>
     <summary>
       Gets an element.
     </summary>
-    <param name="name">The element name.</param>
-    <param name="text">The element content text.</param>
-    <param name="textState">The current text state values.</param>
-    <param name="htmlAttribs">The element attributes.</param>
-    <param name="addIndent">
+    <param name="$name">The element name.</param>
+    <param name="$text">The element content text.</param>
+    <param name="$textState">The current text state values.</param>
+    <param name="$htmlAttribs">The element attributes.</param>
+    <param name="$addIndent">
       Indicates if the element can be indented.
     </param>
     <param name="childIndent">
@@ -886,31 +715,29 @@
       The ChildIndentCount is incremented if the element is not empty and
       not closed.
     </remarks>
-    <example>
-      <code>
-        // Root Method Begin
-        var textState = new TextState();
+    <code>
+      // Root Method Begin
+      $textState = new LJCTextState();
 
-        // Defaults: IndentCharCount = 2, LineLimit = 80, WrapEnabled = false.
-        var hb = new HTMLBuilder(textState);
+      // Defaults: IndentCharCount = 2, LineLimit = 80, WrapEnabled = false.
+      $hb = new HTMLBuilder($textState);
 
-        // Example Method:
-        // Defaults: close = true.
-        hb.Create("head", null, textState);
-        var result = hb.ToString();
+      // Example Method:
+      // Defaults: close = true.
+      $hb-&gt;Create("head", null, $textState);
+      $result = $hb-&gt;ToString();
 
-        // result:
-        // &amp;lt;head&amp;gt;&amp;lt;/head&amp;gt;
-      </code>
-    </example>
+      // result:
+      // &amp;lt;head&amp;gt;&amp;lt;/head&amp;gt;
+    </code>
   </GetCreate>
   <GetEnd>
     <summary>
       Gets the element end tag.
     </summary>
-    <param name="name">The element name.</param>
-    <param name="textState">The current text state values.</param>
-    <param name="addIndent">
+    <param name="$name">The element name.</param>
+    <param name="$textState">The current text state values.</param>
+    <param name="$addIndent">
       Indicates if the element can be indented.
     </param>
     <returns>The element end tag.</returns>
@@ -918,333 +745,89 @@
       GetEnd() is a "GetText" method which creates the element closing tag
       and returns the text value.
     </remarks>
-    <example>
-      <code>
-        // Root Method Begin
-        var textState = new TextState();
+    <code>
+      // Root Method Begin
+      $textState = new LJCTextState();
 
-        // Defaults: IndentCharCount = 2, LineLimit = 80, WrapEnabled = false.
-        var hb = new HTMLBuilder(textState);
+      // Defaults: IndentCharCount = 2, LineLimit = 80, WrapEnabled = false.
+      $hb = new LJCHTMLBuilder($textState);
 
-        // Example Method:
-        // Defaults: close = true.
-        hb.End("head", textState);
-        var result = hb.ToString();
+      // Example Method:
+      // Defaults: close = true.
+      $hb-&gt;End("head", $textState);
+      $result = $hb-&gt;ToString();
 
-        // result:
-        // &amp;lt;/head&amp;gt;
-      </code>
-    </example>
+      // result:
+      // &amp;lt;/head&amp;gt;
+    </code>
   </GetEnd>
-  <GetLink>
-    <summary>
-      Gets the link element for a style sheet.
-    </summary>
-    <param name="fileName">The CSS file name.</param>
-    <param name="textState">The current text state values.</param>
-    <returns>The &lt;link&gt; element.</returns>
-    <example>
-      <code>
-        // Root Method Begin
-        var textState = new TextState();
-
-        // Defaults: IndentCharCount = 2, LineLimit = 80, WrapEnabled = false.
-        var hb = new HTMLBuilder(textState);
-
-        // Example Method:
-        var result = hb.Link("File.css", textState);
-
-        // result:
-        // &amp;lt;link rel="stylesheet" type="text/css" href="File.css" /&amp;gt;
-      </code>
-    </example>
-  </GetLink>
-  <GetMeta>
-    <summary>
-      Gets a meta element.
-    </summary>
-    <param name="name">The name value.</param>
-    <param name="content">The content value.</param>
-    <param name="textState">The current text state values.</param>
-    <returns>The &amp;lt;meta&amp;gt; element.</returns>
-    <example>
-      <code>
-        // Root Method Begin
-        var textState = new TextState();
-
-        // Defaults: IndentCharCount = 2, LineLimit = 80, WrapEnabled = false.
-        var hb = new HTMLBuilder(textState);
-
-        // Example Method:
-        var content = "width=device-width initial-scale=1";
-        var result = hb.Meta("viewport", content, textState);
-
-        // result:
-        // &amp;lt;meta name="viewport" content="width=device-width initial-scale=1" /&amp;gt;
-      </code>
-    </example>
-  </GetMeta>
-  <GetMetas>
-    <summary>
-      Gets common meta elements.
-    </summary>
-    <param name="author">The author.</param>
-    <param name="textState">The current text state values.</param>
-    <param name="description">The description.</param>
-    <param name="keywords">The keywords.</param>
-    <param name="charSet">The charset value.</param>
-    <returns>The &amp;lt;meta&amp;gt; elements.</returns>
-    <example>
-      <code>
-        // Root Method Begin
-        var textState = new TextState();
-
-        // Defaults: IndentCharCount = 2, LineLimit = 80, WrapEnabled = false.
-        var hb = new HTMLBuilder(textState);
-
-        // Example Method:
-        var result = hb.GetMetas("Mr. Smith", textState, "The Description");
-
-        // result:
-        // &amp;lt;meta charset="utf-8" /&amp;gt;
-        // &amp;lt;meta name="description" content="The Description" /&amp;gt;
-        // &amp;lt;meta name="author" content="Mr. Smith" /&amp;gt;
-        // &amp;lt;meta name="viewport" content="width=device-width initial-scale=1" /&amp;gt;
-      </code>
-    </example>
-  </GetMetas>
-  <GetScript>
-    <summary>
-      Gets a &amp;lt;script&amp;gt; element.
-    </summary>
-    <param name="fileName"></param>
-    <param name="textState">The current text state values.</param>
-    <returns>The &amp;lt;script&amp;gt; element.</returns>
-    <example>
-      <code>
-        // Root Method Begin
-        var textState = new TextState();
-
-        // Defaults: IndentCharCount = 2, LineLimit = 80, WrapEnabled = false.
-        var hb = new HTMLBuilder(textState);
-
-        // Example Method:
-        var result = hb.Script("File.js", textState);
-
-        // result:
-        // &amp;lt;script src="File.js"&amp;gt;&amp;lt;&amp;gt;
-      </code>
-    </example>
-  </GetScript>
-  <!-- Append HTML Methods -->
-  <HTMLBegin>
-    <summary>
-      Creates the HTML beginning up to and including head;.
-    </summary>
-    <param name="textState">The current text state values.</param>
-    <param name="copyright">The copyright array.</param>
-    <param name="fileName">The HTML file name.</param>
-    <returns>The added HTML beginning text.</returns>
-    <example>
-      <code>
-        // Root Method Begin
-        var textState = new TextState();
-
-        // Defaults: IndentCharCount = 2, LineLimit = 80, WrapEnabled = false.
-        var hb = new HTMLBuilder(textState);
-
-        // Example Method:
-        var copyright = new string[]
-        {
-        "Copyright (c) First Line",
-        "Second Line",
-        };
-        var fileName = "File.html";
-        hb.HTMLBegin(textState, copyright, fileName);
-        var result = hb.ToString();
-
-        // result:
-
-        // result:
-        // &amp;lt;!DOCTYPE html&amp;gt;
-        // &amp;lt;!-- Copyright (c) First Line --&amp;gt;
-        // &amp;lt;!-- Second Line --&amp;gt;
-        // &amp;lt;!-- File.html --&amp;gt;
-        // &amp;lt;html lang="en" xmlns="http://www.w3.org/1999/xhtml"&amp;gt;
-        // &amp;lt;head&amp;gt;
-      </code>
-    </example>
-  </HTMLBegin>
-  <!-- Get HTML Methods (3) -->
-  <GetHTMLBegin>
-    <summary>
-      Gets the HTML beginning up to and including &amp;lt;head&amp;gt;.
-    </summary>
-    <param name="textState">The current text state values.</param>
-    <param name="copyright">The copyright array.</param>
-    <param name="fileName">The HTML file name.</param>
-    <returns>The HTML beginning text.</returns>
-    <example>
-      <code>
-        // Root Method Begin
-        var textState = new TextState();
-
-        // Defaults: IndentCharCount = 2, LineLimit = 80, WrapEnabled = false.
-        var hb = new HTMLBuilder(textState);
-
-        // Example Method:
-        var copyright = new string[]
-        {
-        "Copyright (c) First Line",
-        "Second Line",
-        };
-        var fileName = "File.html";
-        var result = hb.GetHTMLBegin(textState, copyright, fileName);
-
-        // result:
-        // &amp;lt;!DOCTYPE html&amp;gt;
-        // &amp;lt;!-- Copyright (c) First Line --&amp;gt;
-        // &amp;lt;!-- Second Line --&amp;gt;
-        // &amp;lt;!-- File.html --&amp;gt;
-        // &amp;lt;html lang="en" xmlns="http://www.w3.org/1999/xhtml"&amp;gt;
-        // &amp;lt;head&amp;gt;
-      </code>
-    </example>
-  </GetHTMLBegin>
-  <GetHTMLEnd>
-    <summary>
-      Gets the HTML end &amp;lt;body&amp;gt; and &amp;lt;html&amp;gt;.
-    </summary>
-    <param name="textState">The current text state values.</param>
-    <returns>The HTML end tags.</returns>
-    <example>
-      <code>
-        // Root Method Begin
-        var textState = new TextState();
-
-        // Defaults: IndentCharCount = 2, LineLimit = 80, WrapEnabled = false.
-        var hb = new HTMLBuilder(textState);
-
-        // Example Method:
-        var result = hb.GetHTMLEnd(textState);
-
-        // result:
-        // &amp;lt;/body&amp;gt;
-        // &amp;lt;/html&amp;gt;
-      </code>
-    </example>
-  </GetHTMLEnd>
-  <GetHTMLHead>
-    <summary>
-      Gets the common HTML Head elements.
-    </summary>
-    <param name="textState">The current text state values.</param>
-    <param name="title">The page title.</param>
-    <param name="author">The author.</param>
-    <param name="description">The description.</param>
-    <returns>The common HTML head elements.</returns>
-    <example>
-      <code>
-        // Root Method Begin
-        var textState = new TextState();
-
-        // Defaults: IndentCharCount = 2, LineLimit = 80, WrapEnabled = false.
-        var hb = new HTMLBuilder(textState);
-
-        // Example Method:
-        var title = "The Title";
-        var author = "Mr. Smith";
-        var description = "The Description";
-        // Defaults: title = null, author = null, description = null.
-        var result = hb.GetHTMLHead(textState, title, author, description);
-
-        // result:
-        // &amp;lt;title&amp;gt;The Title&amp;lt;/title&amp;gt;r
-        // &amp;lt;meta name="description" content="The Description" /&amp;gt;
-        // &amp;lt;meta name="author" content="Mr. Smith" /&amp;gt;
-        // &amp;lt;meta name="viewport" content="width=device-width initial-scale=1" /&amp;gt;
-      </code>
-    </example>
-  </GetHTMLHead>
   <!-- Get Element Attribs Methods (3) -->
   <Attribs>
     <summary>
       Gets common element attributes.
     </summary>
-    <param name="className">The class attribute.</param>
-    <param name="id">The id attribute.</param>
+    <param name="$className">The class attribute.</param>
+    <param name="$id">The id attribute.</param>
     <returns>The common element attributes collection.</returns>
-    <example>
-      <code>
-        // Root Method Begin
-        var textState = new TextState();
+    <code>
+      // Root Method Begin
+      $textState = new LJCTextState();
 
-        var hb = new HTMLBuilder(textState);
+      $hb = new LJCHTMLBuilder(textState);
 
-        // Example Method:
-        var className = "className";
-        var id = "id";
-        Attributes attribs = hb.Attribs(className, id);
-
-        // result:
-        // List&amp;lt;string&amp;gt;()
-        // {
-        //   { "className", "id" },
-        // };
-      </code>
-    </example>
+      // Example Method:
+      $className = "className";
+      $id = "id";
+      Attributes $attribs = $hb-&gt;Attribs($className, $id);
+    </code>
   </Attribs>
   <StartAttribs>
     <summary>
       Creates the HTML start attributes.
     </summary>
     <returns>The HTML start attributes.</returns>
-    <example>
-      <code>
-        // Root Method Begin
-        var textState = new TextState();
+    <code>
+      // Root Method Begin
+      $textState = new LJCTextState();
 
-        var hb = new HTMLBuilder(textState);
+      $hb = new LJCHTMLBuilder($textState);
 
-        // Example Method:
-        var attribs = hb.StartAttribs();
+      // Example Method:
+      $attribs = $hb-&gt;StartAttribs();
 
-        var result = hb.GetAttribs(attribs, textState);
+      $result = $hb-&gt;GetAttribs($attribs, $textState);
 
-        // result:
-        // lang=\"en\" xmlns=\"http://www.w3.org/1999/xhtml"
-      </code>
-    </example>
+      // result:
+      // lang=\"en\" xmlns=\"http://www.w3.org/1999/xhtml"
+    </code>
   </StartAttribs>
   <TableAttribs>
     <summary>
       Gets common table attributes.
     </summary>
-    <param name="border">The border attribute.</param>
-    <param name="cellSpacing">The cellspacing attribute</param>
-    <param name="cellPadding">The cellpadding attribute</param>
-    <param name="className">The class attribute.</param>
-    <param name="id">The id attribute.</param>
+    <param name="$border">The border attribute.</param>
+    <param name="$cellSpacing">The cellspacing attribute</param>
+    <param name="$cellPadding">The cellpadding attribute</param>
+    <param name="$className">The class attribute.</param>
+    <param name="$id">The id attribute.</param>
     <returns>The common table attributes.</returns>
-    <example>
-      <code>
-        // Root Method Begin
-        var textState = new TextState();
+    <code>
+      // Root Method Begin
+      $textState = new LJCTextState();
 
-        var hb = new HTMLBuilder(textState);
+      $hb = new LJCHTMLBuilder($textState);
 
-        // Example Method:
-        var border = 1;
-        var cellspacing = 2;
-        var cellpadding = 3;
-        // Defaults: border = 1, cellspacing = 0, cellpadding = 2.
-        var attribs = hb.TableAttribs(border, cellspacing, cellpadding);
+      // Example Method:
+      $border = 1;
+      $cellspacing = 2;
+      $cellpadding = 3;
+      // Defaults: border = 1, cellspacing = 0, cellpadding = 2.
+      $attribs = $hb-&gt;TableAttribs($border, $cellspacing, $cellpadding);
 
-        var result = hb.GetAttribs(attribs, textState);
+      $result = $hb-&gt;GetAttribs($attribs, $textState);
 
-        // result:
-        // border="1" cellspacing="2" cellpadding="3"
-      </code>
-    </example>
+      // result:
+      // border="1" cellspacing="2" cellpadding="3"
+    </code>
   </TableAttribs>
 </items>

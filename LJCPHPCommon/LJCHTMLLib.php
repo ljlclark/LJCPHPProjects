@@ -24,8 +24,22 @@
     // ----------
     // Get Create Element
 
+    // Gets beginning of style selector.
+    /// <include path='items/GetBeginSelector/*' file='Doc/LJCHTML.xml'/>
+    public static function GetBeginSelector(string $selectorName, LJCTextState $textState)
+      : string
+    {
+      $hb = new LJCHTMLBuilder($textState);
+
+      $hb->Text($selectorName);
+      $hb->AddText(" {");
+
+      $retValue = $hb->ToString();
+      return $retValue;
+    }
+
     // Gets the <link> element for a style sheet.
-    /// <include path='items/GetLink/*' file='Doc/LJCHTMLBuilder.xml'/>
+    /// <include path='items/GetLink/*' file='Doc/LJCHTML.xml'/>
     public static function GetLink(string $fileName, LJCTextState $textState) : string
     {
       $hb = new LJCHTMLBuilder($textState);
@@ -43,7 +57,7 @@
     }
 
     // Gets a <meta> element.
-    /// <include path='items/GetMeta/*' file='Doc/LJCHTMLBuilder.xml'/>
+    /// <include path='items/GetMeta/*' file='Doc/LJCHTML.xml'/>
     public static function GetMeta(string $name, string $content
       , LJCTextState $textState) : string
     {
@@ -62,7 +76,7 @@
     }
 
     // Gets common <meta> elements.
-    /// <include path='items/GetMetas/*' file='Doc/LJCHTMLBuilder.xml'/>
+    /// <include path='items/GetMetas/*' file='Doc/LJCHTML.xml'/>
     public static function GetMetas(string $author, LJCTextState $textState
       , string $description = null, string $keywords = null
       , string $charSet = "utf-8") : string
@@ -96,22 +110,8 @@
       return $retValue;
     }
 
-    // Gets beginning of style selector.
-    /// <include path='items/GetBeginSelector/*' file='Doc/LJCHTMLBuilder.xml'/>
-    public static function GetBeginSelector(string $selectorName, LJCTextState $textState)
-      : string
-    {
-      $hb = new LJCHTMLBuilder($textState);
-
-      $hb->Text($selectorName);
-      $hb->AddText(" {");
-
-      $retValue = $hb->ToString();
-      return $retValue;
-    }
-
     // Gets the <script> element.
-    /// <include path='items/GetScript/*' file='Doc/LJCHTMLBuilder.xml'/>
+    /// <include path='items/GetScript/*' file='Doc/LJCHTML.xml'/>
     public static function GetScript(string $fileName, LJCTextState $textState)
       : string
     {
@@ -131,7 +131,7 @@
     // Get HTML Methods
 
     // Gets the HTML beginning up to <head>.
-    /// <include path='items/GetHTMLBegin/*' file='Doc/LJCHTMLBuilder.xml'/>
+    /// <include path='items/GetHTMLBegin/*' file='Doc/LJCHTML.xml'/>
     public static function GetHTMLBegin(LJCTextState $textState
       , array $copyright = null, string $fileName = null) : string
     {
@@ -164,7 +164,7 @@
     }
 
     // Gets the HTML end <body> and <html>.
-    /// <include path='items/GetHTMLEnd/*' file='Doc/LJCHTMLBuilder.xml'/>
+    /// <include path='items/GetHTMLEnd/*' file='Doc/LJCHTML.xml'/>
     public static function GetHTMLEnd(LJCTextState $textState) : string
     {
       $hb = new LJCHTMLBuilder($textState);
@@ -181,7 +181,7 @@
     }
 
     // Gets the main HTML Head elements.
-    /// <include path='items/GetHTMLHead/*' file='Doc/LJCHTMLBuilder.xml'/>
+    /// <include path='items/GetHTMLHead/*' file='Doc/LJCHTML.xml'/>
     public static function GetHTMLHead(LJCTextState $textState, string $title = null
       , string $author = null, string $description = null) : string
     {

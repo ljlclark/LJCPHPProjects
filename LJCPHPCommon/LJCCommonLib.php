@@ -252,7 +252,7 @@
       {
         // *** Add ***
         $value = $text;
-        if ($length > 0)
+        if ($startIndex > 0)
         {
           $value = substr($text, 0, $startIndex + 1);
         }

@@ -28,6 +28,7 @@
     // Static ArrayArray Functions
 
     // Create table headings from an ArrayArray Data Object.
+    /// <include path='items/ArrayArrayHeadings/*' file='Doc/LJCHTMLTable.xml'/>
     public static function ArrayArrayHeadings(array $dataItems
       , array $propertyNames, LJCTextState $textState): string
     {
@@ -42,6 +43,7 @@
     }
 
     // Create an HTML table from an ArrayArray Data Object.
+    /// <include path='items/ArrayArrayHeadings/*' file='Doc/LJCHTMLTable.xml'/>
     public static function ArrayArrayHTML(array $dataItems, array $propertyNames
       , LJCTextState $textState, int $maxRows = 0): string
     {
@@ -64,7 +66,8 @@
       return $retValue;
     }
 
-    // Create table rows from an ArrayArray Data Object.
+    /// <summary>Create table rows from an ArrayArray Data Object.</summary>
+    /// <include path='items/ArrayArrayRows/*' file='Doc/LJCHTMLTable.xml'/>
     public static function ArrayArrayRows(array $dataItems, array $propertyNames
       , LJCTextState $textState, int $maxRows = 0): string
     {
@@ -92,7 +95,8 @@
     // ----------
     // Static Collection Functions
 
-    // Create table headings from a Collection Data Object.
+    // Create table headings from a Collection Object.
+    /// <include path='items/CollectionHeadings/*' file='Doc/LJCHTMLTable.xml'/>
     public static function CollectionHeadings(LJCCollectionBase $dataItems
       , array $propertyNames, LJCTextState $textState): string
     {
@@ -107,7 +111,8 @@
       return $retValue;
     }
 
-    // Create an HTML table from an Collection Data Object.
+    // Create an HTML table from an Collection Object.
+    /// <include path='items/CollectionHTML/*' file='Doc/LJCHTMLTable.xml'/>
     public static function CollectionHTML(LJCCollectionBase $dataItems
       , array $propertyNames, LJCTextState $textState, int $maxRows = 0): string
     {
@@ -130,7 +135,8 @@
       return $retValue;
     }
 
-    // Create table rows from a Collection Data Object.
+    // Create table rows from a Collection Object.
+    /// <include path='items/CollectionRows/*' file='Doc/LJCHTMLTable.xml'/>
     public static function CollectionRows(LJCCollectionBase $dataItems
       , array $propertyNames, LJCTextState $textState, int $maxRows = 0): string
     {
@@ -168,6 +174,7 @@
     // Static ObjectArray Functions
 
     // Create table headings from an ObjectArray Data Object.
+    /// <include path='items/ObjectArrayHeadings/*' file='Doc/LJCHTMLTable.xml'/>
     public static function ObjectArrayHeadings(array $dataItems, array $propertyNames
       , LJCTextState $textState): string
     {
@@ -185,7 +192,8 @@
       return $retValue;
     }
 
-    // Create an HTML table from an ObjectArray Data Object.
+    /// <summary>Create an HTML table from an ObjectArray Data Object.</summary>
+    /// <include path='items/ObjectArrayHTML/*' file='Doc/LJCHTMLTable.xml'/>
     public static function ObjectArrayHTML(array $dataItems, array $propertyNames
       , LJCTextState $textState, int $maxRows = 0): string
     {
@@ -209,6 +217,7 @@
     }
 
     // Create table rows from an ObjectArray Data Object.
+    /// <include path='items/ObjectArrayHTML/*' file='Doc/LJCHTMLTable.xml'/>
     public static function ObjectArrayRows(array $dataItems, array $propertyNames
       , LJCTextState $textState, int $maxRows = 0): string
     {
@@ -237,6 +246,7 @@
     // Static Data Table Functions
 
     // Create table headings from result rows.
+    /// <include path='items/ResultHeadings/*' file='Doc/LJCHTMLTable.xml'/>
     public static function ResultHeadings(array $rows, LJCTextState $textState
       , array $propertyNames): string
     {
@@ -251,6 +261,7 @@
     }
 
     // Create an HTML table from result rows.
+    /// <include path='items/ResultHTML/*' file='Doc/LJCHTMLTable.xml'/>
     public static function ResultHTML(array $rows, LJCTextState $textState
       , array $propertyNames, int $maxRows = 0): string
     {
@@ -274,6 +285,7 @@
     }
 
     // Create table rows from result rows.
+    /// <include path='items/ResultRows/*' file='Doc/LJCHTMLTable.xml'/>
     public static function ResultRows(array $rows, LJCTextState $textState
       , array $propertyNames, int $maxRows = 0): string
     {
@@ -301,6 +313,7 @@
     // --------------------
     // Static Support Methods
 
+    // Create the Array heading table rows.
     private static function ArrayHeadings(array $dataItem
       , LJCTextState $textState, array $propertyNames): string
     {
@@ -323,6 +336,7 @@
       return $retValue;
     }
 
+    // Create the Array data table rows.
     private static function ArrayRow(array $dataItem, LJCTextState $textState
       , array $propertyNames)
     {
@@ -360,6 +374,7 @@
       return $retValue;
     }
 
+    // Create the Object heading table rows.
     private static function ObjectHeadings($dataItem
       , array $propertyNames, LJCTextState $textState): string
     {
@@ -382,6 +397,7 @@
       return $retValue;
     }
 
+    // Create the Object data table rows.
     private static function ObjectRow($dataItem, array $propertyNames
       , LJCTextState $textState)
     {

@@ -30,7 +30,7 @@
   //
   // Get Attrib: Attribs(), StartAttribs(), TableAttribs()
   //
-  /// <summary>Represents a built string value.</summary>
+  // Represents a built string value.
   /// <include path='items/LJCHTMLBuilder/*' file='Doc/LJCHTMLBuilder.xml'/>
   class LJCHTMLBuilder
   {

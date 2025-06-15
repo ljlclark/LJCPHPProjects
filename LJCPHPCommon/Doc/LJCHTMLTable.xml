@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright(c) Lester J. Clark and Contributors. -->
+<!-- Licensed under the MIT License. -->
+<!-- LJCHTMLTable.xml -->
+<items>
+  <ArrayArrayHeadings>
+    <summary>
+      Create table headings from an ArrayArray Data Object.
+    </summary>
+    <param name="$dataItems">The array of item arrays.</param>
+    <param name="$propertyNames">The display property names.</param>
+    <param name="$textState">The text state object.</param>
+    <returns>The HTML table heading rows.</returns>
+  </ArrayArrayHeadings>
+  <ArrayArrayHTML>
+    <summary>
+      Create an HTML table from an ArrayArray Data Object.
+    </summary>
+    <param name="$dataItems">The array of item arrays.</param>
+    <param name="$propertyNames">The display property names.</param>
+    <param name="$textState">The text state object.</param>
+    <returns>The HTML table.</returns>
+  </ArrayArrayHTML>
+  <ArrayArrayRows>
+    <summary>
+      Create table rows from an ArrayArray Data Object.
+    </summary>
+    <param name="$dataItems">The array of item arrays.</param>
+    <param name="$propertyNames">The display property names.</param>
+    <param name="$textState">The text state object.</param>
+    <returns>The HTML table data rows.</returns>
+  </ArrayArrayRows>
+  <CollectionHeadings>
+    <summary>
+      Create table headings from a Collection Object.
+    </summary>
+    <param name="$dataItems">The collection of data objects.</param>
+    <param name="$propertyNames">The display property names.</param>
+    <param name="$textState">The text state object.</param>
+    <returns>The HTML table heading rows.</returns>
+  </CollectionHeadings>
+  <CollectionHTML>
+    <summary>
+      Create an HTML table from an Collection Object.
+    </summary>
+    <param name="$dataItems">The collection of data objects.</param>
+    <param name="$propertyNames">The display property names.</param>
+    <param name="$textState">The text state object.</param>
+    <returns>The HTML table.</returns>
+  </CollectionHTML>
+  <CollectionRows>
+    <summary>
+      Create table rows from a Collection Object.
+    </summary>
+    <param name="$dataItems">The collection of data objects.</param>
+    <param name="$propertyNames">The display property names.</param>
+    <param name="$textState">The text state object.</param>
+    <returns>The HTML table data rows.</returns>
+  </CollectionRows>
+  <ObjectArrayHeadings>
+    <summary>
+      Create table headings from an ObjectArray Data Object.
+    </summary>
+    <param name="$dataItems">The array of data objects.</param>
+    <param name="$propertyNames">The display property names.</param>
+    <param name="$textState">The text state object.</param>
+    <returns>The HTML table heading rows.</returns>
+  </ObjectArrayHeadings>
+  <ObjectArrayHTML>
+    <summary>
+      Create an HTML table from an ObjectArray Data Object.
+    </summary>
+    <param name="$dataItems">The array of data objects.</param>
+    <param name="$propertyNames">The display property names.</param>
+    <param name="$textState">The text state object.</param>
+    <returns>The HTML table.</returns>
+  </ObjectArrayHTML>
+  <ObjectArrayRows>
+    <summary>
+      Create table rows from an ObjectArray Data Object.
+    </summary>
+    <param name="$dataItems">The array of data objects.</param>
+    <param name="$propertyNames">The display property names.</param>
+    <param name="$textState">The text state object.</param>
+    <returns>The HTML table data rows.</returns>
+  </ObjectArrayRows>
+  <ResultHeadings>
+    <summary>
+      Create table headings from result rows.
+    </summary>
+    <param name="$dataItems">The array of row arrays.</param>
+    <param name="$propertyNames">The display property names.</param>
+    <param name="$textState">The text state object.</param>
+    <returns>The HTML table heading rows.</returns>
+  </ResultHeadings>
+  <ResultHTML>
+    <summary>
+      Create an HTML table from result rows.
+    </summary>
+    <param name="$dataItems">The array of row arrays.</param>
+    <param name="$propertyNames">The display property names.</param>
+    <param name="$textState">The text state object.</param>
+    <param name="$maxRows">The number of rows to display.</param>
+    <returns>The HTML table.</returns>
+  </ResultHTML>
+  <ResultRows>
+    <summary>
+      Create table rows from result rows.
+    </summary>
+    <param name="$dataItems">The array of row arrays.</param>
+    <param name="$propertyNames">The display property names.</param>
+    <param name="$textState">The text state object.</param>
+    <param name="$maxRows">The number of rows to display.</param>
+    <returns>The HTML table data rows.</returns>
+  </ResultRows>
+</items>

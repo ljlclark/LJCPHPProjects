@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright(c) Lester J. Clark and Contributors. -->
+<!-- Licensed under the MIT License. -->
+<!-- LJCHTML.xml -->
+<items>
+  <LJCHTML>
+    <summary>Provides methods for creating HTML sections.</summary>
+  </LJCHTML>
+  <!-- Get Create Methods -->
+  <GetBeginSelector>
+    <summary>
+      Gets beginning of style selector.
+    </summary>
+    <param name="$selectorName">The selector name.</param>
+    <param name="$textState">The current text state values.</param>
+    <returns>The style selector beginning.</returns>
+    <code>
+      // Root Method Begin
+      $textState = new LJCTextState();
+      
+      // Defaults: IndentCharCount = 2, LineLimit = 80, WrapEnabled = false.
+      $hb = new LJCHTMLBuilder();
+      
+      // Example Method:
+      // Starts the text with a newline if the builder already has text
+      // and param allowNewLine = true and builder text does not end with
+      // a newline.
+      // The text begins with the current indent string if param
+      // addIndent = true.
+      // Defaults: addIndent = true, allowNewLine = true.
+      $result = $hb-&gt;GetBeginSelector("tr", $textState);
+      
+      // result:
+      // tr {
+    </code>
+  </GetBeginSelector>
+  <GetLink>
+    <summary>
+      Gets the link element for a style sheet.
+    </summary>
+    <param name="$fileName">The CSS file name.</param>
+    <param name="$textState">The current text state values.</param>
+    <returns>The &amp;lt;Link&amp;gt; element.</returns>
+    <code>
+      // Root Method Begin
+      $textState = new LJCTextState();
+      
+      // Defaults: IndentCharCount = 2, LineLimit = 80, WrapEnabled = false.
+      $hb = new LJCHTMLBuilder($textState);
+      
+      // Example Method:
+      $result = $hb-&amp;gt;GetLink("File.css", $textState);
+      
+      // result:
+      // &amp;lt;link rel="stylesheet" type="text/css" href="File.css" /&amp;gt;
+    </code>
+  </GetLink>
+  <GetMeta>
+    <summary>
+      Gets a meta element.
+    </summary>
+    <param name="$name">The name value.</param>
+    <param name="$content">The content value.</param>
+    <param name="$textState">The current text state values.</param>
+    <returns>The &amp;lt;meta&amp;gt; element.</returns>
+    <code>
+      // Root Method Begin
+      $textState = new LJCTextState();
+
+      // Defaults: IndentCharCount = 2, LineLimit = 80, WrapEnabled = false.
+      $hb = new LJCHTMLBuilder($textState);
+
+      // Example Method:
+      $content = "width=device-width initial-scale=1";
+      $result = hb-&amp;gt;GetMeta("viewport", $content, $textState);
+
+      // result:
+      // &amp;lt;meta name="viewport" content="width=device-width initial-scale=1" /&amp;gt;
+    </code>
+  </GetMeta>
+  <GetMetas>
+    <summary>
+      Gets common meta elements.
+    </summary>
+    <param name="$author">The author.</param>
+    <param name="$textState">The current text state values.</param>
+    <param name="$description">The description.</param>
+    <param name="$keywords">The keywords.</param>
+    <param name="$charSet">The charset value.</param>
+    <returns>The &amp;lt;meta&amp;gt; elements.</returns>
+    <code>
+      // Root Method Begin
+      $textState = new LJCTextState();
+
+      // Defaults: IndentCharCount = 2, LineLimit = 80, WrapEnabled = false.
+      $hb = new LJCHTMLBuilder($textState);
+
+      // Example Method:
+      $result = $hb-&gt;GetMetas("Mr. Smith", $textState, "The Description");
+
+      // result:
+      // &amp;lt;meta charset="utf-8" /&amp;gt;
+      // &amp;lt;meta name="description" content="The Description" /&amp;gt;
+      // &amp;lt;meta name="author" content="Mr. Smith" /&amp;gt;
+      // &amp;lt;meta name="viewport" content="width=device-width initial-scale=1" /&amp;gt;
+    </code>
+  </GetMetas>
+  <GetScript>
+    <summary>
+      Gets a &amp;lt;script&amp;gt; element.
+    </summary>
+    <param name="$fileName"></param>
+    <param name="$textState">The current text state values.</param>
+    <returns>The &amp;lt;script&amp;gt; element.</returns>
+    <code>
+      // Root Method Begin
+      $textState = new LJCTextState();
+
+      // Defaults: IndentCharCount = 2, LineLimit = 80, WrapEnabled = false.
+      $hb = new LJCHTMLBuilder($textState);
+
+      // Example Method:
+      $result = $hb-&gt;Script("File.js", $textState);
+
+      // result:
+      // &amp;lt;script src="File.js"&amp;gt;&amp;lt;&amp;gt;
+    </code>
+  </GetScript>
+  <!-- Get HTML Methods (3) -->
+  <GetHTMLBegin>
+    <summary>
+      Gets the HTML beginning up to and including &amp;lt;head&amp;gt;.
+    </summary>
+    <param name="$textState">The current text state values.</param>
+    <param name="$copyright">The copyright array.</param>
+    <param name="$fileName">The HTML file name.</param>
+    <returns>The HTML beginning text.</returns>
+    <code>
+      // Root Method Begin
+      $textState = new LJCTextState();
+
+      // Defaults: IndentCharCount = 2, LineLimit = 80, WrapEnabled = false.
+      $hb = new LJCHTMLBuilder($textState);
+
+      // Example Method:
+      $copyright = [
+        "Copyright (c) First Line",
+        "Second Line",
+      ];
+      $fileName = "File.html";
+      $result = $hb-&gt;GetHTMLBegin($textState, $copyright, $fileName);
+
+      // result:
+      // &amp;lt;!DOCTYPE html&amp;gt;
+      // &amp;lt;!-- Copyright (c) First Line --&amp;gt;
+      // &amp;lt;!-- Second Line --&amp;gt;
+      // &amp;lt;!-- File.html --&amp;gt;
+      // &amp;lt;html lang="en" xmlns="http://www.w3.org/1999/xhtml"&amp;gt;
+      // &amp;lt;head&amp;gt;
+    </code>
+  </GetHTMLBegin>
+  <GetHTMLEnd>
+    <summary>
+      Gets the HTML end &amp;lt;body&amp;gt; and &amp;lt;html&amp;gt;.
+    </summary>
+    <param name="$textState">The current text state values.</param>
+    <returns>The HTML end tags.</returns>
+    <code>
+      // Root Method Begin
+      $textState = new LJCTextState();
+
+      // Defaults: IndentCharCount = 2, LineLimit = 80, WrapEnabled = false.
+      $hb = new LJCHTMLBuilder($textState);
+
+      // Example Method:
+      $result = $hb-&gt;GetHTMLEnd($textState);
+
+      // result:
+      // &amp;lt;/body&amp;gt;
+      // &amp;lt;/html&amp;gt;
+    </code>
+  </GetHTMLEnd>
+  <GetHTMLHead>
+    <summary>
+      Gets the common HTML Head elements.
+    </summary>
+    <param name="$textState">The current text state values.</param>
+    <param name="$title">The page title.</param>
+    <param name="$author">The author.</param>
+    <param name="$description">The description.</param>
+    <returns>The common HTML head elements.</returns>
+    <code>
+      // Root Method Begin
+      $textState = new LJCTextState();
+
+      // Defaults: IndentCharCount = 2, LineLimit = 80, WrapEnabled = false.
+      $hb = new LJCHTMLBuilder($textState);
+
+      // Example Method:
+      $title = "The Title";
+      $author = "Mr. Smith";
+      $description = "The Description";
+      // Defaults: title = null, author = null, description = null.
+      $result = $hb-&gt;GetHTMLHead($textState, $title, $author, $description);
+
+      // result:
+      // &amp;lt;title&amp;gt;The Title&amp;lt;/title&amp;gt;r
+      // &amp;lt;meta name="description" content="The Description" /&amp;gt;
+      // &amp;lt;meta name="author" content="Mr. Smith" /&amp;gt;
+      // &amp;lt;meta name="viewport" content="width=device-width initial-scale=1" /&amp;gt;
+    </code>
+  </GetHTMLHead>
+</items>
