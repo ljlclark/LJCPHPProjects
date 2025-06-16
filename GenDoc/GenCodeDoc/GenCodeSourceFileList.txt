@@ -1,7 +1,9 @@
 ../../LJCPHPCommon/LJCCollectionLib.php
+../../LJCPHPCommon/LJCCommonFileLib.php
 ../../LJCPHPCommon/LJCCommonLib.php
 ../../LJCPHPCommon/LJCDataManagerLib.php
 ../../LJCPHPCommon/LJCDBAccessLib.php
+../../LJCPHPCommon/LJCTextFileLib.php
 ../../LJCPHPCommon/LJCTextLib.php
 ../../LJCPHPCommon/LJCHTMLBuilderLib.php
 ../../LJCPHPCommon/LJCHTMLLib.php
