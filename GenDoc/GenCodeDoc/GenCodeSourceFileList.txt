@@ -1,3 +1,9 @@
+OutputTarget: "../../../WebSitesDev/CodeDoc/LJCPHPCodeDoc/HTML"
+DocDataXMLTarget: ../XMLDocData
+GenDataXMLTarget: ../XMLGenData
+WriteDocDataXML: true
+WriteGenDataXML: true
+
 ../../LJCPHPCommon/LJCCollectionLib.php
 ../../LJCPHPCommon/LJCCommonFileLib.php
 ../../LJCPHPCommon/LJCCommonLib.php

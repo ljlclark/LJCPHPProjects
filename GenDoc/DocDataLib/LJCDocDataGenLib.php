@@ -183,7 +183,7 @@
     // Creates and writes the DocData XML.
     /// <include path='items/CreateDocDataXMLString/*' file='Doc/LJCDocDataGen.xml'/>
     public function CreateDocDataXMLString(string $codeFileSpec
-      , bool $writeXML = false, string $outputPath = null) : ?string
+      , bool $writeDocDataXML = false, string $outputPath = null) : ?string
     {
       $enabled = false;
       $this->Debug->BeginMethod("CreateDocDataXMLString", $enabled);
@@ -191,18 +191,19 @@
 
       // Populate Library(File) XMLComment values.
       $this->LibName = LJCCommon::GetFileName($codeFileSpec);
-      // ***** Begin
-      if ("LJCDocDataGenLib" == $this->LibName
-        || "GenCodeDocLib" == $this->LibName)
-      {
-        $writeXML = true;
-      }
-      // ***** End
       $this->Comments->LibName = $this->LibName;
       $this->DocDataFile = new LJCDocDataFile($this->LibName);
 
       $retValue = $this->ProcessCode($codeFileSpec);
-      if ($writeXML)
+
+      // ***** Begin
+      if ("LJCDocDataGenLib" == $this->LibName
+        || "GenCodeDocLib" == $this->LibName)
+      {
+        $writeDocDataXML = true;
+      }
+      // ***** End
+      if ($writeDocDataXML)
       {
         $outputFileSpec = $this->DocOutputFileSpec($codeFileSpec, $outputPath);
         LJCFileWriter::WriteFile($retValue, $outputFileSpec);

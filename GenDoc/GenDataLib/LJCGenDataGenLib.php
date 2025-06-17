@@ -67,7 +67,7 @@
     // Creates a Lib GenData XML string and optional file.
     /// <include path='items/CreateLibXMLString/*' file='Doc/LJCGenDataGen.xml'/>
     public function CreateLibXMLString(string $docXMLString, string $codeFileSpec
-      , bool $writeXML = false, string $outputPath = null) : string
+      , bool $writeGenDataXML = false, string $outputPath = null) : string
     {
       $enabled = false;
       $this->Debug->BeginMethod("CreateLibXMLString", $enabled);
@@ -79,10 +79,17 @@
       // Start Testing
       $docDataFile = LJCDocDataFile::DeserializeString($docXMLString);
       $retValue = $this->CreateLibString($docDataFile, $fileName);
-      if ($writeXML && $retValue != null)
+
+      // ***** Begin
+      if ("LJCDocDataGenLib.xml" == $fileName
+        || "GenCodeDocLib.xml" == $fileName)
+      {
+        $writeGenDataXML = true;
+      }
+      if ($writeGenDataXML && $retValue != null)
       {
         $outputFileSpec = $this->OutputLibSpec($codeFileSpec, $outputPath);
-        LJCWriter::WriteFile($retValue, $outputFileSpec);
+        LJCFileWriter::WriteFile($retValue, $outputFileSpec);
       }
 
       if ($retValue != null)
@@ -92,7 +99,7 @@
         $htmlFileName = LJCCommon::GetFileName($codeFileSpec);
         $this->WriteHTML($htmlText, $htmlPath, $htmlFileName);
       }
-      $this->CreateClassesXML($docDataFile, $writeXML, $outputPath);
+      $this->CreateClassesXML($docDataFile, $writeGenDataXML, $outputPath);
 
       $this->Debug->EndMethod($enabled);
       return $retValue;
@@ -238,7 +245,7 @@
       {
         $outputPath = "../XMLGenData";
       }
-      LJCCommon::MkDir($outputPath);
+      LJCCommonFile::MkDir($outputPath);
       $fileName = LJCCommon::GetFileName($codeFileSpec) . ".xml";
       $retValue = "$outputPath/$fileName";
 
@@ -453,7 +460,7 @@
     // Creates the Class GenData XML strings and optionally files.
     // <include path='items/CreateClassesXML/*' file='Doc/LJCGenDataGen.xml'/>
     private function CreateClassesXML(LJCDocDataFile $docDataFile
-      , bool $writeXML = true, string $outputPath = null) : void
+      , bool $writeGenDataXML = true, string $outputPath = null) : void
     {
       $enabled = false;
       $this->Debug->BeginPrivateMethod("CreateClassesXML", $enabled);
@@ -464,7 +471,8 @@
       {
         foreach ($classes as $class)
         {
-          $this->CreateClassXML($class, $libName, $writeXML, $outputPath);
+          $this->CreateClassXML($class, $libName, $writeGenDataXML
+            , $outputPath);
         }
       }
 
@@ -474,7 +482,7 @@
     // Creates a Class GenData XML string and optional file.
     // <include path='items/CreateClassXML/*' file='Doc/LJCGenDataGen.xml'/>
     private function CreateClassXML(LJCDocDataClass $class, string $libName
-      , bool $writeXML = true, string $outputPath = null)	: string
+      , bool $writeGenDataXML = true, string $outputPath = null)	: string
     {
       $enabled = false;
       $this->Debug->BeginPrivateMethod("CreateClassXML", $enabled);
@@ -482,10 +490,11 @@
 
       $fileName = $class->Name . ".xml";
       $retValue = $this->CreateClassString($class, $fileName, $libName);
-      if ($writeXML && $retValue != null)
+
+      if ($writeGenDataXML && $retValue != null)
       {
         $outputClassSpec = $this->OutputClassSpec($class, $outputPath);
-        LJCWriter::WriteFile($retValue, $outputClassSpec);
+        LJCFileWriter::WriteFile($retValue, $outputClassSpec);
       }
 
       if ($retValue != null)
@@ -496,8 +505,8 @@
         $this->WriteHTML($htmlText, $htmlPath, $htmlFileName);
       }
 
-      $this->CreateMethodsXML($class, $libName, $writeXML);
-      $this->CreatePropertiesXML($class, $libName, $writeXML);
+      $this->CreateMethodsXML($class, $libName, $writeGenDataXML);
+      $this->CreatePropertiesXML($class, $libName, $writeGenDataXML);
 
       $this->Debug->EndMethod($enabled);
       return $retValue;
@@ -517,7 +526,7 @@
       {
         $outputPath = "../XMLGenData/$name";
       }
-      LJCCommon::MkDir($outputPath);
+      LJCCommonFile::MkDir($outputPath);
       $fileName = LJCCommon::GetFileName($name) . ".xml";
       $retValue = "$outputPath/$fileName";
 
@@ -677,7 +686,7 @@
     // Creates the Method GenData class XML strings and optionally files.
     // <include path='items/CreateMethodsXML/*' file='Doc/LJCGenDataGen.xml'/>
     private function CreateMethodsXML(LJCDocDataClass $class, string $libName
-      , bool $writeXML = true, string $outputPath = null) : void
+      , bool $writeGenDataXML = true, string $outputPath = null) : void
     {
       $enabled = false;
       $this->Debug->BeginPrivateMethod("CreateMethodsXML", $enabled);
@@ -687,7 +696,8 @@
       {
         foreach ($methods as $method)
         {
-          $this->CreateMethodXML($class, $method, $libName, $writeXML, $outputPath);
+          $this->CreateMethodXML($class, $method, $libName, $writeGenDataXML
+            , $outputPath);
         }
       }
 
@@ -697,7 +707,7 @@
     // Creates a Method GenData XML string and optional file.
     // <include path='items/CreateMethodXML/*' file='Doc/LJCGenDataGen.xml'/>
     private function CreateMethodXML(LJCDocDataClass $class
-      , LJCDocDataMethod $method, string $libName, bool $writeXML = false
+      , LJCDocDataMethod $method, string $libName, bool $writeGenDataXML = false
       , string $outputPath = null) : string
     {
       $enabled = false;
@@ -707,10 +717,11 @@
       $fileName = $method->Name;
       $retValue = $this->CreateMethodString($class, $method, $fileName
         , $libName);
-      if ($writeXML && $retValue != null)
+
+      if ($writeGenDataXML && $retValue != null)
       {
         $outputFileSpec = $this->OutputMethodSpec($class, $method, $outputPath);
-        LJCWriter::WriteFile($retValue, $outputFileSpec);
+        LJCFileWriter::WriteFile($retValue, $outputFileSpec);
       }
 
       if ($retValue != null)
@@ -739,7 +750,7 @@
       {
         $outputPath = "../XMLGenData/$name";
       }
-      LJCCommon::MkDir($outputPath);
+      LJCCommonFile::MkDir($outputPath);
       $fileName = $method->Name . ".xml";
       $retValue = "$outputPath/$fileName";
 
@@ -828,7 +839,7 @@
     // Creates the Property GenData class XML strings and optionally files.
     // <include path='items/CreatePropertiesXML/*' file='Doc/LJCGenDataGen.xml'/>
     private function CreatePropertiesXML(LJCDocDataClass $class, string $libName
-      , bool $writeXML = true, string $outputPath = null) : void
+      , bool $writeGenDataXML = true, string $outputPath = null) : void
     {
       $enabled = false;
       $this->Debug->BeginPrivateMethod("CreatePropertiesXML", $enabled);
@@ -838,7 +849,8 @@
       {
         foreach ($properties as $property)
         {
-          $this->CreatePropertyXML($class, $property, $libName, $writeXML, $outputPath);
+          $this->CreatePropertyXML($class, $property, $libName, $writeGenDataXML
+            , $outputPath);
         }
       }
 
@@ -848,8 +860,8 @@
     // Creates a Method GenData XML string and optional file.
     // <include path='items/CreatePropertyXML/*' file='Doc/LJCGenDataGen.xml'/>
     private function CreatePropertyXML(LJCDocDataClass $class
-      , LJCDocDataProperty $property, string $libName, bool $writeXML = false
-      , string $outputPath = null) : string
+      , LJCDocDataProperty $property, string $libName
+      , bool $writeGenDataXML = false, string $outputPath = null) : string
     {
       $enabled = false;
       $this->Debug->BeginPrivateMethod("CreatePropertyXML", $enabled);
@@ -859,7 +871,8 @@
       $fileName = $property->Name . ".xml";
       $retValue = $this->CreatePropertyString($class, $property, $fileName
         , $libName);
-      if ($writeXML && $retValue != null)
+
+      if ($writeGenDataXML && $retValue != null)
       {
         $outputFileSpec = $this->OutputPropertySpec($class, $property
           , $outputPath);
