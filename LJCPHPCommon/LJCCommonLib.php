@@ -18,37 +18,11 @@
     // Static Functions
 
     // Display debug text.
-    public static function Debug(int $lineNumber, string $text)
+    public static function Debug(int $lineNumber, string $text
+      , $value)
     {
-      echo("\r\n$lineNumber {$text}");
+      echo("\r\n$lineNumber {$text} = {$value}");
     }
-
-    /// <summary>Returns a text value as int.</summary>
-    // *** Change *** 5/25/25
-    public static function GetBool(?string $text) : int
-    {
-      //$retValue = true;
-      $retValue = 1;
-
-      if (null == $text)
-      {
-        //$retValue = false;
-        $retValue = 0;
-      }
-      else
-      {
-        switch (strtolower(trim($text)))
-        {
-          case "false":
-          case "":
-          case "0":
-            //$retValue = false;
-            $retValue = 0;
-            break;
-        }
-      }
-      return $retValue;
-    } // GetBool()
 
     // Gets the string between the delimiters.
     /// <include path='items/GetDelimitedString/*' file='Doc/LJCCommon.xml'/>
@@ -289,6 +263,43 @@
       }
       return $retValue;
     } // StrRPos()
+
+    /// <summary>Returns a value as bool.</summary>
+    public static function ToBool($value) : bool
+    {
+      $retValue = boolval($value);
+
+      $testValue = strtolower(trim($value));
+      if ("0" == $testValue
+        || "false" == $testValue)
+      {
+        $retValue = false;
+      }
+      return $retValue;
+    } // ToBool()
+
+    /// <summary>Returns a text value as int boolean.</summary>
+    public static function ToBoolInt(?string $text) : int
+    {
+      $retValue = 1;
+
+      if (null == $text)
+      {
+        $retValue = 0;
+      }
+      else
+      {
+        switch (strtolower(trim($text)))
+        {
+          case "false":
+          case "":
+          case "0":
+            $retValue = 0;
+            break;
+        }
+      }
+      return $retValue;
+    } // ToBoolInt()
 
     // Writes the test compare text.
     public static function WriteCompare(string $methodName, string $result, string $compare)

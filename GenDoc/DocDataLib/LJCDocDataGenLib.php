@@ -8,12 +8,16 @@
   include_once "$prefix/LJCPHPCommon/LJCDebugLib.php";
   include_once "$prefix/LJCPHPCommon/LJCCommonLib.php";
   include_once "$prefix/LJCPHPCommon/LJCCommonFileLib.php";
+  include_once "$prefix/GenDoc/GenCodeDoc/LJCGenDocConfigLib.php";
   include_once "$prefix/LJCPHPCommon/LJCTextLib.php";
   include_once "$prefix/LJCPHPCommon/LJCTextFileLib.php";
   include_once "$prefix/GenDoc/DocDataLib/LJCDocDataLib.php";
   include_once "$prefix/GenDoc/DocDataLib/LJCCommentsLib.php";
   // The used classes:
+  // LJCDebugLib:
   // LJCCommonLib: LJCCommon
+  // LJCCommonFileLib: LJCCommonFile
+  // LJCGenDocConfigLib: LJCGenDocConfig
   // LJCTextLib: LJCWriter
   // LJCDebugLib: LJCDebug
   // LJCDocDataLib: LJCDocDataClass, LJCDocDataClasses, LJCDocDataFile
@@ -177,13 +181,18 @@
       $this->PropertyName = null;
     } // __construct()
 
+    // Sets the GenDoc config.
+    public function SetConfig(LJCGenDocConfig $config)
+    {
+      $this->GenDocConfig = $config;
+    }
+
     // ---------------
     // Public Methods - LJCDocDataGen
 
     // Creates and writes the DocData XML.
     /// <include path='items/CreateDocDataXMLString/*' file='Doc/LJCDocDataGen.xml'/>
-    public function CreateDocDataXMLString(string $codeFileSpec
-      , bool $writeDocDataXML = false, string $outputPath = null) : ?string
+    public function CreateDocDataXMLString(string $codeFileSpec) : ?string
     {
       $enabled = false;
       $this->Debug->BeginMethod("CreateDocDataXMLString", $enabled);
@@ -196,16 +205,17 @@
 
       $retValue = $this->ProcessCode($codeFileSpec);
 
-      // ***** Begin
+      // Write XML data.
+      $writeDocDataXML = $this->GenDocConfig->WriteDocDataXML;
       if ("LJCDocDataGenLib" == $this->LibName
         || "GenCodeDocLib" == $this->LibName)
       {
         $writeDocDataXML = true;
       }
-      // ***** End
       if ($writeDocDataXML)
       {
-        $outputFileSpec = $this->DocOutputFileSpec($codeFileSpec, $outputPath);
+        $docDataXMLPath = $this->GenDocConfig->DocDataXMLPath;
+        $outputFileSpec = $this->DocOutputFileSpec($codeFileSpec, $docDataXMLPath);
         LJCFileWriter::WriteFile($retValue, $outputFileSpec);
       }
 
@@ -603,6 +613,9 @@
 
     // The Function name.
     private ?string $FunctionName;
+
+    // The GenDoc configuration.
+    private LJCGenDocConfig $GenDocConfig;
 
     // The Input File Stream.
     private $InputStream;

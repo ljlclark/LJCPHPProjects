@@ -7,11 +7,6 @@ call CodeRunTest.cmd
 
 rem call GenDoc\DocDataLib\TestDocDataGen.cmd
 
-set command=GenTextLib\TextGenLib.cmd
-set outFolder=GenTextLib
-set outFile=GenDALData.txt
-call CodeRunTest.cmd
-
 set command=TextReader.cmd
 set outFolder=TextReader
 set outFile=TextReader.txt
@@ -29,19 +24,18 @@ set outFolder=TestHTMLWriter
 set outFile=TestHTMLWriterOutput.log
 call CodeRunTest.cmd
 
-set command=GenDALData.cmd
-set outFolder=GenDALTest
-set outFile=GenDALData.txt
-call LJCPHPCommon\HTMLBuilderTest\HTMLBuilderTest.cmd
-del RunDebug\HTMLBuilderTest\HTMLBuilderOutput.log
-move HTMLBuilderOutput.log CodeRunTestsDebug\HTMLBuilderTest\HTMLBuilderOutput.log
+set command=LJCPHPCommon\HTMLBuilderTest\HTMLBuilderTest.cmd
+set outFolder=HTMLBuilderTest
+set outFile=HTMLBuilderOutput.log
+call CodeRunTest.cmd
 
-call LJCPHPCommon\HTMLTest\HTMLTest.cmd
-del RunDebug\HTMLTest\HTMLOutput.log
-move HTMLOutput.log CodeRunTestsDebug\HTMLTest\HTMLOutput.log
+set command=LJCPHPCommon\HTMLTest\HTMLTest.cmd
+set outFolder=HTMLTest
+set outFile=HTMLOutput.log
+call CodeRunTest.cmd
 
-call LJCPHPCommon\HTMLTableTest\HTMLTableTest.cmd
-del RunDebug\HTMLTableTest\HTMLTableOutput.log
-del RunDebug\HTMLTableTest\HTMLTableOutput.html
-move HTMLTableOutput.log CodeRunTestsDebug\HTMLTableTest\HTMLTableOutput.log
-move HTMLTableOutput.html CodeRunTestsDebug\HTMLTableTest\HTMLTableOutput.html
+set command=LJCPHPCommon\HTMLTableTest\HTMLTableTest.cmd
+set outFolder=HTMLTableTest
+set outFile=HTMLTableOutput.log
+call CodeRunTest.cmd
+move HTMLTableOutput.html CodeRunTestsDebug\%outFolder%\HTMLTableOutput.html

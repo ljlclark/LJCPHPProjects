@@ -5,12 +5,16 @@
   $prefix = RelativePrefix();
   include_once "$prefix/LJCPHPCommon/LJCDebugLib.php";
   include_once "$prefix/LJCPHPCommon/LJCCommonFileLib.php";
+  include_once "$prefix/GenDoc/GenCodeDoc/LJCGenDocConfigLib.php";
   include_once "$prefix/LJCPHPCommon/LJCTextLib.php";
+  include_once "$prefix/LJCPHPCommon/LJCTextFileLib.php";
   include_once "$prefix/GenTextLib/LJCGenTextLib.php";
   include_once "$prefix/GenDoc/GenDataLib/LJCGenDataXMLLib.php";
   // LJCCommonLib: LJCCommon
-  // LJCGenTtextLib: 
-  // LJCGenDataXMLLib:
+  // LJCGenDocConfigLib: LJCGenDocConfig
+  // LJCGenTextLib: LJCStringBuilder
+  // LJCGenTextFileLib: LJCFileWriter
+  // LJCGenDataXMLLib:LJCGenDataXML
   // LJCDebugLib: LJCDebug
 
   // Contains classes to create GenData and HTML Doc from DocData.
@@ -53,11 +57,20 @@
     public function __construct()
     {
       // Instantiate properties with Pascal case.
-      $this->Debug = new LJCDebug("LJCDocDataGenLib", "LJCGenDataGen"
+      $this->Debug = new LJCDebug("LJCGenDataGenLib", "LJCGenDataGen"
         , "w", false);
       $this->Debug->IncludePrivate = true;
+    }
 
+    // Sets the GenDoc config.
+    public function SetConfig(LJCGenDocConfig $config)
+    {
       $this->HTMLPath = "../../../WebSitesDev/CodeDoc/LJCPHPCodeDoc/HTML";
+      $this->GenDocConfig = $config;
+      if (LJCCommon::HasValue($config->OutputPath))
+      {
+        $this->HTMLPath = $config->OutputPath;
+      }
       LJCCommonFile::MkDir($this->HTMLPath);
     }
     
@@ -66,8 +79,10 @@
 
     // Creates a Lib GenData XML string and optional file.
     /// <include path='items/CreateLibXMLString/*' file='Doc/LJCGenDataGen.xml'/>
-    public function CreateLibXMLString(string $docXMLString, string $codeFileSpec
-      , bool $writeGenDataXML = false, string $outputPath = null) : string
+    //public function CreateLibXMLString(string $docXMLString, string $codeFileSpec
+    //  , bool $writeGenDataXML = false, string $outputPath = null) : string
+    public function CreateLibXMLString(string $docXMLString
+      , string $codeFileSpec) : string
     {
       $enabled = false;
       $this->Debug->BeginMethod("CreateLibXMLString", $enabled);
@@ -75,12 +90,12 @@
 
       // GenData XML file name same as source file with .xml extension.
       $fileName = LJCCommon::GetFileName($codeFileSpec) . ".xml";
-      $this->Debug->Write("fileName = $fileName");
       // Start Testing
       $docDataFile = LJCDocDataFile::DeserializeString($docXMLString);
       $retValue = $this->CreateLibString($docDataFile, $fileName);
 
-      // ***** Begin
+      // Write XML data.
+      $writeGenDataXML = $this->GenDocConfig->WriteGenDataXML;
       if ("LJCDocDataGenLib.xml" == $fileName
         || "GenCodeDocLib.xml" == $fileName)
       {
@@ -88,7 +103,8 @@
       }
       if ($writeGenDataXML && $retValue != null)
       {
-        $outputFileSpec = $this->OutputLibSpec($codeFileSpec, $outputPath);
+        $genDataXMLPath = $this->GenDocConfig->GenDataXMLPath;
+        $outputFileSpec = $this->OutputLibSpec($codeFileSpec, $genDataXMLPath);
         LJCFileWriter::WriteFile($retValue, $outputFileSpec);
       }
 
@@ -98,8 +114,11 @@
         $htmlPath = $this->HTMLPath;
         $htmlFileName = LJCCommon::GetFileName($codeFileSpec);
         $this->WriteHTML($htmlText, $htmlPath, $htmlFileName);
+        // *** Add ***
+        $this->CreateClassesXML($docDataFile, $writeGenDataXML, $htmlPath);
       }
-      $this->CreateClassesXML($docDataFile, $writeGenDataXML, $outputPath);
+      // *** Move Up ***
+      //$this->CreateClassesXML($docDataFile, $writeGenDataXML, $this->HTMLPath);
 
       $this->Debug->EndMethod($enabled);
       return $retValue;
@@ -876,7 +895,7 @@
       {
         $outputFileSpec = $this->OutputPropertySpec($class, $property
           , $outputPath);
-        LJCWriter::WriteFile($retValue, $outputFileSpec);
+        LJCFileWriter::WriteFile($retValue, $outputFileSpec);
       }
 
       if ($retValue != null)
@@ -905,7 +924,7 @@
       {
         $outputPath = "../XMLGenData/$name";
       }
-      LJCCommon::MkDir($outputPath);
+      LJCCommonFile::MkDir($outputPath);
       $fileName = $property->Name . ".xml";
       $retValue = "$outputPath/$fileName";
 
@@ -952,7 +971,13 @@
       $this->Debug->EndMethod($enabled);
     }
 
+    // ---------------
+    // Properties - LJCDocDataGen
+
     // The path for HTML output.
     public string $HTMLPath;
+
+    // The GenDoc configuration.
+    private LJCGenDocConfig $GenDocConfig;
   }
   ?>

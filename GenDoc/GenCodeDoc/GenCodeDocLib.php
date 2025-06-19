@@ -6,10 +6,12 @@
   include_once "LJCRoot.php";
   $prefix = RelativePrefix();
   include_once "$prefix/LJCPHPCommon/LJCDebugLib.php";
+  include_once "$prefix/GenDoc/GenCodeDoc/LJCGenDocConfigLib.php";
   include_once "$prefix/GenDoc/DocDataLib/LJCDocDataGenLib.php";
   include_once "$prefix/GenDoc/GenDataLib/LJCGenDataGenLib.php";
   include_once "$prefix/GenTextLib/TextGenLib.php";
   // LJCDebugLib: LJCDebug
+  // LJCGenDocConfigLib: LJCGenDocConfig
   // LJCDocDataGenLib: LJCDocDataGen
   // LJCGenDataGenLib: LJCGenDataGen
 
@@ -45,6 +47,7 @@
         , "w", false);
       $this->Debug->IncludePrivate = true;
       
+      $this->GenDocConfig =new LJCGenDocConfig();
       $this->DocDataGen = new LJCDocDataGen();
       $this->GenDataGen = new LJCGenDataGen();
     } // __construct()
@@ -55,13 +58,29 @@
       $enabled = false;
       $this->Debug->BeginMethod("CreateFromList", $enabled);
 
+      $genDocConfig = $this->GenDocConfig;
+      $genDocConfig->OutputPath = "../../../WebSitesDev/CodeDoc/LJCPHPCodeDoc/HTML";
+      $genDocConfig->WriteDocDataXML = false;
+      $genDocConfig->WriteGenDataXML = false;
+
       // Gets the list of files to read.
       $sourceFileListSpec = "GenCodeSourceFileList.txt";
       $inputStream = fopen($sourceFileListSpec, "r+");
       while(false == feof($inputStream))
       {
         $line = (string)fgets($inputStream);
-        $this->CreateFilePages($line);
+
+        // Sets config properties from file list.
+        $isFile = $this->GenDocConfig->SetProperties($line);
+
+        if ($isFile)
+        {
+          // *** Begin *** Add
+          $this->DocDataGen->SetConfig($this->GenDocConfig);
+          $this->GenDataGen->SetConfig($this->GenDocConfig);
+          // *** End   ***
+          $this->CreateFilePages($line);
+        }
       }
 
       $this->Debug->EndMethod($enabled);
@@ -74,18 +93,14 @@
       $enabled = false;
       $this->Debug->BeginMethod("CreateFilePages", $enabled);
 
-      $writeDocDataXML = false;
-      $writeGenDataXML = false;
-
       $fileSpec = trim($fileSpecLine);
       if (TextGenLib::HasValue($fileSpec))
       {
-        $docXMLString = $this->DocDataGen->CreateDocDataXMLString($fileSpec
-          , $writeDocDataXML);
+        $docXMLString = $this->DocDataGen->CreateDocDataXMLString($fileSpec);
         if ($docXMLString != null)
         {
           $genXMLString = $this->GenDataGen->CreateLibXMLString($docXMLString
-            , $fileSpec, $writeGenDataXML);
+            , $fileSpec);
         }
       }
 
@@ -97,5 +112,8 @@
 
     // The Generate GenData XML and HTML object.
     private LJCGenDataGen $GenDataGen;
+
+    // The GenDoc configuration.
+    private LJCGenDocConfig $GenDocConfig;
   }
 ?>

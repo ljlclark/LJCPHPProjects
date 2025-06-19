@@ -1,8 +1,8 @@
-OutputTarget: "../../../WebSitesDev/CodeDoc/LJCPHPCodeDoc/HTML"
+OutputPath: ../../../WebSitesDev/CodeDoc/LJCPHPCodeDoc/HTML
 DocDataXMLTarget: ../XMLDocData
 GenDataXMLTarget: ../XMLGenData
-WriteDocDataXML: true
-WriteGenDataXML: true
+WriteDocDataXML: false
+WriteGenDataXML: false
 
 ../../LJCPHPCommon/LJCCollectionLib.php
 ../../LJCPHPCommon/LJCCommonFileLib.php
