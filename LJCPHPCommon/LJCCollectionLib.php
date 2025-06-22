@@ -108,6 +108,7 @@
       return isset($this->Items[$key]);
     } // HasKey()
 
+    /// <summary>Get item by index.</summary>
     public function Item($index)
     {
       $retItem = null;

@@ -94,14 +94,14 @@
       $docDataFile = LJCDocDataFile::DeserializeString($docXMLString);
       $retValue = $this->CreateLibString($docDataFile, $fileName);
 
-      // Write XML data.
+      // Write Lib XML data.
       $writeGenDataXML = $this->GenDocConfig->WriteGenDataXML;
-      if ("LJCDocDataGenLib.xml" == $fileName
-        || "GenCodeDocLib.xml" == $fileName)
+      if ("LJCHTMLTableLib.xml" == $fileName)
       {
         $writeGenDataXML = true;
       }
-      if ($writeGenDataXML && $retValue != null)
+      if ($writeGenDataXML
+        && $retValue != null)
       {
         $genDataXMLPath = $this->GenDocConfig->GenDataXMLPath;
         $outputFileSpec = $this->OutputLibSpec($codeFileSpec, $genDataXMLPath);
@@ -510,9 +510,17 @@
       $fileName = $class->Name . ".xml";
       $retValue = $this->CreateClassString($class, $fileName, $libName);
 
-      if ($writeGenDataXML && $retValue != null)
+      // Write Class XML data.
+      $writeGenDataXML = $this->GenDocConfig->WriteGenDataXML;
+      if ("LJCHTMLTable.xml" == $fileName)
       {
-        $outputClassSpec = $this->OutputClassSpec($class, $outputPath);
+        $writeGenDataXML = true;
+      }
+      if ($writeGenDataXML
+        && $retValue != null)
+      {
+        $genDataXMLPath = $this->GenDocConfig->GenDataXMLPath;
+        $outputClassSpec = $this->OutputClassSpec($class, $genDataXMLPath);
         LJCFileWriter::WriteFile($retValue, $outputClassSpec);
       }
 
@@ -737,9 +745,18 @@
       $retValue = $this->CreateMethodString($class, $method, $fileName
         , $libName);
 
-      if ($writeGenDataXML && $retValue != null)
+      // Write Method XML data.
+      $writeGenDataXML = $this->GenDocConfig->WriteGenDataXML;
+      if ("ArrayArrayHTML" == $fileName)
       {
-        $outputFileSpec = $this->OutputMethodSpec($class, $method, $outputPath);
+        $writeGenDataXML = true;
+      }
+      if ($writeGenDataXML
+        && $retValue != null)
+      {
+        $genDataXMLPath = $this->GenDocConfig->GenDataXMLPath;
+        $outputFileSpec = $this->OutputMethodSpec($class, $method
+          , $genDataXMLPath);
         LJCFileWriter::WriteFile($retValue, $outputFileSpec);
       }
 

@@ -64,7 +64,6 @@
           if (count($values) > 0)
           {
             // The directive identifier.
-            // *** Change *** 5/11/25
             $retValue->Type = $values[1];
           }
           if (count($values) > 2)
@@ -276,7 +275,8 @@
       $this->Debug->IncludePrivate = true;
 
       $this->Name = trim($name);
-      $this->RepeatItems = [];
+      $this->Groups = [];
+      $this->RepeatItems = new LJCItems();
     }
 
     /// <summary>Creates a copy of the current object.</summary>
@@ -302,8 +302,11 @@
     /// <summary>The Current Item object.</summary>
     public LJCItem $CurrentItem;
 
+    /// <summary>The item Group.</summary>
+    public array $Groups;
+
     /// <summary>The Section Items.</summary>
-    public array $RepeatItems;
+    public LJCItems $RepeatItems;
 
     /// <summary>The Section name.</summary>
     public string $Name;
@@ -320,9 +323,9 @@
   {
 
     // ------------------------
-    // Static Functions
+    // Static Functions - LJCSections
 
-    // Creates the data from a table definition.
+    // Creates "Class" and "Properties" sections data from the table definition.
     /// <include path='items/CreateColumnData/*' file='Doc/LJCSections.xml'/>
     public static function CreateColumnData(LJCDbColumns $dbColumns
       , string $tableName, string $className = null) : LJCSections
@@ -449,7 +452,7 @@
                   $item->Replacements->Add($replacement, $name);
                 }
               }
-              $section->RepeatItems[] = $item;
+              $section->RepeatItems->Add($item);
             }
             $sections->Add($section, $section->Name);
           }
@@ -511,7 +514,7 @@
     }
 
     // ---------------
-    // Constructors
+    // Constructors - LJCSections
 
     /// <summary>Initializes an object instance.</summary>
     public function __construct()
@@ -523,7 +526,7 @@
     }
 
     // ----------------------
-    // *** Collection Methods ***
+    // Collection Methods - LJCSections
 
     /// <summary>Creates an object clone.</summary>
     /// <returns>The cloned object.</returns>
@@ -565,7 +568,7 @@
     }
 
     // ----------------------
-    // *** Data Methods ***
+    // Data Methods - LJCSections
 
     // Adds an object and key value.
     /// <include path='items/Add/*' file='Doc/LJCSections.xml'/>
@@ -585,6 +588,21 @@
         }
         $this->Items[$key] = $item;
       }
+
+      $this->Debug->AddIndent(-1);
+    }
+
+    /// <summary>Remove the item by Key value.</summary>
+    /// <param name="$key">The element key.</param>
+    public function Remove($key) : void
+    {
+      $this->Debug->WriteStartText("Remove");
+
+      if (false == $this->HasKey($key))
+      {
+        throw new Exception("Key: {$key} was not found.");
+      }
+      unset($this->Items[$key]);
 
       $this->Debug->AddIndent(-1);
     }
@@ -614,6 +632,200 @@
       return $retValue;
     }
 
+    // ----------------------
+    // IteratorAggregate Interface Methods - LJCSection
+
+    /// <summary>Allows foreach()</summary>
+    public function getIterator() : Traversable
+    {
+      return new ArrayIterator($this->Items);
+    }
+
+    // ----------------------
+    // Countable Interface Methods - LJCSection
+
+    /// <summary>Allows Count(object).</summary>
+    public function count() : int
+    {
+      return count($this->Items);
+    }
+
+    // ------------------
+    // Class Data - LJCSection
+
+    // The elements array.
+    private $Items = [];
+  }  // LJCSections
+
+  // ***************
+  // Represents a Section Item.
+  // Clone()
+  /// <summary>Represents a Section Item.</summary>
+  class LJCItem
+  {
+    /// <summary>Initializes an object instance with the provided values.</summary>
+    /// <param name="$name">The Item name.</param>
+    public function __construct(string $name, string $memberGroup = "")
+    {
+      // Instantiate properties with Pascal case.
+      $this->Debug = new LJCDebug("LJCGenTextSectionLib", "LJCItem"
+        , "w", false);
+      $this->Debug->IncludePrivate = true;
+
+      $this->Name = trim($name);
+      $this->Replacements = new LJCReplacements();
+      $this->MemberGroup = $memberGroup;
+    }
+
+    /// <summary>Creates a Clone of the current object.</summary>
+    /// <returns>The cloned object.</returns>
+    public function Clone() : self
+    {
+      $enabled = false;
+      $this->Debug->BeginMethod("Clone", $enabled);
+
+      $retValue = new self($this->Name);
+      $retValue->Replacements = $this->Replacements;
+      $retValue->RootName = $this->RootName;
+      $retValue->MemberGroup = $this->MemberGroup;
+
+      $this->Debug->EndMethod($enabled);
+      return $retValue;
+    } // Clone()
+
+    // ------------------
+    // *** Properties *** LJCItem
+
+    /// <summary>The Item name.</summary>
+    public string $Name;
+
+    /// <summary>The Item replacements.</summary>
+    public LJCReplacements $Replacements;
+
+    /// <summary>The XML Root Name value.</summary>
+    public string $RootName = "Items";
+
+    /// The group to which the item belongs.
+    public string $MemberGroup;
+  } // LJCItem
+
+  // ***************
+  // Represents a collection of Item objects.
+  // Collection: Clone(), GetKeys(), GetValues(), HasKey()
+  // Data: Add(), Retrieve(), Remove()
+  // <include path='items/LJCItems/*' file='Doc/LJCItems.xml'/>
+  class LJCItems implements IteratorAggregate, \Countable
+  {
+    // ---------------
+    // Constructors - LJCItems
+
+    /// <summary>Initializes an object instance.</summary>
+    public function __construct()
+    {
+      // Instantiate properties with Pascal case.
+      $this->Debug = new LJCDebug("LJCGenTextSectionLib", "LJCItems"
+        , "w", false);
+      $this->Debug->IncludePrivate = true;
+    }
+
+    // ----------------------
+    // Collection Methods - LJCItems
+
+    /// <summary>Creates an object clone.</summary>
+    /// <returns>The cloned object.</returns>
+    public function Clone() : self
+    {
+      $enabled = false;
+      $this->Debug->BeginMethod("Clone", $enabled);
+      $retValue = new self();
+
+      foreach ($this->Items as $key => $item)
+      {
+        $retValue->Add($item);
+      }
+      unset($item);
+
+      $this->Debug->EndMethod($enabled);
+      return $retValue;
+    } // Clone()
+
+    /// <summary>Gets an indexed array of keys.</summary>
+    /// <returns>The indexed keys array.</returns>
+    public function GetKeys() : array
+    {
+      return array_keys($this->Items);
+    }
+
+    /// <summary>Gets an indexed array of objects.</summary>
+    /// <returns>The indexed values array.</returns>
+    public function GetValues() : array
+    {
+      return array_values($this->Items);
+    }
+
+    // Indicates if a key already exists.
+    // <include path='items/HasKey/*' file='Doc/LJCItems.xml'/>
+    public function HasKey($key) : bool
+    {
+      return isset($this->Items[$key]);
+    }
+
+    /// <summary>Get item by index.</summary>
+    public function Item($index)
+    {
+      $retItem = null;
+
+      $keys = self::GetKeys();
+      if (count($keys) > $index)
+      {
+        $key = $keys[$index];
+        $retItem = $this->Items[$key];
+      }
+      return $retItem;
+    } // Item()
+
+    // ----------------------
+    // Data Methods - LJCItems
+
+    // Adds an object and key value.
+    // <include path='items/Add/*' file='Doc/LJCItems.xml'/>
+    public function Add(LJCItem $item, $key = null) : void
+    {
+      $this->Debug->WriteStartText("Add");
+
+      if (null === $key)
+      {
+        $this->Items[] = $item;
+      }
+      else
+      {
+        if ($this->HasKey($key))
+        {
+          throw new Exception("Key: {$key} already in use.");
+        }
+        $this->Items[$key] = $item;
+      }
+
+      $this->Debug->AddIndent(-1);
+    } // Add()
+
+    // Find the first group item.
+    public static function FindGroupItem(LJCItems $items, string $group)
+      : ?LJCItem
+    {
+      $retItem = null;
+
+      foreach ($items as $item)
+      {
+        if ($item->MemberGroup == $group)
+        {
+          $retItem = $item;
+          break;
+        }
+      }
+      return $retItem;
+    } // FindGroupItem()
+
     /// <summary>Remove the item by Key value.</summary>
     /// <param name="$key">The element key.</param>
     public function Remove($key) : void
@@ -627,16 +839,44 @@
       unset($this->Items[$key]);
 
       $this->Debug->AddIndent(-1);
-    }
+    } // Remove()
+
+    // Get the item by Key value.
+    // <include path='items/Get/*' file='Doc/LJCItems.xml'/>
+    public function Retrieve($key, bool $showError = true) : ?LJCSection
+    {
+      $this->Debug->WriteStartText("Retrieve");
+      $retValue = null;
+
+      $success = true;
+      if (false == $this->HasKey($key))
+      {
+        $success = false;
+        if ($showError)
+        {
+          throw new Exception("Key: '$key' was not found.");
+        }
+      }
+      if ($success)
+      {
+        $retValue = $this->Items[$key];
+      }
+
+      $this->Debug->AddIndent(-1);
+      return $retValue;
+    } // Retrieve()
 
     // ----------------------
-    // *** Interface Methods ***
+    // IteratorAggregate Interface Methods - LJCItems
 
     /// <summary>Allows foreach()</summary>
     public function getIterator() : Traversable
     {
       return new ArrayIterator($this->Items);
     }
+
+    // ----------------------
+    // Countable Interface Methods - LJCItems
 
     /// <summary>Allows Count(object).</summary>
     public function count() : int
@@ -645,57 +885,10 @@
     }
 
     // ------------------
-    // *** Class Data ***
+    // Class Data - LJCItems
 
     // The elements array.
     private $Items = [];
-  }
-
-  // ***************
-  // Represents a Section Item.
-  // Clone()
-  /// <summary>Represents a Section Item.</summary>
-  class LJCItem
-  {
-    /// <summary>Initializes an object instance with the provided values.</summary>
-    /// <param name="$name">The Item name.</param>
-    public function __construct(string $name)
-    {
-      // Instantiate properties with Pascal case.
-      $this->Debug = new LJCDebug("LJCGenTextSectionLib", "LJCItem"
-        , "w", false);
-      $this->Debug->IncludePrivate = true;
-
-      $this->Name = trim($name);
-      $this->Replacements = new LJCReplacements();
-    }
-
-    /// <summary>Creates a Clone of the current object.</summary>
-    /// <returns>The cloned object.</returns>
-    public function Clone() : self
-    {
-      $enabled = false;
-      $this->Debug->BeginMethod("Clone", $enabled);
-
-      $retValue = new self($this->Name);
-      $retValue->Replacements = $this->Replacements;
-      $retValue->RootName = $this->RootName;
-
-      $this->Debug->EndMethod($enabled);
-      return $retValue;
-    }
-
-    // ------------------
-    // *** Properties ***
-
-    /// <summary>The Item name.</summary>
-    public string $Name;
-
-    /// <summary>The Item replacements.</summary>
-    public LJCReplacements $Replacements;
-
-    /// <summary>The XML Root Name value.</summary>
-    public string $RootName = "Items";
   }
 
   // ***************
@@ -763,7 +956,7 @@
     }
 
     // ----------------------
-    // *** Collection Methods ***
+    // Collection Methods - LJCReplacements
 
     // Creates an object clone.
     public function Clone() : self
@@ -790,7 +983,7 @@
     }
 
     // ----------------------
-    // *** Data Methods ***
+    // Data Methods - LJCReplacements
 
     // Adds an object and key value.
     /// <include path='items/Add/*' file='Doc/LJCReplacements.xml'/>
@@ -814,9 +1007,9 @@
       $this->Debug->AddIndent(-1);
     }
 
-    /// <summary>Delete the item by Key value.</summary>
+    /// <summary>Remove the item by Key value.</summary>
     /// <param name="$key"></param>
-    public function Delete($key) : void
+    public function Remove($key) : void
     {
       $this->Debug->WriteStartText("Delete");
 
@@ -855,13 +1048,16 @@
     }
 
     // ----------------------
-    // *** Interface Methods ***
+    // IteratorAggregate Interface Methods - LJCReplacements
 
     // Allows foreach()
     public function getIterator() : Traversable
     {
       return new ArrayIterator($this->Items);
     }
+
+    // ----------------------
+    // Countable Interface Methods - LJCReplacements
 
     // Allows Count(object)
     public function count() : int
@@ -870,7 +1066,7 @@
     }
 
     // ------------------
-    // *** Class Data ***
+    // Class Data - LJCReplacements
 
     // The elements array.
     private $Items = [];

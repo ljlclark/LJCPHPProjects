@@ -75,10 +75,8 @@
 
         if ($isFile)
         {
-          // *** Begin *** Add
           $this->DocDataGen->SetConfig($this->GenDocConfig);
           $this->GenDataGen->SetConfig($this->GenDocConfig);
-          // *** End   ***
           $this->CreateFilePages($line);
         }
       }

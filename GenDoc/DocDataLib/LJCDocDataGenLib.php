@@ -207,8 +207,7 @@
 
       // Write XML data.
       $writeDocDataXML = $this->GenDocConfig->WriteDocDataXML;
-      if ("LJCDocDataGenLib" == $this->LibName
-        || "GenCodeDocLib" == $this->LibName)
+      if ("LJCHTMLTableLib" == $this->LibName)
       {
         $writeDocDataXML = true;
       }
