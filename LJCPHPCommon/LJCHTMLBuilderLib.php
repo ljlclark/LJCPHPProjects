@@ -521,7 +521,7 @@
       }
       if (LJCCommon::HasValue($className))
       {
-        $this->retAttribs->Add("class", $className);
+        $retAttribs->Add("class", $className);
       }
       return $retAttribs;
     }
@@ -770,8 +770,6 @@
       $retValue = $this->RetrieveItem($key);
       return $retValue;
     }
-
-    //public array $Items;
   }
 
   // ********************

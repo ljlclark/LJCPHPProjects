@@ -42,6 +42,47 @@
     // ---------------
     // Public Methods
 
+    // Create the items in group order.
+    public function OrderGroupItems(LJCItems $items, $groups)
+    {
+      $retItems = $items->Clone();
+
+      $items = $items->Clone();
+      $groups = $this->CurrentSection->Groups;
+      if (LJCCommon::HasElements($groups))
+      {
+        $orderedItems = new LJCItems();
+
+        // Add grouped items.
+        $groupCount = count($groups);
+        for ($groupIndex = 0; $groupIndex < $groupCount; $groupIndex++)
+        {
+          $group = $groups[$groupIndex];
+          do
+          {
+            // Find by item->MemberGroup.
+            $item = LJCItems::FindGroupItem($items, $group);
+            if ($item != null)
+            {
+              $orderedItems->Add($item);
+              $items->Remove($item->Name);
+            }
+          } while ($item != null);
+        }
+
+        // Add remaining ungrouped items.
+        while ($items->Count() > 0)
+        {
+          $item = $items->Item(0);
+          $orderedItems->Add($item);
+          $count = strval($items->Count());
+          $items->Remove($item->Name);
+        }
+        $retItems = $orderedItems->Clone();
+      }
+      return $retItems;
+    } // OrderGroupItems
+
     // Processes the Template and Data to produce the output file.
     /// <include path='items/ProcessTemplate/*' file='Doc/LJCGenText.xml'/>
     public function ProcessTemplate(string $templateFileSpec
@@ -66,6 +107,8 @@
           continue;
         }
 
+        // Adds or removes an Active Section.
+        // Sets $this->CurrentSection.
         // The Line is set to null if it is a Directive.
         $directive = $this->ManageSections(0, 0);
         if (null == $this->Line)
@@ -169,7 +212,6 @@
             $this->Line = null;
             break;
         }
-
       } // if ($retValue != null)
 
       $this->Debug->EndMethod($enabled);
@@ -297,15 +339,20 @@
 
       $builder = new LJCStringBuilder();
 
+      $items = $this->CurrentSection->RepeatItems;
+      // *** Begin *** Add
+      $groups = $this->CurrentSection->Groups;
+      $orderedItems = $this->OrderGroupItems($items, $groups);
+      $prevMemberGroup = "";
+      // *** End   *** Add
+
       // Process Items
       $getLine = false;
       $prevLineBegin =  0;
-      $items = $this->CurrentSection->RepeatItems;
-      $itemCount = count($items);
-
+      $itemCount = count($orderedItems);
       for ($itemIndex = 0; $itemIndex < $itemCount; $itemIndex++)
       {
-        $item = $items[$itemIndex];
+        $item = $orderedItems->Item($itemIndex);
         $this->CurrentSection->CurrentItem = $item;
 
         $this->IfOperation = null;
@@ -344,12 +391,27 @@
           }
           $getLine = true;
 
-          if ($this->DoOutput && $this->Line != null)
+          if ($this->DoOutput
+            && $this->Line != null)
           {
             if (LJCCommon::StrPos($this->Line, "_") >= 0)
             {
               $this->ProcessReplacements($item);
             }
+
+            // *** Begin ***
+            // Write group heading.
+            $name = $this->CurrentSection->Name;
+            if (($name == "Class"
+              || $name == "Function")
+              && $item->MemberGroup != $prevMemberGroup)
+            {
+              $text = $this->GroupHeading($item->MemberGroup);
+              $builder->Text($text);
+            }
+            $prevMemberGroup = $item->MemberGroup;
+            // *** End   ***
+
             $builder->Text($this->Line);
           }
         }  // while(true)
@@ -397,6 +459,24 @@
       $this->Debug->EndMethod($enabled);
       return $retValue;
     }  // GetReplacement()
+
+    // Creates the Group heading.
+    private function GroupHeading(string $heading)
+    {
+      $retHeading = "";
+
+      $textState = new LJCTextState();
+      $textState->IndentCount = 3;
+      $hb = new LJCHTMLBuilder($textState);
+      $hb->End("table", $textState);
+      $attribs = $hb->Attribs("Title2");
+      $hb->Create("div", $heading, $textState, $attribs);
+      $attribs = $hb->Attribs("ListTable");
+      $hb->Begin("table", $textState, $attribs);
+      $hb->AddLine();
+      $retHeading = $hb->ToString();
+      return $retHeading;
+    }
 
     // Resets the Stream position to the beginning of the Section.
     private function ResetPosition(LJCDirective $directive, int $itemIndex) : bool

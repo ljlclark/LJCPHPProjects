@@ -7,6 +7,7 @@
   include_once "$prefix/LJCPHPCommon/LJCDebugLib.php";
   require_once "$prefix/LJCPHPCommon/LJCTextLib.php";
   require_once "$prefix/LJCPHPCommon/LJCTextFileLib.php";
+  require_once "$prefix/LJCPHPCommon/LJCHTMLBuilderLib.php";
   require_once "$prefix/LJCPHPCommon/LJCDBAccessLib.php";
   // LJCTextLib: LJCWriter
   // LJCDbAccessLib: LJCDbColumn, LJCDbColumns
@@ -18,7 +19,7 @@
   /// LibName: LJCGenTextSectionLib
   // LJCDirective
   // LJCSection, LJCSections
-  // LJCItem
+  // LJCItem, LJCItems
   // LJCReplacement, LJCReplacements
 
   // ***************
@@ -257,7 +258,7 @@
 
     /// <summary>The compare value.</summary>
     public string $Value;
-  }
+  } // LJCDirective
 
   // ***************
   // Represents a template Section.
@@ -310,7 +311,7 @@
 
     /// <summary>The Section name.</summary>
     public string $Name;
-  }
+  } // LJCSection
 
   // ***************
   // Represents a collection of Section objects.
@@ -321,7 +322,6 @@
   /// <include path='items/LJCSections/*' file='Doc/LJCSections.xml'/>
   class LJCSections implements IteratorAggregate, \Countable
   {
-
     // ------------------------
     // Static Functions - LJCSections
 
@@ -375,7 +375,7 @@
       , string $value) : void
     {
       $replacement = new LJCReplacement($name, $value);
-      $item->Replacements->Add($replacement);
+      $item->Replacements->Add($replacement, $replacement->Name);
     }
 
     // Deserializes the data from a Sections XML file.
@@ -438,7 +438,7 @@
             $xmlItems = $xmlSection->Items->children();
             foreach ($xmlItems as $xmlItem)
             {
-              $name = (string)$xmlItem->Name;
+              $name = trim((string)$xmlItem->Name);
               $item = new LJCItem($name);
 
               $xmlReplacements = $xmlItem->Replacements->children();
@@ -452,7 +452,7 @@
                   $item->Replacements->Add($replacement, $name);
                 }
               }
-              $section->RepeatItems->Add($item);
+              $section->RepeatItems->Add($item, $item->Name);
             }
             $sections->Add($section, $section->Name);
           }
@@ -466,51 +466,58 @@
     // Serializes the data to an XML file.
     /// <include path='items/Serialize/*' file='Doc/LJCSections.xml'/>
     public static function Serialize(string $xmlFile, LJCSections $sections
-      , string $rootName) : void
+      , string $rootName): void
     {
-      $debug = new LJCDebug("LJCGenTextSectionLib", "LJCSections"
-       , "w", false);
-      $enabled = false;
-      $debug->BeginMethod("Serialize", $enabled);
+      $textState = new LJCTextState();
 
-      $writer = new LJCFileWriter($xmlFile, "w");
-      $writer->FWriteLine("<?xml version=\"1.0\"?>");
-      $writer->FWriteLine("<".$rootName.">");
+      $hb = new LJCHTMLBuilder($textState);
+      $hb->AddLine("<?xml version=\"1.0\"?>");
+      $hb->Begin($rootName, $textState);
 
-      $writer->FWriteLine("<Sections>", 1);
+      $hb->Begin("Sections", $textState);
       foreach ($sections as $section)
       {
-        $writer->FWriteLine("<Section>", 2);
-        $writer->FWriteLine("<Begin>".$section->Begin."</Begin>", 3);
-        $writer->FWriteLine("<Name>".$section->Name."</Name>", 3);
-  
-        $writer->FWriteLine("<Items>", 3);	
-        foreach ($section->Items as $item)
-        {
-          $writer->FWriteLine("<Item>", 4);
-          $writer->FWriteLine("<Name>".$item->Name."</Name>", 5);
+        $hb->Begin("Section", $textState);
+        $hb->Create("Begin", strval($section->Begin), $textState);
+        $hb->Create("Name", $section->Name, $textState);
 
-          $writer->FWriteLine("<Replacements>", 5);
+        if ($section->Groups != null)
+        {
+          $hb->Begin("Groups", $textState);
+          foreach ($section->Groups as $group)
+          {
+            $hb->Create("Group", $group, $textState);
+          }
+          $hb->End("Groups", $textState);
+        }
+
+        $hb->Begin("Items", $textState);	
+        foreach ($section->RepeatItems as $item)
+        {
+          $hb->Begin("Item", $textState);
+          $hb->Create("Name", $item->Name, $textState);
+          $hb->Create("MemberGroup", $item->MemberGroup, $textState);
+
+          $hb->Begin("Replacements", $textState);
           $replacements = $item->Replacements;
           foreach ($replacements as $replacement)
           {
-            $writer->FWriteLine("<Replacement>", 6);
-            $writer->FWriteLine("<Name>".$replacement->Name."</Name>", 7);
-            $writer->FWriteLine("<Value>".$replacement->Value."</Value>", 7);
-            $writer->FWriteLine("</Replacement>", 6);
+            $hb->Begin("Replacement", $textState);
+            $hb->Create("Name", $replacement->Name, $textState);
+            $hb->Create("Value", $replacement->Value, $textState);
+            $hb->End("Replacement", $textState);
           }
-          $writer->FWriteLine("</Replacements>", 5);
-          $writer->FWriteLine("</Item>", 4);
+          $hb->End("Replacements", $textState);
+          $hb->End("Item", $textState);
         }
-        $writer->FWriteLine("</Items>", 3);
-        $writer->FWriteLine("</Section>", 2);
+        $hb->End("Items", $textState);
+        $hb->End("Section", $textState);
       }
+      $hb->End("Sections", $textState);
 
-      $writer->FWriteLine("</Sections>", 1);
-      $writer->FWriteLine("</".$rootName.">");
-      $writer->FClose();
-
-      $debug->EndMethod($enabled);
+      $hb->End($rootName, $textState);
+      $xml = $hb->ToString();
+      LJCFileWriter::WriteFile($xml, $xmlFile);
     }
 
     // ---------------
@@ -538,7 +545,7 @@
 
       foreach ($this->Items as $key => $item)
       {
-        $retValue->Add($item);
+        $retValue->Add($item, $item->Name);
       }
       unset($item);
 
@@ -566,6 +573,20 @@
     {
       return isset($this->Items[$key]);
     }
+
+    /// <summary>Get item by index.</summary>
+    public function Item($index)
+    {
+      $retItem = null;
+
+      $keys = self::GetKeys();
+      if (count($keys) > $index)
+      {
+        $key = $keys[$index];
+        $retItem = $this->Items[$key];
+      }
+      return $retItem;
+    } // Item()
 
     // ----------------------
     // Data Methods - LJCSections
@@ -694,7 +715,7 @@
     } // Clone()
 
     // ------------------
-    // *** Properties *** LJCItem
+    // Properties - LJCItem
 
     /// <summary>The Item name.</summary>
     public string $Name;
@@ -741,7 +762,7 @@
 
       foreach ($this->Items as $key => $item)
       {
-        $retValue->Add($item);
+        $retValue->Add($item, $item->Name);
       }
       unset($item);
 
@@ -828,13 +849,16 @@
 
     /// <summary>Remove the item by Key value.</summary>
     /// <param name="$key">The element key.</param>
-    public function Remove($key) : void
+    public function Remove($key, bool $showError = true) : void
     {
       $this->Debug->WriteStartText("Remove");
 
       if (false == $this->HasKey($key))
       {
-        throw new Exception("Key: {$key} was not found.");
+        if ($showError)
+        {
+          throw new Exception("Key: {$key} was not found.");
+        }
       }
       unset($this->Items[$key]);
 
@@ -843,7 +867,7 @@
 
     // Get the item by Key value.
     // <include path='items/Get/*' file='Doc/LJCItems.xml'/>
-    public function Retrieve($key, bool $showError = true) : ?LJCSection
+    public function Retrieve($key, bool $showError = true) : ?LJCItem
     {
       $this->Debug->WriteStartText("Retrieve");
       $retValue = null;
@@ -889,7 +913,7 @@
 
     // The elements array.
     private $Items = [];
-  }
+  } // LJCItems
 
   // ***************
   // Represents Item Replacements.
@@ -925,7 +949,7 @@
     }
 
     // ------------------
-    // *** Properties ***
+    // Properties - LJCReplacement
 
     /// <summary>The Replacement name.</summary>
     public string $Name;
@@ -935,7 +959,7 @@
 
     /// <summary>The XML Root Name value.</summary>
     public string $RootName = "Replacements";
-  }
+  } // LJCReplacement
 
   // ***************
   // Represents a collection of Replacement objects.
@@ -967,7 +991,7 @@
 
       foreach ($this->Items as $key => $item)
       {
-        $retValue->Add($item);
+        $retValue->Add($item, $item->Name);
       }
       unset($item);
 
@@ -1070,5 +1094,5 @@
 
     // The elements array.
     private $Items = [];
-  }
+  } // LJCReplacements
 ?>
