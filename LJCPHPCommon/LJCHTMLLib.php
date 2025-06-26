@@ -187,7 +187,7 @@
     {
       $hb = new LJCHTMLBuilder($textState);
 
-      $hb->Create("title", $title, $textState, childIndent: false);
+      $hb->Create("title", $textState, $title, childIndent: false);
       $createText = self::GetMetas($author, $textState, $description);
       $hb->Text($createText, false);
 

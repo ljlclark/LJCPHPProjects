@@ -315,15 +315,24 @@
 
   // ***************
   // Represents a collection of Section objects.
-  // Static: CreateColumnData(), CreateSections(), AddReplacement()
+  // Static: AddReplacement(), CreateColumnData(), CreateSections() AddReplacement()
   // Collection Static: Deserialize(), DeserializeString(), Serialize()
-  // Collection: Clone(), GetKeys(), GetValues(), HasKey()
-  // Data: Add(), Retrieve(), Remove()
+  // Collection: GetKeys(), GetValues(), HasKey(), Item()
+  // Data: Add(), Clone(), Retrieve(), Remove()
   /// <include path='items/LJCSections/*' file='Doc/LJCSections.xml'/>
   class LJCSections implements IteratorAggregate, \Countable
   {
-    // ------------------------
-    // Static Functions - LJCSections
+    // ---------------
+    // Static Methods - LJCSections
+
+    // Adds a Replacement to an Item.
+    /// <include path='items/AddReplacement/*' file='Doc/LJCSections.xml'/>
+    public static function AddReplacement(LJCItem &$item, string $name
+      , string $value) : void
+    {
+      $replacement = new LJCReplacement($name, $value);
+      $item->Replacements->Add($replacement, $replacement->Name);
+    }
 
     // Creates "Class" and "Properties" sections data from the table definition.
     /// <include path='items/CreateColumnData/*' file='Doc/LJCSections.xml'/>
@@ -369,14 +378,88 @@
       return $sections;
     } // CreateColumnData()
 
-    // Adds a Replacement to an Item.
-    /// <include path='items/AddReplacement/*' file='Doc/LJCSections.xml'/>
-    public static function AddReplacement(LJCItem &$item, string $name
-      , string $value) : void
+    // Creates the Section data from an XMLDoc node.
+    /// <include path='items/CreateSections/*' file='Doc/LJCSections.xml'/>
+    public static function CreateSections(SimpleXMLElement $xmlElement)
+      : LJCSections
     {
-      $replacement = new LJCReplacement($name, $value);
-      $item->Replacements->Add($replacement, $replacement->Name);
+      $debug = new LJCDebug("LJCGenTextSectionLib", "LJCSections"
+       , "w", false);
+      $enabled = false;
+      $debug->BeginMethod("CreateSections", $enabled);
+
+      $sections = new LJCSections();
+      if ($xmlElement)
+      {
+        $xmlSections = $xmlElement->Sections->children();
+        if ($xmlSections != null)
+        {
+          foreach ($xmlSections as $xmlSection)
+          {
+            $sectionName = trim((string)$xmlSection->Name);
+            $section = new LJCSection($sectionName);
+            $section->Begin = (int)$xmlSection->Begin;
+
+            // *** Begin ***
+            $xmlGroupsNode = $xmlSection->Groups;
+            if (self::ElementHasChildren($xmlGroupsNode))
+            {
+              $xmlGroups = $xmlGroupsNode->children();
+              foreach ($xmlGroups as $xmlGroup)
+              {
+                $section->Groups[] = (string)$xmlGroup;
+              }
+            }
+            // *** End   ***
+
+            $xmlItems = $xmlSection->Items->children();
+            foreach ($xmlItems as $xmlItem)
+            {
+              $name = trim((string)$xmlItem->Name);
+              $item = new LJCItem($name);
+              // *** Add ***
+              $item->MemberGroup = (string)$xmlItem->MemberGroup;
+
+              $xmlReplacements = $xmlItem->Replacements->children();
+              if ($xmlReplacements != null)
+              {
+                foreach ($xmlReplacements as $xmlReplacement)
+                {
+                  $name = (string)$xmlReplacement->Name;
+                  $value = (string)$xmlReplacement->Value;
+                  $replacement = new LJCReplacement($name, $value);
+                  $item->Replacements->Add($replacement, $name);
+                }
+              }
+              $section->RepeatItems->Add($item, $item->Name);
+            }
+            $sections->Add($section, $section->Name);
+          }
+        }
+      }
+
+      $debug->EndMethod($enabled);
+      return $sections;	
     }
+
+    public static function ElementHasChildren(SimpleXMLElement $element)
+    {
+      $retValue = false;
+
+      if ($element != null)
+      {
+        $children = $element->children();
+        if ($children != null)
+        {
+          $retValue = true;
+        }
+      }
+      return $retValue;
+    }
+
+
+    // ---------------
+    // Collection Static Methods - LJCSections
 
     // Deserializes the data from a Sections XML file.
     /// <include path='items/Deserialize/*' file='Doc/LJCSections.xml'/>
@@ -413,56 +496,6 @@
       return $retValue;
     } // DeserializeString()
 
-    // Creates the Section data from an XMLDoc node.
-    /// <include path='items/CreateSections/*' file='Doc/LJCSections.xml'/>
-    public static function CreateSections(SimpleXMLElement $xmlElement)
-      : LJCSections
-    {
-      $debug = new LJCDebug("LJCGenTextSectionLib", "LJCSections"
-       , "w", false);
-      $enabled = false;
-      $debug->BeginMethod("CreateSections", $enabled);
-
-      $sections = new LJCSections();
-      if ($xmlElement)
-      {
-        $xmlSections = $xmlElement->Sections->children();
-        if ($xmlSections != null)
-        {
-          foreach ($xmlSections as $xmlSection)
-          {
-            $sectionName = trim((string)$xmlSection->Name);
-            $section = new LJCSection($sectionName);
-            $section->Begin = (int)$xmlSection->Begin;
-
-            $xmlItems = $xmlSection->Items->children();
-            foreach ($xmlItems as $xmlItem)
-            {
-              $name = trim((string)$xmlItem->Name);
-              $item = new LJCItem($name);
-
-              $xmlReplacements = $xmlItem->Replacements->children();
-              if ($xmlReplacements != null)
-              {
-                foreach ($xmlReplacements as $xmlReplacement)
-                {
-                  $name = (string)$xmlReplacement->Name;
-                  $value = (string)$xmlReplacement->Value;
-                  $replacement = new LJCReplacement($name, $value);
-                  $item->Replacements->Add($replacement, $name);
-                }
-              }
-              $section->RepeatItems->Add($item, $item->Name);
-            }
-            $sections->Add($section, $section->Name);
-          }
-        }
-      }
-
-      $debug->EndMethod($enabled);
-      return $sections;	
-    }
-
     // Serializes the data to an XML file.
     /// <include path='items/Serialize/*' file='Doc/LJCSections.xml'/>
     public static function Serialize(string $xmlFile, LJCSections $sections
@@ -478,15 +511,15 @@
       foreach ($sections as $section)
       {
         $hb->Begin("Section", $textState);
-        $hb->Create("Begin", strval($section->Begin), $textState);
-        $hb->Create("Name", $section->Name, $textState);
+        $hb->Create("Begin", $textState, strval($section->Begin));
+        $hb->Create("Name", $textState, $section->Name);
 
         if ($section->Groups != null)
         {
           $hb->Begin("Groups", $textState);
           foreach ($section->Groups as $group)
           {
-            $hb->Create("Group", $group, $textState);
+            $hb->Create("Group", $textState, $group);
           }
           $hb->End("Groups", $textState);
         }
@@ -495,16 +528,16 @@
         foreach ($section->RepeatItems as $item)
         {
           $hb->Begin("Item", $textState);
-          $hb->Create("Name", $item->Name, $textState);
-          $hb->Create("MemberGroup", $item->MemberGroup, $textState);
+          $hb->Create("Name", $textState, $item->Name);
+          $hb->Create("MemberGroup", $textState, $item->MemberGroup);
 
           $hb->Begin("Replacements", $textState);
           $replacements = $item->Replacements;
           foreach ($replacements as $replacement)
           {
             $hb->Begin("Replacement", $textState);
-            $hb->Create("Name", $replacement->Name, $textState);
-            $hb->Create("Value", $replacement->Value, $textState);
+            $hb->Create("Name", $textState, $replacement->Name);
+            $hb->Create("Value", $textState, $replacement->Value);
             $hb->End("Replacement", $textState);
           }
           $hb->End("Replacements", $textState);
@@ -532,26 +565,8 @@
       $this->Debug->IncludePrivate = true;
     }
 
-    // ----------------------
+    // ---------------
     // Collection Methods - LJCSections
-
-    /// <summary>Creates an object clone.</summary>
-    /// <returns>The cloned object.</returns>
-    public function Clone() : self
-    {
-      $enabled = false;
-      $this->Debug->BeginMethod("Clone", $enabled);
-      $retValue = new self();
-
-      foreach ($this->Items as $key => $item)
-      {
-        $retValue->Add($item, $item->Name);
-      }
-      unset($item);
-
-      $this->Debug->EndMethod($enabled);
-      return $retValue;
-    }
 
     /// <summary>Gets an indexed array of keys.</summary>
     /// <returns>The indexed keys array.</returns>
@@ -588,7 +603,7 @@
       return $retItem;
     } // Item()
 
-    // ----------------------
+    // ---------------
     // Data Methods - LJCSections
 
     // Adds an object and key value.
@@ -611,6 +626,24 @@
       }
 
       $this->Debug->AddIndent(-1);
+    }
+
+    /// <summary>Creates an object clone.</summary>
+    /// <returns>The cloned object.</returns>
+    public function Clone() : self
+    {
+      $enabled = false;
+      $this->Debug->BeginMethod("Clone", $enabled);
+      $retValue = new self();
+
+      foreach ($this->Items as $key => $item)
+      {
+        $retValue->Add($item, $item->Name);
+      }
+      unset($item);
+
+      $this->Debug->EndMethod($enabled);
+      return $retValue;
     }
 
     /// <summary>Remove the item by Key value.</summary>
@@ -653,7 +686,7 @@
       return $retValue;
     }
 
-    // ----------------------
+    // ---------------
     // IteratorAggregate Interface Methods - LJCSection
 
     /// <summary>Allows foreach()</summary>
@@ -662,7 +695,7 @@
       return new ArrayIterator($this->Items);
     }
 
-    // ----------------------
+    // ---------------
     // Countable Interface Methods - LJCSection
 
     /// <summary>Allows Count(object).</summary>
@@ -671,7 +704,7 @@
       return count($this->Items);
     }
 
-    // ------------------
+    // ---------------
     // Class Data - LJCSection
 
     // The elements array.

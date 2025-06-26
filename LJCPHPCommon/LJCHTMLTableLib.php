@@ -54,9 +54,13 @@
         $hb = new LJCHTMLBuilder($textState);
         $attribs = $hb->TableAttribs();
         $hb->Begin("table", $textState, $attribs);
+        // *** Add ***
+        $textState = $hb->GetTextState();
         $text = self::ArrayArrayHeadings($dataItems, $propertyNames
          , $textState);
         $hb->Text($text, false);
+        // *** Add ***
+        $textState = $hb->GetTextState();
         $text = self::ArrayArrayRows($dataItems, $propertyNames, $textState
           , $maxRows);
         $hb->Text($text, false);
@@ -123,9 +127,13 @@
         $hb = new LJCHTMLBuilder($textState);
         $attribs = $hb->TableAttribs();
         $hb->Begin("table", $textState, $attribs);
+        // *** Add ***
+        $textState = $hb->GetTextState();
         $text = self::CollectionHeadings($dataItems, $propertyNames
          , $textState);
         $hb->Text($text, false);
+        // *** Add ***
+        $textState = $hb->GetTextState();
         $text = self::CollectionRows($dataItems, $propertyNames, $textState
           , $maxRows);
         $hb->Text($text, false);
@@ -160,7 +168,7 @@
             {
               // Using variable name for object property.
               $value = $dataItem->$propertyName;
-              $hb->Create("td", $value, $textState);
+              $hb->Create("td", $textState, $value);
             }
           }
           $hb->End("tr", $textState);
@@ -204,9 +212,13 @@
         $hb = new LJCHTMLBuilder($textState);
         $attribs = $hb->TableAttribs();
         $hb->Begin("table", $textState, $attribs);
+        // *** Add ***
+        $textState = $hb->GetTextState();
         $text = self::ObjectArrayHeadings($dataItems, $propertyNames
          , $textState);
         $hb->Text($text, false);
+        // *** Add ***
+        $textState = $hb->GetTextState();
         $text = self::ObjectArrayRows($dataItems, $propertyNames, $textState
           , $maxRows);
         $hb->Text($text, false);
@@ -273,8 +285,12 @@
 
         $attribs = $hb->TableAttribs();
         $hb->Begin("table", $textState, $attribs);
+        // *** Add ***
+        $textState = $hb->GetTextState();
         $text = self::ResultHeadings($rows, $textState, $propertyNames);
         $hb->Text($text, false);
+        // *** Add ***
+        $textState = $hb->GetTextState();
         $text = self::ResultRows($rows, $textState, $propertyNames
           , $maxRows);
         $hb->Text($text, false);
@@ -322,12 +338,18 @@
       if (LJCCommon::HasElements($dataItem))
       {
         $hb = new LJCHTMLBuilder($textState);
+        // *****
+        $indentCount = strval($textState->IndentCount);
+        echo("\r\n".__line__." textState->IndentCount = {$indentCount}");
+        $indentLength = strval($hb->IndentLength());
+        echo("\r\n".__line__." hb->IndentLength = {$indentLength}");
+        // *****
         $hb->Begin("tr", $textState);
         foreach ($propertyNames as $propertyName)
         {
           if (array_key_exists($propertyName, $dataItem))
           {
-            $hb->Create("th", $propertyName, $textState);
+            $hb->Create("th", $textState, $propertyName);
           }
         }
         $hb->End("tr", $textState);
@@ -351,7 +373,7 @@
           if (array_key_exists($propertyName, $dataItem))
           {
             $value = $dataItem[$propertyName];
-            $hb->Create("td", strval($value), $textState);
+            $hb->Create("td", $textState, strval($value));
           }
         }
         $hb->End("tr", $textState);
@@ -388,7 +410,7 @@
         {
           if (property_exists($dataItem, $propertyName))
           {
-            $hb->Create("th", $propertyName, $textState);
+            $hb->Create("th", $textState, $propertyName);
           }
         }
         $hb->End("tr", $textState);
@@ -411,7 +433,7 @@
           {
             // Using variable name for object property.
             $value = $dataItem->$propertyName;
-            $hb->Create("td", strval($value), $textState);
+            $hb->Create("td", $textState, strval($value));
           }
         }
         $hb->End("tr", $textState);

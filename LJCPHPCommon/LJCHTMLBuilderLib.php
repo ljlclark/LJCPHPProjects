@@ -125,6 +125,14 @@
       return $retValue;
     }
 
+    // Gets the current LJCTextState object.
+    public function GetTextState()
+    {
+      $indentCount = $this->IndentCount;
+      $retState = new LJCTextState($indentCount);
+      return $retState;
+    }
+
     /// <summary>Indicates if the builder has text.</summary>
     /// <returns>true if builder has text; otherwise false.</returns>
     public function HasText() : bool
@@ -136,6 +144,12 @@
         $retValue = true;
       }
       return $retValue;
+    }
+
+    // Gets the current indent length.
+    public function IndentLength() : int
+    {
+      return $this->IndentCount * $this->IndentCharCount;
     }
 
     // ----------
@@ -387,8 +401,8 @@
 
     // Appends an element.
     /// <include path='items/Create/*' file='Doc/LJCHTMLBuilder.xml'/>
-    public function Create(string $name, string $text, LJCTextState $textState
-      , LJCAttributes $attribs = null, bool $addIndent = true
+    public function Create(string $name, LJCTextState $textState
+      , string $text = "", LJCAttributes $attribs = null, bool $addIndent = true
       , bool $childIndent = true, bool $isEmpty = false, bool $close = true)
       : string
     {
@@ -602,12 +616,6 @@
         $retText = " {$retText}";
       }
       return $retText;
-    }
-
-    // Gets the current indent length.
-    private function IndentLength() : int
-    {
-      return $this->IndentCount * $this->IndentCharCount;
     }
 
     // Gets the text length if not null.

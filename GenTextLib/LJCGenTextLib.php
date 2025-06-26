@@ -470,7 +470,7 @@
       $hb = new LJCHTMLBuilder($textState);
       $hb->End("table", $textState);
       $attribs = $hb->Attribs("Title2");
-      $hb->Create("div", $heading, $textState, $attribs);
+      $hb->Create("div", $textState, $heading, $attribs);
       $attribs = $hb->Attribs("ListTable");
       $hb->Begin("table", $textState, $attribs);
       $hb->AddLine();
