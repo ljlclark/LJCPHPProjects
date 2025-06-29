@@ -45,7 +45,7 @@
 	</LJCGenDataGen>
 	
 	<!-- Public -->
-	<CreateLibXMLString>
+  <SerializeLib>
 		<summary>Creates a Lib GenData XML string and optional file.</summary>
 		<param name="$docXMLString">The DocData XML string.</param>
 		<param name="$codeFileSpec">The code file specification.</param>
@@ -65,104 +65,107 @@
       $genXMLString = $this->GenDataGen->CreateLibXMLString($docXMLString
         , $fileSpec);
     </code>
-	</CreateLibXMLString>
+	</SerializeLib>
 	<!-- Private -->
-	<CreateLibClassString>
+  <OutputLibSpec>
+    <summary>Creates a Lib DocData XML output file spec.</summary>
+    <param name="$codeFileSpec">The code file specification.</param>
+    <param name="$outputPath">The output path.</param>
+  </OutputLibSpec>
+  <SerializeLibXML>
+    <summary>Creates a Lib GenData XML string.</summary>
+    <param name="$docFileNode">The DocData XML main node.</param>
+    <param name="$fileName"></param>
+  </SerializeLibXML>
+  <SerializeLibClass>
 		<summary>Creates a Lib Class section GenData XML string.</summary>
 		<param name="$docFileNode">The DocData XML main node.</param>
-	</CreateLibClassString>
-	<CreateLibString>
-		<summary>Creates a Lib GenData XML string.</summary>
-		<param name="$docFileNode">The DocData XML main node.</param>
-		<param name="$fileName"></param>
-	</CreateLibString>
-	<OutputLibSpec>
-		<summary>Creates a Lib DocData XML output file spec.</summary>
-		<param name="$codeFileSpec">The code file specification.</param>
-		<param name="$outputPath">The output path.</param>
-	</OutputLibSpec>
+	</SerializeLibClass>
 
 	<!-- Class Methods -->
 	<!-- Private -->
-	<CreateClassMethodString>
-		<summary>Creates a Class Methods section GenData XML string.</summary>
-		<param name="$class">The Class object.</param>
-	</CreateClassMethodString>
-	<CreateClassString>
+  <OutputClassSpec>
+    <summary>Creates a Class GenData XML output file spec.</summary>
+    <param name="$class">The Class object.</param>
+    <param name="$outputPath">The output path.</param>
+  </OutputClassSpec>
+  <SerializeClass>
+    <summary>Creates a Class GenData XML string and optional file.</summary>
+    <param name="$class">The Class object.</param>
+    <param name="$libName"></param>
+    <param name="$writeXML">Indicates if the XML file is to be written.</param>
+    <param name="$outputPath">The output path.</param>
+  </SerializeClass>
+  <SerializeClasses>
+    <summary>Creates the Class GenData XML strings and optionally files.</summary>
+    <param name="$docFileNode">The DocData XML main node.</param>
+    <param name="$writeXML">Indicates if the XML file is to be written.</param>
+    <param name="$outputPath">The output path.</param>
+  </SerializeClasses>
+  <SerializeClassMethod>
+    <summary>Creates a Class Methods section GenData XML string.</summary>
+    <param name="$class">The Class object.</param>
+  </SerializeClassMethod>
+  <SerializeClassXML>
 		<summary>Creates a Class GenData XML string.</summary>
 		<param name="$class">The Class object.</param>
 		<param name="$fileName"></param>
-	</CreateClassString>
-	<CreateClassesXML>
-		<summary>Creates the Class GenData XML strings and optionally files.</summary>
-		<param name="$docFileNode">The DocData XML main node.</param>
-		<param name="$writeXML">Indicates if the XML file is to be written.</param>
-		<param name="$outputPath">The output path.</param>
-	</CreateClassesXML>
-	<CreateClassXML>
-		<summary>Creates a Class GenData XML string and optional file.</summary>
-		<param name="$class">The Class object.</param>
-		<param name="$libName"></param>
-		<param name="$writeXML">Indicates if the XML file is to be written.</param>
-		<param name="$outputPath">The output path.</param>
-	</CreateClassXML>
-	<OutputClassSpec>
-		<summary>Creates a Class GenData XML output file spec.</summary>
-		<param name="$class">The Class object.</param>
-		<param name="$outputPath">The output path.</param>
-	</OutputClassSpec>
+	</SerializeClassXML>
 
 	<!-- Method Methods -->
 	<!-- Private -->
-	<CreateMethodString>
+  <OutputMethodSpec>
+    <summary>Creates a Method GenData XML output file spec.</summary>
+    <param name="$class">The Class object.</param>
+    <param name="$method">The Method object.</param>
+    <param name="$outputPath">The output path.</param>
+  </OutputMethodSpec>
+  <SerializeMethods>
+    <summary>Creates the Method GenData XML strings and optionally files.</summary>
+    <param name="$method">The Method object.</param>
+    <param name="$writeXML">Indicates if the XML file is to be written.</param>
+    <param name="$outputPath">The output path.</param>
+  </SerializeMethods>
+  <SerializeMethod>
+    <summary>Creates a Method GenData XML string and optional file.</summary>
+    <param name="$class">The Class object.</param>
+    <param name="$method">The Method object.</param>
+    <param name="$writeXML">Indicates if the XML file is to be written.</param>
+    <param name="$outputPath">The output path.</param>
+  </SerializeMethod>
+  <SerializeMethodXML>
 		<summary>Creates a Method GenData XML string.</summary>
 		<param name="$class">The Class object.</param>
 		<param name="$fileName"></param>
-	</CreateMethodString>
-	<CreateMethodsXML>
-		<summary>Creates the Method GenData XML strings and optionally files.</summary>
-		<param name="$method">The Method object.</param>
-		<param name="$writeXML">Indicates if the XML file is to be written.</param>
-		<param name="$outputPath">The output path.</param>
-	</CreateMethodsXML>
-	<CreateMethodXML>
-		<summary>Creates a Method GenData XML string and optional file.</summary>
-		<param name="$class">The Class object.</param>
-		<param name="$method">The Method object.</param>
-		<param name="$writeXML">Indicates if the XML file is to be written.</param>
-		<param name="$outputPath">The output path.</param>
-	</CreateMethodXML>
-	<OutputMethodSpec>
-		<summary>Creates a Method GenData XML output file spec.</summary>
-		<param name="$class">The Class object.</param>
-		<param name="$method">The Method object.</param>
-		<param name="$outputPath">The output path.</param>
-	</OutputMethodSpec>
+	</SerializeMethodXML>
 
 	<!-- Property Methods -->
 	<!-- Private -->
-	<CreatePropertyString>
-		<summary>Creates a Property GenData XML string.</summary>
-		<param name="$class">The Class object.</param>
-		<param name="$fileName"></param>
-	</CreatePropertyString>
-	<CreatePropertiesXML>
-		<summary>Creates the Property GenData XML strings and optionally files.</summary>
-		<param name="$property">The Property object.</param>
-		<param name="$writeXML">Indicates if the XML file is to be written.</param>
-		<param name="$outputPath">The output path.</param>
-	</CreatePropertiesXML>
-	<CreatePropertyXML>
-		<summary>Creates a Property GenData XML string and optional file.</summary>
-		<param name="$class">The Class object.</param>
-		<param name="$property">The property object.</param>
-		<param name="$writeXML">Indicates if the XML file is to be written.</param>
-		<param name="$outputPath">The output path.</param>
-	</CreatePropertyXML>
 	<OutputPropertySpec>
 		<summary>Creates a Property GenData XML output file spec.</summary>
 		<param name="$class">The Class object.</param>
 		<param name="$proerty">The property object.</param>
 		<param name="$outputPath">The output path.</param>
 	</OutputPropertySpec>
+  <SerializeProperties>
+    <summary>Creates the Property GenData XML strings and optionally files.</summary>
+    <param name="$property">The Property object.</param>
+    <param name="$writeXML">Indicates if the XML file is to be written.</param>
+    <param name="$outputPath">The output path.</param>
+  </SerializeProperties>
+  <SerializeProperty>
+    <summary>Creates a Property GenData XML string and optional file.</summary>
+    <param name="$class">The Class object.</param>
+    <param name="$property">The property object.</param>
+    <param name="$writeXML">Indicates if the XML file is to be written.</param>
+    <param name="$outputPath">The output path.</param>
+  </SerializeProperty>
+  <SerializePropertyXML>
+    <summary>Creates a Property GenData XML string.</summary>
+    <param name="$class">The Class object.</param>
+    <param name="$fileName"></param>
+  </SerializePropertyXML>
+
+
+
 </items>

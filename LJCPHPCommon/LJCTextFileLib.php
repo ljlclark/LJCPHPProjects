@@ -92,7 +92,7 @@
       $fileName = $locName . "txt";
       if ($mode = "w")
       {
-        $fileName = LJCCommon::GetDebugFileName("Debug", $locName);
+        $fileName = LJCCommonFile::GetDebugFileName("Debug", $locName);
       }
       $this->DebugWriter = new LJCFileWriter($fileName, $mode);
     } // __construct()
@@ -125,6 +125,6 @@
     } // Debug()
 
     // The DebugWriter value.
-    private ?LJCWriter $DebugWriter;
+    private ?LJCFileWriter $DebugWriter;
   } // LJCDebugWriter
 ?>

@@ -168,7 +168,7 @@
     {
       // Instantiate properties with Pascal case.
       $this->Debug = new LJCDebug("LJCDocDataGenLib", "LJCDocDataGen"
-        , "w", false);
+        , "w", true);
       $this->Debug->IncludePrivate = true;
 
       $this->ClassName = null;
@@ -194,8 +194,8 @@
     /// <include path='items/CreateDocDataXMLString/*' file='Doc/LJCDocDataGen.xml'/>
     public function CreateDocDataXMLString(string $codeFileSpec) : ?string
     {
-      $enabled = false;
-      $this->Debug->BeginMethod("CreateDocDataXMLString", $enabled);
+      $enabled = true;
+      //$this->Debug->BeginMethod("CreateDocDataXMLString", $enabled);
       $retValue = null;
 
       // Populate Library(File) XMLComment values.
@@ -209,6 +209,10 @@
       $writeDocDataXML = $this->GenDocConfig->WriteDocDataXML;
       if ("LJCHTMLTableLib" == $this->LibName)
       {
+        // *****
+        $this->Debug->BeginMethod("CreateDocDataXMLString", $enabled);
+        $this->Debug->Write(" retValue = \r\n{$retValue}");
+        // *****
         $writeDocDataXML = true;
       }
       if ($writeDocDataXML)
@@ -277,6 +281,13 @@
       if ($this->DocDataFile != null)
       {
         $retValue = $this->DocDataFile->SerializeToString(null);
+        // *****
+        if ("LJCHTMLTableLib" == $codeFileSpec)
+        {
+          //echo("\r\n".__line__." LJCDocDataGen.ProcessCode()");
+          //echo(" $retValue = {$retValue}");
+        }
+        // *****
       }
 
       $this->Debug->EndMethod($enabled);
@@ -365,6 +376,14 @@
           if (false == $retProcessed)
           {
             // Sets the line XML Comment values or Include file values.
+            // *****
+            $cmp = trim(strtolower($trimLine));
+            if (str_contains($cmp, "parentgroup"))
+            {
+              //echo("\r\n".__line__." LJCDocDataGen.CreateDocDataString()");
+              //echo(" trimLine = {$trimLine}");
+            }
+            // *****
             $this->Comments->SetComment($line, $codeFileSpec);
             $retProcessed = true;
           }
@@ -384,7 +403,7 @@
       return $retProcessed;
     } // LineProcessed()
 
-    // Process the Class XML data.
+    // Copy the Class XML comments into the DocData objects.
     private function ProcessClass() : void
     {
       $enabled = false;
@@ -400,24 +419,30 @@
       $summary = $this->Comments->Summary;
       $class = new LJCDocDataClass($name, $summary);
       $classes->AddObject($class, $name);
-
       $class->Syntax = trim($this->Line);
-      $class->Remarks = $this->Comments->Remarks;
+
+      // Get Comment values.
       $class->Code = $this->Comments->Code;
+      // *** Begin *** Add
+      foreach ($this->Comments->Groups as $group)
+      {
+        $class->Groups[] = $group;
+      }
+      // *** End   *** Add
+      $class->Remarks = $this->Comments->Remarks;
 
       $this->Comments->ClearComments();
 
       $this->Debug->EndMethod($enabled);
     } // ProcessClass()
 
-    // Process the Function XML data.
+    // Copy the Function XML comments into the DocData objects.
     private function ProcessFunction() : void
     {
       $enabled = false;
       $this->Debug->BeginPrivateMethod("ProcessFunction", $enabled);
 
       $classes = $this->DocDataFile->Classes;
-      //$class = $classes->Get($this->ClassName);
       $class = $classes->Retrieve($this->ClassName);
       $methods = $class->Methods;
       if (null == $methods)
@@ -431,11 +456,22 @@
       $method = new LJCDocDataMethod($name, $summary, $returns);
       $methods->AddObject($method, $name);
 
-      $this->SetFunctionSyntax();
-      $method->Params = $this->Comments->Params;
-      $method->Syntax = $this->Syntax;
-      $method->Remarks = $this->Comments->Remarks;
+      // Get Comment values.
       $method->Code = $this->Comments->Code;
+      // *** Begin ***
+      $method->ParentGroup = $this->Comments->ParentGroup;
+      // *****
+      if ($method->ParentGroup != null)
+      {
+        //echo("\r\n".__line__." LJCDocDataGen.ProcessFunction()");
+        //echo(" ParentGroup = {$method->ParentGroup}");
+      }
+      // *****
+
+      $method->Params = $this->Comments->Params;
+      $method->Remarks = $this->Comments->Remarks;
+      $this->SetFunctionSyntax();
+      $method->Syntax = $this->Syntax;
 
       $this->Comments->ClearComments();
 
@@ -493,7 +529,7 @@
       $this->Debug->EndMethod($enabled);
     } // ProcessItem()
 
-    // Process the Lib XML data.
+    // Copy the Lib XML comments into the DocData objects.
     private function ProcessLib() : void
     {
       $enabled = false;
@@ -508,7 +544,7 @@
       $this->Debug->EndMethod($enabled);
     } // ProcessLib()
 
-    // Process the Property XML data.
+    // Copy the Property XML comments into the DocData objects.
     private function ProcessProperty() : void
     {
       $enabled = false;

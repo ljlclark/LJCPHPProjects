@@ -50,8 +50,12 @@
 
       $this->CurrentTagName = null;
       $this->Code = null;
+      // *** Add ***
+      $this->Groups = [];
       $this->LibName = null;
       $this->Params = null;
+      // *** Add ***
+      $this->ParentGroup = null;
       $this->Remarks = null;
       $this->Returns = null;
       $this->Summary = null;
@@ -104,9 +108,18 @@
       {
         // New comment.
         $this->CurrentTagName = $this->GetBeginTagName($line);
+        // *****
+        if ("parentgroup" == $this->CurrentTagName)
+        {
+          //echo("\r\n".__line__." LJCComments.SetComment()");
+          //echo(" currentTagName = {$this->CurrentTagName}");
+        }
+        // *****
 
-        // Critical to handle multiple params.
-        if($this->CurrentTagName != "param")
+        // *** Change ***
+        // Critical to handle multiple tags.
+        if($this->CurrentTagName != "param"
+          && $this->CurrentTagName != "group")
         {
           $this->ClearComment();
         }
@@ -158,26 +171,44 @@
         switch ($tagName)
         {
           case "code":
+            // Setup for multiple lines.
             $this->Code = "";
             break;
 
+          // *** Add ***
+          case "group":
+            // Setup for multiple lines.
+            $this->Groups = [];
+            break;
+
           case "include":
+            // Setup for single value.
             $this->IncludeXMLPath = null;
             break;
 
           case "param":					
+            // Setup for multiple lines.
             $this->Params = new LJCDocDataParams();
             break;
 
+          // *** Add ***
+          case "parentgroup":
+            // Setup for single value.
+            $this->ParentGroup = null;
+            break;
+
           case "remarks":
+            // Setup for multiple lines.
             $this->Remarks = "";
             break;
 
           case "returns":
+            // Setup for multiple lines.
             $this->Returns = "";
             break;
 
           case "summary":
+            // Setup for multiple lines.
             $this->Summary = "";
             break;
         }
@@ -195,6 +226,14 @@
 
       // Get using $CurrentTagName.
       $beginTag = $this->GetBeginTag();
+      // *****
+      $cmp = trim(strtolower($beginTag));
+      if ("<parentgroup>" == $cmp)
+      {
+        //echo("\r\n".__line__." LJCComments.GetComment()");
+        //echo(" beginTag = {$beginTag}");
+      }
+      // *****
       $endTag = $this->GetEndTag();
 
       $positionBegin = LJCCommon::StrPos($line, $beginTag);
@@ -223,6 +262,7 @@
         $this->CurrentTagName = null;
       }
 
+      // Save param item.
       if ("<param" == $beginTag)
       {
         $isSimpleComment = false;
@@ -243,6 +283,13 @@
         // Get to end of string if endTag is null.
         $retValue = LJCCommon::GetDelimitedString($line, $beginTag, $endTag
           , false, $rTrim);
+        // *****
+        if ("parentgroup" == $beginTag)
+        {
+          echo("\r\n".__line__." LJCComments.GetComment()");
+          echo(" beginTag = {$beginTag}");
+        }
+        // *****
       }
 
       $this->Debug->EndMethod($enabled);
@@ -263,6 +310,16 @@
             $this->Code .= "\r\n";
           }
           $this->Code .= htmlspecialchars($comment);
+          break;
+
+        // *** Add ***
+        case "group":
+          $this->Groups[] = htmlspecialchars($comment);
+          break;
+
+        // *** Add ***
+        case "parentgroup":
+          $this->ParentGroup = htmlspecialchars($comment);
           break;
 
         case "remarks":
@@ -297,9 +354,12 @@
       }
 
       // Get XML Comment tag name.
+      // beginTagName = "group", beginTag = "<group>"
       foreach ($this->BeginTags as $beginTagName => $beginTag)
       {
-        if (LJCCommon::StrPos($line, $beginTag) >= 0)
+        // *** Add ***
+        $checkLine = strtolower($line);
+        if (LJCCommon::StrPos($checkLine, $beginTag) >= 0)
         {
           $retValue = $beginTagName;
           break;
@@ -424,13 +484,23 @@
       $enabled = false;
       $this->Debug->BeginPrivateMethod("SetCommentTags", $enabled);
 
+      // tagName = "code", tag = "<code>"
       $this->BeginTags["code"] = "<code>";
+      // *** Add ***
+      $this->BeginTags["group"] = "<group>";
       $this->BeginTags["include"] = "<include";
+      // *** Add ***
+      $this->BeginTags["parentgroup"] = "<parentgroup>";
       $this->BeginTags["param"] = "<param";
       $this->BeginTags["remarks"] = "<remarks>";
       $this->BeginTags["returns"] = "<returns>";
       $this->BeginTags["summary"] = "<summary>";
+
       $this->EndTags["code"] = "</code>";
+      // *** Begin *** Add
+      $this->EndTags["group"] = "</group>";
+      $this->EndTags["parentgroup"] = "</parentgroup>";
+      // *** End   *** Add
       $this->EndTags["param"] = "</param>";
       $this->EndTags["remarks"] = "</remarks>";
       $this->EndTags["returns"] = "</returns>";
@@ -474,9 +544,15 @@
     /// <summary>The current tag name.</summary>
     public ?string $CurrentTagName;
 
+    // *** Add ***
+    public ?array $Groups;
+
     /// <summary>The Param comments.</summary>
     //public ?array $Params;
     public ?LJCDocDataParams $Params;
+
+    // *** Add ***
+    public ?string $ParentGroup;
 
     /// <summary>The Remark comment.</summary>
     public ?string $Remarks;

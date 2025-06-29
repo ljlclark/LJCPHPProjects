@@ -29,7 +29,7 @@
   // CreateFromList() public
   //   CreateFilePages() public
   //     LJCDocDataGen->CreateDocDataXMLString()
-  //     LJCGenDataGen->CreateLibXMLString()
+  //     LJCGenDataGen->SerializeLib()
 
   // ***************
   // Generates HTML doc for files in GenCodeSourceFileList.txt 
@@ -97,7 +97,7 @@
         $docXMLString = $this->DocDataGen->CreateDocDataXMLString($fileSpec);
         if ($docXMLString != null)
         {
-          $genXMLString = $this->GenDataGen->CreateLibXMLString($docXMLString
+          $genXMLString = $this->GenDataGen->SerializeLib($docXMLString
             , $fileSpec);
         }
       }

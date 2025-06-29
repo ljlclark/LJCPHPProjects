@@ -57,6 +57,7 @@
       $this->Debug->IncludePrivate = true;
 
       $this->Code = null;
+      $this->Groups = [];
       $this->Methods = null;
       $this->Name = $name;
       $this->Properties = null;
@@ -88,6 +89,9 @@
 
     /// <summary>The Code value.</summary>
     public ?string $Code;
+
+    // *** Add ***
+    public ?array $Groups;
 
     /// <summary>The Method array.</summary>
     public ?LJCDocDataMethods $Methods;
@@ -174,7 +178,7 @@
   // ***************
   // Represents a DocData Lib File.
   // Static: Deserialize(), DeserializeString(), GetProperties()
-  // Public: Clone(), Serialize(), SerializeString()
+  // Public: Clone(), Serialize(), SerializeToString()
   /// <include path='items/LJCDocDataFile/*' file='Doc/LJCDocDataFile.xml'/>
   class LJCDocDataFile
   {
@@ -481,9 +485,19 @@
           $builder->Line("<Class>", $indent + 1);
           $builder->Tags("Name", $class->Name, $indent + 2);
           $builder->Tags("Summary", $class->Summary, $indent + 2);
+          // *** Begin *** 6/27/25
+          if (LJCCommon::HasItems($class->Groups))
+          {
+            foreach ($class->Groups as $group)
+            {
+              $builder->Tags("Group", $group, $indent + 2);
+            }
+            // *** End   ***
+          }
+          // *** End   ***
           $builder->Tags("Remarks", $class->Remarks, $indent + 2);
-          $builder->Text($this->CreateMethods($class, $indent + 2));
-          $builder->Text($this->CreateProperties($class, $indent + 2));
+          $builder->Text($this->SerializeMethods($class, $indent + 2));
+          $builder->Text($this->SerializeProperties($class, $indent + 2));
           $builder->Tags("Code", $class->Code, $indent + 2);
           $builder->Line("</Class>", $indent + 1);
         }
@@ -492,18 +506,20 @@
       $builder->Line("</LJCDocDataFile>");
 
       $this->Debug->EndMethod($enabled);
-      return $builder->ToString();
+      // *** Add ***
+      $retValue = $builder->ToString();
+      return $retValue;
     } // SerializeToString()
     
     // ---------------
     // Private Methods - LJCDocDataFile
 
     // Creates the serialized Methods XML.
-    private function CreateMethods(LJCDocDataClass $class, int $indent)
+    private function SerializeMethods(LJCDocDataClass $class, int $indent)
       : ?string
     {
       $enabled = false;
-      $this->Debug->BeginPrivateMethod("CreateMethods", $enabled);
+      $this->Debug->BeginPrivateMethod("SerializeMethods", $enabled);
 
       $builder = new LJCStringBuilder();
       if ($class->Methods != null && count($class->Methods) > 0)
@@ -515,7 +531,16 @@
           $builder->Line("<Method>", $indent + 1);
           $builder->Tags("Name", $method->Name, $indent + 2);
           $builder->Tags("Summary", $method->Summary, $indent + 2);
-          $builder->Text($this->CreateParams($method->Params, $indent + 2));
+          $builder->Text($this->SerializeParams($method->Params, $indent + 2));
+          // *****
+          if ("LJCHTMLTable" == $class->Name)
+          {
+            //echo("\r\n".__line__." LJCDocData.SerializeMethods()");
+            //echo(" ParentGroup = {$method->ParentGroup}");
+          }
+          // *****
+          // *** Add ***
+          $builder->Tags("ParentGroup", $method->ParentGroup, $indent + 2);
           $builder->Tags("Returns", $method->Returns, $indent + 2);
           $builder->Tags("Remarks", $method->Remarks, $indent + 2);
           $builder->Tags("Syntax", $method->Syntax, $indent + 2);
@@ -527,10 +552,10 @@
 
       $this->Debug->EndMethod($enabled);
       return $builder->ToString();
-    } // CreateMethods()
+    } // SerializeMethods()
 
     // Creates the serialized Params XML.
-    private function CreateParams(?LJCDocDataParams $params, int $indent)
+    private function SerializeParams(?LJCDocDataParams $params, int $indent)
       : ?string
     {
       $enabled = false;
@@ -552,10 +577,10 @@
 
       $this->Debug->EndMethod($enabled);
       return $builder->ToString();
-    } // CreateParams()
+    } // SerializeParams()
 
     // Appends the serialized Properties XML.
-    private function CreateProperties(LJCDocDataClass $class, int $indent)
+    private function SerializeProperties(LJCDocDataClass $class, int $indent)
       : ?string
     {
       $enabled = false;
@@ -580,7 +605,7 @@
 
       $this->Debug->EndMethod($enabled);
       return $builder->ToString();
-    } // CreateProperties()
+    } // SerializeProperties()
 
     // ---------------
     // Public Properties - LJCDocDataFile
@@ -624,6 +649,8 @@
 
       $this->Code = null;
       $this->Name = $name;
+      // *** Add ***
+      $this->ParentGroup = null;
       $this->Params = null;
       $this->Remarks = null;
       $this->Returns = $returns;
@@ -660,6 +687,10 @@
 
     /// <summary>The Param array.</summary>
     public ?LJCDocDataParams $Params;
+
+    // *** Add ***
+    // The method group name.
+    public ?string $ParentGroup;
 
     /// <summary>The Remarks value.</summary>
     public ?string $Remarks;

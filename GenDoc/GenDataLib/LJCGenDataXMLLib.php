@@ -39,7 +39,8 @@
 
     // Creates the Item begin string.
     /// <include path='items/ItemBegin/*' file='Doc/LJCGenDataXML.xml'/>
-    public static function ItemBegin(string $name, int $indent) : string
+    public static function ItemBegin(string $name, int $indent
+      , ?string $parentGroup = null) : string
     {
       $debug = new LJCDebug("LJCGenDataXMLLib", "LJCGenDataXML"
        , "w", false);
@@ -51,6 +52,11 @@
       $builder->Line("<Item>", $indent);
       $indent++;
       $builder->Tags("Name", $name, $indent);
+      // *** Begin ***
+      if ($parentGroup != null)
+      {
+        $builder->Tags("ParentGroup", $parentGroup, $indent);
+      }
       $builder->Line("<Replacements>", $indent);
       $retValue = $builder->ToString();
 
