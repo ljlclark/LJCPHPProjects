@@ -15,7 +15,7 @@
   include_once "$prefix/GenDoc/DocDataLib/LJCCommentsLib.php";
   // The used classes:
   // LJCDebugLib:
-  // LJCCommonLib: LJCCommon
+  // LJCCommonLib: LJC
   // LJCCommonFileLib: LJCCommonFile
   // LJCGenDocConfigLib: LJCGenDocConfig
   // LJCTextLib: LJCWriter
@@ -129,14 +129,14 @@
       $debug->BeginMethod("ScrubFunctionName", $enabled);
       $retValue = $functionToken;
 
-      $position = LJCCommon::StrPos($retValue, "construct(");
+      $position = LJC::StrPos($retValue, "construct(");
       if ($position >= 0)
       {
         $length = strlen($retValue) - 2;
         $retValue = substr($retValue, 2, $length);
       }
 
-      $position = LJCCommon::StrPos($retValue, "(");
+      $position = LJC::StrPos($retValue, "(");
       if ($position >= 0)
       {
         $length = strlen($retValue);
@@ -168,7 +168,7 @@
     {
       // Instantiate properties with Pascal case.
       $this->Debug = new LJCDebug("LJCDocDataGenLib", "LJCDocDataGen"
-        , "w", true);
+        , "w", false);
       $this->Debug->IncludePrivate = true;
 
       $this->ClassName = null;
@@ -192,14 +192,14 @@
 
     // Creates and writes the DocData XML.
     /// <include path='items/CreateDocDataXMLString/*' file='Doc/LJCDocDataGen.xml'/>
-    public function CreateDocDataXMLString(string $codeFileSpec) : ?string
+    public function SerializeDocData(string $codeFileSpec) : ?string
     {
-      $enabled = true;
-      //$this->Debug->BeginMethod("CreateDocDataXMLString", $enabled);
+      $enabled = false;
+      $this->Debug->BeginMethod("SerializeDocData", $enabled);
       $retValue = null;
 
       // Populate Library(File) XMLComment values.
-      $this->LibName = LJCCommon::GetFileName($codeFileSpec);
+      $this->LibName = LJC::GetFileName($codeFileSpec);
       $this->Comments->LibName = $this->LibName;
       $this->DocDataFile = new LJCDocDataFile($this->LibName);
 
@@ -207,14 +207,12 @@
 
       // Write XML data.
       $writeDocDataXML = $this->GenDocConfig->WriteDocDataXML;
+      // *** Begin *** Debug Output
       if ("LJCHTMLTableLib" == $this->LibName)
       {
-        // *****
-        $this->Debug->BeginMethod("CreateDocDataXMLString", $enabled);
-        $this->Debug->Write(" retValue = \r\n{$retValue}");
-        // *****
         $writeDocDataXML = true;
       }
+      // *** End   ***
       if ($writeDocDataXML)
       {
         $docDataXMLPath = $this->GenDocConfig->DocDataXMLPath;
@@ -266,7 +264,7 @@
           }
 
           // Check for Class, Function or Property.
-          $tokens = LJCCommon::GetTokens($this->Line);
+          $tokens = LJC::GetTokens($this->Line);
           if (count($tokens) < 2)
           {
             continue;
@@ -281,13 +279,6 @@
       if ($this->DocDataFile != null)
       {
         $retValue = $this->DocDataFile->SerializeToString(null);
-        // *****
-        if ("LJCHTMLTableLib" == $codeFileSpec)
-        {
-          //echo("\r\n".__line__." LJCDocDataGen.ProcessCode()");
-          //echo(" $retValue = {$retValue}");
-        }
-        // *****
       }
 
       $this->Debug->EndMethod($enabled);
@@ -311,7 +302,7 @@
         $outputPath = "../XMLDocData";
       }
       LJCCommonFile::MkDir($outputPath);
-      $fileName = LJCCommon::GetFileName($codeFileSpec) . ".xml";
+      $fileName = LJC::GetFileName($codeFileSpec) . ".xml";
       $retValue = "$outputPath/$fileName";
 
       $this->Debug->EndMethod($enabled);
@@ -326,14 +317,14 @@
       $retValue = false;
 
       $trimLine = trim($line);
-      $textIndex = LJCCommon::StrRPos($trimLine, ":");
+      $textIndex = LJC::StrRPos($trimLine, ":");
       if ($textIndex > 0)
       {
         $textIndex = strlen($trimLine) - 1;
       }
       if ($textIndex < 0)
       {
-        $textIndex = LJCCommon::StrRPos($trimLine, ")");
+        $textIndex = LJC::StrRPos($trimLine, ")");
       }
       $textLength = strlen($trimLine);
       if ($textIndex < $textLength - 2)
@@ -360,10 +351,10 @@
 
       if (false == $retProcessed)
       {
-        $position = LJCCommon::StrPos($trimLine, "///");
+        $position = LJC::StrPos($trimLine, "///");
         if (0 == $position)
         {
-          $tokens = LJCCommon::GetTokens($trimLine);
+          $tokens = LJC::GetTokens($trimLine);
           if (count($tokens) > 1)
           {
             if ("LibName:" == $tokens[1])
@@ -376,14 +367,6 @@
           if (false == $retProcessed)
           {
             // Sets the line XML Comment values or Include file values.
-            // *****
-            $cmp = trim(strtolower($trimLine));
-            if (str_contains($cmp, "parentgroup"))
-            {
-              //echo("\r\n".__line__." LJCDocDataGen.CreateDocDataString()");
-              //echo(" trimLine = {$trimLine}");
-            }
-            // *****
             $this->Comments->SetComment($line, $codeFileSpec);
             $retProcessed = true;
           }
@@ -392,7 +375,7 @@
 
       if (false == $retProcessed)
       {
-        $position = LJCCommon::StrPos($trimLine, "//");
+        $position = LJC::StrPos($trimLine, "//");
         if (0 == $position)
         {
           $retProcessed = true;
@@ -458,17 +441,8 @@
 
       // Get Comment values.
       $method->Code = $this->Comments->Code;
-      // *** Begin ***
-      $method->ParentGroup = $this->Comments->ParentGroup;
-      // *****
-      if ($method->ParentGroup != null)
-      {
-        //echo("\r\n".__line__." LJCDocDataGen.ProcessFunction()");
-        //echo(" ParentGroup = {$method->ParentGroup}");
-      }
-      // *****
-
       $method->Params = $this->Comments->Params;
+      $method->ParentGroup = $this->Comments->ParentGroup;
       $method->Remarks = $this->Comments->Remarks;
       $this->SetFunctionSyntax();
       $method->Syntax = $this->Syntax;

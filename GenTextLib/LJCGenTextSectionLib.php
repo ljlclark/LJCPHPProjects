@@ -57,7 +57,7 @@
       if (str_starts_with(trim($line), $commentChars))
       {
         // Template directive starts with "#".
-        $index = LJCCommon::StrPos($line, "#");
+        $index = LJC::StrPos($line, "#");
         if ($index > -1)
         {
           $retValue = new LJCDirective("", $commentChars);
@@ -339,8 +339,8 @@
     public static function CreateColumnData(LJCDbColumns $dbColumns
       , string $tableName, string $className = null) : LJCSections
     {
-      $debug = new LJCDebug("LJCGenTextSectionLib", "LJCSections"
-       , "w", false);
+      $debug = new LJCDebug("LJCGenTextSectionLib", "LJCSectionsStatic"
+       , "a", false);
       $enabled = false;
       $debug->BeginMethod("CreateColumnData", $enabled);
 
@@ -383,13 +383,15 @@
     public static function CreateSections(SimpleXMLElement $xmlElement)
       : LJCSections
     {
-      $debug = new LJCDebug("LJCGenTextSectionLib", "LJCSections"
-       , "w", false);
+      // Deserialize()
+      // DeserializeString()
+      $debug = new LJCDebug("LJCGenTextSectionLib", "LJCSectionsStatic"
+       , "a", false);
       $enabled = false;
       $debug->BeginMethod("CreateSections", $enabled);
 
       $sections = new LJCSections();
-      if ($xmlElement)
+      if ($xmlElement != null)
       {
         $xmlSections = $xmlElement->Sections->children();
         if ($xmlSections != null)
@@ -418,7 +420,7 @@
               $name = trim((string)$xmlItem->Name);
               $item = new LJCItem($name);
               // *** Add ***
-              $item->MemberGroup = (string)$xmlItem->MemberGroup;
+              $item->ParentGroup = (string)$xmlItem->ParentGroup;
 
               $xmlReplacements = $xmlItem->Replacements->children();
               if ($xmlReplacements != null)
@@ -457,7 +459,6 @@
       return $retValue;
     }
 
-
     // ---------------
     // Collection Static Methods - LJCSections
 
@@ -465,15 +466,21 @@
     /// <include path='items/Deserialize/*' file='Doc/LJCSections.xml'/>
     public static function Deserialize(string $xmlFileSpec) : LJCSections
     {
-      $debug = new LJCDebug("LJCGenTextSectionLib", "LJCSections"
-       , "w", false);
+      $debug = new LJCDebug("LJCGenTextSectionLib", "LJCSectionsStatic"
+       , "a", false);
       $enabled = false;
       $debug->BeginMethod("Deserialize", $enabled);
       $retValue = null;
-      $retValue = null;
 
-      $xmlElement = simplexml_load_file($xmlFileSpec);
-      $retValue = self::CreateSections($xmlElement);
+      if (!file_exists($xmlFileSpec))
+      {
+        throw new Exception("File: {$xmlFileSpec} does not exist.");
+      }
+      else
+      {
+        $xmlElement = simplexml_load_file($xmlFileSpec);
+        $retValue = self::CreateSections($xmlElement);
+      }
 
       $debug->EndMethod($enabled);
       return $retValue;
@@ -483,7 +490,7 @@
     /// <include path='items/DeserializeString/*' file='Doc/LJCSections.xml'/>
     public static function DeserializeString(string $xmlString) : LJCSections
     {
-      $debug = new LJCDebug("LJCGenTextSectionLib", "LJCSections"
+      $debug = new LJCDebug("LJCGenTextSectionLib", "LJCSectionsStatic"
        , "w", false);
       $enabled = false;
       $debug->BeginMethod("DeserializeString", $enabled);
@@ -529,7 +536,7 @@
         {
           $hb->Begin("Item", $textState);
           $hb->Create("Name", $textState, $item->Name);
-          $hb->Create("MemberGroup", $textState, $item->MemberGroup);
+          $hb->Create("ParentGroup", $textState, $item->ParentGroup);
 
           $hb->Begin("Replacements", $textState);
           $replacements = $item->Replacements;
@@ -719,7 +726,7 @@
   {
     /// <summary>Initializes an object instance with the provided values.</summary>
     /// <param name="$name">The Item name.</param>
-    public function __construct(string $name, string $memberGroup = "")
+    public function __construct(string $name, string $parentGroup = "")
     {
       // Instantiate properties with Pascal case.
       $this->Debug = new LJCDebug("LJCGenTextSectionLib", "LJCItem"
@@ -727,8 +734,8 @@
       $this->Debug->IncludePrivate = true;
 
       $this->Name = trim($name);
+      $this->ParentGroup = $parentGroup;
       $this->Replacements = new LJCReplacements();
-      $this->MemberGroup = $memberGroup;
     }
 
     /// <summary>Creates a Clone of the current object.</summary>
@@ -741,7 +748,7 @@
       $retValue = new self($this->Name);
       $retValue->Replacements = $this->Replacements;
       $retValue->RootName = $this->RootName;
-      $retValue->MemberGroup = $this->MemberGroup;
+      $retValue->ParentGroup = $this->ParentGroup;
 
       $this->Debug->EndMethod($enabled);
       return $retValue;
@@ -753,14 +760,14 @@
     /// <summary>The Item name.</summary>
     public string $Name;
 
+    /// The group to which the item belongs.
+    public string $ParentGroup;
+
     /// <summary>The Item replacements.</summary>
     public LJCReplacements $Replacements;
 
     /// <summary>The XML Root Name value.</summary>
     public string $RootName = "Items";
-
-    /// The group to which the item belongs.
-    public string $MemberGroup;
   } // LJCItem
 
   // ***************
@@ -871,7 +878,7 @@
 
       foreach ($items as $item)
       {
-        if ($item->MemberGroup == $group)
+        if ($item->ParentGroup == $group)
         {
           $retItem = $item;
           break;

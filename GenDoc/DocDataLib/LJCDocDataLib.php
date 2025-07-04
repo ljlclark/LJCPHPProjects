@@ -9,7 +9,7 @@
   include_once "$prefix/LJCPHPCommon/LJCCommonLib.php";
   include_once "$prefix/LJCPHPCommon/LJCTextLib.php";
   include_once "$prefix/LJCPHPCommon/LJCCollectionLib.php";
-  // LJCCommonLib: LJCCommon
+  // LJCCommonLib: LJC
   // LJCTextLib: LJCStringBuilder, LJCWriter
   // LJCCollectionLib: LJCCollectionBase
   // LJCDebugLib: LJCDebug
@@ -211,15 +211,17 @@
     private static function CreateDocDataFile(SimpleXMLElement $xmlNode)
       : ?LJCDocDataFile
     {
+      // Deserialize()
+      // + DeserializeString()
       $retValue = null;
 
       if (null != $xmlNode)
       {
-        $name = self::Value($xmlNode->Name);
+        $name = self::XMLToString($xmlNode->Name);
         $retValue = new LJCDocDataFile($name);
         $retValue->Classes = self::GetClasses($xmlNode);
-        $retValue->Remarks = self::Value($xmlNode->Remarks);
-        $retValue->Summary = self::Value($xmlNode->Summary);
+        $retValue->Remarks = self::XMLToString($xmlNode->Remarks);
+        $retValue->Summary = self::XMLToString($xmlNode->Summary);
       }
       return $retValue;
     } // CreateDocDataFile()
@@ -228,6 +230,8 @@
     private static function GetClasses(SimpleXMLElement $docNode)
       : ?LJCDocDataClasses
     {
+      // Deserialize()
+      // + DeserializeString()-CreateDocDataFile()
       $retValue = null;
 
       $classNodes = self::GetClassNodes($docNode);
@@ -236,14 +240,16 @@
         $retValue = new LJCDocDataClasses();
         foreach ($classNodes as $classNode)
         {
-          $name = self::Value($classNode->Name);
+          $name = self::XMLToString($classNode->Name);
           $class = new LJCDocDataClass($name);
           $retValue->AddObject($class, $name);
-          $class->Summary = self::Value($classNode->Summary);
-          $class->Remarks = self::Value($classNode->Remarks);
+          $class->Summary = self::XMLToString($classNode->Summary);
+          // *** Add ***
+          $class->Groups = self::GetGroups($classNode);
+          $class->Remarks = self::XMLToString($classNode->Remarks);
           $class->Methods = self::GetMethods($classNode);
           $class->Properties = self::GetProperties($classNode);
-          $class->Code = self::Value($classNode->Code, false);
+          $class->Code = self::XMLToString($classNode->Code, false);
         }
       }
       return $retValue;
@@ -253,6 +259,8 @@
     private static function GetMethods(SimpleXMLElement $classNode)
       : ?LJCDocDataMethods
     {
+      // Deserialize()
+      // + DeserializeString()-CreateDocDataFile()-GetClasses()
       $retValue = null;
 
       $methodNodes = self::GetMethodNodes($classNode);
@@ -261,24 +269,48 @@
         $retValue = new LJCDocDataMethods();
         foreach ($methodNodes as $methodNode)
         {
-          $name = self::Value($methodNode->Name);
+          $name = self::XMLToString($methodNode->Name);
           $method = new LJCDocDataMethod($name);
           $retValue->AddObject($method, $name);
-          $method->Summary = self::Value($methodNode->Summary);
+          $method->Summary = self::XMLToString($methodNode->Summary);
+          // *** Add ***
+          $method->ParentGroup = self::XMLToString($methodNode->ParentGroup);
           $method->Params = self::GetParams($methodNode);
-          $method->Returns = self::Value($methodNode->Returns);
-          $method->Remarks = self::Value($methodNode->Remarks);
-          $method->Syntax = self::Value($methodNode->Syntax);
-          $method->Code = self::Value($methodNode->Code, false);
+          $method->Returns = self::XMLToString($methodNode->Returns);
+          $method->Remarks = self::XMLToString($methodNode->Remarks);
+          $method->Syntax = self::XMLToString($methodNode->Syntax);
+          $method->Code = self::XMLToString($methodNode->Code, false);
         }
       }
       return $retValue;
     } // GetMethods()
 
+    // Deserialize Groups from the Class node.
+    private static function GetGroups(SimpleXMLElement $classNode)
+    {
+      // Deserialize()
+      // + DeserializeString()-CreateDocDataFile()-GetClasses()
+      $retValue = null;
+
+      $groupNodes = self::GetGroupNodes($classNode);
+      if ($groupNodes != null)
+      {
+        $retValue = [];
+        foreach ($groupNodes as $groupNode)
+        {
+          $retValue[] = self::XMLToString($groupNode);
+        }
+      }
+      return $retValue;
+    }
+
     // Deserialize Params from the Method node.
     private static function GetParams(SimpleXMLElement $methodNode)
       : ?LJCDocDataParams
     {
+      // Deserialize()
+      // + DeserializeString()-CreateDocDataFile()-GetClasses()
+      //   -GetMethods()
       $retValue = null;
 
       $paramNodes = self::GetParamNodes($methodNode);
@@ -287,8 +319,8 @@
         $retValue = new LJCDocDataParams();
         foreach ($paramNodes as $paramNode)
         {
-          $name = self::Value($paramNode->Name);
-          $summary = self::Value($paramNode->Summary);
+          $name = self::XMLToString($paramNode->Name);
+          $summary = self::XMLToString($paramNode->Summary);
           $param = new LJCDocDataParam($name, $summary);
           $retValue->AddObject($param, $name);
         }
@@ -301,6 +333,8 @@
     public static function GetProperties(SimpleXMLElement $classNode)
       : ?LJCDocDataProperties
     {
+      // Deserialize()
+      // + DeserializeString()-CreateDocDataFile()-GetClasses()
       $retValue = null;
 
       $propertyNodes = self::GetPropertyNodes($classNode);
@@ -309,13 +343,13 @@
         $retValue = new LJCDocDataProperties();
         foreach ($propertyNodes as $propertyNode)
         {
-          $name = self::Value($propertyNode->Name);
+          $name = self::XMLToString($propertyNode->Name);
           $property = new LJCDocDataProperty($name);
           $retValue->AddObject($property, $name);
-          $property->Summary = self::Value($propertyNode->Summary);
-          $property->Returns = self::Value($propertyNode->Returns);
-          $property->Remarks = self::Value($propertyNode->Remarks);
-          $property->Syntax = self::Value($propertyNode->Syntax);
+          $property->Summary = self::XMLToString($propertyNode->Summary);
+          $property->Returns = self::XMLToString($propertyNode->Returns);
+          $property->Remarks = self::XMLToString($propertyNode->Remarks);
+          $property->Syntax = self::XMLToString($propertyNode->Syntax);
         }
       }
       return $retValue;
@@ -337,6 +371,16 @@
       }
       return $retValue;
     } // GetClassNodes()
+
+    // Retrieves the Group nodes.
+    private static function GetGroupNodes(SimpleXMLElement $classNode)
+      : ?array
+    {
+      $retArray = null;
+
+      $retArray = $classNode->xPath("Group");
+      return $retArray;
+    }
 
     // Retrieves the Method nodes.
     private static function GetMethodNodes(SimpleXMLElement $classNode)
@@ -380,9 +424,9 @@
       return $retValue;
     } // GetPropertyNodes()
 
-    // Get the value from the XML value.
+    // Get a string value from the XML value.
     // Possible for Common code.
-    private static function Value(SimpleXMLElement $xmlValue
+    private static function XMLToString(SimpleXMLElement $xmlValue
       , bool $trim = true) : ?string
     {
       $retValue = null;
@@ -454,6 +498,7 @@
     /// <include path='items/SerializeToString/*' file='Doc/LJCDocDataFile.xml'/>
     public function SerializeToString($xmlFileName = null) : string
     {
+      // Serialize()
       $enabled = false;
       $this->Debug->BeginMethod("SerializeToString", $enabled);
 
@@ -485,16 +530,13 @@
           $builder->Line("<Class>", $indent + 1);
           $builder->Tags("Name", $class->Name, $indent + 2);
           $builder->Tags("Summary", $class->Summary, $indent + 2);
-          // *** Begin *** 6/27/25
-          if (LJCCommon::HasItems($class->Groups))
+          if (LJC::HasItems($class->Groups))
           {
             foreach ($class->Groups as $group)
             {
               $builder->Tags("Group", $group, $indent + 2);
             }
-            // *** End   ***
           }
-          // *** End   ***
           $builder->Tags("Remarks", $class->Remarks, $indent + 2);
           $builder->Text($this->SerializeMethods($class, $indent + 2));
           $builder->Text($this->SerializeProperties($class, $indent + 2));
@@ -518,6 +560,7 @@
     private function SerializeMethods(LJCDocDataClass $class, int $indent)
       : ?string
     {
+      // SerializeToString()
       $enabled = false;
       $this->Debug->BeginPrivateMethod("SerializeMethods", $enabled);
 
@@ -531,16 +574,9 @@
           $builder->Line("<Method>", $indent + 1);
           $builder->Tags("Name", $method->Name, $indent + 2);
           $builder->Tags("Summary", $method->Summary, $indent + 2);
-          $builder->Text($this->SerializeParams($method->Params, $indent + 2));
-          // *****
-          if ("LJCHTMLTable" == $class->Name)
-          {
-            //echo("\r\n".__line__." LJCDocData.SerializeMethods()");
-            //echo(" ParentGroup = {$method->ParentGroup}");
-          }
-          // *****
           // *** Add ***
           $builder->Tags("ParentGroup", $method->ParentGroup, $indent + 2);
+          $builder->Text($this->SerializeParams($method->Params, $indent + 2));
           $builder->Tags("Returns", $method->Returns, $indent + 2);
           $builder->Tags("Remarks", $method->Remarks, $indent + 2);
           $builder->Tags("Syntax", $method->Syntax, $indent + 2);
@@ -558,6 +594,7 @@
     private function SerializeParams(?LJCDocDataParams $params, int $indent)
       : ?string
     {
+      // SerializeToString()-SerializeMethods()
       $enabled = false;
       $this->Debug->BeginPrivateMethod("CreateParams", $enabled);
 
@@ -583,6 +620,7 @@
     private function SerializeProperties(LJCDocDataClass $class, int $indent)
       : ?string
     {
+      // SerializeToString()
       $enabled = false;
       $this->Debug->BeginPrivateMethod("CreateProperties", $enabled);
 

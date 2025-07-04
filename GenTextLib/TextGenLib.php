@@ -358,7 +358,7 @@
       $startIndex = 0;
       while ($startIndex >= 0)
       {
-        $placeholder = LJCCommon::GetDelimitedString($text, $this->PlaceholderBegin
+        $placeholder = LJC::GetDelimitedString($text, $this->PlaceholderBegin
         , $this->PlaceholderEnd);
         if (!self::HasValue($placeholder))
         {
@@ -367,7 +367,7 @@
         }
 
         $placeholder = "$this->PlaceholderBegin$placeholder$this->PlaceholderEnd";
-        $startIndex = LJCCommon::StrPos($text, $placeholder);
+        $startIndex = LJC::StrPos($text, $placeholder);
         if ($startIndex >= 0)
         {
           $retValue[] = $placeholder;

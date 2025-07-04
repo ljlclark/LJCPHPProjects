@@ -10,7 +10,7 @@
   include_once "$prefix/LJCPHPCommon/LJCTextLib.php";
   //include_once "$prefix/LJCPHPCommon/LJCDbAccessLib.php";
   // LJCCollectionLib: LJCCollectionBase
-  // LJCCommonLib: LJCCommon
+  // LJCCommonLib: LJC
   // LJCTextLib: LJCWriter
 
   /// <summary>The Common Text Output Class Library</summary>
@@ -71,7 +71,7 @@
     {
       $childIndentCount = $textState->ChildIndentCount;
 
-      if (LJCCommon::HasValue($createText)
+      if (LJC::HasValue($createText)
         && $childIndentCount > 0)
       {
         $this->AddIndent($childIndentCount);
@@ -168,7 +168,7 @@
     /// <include path='items/AddText/*' file='Doc/LJCHTMLBuilder.xml'/>
     public function AddText(string $text)
     {
-      if (LJCCommon::HasValue($text))
+      if (LJC::HasValue($text))
       {
         $this->BuilderValue .= $text;
       }
@@ -190,7 +190,7 @@
       , bool $allowNewLine = true) : string
     {
       $retText = $this->GetText($text, $addIndent, $allowNewLine);
-      if (LJCCommon::HasValue($retText))
+      if (LJC::HasValue($retText))
       {
         $this->BuilderValue .= $retText;
       }
@@ -207,7 +207,7 @@
     {
       $retText = "";
 
-      if (LJCCommon::HasItems($attribs))
+      if (LJC::HasItems($attribs))
       {
         $hb = new LJCHTMLBuilder($textState);
         $isFirst = true;
@@ -219,7 +219,7 @@
           if (!$isFirst)
           {
             // Wrap line for large attribute value.
-            if (LJCCommon::HasValue($value)
+            if (LJC::HasValue($value)
               && strlen($value) > 35)
             {
               $hb->AddText("\r\n{$GetIndentString()}");
@@ -228,7 +228,7 @@
           $isFirst = false;
 
           $hb->AddText(" {$name}");
-          if (LJCCommon::HasValue($value))
+          if (LJC::HasValue($value))
           {
             $hb->AddText("=\"{$value}\"");
           }
@@ -284,7 +284,7 @@
         $retText = "\r\n";
       }
 
-      if (LJCCommon::HasValue($text))
+      if (LJC::HasValue($text))
       {
         $retText .= $text;
 
@@ -529,11 +529,11 @@
       : LJCAttributes
     {
       $retAttribs = new LJCAttributes();
-      if (LJCCommon::HasValue($id))
+      if (LJC::HasValue($id))
       {
         $retAttribs->Add("id", $id);
       }
-      if (LJCCommon::HasValue($className))
+      if (LJC::HasValue($className))
       {
         $retAttribs->Add("class", $className);
       }
@@ -584,7 +584,7 @@
       // Add text content.
       $isWrapped = false;
       if (!$isEmpty
-        && LJCCommon::HasValue($text))
+        && LJC::HasValue($text))
       {
         if (strlen($text) > 80 - $this->IndentLength())
         {
@@ -619,7 +619,7 @@
     }
 
     // Gets the text length if not null.
-    // Move to LJCCommon?
+    // Move to LJC?
     private function TextLength(?string $text) : int
     {
       $retLength = 0;
@@ -660,7 +660,7 @@
         // *** Different than TextBuilder ***
         // Get wrap point in allowed length.
         // Wrap on a space.
-        $retIndex = LJCCommon::StrRPos($text, " ", $wrapLength);
+        $retIndex = LJC::StrRPos($text, " ", $wrapLength);
         if (-1 == $retIndex)
         {
           // Wrap index not found; Wrap at new text.
@@ -701,7 +701,7 @@
         }
         // *** Different than TextBuilder ***
         $nextLength = $this->LineLimit - $this->IndentLength;
-        $nextLength = LJCCommon::StrRPos($tempText, " ", $nextLength);
+        $nextLength = LJC::StrRPos($tempText, " ", $nextLength);
         $retText = substr($text, $startIndex, $nextLength);
       }
       return $retText;

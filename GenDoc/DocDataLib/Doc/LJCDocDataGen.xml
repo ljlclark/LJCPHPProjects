@@ -29,7 +29,7 @@
   </ScrubPropertyName>
 
   <!-- Public Methods -->
-	<CreateDocDataXMLString>
+	<SerializeDocData>
 		<summary>Creates and optionally writes the DocData XML.</summary>
 		<param name="$codeFileSpec">The code file specification.</param>
 		<param name="$writeXML">Indicates if the XML file is to be written.</param>
@@ -43,7 +43,7 @@
       $docDataGen = new LJCDocDataGen();
       $xmlString = $docDataGen->CreateDocDataXMLString("SourceFile.php");
     </code>
-	</CreateDocDataXMLString>
+	</SerializeDocData>
 	<ProcessCode>
 		<summary>Generates the Doc data for the file.</summary>
 		<param name="$codeFileSpec">The code file spec.</param>

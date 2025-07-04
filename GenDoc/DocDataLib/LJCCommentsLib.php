@@ -10,7 +10,7 @@
   include_once "$prefix/GenTextLib/LJCGenTextSectionLib.php";
   include_once "$prefix/GenDoc/DocDataLib/LJCIncludeLib.php";
   include_once "$prefix/GenDoc/DocDataLib/LJCParamCommentLib.php";
-  // LJCCommonLib: LJCCommon
+  // LJCCommonLib: LJC
   // LJCGenTextSectionLib: LJCDirective, LJCSection, LJCSections
   //   , LJCItem, LJCReplacement, LJCReplacements
   // LJCDebugLib: LJCDebug
@@ -236,7 +236,7 @@
       // *****
       $endTag = $this->GetEndTag();
 
-      $positionBegin = LJCCommon::StrPos($line, $beginTag);
+      $positionBegin = LJC::StrPos($line, $beginTag);
       if ($positionBegin < 0)
       {
         // No BeginTag so set parse for start of comment.
@@ -281,7 +281,7 @@
         }
 
         // Get to end of string if endTag is null.
-        $retValue = LJCCommon::GetDelimitedString($line, $beginTag, $endTag
+        $retValue = LJC::GetDelimitedString($line, $beginTag, $endTag
           , false, $rTrim);
         // *****
         if ("parentgroup" == $beginTag)
@@ -359,7 +359,7 @@
       {
         // *** Add ***
         $checkLine = strtolower($line);
-        if (LJCCommon::StrPos($checkLine, $beginTag) >= 0)
+        if (LJC::StrPos($checkLine, $beginTag) >= 0)
         {
           $retValue = $beginTagName;
           break;
@@ -468,7 +468,7 @@
 
       $endTag = $this->GetEndTag();
       if ($endTag != null
-        && LJCCommon::StrRPos($line, $endTag) >= 0)
+        && LJC::StrRPos($line, $endTag) >= 0)
       {
         $retValue = true;
       }

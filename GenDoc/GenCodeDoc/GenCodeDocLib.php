@@ -88,13 +88,15 @@
     /// <param name="$fileSpecLine">The source file spec.</param>
     public function CreateFilePages($fileSpecLine) : void
     {
+      // CreateFromList()
       $enabled = false;
       $this->Debug->BeginMethod("CreateFilePages", $enabled);
 
       $fileSpec = trim($fileSpecLine);
       if (TextGenLib::HasValue($fileSpec))
       {
-        $docXMLString = $this->DocDataGen->CreateDocDataXMLString($fileSpec);
+        $docXMLString = $this->DocDataGen->SerializeDocData($fileSpec);
+
         if ($docXMLString != null)
         {
           $genXMLString = $this->GenDataGen->SerializeLib($docXMLString

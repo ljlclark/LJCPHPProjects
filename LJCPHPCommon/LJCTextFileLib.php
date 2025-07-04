@@ -6,6 +6,8 @@
   include_once "LJCRoot.php";
   $prefix = RelativePrefix();
   include_once "$prefix/LJCPHPCommon/LJCCommonLib.php";
+  include_once "$prefix/LJCPHPCommon/LJCCommonFileLib.php";
+  include_once "$prefix/LJCPHPCommon/LJCTextFileLib.php";
   // LJCCommonLib: LJCCommon
 
   /// <summary>The Common Text Output Class Library</summary>
@@ -90,10 +92,7 @@
     public function __construct(string $locName, $mode = "w")
     {
       $fileName = $locName . "txt";
-      if ($mode = "w")
-      {
-        $fileName = LJCCommonFile::GetDebugFileName("Debug", $locName);
-      }
+      $fileName = LJCCommonFile::GetDebugFileName("Debug", $locName);
       $this->DebugWriter = new LJCFileWriter($fileName, $mode);
     } // __construct()
 

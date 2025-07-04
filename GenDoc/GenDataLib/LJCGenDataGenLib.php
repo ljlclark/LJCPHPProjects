@@ -10,12 +10,13 @@
   include_once "$prefix/LJCPHPCommon/LJCTextFileLib.php";
   include_once "$prefix/GenTextLib/LJCGenTextLib.php";
   include_once "$prefix/GenDoc/GenDataLib/LJCGenDataXMLLib.php";
-  // LJCCommonLib: LJCCommon
+  // LJCDebugLib: LJCDebug
+  // LJCCommonLib: LJC
+  // LJCCommonFileLib: LJCCommonFile
   // LJCGenDocConfigLib: LJCGenDocConfig
   // LJCGenTextLib: LJCStringBuilder
   // LJCGenTextFileLib: LJCFileWriter
   // LJCGenDataXMLLib:LJCGenDataXML
-  // LJCDebugLib: LJCDebug
 
   // Contains classes to create GenData XML and HTML Doc from DocData XML.
   /// <include path='items/LJCGenDataGenLib/*' file='Doc/LJCGenDataGenLib.xml'/>
@@ -29,19 +30,15 @@
   // SerializeLib() public
   //   SerializeLibXML()
   //     SerializeLibClass()
-  //   GetHTMLText()
-  //
   //   SerializeClasses()
   //     SerializeClass()
   //       SerializeClassXML()
   //         SerializeClassMethod()
   //         SerializeClassProperty()
-  //
   //       SerializeMethods()
   //         SerializeMethod()
   //           SerializeMethodXML();
   //             SerializeMethodParam()
-  //
   //       SerializeProperties()
   //         SerializeProperty()
   //           SerializePropertyXML()
@@ -57,7 +54,7 @@
     {
       // Instantiate properties with Pascal case.
       $this->Debug = new LJCDebug("LJCGenDataGenLib", "LJCGenDataGen"
-        , "w", true);
+        , "w", false);
       $this->Debug->IncludePrivate = true;
     }
 
@@ -66,7 +63,7 @@
     {
       $this->HTMLPath = "../../../WebSitesDev/CodeDoc/LJCPHPCodeDoc/HTML";
       $this->GenDocConfig = $config;
-      if (LJCCommon::HasValue($config->OutputPath))
+      if (LJC::HasValue($config->OutputPath))
       {
         $this->HTMLPath = $config->OutputPath;
       }
@@ -78,68 +75,31 @@
 
     // Creates a Lib GenData XML string and optional file.
     /// <include path='items/SerializeLib/*' file='Doc/LJCGenDataGen.xml'/>
-    public function SerializeLib(string $docXMLString
-      , string $codeFileSpec) : string
+    public function SerializeLib(string $docXML, string $codeFileSpec) : string
     {
       $enabled = false;
       $this->Debug->BeginMethod("SerializeLib", $enabled);
-      $retValue = null;
+      $retLibGenXML = null;
 
       // GenData XML file name same as source file with .xml extension.
-      $fileName = LJCCommon::GetFileName($codeFileSpec) . ".xml";
-      // Start Testing
-      $docDataFile = LJCDocDataFile::DeserializeString($docXMLString);
-      $retValue = $this->SerializeLibXML($docDataFile, $fileName);
+      $fileName = LJC::GetFileName($codeFileSpec) . ".xml";
+      $docDataFile = LJCDocDataFile::DeserializeString($docXML);
+      $retLibGenXML = $this->SerializeLibXML($docDataFile, $fileName);
+      $writeGenDataXML = $this->WriteLibGenXML($retLibGenXML, $codeFileSpec
+        , $fileName);
 
-      // Write Lib XML data.
-      $writeGenDataXML = $this->GenDocConfig->WriteGenDataXML;
-      // *****
-      if ("LJCHTMLTableLib.xml" == $fileName)
+      // Write HTML file.
+      if ($retLibGenXML != null)
       {
-        $writeGenDataXML = true;
-      }
-      // *****
-      if ($writeGenDataXML
-        && $retValue != null)
-      {
-        $genDataXMLPath = $this->GenDocConfig->GenDataXMLPath;
-        $outputFileSpec = $this->OutputLibSpec($codeFileSpec, $genDataXMLPath);
-        LJCFileWriter::WriteFile($retValue, $outputFileSpec);
-      }
-
-      if ($retValue != null)
-      {
-        $htmlText = $this->GetHTMLText($retValue, "LibTemplate.html");
+        $htmlText = $this->GetHTMLText($retLibGenXML, "LibTemplate.html");
         $htmlPath = $this->HTMLPath;
-        $htmlFileName = LJCCommon::GetFileName($codeFileSpec);
+        $htmlFileName = LJC::GetFileName($codeFileSpec);
         $this->WriteHTML($htmlText, $htmlPath, $htmlFileName);
         $this->SerializeClasses($docDataFile, $writeGenDataXML, $htmlPath);
       }
 
       $this->Debug->EndMethod($enabled);
-      return $retValue;
-    }
-
-    // Creates a Lib GenData XML output file spec.
-    // <include path='items/OutputLibSpec/*' file='Doc/LJCGenDataGen.xml'/>
-    private function OutputLibSpec(string $codeFileSpec
-      , string $outputPath = null) : string
-    {
-      // SerializeLib()
-      $enabled = false;
-      $this->Debug->BeginPrivateMethod("OutputLibSpec", $enabled);
-      $retValue = null;
-
-      if (null == $outputPath)
-      {
-        $outputPath = "../XMLGenData";
-      }
-      LJCCommonFile::MkDir($outputPath);
-      $fileName = LJCCommon::GetFileName($codeFileSpec) . ".xml";
-      $retValue = "$outputPath/$fileName";
-
-      $this->Debug->EndMethod($enabled);
-      return $retValue;
+      return $retLibGenXML;
     }
 
     // Creates a Lib GenData XML string.
@@ -162,9 +122,10 @@
       $value = LJCGenDataXML::SectionBegin("Main", $indent);
       $builder->Text($value);
 
-      // Items Begin Lines
-      $indent += 2;
-      // *** Change ***
+      // Items
+      $indent++;
+      $builder->Line("<Items>", $indent);
+      $indent++;
       $value = LJCGenDataXML::ItemBegin("Main", $indent);
       $builder->Text($value);
       $indent++;
@@ -237,7 +198,10 @@
         $value = LJCGenDataXML::SectionBegin("Class", $indent);
         $builder->Text($value);
 
-        $indent += 2;
+        // Items
+        $indent++;
+        $builder->Line("<Items>", $indent);
+        $indent++;
         foreach ($classes as $class)
         {
           // Items Begin Lines
@@ -275,29 +239,6 @@
     // ---------------
     // Class Methods - LJCGenDataGen
 
-    // Creates a Class GenData XML output file spec.
-    // <include path='items/OutputClassSpec/*' file='Doc/LJCGenDataGen.xml'/>
-    private function OutputClassSpec(LJCDocDataClass $class
-      , string $outputPath = null) : string
-    {
-      // SerializeLib()-SerializeClasses()-SerializeClass()
-      $enabled = false;
-      $this->Debug->BeginPrivateMethod("OutputClassSpec", $enabled);
-      $retValue = null;
-
-      $name = $class->Name;
-      if (null == $outputPath)
-      {
-        $outputPath = "../XMLGenData/$name";
-      }
-      LJCCommonFile::MkDir($outputPath);
-      $fileName = LJCCommon::GetFileName($name) . ".xml";
-      $retValue = "$outputPath/$fileName";
-
-      $this->Debug->EndMethod($enabled);
-      return $retValue;
-    }
-
     // Creates a Class GenData XML string and optional file.
     // <include path='items/SerializeClass/*' file='Doc/LJCGenDataGen.xml'/>
     private function SerializeClass(LJCDocDataClass $class, string $libName
@@ -306,28 +247,18 @@
       // SerializeLib()-SerializeClasses()
       $enabled = false;
       $this->Debug->BeginPrivateMethod("SerializeClass", $enabled);
-      $retValue = null;
+      $retClassGenXML = null;
 
       $fileName = $class->Name . ".xml";
-      $retValue = $this->SerializeClassXML($class, $fileName, $libName);
+      $retClassGenXML = $this->SerializeClassXML($class, $fileName, $libName);
+      // *** Add ***
+      $writeGenDataXML = $this->WriteClassGenXML($retClassGenXML, $class
+        , $fileName);
 
-      // Write Class XML data.
-      $writeGenDataXML = $this->GenDocConfig->WriteGenDataXML;
-      if ("LJCHTMLTable.xml" == $fileName)
+      // Write HTML file.
+      if ($retClassGenXML != null)
       {
-        $writeGenDataXML = true;
-      }
-      if ($writeGenDataXML
-        && $retValue != null)
-      {
-        $genDataXMLPath = $this->GenDocConfig->GenDataXMLPath;
-        $outputClassSpec = $this->OutputClassSpec($class, $genDataXMLPath);
-        LJCFileWriter::WriteFile($retValue, $outputClassSpec);
-      }
-
-      if ($retValue != null)
-      {
-        $htmlText = $this->GetHTMLText($retValue, "ClassTemplate.html");
+        $htmlText = $this->GetHTMLText($retClassGenXML, "ClassTemplate.html");
         $htmlPath = "$this->HTMLPath/$class->Name";
         $htmlFileName = "$class->Name";
         $this->WriteHTML($htmlText, $htmlPath, $htmlFileName);
@@ -337,7 +268,7 @@
       $this->SerializeProperties($class, $libName, $writeGenDataXML);
 
       $this->Debug->EndMethod($enabled);
-      return $retValue;
+      return $retClassGenXML;
     } // SerializeClass()
 
     // Creates the Class GenData XML strings and optionally files.
@@ -383,7 +314,10 @@
         $value = LJCGenDataXML::SectionBegin("Function", $indent);
         $builder->Text($value);
 
-        $indent += 2;
+        // Items
+        $indent++;
+        $builder->Line("<Items>", $indent);
+        $indent++;
         foreach ($methods as $method)
         {
           // Items Begin Lines
@@ -437,7 +371,10 @@
         $value = LJCGenDataXML::SectionBegin("Property", $indent);
         $builder->Text($value);
 
-        $indent += 2;
+        // Items
+        $indent++;
+        $builder->Line("<Items>", $indent);
+        $indent++;
         foreach ($properties as $property)
         {
           // Items Begin Lines
@@ -477,9 +414,9 @@
     private function SerializeClassXML(LJCDocDataClass $class
       , string $fileName, string $libName) : string
     {
-      // SerializeLib()-SerializeClasses()-SerializeCLass()
-      $enabled = false;
-      $this->Debug->BeginPrivateMethod("SerializeClassXML", $enabled);
+      // SerializeLib()-SerializeClasses()-SerializeClass()
+      $enabled = true;
+      //$this->Debug->BeginPrivateMethod("SerializeClassXML", $enabled);
       $retValue = null;
 
       $builder = new LJCStringBuilder();
@@ -492,8 +429,33 @@
       $value = LJCGenDataXML::SectionBegin("Class", $indent);
       $builder->Text($value);
 
-      // Items Begin Lines
-      $indent += 2;
+      // *** Begin *** Add
+      if ($class->Groups != null)
+      {
+        $first = true;
+        //$text = "<groups>\r\n";
+        //$builder->Text($text);
+        foreach ($class->Groups as $group)
+        {
+          $text = "";
+          if (!$first)
+          {
+            $text .= "\r\n";
+          }
+          $first = false;
+          //$text .= "<group>{$group}</group>";
+          $text .= "&lt;group&gt;{$group}&lt;/group&gt;";
+          $builder->Text($text);
+        }
+        //$text = "</groups>\r\n";
+        //$builder->Text($text);
+      }
+      // *** End   ***
+
+      // Items
+      $indent++;
+      $builder->Line("<Items>", $indent);
+      $indent++;
       $value = LJCGenDataXML::ItemBegin("Class", $indent);
       $builder->Text($value);
       $indent++;
@@ -571,30 +533,6 @@
 
     // ---------------
     // Method Methods - LJCGenDataGen
-  
-    // Creates a Method GenData XML output file spec.
-    // <include path='items/OutputMethodSpec/*' file='Doc/LJCGenDataGen.xml'/>
-    private function OutputMethodSpec(LJCDocDataClass $class
-      , LJCDocDataMethod $method, string $outputPath = null) : string
-    {
-      // SerializeLib()-SerializeClasses()-SerializeClass()
-      //   -SerializeMethods()-SerializeMethod()
-      $enabled = false;
-      $this->Debug->BeginPrivateMethod("OutputMethodSpec", $enabled);
-      $retValue = null;
-
-      $name = $class->Name;
-      if (null == $outputPath)
-      {
-        $outputPath = "../XMLGenData/$name";
-      }
-      LJCCommonFile::MkDir($outputPath);
-      $fileName = $method->Name . ".xml";
-      $retValue = "$outputPath/$fileName";
-
-      $this->Debug->EndMethod($enabled);
-      return $retValue;
-    }
 
     // Creates a Method GenData XML string and optional file.
     // <include path='items/SerializeMethod/*' file='Doc/LJCGenDataGen.xml'/>
@@ -611,24 +549,10 @@
       $fileName = $method->Name;
       $retValue = $this->SerializeMethodXML($class, $method, $fileName
         , $libName);
+      // *** Add ***
+      $this->WriteMethodGenXML($retValue, $class, $method, $fileName);
 
-      // Write Method XML data.
-      $writeGenDataXML = $this->GenDocConfig->WriteGenDataXML;
-      // *****
-      if ("ArrayArrayHTML" == $fileName)
-      {
-        $writeGenDataXML = true;
-      }
-      // *****
-      if ($writeGenDataXML
-        && $retValue != null)
-      {
-        $genDataXMLPath = $this->GenDocConfig->GenDataXMLPath;
-        $outputFileSpec = $this->OutputMethodSpec($class, $method
-          , $genDataXMLPath);
-        LJCFileWriter::WriteFile($retValue, $outputFileSpec);
-      }
-
+      // Write HTML file.
       if ($retValue != null)
       {
         $htmlText = $this->GetHTMLText($retValue, "FunctionTemplate.html");
@@ -646,7 +570,7 @@
     private function SerializeMethods(LJCDocDataClass $class, string $libName
       , bool $writeGenDataXML = true, string $outputPath = null) : void
     {
-      // CreateLibXMLString()-SerializeClasses()-SerializeClass()
+      // SerializeLib()-SerializeClasses()-SerializeClass()
       $enabled = false;
       $this->Debug->BeginPrivateMethod("SerializeMethods", $enabled);
 
@@ -667,6 +591,8 @@
     // <param name="$method">The Method object.</param>
     private function SerializeMethodParam(LJCDocDataMethod $method) : ?string
     {
+      // SerializeLib()-SerializeClasses()-SerializeClass()
+      //   -SerializeMethods()-SerializeMethod()-SerializeMethodXML()
       $enabled = false;
       $this->Debug->BeginPrivateMethod("SerializeMethodParam", $enabled);
       $retValue = null;
@@ -681,7 +607,10 @@
         $value = LJCGenDataXML::SectionBegin("Parameters", $indent);
         $builder->Text($value);
 
-        $indent += 2;
+        // Items
+        $indent++;
+        $builder->Line("<Items>", $indent);
+        $indent++;
         foreach ($params as $param)
         {
           // Items Begin Lines
@@ -723,7 +652,7 @@
     {
       // CreateLibXMLString()-SerializeClasses()-SerializeClass()
       //   -SerializeMethods()-SerializeMethod()
-      $enabled = true;
+      $enabled = false;
       $this->Debug->BeginPrivateMethod("SerializeMethodXML", $enabled);
       $retValue = null;
 
@@ -737,17 +666,13 @@
       $value = LJCGenDataXML::SectionBegin("Function", $indent);
       $builder->Text($value);
 
-      // Items Begin Lines
-      $indent += 2;
+      // Items
+      $indent++;
+      $builder->Line("<Items>", $indent);
+      $indent++;
       $text = $method->Name;
       // *** Add ***
       $parentGroup = $method->ParentGroup;
-      // *****
-      if ($parentGroup != null)
-      {
-        $this->Debug->Write(" parentGroup = {$parentGroup}");
-      }
-      // *****
       $value = LJCGenDataXML::ItemBegin($text, $indent, $parentGroup);
       $builder->Text($value);
       $indent++;
@@ -821,37 +746,13 @@
 
     // ---------------
     // Property Methods - LJCGenDataGen
-  
-    // Creates a Property GenData XML output file spec.
-    // <include path='items/OutputPropertySpec/*' file='Doc/LJCGenDataGen.xml'/>
-    private function OutputPropertySpec(LJCDocDataClass $class
-      , LJCDocDataProperty $property, string $outputPath = null) : string
-    {
-      // CreateLibXMLString()-SerializeClasses()-SerializeClass()
-      //   -SerializeProperty()
-      $enabled = false;
-      $this->Debug->BeginPrivateMethod("OutputPropertySpec", $enabled);
-      $retValue = null;
-
-      $name = $class->Name;
-      if (null == $outputPath)
-      {
-        $outputPath = "../XMLGenData/$name";
-      }
-      LJCCommonFile::MkDir($outputPath);
-      $fileName = $property->Name . ".xml";
-      $retValue = "$outputPath/$fileName";
-
-      $this->Debug->EndMethod($enabled);
-      return $retValue;
-    }
 
     // Creates the Property GenData class XML strings and optionally files.
     // <include path='items/SerializeProperties/*' file='Doc/LJCGenDataGen.xml'/>
     private function SerializeProperties(LJCDocDataClass $class, string $libName
       , bool $writeGenDataXML = true, string $outputPath = null) : void
     {
-      // CreateLibXMLString()-SerializeClasses()-SerializeClass()
+      // SerializeLib()-SerializeClasses()-SerializeClass()
       $enabled = false;
       $this->Debug->BeginPrivateMethod("SerializeProperties", $enabled);
 
@@ -874,7 +775,7 @@
       , LJCDocDataProperty $property, string $libName
       , bool $writeGenDataXML = false, string $outputPath = null) : string
     {
-      // CreateLibXMLString()-SerializeClasses()-SerializeClass()
+      // SerializeLib()-SerializeClasses()-SerializeClass()
       //   -SerializeProperties()
       $enabled = false;
       $this->Debug->BeginPrivateMethod("SerializeProperty", $enabled);
@@ -884,14 +785,10 @@
       $fileName = $property->Name . ".xml";
       $retValue = $this->SerializePropertyXML($class, $property, $fileName
         , $libName);
+      // *** Add ***
+      $this->WritePropertyGenXML($retValue, $class, $property, $fileName);
 
-      if ($writeGenDataXML && $retValue != null)
-      {
-        $outputFileSpec = $this->OutputPropertySpec($class, $property
-          , $outputPath);
-        LJCFileWriter::WriteFile($retValue, $outputFileSpec);
-      }
-
+      // Write HTML file.
       if ($retValue != null)
       {
         $htmlText = $this->GetHTMLText($retValue, "PropertyTemplate.html");
@@ -910,7 +807,7 @@
       , LJCDocDataProperty $property, string $fileName, string $libName)
         : ?string
     {
-      // CreateLibXMLString()-SerializeClasses()-SerializeClass()
+      // SerializeLib()-SerializeClasses()-SerializeClass()
       //   -SerializeProperty()
       $enabled = false;
       $this->Debug->BeginPrivateMethod("SerializePropertyXML", $enabled);
@@ -926,8 +823,10 @@
       $value = LJCGenDataXML::SectionBegin("Property", $indent);
       $builder->Text($value);
 
-      // Items Begin Lines
-      $indent += 2;
+      // Items
+      $indent++;
+      $builder->Line("<Items>", $indent);
+      $indent++;
       $text = $property->Name;
       $value = LJCGenDataXML::ItemBegin($text, $indent);
       $builder->Text($value);
@@ -1019,6 +918,200 @@
 
       $this->Debug->EndMethod($enabled);
     } // WriteHTML()
+    
+    // ---------------
+    // Private Write XML Methods - LJCGenDataGen
+
+    // Creates a Class GenData XML output file spec.
+    // <include path='items/OutputClassSpec/*' file='Doc/LJCGenDataGen.xml'/>
+    private function ClassGenXMLSpec(LJCDocDataClass $class
+      , string $outputPath = null) : string
+    {
+      // SerializeLib()-SerializeClasses()-SerializeClass()
+      $enabled = false;
+      $this->Debug->BeginPrivateMethod("OutputClassSpec", $enabled);
+      $retValue = null;
+
+      $name = $class->Name;
+      if (null == $outputPath)
+      {
+        $outputPath = "../XMLGenData/$name";
+      }
+      LJCCommonFile::MkDir($outputPath);
+      $fileName = LJC::GetFileName($name) . ".xml";
+      $retValue = "$outputPath/$fileName";
+
+      $this->Debug->EndMethod($enabled);
+      return $retValue;
+    }
+
+    // Creates a Lib GenData XML output file spec.
+    // <include path='items/OutputLibSpec/*' file='Doc/LJCGenDataGen.xml'/>
+    private function LibGenXMLSpec(string $codeFileSpec
+      , string $outputPath = null) : string
+    {
+      // WriteLibGenXMLFile()
+      $enabled = false;
+      $this->Debug->BeginPrivateMethod("OutputLibSpec", $enabled);
+      $retValue = null;
+
+      if (null == $outputPath)
+      {
+        $outputPath = "../XMLGenData";
+      }
+      LJCCommonFile::MkDir($outputPath);
+      $fileName = LJC::GetFileName($codeFileSpec) . ".xml";
+      $retValue = "$outputPath/$fileName";
+
+      $this->Debug->EndMethod($enabled);
+      return $retValue;
+    }
+  
+    // Creates a Method GenData XML output file spec.
+    // <include path='items/OutputMethodSpec/*' file='Doc/LJCGenDataGen.xml'/>
+    private function MethodGenXMLSpec(LJCDocDataClass $class
+      , LJCDocDataMethod $method, string $outputPath = null) : string
+    {
+      // SerializeLib()-SerializeClasses()-SerializeClass()
+      //   -SerializeMethods()-SerializeMethod()
+      $enabled = false;
+      $this->Debug->BeginPrivateMethod("OutputMethodSpec", $enabled);
+      $retValue = null;
+
+      $name = $class->Name;
+      if (null == $outputPath)
+      {
+        $outputPath = "../XMLGenData/$name";
+      }
+      LJCCommonFile::MkDir($outputPath);
+      $fileName = $method->Name . ".xml";
+      $retValue = "$outputPath/$fileName";
+
+      $this->Debug->EndMethod($enabled);
+      return $retValue;
+    }
+  
+    // Creates a Property GenData XML output file spec.
+    // <include path='items/OutputPropertySpec/*' file='Doc/LJCGenDataGen.xml'/>
+    private function PropertyGenXMLSpec(LJCDocDataClass $class
+      , LJCDocDataProperty $property, string $outputPath = null) : string
+    {
+      // CreateLibXMLString()-SerializeClasses()-SerializeClass()
+      //   -SerializeProperty()
+      $enabled = false;
+      $this->Debug->BeginPrivateMethod("OutputPropertySpec", $enabled);
+      $retValue = null;
+
+      $name = $class->Name;
+      if (null == $outputPath)
+      {
+        $outputPath = "../XMLGenData/$name";
+      }
+      LJCCommonFile::MkDir($outputPath);
+      $fileName = $property->Name . ".xml";
+      $retValue = "$outputPath/$fileName";
+
+      $this->Debug->EndMethod($enabled);
+      return $retValue;
+    }
+
+    // Writes the LibGenXML file.
+    private function WriteLibGenXML(string $libGenXML, string $codeFileSpec
+      , string $fileName)
+    {
+      // SerializeLib()
+      $retValue = false;
+
+      $writeGenDataXML = $this->GenDocConfig->WriteGenDataXML;
+      // *** Begin *** Debug Output
+      if ("LJCHTMLTableLib.xml" == $fileName)
+      {
+        $writeGenDataXML = true;
+      }
+      // *** End   ***
+
+      if ($writeGenDataXML
+        && $libGenXML != null)
+      {
+        $retValue = true;
+        $genDataXMLPath = $this->GenDocConfig->GenDataXMLPath;
+        $fileSpec = $this->LibGenXMLSpec($codeFileSpec, $genDataXMLPath);
+        LJCFileWriter::WriteFile($libGenXML, $fileSpec);
+      }
+      return $retValue;
+    }
+
+    // Writes the ClassGenXML file.
+    private function WriteClassGenXML(string $classGenXML
+      , LJCDocDataClass $class, string $fileName)
+    {
+      // SerializeClass()
+      $retValue = false;
+
+      $writeGenDataXML = $this->GenDocConfig->WriteGenDataXML;
+      // *** Begin *** Debug Output
+      if ("LJCHTMLTable.xml" == $fileName)
+      {
+        $writeGenDataXML = true;
+      }
+      // *** End   ***
+
+      if ($writeGenDataXML
+        && $classGenXML != null)
+      {
+        $retValue = true;
+        $genDataXMLPath = $this->GenDocConfig->GenDataXMLPath;
+        $fileSpec = $this->ClassGenXMLSpec($class, $genDataXMLPath);
+        LJCFileWriter::WriteFile($classGenXML, $fileSpec);
+      }
+      return $retValue;
+    }
+
+    // Writes the MethodGenXML file.
+    private function WriteMethodGenXML(string $methodGenXML
+      , LJCDocDataClass $class, LJCDocDataMethod $method, string $fileName)
+    {
+      // SerializeMethod()
+      $retValue = false;
+
+      $writeGenDataXML = $this->GenDocConfig->WriteGenDataXML;
+      // *** Begin *** Debug Output
+      if ("ArrayArrayHTML" == $fileName)
+      {
+        $writeGenDataXML = true;
+      }
+      // *** End   ***
+
+      if ($writeGenDataXML
+        && $methodGenXML != null)
+      {
+        $retValue = true;
+        $genDataXMLPath = $this->GenDocConfig->GenDataXMLPath;
+        $fileSpec = $this->MethodGenXMLSpec($class, $method, $genDataXMLPath);
+        LJCFileWriter::WriteFile($methodGenXML, $fileSpec);
+      }
+      return $retValue;
+    }
+
+    // Writes the PropertyGenXML file.
+    private function WritePropertyGenXML(string $propertyGenXML
+      , LJCDocDataClass $class, LJCDocDataProperty $property, string $fileName)
+    {
+      // SerializeProperty()
+      $retValue = false;
+
+      $writeGenDataXML = $this->GenDocConfig->WriteGenDataXML;
+
+      if ($writeGenDataXML
+        && $propertyGenXML != null)
+      {
+        $retValue = true;
+        $fileSpec = $this->PropertyGenXMLSpec($class, $property
+          , $outputPath);
+        LJCFileWriter::WriteFile($propertyGenXML, $fileSpec);
+      }
+      return $retValue;
+    }
 
     // ---------------
     // Properties - LJCDocDataGen

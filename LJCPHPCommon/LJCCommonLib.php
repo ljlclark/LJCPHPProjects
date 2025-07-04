@@ -6,13 +6,13 @@
 
   /// <summary>The Common PHP Class Library</summary>
   /// LibName: LJCCommonLib
-  // Classes: LJCCommon
+  // Classes: LJC
 
   // ***************
   // Static: Scrub(), Split(), StrPos(), StrRPos(), GetBool()
   //   GetDelimitedString(), GetFileName(), GetFileSpecPath(), GetTokens()
   /// <summary>Contains common functions.</summary>
-  class LJCCommon
+  class LJC
   {
     // ---------------
     // Static Functions
@@ -90,7 +90,7 @@
       //$retValue = $fileSpec;
       $retValue = "";
 
-      $length = LJCCommon::StrRPos($fileSpec, "/");
+      $length = LJC::StrRPos($fileSpec, "/");
       if ($length >= 0)
       {
         $retValue = substr($fileSpec, 0, $length);
@@ -153,6 +153,26 @@
         && strlen(trim($text)) > 0)
       {
         $retValue = true;
+      }
+      return $retValue;
+    }
+
+    /// <summary>Checks an XML element for a value.
+    /// <param name="$xmlElement">The simple xml element.</param>
+    /// <returns>
+    ///   true if element text has other than white space; otherwise false;
+    /// </returns>
+    public static function HasXML(SimpleXMLElement $xmlElement)
+    {
+      $retValue = false;
+
+      if ($xmlElement != null)
+      {
+        $value = (string)$xmlElement;
+        if (strlen(trim($value)) > 0)
+        {
+          $retValue = true;
+        }
       }
       return $retValue;
     }

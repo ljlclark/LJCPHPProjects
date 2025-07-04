@@ -9,7 +9,7 @@
   include_once "$prefix/LJCPHPCommon/LJCCommonLib.php";
   include_once "$prefix/LJCPHPCommon/LJCTextLib.php";
   include_once "$prefix/GenTextLib/LJCGenTextSectionLib.php";
-  // LJCCommonLib: LJCCommon
+  // LJCCommonLib: LJC
   // LJCTextLib: LJCWriter
   // LJCGenTextSectionLib: LJCDirective, LJCSection, LJCSections, LJCItem
   //   , LJCReplacement, LJCReplacements
@@ -75,7 +75,7 @@
           $trimLine = trim($line);
 
           // Do not start processing until the itemTag is found.
-          if (LJCCommon::StrPos($trimLine, "<$itemTag>") >= 0)
+          if (LJC::StrPos($trimLine, "<$itemTag>") >= 0)
           {
             $isItem = true;
           }
@@ -150,7 +150,7 @@
         // Is Code or Has EndTag then remove cr/lf.
         $rTrim = true;
       }
-      $comment = LJCCommon::GetDelimitedString($line, $beginTag, $endTag
+      $comment = LJC::GetDelimitedString($line, $beginTag, $endTag
         , false, $rTrim);
 
       $success = true;
@@ -200,7 +200,7 @@
       $this->Debug->BeginPrivateMethod("GetLineBeginTag", $enabled);
       $retValue = null;
 
-      $beginTag = LJCCommon::GetDelimitedString($line, "<", ">");
+      $beginTag = LJC::GetDelimitedString($line, "<", ">");
       if ($this->IsCommentTag($beginTag))
       {
         $retValue = "<$beginTag>";								
@@ -217,7 +217,7 @@
       $this->Debug->BeginPrivateMethod("GetLineEndTag", $enabled);
       $retValue = null;
 
-      $endTag = LJCCommon::GetDelimitedString($line, "</", ">");
+      $endTag = LJC::GetDelimitedString($line, "</", ">");
       if ($this->IsCommentTag($endTag))
       {
         $retValue = "</$endTag>";								
@@ -236,7 +236,7 @@
 
       if ($comment != null)
       {
-        $endTag = LJCCommon::GetDelimitedString($comment, "</", ">");
+        $endTag = LJC::GetDelimitedString($comment, "</", ">");
 
         if ($endTag != null
           && false === $this->IsCommentTag($endTag))
@@ -308,9 +308,9 @@
       $retValue = true;
 
       $itemTag = null;
-      $this->LibName = LJCCommon::GetFileName($codeFileSpec);
+      $this->LibName = LJC::GetFileName($codeFileSpec);
       $this->Comments = [];
-      $xmlPath = LJCCommon::GetDelimitedString($includeLine, "path='", "'");
+      $xmlPath = LJC::GetDelimitedString($includeLine, "path='", "'");
       if (null == $xmlPath)
       {
         $retValue = false;
@@ -318,15 +318,15 @@
 
       if ($retValue)
       {
-        $itemTag = LJCCommon::GetDelimitedString($xmlPath, "items/", "/*");
-        $this->XMLFile = LJCCommon::GetDelimitedString($includeLine, "file='", "'");
+        $itemTag = LJC::GetDelimitedString($xmlPath, "items/", "/*");
+        $this->XMLFile = LJC::GetDelimitedString($includeLine, "file='", "'");
         if (null == $this->XMLFile)
         {
           $retValue = false;
         }
 
         // Add code file path to doc file path to create XML file spec.
-        $fileSpecPath = LJCCommon::GetFileSpecPath($codeFileSpec);
+        $fileSpecPath = LJC::GetFileSpecPath($codeFileSpec);
         // *** Begin *** #01
         // ToDo: This is causing problems?
         if ($fileSpecPath != "")

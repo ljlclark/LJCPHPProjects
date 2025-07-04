@@ -70,10 +70,10 @@
               $this->GenDataXMLPath = $value;
               break;
             case "writedocdataxml":
-              $this->WriteDocDataXML = LJCCommon::ToBool($value);
+              $this->WriteDocDataXML = LJC::ToBool($value);
               break;
             case "writegendataxml":
-              $this->WriteGenDataXML = LJCCommon::ToBool($value);
+              $this->WriteGenDataXML = LJC::ToBool($value);
             break;
           }
         }

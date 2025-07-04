@@ -17,8 +17,7 @@
 
       $genText = new LJCGenText();
       $templateFileSpec = "$prefix/GenDoc/GenDataLib/Templates/ClassTemplate.html";
-      //$sections = LJCSections::Deserialize("LJCHTMLTable.xml");
-      $sections = LJCSections::Deserialize("Modified.xml");
+      $sections = LJCSections::Deserialize("LJCHTMLTable.xml");
 
       //self::ModifySection($sections);
       LJCSections::Serialize("Modified.xml", $sections, "Data");

@@ -57,6 +57,7 @@
       {
         $builder->Tags("ParentGroup", $parentGroup, $indent);
       }
+      // *** End   ***
       $builder->Line("<Replacements>", $indent);
       $retValue = $builder->ToString();
 
@@ -127,7 +128,7 @@
       $indent++;
       $builder->Line("<Begin/>", $indent);
       $builder->Tags("Name", $name, $indent);
-      $builder->Line("<Items>", $indent);
+      //$builder->Line("<Items>", $indent);
       $retValue = $builder->ToString();
 
       $debug->EndMethod($enabled);

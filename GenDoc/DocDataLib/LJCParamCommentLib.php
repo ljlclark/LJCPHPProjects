@@ -40,8 +40,8 @@
 
       if ($paramLine != null)
       {
-        $name = LJCCommon::GetDelimitedString($paramLine, "name=\"", "\">");
-        $summary = LJCCommon::GetDelimitedString($paramLine, ">", "</");
+        $name = LJC::GetDelimitedString($paramLine, "name=\"", "\">");
+        $summary = LJC::GetDelimitedString($paramLine, ">", "</");
         $retValue = new LJCDocDataParam($name, $summary);
       }
 

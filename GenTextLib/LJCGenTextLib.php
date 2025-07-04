@@ -8,7 +8,7 @@
   include_once "$prefix/LJCPHPCommon/LJCCommonLib.php";
   include_once "$prefix/LJCPHPCommon/LJCTextLib.php";
   include_once "$prefix/GenTextLib/LJCGenTextSectionLib.php";
-  // LJCCommonLib: LJCCommon
+  // LJCCommonLib: LJC
   // LJCTextLib: LJCStringBuilder
   // LJCDebugLib: LJCDebug
 
@@ -49,7 +49,7 @@
 
       $items = $items->Clone();
       $groups = $this->CurrentSection->Groups;
-      if (LJCCommon::HasElements($groups))
+      if (LJC::HasElements($groups))
       {
         $orderedItems = new LJCItems();
 
@@ -119,7 +119,7 @@
         // Has ActiveSections and Line contains a potential Replacement.
         $writeLine = true;
         if (count($this->ActiveSections) > 0
-          && LJCCommon::StrPos($this->Line, "_") >= 0)
+          && LJC::StrPos($this->Line, "_") >= 0)
         {
           $writeLine = false;
           $lines = $this->ProcessSection();
@@ -303,13 +303,13 @@
           $replacements = $item->Replacements;
           foreach ($replacements as $replacement)
           {
-            $position = LJCCommon::StrPos($this->Line, $replacement->Name);
+            $position = LJC::StrPos($this->Line, $replacement->Name);
             if ($position >= 0)
             { 
               $this->Line = str_replace($replacement->Name, $replacement->Value
                 , $this->Line);
             }
-            if (-1 == LJCCommon::StrPos($this->Line, "_"))
+            if (-1 == LJC::StrPos($this->Line, "_"))
             {
               $outerBreak = true;
               break;
@@ -343,7 +343,7 @@
       // *** Begin *** Add
       $groups = $this->CurrentSection->Groups;
       $orderedItems = $this->OrderGroupItems($items, $groups);
-      $prevMemberGroup = "";
+      $prevParentGroup = "";
       // *** End   *** Add
 
       // Process Items
@@ -394,7 +394,7 @@
           if ($this->DoOutput
             && $this->Line != null)
           {
-            if (LJCCommon::StrPos($this->Line, "_") >= 0)
+            if (LJC::StrPos($this->Line, "_") >= 0)
             {
               $this->ProcessReplacements($item);
             }
@@ -404,12 +404,12 @@
             $name = $this->CurrentSection->Name;
             if (($name == "Class"
               || $name == "Function")
-              && $item->MemberGroup != $prevMemberGroup)
+              && $item->ParentGroup != $prevParentGroup)
             {
-              $text = $this->GroupHeading($item->MemberGroup);
+              $text = $this->GroupHeading($item->ParentGroup);
               $builder->Text($text);
             }
-            $prevMemberGroup = $item->MemberGroup;
+            $prevParentGroup = $item->ParentGroup;
             // *** End   ***
 
             $builder->Text($this->Line);
@@ -441,7 +441,7 @@
           $replacements = $activeSection->CurrentItem->Replacements;
           foreach ($replacements as $replacement)
           {
-            $position = LJCCommon::StrPos($line, $replacement->Name);
+            $position = LJC::StrPos($line, $replacement->Name);
             if ($position >= 0)
             { 
               $retValue = $replacement;
