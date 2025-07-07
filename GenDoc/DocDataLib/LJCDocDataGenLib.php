@@ -14,12 +14,12 @@
   include_once "$prefix/GenDoc/DocDataLib/LJCDocDataLib.php";
   include_once "$prefix/GenDoc/DocDataLib/LJCCommentsLib.php";
   // The used classes:
-  // LJCDebugLib:
+  // LJCDebugLib: LJCDebug
   // LJCCommonLib: LJC
   // LJCCommonFileLib: LJCCommonFile
   // LJCGenDocConfigLib: LJCGenDocConfig
   // LJCTextLib: LJCWriter
-  // LJCDebugLib: LJCDebug
+  // LJCTextFileLib: LJCFileWriter
   // LJCDocDataLib: LJCDocDataClass, LJCDocDataClasses, LJCDocDataFile
   //   , LJCDocDataMethod, LJCDocDataMethods, LJCDocDataParam, LJCDocDataParams
   // LJCCommentsLib: LJCComments
@@ -35,7 +35,7 @@
   // GenCodeDoc->CreateFilePages()
   //
   // Main Call Tree:
-  // CreateDocDataXMLString() public
+  // SerializeDocData() public
   //   ProcessCode() public
   //     LineProcessed()
   //       ProcessLib()
@@ -66,9 +66,9 @@
     // <include path='items/GetFunctionName/*' file='Doc/LJCDocDataGen.xml'/>
     private static function GetFunctionName(array $tokens)	: ?string
     {
-      $debug = new LJCDebug("LJCGenTextSectionLib", "LJCDocDataGen"
-       , "w", false);
       $enabled = false;
+      $debug = new LJCDebug("LJCDocDataGenLib", "LJCDocDataGen"
+       , "a", $enabled);
       $debug->BeginMethod("GetFunctionName", $enabled);
       $retValue = null;
 
@@ -96,9 +96,9 @@
     // <include path='items/GetPropertyName/*' file='Doc/LJCDocDataGen.xml'/>
     private static function GetPropertyName(array $tokens) : ?string
     {
-      $debug = new LJCDebug("LJCGenTextSectionLib", "LJCDocDataGen"
-       , "w", false);
       $enabled = false;
+      $debug = new LJCDebug("LJCDocDataGenLib", "LJCDocDataGen"
+       , "a", $enabled);
       $debug->BeginMethod("GetPropertyName", $enabled);
       $retValue = null;
 
@@ -123,9 +123,9 @@
     // <include path='items/ScrubFunctionName/*' file='Doc/LJCDocDataGen.xml'/>
     private static function ScrubFunctionName(string $functionToken) : string
     {
-      $debug = new LJCDebug("LJCGenTextSectionLib", "LJCDocDataGen"
-       , "w", false);
       $enabled = false;
+      $debug = new LJCDebug("LJCDocDataGenLib", "LJCDocDataGen"
+       , "a", $enabled);
       $debug->BeginMethod("ScrubFunctionName", $enabled);
       $retValue = $functionToken;
 
@@ -167,13 +167,14 @@
     public function __construct()
     {
       // Instantiate properties with Pascal case.
+      $enabled = false;
       $this->Debug = new LJCDebug("LJCDocDataGenLib", "LJCDocDataGen"
-        , "w", false);
+        , "w", $enabled);
       $this->Debug->IncludePrivate = true;
 
       $this->ClassName = null;
       $this->Comments = new LJCComments();
-      $this->DocDataFile = new LJCDocDataFile("");
+      //$this->DocDataFile = new LJCDocDataFile("");
       $this->FunctionName= null;
       $this->InputStream = null;
       $this->LibName = null;
@@ -194,6 +195,7 @@
     /// <include path='items/CreateDocDataXMLString/*' file='Doc/LJCDocDataGen.xml'/>
     public function SerializeDocData(string $codeFileSpec) : ?string
     {
+      // GenCodeDoc.CreateFilePages()
       $enabled = false;
       $this->Debug->BeginMethod("SerializeDocData", $enabled);
       $retValue = null;
@@ -204,21 +206,7 @@
       $this->DocDataFile = new LJCDocDataFile($this->LibName);
 
       $retValue = $this->ProcessCode($codeFileSpec);
-
-      // Write XML data.
-      $writeDocDataXML = $this->GenDocConfig->WriteDocDataXML;
-      // *** Begin *** Debug Output
-      if ("LJCHTMLTableLib" == $this->LibName)
-      {
-        $writeDocDataXML = true;
-      }
-      // *** End   ***
-      if ($writeDocDataXML)
-      {
-        $docDataXMLPath = $this->GenDocConfig->DocDataXMLPath;
-        $outputFileSpec = $this->DocOutputFileSpec($codeFileSpec, $docDataXMLPath);
-        LJCFileWriter::WriteFile($retValue, $outputFileSpec);
-      }
+      $this->WriteLibDocXML($retValue, $codeFileSpec, $this->LibName);
 
       $this->Debug->EndMethod($enabled);
       return $retValue;
@@ -228,6 +216,8 @@
     /// <include path='items/ProcessCode/*' file='Doc/LJCDocDataGen.xml'/>
     public function ProcessCode(string $codeFileSpec) : ?string
     {
+      // SerializeDocData()
+      // ProcessCode()
       $enabled = false;
       $this->Debug->BeginMethod("ProcessCode", $enabled);
       $retValue = null;
@@ -237,7 +227,6 @@
       {
         $success = false;
         $this->Debug->BeginMethod("ProcessCode");
-        $this->Debug->Write(__LINE__." $codeFileSpec was not found.");
         $this->Debug->EndMethod();
       }
       if ($success)
@@ -246,9 +235,15 @@
         if (null == $this->InputStream)
         {
           $success = false;
+          $saveEnabled = $this->Debug->IsEnabled();
+          if (!$saveEnabled)
+          {
+            $this->Debug->setEnabled(true);
+          }
           $this->Debug->BeginMethod("ProcessCode");
-          $this->Debug->Write(__LINE__." Unable to open $codeFileSpec.");
+          $this->Debug->Write(__LINE__." Unable to open {$codeFileSpec}.");
           $this->Debug->EndMethod();
+          $this->Debug->setEnabled($saveEnabled);
         }
       }
       if ($success)
@@ -288,57 +283,10 @@
     // ---------------
     // Private Methods - LJCDocDataGen
 
-    // Creates the DocData XML output file spec.
-    /// <include path='items/DocOutputFileSpec/*' file='Doc/LJCDocDataGen.xml'/>
-    private function DocOutputFileSpec(string $codeFileSpec
-      , string $outputPath = null) : string
-    {
-      $enabled = false;
-      $this->Debug->BeginPrivateMethod("DocOutputFileSpec", $enabled);
-      $retValue = null;
-
-      if (null == $outputPath)
-      {
-        $outputPath = "../XMLDocData";
-      }
-      LJCCommonFile::MkDir($outputPath);
-      $fileName = LJC::GetFileName($codeFileSpec) . ".xml";
-      $retValue = "$outputPath/$fileName";
-
-      $this->Debug->EndMethod($enabled);
-      return $retValue;
-    } // DocOutputFileSpec()
-
-    // Indicates if the Syntax eligible statement is continued.
-    private function IsSyntaxContinue(string $line) : bool
-    {
-      $enabled = false;
-      $this->Debug->BeginPrivateMethod("IsSyntaxContinue", $enabled);
-      $retValue = false;
-
-      $trimLine = trim($line);
-      $textIndex = LJC::StrRPos($trimLine, ":");
-      if ($textIndex > 0)
-      {
-        $textIndex = strlen($trimLine) - 1;
-      }
-      if ($textIndex < 0)
-      {
-        $textIndex = LJC::StrRPos($trimLine, ")");
-      }
-      $textLength = strlen($trimLine);
-      if ($textIndex < $textLength - 2)
-      {
-        $retValue = true;
-      }
-
-      $this->Debug->EndMethod($enabled);
-      return $retValue;
-    } // IsSyntaxContinue()
-
     // Process XML Comment or Skip Null line and Comment Line.
     private function LineProcessed(?string $line, string $codeFileSpec) : bool
     {
+      // ProcessCode()
       $enabled = false;
       $this->Debug->BeginPrivateMethod("LineProcessed", $enabled);
       $retProcessed = false;
@@ -386,9 +334,62 @@
       return $retProcessed;
     } // LineProcessed()
 
+    // Copy the Lib XML comments into the DocData objects.
+    private function ProcessLib() : void
+    {
+      // LineProcessed()
+      $enabled = false;
+      $this->Debug->BeginPrivateMethod("ProcessLib", $enabled);
+
+      $docDataFile = $this->DocDataFile;
+      $docDataFile->Summary = $this->Comments->Summary;
+      $docDataFile->Remarks = $this->Comments->Remarks;
+
+      $this->Comments->ClearComments();
+
+      $this->Debug->EndMethod($enabled);
+    } // ProcessLib()
+
+    // Writes an output line.
+    private function Output($text = null, $value = null)
+    {
+      $enabled = false;
+      $this->Debug->BeginPrivateMethod("Output", $enabled);
+
+      $lib = "";
+      //$lib = "LJCCommonLib";
+      if ("" == $lib
+        || $lib == $this->LibName
+        || $lib == $this->IncludeFile->LibName)
+      {
+        LJCWriter::Write($text);
+        if ($value != null)
+        {
+          if (is_array($value))
+          {
+            foreach ($value as $key => $value)
+            {
+              LJCWriter::WriteLine(":\r\n|$key| |$value|");
+            }
+          }
+          else
+          {
+            LJCWriter::Write(":\r\n|$value|");
+          }
+        }
+        LJCWriter::WriteLine("");
+      }
+
+      $this->Debug->EndMethod($enabled);
+    } // Output()
+
+    // ---------------
+    // Private Process Item Methods - LJCDocDataGen
+
     // Copy the Class XML comments into the DocData objects.
     private function ProcessClass() : void
     {
+      // ProcessItem()
       $enabled = false;
       $this->Debug->BeginPrivateMethod("ProcessClass", $enabled);
 
@@ -406,10 +407,10 @@
 
       // Get Comment values.
       $class->Code = $this->Comments->Code;
-      // *** Begin *** Add
-      foreach ($this->Comments->Groups as $group)
+      // *** Begin *** Add Named Groups
+      foreach ($this->Comments->Groups as $key => $value)
       {
-        $class->Groups[] = $group;
+        $class->Groups[$key] = $value;
       }
       // *** End   *** Add
       $class->Remarks = $this->Comments->Remarks;
@@ -419,43 +420,11 @@
       $this->Debug->EndMethod($enabled);
     } // ProcessClass()
 
-    // Copy the Function XML comments into the DocData objects.
-    private function ProcessFunction() : void
-    {
-      $enabled = false;
-      $this->Debug->BeginPrivateMethod("ProcessFunction", $enabled);
-
-      $classes = $this->DocDataFile->Classes;
-      $class = $classes->Retrieve($this->ClassName);
-      $methods = $class->Methods;
-      if (null == $methods)
-      {
-        $methods = new LJCDocDataMethods();
-        $class->Methods = $methods;
-      }
-      $name = $this->FunctionName;
-      $summary = $this->Comments->Summary;
-      $returns = $this->Comments->Returns;
-      $method = new LJCDocDataMethod($name, $summary, $returns);
-      $methods->AddObject($method, $name);
-
-      // Get Comment values.
-      $method->Code = $this->Comments->Code;
-      $method->Params = $this->Comments->Params;
-      $method->ParentGroup = $this->Comments->ParentGroup;
-      $method->Remarks = $this->Comments->Remarks;
-      $this->SetFunctionSyntax();
-      $method->Syntax = $this->Syntax;
-
-      $this->Comments->ClearComments();
-
-      $this->Debug->EndMethod($enabled);
-    } // ProcessFunction()
-
     // Processes the Class, Function or Property.
     // $tokens - The array of line tokens.
     private function ProcessItem(array $tokens) : void
     {
+      // ProcessCode()
       $enabled = false;
       $this->Debug->BeginPrivateMethod("ProcessItem", $enabled);
 
@@ -503,24 +472,10 @@
       $this->Debug->EndMethod($enabled);
     } // ProcessItem()
 
-    // Copy the Lib XML comments into the DocData objects.
-    private function ProcessLib() : void
-    {
-      $enabled = false;
-      $this->Debug->BeginPrivateMethod("ProcessLib", $enabled);
-
-      $docDataFile = $this->DocDataFile;
-      $docDataFile->Summary = $this->Comments->Summary;
-      $docDataFile->Remarks = $this->Comments->Remarks;
-
-      $this->Comments->ClearComments();
-
-      $this->Debug->EndMethod($enabled);
-    } // ProcessLib()
-
     // Copy the Property XML comments into the DocData objects.
     private function ProcessProperty() : void
     {
+      // ProcessItem()
       $enabled = false;
       $this->Debug->BeginPrivateMethod("ProcessProperty", $enabled);
 
@@ -546,10 +501,77 @@
 
       $this->Debug->EndMethod($enabled);
     } // ProcessProperty()
+    
+    // ---------------
+    // Private Process Function Methods - LJCGenDataGen
+
+    // Indicates if the Syntax eligible statement is continued.
+    private function IsSyntaxContinue(string $line) : bool
+    {
+      // SetFunctionSyntax()
+      $enabled = false;
+      $this->Debug->BeginPrivateMethod("IsSyntaxContinue", $enabled);
+      $retValue = false;
+
+      $trimLine = trim($line);
+      $textIndex = LJC::StrRPos($trimLine, ":");
+      if ($textIndex > 0)
+      {
+        $textIndex = strlen($trimLine) - 1;
+      }
+      if ($textIndex < 0)
+      {
+        $textIndex = LJC::StrRPos($trimLine, ")");
+      }
+      $textLength = strlen($trimLine);
+      if ($textIndex < $textLength - 2)
+      {
+        $retValue = true;
+      }
+
+      $this->Debug->EndMethod($enabled);
+      return $retValue;
+    } // IsSyntaxContinue()
+
+    // Copy the Function XML comments into the DocData objects.
+    private function ProcessFunction() : void
+    {
+      // ProcessItem()
+      $enabled = false;
+      $this->Debug->BeginPrivateMethod("ProcessFunction", $enabled);
+
+      $classes = $this->DocDataFile->Classes;
+      $class = $classes->Retrieve($this->ClassName);
+      $methods = $class->Methods;
+      if (null == $methods)
+      {
+        $methods = new LJCDocDataMethods();
+        $class->Methods = $methods;
+      }
+      $name = $this->FunctionName;
+      $summary = $this->Comments->Summary;
+      $returns = $this->Comments->Returns;
+      $method = new LJCDocDataMethod($name, $summary, $returns);
+      $methods->AddObject($method, $name);
+
+      // Get Comment values.
+      $method->Code = $this->Comments->Code;
+      $method->Params = $this->Comments->Params;
+      // *** Add ***
+      $method->ParentGroup = $this->Comments->ParentGroup;
+      $method->Remarks = $this->Comments->Remarks;
+      $this->SetFunctionSyntax();
+      $method->Syntax = $this->Syntax;
+
+      $this->Comments->ClearComments();
+
+      $this->Debug->EndMethod($enabled);
+    } // ProcessFunction()
 
     // Sets the Syntax value for a function.
     private function SetFunctionSyntax() : void
     {
+      // ProcessFunction()
       $enabled = false;
       $this->Debug->BeginPrivateMethod("SetFunctionSyntax", $enabled);
 
@@ -574,39 +596,61 @@
 
       $this->Debug->EndMethod($enabled);
     } // SetFunctionSyntax()
+    
+    // ---------------
+    // Private Write XML Methods - LJCGenDataGen
 
-    // Writes an output line.
-    private function Output($text = null, $value = null)
+    // Creates a Lib DocData XML output file spec.
+    /// <include path='items/DocOutputFileSpec/*' file='Doc/LJCDocDataGen.xml'/>
+    private function LibGenXMLSpec(string $codeFileSpec
+      , string $outputPath = null) : string
     {
+      // WriteLibDocXML()
       $enabled = false;
-      $this->Debug->BeginPrivateMethod("Output", $enabled);
+      $this->Debug->BeginPrivateMethod("LibGenXMLSpec", $enabled);
+      $retValue = null;
 
-      $lib = "";
-      //$lib = "LJCCommonLib";
-      if ("" == $lib
-        ||$lib == $this->LibName
-        || $lib == $this->IncludeFile->LibName)
+      if (null == $outputPath)
+      {  
+        $outputPath = "../XMLDocData";
+      }
+      LJCCommonFile::MkDir($outputPath);
+      $fileName = LJC::GetFileName($codeFileSpec) . ".xml";
+      $retValue = "$outputPath/$fileName";
+
+      $this->Debug->EndMethod($enabled);
+      return $retValue;
+    } // LibGenXMLSpec()
+
+    // Writes the LibGenXML file.
+    private function WriteLibDocXML(string $libDocXML, string $codeFileSpec
+      , string $fileName)
+    {
+      // SerializeDocData()
+      $enabled = false;
+      $this->Debug->BeginPrivateMethod("WriteLibDocXML", $enabled);
+      $retValue = false;
+
+      $writeDocDataXML = $this->GenDocConfig->WriteDocDataXML;
+      // *** Begin *** Debug Output
+      if ("LJCHTMLTableLib" == $fileName)
       {
-        LJCWriter::Write($text);
-        if ($value != null)
-        {
-          if (is_array($value))
-          {
-            foreach ($value as $item)
-            {
-              LJCWriter::WriteLine(":\r\n|$item|");
-            }
-          }
-          else
-          {
-            LJCWriter::Write(":\r\n|$value|");
-          }
-        }
-        LJCWriter::WriteLine("");
+        $writeDocDataXML = true;
+      }
+      // *** End   ***
+
+      if ($writeDocDataXML
+        && $libDocXML != null)
+      {
+        $retValue = true;
+        $docDataXMLPath = $this->GenDocConfig->DocDataXMLPath;
+        $fileSpec = $this->LibGenXMLSpec($codeFileSpec, $docDataXMLPath);
+        LJCFileWriter::WriteFile($libDocXML, $fileSpec);
       }
 
       $this->Debug->EndMethod($enabled);
-    } // Output()
+      return $retValue;
+    }
 
     // ---------------
     // Private Properties - LJCDocDataGen

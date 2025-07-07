@@ -5,8 +5,8 @@
   declare(strict_types=1);
   include_once "LJCRoot.php";
   $prefix = RelativePrefix();
-  include_once "$prefix/LJCPHPCommon/LJCTextLib.php";
-  // LJCTextLib: LJCDebugWriter
+  include_once "$prefix/LJCPHPCommon/LJCTextFileLib.php";
+  // LJCTextFileLib: LJCDebugWriter
 
   // Contains classes for debugging.
   /// LibName: LJCDebugLib
@@ -50,18 +50,18 @@
     // Start Text Methods - LJCDebug
 
     /// <summary>Begin the method comments.</summary>
-    public function BeginMethod(string $methodName, bool $enable = true)
+    public function BeginMethod(string $methodName, bool $enabled = true)
     {
-      if ($enable)
+      if ($enabled)
       {
         $this->WriteStartText($methodName);
       }
     }
 
     /// <summary>Begin the method comments.</summary>
-    public function BeginPrivateMethod(string $methodName, bool $enable = true)
+    public function BeginPrivateMethod(string $methodName, bool $enabled = true)
     {
-      if ($enable)
+      if ($enabled)
       {
         $this->WritePrivateStartText($methodName);
       }
@@ -179,6 +179,11 @@
       return str_pad($retText, $this->IndentCount * 2);
     }
 
+    public function IsEnabled()
+    {
+      return $this->Enabled;
+    }
+
     /// <summary>Writes the indent count.</summary>
     public function WriteIndentCount()
     {
@@ -198,6 +203,10 @@
     public function setEnabled(bool $isEnabled)
     {
       $this->Enabled = $isEnabled;
+      if (!$isEnabled)
+      {
+        unset($this->Writer);
+      }
       if ($isEnabled
         && !isset($this->Writer))
       {

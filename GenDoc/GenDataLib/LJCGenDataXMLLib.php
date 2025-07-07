@@ -52,12 +52,10 @@
       $builder->Line("<Item>", $indent);
       $indent++;
       $builder->Tags("Name", $name, $indent);
-      // *** Begin ***
       if ($parentGroup != null)
       {
         $builder->Tags("ParentGroup", $parentGroup, $indent);
       }
-      // *** End   ***
       $builder->Line("<Replacements>", $indent);
       $retValue = $builder->ToString();
 

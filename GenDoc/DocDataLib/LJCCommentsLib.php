@@ -44,8 +44,9 @@
     public function __construct()
     {
       // Instantiate properties with Pascal case.
+      $enabled = false;
       $this->Debug = new LJCDebug("LJCCommentsLib", "LJCComments"
-        , "w",  false);
+        , "w",  $enabled);
       $this->Debug->IncludePrivate = true;
 
       $this->CurrentTagName = null;
@@ -82,6 +83,7 @@
       $this->Debug->BeginMethod("ClearComments", $enabled);
 
       $this->ClearComment("code");
+      $this->ClearComment("group");
       $this->ClearComment("include");
       $this->ClearComment("param");
       $this->ClearComment("remarks");
@@ -108,13 +110,6 @@
       {
         // New comment.
         $this->CurrentTagName = $this->GetBeginTagName($line);
-        // *****
-        if ("parentgroup" == $this->CurrentTagName)
-        {
-          //echo("\r\n".__line__." LJCComments.SetComment()");
-          //echo(" currentTagName = {$this->CurrentTagName}");
-        }
-        // *****
 
         // *** Change ***
         // Critical to handle multiple tags.
@@ -226,14 +221,6 @@
 
       // Get using $CurrentTagName.
       $beginTag = $this->GetBeginTag();
-      // *****
-      $cmp = trim(strtolower($beginTag));
-      if ("<parentgroup>" == $cmp)
-      {
-        //echo("\r\n".__line__." LJCComments.GetComment()");
-        //echo(" beginTag = {$beginTag}");
-      }
-      // *****
       $endTag = $this->GetEndTag();
 
       $positionBegin = LJC::StrPos($line, $beginTag);
@@ -262,6 +249,18 @@
         $this->CurrentTagName = null;
       }
 
+      // *** Begin *** Named Groups
+      // Save group item.
+      if ("<group" == $beginTag)
+      {
+        $this->Debug->BeginPrivateMethod("GetComment", $enabled);
+        $isSimpleComment = false;
+        $paramComment = new LJCParamComment();
+        $param = $paramComment->GetParam($line);
+        $this->Groups[$param->Name] = $param->Summary;
+      }
+      // *** End   ***
+
       // Save param item.
       if ("<param" == $beginTag)
       {
@@ -283,13 +282,6 @@
         // Get to end of string if endTag is null.
         $retValue = LJC::GetDelimitedString($line, $beginTag, $endTag
           , false, $rTrim);
-        // *****
-        if ("parentgroup" == $beginTag)
-        {
-          echo("\r\n".__line__." LJCComments.GetComment()");
-          echo(" beginTag = {$beginTag}");
-        }
-        // *****
       }
 
       $this->Debug->EndMethod($enabled);
@@ -312,10 +304,11 @@
           $this->Code .= htmlspecialchars($comment);
           break;
 
+        // *** Delete *** Named Groups
         // *** Add ***
-        case "group":
-          $this->Groups[] = htmlspecialchars($comment);
-          break;
+        //case "group":
+        //  $this->Groups[] = htmlspecialchars($comment);
+        //  break;
 
         // *** Add ***
         case "parentgroup":
@@ -487,7 +480,7 @@
       // tagName = "code", tag = "<code>"
       $this->BeginTags["code"] = "<code>";
       // *** Add ***
-      $this->BeginTags["group"] = "<group>";
+      $this->BeginTags["group"] = "<group";
       $this->BeginTags["include"] = "<include";
       // *** Add ***
       $this->BeginTags["parentgroup"] = "<parentgroup>";

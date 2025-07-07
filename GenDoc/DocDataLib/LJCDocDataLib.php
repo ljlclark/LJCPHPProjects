@@ -8,9 +8,11 @@
   include_once "$prefix/LJCPHPCommon/LJCDebugLib.php";
   include_once "$prefix/LJCPHPCommon/LJCCommonLib.php";
   include_once "$prefix/LJCPHPCommon/LJCTextLib.php";
+  include_once "$prefix/LJCPHPCommon/LJCTextFileLib.php";
   include_once "$prefix/LJCPHPCommon/LJCCollectionLib.php";
   // LJCCommonLib: LJC
-  // LJCTextLib: LJCStringBuilder, LJCWriter
+  // LJCTextLib: LJCStringBuilder
+  // LJCTextFileLib: LJCFileWriter
   // LJCCollectionLib: LJCCollectionBase
   // LJCDebugLib: LJCDebug
 
@@ -52,8 +54,9 @@
     public function __construct(string $name, ?string $summary = null)
     {
       // Instantiate properties with Pascal case.
+      $enabled = false;
       $this->Debug = new LJCDebug("LJCDocDataLib", "LJCDocDataClass"
-        , "w", false);
+        , "w", $enabled);
       $this->Debug->IncludePrivate = true;
 
       $this->Code = null;
@@ -334,7 +337,7 @@
       : ?LJCDocDataProperties
     {
       // Deserialize()
-      // + DeserializeString()-CreateDocDataFile()-GetClasses()
+      // DeserializeString()-CreateDocDataFile()-GetClasses()
       $retValue = null;
 
       $propertyNodes = self::GetPropertyNodes($classNode);
@@ -450,9 +453,10 @@
     public function __construct(string $name, ?string $summary = null)
     {
       // Instantiate properties with Pascal case.
-      $this->Debug = new LJCDebug("LJCDocDataLib", "LJCDocDataFile"
-        , "w",  false);
-      $this->Debug->IncludePrivate = true;
+      //$enabled = false;
+      //$this->Debug = new LJCDebug("LJCDocDataLib", "LJCDocDataFile"
+      //  , "w",  $enabled);
+      //$this->Debug->IncludePrivate = true;
 
       $this->Classes = null;
       $this->Functions = null;
@@ -487,8 +491,8 @@
 
       $docDataXML = $this->SerializeToString();
       $stream = fopen($xmlFileSpec, "w");
-      $this->Writer = new LJCWriter($stream);
-      $this->Writer->FWrite($docDataXML);
+      $fileWriter = new LJCFileWriter($stream);
+      $fileWriter->FWrite($docDataXML);
       fclose($stream);
 
       $this->Debug->EndMethod($enabled);
@@ -498,8 +502,13 @@
     /// <include path='items/SerializeToString/*' file='Doc/LJCDocDataFile.xml'/>
     public function SerializeToString($xmlFileName = null) : string
     {
+      // LJCDocDataGenLib.ProcessCode()
       // Serialize()
       $enabled = false;
+      $this->Debug = new LJCDebug("LJCDocDataLib", "LJCDocDataFile"
+        , "w",  $enabled);
+      $this->Debug->IncludePrivate = true;
+      //$enabled = false;
       $this->Debug->BeginMethod("SerializeToString", $enabled);
 
       $builder = new LJCStringBuilder();
@@ -508,7 +517,7 @@
       $builder->Line("<?xml version=\"1.0\"?>");
       $builder->Line("<!-- Copyright (c) Lester J. Clark and Contributors. -->");
       $builder->Line("<!-- Licensed under the MIT License. -->");
-      if (null != $xmlFileName)
+      if ($xmlFileName != null)
       {
         $builder->Line("<!-- $xmlFileName -->");
       }
@@ -530,13 +539,18 @@
           $builder->Line("<Class>", $indent + 1);
           $builder->Tags("Name", $class->Name, $indent + 2);
           $builder->Tags("Summary", $class->Summary, $indent + 2);
-          if (LJC::HasItems($class->Groups))
-          {
-            foreach ($class->Groups as $group)
+          //if (LJC::HasElements($class->Groups))
+          //{
+            //foreach ($class->Groups as $group)
+            //{
+            //  $builder->Tags("Group", $group, $indent + 2);
+            //}
+            foreach ($class->Groups as $key => $value)
             {
-              $builder->Tags("Group", $group, $indent + 2);
+              $text = "<Group name=\"{$key}\">{$value}</Group>";
+              $builder->Text($text);
             }
-          }
+          //}
           $builder->Tags("Remarks", $class->Remarks, $indent + 2);
           $builder->Text($this->SerializeMethods($class, $indent + 2));
           $builder->Text($this->SerializeProperties($class, $indent + 2));
@@ -596,7 +610,7 @@
     {
       // SerializeToString()-SerializeMethods()
       $enabled = false;
-      $this->Debug->BeginPrivateMethod("CreateParams", $enabled);
+      $this->Debug->BeginPrivateMethod("SerializeParams", $enabled);
 
       $builder = new LJCStringBuilder();
       if ($params != null && count($params) > 0)
@@ -622,7 +636,7 @@
     {
       // SerializeToString()
       $enabled = false;
-      $this->Debug->BeginPrivateMethod("CreateProperties", $enabled);
+      $this->Debug->BeginPrivateMethod("SerializeProperties", $enabled);
 
       $builder = new LJCStringBuilder();
       if ($class->Properties != null && count($class->Properties) > 0)
@@ -662,9 +676,6 @@
 
     /// <summary>The Summary value.</summary>
     public ?string $Summary;
-
-    // The Writer object.
-    private LJCWriter $Writer;
   } // LJCDocDataFile
 
   // ***************

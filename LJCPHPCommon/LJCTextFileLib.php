@@ -7,7 +7,7 @@
   $prefix = RelativePrefix();
   include_once "$prefix/LJCPHPCommon/LJCCommonLib.php";
   include_once "$prefix/LJCPHPCommon/LJCCommonFileLib.php";
-  include_once "$prefix/LJCPHPCommon/LJCTextFileLib.php";
+  //include_once "$prefix/LJCPHPCommon/LJCTextFileLib.php";
   // LJCCommonLib: LJCCommon
 
   /// <summary>The Common Text Output Class Library</summary>
