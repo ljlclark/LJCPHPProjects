@@ -182,12 +182,12 @@
 
       // Search for beginning of first value.
       $currentIndex = 0;
-      $beginIndex = LJCCommon::StrPos($text, $this->ValueDelimiter);
+      $beginIndex = LJC::StrPos($text, $this->ValueDelimiter);
       while ($beginIndex > -1)
       {
         // Search for ending of value.
         $currentIndex = $beginIndex + 1;
-        $endIndex = LJCCommon::StrPos($text, $this->ValueDelimiter
+        $endIndex = LJC::StrPos($text, $this->ValueDelimiter
           , $currentIndex);
         if (-1 == $endIndex)
         {
@@ -207,7 +207,7 @@
         // Search for beginning of next value.
         $currentIndex = $endIndex + 1;
         $endIndex = -1;
-        $beginIndex = LJCCommon::StrPos($text, $this->ValueDelimiter
+        $beginIndex = LJC::StrPos($text, $this->ValueDelimiter
           , $currentIndex);
       }
 
@@ -242,13 +242,13 @@
           $field = substr($line, $beginIndex);
           if (str_starts_with(trim($field), $this->ValueDelimiter))
           {
-            $index = LJCCommon::StrPos($field, $this->ValueDelimiter);
+            $index = LJC::StrPos($field, $this->ValueDelimiter);
             $beginIndex += $index + 1;
           }
 
           // Find the end of field.
           $currentIndex = $beginIndex + 1;
-          $endIndex = LJCCommon::StrPos($line, $this->FieldDelimiter, $currentIndex);
+          $endIndex = LJC::StrPos($line, $this->FieldDelimiter, $currentIndex);
           if (-1 == $endIndex)
           {
             // No more field delimiters so use length to get last field.
@@ -260,7 +260,7 @@
             while ($this->IsInValue($endIndex))
             {
               $currentIndex = $endIndex + 1;
-              $endIndex = LJCCommon::StrPos($line, $this->FieldDelimiter
+              $endIndex = LJC::StrPos($line, $this->FieldDelimiter
                 , $currentIndex);
               if (-1 == $endIndex)
               {
@@ -331,7 +331,7 @@
 
       // Verify ending of value.
       $verifyStartIndex = $endIndex + 1;
-      $verifyIndex = LJCCommon::StrPos($text, $this->FieldDelimiter
+      $verifyIndex = LJC::StrPos($text, $this->FieldDelimiter
         , $verifyStartIndex);
       if (-1 == $verifyIndex)
       {

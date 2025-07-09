@@ -271,8 +271,9 @@
     public function __construct(string $name)
     {
       // Instantiate properties with Pascal case.
+      $enabled = false;
       $this->Debug = new LJCDebug("LJCGenTextSectionLib", "LJCSection"
-        , "w", false);
+        , "w", $enabled);
       $this->Debug->IncludePrivate = true;
 
       $this->Name = trim($name);
@@ -286,6 +287,8 @@
     {
       $enabled = false;
       $this->Debug->BeginMethod("Clone", $enabled);
+      //$this->Debug->Write(__line__." Var = {$this->Var}");
+      //LJC::Debug(__line__, "Var", $this->Var);
 
       $retValue = new self($this->Name);
       $retValue->Begin = $this->Begin;
@@ -339,10 +342,12 @@
     public static function CreateColumnData(LJCDbColumns $dbColumns
       , string $tableName, string $className = null) : LJCSections
     {
-      $debug = new LJCDebug("LJCGenTextSectionLib", "LJCSectionsStatic"
-       , "a", false);
       $enabled = false;
+      $debug = new LJCDebug("LJCGenTextSectionLib", "LJCSectionsStatic"
+       , "a", $enabled);
       $debug->BeginMethod("CreateColumnData", $enabled);
+      //$this->Debug->Write(__line__." Var = {$this->Var}");
+      //LJC::Debug(__line__, "Var", $this->Var);
 
       if ($className == null)
       {
@@ -385,10 +390,12 @@
     {
       // Deserialize()
       // DeserializeString()
-      $debug = new LJCDebug("LJCGenTextSectionLib", "LJCSectionsStatic"
-       , "a", false);
       $enabled = false;
+      $debug = new LJCDebug("LJCGenTextSectionLib", "LJCSectionsStatic"
+       , "a", $enabled);
       $debug->BeginMethod("CreateSections", $enabled);
+      //$this->Debug->Write(__line__." Var = {$this->Var}");
+      //LJC::Debug(__line__, "Var", $this->Var);
 
       $sections = new LJCSections();
       if ($xmlElement != null)
@@ -402,17 +409,17 @@
             $section = new LJCSection($sectionName);
             $section->Begin = (int)$xmlSection->Begin;
 
-            // *** Begin ***
             $xmlGroupsNode = $xmlSection->Groups;
             if (self::ElementHasChildren($xmlGroupsNode))
             {
               $xmlGroups = $xmlGroupsNode->children();
               foreach ($xmlGroups as $xmlGroup)
               {
-                $section->Groups[] = (string)$xmlGroup;
+                $name = (string)$xmlGroup->Name;
+                $heading = (string)$xmlGroup->Heading;
+                $section->Groups[$name] = $heading;
               }
             }
-            // *** End   ***
 
             $xmlItems = $xmlSection->Items->children();
             foreach ($xmlItems as $xmlItem)
@@ -470,6 +477,8 @@
        , "a", false);
       $enabled = false;
       $debug->BeginMethod("Deserialize", $enabled);
+      //$this->Debug->Write(__line__." Var = {$this->Var}");
+      //LJC::Debug(__line__, "Var", $this->Var);
       $retValue = null;
 
       if (!file_exists($xmlFileSpec))
@@ -494,6 +503,8 @@
        , "w", false);
       $enabled = false;
       $debug->BeginMethod("DeserializeString", $enabled);
+      //$this->Debug->Write(__line__." Var = {$this->Var}");
+      //LJC::Debug(__line__, "Var", $this->Var);
       $retValue = null;
 
       $xmlElement = simplexml_load_string($xmlString);
@@ -567,8 +578,9 @@
     public function __construct()
     {
       // Instantiate properties with Pascal case.
+      $enabled = false;
       $this->Debug = new LJCDebug("LJCGenTextSectionLib", "LJCSections"
-        , "w", false);
+        , "w", $enabled);
       $this->Debug->IncludePrivate = true;
     }
 
@@ -618,6 +630,8 @@
     public function Add(LJCSection $item, $key = null) : void
     {
       $this->Debug->WriteStartText("Add");
+      //$this->Debug->Write(__line__." Var = {$this->Var}");
+      //LJC::Debug(__line__, "Var", $this->Var);
 
       if (null === $key)
       {
@@ -641,6 +655,8 @@
     {
       $enabled = false;
       $this->Debug->BeginMethod("Clone", $enabled);
+      //$this->Debug->Write(__line__." Var = {$this->Var}");
+      //LJC::Debug(__line__, "Var", $this->Var);
       $retValue = new self();
 
       foreach ($this->Items as $key => $item)
@@ -658,6 +674,8 @@
     public function Remove($key) : void
     {
       $this->Debug->WriteStartText("Remove");
+      //$this->Debug->Write(__line__." Var = {$this->Var}");
+      //LJC::Debug(__line__, "Var", $this->Var);
 
       if (false == $this->HasKey($key))
       {
@@ -673,6 +691,8 @@
     public function Retrieve($key, bool $showError = true) : ?LJCSection
     {
       $this->Debug->WriteStartText("Retrieve");
+      //$this->Debug->Write(__line__." Var = {$this->Var}");
+      //LJC::Debug(__line__, "Var", $this->Var);
       $retValue = null;
 
       $success = true;
@@ -729,9 +749,12 @@
     public function __construct(string $name, string $parentGroup = "")
     {
       // Instantiate properties with Pascal case.
+      $enabled = false;
       $this->Debug = new LJCDebug("LJCGenTextSectionLib", "LJCItem"
-        , "w", false);
+        , "w", $enabled);
       $this->Debug->IncludePrivate = true;
+      //$this->Debug->Write(__line__." Var = {$this->Var}");
+      //LJC::Debug(__line__, "Var", $this->Var);
 
       $this->Name = trim($name);
       $this->ParentGroup = $parentGroup;
@@ -744,6 +767,8 @@
     {
       $enabled = false;
       $this->Debug->BeginMethod("Clone", $enabled);
+      //$this->Debug->Write(__line__." Var = {$this->Var}");
+      //LJC::Debug(__line__, "Var", $this->Var);
 
       $retValue = new self($this->Name);
       $retValue->Replacements = $this->Replacements;

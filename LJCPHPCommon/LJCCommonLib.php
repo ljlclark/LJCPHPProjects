@@ -9,8 +9,11 @@
   // Classes: LJC
 
   // ***************
-  // Static: Scrub(), Split(), StrPos(), StrRPos(), GetBool()
-  //   GetDelimitedString(), GetFileName(), GetFileSpecPath(), GetTokens()
+  // Static: Debug(), EndsWithNewLine(), GetDelimitedString()
+  //    GetFileName(), GetFileSpecPath(), GetTokens()
+  //    HasElements(), HasItems(), HasValue(), HasXML(), NewLineTrim() 
+  //    Scrub(), Split(), StrPos(), StrRPos(), ToBool(), ToBoolInt()
+  //    WriteCompare(), XMLToString()
   /// <summary>Contains common functions.</summary>
   class LJC
   {
@@ -18,10 +21,38 @@
     // Static Functions
 
     // Display debug text.
-    public static function Debug(int $lineNumber, string $text
-      , $value)
+    public static function Debug(int $lineNumber = 0, string $text = ""
+      , $value = null)
     {
-      echo("\r\n$lineNumber {$text} = {$value}");
+      echo("\r\n");
+      if ($lineNumber > 0)
+      {
+        echo("$lineNumber");
+      }
+      if (self::HasValue($text))
+      {
+        echo(" {$text}");
+      }
+      if ($value != null)
+      {
+        echo(" = {$value}");
+      }
+    }
+
+    // Indicates if the builder text ends with a newline.
+    public static function EndsWithNewLine(string $text) : bool
+    {
+      $retValue = false;
+
+      if (strlen($text) > 0)
+      {
+        $length = strlen($text);
+        if ("\n" == $text[$length - 1])
+        {
+          $retValue = true;
+        }
+      }
+      return $retValue;
     }
 
     // Gets the string between the delimiters.
@@ -86,8 +117,6 @@
     /// <include path='items/GetFileSpecPath/*' file='Doc/LJCCommon.xml'/>
     public static function GetFileSpecPath(string $fileSpec) : string
     {
-      // *** Change *** 5/4/25
-      //$retValue = $fileSpec;
       $retValue = "";
 
       $length = LJC::StrRPos($fileSpec, "/");
@@ -177,6 +206,28 @@
       return $retValue;
     }
 
+    // Remove newline from text.
+    public static function NewLineTrim(string $text)
+    {
+      $retValue = $text;
+
+      if (strlen($text) > 0)
+      {
+        $length = strlen($text);
+        if ("\n" == $text[$length - 1])
+        {
+          $text = substr($text, 0, $length - 1);
+        }
+        $length = strlen($text);
+        if ("\r" == $text[$length - 1])
+        {
+          $text = substr($text, 0, $length - 1);
+        }
+        $retValue = $text;
+      }
+      return $retValue;
+    }
+
     // Returns a scrubbed external value.
     /// <include path='items/Scrub/*' file='Doc/LJCCommon.xml'/>
     public static function Scrub(string $text) : string
@@ -244,20 +295,14 @@
       if ($text != null
         && $find !=null)
       {
-        // *** Add ***
         $value = $text;
         if ($startIndex > 0)
         {
           $value = substr($text, 0, $startIndex + 1);
         }
-        // *** Change ***
-        //$index = strripos($text, $find, $start);
         $index = strripos($value, $find);
-        // *** End   ***
         if ($exact)
         {
-          // *** Change ***
-          //$index = strrpos($text, $find, $start);
           $index = strrpos($value, $find);
         }
 
@@ -341,5 +386,22 @@
         echo("$compare\r\n");
       }
     }
+
+    // Get a string value from the XML value.
+    public static function XMLToString(SimpleXMLElement $xmlValue
+      , bool $trim = true) : ?string
+    {
+      $retValue = null;
+
+      if ($xmlValue != null)
+      {
+        $retValue = (string)$xmlValue;
+        if (true == $trim)
+        {
+          $retValue = trim($retValue);
+        }
+      }
+      return $retValue;
+    } // Value()
   } // LJCCommon
 ?>

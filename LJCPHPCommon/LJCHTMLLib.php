@@ -90,12 +90,12 @@
         , isEmpty: true);
       $hb->Text($createText, false);
 
-      if (LJCCommon::HasValue($description))
+      if (LJC::HasValue($description))
       {
         $createText = self::GetMeta("description", $description, $textState);
         $hb->Text($createText, false);
       }
-      if (LJCCommon::HasValue($keywords))
+      if (LJC::HasValue($keywords))
       {
         $createText = self::GetMeta("keywords", $keywords, $textState);
         $hb->Text($createText, false);
@@ -138,14 +138,14 @@
       $hb = new LJCHTMLBuilder($textState);
 
       $hb->Text("<!DOCTYPE html>");
-      if (LJCCommon::HasElements($copyright))
+      if (LJC::HasElements($copyright))
       {
         foreach ($copyright as $line)
         {
           $hb->Text("<!-- {$line} -->");
         }
       }
-      if (LJCCommon::HasValue($fileName))
+      if (LJC::HasValue($fileName))
       {
         $hb->Text("<!-- {$fileName} -->");
       }

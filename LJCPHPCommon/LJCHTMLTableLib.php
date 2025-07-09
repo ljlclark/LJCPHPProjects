@@ -15,7 +15,7 @@
   //  Classes: LJCHTMLTable
 
   // ********************
-  // Methods:
+  // Public:
   // ArrayArrayHeadings(), ArrayArrayHTML(), ArrayArrayRows()
   // CollectionHeadings(), CollectionHTML(), CollectionRows()
   // ObjectArrayHeadings(), ObjectArrayHTML(), ObjectArrayRows()
@@ -39,7 +39,7 @@
     {
       $retValue = null;
 
-      if (LJCCommon::HasElements($dataItems))
+      if (LJC::HasElements($dataItems))
       {
         $dataItem = $dataItems[0];
         $retValue = self::ArrayHeadings($dataItem, $textState, $propertyNames);
@@ -55,17 +55,16 @@
     {
       $retValue = null;
 
-      if (LJCCommon::HasItems($dataItems))
+      if (LJC::HasItems($dataItems))
       {
         $hb = new LJCHTMLBuilder($textState);
         $attribs = $hb->TableAttribs();
         $hb->Begin("table", $textState, $attribs);
-        // *** Add ***
+        // ?
         $textState = $hb->GetTextState();
         $text = self::ArrayArrayHeadings($dataItems, $propertyNames
          , $textState);
         $hb->Text($text, false);
-        // *** Add ***
         $textState = $hb->GetTextState();
         $text = self::ArrayArrayRows($dataItems, $propertyNames, $textState
           , $maxRows);
@@ -84,7 +83,7 @@
     {
       $retValue = null;
 
-      if (LJCCommon::HasElements($dataItems))
+      if (LJC::HasElements($dataItems))
       {
         $hb = new LJCHTMLBuilder($textState);
 
@@ -114,7 +113,7 @@
     {
       $retValue = null;
 
-      if (LJCCommon::HasItems($dataItems))
+      if (LJC::HasItems($dataItems))
       {
         $dataItem = $dataItems->Item(0);
         $retValue = self::ObjectHeadings($dataItem, $propertyNames
@@ -131,17 +130,15 @@
     {
       $retValue = null;
 
-      if (LJCCommon::HasItems($dataItems))
+      if (LJC::HasItems($dataItems))
       {
         $hb = new LJCHTMLBuilder($textState);
         $attribs = $hb->TableAttribs();
         $hb->Begin("table", $textState, $attribs);
-        // *** Add ***
         $textState = $hb->GetTextState();
         $text = self::CollectionHeadings($dataItems, $propertyNames
          , $textState);
         $hb->Text($text, false);
-        // *** Add ***
         $textState = $hb->GetTextState();
         $text = self::CollectionRows($dataItems, $propertyNames, $textState
           , $maxRows);
@@ -160,7 +157,7 @@
     {
       $retValue = null;
 
-      if (LJCCommon::HasItems($dataItems))
+      if (LJC::HasItems($dataItems))
       {
         $hb = new LJCHTMLBuilder($textState);
 
@@ -199,7 +196,7 @@
     {
       $retValue = null;
 
-      if (LJCCommon::HasElements($dataItems))
+      if (LJC::HasElements($dataItems))
       {
         $dataItem = $dataItems[0];
         if ($dataItem != null)
@@ -219,17 +216,15 @@
     {
       $retValue = null;
 
-      if (LJCCommon::HasItems($dataItems))
+      if (LJC::HasItems($dataItems))
       {
         $hb = new LJCHTMLBuilder($textState);
         $attribs = $hb->TableAttribs();
         $hb->Begin("table", $textState, $attribs);
-        // *** Add ***
         $textState = $hb->GetTextState();
         $text = self::ObjectArrayHeadings($dataItems, $propertyNames
          , $textState);
         $hb->Text($text, false);
-        // *** Add ***
         $textState = $hb->GetTextState();
         $text = self::ObjectArrayRows($dataItems, $propertyNames, $textState
           , $maxRows);
@@ -248,7 +243,7 @@
     {
       $retValue = null;
 
-      if (LJCCommon::HasElements($dataItems))
+      if (LJC::HasElements($dataItems))
       {
         $hb = new LJCHTMLBuilder($textState);
 
@@ -278,7 +273,7 @@
     {
       $retValue = null;
 
-      if (LJCCommon::HasElements($rows))
+      if (LJC::HasElements($rows))
       {
         $row = $rows[0];
         $retValue = self::ArrayHeadings($row, $textState, $propertyNames);
@@ -294,17 +289,15 @@
     {
       $retValue = null;
 
-      if (LJCCommon::HasElements($rows))
+      if (LJC::HasElements($rows))
       {
         $hb = new LJCHTMLBuilder($textState);
 
         $attribs = $hb->TableAttribs();
         $hb->Begin("table", $textState, $attribs);
-        // *** Add ***
         $textState = $hb->GetTextState();
         $text = self::ResultHeadings($rows, $textState, $propertyNames);
         $hb->Text($text, false);
-        // *** Add ***
         $textState = $hb->GetTextState();
         $text = self::ResultRows($rows, $textState, $propertyNames
           , $maxRows);
@@ -323,7 +316,7 @@
     {
       $retValue = null;
 
-      if (LJCCommon::HasElements($rows))
+      if (LJC::HasElements($rows))
       {
         $hb = new LJCHTMLBuilder($textState);
 
@@ -351,7 +344,7 @@
     {
       $retValue = null;
 
-      if (LJCCommon::HasElements($dataItem))
+      if (LJC::HasElements($dataItem))
       {
         $hb = new LJCHTMLBuilder($textState);
         // *****
@@ -380,7 +373,7 @@
     {
       $retValue = null;
 
-      if (LJCCommon::HasElements($dataItem))
+      if (LJC::HasElements($dataItem))
       {
         $hb = new LJCHTMLBuilder($textState);
         $hb->Begin("tr", $textState);

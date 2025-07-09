@@ -57,7 +57,7 @@
       $result = LJCHTMLTable::ArrayArrayHtml($dataItems, $propertyNames
         , $textState);
       $compare = self::GetTableCompare();
-      LJCCommon::WriteCompare("GetArraysTable()", $result, $compare);
+      LJC::WriteCompare("GetArraysTable()", $result, $compare);
     }
 
     // Get Collection data table.
@@ -71,7 +71,7 @@
       $result = LJCHTMLTable::CollectionHtml($dataItems, $propertyNames
         , $textState);
       $compare = self::GetTableCompare();
-      LJCCommon::WriteCompare("GetCollectionTable()", $result, $compare);
+      LJC::WriteCompare("GetCollectionTable()", $result, $compare);
     }
 
     // Get Object Array data table.
@@ -85,7 +85,7 @@
       $result = LJCHTMLTable::ObjectArrayHtml($dataItems, $propertyNames
         , $textState);
       $compare = self::GetTableCompare();
-      LJCCommon::WriteCompare("GetObjectsTable()", $result, $compare);
+      LJC::WriteCompare("GetObjectsTable()", $result, $compare);
     }
 
     private static function GetResultsTable(LJCTextState $textState)
@@ -107,7 +107,7 @@
       $displayPropertyNames = $manager->PropertyNames();
       $result = LJCHTMLTable::ResultHtml($rows, $textState, $displayPropertyNames);
       $compare = self::GetTableCompare();
-      LJCCommon::WriteCompare("GetResultTable()", $result, $compare);
+      LJC::WriteCompare("GetResultTable()", $result, $compare);
     }
 
     // --------------------

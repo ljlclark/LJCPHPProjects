@@ -10,11 +10,11 @@
   include_once "$prefix/LJCPHPCommon/LJCTextLib.php";
   include_once "$prefix/LJCPHPCommon/LJCTextFileLib.php";
   include_once "$prefix/LJCPHPCommon/LJCCollectionLib.php";
+  // LJCDebugLib: LJCDebug
   // LJCCommonLib: LJC
   // LJCTextLib: LJCStringBuilder
   // LJCTextFileLib: LJCFileWriter
   // LJCCollectionLib: LJCCollectionBase
-  // LJCDebugLib: LJCDebug
 
   // Contains Classes to represent DocData.
   /// <include path='items/LJCDocDataLib/*' file='Doc/LJCDocDataLib.xml'/>
@@ -35,11 +35,6 @@
   //       LJCDocDataProperties
   //         LJCDocDataProperty
   //   LJCDocDataMethods
-
-  // #01 Correct XMLFileName - 5/1/25
-  //   LJCIncludeLib.php
-  // #02 Correct Syntac - 5/1/25
-  //   LJCCollectionLib.php
 
   // ***************
   // Public: Clone()
@@ -127,10 +122,12 @@
     } // __construct
 
     /// <summary>Creates a clone of the current object.</summary>
-    public function Clone() : self
+    public function Clone(): self
     {
       $enabled = false;
       $this->Debug->BeginMethod("Clone", $enabled);
+      //$this->Debug->Write(__line__." Var = {$this->Var}");
+      //LJC::Debug(__line__, "Var", $this->Var);
       $retValue = new self();
 
       foreach ($this->Items as $key => $item)
@@ -153,6 +150,8 @@
     {
       $enabled = false;
       $this->Debug->BeginMethod("AddObject", $enabled);
+      //$this->Debug->Write(__line__." Var = {$this->Var}");
+      //LJC::Debug(__line__, "Var", $this->Var);
 
       if (null == $key)
       {
@@ -166,10 +165,12 @@
 
     // <summary>Retrieves the item by Key value.</summary>
     /// <include path='items/Retrieve/*' file='../../CommonDoc/PHPCollection.xml'/>
-    public function Retrieve($key, bool $throwError = true) : ?LJCDocDataClass
+    public function Retrieve($key, bool $throwError = true): ?LJCDocDataClass
     {
       $enabled = false;
       $this->Debug->BeginMethod("Retrieve", $enabled);
+      //$this->Debug->Write(__line__." Var = {$this->Var}");
+      //LJC::Debug(__line__, "Var", $this->Var);
 
       $retValue = $this->RetrieveItem($key, $throwError);
 
@@ -180,17 +181,35 @@
 
   // ***************
   // Represents a DocData Lib File.
-  // Static: Deserialize(), DeserializeString(), GetProperties()
-  // Public: Clone(), Serialize(), SerializeToString()
+  // Static: Deserialize(), DeserializeString()
+  // Public: Clone(), Serialize(), SerializeGroups() SerializeToString()
   /// <include path='items/LJCDocDataFile/*' file='Doc/LJCDocDataFile.xml'/>
   class LJCDocDataFile
   {
     // ---------------
     // Public Static Functions
 
+    // Static Call Tree
+    // Deserialize() public
+    // DeserializeString() public
+    //   CreateDocDataFile()
+    //     GetClasses()
+    //       GetMethods()
+    //         GetParams()
+    //       GetProperties()
+
+    // Serialize Call Tree
+    // LJCDocDataLib.php
+    // LJCDocData.ProcessCode()
+    //   SerializeToString()
+    //     SerializeGroups()
+    //     SerializeMethods()
+    //       SerializeParams()
+    //     SerializeProperties()
+
     // Deserializes the data from an LJCDocDataFile XML file.
     /// <include path='items/Deserialize/*' file='Doc/LJCDocDataFile.xml'/>
-    public static function Deserialize(string $xmlFileSpec) : LJCDocDataFile
+    public static function Deserialize(string $xmlFileSpec): LJCDocDataFile
     {
       $retValue = null;
 
@@ -201,7 +220,7 @@
 
     // Deserializes the data from an LJCDocDataFile XML string.
     /// <include path='items/DeserializeString/*' file='Doc/LJCDocDataFile.xml'/>
-    public static function DeserializeString(string $xmlString) : LJCDocDataFile
+    public static function DeserializeString(string $xmlString): LJCDocDataFile
     {
       $retValue = null;
 
@@ -215,16 +234,16 @@
       : ?LJCDocDataFile
     {
       // Deserialize()
-      // + DeserializeString()
+      // DeserializeString()
       $retValue = null;
 
       if (null != $xmlNode)
       {
-        $name = self::XMLToString($xmlNode->Name);
+        $name = LJC::XMLToString($xmlNode->Name);
         $retValue = new LJCDocDataFile($name);
         $retValue->Classes = self::GetClasses($xmlNode);
-        $retValue->Remarks = self::XMLToString($xmlNode->Remarks);
-        $retValue->Summary = self::XMLToString($xmlNode->Summary);
+        $retValue->Remarks = LJC::XMLToString($xmlNode->Remarks);
+        $retValue->Summary = LJC::XMLToString($xmlNode->Summary);
       }
       return $retValue;
     } // CreateDocDataFile()
@@ -234,7 +253,7 @@
       : ?LJCDocDataClasses
     {
       // Deserialize()
-      // + DeserializeString()-CreateDocDataFile()
+      // DeserializeString()-CreateDocDataFile()
       $retValue = null;
 
       $classNodes = self::GetClassNodes($docNode);
@@ -243,16 +262,16 @@
         $retValue = new LJCDocDataClasses();
         foreach ($classNodes as $classNode)
         {
-          $name = self::XMLToString($classNode->Name);
+          $name = LJC::XMLToString($classNode->Name);
           $class = new LJCDocDataClass($name);
           $retValue->AddObject($class, $name);
-          $class->Summary = self::XMLToString($classNode->Summary);
+          $class->Summary = LJC::XMLToString($classNode->Summary);
           // *** Add ***
           $class->Groups = self::GetGroups($classNode);
-          $class->Remarks = self::XMLToString($classNode->Remarks);
+          $class->Remarks = LJC::XMLToString($classNode->Remarks);
           $class->Methods = self::GetMethods($classNode);
           $class->Properties = self::GetProperties($classNode);
-          $class->Code = self::XMLToString($classNode->Code, false);
+          $class->Code = LJC::XMLToString($classNode->Code, false);
         }
       }
       return $retValue;
@@ -263,7 +282,7 @@
       : ?LJCDocDataMethods
     {
       // Deserialize()
-      // + DeserializeString()-CreateDocDataFile()-GetClasses()
+      // DeserializeString()-CreateDocDataFile()-GetClasses()
       $retValue = null;
 
       $methodNodes = self::GetMethodNodes($classNode);
@@ -272,27 +291,33 @@
         $retValue = new LJCDocDataMethods();
         foreach ($methodNodes as $methodNode)
         {
-          $name = self::XMLToString($methodNode->Name);
+          $name = LJC::XMLToString($methodNode->Name);
           $method = new LJCDocDataMethod($name);
           $retValue->AddObject($method, $name);
-          $method->Summary = self::XMLToString($methodNode->Summary);
+          $method->Summary = LJC::XMLToString($methodNode->Summary);
           // *** Add ***
-          $method->ParentGroup = self::XMLToString($methodNode->ParentGroup);
+          $method->ParentGroup = LJC::XMLToString($methodNode->ParentGroup);
           $method->Params = self::GetParams($methodNode);
-          $method->Returns = self::XMLToString($methodNode->Returns);
-          $method->Remarks = self::XMLToString($methodNode->Remarks);
-          $method->Syntax = self::XMLToString($methodNode->Syntax);
-          $method->Code = self::XMLToString($methodNode->Code, false);
+          $method->Returns = LJC::XMLToString($methodNode->Returns);
+          $method->Remarks = LJC::XMLToString($methodNode->Remarks);
+          $method->Syntax = LJC::XMLToString($methodNode->Syntax);
+          $method->Code = LJC::XMLToString($methodNode->Code, false);
         }
       }
       return $retValue;
     } // GetMethods()
 
     // Deserialize Groups from the Class node.
-    private static function GetGroups(SimpleXMLElement $classNode)
+    private static function GetGroups(SimpleXMLElement $classNode): ?array
     {
       // Deserialize()
-      // + DeserializeString()-CreateDocDataFile()-GetClasses()
+      // DeserializeString()-CreateDocDataFile()-GetClasses()
+      $enabled = false;
+      $debug = new LJCDebug("LJCDocDataGenLib", "LJCDocDataFile"
+       , "a", $enabled);
+      $debug->BeginMethod("GetGroups", $enabled);
+      //$this->Debug->Write(__line__." Var = {$this->Var}");
+      //LJC::Debug(__line__, "Var", $this->Var);
       $retValue = null;
 
       $groupNodes = self::GetGroupNodes($classNode);
@@ -301,7 +326,9 @@
         $retValue = [];
         foreach ($groupNodes as $groupNode)
         {
-          $retValue[] = self::XMLToString($groupNode);
+          $name = LJC::XMLToString($groupNode->Name);
+          $heading = LJC::XMLToString($groupNode->Heading);
+          $retValue[$name] = $heading;
         }
       }
       return $retValue;
@@ -312,7 +339,7 @@
       : ?LJCDocDataParams
     {
       // Deserialize()
-      // + DeserializeString()-CreateDocDataFile()-GetClasses()
+      // DeserializeString()-CreateDocDataFile()-GetClasses()
       //   -GetMethods()
       $retValue = null;
 
@@ -322,8 +349,8 @@
         $retValue = new LJCDocDataParams();
         foreach ($paramNodes as $paramNode)
         {
-          $name = self::XMLToString($paramNode->Name);
-          $summary = self::XMLToString($paramNode->Summary);
+          $name = LJC::XMLToString($paramNode->Name);
+          $summary = LJC::XMLToString($paramNode->Summary);
           $param = new LJCDocDataParam($name, $summary);
           $retValue->AddObject($param, $name);
         }
@@ -333,7 +360,7 @@
 
     // Deserialize Properties from the Class node.
     /// <include path='items/GetProperties/*' file='Doc/LJCDocDataFile.xml'/>
-    public static function GetProperties(SimpleXMLElement $classNode)
+    private static function GetProperties(SimpleXMLElement $classNode)
       : ?LJCDocDataProperties
     {
       // Deserialize()
@@ -346,13 +373,13 @@
         $retValue = new LJCDocDataProperties();
         foreach ($propertyNodes as $propertyNode)
         {
-          $name = self::XMLToString($propertyNode->Name);
+          $name = LJC::XMLToString($propertyNode->Name);
           $property = new LJCDocDataProperty($name);
           $retValue->AddObject($property, $name);
-          $property->Summary = self::XMLToString($propertyNode->Summary);
-          $property->Returns = self::XMLToString($propertyNode->Returns);
-          $property->Remarks = self::XMLToString($propertyNode->Remarks);
-          $property->Syntax = self::XMLToString($propertyNode->Syntax);
+          $property->Summary = LJC::XMLToString($propertyNode->Summary);
+          $property->Returns = LJC::XMLToString($propertyNode->Returns);
+          $property->Remarks = LJC::XMLToString($propertyNode->Remarks);
+          $property->Syntax = LJC::XMLToString($propertyNode->Syntax);
         }
       }
       return $retValue;
@@ -368,7 +395,7 @@
       $retValue = null;
 
       $nodes = $docNode->Classes;
-      if (null != $nodes)
+      if ($nodes != null)
       {
         $retValue = $nodes->children();
       }
@@ -377,12 +404,16 @@
 
     // Retrieves the Group nodes.
     private static function GetGroupNodes(SimpleXMLElement $classNode)
-      : ?array
+      : ?SimpleXMLElement
     {
-      $retArray = null;
+      $retValue = null;
 
-      $retArray = $classNode->xPath("Group");
-      return $retArray;
+      $nodes = $classNode->Groups;
+      if ($nodes != null)
+      {
+        $retValue = $nodes->children();
+      }
+      return $retValue;
     }
 
     // Retrieves the Method nodes.
@@ -427,24 +458,6 @@
       return $retValue;
     } // GetPropertyNodes()
 
-    // Get a string value from the XML value.
-    // Possible for Common code.
-    private static function XMLToString(SimpleXMLElement $xmlValue
-      , bool $trim = true) : ?string
-    {
-      $retValue = null;
-
-      if ($xmlValue != null)
-      {
-        $retValue = (string)$xmlValue;
-        if (true == $trim)
-        {
-          $retValue = trim($retValue);
-        }
-      }
-      return $retValue;
-    } // Value()
-
     // ---------------
     // Constructors - LJCDocDataFile
 
@@ -453,10 +466,10 @@
     public function __construct(string $name, ?string $summary = null)
     {
       // Instantiate properties with Pascal case.
-      //$enabled = false;
-      //$this->Debug = new LJCDebug("LJCDocDataLib", "LJCDocDataFile"
-      //  , "w",  $enabled);
-      //$this->Debug->IncludePrivate = true;
+      $enabled = false;
+      $this->Debug = new LJCDebug("LJCDocDataLib", "LJCDocDataFile"
+        , "w",  $enabled);
+      $this->Debug->IncludePrivate = true;
 
       $this->Classes = null;
       $this->Functions = null;
@@ -469,10 +482,12 @@
     // Public Methods - LJCDocDataFile
 
     /// <summary>Creates a Clone of the current object.</summary>
-    public function Clone() : self
+    public function Clone(): self
     {
       $enabled = false;
       $this->Debug->BeginMethod("Clone", $enabled);
+      //$this->Debug->Write(__line__." Var = {$this->Var}");
+      //LJC::Debug(__line__, "Var", $this->Var);
 
       $retValue = new self($this->Name, $this->Summary);
       $retValue->Classes = $this->Classes;
@@ -484,10 +499,12 @@
 
     // Writes the serialized XML.
     /// <include path='items/Serialize/*' file='Doc/LJCDocDataFile.xml'/>
-    public function Serialize(string $xmlFileSpec) : void
+    public function Serialize(string $xmlFileSpec): void
     {
       $enabled = false;
       $this->Debug->BeginMethod("Serialize", $enabled);
+      //$this->Debug->Write(__line__." Var = {$this->Var}");
+      //LJC::Debug(__line__, "Var", $this->Var);
 
       $docDataXML = $this->SerializeToString();
       $stream = fopen($xmlFileSpec, "w");
@@ -498,18 +515,47 @@
       $this->Debug->EndMethod($enabled);
     } // Serialize()
 
+    // Writes the serialized Groups XML.
+    public function SerializeGroups(array $groups, int $indent): string
+    {
+      // LJCDocDataGenLib.ProcessCode()-SerializeToString()
+      // Serialize()-SerializeToString()
+      $enabled = false;
+      $this->Debug->BeginPrivateMethod("SerializeGroups", $enabled);
+      //$this->Debug->Write(__line__." Var = {$this->Var}");
+      //LJC::Debug(__line__, "Var", $this->Var);
+      $retValue = "";
+
+
+      if (LJC::HasElements($groups))
+      {
+        $builder = new LJCStringBuilder();
+        $builder->Line("<Groups>", $indent + 2);
+        foreach ($groups as $key => $value)
+        {
+          $builder->Line("<Group>", $indent + 3);
+          $builder->Tags("Name", $key, $indent + 4);
+          $builder->Tags("Heading", $value, $indent + 4);
+          $builder->Line("</Group>", $indent + 3);
+        }
+        $builder->Line("</Groups>", $indent + 2);
+        $retValue = $builder->ToString();
+      }
+
+      $this->Debug->EndMethod($enabled);
+      return $retValue;
+    }
+
     // Creates the serialized XML string.
     /// <include path='items/SerializeToString/*' file='Doc/LJCDocDataFile.xml'/>
-    public function SerializeToString($xmlFileName = null) : string
+    public function SerializeToString($xmlFileName = null): string
     {
       // LJCDocDataGenLib.ProcessCode()
       // Serialize()
       $enabled = false;
-      $this->Debug = new LJCDebug("LJCDocDataLib", "LJCDocDataFile"
-        , "w",  $enabled);
-      $this->Debug->IncludePrivate = true;
-      //$enabled = false;
       $this->Debug->BeginMethod("SerializeToString", $enabled);
+      //$this->Debug->Write(__line__." Var = {$this->Var}");
+      //LJC::Debug(__line__, "Var", $this->Var);
 
       $builder = new LJCStringBuilder();
 
@@ -539,18 +585,8 @@
           $builder->Line("<Class>", $indent + 1);
           $builder->Tags("Name", $class->Name, $indent + 2);
           $builder->Tags("Summary", $class->Summary, $indent + 2);
-          //if (LJC::HasElements($class->Groups))
-          //{
-            //foreach ($class->Groups as $group)
-            //{
-            //  $builder->Tags("Group", $group, $indent + 2);
-            //}
-            foreach ($class->Groups as $key => $value)
-            {
-              $text = "<Group name=\"{$key}\">{$value}</Group>";
-              $builder->Text($text);
-            }
-          //}
+          $text = $this->SerializeGroups($class->Groups, $indent);
+          $builder->Text($text);
           $builder->Tags("Remarks", $class->Remarks, $indent + 2);
           $builder->Text($this->SerializeMethods($class, $indent + 2));
           $builder->Text($this->SerializeProperties($class, $indent + 2));
@@ -577,6 +613,8 @@
       // SerializeToString()
       $enabled = false;
       $this->Debug->BeginPrivateMethod("SerializeMethods", $enabled);
+      //$this->Debug->Write(__line__." Var = {$this->Var}");
+      //LJC::Debug(__line__, "Var", $this->Var);
 
       $builder = new LJCStringBuilder();
       if ($class->Methods != null && count($class->Methods) > 0)
@@ -611,6 +649,8 @@
       // SerializeToString()-SerializeMethods()
       $enabled = false;
       $this->Debug->BeginPrivateMethod("SerializeParams", $enabled);
+      //$this->Debug->Write(__line__." Var = {$this->Var}");
+      //LJC::Debug(__line__, "Var", $this->Var);
 
       $builder = new LJCStringBuilder();
       if ($params != null && count($params) > 0)
@@ -637,6 +677,8 @@
       // SerializeToString()
       $enabled = false;
       $this->Debug->BeginPrivateMethod("SerializeProperties", $enabled);
+      //$this->Debug->Write(__line__." Var = {$this->Var}");
+      //LJC::Debug(__line__, "Var", $this->Var);
 
       $builder = new LJCStringBuilder();
       if ($class->Properties != null && count($class->Properties) > 0)
@@ -711,10 +753,12 @@
     // Public Methods - LJCDocDataMethod
 
     /// <summary>Creates a Clone of the current object.</summary>
-    public function Clone() : self
+    public function Clone(): self
     {
       $enabled = false;
       $this->Debug->BeginMethod("Clone", $enabled);
+      //$this->Debug->Write(__line__." Var = {$this->Var}");
+      //LJC::Debug(__line__, "Var", $this->Var);
 
       $retValue = new self($this->Name, $this->Summary, $this->Returns);
       $retValue->Code = $this->Code;
@@ -772,10 +816,12 @@
     }
 
     /// <summary>Creates a clone of the current object.</summary>
-    public function Clone() : self
+    public function Clone(): self
     {
       $enabled = false;
       $this->Debug->BeginMethod("Clone", $enabled);
+      //$this->Debug->Write(__line__." Var = {$this->Var}");
+      //LJC::Debug(__line__, "Var", $this->Var);
 
       $retValue = new self();
       foreach ($this->Items as $key => $item)
@@ -798,6 +844,8 @@
     {
       $enabled = false;
       $this->Debug->BeginMethod("AddObject", $enabled);
+      //$this->Debug->Write(__line__." Var = {$this->Var}");
+      //LJC::Debug(__line__, "Var", $this->Var);
 
       if (null == $key)
       {
@@ -811,10 +859,12 @@
 
     // <summary>Retrieves the item by Key value.</summary>
     /// <include path='items/Retrieve/*' file='../../CommonDoc/PHPCollection.xml'/>
-    public function Retrieve($key, bool $throwError = true) : ?LJCDocDataMethod
+    public function Retrieve($key, bool $throwError = true): ?LJCDocDataMethod
     {
       $enabled = false;
       $this->Debug->BeginMethod("Retrieve", $enabled);
+      //$this->Debug->Write(__line__." Var = {$this->Var}");
+      //LJC::Debug(__line__, "Var", $this->Var);
 
       $retValue = $this->RetrieveItem($key, $throwError);
 
@@ -845,10 +895,12 @@
     } // __construct()
 
     /// <summary>Creates a Clone of the current object.</summary>
-    public function Clone() : self
+    public function Clone(): self
     {
       $enabled = false;
       $this->Debug->StartMethod("Clone", $enabled);
+      //$this->Debug->Write(__line__." Var = {$this->Var}");
+      //LJC::Debug(__line__, "Var", $this->Var);
 
       $retValue = new self($this->Name, $this->Summary);
 
@@ -869,12 +921,15 @@
   // ***************
   // Public: Clone(), AddObject(), Retrieve()
   /// <summary>Represents a collection of objects.</summary>
+  // <group name="Constructor">Constructor Methods</group>
+  // <group name="Collection">Collection Methods</group>
   class LJCDocDataParams extends LJCCollectionBase
   {
     // ---------------
     // Constructors
 
     // <summary>Initializes an object instance.</summary>
+    // <ParentGroup>Constructor</ParentGroup>
     public function __construct()
     {
       // Instantiate properties with Pascal case.
@@ -884,10 +939,13 @@
     } // __construct()
 
     /// <summary>Creates a clone of the current object.</summary>
-    public function Clone() : self
+    // <ParentGroup>Collection</ParentGroup>
+    public function Clone(): self
     {
       $enabled = false;
       $this->Debug->BeginMethod("Clone", $enabled);
+      //$this->Debug->Write(__line__." Var = {$this->Var}");
+      //LJC::Debug(__line__, "Var", $this->Var);
 
       $retValue = new self();
       foreach ($this->Items as $key => $item)
@@ -905,11 +963,14 @@
 
     /// <summary>Adds an object and key value.</summary>
     /// <include path='items/AddObject/*' file='../../CommonDoc/PHPCollection.xml'/>
+    // <ParentGroup>Collection</ParentGroup>
     public function AddObject(LJCDocDataParam $item, $key = null)
       : ?LJCDocDataParam
     {
       $enabled = false;
       $this->Debug->BeginMethod("AddObject", $enabled);
+      //$this->Debug->Write(__line__." Var = {$this->Var}");
+      //LJC::Debug(__line__, "Var", $this->Var);
 
       if (null == $key)
       {
@@ -923,10 +984,13 @@
 
     /// <summary>Retrieves the item by Key value.</summary>
     /// <include path='items/Retrieve/*' file='../../CommonDoc/PHPCollection.xml'/>
-    public function Retrieve($key, bool $throwError = true) : ?LJCDocDataParam
+    // <ParentGroup>Collection</ParentGroup>
+    public function Retrieve($key, bool $throwError = true): ?LJCDocDataParam
     {
       $enabled = false;
       $this->Debug->BeginMethod("Retrieve", $enabled);
+      //$this->Debug->Write(__line__." Var = {$this->Var}");
+      //LJC::Debug(__line__, "Var", $this->Var);
 
       $retValue = $this->RetrieveItem($key, $throwError);
 
@@ -961,10 +1025,12 @@
     } // __construct()
 
     /// <summary>Creates a Clone of the current object.</summary>
-    public function Clone() : self
+    public function Clone(): self
     {
       $enabled = false;
       $this->Debug->BeginMethod("Clone", $enabled);
+      //$this->Debug->Write(__line__." Var = {$this->Var}");
+      //LJC::Debug(__line__, "Var", $this->Var);
 
       $retValue = new self($this->Name, $this->Summary, $this->Returns);
       $retValue->Remarks = $this->Remarks;
@@ -995,12 +1061,15 @@
   // ***************
   // Public: Clone(), AddObject(), Retrieve()
   /// <summary>Represents a collection of objects.</summary>
+  /// <group name="Constructor">Constructor Methods</group>
+  /// <group name="Collection">Collection Methods</group>
   class LJCDocDataProperties extends LJCCollectionBase
   {
     // ---------------
     // Constructors
 
     // Initializes an object instance.
+    /// <ParentGroup>Constructor</ParentGroup>
     public function __construct()
     {
       // Instantiate properties with Pascal case.
@@ -1010,10 +1079,13 @@
     }
 
     /// <summary>Creates a clone of the current object.</summary>
-    public function Clone() : self
+    /// <ParentGroup>Collection</ParentGroup>
+    public function Clone(): self
     {
       $enabled = false;
       $this->Debug->BeginMethod("Clone", $enabled);
+      //$this->Debug->Write(__line__." Var = {$this->Var}");
+      //LJC::Debug(__line__, "Var", $this->Var);
 
       $retValue = new self();
       foreach ($this->Items as $key => $item)
@@ -1031,11 +1103,14 @@
 
     // <summary>Adds an object and key value.</summary>
     /// <include path='items/AddObject/*' file='../../CommonDoc/PHPCollection.xml'/>
+    /// <ParentGroup>Collection</ParentGroup>
     public function AddObject(LJCDocDataProperty $item, $key = null)
       : ?LJCDocDataProperty
     {
       $enabled = false;
       $this->Debug->BeginMethod("AddObject", $enabled);
+      //$this->Debug->Write(__line__." Var = {$this->Var}");
+      //LJC::Debug(__line__, "Var", $this->Var);
 
       if (null == $key)
       {
@@ -1049,10 +1124,13 @@
 
     // <summary>Retrieves the item by Key value.</summary>
     /// <include path='items/Retrieve/*' file='../../CommonDoc/PHPCollection.xml'/>
-    public function Retrieve($key, bool $throwError = true) : ?LJCDocDataProperty
+    /// <ParentGroup>Collection</ParentGroup>
+    public function Retrieve($key, bool $throwError = true): ?LJCDocDataProperty
     {
       $enabled = false;
       $this->Debug->BeginMethod("Retrieve", $enabled);
+      //$this->Debug->Write(__line__." Var = {$this->Var}");
+      //LJC::Debug(__line__, "Var", $this->Var);
 
       $retValue = $this->RetrieveItem($key, $throwError);
 

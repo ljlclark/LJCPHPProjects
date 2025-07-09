@@ -31,10 +31,12 @@
     public function __construct(?string $debugFileSuffix = "GenData")
     {
       // Instantiate properties with Pascal case.
+      $enabled = false;
       $this->Debug = new LJCDebug("LJCGenTextLib", "LJCGenText"
-        , "w", false);
+        , "w", $enabled);
       $this->Debug->IncludePrivate = true;
 
+      $this->Groups = [];
       $this->ActiveSections = [];
       $this->CurrentSection = null;
     }  // construct()
@@ -45,41 +47,44 @@
     // Create the items in group order.
     public function OrderGroupItems(LJCItems $items, $groups)
     {
+      $enabled = false;
+      $this->Debug->BeginPrivateMethod("OrderGroupItems", $enabled);
+      //$this->Debug->Write(__line__." Var = {$this->Var}");
+      //LJC::Debug(__line__, "Var", $this->Var);
       $retItems = $items->Clone();
 
-      $items = $items->Clone();
+      $itemPool = $items->Clone();
       $groups = $this->CurrentSection->Groups;
       if (LJC::HasElements($groups))
       {
         $orderedItems = new LJCItems();
 
         // Add grouped items.
-        $groupCount = count($groups);
-        for ($groupIndex = 0; $groupIndex < $groupCount; $groupIndex++)
+        foreach ($groups as $key => $value)
         {
-          $group = $groups[$groupIndex];
           do
           {
-            // Find by item->MemberGroup.
-            $item = LJCItems::FindGroupItem($items, $group);
-            if ($item != null)
+            // Find by item->ParentGroup
+            $item = LJCItems::FindGroupItem($itemPool, $key);
+            if ($item !=null)
             {
               $orderedItems->Add($item);
-              $items->Remove($item->Name);
+              $itemPool->Remove($item->Name);
             }
           } while ($item != null);
         }
 
         // Add remaining ungrouped items.
-        while ($items->Count() > 0)
+        while ($itemPool->Count() > 0)
         {
-          $item = $items->Item(0);
+          $item = $itemPool->Item(0);
           $orderedItems->Add($item);
-          $count = strval($items->Count());
-          $items->Remove($item->Name);
+          $itemPool->Remove($item->Name);
         }
         $retItems = $orderedItems->Clone();
       }
+
+      $this->Debug->EndMethod($enabled);
       return $retItems;
     } // OrderGroupItems
 
@@ -90,6 +95,8 @@
     {
       $enabled = false;
       $this->Debug->BeginMethod("ProcessTemplate", $enabled);
+      //$this->Debug->Write(__line__." Var = {$this->Var}");
+      //LJC::Debug(__line__, "Var", $this->Var);
       $retValue = null;
 
       // Instantiate properties with Pascal case.
@@ -147,6 +154,8 @@
     {
       $enabled = false;
       $this->Debug->BeginPrivateMethod("ManageSections", $enabled);
+      //$this->Debug->Write(__line__." Var = {$this->Var}");
+      //LJC::Debug(__line__, "Var", $this->Var);
       $retValue = null;
 
       if (null == $this->Line)
@@ -165,6 +174,8 @@
             {
               // Set CurrentSection if Section Data exists.
               $this->CurrentSection = $section;
+              $name = $this->CurrentSection->Name;
+              $this->SectionName = $name;
 
               if (count($this->CurrentSection->RepeatItems) > 1
                 && null == $this->CurrentSection->Begin)
@@ -224,6 +235,8 @@
     {
       $enabled = false;
       $this->Debug->BeginPrivateMethod("ProcessIfDirectives", $enabled);
+      //$this->Debug->Write(__line__." Var = {$this->Var}");
+      //LJC::Debug(__line__, "Var", $this->Var);
       $retValue = $this->DoOutput;
 
       switch (strtolower($directive->Type))
@@ -290,6 +303,8 @@
     {
       $enabled = false;
       $this->Debug->BeginPrivateMethod("ProcessReplacements", $enabled);
+      //$this->Debug->Write(__line__." Var = {$this->Var}");
+      //LJC::Debug(__line__, "Var", $this->Var);
 
       // Start with most recent.
       $outerBreak = false;
@@ -328,8 +343,12 @@
     // Processes the current Section.
     private function ProcessSection() : ?string
     {
-      $enabled = false;
+      // ProcessTemplate()
+      // ProcessSection()
+      $enabled = true;
       $this->Debug->BeginPrivateMethod("ProcessSection", $enabled);
+      //$this->Debug->Write(__line__." Var = {$this->Var}");
+      //LJC::Debug(__line__, "Var", $this->Var);
       $retValue = null;
 
       if (null == $this->CurrentSection)
@@ -340,18 +359,35 @@
       $builder = new LJCStringBuilder();
 
       $items = $this->CurrentSection->RepeatItems;
-      // *** Begin *** Add
-      $groups = $this->CurrentSection->Groups;
-      $orderedItems = $this->OrderGroupItems($items, $groups);
+      $orderedItems = $items;
+      $sectionName = $this->CurrentSection->Name;
       $prevParentGroup = "";
-      // *** End   *** Add
+      if ($sectionName == "Class")
+      {
+        $this->Groups = $this->CurrentSection->Groups;
+        $this->HasGroups = false;
+        if ($this->Groups != null)
+        {
+          $this->HasGroups = true;
+        }
+      }
+      if ($sectionName == "Function")
+      {
+        if ($this->Groups != null)
+        {
+          $orderedItems = $this->OrderGroupItems($items, $this->Groups);
+        }
+        $prevParentGroup = "";
+      }
 
       // Process Items
       $getLine = false;
       $prevLineBegin =  0;
-      $itemCount = count($orderedItems);
+      //$itemCount = $items->count();
+      $itemCount = $orderedItems->count();
       for ($itemIndex = 0; $itemIndex < $itemCount; $itemIndex++)
       {
+        //$item = $items->Item($itemIndex);
         $item = $orderedItems->Item($itemIndex);
         $this->CurrentSection->CurrentItem = $item;
 
@@ -399,22 +435,32 @@
               $this->ProcessReplacements($item);
             }
 
-            // *** Begin ***
             // Write group heading.
             $name = $this->CurrentSection->Name;
             if (($name == "Class"
               || $name == "Function")
               && $item->ParentGroup != $prevParentGroup)
             {
-              $text = $this->GroupHeading($item->ParentGroup);
-              $builder->Text($text);
+              $heading = "";
+              foreach ($this->Groups as $key => $value)
+              {
+                if ($key == $item->ParentGroup)
+                {
+                  $heading = $value;
+                  break;
+                }
+              }
+              if (LJC::HasValue($heading))
+              {
+                $text = $this->GroupHeading($heading);
+                $builder->Text($text);
+              }
+              $prevParentGroup = $item->ParentGroup;
             }
-            $prevParentGroup = $item->ParentGroup;
-            // *** End   ***
 
             $builder->Text($this->Line);
           }
-        }  // while(true)
+        }
       }
       $retValue = $builder->ToString();
 
@@ -428,6 +474,8 @@
     {
       $enabled = false;
       $this->Debug->BeginPrivateMethod("GetReplacement", $enabled);
+      //$this->Debug->Write(__line__." Var = {$this->Var}");
+      //LJC::Debug(__line__, "Var", $this->Var);
       $retValue = null;
 
       // Start with most recent.
@@ -483,6 +531,8 @@
     {
       $enabled = false;
       $this->Debug->BeginPrivateMethod("ResetPosition", $enabled);
+      //$this->Debug->Write(__line__." Var = {$this->Var}");
+      //LJC::Debug(__line__, "Var", $this->Var);
       $retValue = false;
 
       if ($directive != null && "#sectionend" == strtolower($directive->Type))
@@ -514,6 +564,8 @@
     {
       $enabled = false;
       $this->Debug->BeginPrivateMethod("IsBeginOrEnd", $enabled);
+      //$this->Debug->Write(__line__." Var = {$this->Var}");
+      //LJC::Debug(__line__, "Var", $this->Var);
       $retValue = false;
 
       if ($directive != null)

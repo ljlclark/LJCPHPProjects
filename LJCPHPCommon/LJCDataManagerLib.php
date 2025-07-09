@@ -6,10 +6,12 @@
   include_once "LJCRoot.php";
   $prefix = RelativePrefix();
   include_once "$prefix/LJCPHPCommon/LJCDBAccessLib.php";
+  include_once "$prefix/LJCPHPCommon/LJCTextLib.php";
   // LJCDBAccessLib: LJCConnectionValues, LJCDbAccess
   //   , LJCDbColumn, LJCDbColumns
   //   , LJCJoin, LJCJoins
   //   , LJCJoinOn, LJCJoinOns
+  // LJCTextLib: LJCStringBuilder
 
   /// <summary>The PDO Data Manager Library</summary>
   /// LibName: LJCDataManagerLib
@@ -21,6 +23,8 @@
   //   , SQLExecute(), SQLLoad(), SQLRetrieve()
   //   , CreateDataCollection(), CreateDataObject()
   /// <include path='items/LJCDataManager/*' file='Doc/LJCDataManager.xml'/>
+  /// <group name="Data">Data Methods</group>
+  /// <group name="Other">Other Methods</group>
   class LJCDataManager
   {
     // Initializes a class instance with the provided values.
@@ -42,6 +46,7 @@
 
     // Adds the record for the provided values.
     /// <include path='items/Add/*' file='Doc/LJCDataManager.xml'/>
+    /// <ParentGroup>Data</ParentGroup>
     public function Add(LJCDbColumns $dataColumns) : int
     {
       $retValue = 0;
@@ -54,6 +59,7 @@
   
     // Deletes the records for the provided values.
     /// <include path='items/Delete/*' file='Doc/LJCDataManager.xml'/>
+    /// <ParentGroup>Data</ParentGroup>
     public function Delete(LJCDbColumns $keyColumns) : int
     {
       $retValue = 0;
@@ -69,17 +75,16 @@
 
     // Loads the records for the provided values.
     /// <include path='items/Load/*' file='Doc/LJCDataManager.xml'/>
+    /// <ParentGroup>Data</ParentGroup>
     public function Load(?LJCDbColumns $keyColumns = null, ?array $propertyNames = null
       , ?LJCJoins $joins = null)	: ?array
     {
       $retValue = null;
       
-      // *** Begin *** Add
       if (null == $propertyNames)
       {
         $propertyNames = $this->PropertyNames(); 
       }
-      // *** End   *** Add
       $this->Joins = $joins;
       $this->SQL = LJCSQLBuilder::CreateSelect($this->TableName
         , $this->SchemaColumns, $keyColumns, $propertyNames, $joins);
@@ -90,17 +95,16 @@
 
     // Retrieves the record for the provided values.
     /// <include path='items/Retrieve/*' file='Doc/LJCDataManager.xml'/>
+    /// <ParentGroup>Data</ParentGroup>
     public function Retrieve(LJCDbColumns $keyColumns
       , array $propertyNames = null, LJCJoins $joins = null) : ?array
     {
       $retValue = null;
 
-      // *** Begin *** Add
       if (null == $propertyNames)
       {
         $propertyNames = $this->PropertyNames(); 
       }
-      // *** End   *** Add
       $this->Joins = $joins;
       $this->SQL = LJCSQLBuilder::CreateSelect($this->TableName
         , $this->SchemaColumns, $keyColumns, $propertyNames, $joins);
@@ -111,6 +115,7 @@
 
     // Updates the records for the provided values.
     /// <include path='items/Update/*' file='Doc/LJCDataManager.xml'/>
+    /// <ParentGroup>Data</ParentGroup>
     public function Update(LJCDbColumns $keyColumns, LJCDbColumns $dataColumns)
       : int
     {
@@ -128,6 +133,7 @@
 
     // Executes an Add, Delete or Update SQL statement.
     /// <include path='items/SQLExecute/*' file='Doc/LJCDataManager.xml'/>
+    /// <ParentGroup>Data</ParentGroup>
     public function SQLExecute(string $sql) : int
     {
       $this->SQL = $sql;
@@ -137,6 +143,7 @@
 
     // Executes a Select SQL statement.
     /// <include path='items/SQLLoad/*' file='Doc/LJCDataManager.xml'/>
+    /// <ParentGroup>Data</ParentGroup>
     public function SQLLoad() : ?array
     {
       $this->SQL = $sql;
@@ -146,6 +153,7 @@
 
     // Executes a Select SQL statement.
     /// <include path='items/SQLRetrieve/*' file='Doc/LJCDataManager.xml'/>
+    /// <ParentGroup>Data</ParentGroup>
     public function SQLRetrieve() : ?array
     {
       $this->SQL = $sql;
@@ -154,6 +162,7 @@
     } // SQLRetrieve()
 
     // Get the column definitions that match the property names.
+    /// <ParentGroup>Data</ParentGroup>
     public function Columns(array $propertyNames = null): DbColumns
     {
       $retValue = $this->SchemaColumns->Columns($propertyNames);
@@ -161,6 +170,7 @@
     }
 
     // Creates a PropertyNames list from the data definition.
+    /// <ParentGroup>Data</ParentGroup>
     public function PropertyNames(): array
     {
       $retNames = $this->SchemaColumns->PropertyNames();
@@ -172,6 +182,7 @@
 
     // Creates an array of Data Objects from a Data Result rows array.
     /// <include path='items/CreateDataCollection/*' file='Doc/LJCDataManager.xml'/>
+    /// <ParentGroup>Other</ParentGroup>
     public function CreateDataCollection(object $collection
       , object $dataObject, array $rows)
     {
@@ -192,6 +203,7 @@
 
     // Populates a Data Object with values from a Data Result row.
     /// <include path='items/CreateDataObject/*' file='Doc/LJCDataManager.xml'/>
+    /// <ParentGroup>Other</ParentGroup>
     public function CreateDataObject($dataObject, array $row)
     {
       $retValue = $dataObject;
@@ -301,7 +313,6 @@
 
     // Creates a Select SQL statement.
     /// <include path='items/CreateSelect/*' file='Doc/LJCSQLBuilder.xml'/>
-    // *** Next Statement *** Change
     public static function CreateSelect(string $tableName
       , LJCDbColumns $schemaColumns, ?LJCDbColumns $keyColumns
       , array $propertyNames = null, ?LJCJoins $joins = null) : string
@@ -315,7 +326,6 @@
       $retValue = "select\r\n";
       $retValue .= self::SQLColumns($tableName, $sqlColumns, joins: $joins);
       $retValue .= "from $tableName \r\n";
-      // *** Next Statement *** Add
       $retValue .= self::GetJoinStatement($tableName, $joins);
       $retValue .= self::WhereClause($tableName, $keyColumns);
       return $retValue;
@@ -347,45 +357,45 @@
         // Begin the Join grouping.
         if ($first && false == $recursive)
         {
-          $builder->Append("(");
+          $builder->Text("(");
         }
         else
         {
           if (false == $recursive)
           {
-            $builder->Append(")");
+            $builder->Text(")");
           }
-          $builder->Append("\r\n $joinOn->BooleanOperator ");
+          $builder->Text("\r\n $joinOn->BooleanOperator ");
           if (false == $recursive)
           {
-            $builder->Append("(");
+            $builder->Text("(");
           }
         }
         $first = false;
 
         // Begin the JoinOn grouping.
-        $builder->Append("(");
+        $builder->Text("(");
 
         $fromColumnName = self::GetQualifiedColumnName($joinOn->FromColumnName
           , $tableName);
         $toColumnName = self::GetQualifiedColumnName($joinOn->ToColumnName
           , $join->TableName, $join->TableAlias);
-        $builder->Append("$fromColumnName $joinOn->JoinOnOperator $toColumnName");
+        $builder->Text("$fromColumnName $joinOn->JoinOnOperator $toColumnName");
 
         // End the JoinOn grouping.
-        $builder->Append(")");
+        $builder->Text(")");
 
         // Recursive JoinOns.
         if ($joinOn->JoinOns != null && count($joinOn->JoinOns) > 0)
         {
-          $builder->Append(self::GetJoinOns($tableName, $join, true));
+          $builder->Text(self::GetJoinOns($tableName, $join, true));
         }
       }
 
       // End the Join grouping.
       if (false == $recursive)
       {
-        $builder->Append(")");
+        $builder->Text(")");
       }
       $retValue = $builder->ToString();
       return $retValue;
@@ -406,14 +416,14 @@
           // Begin the Join.
           if ($builder->Length() > 0)
           {
-            $builder->AppendLine(" ");
+            $builder->Line(" ");
           }
-          $builder->Append("$join->JoinType join");
-          $builder->Append(self::GetJoinTableString($join));
-          $builder->Append(" on ");
-          $builder->Append(self::GetJoinOns($tableName, $join));
+          $builder->Text("$join->JoinType join");
+          $builder->Text(self::GetJoinTableString($join));
+          $builder->Text(" on ");
+          $builder->Text(self::GetJoinOns($tableName, $join));
         }
-        $builder->AppendLine(" ");
+        $builder->Line(" ");
         $retValue = $builder->ToString();
       }
       return $retValue;
@@ -426,17 +436,17 @@
       $retValue = null;
 
       $builder = new LJCStringBuilder();
-      $builder->Append(" ");
+      $builder->Text(" ");
       if ($join->SchemaName != null && strlen($join->SchemaName) > 0)
       {
-        $builder->Append("$join->SchemaName.");
+        $builder->Text("$join->SchemaName.");
       }
-      $builder->Append("$join->TableName");
+      $builder->Text("$join->TableName");
       if ($join->TableAlias != null)
       {
-        $builder->Append(" as $join->TableAlias");
+        $builder->Text(" as $join->TableAlias");
       }
-      $builder->AppendLine(" ");
+      $builder->Line(" ");
       $retValue = $builder->ToString();
       return $retValue;
     } // GetJoinTableString()
@@ -620,7 +630,7 @@
       if ($qualify)
       {
         // Allow user to qualify column name to another table.
-        if (LJCCommon::StrPos($columnName, ".") > -1)
+        if (LJC::StrPos($columnName, ".") > -1)
         {
           $values = preg_split(".", $columnName, 0, PREG_SPLIT_NO_EMPTY);
           if ($values.Length > 1)

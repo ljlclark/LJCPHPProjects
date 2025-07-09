@@ -24,10 +24,7 @@
     // ---------------
     // Constructors - LJCDocDataGen
 
-    /// <summary>
-    ///		Initializes a class instance.
-    ///		And More.
-    /// </summary>
+    /// <summary>Initializes a class instance.</summary>
     public function __construct()
     {
       // Instantiate properties with Pascal case.

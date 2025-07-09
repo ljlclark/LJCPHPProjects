@@ -35,11 +35,16 @@
         specific PHP Source files.
       </p>
       <pre>
-  GenCodeDocFiles.php
+  (GenCodeDocFiles.php)
+    (GenCodeDocLib.php)
     GenCodeDoc->CreateFromList()
-      GenCodeDoc->CreateXML()
-        LJCDocDataGen->CreateDocDataXMLString()
-          LJCGenDataGen->CreateLibXMLString()
+      CreateFilePages()
+        (LJCDocDataGenLib.php)
+        LJCDocDataGen->SerializeDocData()
+        (LJCGenDataGenLib.php)
+        LJCGenDataGen->SerializeLib()
+          GetHTMLText()
+            (LJCGenTextLib.php)
             LJCGenText->ProcessTemplate()</pre>
       <div class="indent1">
         <table>
@@ -50,7 +55,7 @@
           <tr>
             <td class="start">GenCodeDocFiles.php</td>
             <td>
-              The example program entry file. It calls GenCodeDoc->CreateXML()
+              The example program entry file. It calls GenCodeDoc->CreateFromList()
               for each PHP File where HTML CodeDoc will be generated.
             </td>
           </tr>
@@ -59,12 +64,11 @@
             <td>
               Contains classes to generate the XML and HTML files.
               <br />
-              Method GenCodeDoc->CreateXML()<br />
+              Method GenCodeDoc->CreateFromList()<br />
               For each specified PHP Source file it calls
-              LJCDocDataGen->CreateDocDataXMLString() to create the DocXML
-              string.
+              LJCDocDataGen->SerializeDocData() to create the DocData XML string.
               <br />
-              The DocXML string is passed to LJCGenDataGen->CreateLibXMLString()
+              The DocData XML string is passed to LJCGenDataGen->SerializeLib()
               to create the GenData XML string.
               <br />
               The data from the GenData XML string and the appropriate Text

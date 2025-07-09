@@ -22,14 +22,13 @@
   /// LibName: LJCCommentsLib
   // LJCComments
 
-  // Calling Code
-  // LJCDocDataGenLib.php
-
   // Main Call Tree
-  // SetComment() public
-  //   GetComment()
-  //     LJCInclude.SetComments()
-  //   SaveComment()
+  // LJCDocDataGenLib.php
+  // LJCDocDataGen.LineProcessed()
+  //   SetComment() public
+  //     GetComment()
+  //       LJCInclude.SetComments()
+  //     SaveComment()
   
   // ***************
   // Provides methods to parse code XML comment values.
@@ -51,11 +50,9 @@
 
       $this->CurrentTagName = null;
       $this->Code = null;
-      // *** Add ***
       $this->Groups = [];
       $this->LibName = null;
       $this->Params = null;
-      // *** Add ***
       $this->ParentGroup = null;
       $this->Remarks = null;
       $this->Returns = null;
@@ -77,10 +74,12 @@
     // Public Methods - LJCComments
 
     /// <summary>Clears the XML comments.</summary>
-    public function ClearComments() : void
+    public function ClearComments(): void
     {
       $enabled = false;
       $this->Debug->BeginMethod("ClearComments", $enabled);
+      //$this->Debug->Write(__line__." Var = {$this->Var}");
+      //LJC::Debug(__line__, "Var", $this->Var);
 
       $this->ClearComment("code");
       $this->ClearComment("group");
@@ -98,8 +97,11 @@
     public function SetComment(string $line, ?string $codeFileSpec = null)
       : void
     {
+      // LJCDocDataGen.LineProcessed()
       $enabled = false;
       $this->Debug->BeginMethod("SetComment", $enabled);
+      //$this->Debug->Write(__line__." Var = {$this->Var}");
+      //LJC::Debug(__line__, "Var", $this->Var);
 
       if ($codeFileSpec != null)
       {
@@ -111,7 +113,6 @@
         // New comment.
         $this->CurrentTagName = $this->GetBeginTagName($line);
 
-        // *** Change ***
         // Critical to handle multiple tags.
         if($this->CurrentTagName != "param"
           && $this->CurrentTagName != "group")
@@ -150,10 +151,12 @@
     // Private Comment Methods - LJCComments
 
     // Clears the comments for the specified comment tag.
-    private function ClearComment(?string $tagName = null) : void
+    private function ClearComment(?string $tagName = null): void
     {
       $enabled = false;
       $this->Debug->BeginPrivateMethod("ClearComment", $enabled);
+      //$this->Debug->Write(__line__." Var = {$this->Var}");
+      //LJC::Debug(__line__, "Var", $this->Var);
 
       if (null == $tagName)
       {
@@ -170,7 +173,6 @@
             $this->Code = "";
             break;
 
-          // *** Add ***
           case "group":
             // Setup for multiple lines.
             $this->Groups = [];
@@ -186,7 +188,6 @@
             $this->Params = new LJCDocDataParams();
             break;
 
-          // *** Add ***
           case "parentgroup":
             // Setup for single value.
             $this->ParentGroup = null;
@@ -213,10 +214,13 @@
     } // ClearComment()
 
     // Gets the comment for the current comment tag.
-    private function GetComment(string $line) : ?string
+    private function GetComment(string $line): ?string
     {
+      // SetComment()
       $enabled = false;
       $this->Debug->BeginPrivateMethod("GetComment", $enabled);
+      //$this->Debug->Write(__line__." Var = {$this->Var}");
+      //LJC::Debug(__line__, "Var", $this->Var);
       $retValue = null;
 
       // Get using $CurrentTagName.
@@ -249,17 +253,14 @@
         $this->CurrentTagName = null;
       }
 
-      // *** Begin *** Named Groups
       // Save group item.
       if ("<group" == $beginTag)
       {
-        $this->Debug->BeginPrivateMethod("GetComment", $enabled);
         $isSimpleComment = false;
         $paramComment = new LJCParamComment();
         $param = $paramComment->GetParam($line);
         $this->Groups[$param->Name] = $param->Summary;
       }
-      // *** End   ***
 
       // Save param item.
       if ("<param" == $beginTag)
@@ -289,10 +290,13 @@
     }  // GetComment();
 
     // Saves the comment for the current comment tag.
-    private function SaveComment(?string $comment) : void
+    private function SaveComment(?string $comment): void
     {
+      // SetComment()
       $enabled = false;
       $this->Debug->BeginPrivateMethod("SaveComment", $enabled);
+      //$this->Debug->Write(__line__." Var = {$this->Var}");
+      //LJC::Debug(__line__, "Var", $this->Var);
 
       switch ($this->CurrentTagName)
       {
@@ -304,13 +308,6 @@
           $this->Code .= htmlspecialchars($comment);
           break;
 
-        // *** Delete *** Named Groups
-        // *** Add ***
-        //case "group":
-        //  $this->Groups[] = htmlspecialchars($comment);
-        //  break;
-
-        // *** Add ***
         case "parentgroup":
           $this->ParentGroup = htmlspecialchars($comment);
           break;
@@ -335,10 +332,12 @@
     // Private Tag Methods - LJCComments
 
     // Returns the current or other BeginTag found in the line.
-    private function GetBeginTagName(string $line) : ?string
+    private function GetBeginTagName(string $line): ?string
     {
       $enabled = false;
       $this->Debug->BeginPrivateMethod("GetBeginTagName", $enabled);
+      //$this->Debug->Write(__line__." Var = {$this->Var}");
+      //LJC::Debug(__line__, "Var", $this->Var);
       $retValue = null;
       
       if ($this->CurrentTagName != null)
@@ -350,7 +349,6 @@
       // beginTagName = "group", beginTag = "<group>"
       foreach ($this->BeginTags as $beginTagName => $beginTag)
       {
-        // *** Add ***
         $checkLine = strtolower($line);
         if (LJC::StrPos($checkLine, $beginTag) >= 0)
         {
@@ -364,10 +362,12 @@
     } // GetBeginTagName()
 
     // Gets the BeginTag for the specified comment tag.
-    private function GetBeginTag(?string $tagName = null) : ?string
+    private function GetBeginTag(?string $tagName = null): ?string
     {
       $enabled = false;
       $this->Debug->BeginPrivateMethod("GetBeginTag", $enabled);
+      //$this->Debug->Write(__line__." Var = {$this->Var}");
+      //LJC::Debug(__line__, "Var", $this->Var);
       $retValue = null;
 
       if (null == $tagName)
@@ -385,10 +385,12 @@
     } // GetBeginTag()
 
     // Gets the EndTag for the specified or current comment tag.
-    private function GetEndTag(?string $tagName = null) : ?string
+    private function GetEndTag(?string $tagName = null): ?string
     {
       $enabled = false;
       $this->Debug->BeginPrivateMethod("GetEndTag", $enabled);
+      //$this->Debug->Write(__line__." Var = {$this->Var}");
+      //LJC::Debug(__line__, "Var", $this->Var);
       $retValue = null;
 
       if (null == $tagName)
@@ -406,10 +408,12 @@
     } // GetEndTag()
 
     // Gets the BeginTag length for the specified or current comment tag.
-    private function GetLengthBeginTag(?string $tagName = null) : int
+    private function GetLengthBeginTag(?string $tagName = null): int
     {
       $enabled = false;
       $this->Debug->BeginPrivateMethod("GetLengthBeginTag", $enabled);
+      //$this->Debug->Write(__line__." Var = {$this->Var}");
+      //LJC::Debug(__line__, "Var", $this->Var);
       $retValue = 0;
 
       if (null == $tagName)
@@ -428,10 +432,12 @@
     } // GetLengthBeginTag()
 
     // Gets the EndTag length for the specified or current comment tag.
-    private function GetLengthEndTag(?string $tagName = null) : int
+    private function GetLengthEndTag(?string $tagName = null): int
     {
       $enabled = false;
       $this->Debug->BeginPrivateMethod("GetLengthEndTag", $enabled);
+      //$this->Debug->Write(__line__." Var = {$this->Var}");
+      //LJC::Debug(__line__, "Var", $this->Var);
       $retValue = 0;
 
       if (null == $tagName)
@@ -453,10 +459,12 @@
     } // GetLengthEndTag()
 
     // Indicates if the lines has a current EndTag.
-    private function HasCurrentEndTag(string $line) : bool
+    private function HasCurrentEndTag(string $line): bool
     {
       $enabled = false;
       $this->Debug->BeginPrivateMethod("HasCurrentEndTag", $enabled);
+      //$this->Debug->Write(__line__." Var = {$this->Var}");
+      //LJC::Debug(__line__, "Var", $this->Var);
       $retValue = false;
 
       $endTag = $this->GetEndTag();
@@ -471,18 +479,18 @@
     } // HasCurrentEndTag()
 
     // Sets the comment tag values
-    private function SetCommentTags() : void
+    private function SetCommentTags(): void
     {
       // Instantiate properties with Pascal case.
       $enabled = false;
       $this->Debug->BeginPrivateMethod("SetCommentTags", $enabled);
+      //$this->Debug->Write(__line__." Var = {$this->Var}");
+      //LJC::Debug(__line__, "Var", $this->Var);
 
       // tagName = "code", tag = "<code>"
       $this->BeginTags["code"] = "<code>";
-      // *** Add ***
       $this->BeginTags["group"] = "<group";
       $this->BeginTags["include"] = "<include";
-      // *** Add ***
       $this->BeginTags["parentgroup"] = "<parentgroup>";
       $this->BeginTags["param"] = "<param";
       $this->BeginTags["remarks"] = "<remarks>";
@@ -490,10 +498,8 @@
       $this->BeginTags["summary"] = "<summary>";
 
       $this->EndTags["code"] = "</code>";
-      // *** Begin *** Add
       $this->EndTags["group"] = "</group>";
       $this->EndTags["parentgroup"] = "</parentgroup>";
-      // *** End   *** Add
       $this->EndTags["param"] = "</param>";
       $this->EndTags["remarks"] = "</remarks>";
       $this->EndTags["returns"] = "</returns>";
@@ -506,10 +512,12 @@
     // Private Output Methods - LJCComments
 
     // Writes an output line.
-    private function Output($text = null, $value = null)
+    private function Output($text = null, $value = null): void
     {
       $enabled = false;
       $this->Debug->BeginPrivateMethod("Output", $enabled);
+      //$this->Debug->Write(__line__." Var = {$this->Var}");
+      //LJC::Debug(__line__, "Var", $this->Var);
 
       $lib = "";
       //$lib = "LJCCommonLib";
@@ -537,14 +545,13 @@
     /// <summary>The current tag name.</summary>
     public ?string $CurrentTagName;
 
-    // *** Add ***
+    /// <summary>The groups.</summary>
     public ?array $Groups;
 
     /// <summary>The Param comments.</summary>
-    //public ?array $Params;
     public ?LJCDocDataParams $Params;
 
-    // *** Add ***
+    /// <summary>The Parent group name.</summary>
     public ?string $ParentGroup;
 
     /// <summary>The Remark comment.</summary>

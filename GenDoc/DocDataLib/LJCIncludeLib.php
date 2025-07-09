@@ -15,17 +15,17 @@
   //   , LJCReplacement, LJCReplacements
   // LJCDebugLib: LJCDebug
 
-  // #01 Correct XMLFileName - 5/4/25
-
   // Contains Classes to retrieve data from include XML files.
   /// <include path='items/LJCIncludeLib/*' file='Doc/LJCIncludeLib.xml'/>
   /// LibName: LJCIncludeLib
   //  LJCInclude
 
   // Main Call Tree
-  // SetComments() public
-  //   SetIncludeValues()
-  //   GetComment()
+  // LJCComments.php
+  // GetComment()
+  //   SetComments() public
+  //     SetIncludeValues()
+  //     GetComment()
 
   // ***************
   // Retrieves the Include file XML comment values.
@@ -58,8 +58,11 @@
     public function SetComments(string $includeLine, string $codeFileSpec)
       : void
     {
+      // GetComment()
       $enabled = false;
       $this->Debug->BeginMethod("SetComments", $enabled);
+      //$this->Debug->Write(__line__." Var = {$this->Var}");
+      //LJC::Debug(__line__, "Var", $this->Var);
 
       // Sets LibName, XMLFile and itemTag.
       if ($this->SetIncludeValues($includeLine, $codeFileSpec, $itemTag))
@@ -127,10 +130,14 @@
     // Private Methods - LJCInclude
 
     // Gets the comment for the specified code line.
-    private function GetComment(string $line) : ?string
+    private function GetComment(string $line): ?string
     {
+      // LJCComments.php
+      // GetComment()-SetComments()
       $enabled = false;
       $this->Debug->BeginPrivateMethod("GetComment", $enabled);
+      //$this->Debug->Write(__line__." Var = {$this->Var}");
+      //LJC::Debug(__line__, "Var", $this->Var);
       $retValue = null;
 
       $beginTag = $this->GetLineBeginTag($line);
@@ -194,10 +201,12 @@
     } // GetComment()
 
     // Gets the begin tag.
-    private  function GetLineBeginTag(string $line) : ?string
+    private  function GetLineBeginTag(string $line): ?string
     {
       $enabled = false;
       $this->Debug->BeginPrivateMethod("GetLineBeginTag", $enabled);
+      //$this->Debug->Write(__line__." Var = {$this->Var}");
+      //LJC::Debug(__line__, "Var", $this->Var);
       $retValue = null;
 
       $beginTag = LJC::GetDelimitedString($line, "<", ">");
@@ -211,10 +220,12 @@
     } // GetLineBeginTag()
 
     // Gets the end tag.
-    private function GetLineEndTag(string $line) : ?string
+    private function GetLineEndTag(string $line): ?string
     {
       $enabled = false;
       $this->Debug->BeginPrivateMethod("GetLineEndTag", $enabled);
+      //$this->Debug->Write(__line__." Var = {$this->Var}");
+      //LJC::Debug(__line__, "Var", $this->Var);
       $retValue = null;
 
       $endTag = LJC::GetDelimitedString($line, "</", ">");
@@ -228,10 +239,12 @@
     } // GetLineEndTag()
 
     // Checks for an invalid end comment tag.
-    private function InvalidCommentEndTag(?string $comment) : bool
+    private function InvalidCommentEndTag(?string $comment): bool
     {
       $enabled = false;
       $this->Debug->BeginPrivateMethod("InvalidCommentEndTag", $enabled);
+      //$this->Debug->Write(__line__." Var = {$this->Var}");
+      //LJC::Debug(__line__, "Var", $this->Var);
       $retValue = false;
 
       if ($comment != null)
@@ -251,10 +264,12 @@
     } // InvalidCommentEndTag()
 
     // Checks for a valid comment tag.
-    private function IsCommentTag(?string $tag) : bool
+    private function IsCommentTag(?string $tag): bool
     {
       $enabled = false;
       $this->Debug->BeginPrivateMethod("IsCommentTag", $enabled);
+      //$this->Debug->Write(__line__." Var = {$this->Var}");
+      //LJC::Debug(__line__, "Var", $this->Var);
       $retValue = false;
 
       if ($tag != null)
@@ -277,10 +292,12 @@
     } // IsCommentTag()
 
     // Replaces tabs with spaces and removes extra leading spaces
-    private function LTrimXMLComment(string $comment) : string
+    private function LTrimXMLComment(string $comment): string
     {
       $enabled = false;
       $this->Debug->BeginPrivateMethod("LTrimXMLComment", $enabled);
+      //$this->Debug->Write(__line__." Var = {$this->Var}");
+      //LJC::Debug(__line__, "Var", $this->Var);
 
       // Convert comment tabs to spaces.
       $retValue = str_replace("\t", "  ", $comment);
@@ -301,10 +318,13 @@
 
     // Sets the Class include file values: LibName, XMLFile.
     private function SetIncludeValues(string $includeLine, string $codeFileSpec
-      , ?string &$itemTag) : bool
+      , ?string &$itemTag): bool
     {
+      // GetComment()-SetComments()
       $enabled = false;
       $this->Debug->BeginPrivateMethod("SetIncludeValues", $enabled);
+      //$this->Debug->Write(__line__." Var = {$this->Var}");
+      //LJC::Debug(__line__, "Var", $this->Var);
       $retValue = true;
 
       $itemTag = null;
@@ -344,10 +364,12 @@
     // Private Output Methods
 
     // Writes an output line.
-    private function Output($text = null, $value = null)
+    private function Output($text = null, $value = null): void
     {
       $enabled = false;
       $this->Debug->BeginPrivateMethod("Output", $enabled);
+      //$this->Debug->Write(__line__." Var = {$this->Var}");
+      //LJC::Debug(__line__, "Var", $this->Var);
 
       $lib = "";
       //$lib = "LJCCommonLib";

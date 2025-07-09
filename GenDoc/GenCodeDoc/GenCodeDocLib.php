@@ -14,6 +14,7 @@
   // LJCGenDocConfigLib: LJCGenDocConfig
   // LJCDocDataGenLib: LJCDocDataGen
   // LJCGenDataGenLib: LJCGenDataGen
+  // TextGenLib: HasValue()
 
   /// <summary>
   ///   Contains classes to generate HTML doc for files listed
@@ -22,13 +23,11 @@
   /// LibName: GenCodeDocLib
   // GenCodeDoc
 
-  // Calling Code
-  // GenCodeDocFiles.php
-
   // Main Call Tree
+  // GenCodeDocFiles.php
   // CreateFromList() public
   //   CreateFilePages() public
-  //     LJCDocDataGen->CreateDocDataXMLString()
+  //     LJCDocDataGen->SerializeDocData()
   //     LJCGenDataGen->SerializeLib()
 
   // ***************
@@ -47,6 +46,8 @@
       $this->Debug = new LJCDebug("GenCodeDocLib", "GenCodeDoc"
         , "w", $enable);
       $this->Debug->IncludePrivate = true;
+      //$this->Debug->Write(__line__." Var = {$this->Var}");
+      //LJC::Debug(__line__, "Var", $this->Var);
       
       $this->GenDocConfig =new LJCGenDocConfig();
       $this->DocDataGen = new LJCDocDataGen();
@@ -56,8 +57,11 @@
     /// <summary>Creates CodeDoc pages from source file list.</summary>
     public function CreateFromList()
     {
+      // GenCodeDocFiles.php
       $enabled = false;
       $this->Debug->BeginMethod("CreateFromList", $enabled);
+      //$this->Debug->Write(__line__." Var = {$this->Var}");
+      //LJC::Debug(__line__, "Var", $this->Var);
 
       $genDocConfig = $this->GenDocConfig;
       $genDocConfig->OutputPath = "../../../WebSitesDev/CodeDoc/LJCPHPCodeDoc/HTML";
@@ -89,18 +93,20 @@
     /// <param name="$fileSpecLine">The source file spec.</param>
     public function CreateFilePages($fileSpecLine) : void
     {
-      // CreateFromList()
+      // GenCodeDocFiles.php-CreateFromList()
       $enabled = false;
       $this->Debug->BeginMethod("CreateFilePages", $enabled);
+      //$this->Debug->Write(__line__." Var = {$this->Var}");
+      //LJC::Debug(__line__, "Var", $this->Var);
 
       $fileSpec = trim($fileSpecLine);
       if (TextGenLib::HasValue($fileSpec))
       {
-        $docXMLString = $this->DocDataGen->SerializeDocData($fileSpec);
+        $docDataXML = $this->DocDataGen->SerializeDocData($fileSpec);
 
-        if ($docXMLString != null)
+        if ($docDataXML != null)
         {
-          $genXMLString = $this->GenDataGen->SerializeLib($docXMLString
+          $genDataXML = $this->GenDataGen->SerializeLib($docDataXML
             , $fileSpec);
         }
       }

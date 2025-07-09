@@ -29,8 +29,9 @@
     public function __construct()
     {
       // Instantiate properties with Pascal case.
+      $enabled = false;
       $this->Debug = new LJCDebug("LJCDocGenDataXMLLib", "LJCGenDataXML"
-        , false);
+        , $enabled);
       $this->Debug->IncludePrivate = true;
     }
 
@@ -42,10 +43,12 @@
     public static function ItemBegin(string $name, int $indent
       , ?string $parentGroup = null) : string
     {
-      $debug = new LJCDebug("LJCGenDataXMLLib", "LJCGenDataXML"
-       , "w", false);
       $enabled = false;
+      $debug = new LJCDebug("LJCGenDataXMLLib", "LJCGenDataXML"
+       , "a", $enabled);
       $debug->BeginMethod("ItemBegin", $enabled);
+      //$this->Debug->Write(__line__." Var = {$this->Var}");
+      //LJC::Debug(__line__, "Var", $this->Var);
       $retValue = null;
 
       $builder = new LJCStringBuilder();
@@ -67,10 +70,12 @@
     /// <include path='items/ItemEnd/*' file='Doc/LJCGenDataXML.xml'/>
     public static function ItemEnd(int $indent) : string
     {
-      $debug = new LJCDebug("LJCGenDataXMLLib", "LJCGenDataXML"
-       , "w", false);
       $enabled = false;
+      $debug = new LJCDebug("LJCGenDataXMLLib", "LJCGenDataXML"
+       , "a", $enabled);
       $debug->BeginMethod("ItemEnd", $enabled);
+      //$this->Debug->Write(__line__." Var = {$this->Var}");
+      //LJC::Debug(__line__, "Var", $this->Var);
       $retValue = null;
 
       $builder = new LJCStringBuilder();
@@ -88,10 +93,12 @@
     public static function Replacement(string $name, ?string $value
       , int $indent) : ?string
     {
-      $debug = new LJCDebug("LJCGenDataXMLLib", "LJCGenDataXML"
-       , "w", false);
       $enabled = false;
+      $debug = new LJCDebug("LJCGenDataXMLLib", "LJCGenDataXML"
+       , "a", $enabled);
       $debug->BeginMethod("Replacement", $enabled);
+      //$this->Debug->Write(__line__." Var = {$this->Var}");
+      //LJC::Debug(__line__, "Var", $this->Var);
       $retValue = null;
 
       if ($value != null)
@@ -115,10 +122,12 @@
     /// <include path='items/SectionBegin/*' file='Doc/LJCGenDataXML.xml'/>
     public static function SectionBegin(string $name, int $indent) : string
     {
-      $debug = new LJCDebug("LJCGenDataXMLLib", "LJCGenDataXML"
-       , "w", false);
       $enabled = false;
+      $debug = new LJCDebug("LJCGenDataXMLLib", "LJCGenDataXML"
+       , "a", $enabled);
       $debug->BeginMethod("SectionBegin", $enabled);
+      //$this->Debug->Write(__line__." Var = {$this->Var}");
+      //LJC::Debug(__line__, "Var", $this->Var);
       $retValue = null;
 
       $builder = new LJCStringBuilder();
@@ -137,10 +146,12 @@
     /// <include path='items/SectionEnd/*' file='Doc/LJCGenDataXML.xml'/>
     public static function SectionEnd(int $indent) : string
     {
-      $debug = new LJCDebug("LJCGenDataXMLLib", "LJCGenDataXML"
-       , "w", false);
       $enabled = false;
+      $debug = new LJCDebug("LJCGenDataXMLLib", "LJCGenDataXML"
+       , "a", $enabled);
       $debug->BeginMethod("SectionEnd", $enabled);
+      //$this->Debug->Write(__line__." Var = {$this->Var}");
+      //LJC::Debug(__line__, "Var", $this->Var);
       $retValue = null;
 
       $builder = new LJCStringBuilder();
@@ -160,9 +171,11 @@
       , string $years = "2022") : string
     {
       $debug = new LJCDebug("LJCGenDataXMLLib", "LJCGenDataXML"
-       , "w", false);
+       , "a", false);
       $enabled = false;
       $debug->BeginMethod("XMLHead", $enabled);
+      //$this->Debug->Write(__line__." Var = {$this->Var}");
+      //LJC::Debug(__line__, "Var", $this->Var);
       $retValue = null;
 
       $builder = new LJCStringBuilder();

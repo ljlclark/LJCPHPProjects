@@ -32,10 +32,13 @@
     /// <summary>Creates a Param object from a param XML comment.</summary>
     /// <param name="$paramLine">The param line.</param>
     /// <returns>The Param object.</returns>
-    public function GetParam(string $paramLine) : ?LJCDocDataParam
+    public function GetParam(string $paramLine): ?LJCDocDataParam
     {
+      // LJCComments.GetComment()
       $enabled = false;
       $this->Debug->BeginMethod("GetParam", $enabled);
+      //$this->Debug->Write(__line__." Var = {$this->Var}");
+      //LJC::Debug(__line__, "Var", $this->Var);
       $retValue = null;
 
       if ($paramLine != null)
