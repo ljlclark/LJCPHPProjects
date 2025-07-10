@@ -245,7 +245,9 @@
             $value = $row[$columnName];
             if ("bool" == $column->DataTypeName)
             {
-              $dataObject->$propertyName = (bool)$value;
+              // *** Change ***
+              //$dataObject->$propertyName = (bool)$value;
+              $dataObject->$propertyName = (int)$value;
             }
             else
             {

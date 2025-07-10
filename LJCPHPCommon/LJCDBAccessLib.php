@@ -245,7 +245,8 @@
       switch ($mySQLTypeName)
       {
         case "bit":
-          $retValue = "bool";
+          //$retValue = "bool";
+          $retValue = "int";
           break;
 
         case "int":
@@ -442,8 +443,9 @@
         }
       }
       return $retValue;
-    } // Columns()
+    } // GetColumns()
 
+    // Output DbColumn information.
     public static function DebugDbColumns(LJCDbColumns $dbColumns
       , string $location = null)
     {
@@ -465,6 +467,7 @@
       LJC::Debug();
     }
 
+    // Output Collection Keys information.
     public static function DebugKeys(LJCCollectionBase $collection
       , string $location = null)
     {
@@ -482,6 +485,7 @@
       LJC::Debug();
     }
 
+    // Output property names.
     public static function DebugPropertyNames(array $propertyNames
       , string $location = null)
     {
