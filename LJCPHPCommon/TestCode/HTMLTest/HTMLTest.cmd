@@ -1,4 +1,4 @@
-del php_errors.log
-del ErrorOutput.log
+call HTMLTestClear.cmd
 php HTMLTest.php > HTMLOutput.log
 call ParseError.cmd
+call NotePad.exe HTMLOutput.log

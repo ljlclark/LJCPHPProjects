@@ -238,7 +238,7 @@
   {
     // Coverts MySQL type names to PHP type names.
     /// <include path='items/GetDataType/*' file='Doc/LJCDbColumn.xml'/>
-    public static function GetDataType(string $mySQLTypeName) : string
+    public static function GetDataType(string $mySQLTypeName): string
     {
       $retValue = "string";
 
@@ -282,7 +282,7 @@
     } // __construct()
 
     /// <summary>Creates an object clone.</summary>
-    public function Clone() : self
+    public function Clone(): self
     {
       $retValue = new self($this->ColumnName);
 
@@ -359,7 +359,7 @@
     // Data Class Methods
 
     /// <summary>Creates an object clone.</summary>
-    public function Clone() : self
+    public function Clone(): self
     {
       $retValue = new self();
       foreach ($this->Items as $key => $item)
@@ -379,7 +379,7 @@
     /// <include path='items/Add/*' file='Doc/LJCDbColumns.xml'/>
     public function Add(string $columnName, ?string $propertyName = null
       , ?string $renameAs = null, string $dataTypeName = "string"
-      , ?string $value = null, $key = null) : ?LJCDbColumn
+      , ?string $value = null, $key = null): ?LJCDbColumn
     {
       $retValue = null;
 
@@ -400,7 +400,7 @@
 
     // Adds an object and key value.
     /// <include path='items/AddObject/*' file='Doc/LJCDbColumns.xml'/>
-    public function AddObject(LJCDbColumn $item, $key = null) : ?LJCDbColumn
+    public function AddObject(LJCDbColumn $item, $key = null): ?LJCDbColumn
     {
       if (null == $key)
       {
@@ -412,7 +412,7 @@
 
     // Retrieves the item by Key value.
     /// <include path='items/Retrieve/*' file='Doc/LJCDbColumns.xml'/>
-    public function Retrieve($key, bool $throwError = true) : ?LJCDbColumn
+    public function Retrieve($key, bool $throwError = true): ?LJCDbColumn
     {
       $retValue = $this->RetrieveItem($key, $throwError);
       return $retValue;
@@ -423,7 +423,7 @@
 
     // Get the column definitions that match the property names.
     /// <include path='items/GetColumns/*' file='Doc/LJCDbColumns.xml'/>
-    public function Columns(array $propertyNames = null) : self
+    public function Columns(array $propertyNames = null): self
     {
       $retValue = null;
 
@@ -447,7 +447,7 @@
 
     // Output DbColumn information.
     public static function DebugDbColumns(LJCDbColumns $dbColumns
-      , string $location = null)
+      , string $location = null): void
     {
       $text = "DebugDbColumns:";
       if ($location != null)
@@ -469,7 +469,7 @@
 
     // Output Collection Keys information.
     public static function DebugKeys(LJCCollectionBase $collection
-      , string $location = null)
+      , string $location = null): void
     {
       $text = "DebugKeys:";
       if ($location != null)
@@ -487,7 +487,7 @@
 
     // Output property names.
     public static function DebugPropertyNames(array $propertyNames
-      , string $location = null)
+      , string $location = null): void
     {
       $text = "DebugPropertyNames:";
       if ($location != null)
@@ -505,7 +505,7 @@
     // Sets the PropertyName, RenameAs and Caption values for a column.
     /// <include path='items/MapNames/*' file='Doc/LJCDbColumns.xml'/>
     public function MapNames(string $columnName, ?string $propertyName = null
-      , ?string $renameAs = null, ?string $caption = null)
+      , ?string $renameAs = null, ?string $caption = null): void
     {
       $dbColumn = $this->Retrieve($columnName);
       if ($dbColumn != null)
@@ -532,7 +532,7 @@
     } // MapNames()
 
     // Creates a PropertyNames list from the data definition.
-    public function PropertyNames()
+    public function PropertyNames(): array
     {
       $retValue = [];
 
@@ -546,7 +546,7 @@
     // Sets the Where Clause operators.
     /// <include path='items/SetWhereOperators/*' file='Doc/LJCDbColumns.xml'/>
     public function SetWhereOperators($key, string $compareOperator
-      ,  string $boolOperator = "and") : void
+      ,  string $boolOperator = "and"): void
     {
       $item = $this->Retrieve($key);
       if ($item != null)
@@ -624,7 +624,7 @@
     // Creates an object and adds it to the collection.
     /// <include path='items/Add/*' file='Doc/LJCJoins.xml'/>
     public function Add(string $tableName, string $tableAlias = null
-      , $key = null) : ?LJCJoin
+      , $key = null): ?LJCJoin
     {
       $retValue = null;
 
@@ -640,7 +640,7 @@
 
     // Adds an object and key value.
     /// <include path='items/AddObject/*' file='Doc/LJCJoins.xml'/>
-    public function AddObject(LJCJoin $item, $key = null) : ?LJCJoin
+    public function AddObject(LJCJoin $item, $key = null): ?LJCJoin
     {
       if (null == $key)
       {
@@ -651,7 +651,7 @@
     } // AddObject()
 
     /// <summary>Creates an object clone.</summary>
-    public function Clone() : self
+    public function Clone(): self
     {
       $retValue = new self();
 
@@ -665,7 +665,7 @@
 
     // Retrieves the item by Key value.
     /// <include path='items/Retrieve/*' file='Doc/LJCJoins.xml'/>
-    public function Retrieve($key, bool $throwError = true) : ?LJCJoin
+    public function Retrieve($key, bool $throwError = true): ?LJCJoin
     {
       $retValue = $this->RetrieveItem($key, $throwError);
       return $retValue;
@@ -689,7 +689,7 @@
     } // __construct()
 
     /// <summary>Creates an object clone.</summary>
-    public function Clone() : self
+    public function Clone(): self
     {
       $retValue = new self();
 
@@ -736,7 +736,7 @@
     // Creates an object and adds it to the collection.
     /// <include path='items/Add/*' file='Doc/LJCJoinOns.xml'/>
     public function Add(string $fromColumnName, string $toColumnName
-      , $key = null) : ?LJCJoinOn
+      , $key = null): ?LJCJoinOn
     {
       $retValue = null;
 
@@ -752,7 +752,7 @@
 
     // Adds an object and key value.
     /// <include path='items/AddObject/*' file='Doc/LJCJoinOns.xml'/>
-    public function AddObject(LJCJoinOn $item, $key = null) : ?LJCJoinOn
+    public function AddObject(LJCJoinOn $item, $key = null): ?LJCJoinOn
     {
       if (null == $key)
       {
@@ -763,7 +763,7 @@
     } // AddObject()
 
     /// <summary>Creates an object clone.</summary>
-    public function Clone() : self
+    public function Clone(): self
     {
       $retValue = new self();
 
@@ -777,7 +777,7 @@
 
     // Retrieves the item by Key value.
     /// <include path='items/Retrieve/*' file='Doc/LJCJoinOns.xml'/>
-    public function Retrieve($key, bool $throwError = true) : ?LJCJoinOn
+    public function Retrieve($key, bool $throwError = true): ?LJCJoinOn
     {
       $retValue = $this->RetrieveItem($key, $throwError);
       return $retValue;

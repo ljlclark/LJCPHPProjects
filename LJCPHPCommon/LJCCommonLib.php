@@ -22,7 +22,7 @@
 
     // Display debug text.
     public static function Debug(int $lineNumber = 0, string $text = ""
-      , $value = null)
+      , $value = null): void
     {
       echo("\r\n");
       if ($lineNumber > 0)
@@ -40,7 +40,7 @@
     }
 
     // Indicates if the builder text ends with a newline.
-    public static function EndsWithNewLine(string $text) : bool
+    public static function EndsWithNewLine(string $text): bool
     {
       $retValue = false;
 
@@ -58,7 +58,7 @@
     // Gets the string between the delimiters.
     /// <include path='items/GetDelimitedString/*' file='Doc/LJCCommon.xml'/>
     public static function GetDelimitedString(string $text, string $beginDelimiter
-      , ?string $endDelimiter, bool $lTrim = true, bool $rTrim = true) : ?string
+      , ?string $endDelimiter, bool $lTrim = true, bool $rTrim = true): ?string
     {
       $retValue = null;
 
@@ -93,7 +93,7 @@
 
     // Gets the FileName from the file spec.
     /// <include path='items/GetFileName/*' file='Doc/LJCCommon.xml'/>
-    public static function GetFileName(string $fileSpec) : string
+    public static function GetFileName(string $fileSpec): string
     {
       $retValue = $fileSpec;
 
@@ -115,7 +115,7 @@
 
     // Gets the Path from the file spec.
     /// <include path='items/GetFileSpecPath/*' file='Doc/LJCCommon.xml'/>
-    public static function GetFileSpecPath(string $fileSpec) : string
+    public static function GetFileSpecPath(string $fileSpec): string
     {
       $retValue = "";
 
@@ -144,7 +144,7 @@
     } // GetTokens()
 
     // Checks for array elements.
-    public static function HasElements($array) : bool
+    public static function HasElements($array): bool
     {
       $retValue = false;
 
@@ -157,7 +157,7 @@
     }
 
     // Checks for array elements.
-    public static function HasItems($collection) : bool
+    public static function HasItems($collection): bool
     {
       $retValue = false;
 
@@ -174,7 +174,7 @@
     /// <returns>
     ///   true if the text has other than white space; otherwise false;
     /// </returns>
-    public static function HasValue($text) : bool
+    public static function HasValue($text): bool
     {
       $retValue = false;
 
@@ -191,7 +191,7 @@
     /// <returns>
     ///   true if element text has other than white space; otherwise false;
     /// </returns>
-    public static function HasXML(SimpleXMLElement $xmlElement)
+    public static function HasXML(SimpleXMLElement $xmlElement): bool
     {
       $retValue = false;
 
@@ -207,7 +207,7 @@
     }
 
     // Remove newline from text.
-    public static function NewLineTrim(string $text)
+    public static function NewLineTrim(string $text): string
     {
       $retValue = $text;
 
@@ -230,7 +230,7 @@
 
     // Returns a scrubbed external value.
     /// <include path='items/Scrub/*' file='Doc/LJCCommon.xml'/>
-    public static function Scrub(string $text) : string
+    public static function Scrub(string $text): string
     {
       $retValue = trim($text);
       $retValue = stripslashes($retValue);
@@ -239,7 +239,7 @@
     } // Scrub()
 
     /// <summary>Splits a string on whitespace.</summary>
-    public static function Split(string $text) : array
+    public static function Split(string $text): array
     {
       $retValues = preg_split("/[\s,]+/", $text, 0, PREG_SPLIT_NO_EMPTY);
       return $retValues;
@@ -248,7 +248,7 @@
     // Gets the first index for the search value.
     /// <include path='items/StrPos/*' file='Doc/LJCCommon.xml'/>
     public static function StrPos(?string $text, ?string $find
-      , int $startIndex = 0, bool $exact = false) : int
+      , int $startIndex = 0, bool $exact = false): int
     {
       $retValue = -1;
 
@@ -287,7 +287,7 @@
     // Gets the last index for the search value.
     /// <include path='items/StrRPos/*' file='Doc/LJCCommon.xml'/>
     public static function StrRPos(?string $text, ?string $find, int $startIndex = 0
-      , bool $exact = false) : int
+      , bool $exact = false): int
     {
       $retValue = -1;
 
@@ -330,7 +330,7 @@
     } // StrRPos()
 
     /// <summary>Returns a value as bool.</summary>
-    public static function ToBool($value) : bool
+    public static function ToBool($value): bool
     {
       $retValue = boolval($value);
 
@@ -344,7 +344,7 @@
     } // ToBool()
 
     /// <summary>Returns a text value as int boolean.</summary>
-    public static function ToBoolInt(?string $text) : int
+    public static function ToBoolInt(?string $text): int
     {
       $retValue = 1;
 
@@ -367,7 +367,8 @@
     } // ToBoolInt()
 
     // Writes the test compare text.
-    public static function WriteCompare(string $methodName, string $result, string $compare)
+    public static function WriteCompare(string $methodName, string $result
+      , string $compare): void
     {
       if (!self::HasValue($result))
       {
@@ -389,7 +390,7 @@
 
     // Get a string value from the XML value.
     public static function XMLToString(SimpleXMLElement $xmlValue
-      , bool $trim = true) : ?string
+      , bool $trim = true): ?string
     {
       $retValue = null;
 

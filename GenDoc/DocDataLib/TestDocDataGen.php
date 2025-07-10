@@ -27,12 +27,12 @@
 
     if ($isFile)
     {
-      $docDataGen->SetConfig($this->GenDocConfig);
+      $docDataGen->SetConfig($genDocConfig);
       break;
     }
   }
 
-  $xmlString = $docDataGen->CreateDocDataXMLString("../GenCodeDoc/GenCodeDocLib.php"
+  $xmlString = $docDataGen->SerializeDocData("../GenCodeDoc/GenCodeDocLib.php"
     , $writeXML);
   echo($xmlString);
 ?>

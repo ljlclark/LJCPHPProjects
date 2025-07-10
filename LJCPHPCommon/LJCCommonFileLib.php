@@ -27,7 +27,7 @@
     // Gets the indexed Debug file name.
     /// <include path='items/GetIndexedDebugFileName/*' file='Doc/LJCCommon.xml'/>
     public static function GetIndexedDebugFileName(string $folder
-      , string $fileName)	: string
+      , string $fileName): string
     {
       $retValue = "$folder/$fileName.txt";
 
@@ -44,7 +44,7 @@
 
     // Creates the specified folder if it does not already exist.
     /// <param name="$folder">The folder name.</param>
-    public static function MkDir(string $folder)
+    public static function MkDir(string $folder): void
     {
       if (false == file_exists($folder))
       {

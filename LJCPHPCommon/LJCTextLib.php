@@ -33,7 +33,7 @@
     // Appends a text line with indents.
     /// <include path='items/Line/*' file='Doc/LJCStringBuilder.xml'/>
     public function Line(?string $text, int $indent = 0
-      , bool $addBreak = false)
+      , bool $addBreak = false): void
     {
       $this->Text($text, $indent, $addBreak);
       $this->Text("\r\n");
@@ -42,7 +42,7 @@
     // Appends text with indents.
     /// <include path='items/Text/*' file='Doc/LJCStringBuilder.xml'/>
     public function Text(?string $text, int $indent = 0
-      , bool $addBreak = false)
+      , bool $addBreak = false): void
     {
       $this->InitValue();
       if ($indent > 0)
@@ -70,7 +70,7 @@
     // Appends a text line with begin tag, end tag and indents.
     /// <include path='items/Tags/*' file='Doc/LJCStringBuilder.xml'/>
     public function Tags(string $tag, ?string $text, int $indent
-      , bool $addBreak = false)
+      , bool $addBreak = false): void
     {
       if ($text != null)
       {
@@ -79,7 +79,7 @@
     } // Tags()
 
     /// <summary>Gets the current builder string length.</summary>
-    public function Length() : int
+    public function Length(): int
     {
       $retValue = 0;
 
@@ -92,13 +92,13 @@
     } // Length()
 
     /// <summary>Gets the built string.</summary>
-    public function ToString()
+    public function ToString(): string
     {
       return $this->StringValue;
     } // ToString()
 
     // Initializes built string value.
-    private function InitValue()
+    private function InitValue(): void
     {
       if (null == $this->StringValue)
       {
@@ -154,9 +154,19 @@
     // ---------------
     // Public Static Functions
 
+    // Writes the element attributes.
+    public static function WriteAttribute(string $name, ?string $value): void
+    {
+      if ($value != null)
+      {
+        LJCWriter::Write(" $name='$value'");
+      }
+    } // WriteAttribute()
+
     // Writes an HTML table header row.
     /// <include path='items/WriteHeader/*' file='Doc/LJCHTMLWriter.xml'/>
-    public static function WriteHeader($columns)
+    // *** Change ***
+    public static function WriteHeader(array $columns): void
     {
       //LJCWriter::WriteLine("<thead>", 1);
       LJCWriter::WriteLine("<tr>", 1);
@@ -176,7 +186,7 @@
 
     // Writes an HTML table data row.
     /// <include path='items/WriteRow/*' file='Doc/LJCHTMLWriter.xml'/>
-    public static function WriteRow($dataObject, $columns)
+    public static function WriteRow($dataObject, $columns): void
     {
       LJCWriter::WriteLine("<tr>", 1);
 
@@ -195,15 +205,6 @@
       }
       LJCWriter::WriteLine("</tr>", 1);
     } // WriteRow()
-
-    // Writes the style property values.
-    public static function WriteAttribute(string $name, ?string $value)
-    {
-      if ($value != null)
-      {
-        LJCWriter::Write(" $name='$value'");
-      }
-    } // WriteAttribute()
   } // LJCHTMLWriter
 
   // ***************
@@ -216,7 +217,7 @@
     // Public Static Functions
 
     // Runs a program and returns the output.
-    public static function Run($programName) : array
+    public static function Run($programName): array
     {
       $lines = null;
       $status = null;
@@ -227,7 +228,7 @@
     // Writes text with indents.
     /// <include path='items/Write/*' file='Doc/LJCWriter.xml'/>
     public static function Write(?string $text, int $indentCount = 0
-      , bool $addBreak = false)
+      , bool $addBreak = false): void
     {
       if (null == $text)
       {
@@ -253,19 +254,19 @@
           $text .= "<br />";
         }
       }
-      echo $text;
+      echo($text);
     } // Write()
 
     // Writes text with indents.
     /// <include path='items/WriteAll/*' file='Doc/LJCWriter.xml'/>
-    public static function WriteAll(array $lines, bool $addCRLF = true)
+    public static function WriteAll(array $lines, bool $addCRLF = true): void
     {
       foreach ($lines as $line)
       {
-        echo $line;
+        echo($line);
         if ($addCRLF)
         {
-          echo "\r\n";
+          echo("\r\n");
         }
       }
     } // WriteAll()
@@ -273,10 +274,10 @@
     // Writes a text line with indents.
     /// <include path='items/WriteLine/*' file='Doc/LJCWriter.xml'/>
     public static function WriteLine(?string $text, int $indentCount = 0
-      , bool $addBreak = false)
+      , bool $addBreak = false): void
     {
       self::Write($text, $indentCount, $addBreak);
-      echo "\r\n";
+      echo("\r\n");
     } // WriteLine()
   } // LJCWriter
 ?>
