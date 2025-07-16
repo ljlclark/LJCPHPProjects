@@ -6,7 +6,9 @@
   include_once "LJCRoot.php";
   $prefix = RelativePrefix();
   include_once "$prefix/LJCPHPCommon/LJCCollectionLib.php";
+  include_once "$prefix/LJCPHPCommon/LJCTextLib.php";
   // LJCCollectionLib: LJCCollectionBase
+  // LJCTextLib: LJCWriter
 
   /// <summary>The PDO Data Access Library</summary>
   /// LibName: LJCDBAccessLib
@@ -162,7 +164,7 @@
       catch(PDOException $e)
       {
         $retValue = null;
-        Writer::WriteLine("Connection failed: ".$e->getMessage());
+        LJCWriter::WriteLine("Connection failed: ".$e->getMessage());
       }
       return $retValue;
     } // GetConnection()

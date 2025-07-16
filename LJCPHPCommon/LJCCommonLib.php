@@ -32,10 +32,14 @@
       if (self::HasValue($text))
       {
         echo(" {$text}");
+        if ($value != null)
+        {
+          echo(" = ");
+        }
       }
       if ($value != null)
       {
-        echo(" = {$value}");
+        echo("{$value}");
       }
     }
 
@@ -197,8 +201,8 @@
 
       if ($xmlElement != null)
       {
-        $value = (string)$xmlElement;
-        if (strlen(trim($value)) > 0)
+        $value = self::XMLToString($xmlElement);
+        if (strlen($value) > 0)
         {
           $retValue = true;
         }
@@ -226,6 +230,22 @@
         $retValue = $text;
       }
       return $retValue;
+    }
+
+    // Remove element from string array by value.
+    public static function RemoveString(array &$array, string $value): void
+    {
+      if (self::HasElements($array))
+      {
+        $key = array_search($value, $array);
+
+        // Check empty string because index could be "0" which
+        // evaluates to false.
+        if ($key != "")
+        {
+          unset($array[$key]);
+        }
+      }
     }
 
     // Returns a scrubbed external value.

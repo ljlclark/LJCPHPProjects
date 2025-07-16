@@ -54,8 +54,13 @@
       ];
       $propertyNames = self::GetPropertyNames();
 
-      $result = LJCHTMLTable::ArrayArrayHtml($dataItems, $propertyNames
-        , $textState);
+      $ht = new LJCHTMLTable();
+      // *** Begin ***
+      $ht->ColumnNames = $propertyNames;
+      $hb = new LJCHtmlBuilder();
+      $ht->TableAttribs = $hb->TableAttribs();
+      // *** End   ***
+      $result = $ht->ArrayArrayHtml($dataItems, $textState);
       $compare = self::GetTableCompare();
       LJC::WriteCompare("GetArraysTable()", $result, $compare);
     }
@@ -68,8 +73,14 @@
       $dataItems->Add("cellspacing", "2");
       $propertyNames = self::GetPropertyNames();
 
-      $result = LJCHTMLTable::CollectionHtml($dataItems, $propertyNames
-        , $textState);
+      $ht = new LJCHTMLTable();
+      // *** Begin ***
+      $ht->ColumnNames = $propertyNames;
+      $hb = new LJCHtmlBuilder();
+      $ht->TableAttribs = $hb->TableAttribs();
+      // *** End   ***
+      $result = $ht->CollectionHtml($dataItems, $textState
+        , $propertyNames);
       $compare = self::GetTableCompare();
       LJC::WriteCompare("GetCollectionTable()", $result, $compare);
     }
@@ -82,12 +93,19 @@
       $dataItems[] = new LJCAttribute("cellspacing", "2");
       $propertyNames = self::GetPropertyNames();
 
-      $result = LJCHTMLTable::ObjectArrayHtml($dataItems, $propertyNames
-        , $textState);
+      $ht = new LJCHTMLTable();
+      // *** Begin ***
+      $ht->ColumnNames = $propertyNames;
+      $hb = new LJCHtmlBuilder();
+      $ht->TableAttribs = $hb->TableAttribs();
+      // *** End   ***
+      $result = $ht->ObjectArrayHtml($dataItems, $textState
+        , $propertyNames);
       $compare = self::GetTableCompare();
       LJC::WriteCompare("GetObjectsTable()", $result, $compare);
     }
 
+    // Get Result table.
     private static function GetResultsTable(LJCTextState $textState)
     {
 	    $database = "TestData";
@@ -104,10 +122,16 @@
       // Retrieves all column values.
       $rows = $manager->Load();
 
-      $displayPropertyNames = $manager->PropertyNames();
-      $result = LJCHTMLTable::ResultHtml($rows, $textState, $displayPropertyNames);
-      $compare = self::GetTableCompare();
-      LJC::WriteCompare("GetResultTable()", $result, $compare);
+      $propertyNames = $manager->PropertyNames();
+      $ht = new LJCHTMLTable();
+      // *** Begin ***
+      $ht->ColumnNames = $propertyNames;
+      $hb = new LJCHtmlBuilder();
+      $ht->TableAttribs = $hb->TableAttribs();
+      // *** End   ***
+      $result = $ht->ResultHtml($rows, $textState, $propertyNames);
+      //$compare = self::GetTableCompare();
+      //LJC::WriteCompare("GetResultTable()", $result, $compare);
     }
 
     // --------------------

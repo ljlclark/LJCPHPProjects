@@ -92,7 +92,7 @@
     } // Length()
 
     /// <summary>Gets the built string.</summary>
-    public function ToString(): string
+    public function ToString(): ?string
     {
       return $this->StringValue;
     } // ToString()

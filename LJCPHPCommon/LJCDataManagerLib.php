@@ -163,7 +163,7 @@
 
     // Get the column definitions that match the property names.
     /// <ParentGroup>Data</ParentGroup>
-    public function Columns(array $propertyNames = null): DbColumns
+    public function Columns(array $propertyNames = null): LJCDbColumns
     {
       $retValue = $this->SchemaColumns->Columns($propertyNames);
       return $retValue;

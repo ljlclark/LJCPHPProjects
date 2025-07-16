@@ -15,10 +15,75 @@
 
   /// <summary>The Common Text Output Class Library</summary>
   /// LibName: LJCHTMLBuilderLib
-  //  Classes: LJCHTMLBuilder, LJCAttribute, LJCAttributes, LJCTextState
+  //  Classes: LJCAttribute, LJCAttributes, LJCHTMLBuilder, LJCTextState
 
   // ********************
-  // Methods: ToString(), AddChildIndent(), AddIndent(), EndsWithNewLine()
+  /// <summary>Represents a node attribute.</summary>
+  class LJCAttribute
+  {
+    /// <summary>Initializes a class instance.</summary>
+    public function __construct(string $name = null, string $value = null)
+    {
+      $this->Name = $name;
+      $this->Value = $value;
+    } // __construct()
+  }
+
+  // ********************
+  // Methods: Add(), AddObject(), Retrieve()
+  /// <summary>Represents a collection of node or element attributes.</summary>
+  class LJCAttributes extends LJCCollectionBase
+  {
+    // Creates an object and adds it to the collection.
+    public function Add(string $name, string $value = null, $key = null)
+      : ?LJCAttribute
+    {
+      $retValue = null;
+
+      if (null == $key)
+      {
+        $key = $name;
+      }
+
+      $item = new LJCAttribute($name, $value);
+      $retValue = $this->AddObject($item, $key);
+      return $retValue;
+    }
+
+    // Adds an object and key value.
+    public function AddObject(LJCAttribute $item, $key = null): ?LJCAttribute
+    {
+      if (null == $key)
+      {
+        $key = $item->Name;
+      }
+      $retValue = $this->AddItem($item, $key);
+      return $retValue;
+    }// AddObject()
+
+    // Append items.
+    public function Append(LJCAttributes $attribs): void
+    {
+      foreach ($attribs as $attrib)
+      {
+        $this->AddObject($attrib);
+      }
+    }
+
+    // Gets an item by key.
+    public function Retrieve($key)
+    {
+      $retValue = null;
+
+      $retValue = $this->RetrieveItem($key);
+      return $retValue;
+    }
+  }
+
+  // ********************
+  // Data Class: ToString()
+  //
+  // Methods: AddChildIndent(), AddIndent(), EndsWithNewLine()
   //   , StartWithNewLine(), HasText()
   //
   // Append Text: AddLine(), AddText(), Line(), Text()
@@ -32,6 +97,7 @@
   //
   /// <summary>Represents a built string value.</summary>
   /// <group name="Constructor">Constructor Methods</group>
+  /// <group name="DataClass">Data Class Methods</group>
   /// <group name="Main">Class Methods</group>
   /// <group name="AppendText">Append Text</group>
   /// <group name="GetText">Get Text</group>
@@ -65,19 +131,20 @@
 
     // Gets the built string.
     /// <include path='items/ToString/*' file='Doc/LJCHTMLBuilder.xml'/>
-    /// <ParentGroup>Main</ParentGroup>
-    public function ToString()
+    /// <ParentGroup>DataClass</ParentGroup>
+    public function ToString(): string
     {
       return $this->BuilderValue;
     } // ToString()
 
     // ----------
-    // Methods
+    // Class Methods
 
     // Adds the new (child) indents.
     /// <include path='items/AddChildIndent/*' file='Doc/LJCHTMLBuilder.xml'/>
     /// <ParentGroup>Main</ParentGroup>
     public function AddChildIndent(string $createText, LJCTextState $textState)
+      : void
     {
       $childIndentCount = $textState->ChildIndentCount;
 
@@ -93,7 +160,7 @@
     // Changes the IndentCount by the provided value.
     /// <include path='items/AddIndent/*' file='Doc/LJCHTMLBuilder.xml'/>
     /// <ParentGroup>Main</ParentGroup>
-    public function AddIndent($increment = 1) : int
+    public function AddIndent($increment = 1): int
     {
       $this->IndentCount += $increment;
       if ($this->IndentCount < 0)
@@ -106,7 +173,7 @@
     // Indicates if the builder text ends with a newline.
     /// <include path='items/EndsWithNewLine/*' file='Doc/LJCHTMLBuilder.xml'/>
     /// <ParentGroup>Main</ParentGroup>
-    public function EndsWithNewLine() : bool
+    public function EndsWithNewLine(): bool
     {
       $builderValue = $this->BuilderValue;
       $retValue = false;
@@ -125,7 +192,7 @@
     // Checks if text can start with a newline.
     /// <include path='items/StartWithNewLine/*' file='Doc/LJCHTMLBuilder.xml'/>
     /// <ParentGroup>Main</ParentGroup>
-    public function StartWithNewLine(bool $allowNewLine) : bool
+    public function StartWithNewLine(bool $allowNewLine): bool
     {
       $retValue = false;
 
@@ -140,7 +207,7 @@
 
     // Gets the current LJCTextState object.
     /// <ParentGroup>Main</ParentGroup>
-    public function GetTextState()
+    public function GetTextState(): LJCTextState
     {
       $indentCount = $this->IndentCount;
       $retState = new LJCTextState($indentCount);
@@ -150,7 +217,7 @@
     /// <summary>Indicates if the builder has text.</summary>
     /// <returns>true if builder has text; otherwise false.</returns>
     /// <ParentGroup>Main</ParentGroup>
-    public function HasText() : bool
+    public function HasText(): bool
     {
       $retValue = false;
 
@@ -163,7 +230,7 @@
 
     // Gets the current indent length.
     /// <ParentGroup>Main</ParentGroup>
-    public function IndentLength() : int
+    public function IndentLength(): int
     {
       return $this->IndentCount * $this->IndentCharCount;
     }
@@ -174,7 +241,7 @@
     // Appends a text line without modification.
     /// <include path='items/AddLine/*' file='Doc/LJCHTMLBuilder.xml'/>
     /// <ParentGroup>AppendText</ParentGroup>
-    public function AddLine(string $text = null) : string
+    public function AddLine(string $text = null): string
     {
       $retText = "{$text}\r\n";
       $this->BuilderValue .= $retText;
@@ -184,7 +251,7 @@
     // Appends text without modification.
     /// <include path='items/AddText/*' file='Doc/LJCHTMLBuilder.xml'/>
     /// <ParentGroup>AppendText</ParentGroup>
-    public function AddText(string $text)
+    public function AddText(string $text): void
     {
       if (LJC::HasValue($text))
       {
@@ -196,7 +263,7 @@
     /// <include path='items/Line/*' file='Doc/LJCHTMLBuilder.xml'/>
     /// <ParentGroup>AppendText</ParentGroup>
     public function Line(?string $text = null, bool $addIndent = true
-      , bool $allowNewLine = true) : string
+      , bool $allowNewLine = true): string
     {
       $retText = $this->GetLine($text, $addIndent, $allowNewLine);
       $this->BuilderValue .= $retText;
@@ -207,7 +274,7 @@
     /// <include path='items/Text/*' file='Doc/LJCHTMLBuilder.xml'/>
     /// <ParentGroup>AppendText</ParentGroup>
     public function Text(string $text, bool $addIndent = true
-      , bool $allowNewLine = true) : string
+      , bool $allowNewLine = true): string
     {
       $retText = $this->GetText($text, $addIndent, $allowNewLine);
       if (LJC::HasValue($retText))
@@ -248,6 +315,7 @@
           }
           $isFirst = false;
 
+          // [ AttribName="Value"]
           $hb->AddText(" {$name}");
           if (LJC::HasValue($value))
           {
@@ -262,7 +330,7 @@
     // Gets a new potentially indented line.
     /// <include path='items/GetIndented/*' file='Doc/LJCHTMLBuilder.xml'/>
     /// <ParentGroup>GetText</ParentGroup>
-    public function GetIndented(string $text) : string
+    public function GetIndented(string $text): string
     {
       $retText = "";
 
@@ -278,7 +346,7 @@
     // Gets the current indent string.
     /// <include path='items/GetIndentString/*' file='Doc/LJCHTMLBuilder.xml'/>
     /// <ParentGroup>GetText</ParentGroup>
-    public function GetIndentString() : string
+    public function GetIndentString(): string
     {
       $retValue = str_repeat(" ", $this->IndentLength());
       return $retValue;
@@ -288,7 +356,7 @@
     /// <include path='items/GetLine/*' file='Doc/LJCHTMLBuilder.xml'/>
     /// <ParentGroup>GetText</ParentGroup>
     public function GetLine(string $text = null, bool $addIndent = true
-      , bool $allowNewLine = true) : string
+      , bool $allowNewLine = true): string
     {
       $retLine = $this->GetText($text, $addIndent, $allowNewLine);
       $retLine .= "\r\n";
@@ -299,7 +367,7 @@
     /// <include path='items/GetText/*' file='Doc/LJCHTMLBuilder.xml'/>
     /// <ParentGroup>GetText</ParentGroup>
     public function GetText(?string $text, bool $addIndent = true
-      , bool $allowNewLine = true) : string
+      , bool $allowNewLine = true): string
     {
       $retText = "";
 
@@ -341,7 +409,7 @@
     // Appends added text and new wrapped line if combined line > LineLimit.
     /// <include path='items/GetWrapped/*' file='Doc/LJCHTMLBuilder.xml'/>
     /// <ParentGroup>GetText</ParentGroup>
-    public function GetWrapped(string $text) : string
+    public function GetWrapped(string $text): string
     {
       $lineLength = $this->LineLength;
       $lineLimit = $this->LineLimit;
@@ -412,7 +480,7 @@
     /// <ParentGroup>AppendElement</ParentGroup>
     public function Begin(string $name, LJCTextState $textState
       , LJCAttributes $attribs = null, bool $addIndent = true
-      , bool $childIndent = true) : string
+      , bool $childIndent = true): string
     {
       $createText = $this->GetBegin($name, $textState, $attribs, $addIndent
         , $childIndent);
@@ -453,7 +521,7 @@
     /// <include path='items/End/*' file='Doc/LJCHTMLBuilder.xml'/>
     /// <ParentGroup>AppendElement</ParentGroup>
     public function End(string $name, LJCTextState $textState
-      , bool $addIndent = true) : string
+      , bool $addIndent = true): string
     {
       $createText = $this->GetEnd($name, $textState, $addIndent);
       $this->Text($createText, false);
@@ -471,7 +539,7 @@
     /// <ParentGroup>GetElement</ParentGroup>
     public function GetBegin(string $name, LJCTextState $textState
       , LJCAttributes $attribs = null, bool $addIndent = true
-      , bool $childIndent = true) : string
+      , bool $childIndent = true): string
     {
       $hb = new LJCHTMLBuilder($textState);
 
@@ -490,7 +558,7 @@
     public function GetCreate(string $name, string $text
       , LJCTextState $textState, LJCAttributes $attribs = null
       , bool $addIndent = true, bool $childIndent = true, bool $isEmpty = false
-      , bool $close = true) : string
+      , bool $close = true): string
     {
       $textState->ChildIndentCount = 0; // ?
       $hb = new LJCHTMLBuilder($textState);
@@ -541,7 +609,7 @@
     /// <include path='items/GetEnd/*' file='Doc/LJCHTMLBuilder.xml'/>
     /// <ParentGroup>GetElement</ParentGroup>
     public function GetEnd(string $name, LJCTextState $textState
-      , bool $addIndent = true) : string
+      , bool $addIndent = true): string
     {
       $hb = new LJCHTMLBuilder($textState);
 
@@ -576,7 +644,7 @@
     // Creates the HTML element attributes.
     /// <include path='items/StartAttribs/*' file='Doc/LJCHTMLBuilder.xml'/>
     /// <ParentGroup>GetAttribs</ParentGroup>
-    public function StartAttribs() : LJCAttributes
+    public function StartAttribs(): LJCAttributes
     {
       $retAttribs = new LJCAttributes();
       $retAttribs->Add("lang", "en");
@@ -603,7 +671,7 @@
 
     // Adds indent to builders and sync object.
     private function AddSyncIndent(LJCHTMLBuilder $hb, LJCTextState $state
-      , int $value = 1)
+      , int $value = 1): void
     {
       $this->AddIndent($value);
       $hb->AddIndent($value);
@@ -612,7 +680,7 @@
 
     // Creates the content text.
     private function Content(string $text, LJCTextState $textState, bool $isEmpty
-      , bool &$isWrapped) : string
+      , bool &$isWrapped): string
     {
       $retValue = "";
 
@@ -641,7 +709,7 @@
     }
 
     // Gets the text to add to the existing line.
-    private function GetAddText(string $text, int $addLength) : string
+    private function GetAddText(string $text, int $addLength): string
     {
       $retText = substr($text, 0, $addLength);
       if ($this->LineLength > 0
@@ -655,7 +723,7 @@
 
     // Gets the text length if not null.
     // Move to LJC?
-    private function TextLength(?string $text) : int
+    private function TextLength(?string $text): int
     {
       $retLength = 0;
 
@@ -667,7 +735,7 @@
     }
 
     // Updates the text state values.
-    private function UpdateState(?LJCTextState $textState)
+    private function UpdateState(?LJCTextState $textState): void
     {
       if ($textState != null)
       {
@@ -676,7 +744,7 @@
     }
 
     // Calculates the index at which to wrap the text.
-    private function WrapIndex(string $text) : int
+    private function WrapIndex(string $text): int
     {
       $retIndex = -1;
 
@@ -706,7 +774,7 @@
     }
 
     // Get next text up to LineLimit without leading space.
-    private function WrapText(string $text, int $wrapIndex) : string
+    private function WrapText(string $text, int $wrapIndex): string
     {
       $retText;
 
@@ -759,60 +827,6 @@
     private int $LineLength;
 
     private int $LineLimit;
-  }
-
-  // ********************
-  /// <summary>Represents a node attribute.</summary>
-  class LJCAttribute
-  {
-    /// <summary>Initializes a class instance.</summary>
-    public function __construct(string $name = null, string $value = null)
-    {
-      $this->Name = $name;
-      $this->Value = $value;
-    } // __construct()
-  }
-
-  // ********************
-  // Methods: Add(), AddObject(), Retrieve()
-  /// <summary>Represents a collection of node or element attributes.</summary>
-  class LJCAttributes extends LJCCollectionBase
-  {
-    // Creates an object and adds it to the collection.
-    public function Add(string $name, string $value = null, $key = null)
-      : ?LJCAttribute
-    {
-      $retValue = null;
-
-      if (null == $key)
-      {
-        $key = $name;
-      }
-
-      $item = new LJCAttribute($name, $value);
-      $retValue = $this->AddObject($item, $key);
-      return $retValue;
-    }
-
-    // Adds an object and key value.
-    public function AddObject(LJCAttribute $item, $key = null) : ?LJCAttribute
-    {
-      if (null == $key)
-      {
-        $key = $item->Name;
-      }
-      $retValue = $this->AddItem($item, $key);
-      return $retValue;
-    }// AddObject()
-
-    // Gets an item by key.
-    public function Retrieve($key)
-    {
-      $retValue = null;
-
-      $retValue = $this->RetrieveItem($key);
-      return $retValue;
-    }
   }
 
   // ********************
