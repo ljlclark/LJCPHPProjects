@@ -60,7 +60,8 @@
       $hb = new LJCHtmlBuilder();
       $ht->TableAttribs = $hb->TableAttribs();
       // *** End   ***
-      $result = $ht->ArrayArrayHtml($dataItems, $textState);
+      //$result = $ht->ArrayArrayHtml($dataItems, $textState);
+      $result = $ht->ResultHtml($dataItems, $textState);
       $compare = self::GetTableCompare();
       LJC::WriteCompare("GetArraysTable()", $result, $compare);
     }
@@ -129,7 +130,7 @@
       $hb = new LJCHtmlBuilder();
       $ht->TableAttribs = $hb->TableAttribs();
       // *** End   ***
-      $result = $ht->ResultHtml($rows, $textState, $propertyNames);
+      $result = $ht->ResultHtml($rows, $textState);
       //$compare = self::GetTableCompare();
       //LJC::WriteCompare("GetResultTable()", $result, $compare);
     }

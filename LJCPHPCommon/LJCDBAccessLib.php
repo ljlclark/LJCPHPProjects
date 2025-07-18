@@ -276,6 +276,7 @@
       {
         $propertyName = $columnName;
       }
+      $this->Caption = $propertyName;
       $this->PropertyName = $propertyName;
       $this->RenameAs = $renameAs;
       $this->Value = $value;
@@ -290,6 +291,7 @@
 
       $retValue->AllowDbNull = $this->AllowDbNull;
       $retValue->AutoIncrement = $this->AutoIncrement;
+      $retValue->Caption = $this->Caption;
       $retValue->DataTypeName = $this->DataTypeName;
       $retValue->DefaultValue = $this->DefaultValue;
       $retValue->MaxLength = $this->MaxLength;
@@ -310,6 +312,9 @@
 
     /// <summary>The AutoIncrement flag.</summary>
     public bool $AutoIncrement;
+
+    /// <summary>The Caption value.</summary>
+    public string $Caption;
 
     /// <summary>The Column name.</summary>
     public string $ColumnName;
@@ -389,6 +394,8 @@
       {
         $propertyName = $columnName;
       }
+      // *** Add ***
+      $caption = $propertyName;
       if (null == $key)
       {
         $key = $propertyName;
@@ -396,6 +403,8 @@
 
       $item = new LJCDbColumn($columnName, $propertyName, $renameAs
         , $dataTypeName, $value);
+      // *** Add ***
+      $item->Caption = $caption;
       $retValue = $this->AddObject($item , $key);
       return $retValue;
     } // Add()
@@ -404,6 +413,16 @@
     /// <include path='items/AddObject/*' file='Doc/LJCDbColumns.xml'/>
     public function AddObject(LJCDbColumn $item, $key = null): ?LJCDbColumn
     {
+      // *** Begin *** Add
+      if (null == $item->PropertyName)
+      {
+        $item->PropertyName = $item->ColumnName;
+      }
+      if (null == $item->Caption)
+      {
+        $item->Caption = $item->PropertyName;
+      }
+      // *** End   ***
       if (null == $key)
       {
         $key = $item->PropertyName;
@@ -411,6 +430,12 @@
       $retValue = $this->AddItem($item, $key);
       return $retValue;
     } // AddObject()
+
+    // Delete the item by Key value.
+    public function Delete($key, bool $throwError = true): void
+    {
+      $this->DeleteItem($key, $throwError);
+    }
 
     // Retrieves the item by Key value.
     /// <include path='items/Retrieve/*' file='Doc/LJCDbColumns.xml'/>
