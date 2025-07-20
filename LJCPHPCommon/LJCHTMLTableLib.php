@@ -22,7 +22,6 @@
   // ResultHeadings(), ResultHTML(), ResultRows()
   //
   /// <summary>Provides methods to create an object HTML Table.</summary>
-  /// <group name="Arrays">Array of Arrays</group>
   /// <group name="Collection">Collection</group>
   /// <group name="Objects">Array of Objects</group>
   /// <group name="Rows">Array of Rows</group>
