@@ -16,7 +16,6 @@
 
   // ********************
   // Public:
-  // ArrayArrayHeadings(), ArrayArrayHTML(), ArrayArrayRows()
   // CollectionHeadings(), CollectionHTML(), CollectionRows()
   // ObjectArrayHeadings(), ObjectArrayHTML(), ObjectArrayRows()
   // ResultHeadings(), ResultHTML(), ResultRows()
