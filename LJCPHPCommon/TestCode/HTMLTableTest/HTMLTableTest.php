@@ -55,11 +55,9 @@
       $propertyNames = self::GetPropertyNames();
 
       $ht = new LJCHTMLTable();
-      // *** Begin ***
       $ht->ColumnNames = $propertyNames;
       $hb = new LJCHtmlBuilder();
       $ht->TableAttribs = $hb->TableAttribs();
-      // *** End   ***
       //$result = $ht->ArrayArrayHtml($dataItems, $textState);
       $result = $ht->ResultHtml($dataItems, $textState);
       $compare = self::GetTableCompare();
@@ -75,12 +73,10 @@
       $propertyNames = self::GetPropertyNames();
 
       $ht = new LJCHTMLTable();
-      // *** Begin ***
       $ht->ColumnNames = $propertyNames;
-      $hb = new LJCHtmlBuilder();
+      $hb = new LJCHTMLBuilder();
       $ht->TableAttribs = $hb->TableAttribs();
-      // *** End   ***
-      $result = $ht->CollectionHtml($dataItems, $textState
+      $result = $ht->CollectionHTML($dataItems, $textState
         , $propertyNames);
       $compare = self::GetTableCompare();
       LJC::WriteCompare("GetCollectionTable()", $result, $compare);
@@ -95,12 +91,10 @@
       $propertyNames = self::GetPropertyNames();
 
       $ht = new LJCHTMLTable();
-      // *** Begin ***
       $ht->ColumnNames = $propertyNames;
-      $hb = new LJCHtmlBuilder();
+      $hb = new LJCHTMLBuilder();
       $ht->TableAttribs = $hb->TableAttribs();
-      // *** End   ***
-      $result = $ht->ObjectArrayHtml($dataItems, $textState
+      $result = $ht->ObjectArrayHTML($dataItems, $textState
         , $propertyNames);
       $compare = self::GetTableCompare();
       LJC::WriteCompare("GetObjectsTable()", $result, $compare);
@@ -125,12 +119,10 @@
 
       $propertyNames = $manager->PropertyNames();
       $ht = new LJCHTMLTable();
-      // *** Begin ***
       $ht->ColumnNames = $propertyNames;
-      $hb = new LJCHtmlBuilder();
+      $hb = new LJCHTMLBuilder();
       $ht->TableAttribs = $hb->TableAttribs();
-      // *** End   ***
-      $result = $ht->ResultHtml($rows, $textState);
+      $result = $ht->ResultHTML($rows, $textState);
       //$compare = self::GetTableCompare();
       //LJC::WriteCompare("GetResultTable()", $result, $compare);
     }

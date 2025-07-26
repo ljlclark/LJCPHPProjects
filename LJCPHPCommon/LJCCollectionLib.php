@@ -10,16 +10,19 @@
 
   // ***************
   // Represents a Collection of objects.
-  // Protected: AddItem(), ClearItems(), DeleteItem(), RetrieveItem() 
-  // Methods: GetKeys(), GetValues(), HasKey(), Count()
+  /// <group name="Data">Data Methods</group>
+  //    AddItem(), ClearItems(), DeleteItem(), RetrieveIndex(), RetrieveItem()
+  /// <group name="Other">Other Methods</group>
+  //    GetKeys(), GetValues(), HasKey(), count()
   /// <include path='items/LJCCollectionBase/*' file='Doc/LJCCollectionBase.xml'/>
   class LJCCollectionBase implements IteratorAggregate, Countable
   {
     // ---------------
-    // Public Methods
+    // Data Methods
 
     // Adds an object and key value.
     /// <include path='items/AddItem/*' file='Doc/LJCCollectionBase.xml'/>
+    /// <ParentGroup>Data</ParentGroup>
     protected function AddItem($item, $key = null)
     {
       $retValue = $item;
@@ -40,6 +43,7 @@
     } // AddItem()
 
     /// <summary>Clears the collection items.</summary>
+    /// <ParentGroup>Data</ParentGroup>
     protected function ClearItems()
     {
       $this->Items = [];
@@ -47,6 +51,7 @@
 
     // Remove the item by Key value.
     /// <include path='items/DeleteItem/*' file='Doc/LJCCollectionBase.xml'/>
+    /// <ParentGroup>Data</ParentGroup>
     protected function DeleteItem($key, bool $throwError = true): void
     {
       $success = true;
@@ -64,8 +69,26 @@
       }
     } // DeleteItem()
 
+    // Change to RetrieveIndex()?
+    // Retrieves the item by index.
+    /// <include path='items/RetrieveIndex/*' file='Doc/LJCCollectionBase.xml'/>
+    /// <ParentGroup>Data</ParentGroup>
+    public function RetrieveIndex($index)
+    {
+      $retItem = null;
+
+      $keys = self::GetKeys();
+      if (count($keys) > $index)
+      {
+        $key = $keys[$index];
+        $retItem = $this->Items[$key];
+      }
+      return $retItem;
+    } // Item()
+
     // Retrieves the item by Key value.
     /// <include path='items/RetrieveItem/*' file='Doc/LJCCollectionBase.xml'/>
+    /// <ParentGroup>Data</ParentGroup>
     protected function RetrieveItem($key, bool $throwError = true)
     {
       $retValue = null;
@@ -86,8 +109,12 @@
       return $retValue;
     } // RetrieveItem()
 
+    // ---------------
+    // Other Methods
+
     /// <summary>Gets an indexed array of keys.</summary>
     /// <returns>The indexed keys array.</returns>
+    /// <ParentGroup>Other</ParentGroup>
     public function GetKeys(): array
     {
       return array_keys($this->Items);
@@ -95,6 +122,7 @@
 
     /// <summary>Gets an indexed array of objects.</summary>
     /// <returns>The indexed values array.</returns>
+    /// <ParentGroup>Other</ParentGroup>
     public function GetValues(): array
     {
       return array_values($this->Items);
@@ -102,31 +130,19 @@
 
     // Indicates if a key already exists.
     /// <include path='items/HasKey/*' file='Doc/LJCCollectionBase.xml'/>
+    /// <ParentGroup>Other</ParentGroup>
     public function HasKey($key): bool
     {
       //return array_key_exists($key, $this->Items);
       return isset($this->Items[$key]);
     } // HasKey()
 
-    /// <summary>Get item by index.</summary>
-    public function Item($index)
-    {
-      $retItem = null;
-
-      $keys = self::GetKeys();
-      if (count($keys) > $index)
-      {
-        $key = $keys[$index];
-        $retItem = $this->Items[$key];
-      }
-      return $retItem;
-    } // Item()
-
     // ----------------------
     // Countable Implementation Methods - LJCCollectionBase
 
     /// <summary>Allows Count(object).</summary>
     /// <returns>The element count.</returns>
+    /// <ParentGroup>Other</ParentGroup>
     public function count(): int
     {
       return count($this->Items);

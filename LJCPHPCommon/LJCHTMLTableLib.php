@@ -15,15 +15,13 @@
   //  Classes: LJCHTMLTable
 
   // ********************
-  // Public:
-  // CollectionHeadings(), CollectionHTML(), CollectionRows()
-  // ObjectArrayHeadings(), ObjectArrayHTML(), ObjectArrayRows()
-  // ResultHeadings(), ResultHTML(), ResultRows()
-  //
   /// <summary>Provides methods to create an object HTML Table.</summary>
   /// <group name="Collection">Collection</group>
+  //    CollectionHeadings(), CollectionHTML(), CollectionRows()
   /// <group name="Objects">Array of Objects</group>
+  //    ObjectArrayHeadings(), ObjectArrayHTML(), ObjectArrayRows()
   /// <group name="Rows">Array of Rows</group>
+  //    ResultHeadings(), ResultHTML(), ResultRows()
   class LJCHTMLTable
   {
     // Initializes a class instance with the provided values.
@@ -50,7 +48,7 @@
 
       if (LJC::HasItems($dataItems))
       {
-        $dataItem = $dataItems->Item(0);
+        $dataItem = $dataItems->RetrieveIndex(0);
         $retValue = $this->ObjectHeadings($dataItem, $textState);
       }
       return $retValue;

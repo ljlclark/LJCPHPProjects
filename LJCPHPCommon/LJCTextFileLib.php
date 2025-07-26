@@ -16,16 +16,19 @@
 
   // ***************
   // Contains console and file output methods.
-  // Static: WriteFile() 
-  // Methods: FClose(), FWrite(), FWriteLine()
   /// <include path='items/LJCWriter/*' file='Doc/LJCWriter.xml'/>
+  /// <group name="Static">Static Methods</group>
+  //    WriteFile()
+  /// <group name="Class">Class Methods</group>
+  //    FClose(), FWrite(), FWriteLine()
   class LJCFileWriter
   {
     // ---------------
-    // Public Static Functions
+    // Static Functions
 
     // <summary>Writes an XML file.</summary>
     /// <include path='items/WriteFile/*' file='Doc/LJCWriter.xml'/>
+    /// <ParentGroup>Static</ParentGroup>
     public static function WriteFile(string $text, string $fileSpec)
     {
       if ($text != null)
@@ -51,6 +54,7 @@
     // Public Methods - LJCWriter
 
     /// <summary>Closes the stream.</summary>
+    /// <ParentGroup>Class</ParentGroup>
     public function FClose()
     {
       fclose($this->Stream);
@@ -58,6 +62,7 @@
 
     // Writes file text with indents.
     /// <include path='items/FWrite/*' file='Doc/LJCWriter.xml'/>
+    /// <ParentGroup>Class</ParentGroup>
     public function FWrite(string $text, int $indentCount = 0)
     {
       if ($indentCount > 0)
@@ -69,6 +74,7 @@
 
     // Writes a file text line with indents.
     /// <include path='items/FWriteLine/*' file='Doc/LJCWriter.xml'/>
+    /// <ParentGroup>Class</ParentGroup>
     public function FWriteLine(string $text, int $indentCount = 0)
     {
       $this->FWrite("$text\r\n", $indentCount);

@@ -81,30 +81,25 @@
   }
 
   // ********************
-  // Data Class: ToString()
-  //
-  // Methods: AddChildIndent(), AddIndent(), EndsWithNewLine()
-  //   , StartWithNewLine(), HasText()
-  //
-  // Append Text: AddLine(), AddText(), Line(), Text()
-  // Get Text: GetAttribs(), GetIndented(), GetIndentString(), GetLine()
-  //   , GetText()
-  //
-  // Append Element: Begin(), Create(), End()
-  // Get Element: GetBegin(), GetCreate(), GetEnd()
-  //
-  // Get Attrib: Attribs(), StartAttribs(), TableAttribs()
-  //
   /// <summary>Represents a built string value.</summary>
+  /// <include path='items/LJCHTMLBuilder/*' file='Doc/LJCHTMLBuilder.xml'/>
   /// <group name="Constructor">Constructor Methods</group>
   /// <group name="DataClass">Data Class Methods</group>
+  //    ToString()
   /// <group name="Main">Class Methods</group>
+  //    AddChildIndent(), AddIndent(), EndsWithNewLine(), StartWithNewLine()
+  //    HasText(), IndentLength()
   /// <group name="AppendText">Append Text</group>
+  //    AddLine(), AddText(), Line(), Text()
   /// <group name="GetText">Get Text</group>
+  //    GetAttribs(), GetIndented(), GetIndentString(), GetLine(), GetText()
+  //    GetWrapped()
   /// <group name="AppendElement">Append Element</group>
+  //    Begin(), Create(), End()
   /// <group name="GetElement">Get Element</group>
+  //    GetBegin(), GetCreate(), GetEnd()
   /// <group name="GetAttribs">Get Attribs</group>
-  /// <include path='items/LJCHTMLBuilder/*' file='Doc/LJCHTMLBuilder.xml'/>
+  //    Attribs(), StartAttribs(), TableAttribs()
   class LJCHTMLBuilder
   {
     // ----------

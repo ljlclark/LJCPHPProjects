@@ -19,12 +19,14 @@
 
   // ***************
   // Provides Standard DB Table methods.
-  // Methods: Add(), Delete(), Load(), Retrieve(), Update()
-  //   , SQLExecute(), SQLLoad(), SQLRetrieve()
-  //   , CreateDataCollection(), CreateDataObject()
   /// <include path='items/LJCDataManager/*' file='Doc/LJCDataManager.xml'/>
   /// <group name="Data">Data Methods</group>
+  //    Add(), Delete(), Load(), Retrieve(), Update(), SQLExecute(), SQLLoad()
+  //      , SQLRetrieve()
   /// <group name="Other">Other Methods</group>
+  //    Columns(), PropertyNames()
+  /// <group name="ORM">ORM Methods</group>
+  //    CreateDataCollection(), CreateDataObject()
   class LJCDataManager
   {
     // Initializes a class instance with the provided values.
@@ -42,7 +44,7 @@
     } // __construct()
 
     // ---------------
-    // Public Data Methods - LJCDataManager
+    // Data Methods - LJCDataManager
 
     // Adds the record for the provided values.
     /// <include path='items/Add/*' file='Doc/LJCDataManager.xml'/>
@@ -161,28 +163,31 @@
       return $retValue;
     } // SQLRetrieve()
 
+    // ---------------
+    // Other Methods - LJCDataManager
+
     // Get the column definitions that match the property names.
-    /// <ParentGroup>Data</ParentGroup>
+    /// <ParentGroup>Other</ParentGroup>
     public function Columns(array $propertyNames = null): LJCDbColumns
     {
       $retValue = $this->SchemaColumns->Columns($propertyNames);
       return $retValue;
-    }
+    } // Columns()
 
     // Creates a PropertyNames list from the data definition.
-    /// <ParentGroup>Data</ParentGroup>
+    /// <ParentGroup>Other</ParentGroup>
     public function PropertyNames(): array
     {
       $retNames = $this->SchemaColumns->PropertyNames();
       return $retNames;
-    }
+    } // PropertyNames()
 
     // ---------------
-    // Public Methods - LJCDataManager
+    // ORM Methods - LJCDataManager
 
     // Creates an array of Data Objects from a Data Result rows array.
     /// <include path='items/CreateDataCollection/*' file='Doc/LJCDataManager.xml'/>
-    /// <ParentGroup>Other</ParentGroup>
+    /// <ParentGroup>ORM</ParentGroup>
     public function CreateDataCollection(object $collection
       , object $dataObject, array $rows)
     {
@@ -203,7 +208,7 @@
 
     // Populates a Data Object with values from a Data Result row.
     /// <include path='items/CreateDataObject/*' file='Doc/LJCDataManager.xml'/>
-    /// <ParentGroup>Other</ParentGroup>
+    /// <ParentGroup>ORM</ParentGroup>
     public function CreateDataObject($dataObject, array $row)
     {
       $retValue = $dataObject;
@@ -283,17 +288,21 @@
 
   // ***************
   // Provides functions for creating SQL statements.
-  // Static: CreateDelete(), CreateInsert(), CreateSelect(), CreateUpdate()
-  //   , GetJoinOns(), GetJoinStatement(), GetJoinTableString(), GetOrderBy()
-  //   , SqlColumns(), SQLJoinColumns(), SQLValueColumns() 
   /// <include path='items/LJCSQLBuilder/*' file='Doc/LJCSQLBuilder.xml'/>
+  /// <group name="Statement">SQL Statement Methods</group>
+  //    CreateDelete(), CreateInsert(), CreateSelect(), CreateUpdate()
+  /// <group name="Column">SQL Column Methods</group>
+  //    GetOrderBy(), SQLColumns(), SQLJoinColumns(), SQLValueColumns()
+  /// <group name="Join">Join Methods</group>
+  //    GetJoinOns(), GetJoinStatement(), GetJoinTableString()
   class LJCSQLBuilder
   {
     // ---------------
-    // Public Static Functions
+    // Static Statement Methods
 
     // Creates a Delete SQL statement.
     /// <include path='items/CreateDelete/*' file='Doc/LJCSQLBuilder.xml'/>
+    /// <ParentGroup>Statement</ParentGroup>
     public static function CreateDelete(string $tableName
       , LJCDbColumns $keyColumns): string
     {
@@ -304,6 +313,7 @@
 
     // Creates a Select SQL statement.
     /// <include path='items/CreateInsert/*' file='Doc/LJCSQLBuilder.xml'/>
+    /// <ParentGroup>Statement</ParentGroup>
     public static function CreateInsert(string $tableName
       , LJCDbColumns $dataColumns): string
     {
@@ -316,6 +326,7 @@
 
     // Creates a Select SQL statement.
     /// <include path='items/CreateSelect/*' file='Doc/LJCSQLBuilder.xml'/>
+    /// <ParentGroup>Statement</ParentGroup>
     public static function CreateSelect(string $tableName
       , LJCDbColumns $schemaColumns, ?LJCDbColumns $keyColumns
       , array $propertyNames = null, ?LJCJoins $joins = null): string
@@ -336,6 +347,7 @@
 
     // Creates an Update SQL statement.
     /// <include path='items/CreateUpdate/*' file='Doc/LJCSQLBuilder.xml'/>
+    /// <ParentGroup>Statement</ParentGroup>
     public static function CreateUpdate(string $tableName
       , ?LJCDbColumns $keyColumns, LJCDbColumns $dataColumns): string
     {
@@ -345,8 +357,219 @@
       return $retValue;
     } // CreateUpdate()
 
+    // ---------------
+    // Static Column Methods - LJCSQLBuilder
+
+    // Creates an OrderBy clause.
+    /// <include path='items/GetOrderBy/*' file='Doc/LJCSQLBuilder.xml'/>
+    /// <ParentGroup>Column</ParentGroup>
+    public static function GetOrderBy(?array $orderByNames): string
+    {
+      $retValue = "";
+
+      if ($orderByNames != null && count($orderByNames) > 0)
+      {
+        $retValue = "\r\norder by ";
+
+        $first = true;
+        foreach ($orderByNames as $orderByName)
+        {
+          if ($orderByName != null)
+          {
+            if (false == $first)
+            {
+              $retValue .= ", ";
+            }
+            $first = false;
+
+            $retValue .= $orderByName;
+          }
+        }
+      }
+      return $retValue;
+    } // GetOrderBy()
+
+    // Creates the columns for a Select SQL statement.
+    /// <include path='items/SQLColumns/*' file='Doc/LJCSQLBuilder.xml'/>
+    /// <ParentGroup>Column</ParentGroup>
+    public static function SQLColumns(string $tableName
+      , LJCDbColumns $sqlColumns, bool $includeParens = false
+      , LJCJoins $joins = null): string
+    {
+      $retValue = "";
+
+      if ($includeParens)
+      {
+        $retValue .= " (\r\n";
+      }
+
+      $first = true;
+      foreach ($sqlColumns as $sqlColumn)
+      {
+        if (false == $first)
+        {
+          $retValue .= ", \r\n";
+        }
+        $first = false;
+
+        $retValue .= "  $tableName.$sqlColumn->ColumnName";
+        if ($sqlColumn->RenameAs != null)
+        {
+          $retValue .= " as $sqlColumn->RenameAs";
+        }
+      }
+      $retValue .= self::SQLJoinColumns($joins);
+
+      $retValue .= " \r\n";
+      if ($includeParens)
+      {
+        $retValue .= " )\r\n";
+      }
+      return $retValue;
+    } // SQLColumns()
+
+    // Creates the Join columns for a Select SQL statement.
+    /// <include path='items/SQLJoinColumns/*' file='Doc/LJCSQLBuilder.xml'/>
+    /// <ParentGroup>Column</ParentGroup>
+    public static function SQLJoinColumns(?LJCJoins $joins): ?string
+    {
+      $retValue = null;
+
+      if ($joins != null && count($joins) > 0)
+      {
+        foreach ($joins as $join)
+        {
+          if ($join->Columns != null)
+          {
+            foreach ($join->Columns as $column)
+            {
+              $qualifier = $join->TableName;
+              if ($join->TableAlias != null)
+              {
+                $qualifier = $join->TableAlias;
+              }
+
+              $retValue .= ",\r\n  $qualifier.$column->ColumnName";
+              if ($column->RenameAs != null)
+              {
+                $retValue .= " as $column->RenameAs";
+              }
+            }
+          }
+        }
+      }
+      return $retValue;
+    } // SQLJoinColumns()
+
+    // Creates the value columns for an Update SQL statement.
+    /// <include path='items/SQLValueColumns/*' file='Doc/LJCSQLBuilder.xml'/>
+    /// <ParentGroup>Column</ParentGroup>
+    public static function SQLValueColumns(LJCDbColumns $dataColumns
+      , bool $isUpdate = false, bool $includeParens = false): string
+    {
+      $retValue = "";
+
+      if ($includeParens)
+      {
+        $retValue .= " (\r\n";
+      }
+
+      $first = true;
+      foreach ($dataColumns as $dataColumn)
+      {
+        if ($dataColumn->AutoIncrement)
+        //	|| null == $dataColumn->Value)
+        {
+          continue;
+        }
+
+        if (false == $first)
+        {
+          $retValue .= ", \r\n";
+        }
+        $first = false;
+
+        $retValue .= "  ";
+        if ($isUpdate)
+        {
+          $retValue .= "$dataColumn->ColumnName = ";
+        }
+
+        $value = $dataColumn->Value;
+        if ("string" == $dataColumn->DataTypeName)
+        {
+          if (null == $value)
+          {
+            $value = "null";
+          }
+          else
+          {
+            $value = "'$value'";
+          }
+          $retValue .= "$value";
+        }
+        else
+        {
+          $retValue .= "$value";
+        }
+      }
+      $retValue .= " \r\n";
+      if ($includeParens)
+      {
+        $retValue .= " )\r\n";
+      }
+      return $retValue;
+    } // SQLValueColumns()
+
+    // Creates the Where clause.
+    private static function WhereClause(string $tableName
+      , ?LJCDbColumns $keyColumns): ?string
+    {
+      $retValue = null;
+
+      if ($keyColumns != null && count($keyColumns) > 0)
+      {
+        $retValue = "where ";
+
+        $first = true;
+        foreach ($keyColumns as $keyColumn)
+        {
+          if ($keyColumn->Value != null)
+          {
+            if (false == $first)
+            {
+              $retValue .= "\r\n";
+              $retValue .= "  $keyColumn->WhereBoolOperator ";
+            }
+            $first = false;
+
+            // Include quotes if string.
+            $value = "$keyColumn->Value";
+            if ($keyColumn->DataTypeName == "string")
+            {
+              $value = "'$keyColumn->Value'";
+            }
+
+            // Use RenameAs if set.
+            $columnName = $keyColumn->ColumnName;
+            if ($keyColumn->RenameAs != null)
+            {
+              $columnName = $keyColumn->RenameAs;
+            }
+            $compareOperator = $keyColumn->WhereCompareOperator;
+            $retValue .= "$tableName.$columnName $compareOperator $value";
+          }
+        }
+      }
+      return $retValue;
+    } // WhereClause()
+
+    // ---------------
+    // Static Join Methods - LJCSQLBuilder
+
     // Get the JoinOn statements.
     /// <include path='items/GetJoinOns/*' file='Doc/LJCSQLBuilder.xml'/>
+    /// <ParentGroup>Join</ParentGroup>
     public static function GetJoinOns(string $tableName, LJCJoin $join
       , bool $recursive = false): ?string
     {
@@ -406,6 +629,7 @@
 
     // Creates the join statement.
     /// <include path='items/GetJoinStatement/*' file='Doc/LJCSQLBuilder.xml'/>
+    /// <ParentGroup>Join</ParentGroup>
     public static function GetJoinStatement(string $tableName
       , ?LJCJoins $joins): ?string
     {
@@ -454,166 +678,6 @@
       return $retValue;
     } // GetJoinTableString()
 
-    // Creates an OrderBy clause.
-    /// <include path='items/GetOrderBy/*' file='Doc/LJCSQLBuilder.xml'/>
-    public static function GetOrderBy(?array $orderByNames): string
-    {
-      $retValue = "";
-
-      if ($orderByNames != null && count($orderByNames) > 0)
-      {
-        $retValue = "\r\norder by ";
-
-        $first = true;
-        foreach ($orderByNames as $orderByName)
-        {
-          if ($orderByName != null)
-          {
-            if (false == $first)
-            {
-              $retValue .= ", ";
-            }
-            $first = false;
-
-            $retValue .= $orderByName;
-          }
-        }
-      }
-      return $retValue;
-    } // GetOrderBy()
-
-    // Creates the columns for a Select SQL statement.
-    /// <include path='items/SQLColumns/*' file='Doc/LJCSQLBuilder.xml'/>
-    public static function SQLColumns(string $tableName
-      , LJCDbColumns $sqlColumns, bool $includeParens = false
-      , LJCJoins $joins = null): string
-    {
-      $retValue = "";
-
-      if ($includeParens)
-      {
-        $retValue .= " (\r\n";
-      }
-
-      $first = true;
-      foreach ($sqlColumns as $sqlColumn)
-      {
-        if (false == $first)
-        {
-          $retValue .= ", \r\n";
-        }
-        $first = false;
-
-        $retValue .= "  $tableName.$sqlColumn->ColumnName";
-        if ($sqlColumn->RenameAs != null)
-        {
-          $retValue .= " as $sqlColumn->RenameAs";
-        }
-      }
-      $retValue .= self::SQLJoinColumns($joins);
-
-      $retValue .= " \r\n";
-      if ($includeParens)
-      {
-        $retValue .= " )\r\n";
-      }
-      return $retValue;
-    } // SQLColumns()
-
-    // Creates the Join columns for a Select SQL statement.
-    /// <include path='items/SQLJoinColumns/*' file='Doc/LJCSQLBuilder.xml'/>
-    public static function SQLJoinColumns(?LJCJoins $joins): ?string
-    {
-      $retValue = null;
-
-      if ($joins != null && count($joins) > 0)
-      {
-        foreach ($joins as $join)
-        {
-          if ($join->Columns != null)
-          {
-            foreach ($join->Columns as $column)
-            {
-              $qualifier = $join->TableName;
-              if ($join->TableAlias != null)
-              {
-                $qualifier = $join->TableAlias;
-              }
-
-              $retValue .= ",\r\n  $qualifier.$column->ColumnName";
-              if ($column->RenameAs != null)
-              {
-                $retValue .= " as $column->RenameAs";
-              }
-            }
-          }
-        }
-      }
-      return $retValue;
-    } // SQLJoinColumns()
-
-    // Creates the value columns for an Update SQL statement.
-    /// <include path='items/SQLValueColumns/*' file='Doc/LJCSQLBuilder.xml'/>
-    public static function SQLValueColumns(LJCDbColumns $dataColumns
-      , bool $isUpdate = false, bool $includeParens = false): string
-    {
-      $retValue = "";
-
-      if ($includeParens)
-      {
-        $retValue .= " (\r\n";
-      }
-
-      $first = true;
-      foreach ($dataColumns as $dataColumn)
-      {
-        if ($dataColumn->AutoIncrement)
-        //	|| null == $dataColumn->Value)
-        {
-          continue;
-        }
-
-        if (false == $first)
-        {
-          $retValue .= ", \r\n";
-        }
-        $first = false;
-
-        $retValue .= "  ";
-        if ($isUpdate)
-        {
-          $retValue .= "$dataColumn->ColumnName = ";
-        }
-
-        $value = $dataColumn->Value;
-        if ("string" == $dataColumn->DataTypeName)
-        {
-          if (null == $value)
-          {
-            $value = "null";
-          }
-          else
-          {
-            $value = "'$value'";
-          }
-          $retValue .= "$value";
-        }
-        else
-        {
-          $retValue .= "$value";
-        }
-      }
-      $retValue .= " \r\n";
-      if ($includeParens)
-      {
-        $retValue .= " )\r\n";
-      }
-      return $retValue;
-    } // SQLValueColumns()
-
-    // ---------------
-    // Private Static Functions - LJCSQLBuilder
-
     // Qualify with the table name or alias unless already qualified.
     // <include path='items/GetQualifiedColumnName/*' file='Doc/LJCSQLBuilder.xml'/>
     private static function GetQualifiedColumnName(string $columnName
@@ -653,48 +717,5 @@
       }
       return $retValue;
     } // GetQualifiedColumnName()
-
-    // Creates the Where clause.
-    private static function WhereClause(string $tableName
-      , ?LJCDbColumns $keyColumns): ?string
-    {
-      $retValue = null;
-
-      if ($keyColumns != null && count($keyColumns) > 0)
-      {
-        $retValue = "where ";
-
-        $first = true;
-        foreach ($keyColumns as $keyColumn)
-        {
-          if ($keyColumn->Value != null)
-          {
-            if (false == $first)
-            {
-              $retValue .= "\r\n";
-              $retValue .= "  $keyColumn->WhereBoolOperator ";
-            }
-            $first = false;
-
-            // Include quotes if string.
-            $value = "$keyColumn->Value";
-            if ($keyColumn->DataTypeName == "string")
-            {
-              $value = "'$keyColumn->Value'";
-            }
-
-            // Use RenameAs if set.
-            $columnName = $keyColumn->ColumnName;
-            if ($keyColumn->RenameAs != null)
-            {
-              $columnName = $keyColumn->RenameAs;
-            }
-            $compareOperator = $keyColumn->WhereCompareOperator;
-            $retValue .= "$tableName.$columnName $compareOperator $value";
-          }
-        }
-      }
-      return $retValue;
-    } // WhereClause()
   }  // LJCSQLBuilder
 ?>

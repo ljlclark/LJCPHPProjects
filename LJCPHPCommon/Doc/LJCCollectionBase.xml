@@ -18,7 +18,7 @@
 			typed.
 			&lt;/p&gt;
 			&lt;p&gt;
-			The strongly typed collection class would also provide a Get() method
+			The strongly typed collection class would also provide a Retrieve() method
 			that could retrieve the internal array element by key.
 			&lt;/p&gt;
 			For an example of how this works, see class: LJCDBAccessLib-LJCDbColumns.
@@ -58,12 +58,34 @@
       $prefix = RelativePrefix();
       include_once "$prefix/LJCPHPCommon/LJCCollectionLib.php";
 
-      // $collection extends LJCCollectionBase
-      $collection->Remove("KeyName");
+      // Add to class that extends LJCCollectionBase
+      // Deletes an item.
+      public function DeleteItem($key)
+      {
+        $this->Delete("KeyName");
+      }
     </code>
   </DeleteItem>
+  <RetrieveIndex>
+    <summary>Retrieves the item by index.</summary>
+    <param name="$index">The element index.</param>
+    <returns>The object at the index parameter.</returns>
+		<code>
+      include_once "LJCRoot.php";
+      $prefix = RelativePrefix();
+      include_once "$prefix/LJCPHPCommon/LJCCollectionLib.php";
+
+      // Add to class that extends LJCCollectionBase
+      // Retrieves the item by index.
+      public function RetrieveWithIndex($index)
+      {
+        $retValue = $this->&lt;b&gt;RetrieveIndex&lt;/b&gt;($key, $throwError);
+			  return $retValue;
+  	  }
+		</code>
+  </RetrieveIndex>
   <RetrieveItem>
-		<summary>Get the item by Key value.</summary>
+		<summary>Retrieves the item by Key value.</summary>
 		<param name="$key">The element key.</param>
 		<param name="$throwError">Indicates if an error should be thrown if the key is not found.</param>
 		<returns>The object with the matching key value.</returns>
@@ -94,7 +116,7 @@
 		  $key = "KeyName";
 		  if ($collection->HasKey($key))
 		  {
-		 	 throw new Exception("Key: {$key} already in use.");
+		 	  throw new Exception("Key: {$key} already in use.");
 		  }
 		</code>
 	</HasKey>

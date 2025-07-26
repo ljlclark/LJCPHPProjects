@@ -9,41 +9,27 @@
   // Classes: LJC
 
   // ***************
-  // Static: Debug(), EndsWithNewLine(), GetDelimitedString()
-  //    GetFileName(), GetFileSpecPath(), GetTokens()
-  //    HasElements(), HasItems(), HasValue(), HasXML(), NewLineTrim() 
-  //    Scrub(), Split(), StrPos(), StrRPos(), ToBool(), ToBoolInt()
-  //    WriteCompare(), XMLToString()
+  /// <group name="String">String Functions</group>
+  //    EndsWithNewLine(), GetDelimitedString(), GetTokens(), NewLineTrim()
+  //    Scrub(), Split(), StrPos(), StrRPos() 
+  /// <group name="File">File Name Functions</group>
+  //    GetFileName(), GetFileSpecPath()
+  /// <group name="Check">Check Value Functions</group>
+  //    HasElements(), HasItems(), HasValue(), HasXML() 
+  /// <group name="Arr">Arrays Functions</group>
+  //    RemoveString()
+  /// <group name="Convert">Conversion Functions</group>
+  //    ToBool(), ToBoolInt(), XMLToString()
+  /// <group name="Output">Output Functions</group>
+  //    Debug(), WriteCompare()
   /// <summary>Contains common functions.</summary>
   class LJC
   {
     // ---------------
-    // Static Functions
-
-    // Display debug text.
-    public static function Debug(int $lineNumber = 0, string $text = ""
-      , $value = null): void
-    {
-      echo("\r\n");
-      if ($lineNumber > 0)
-      {
-        echo("$lineNumber");
-      }
-      if (self::HasValue($text))
-      {
-        echo(" {$text}");
-        if ($value != null)
-        {
-          echo(" = ");
-        }
-      }
-      if ($value != null)
-      {
-        echo("{$value}");
-      }
-    }
+    // String Functions
 
     // Indicates if the builder text ends with a newline.
+    /// <ParentGroup>String</ParentGroup>
     public static function EndsWithNewLine(string $text): bool
     {
       $retValue = false;
@@ -61,6 +47,7 @@
 
     // Gets the string between the delimiters.
     /// <include path='items/GetDelimitedString/*' file='Doc/LJCCommon.xml'/>
+    /// <ParentGroup>String</ParentGroup>
     public static function GetDelimitedString(string $text, string $beginDelimiter
       , ?string $endDelimiter, bool $lTrim = true, bool $rTrim = true): ?string
     {
@@ -95,46 +82,11 @@
       return $retValue;
     } // GetDelimitedString()
 
-    // Gets the FileName from the file spec.
-    /// <include path='items/GetFileName/*' file='Doc/LJCCommon.xml'/>
-    public static function GetFileName(string $fileSpec): string
-    {
-      $retValue = $fileSpec;
-
-      $begin = self::StrRPos($fileSpec, "/");
-      if ($begin < 0)
-      {
-        $begin = -1;
-      }
-      $begin++;
-      $end = self::StrRPos($fileSpec, ".");
-      if ($end < 0)
-      {
-        $end = strlen($fileSpec);
-      }
-      $length = $end - $begin;
-      $retValue = substr($fileSpec, $begin, $length);
-      return $retValue;
-    } // GetFileName()
-
-    // Gets the Path from the file spec.
-    /// <include path='items/GetFileSpecPath/*' file='Doc/LJCCommon.xml'/>
-    public static function GetFileSpecPath(string $fileSpec): string
-    {
-      $retValue = "";
-
-      $length = LJC::StrRPos($fileSpec, "/");
-      if ($length >= 0)
-      {
-        $retValue = substr($fileSpec, 0, $length);
-      }
-      return $retValue;
-    } // GetFileSpecPath()
-
     /// <summary>Get string tokens.</summary>
     /// <param name="$text">The string value.</param>
     /// <param name="$splitString">The split string value.</param>
     /// <returns>The split string array.</returns>
+    /// <ParentGroup>String</ParentGroup>
     public static function GetTokens(string $text, ?string $splitString = null)
       : array
     {
@@ -147,70 +99,8 @@
       return $retValue;
     } // GetTokens()
 
-    // Checks for array elements.
-    public static function HasElements($array): bool
-    {
-      $retValue = false;
-
-      if (is_array($array)
-        && count($array) > 0)
-      {
-        $retValue = true;
-      }
-      return $retValue;
-    }
-
-    // Checks for array elements.
-    public static function HasItems($collection): bool
-    {
-      $retValue = false;
-
-      if (isset($collection)
-        && count($collection) > 0)
-      {
-        $retValue = true;
-      }
-      return $retValue;
-    }
-
-    /// <summary>Check for text.</summary>
-    /// <param name="$text"></param>
-    /// <returns>
-    ///   true if the text has other than white space; otherwise false;
-    /// </returns>
-    public static function HasValue($text): bool
-    {
-      $retValue = false;
-
-      if ($text != null
-        && strlen(trim($text)) > 0)
-      {
-        $retValue = true;
-      }
-      return $retValue;
-    }
-
-    /// <summary>Checks an XML element for a value.
-    /// <param name="$xmlElement">The simple xml element.</param>
-    /// <returns>
-    ///   true if element text has other than white space; otherwise false;
-    /// </returns>
-    public static function HasXML(SimpleXMLElement $xmlElement): bool
-    {
-      $retValue = false;
-
-      if ($xmlElement != null)
-      {
-        $value = self::XMLToString($xmlElement);
-        if (strlen($value) > 0)
-        {
-          $retValue = true;
-        }
-      }
-      return $retValue;
-    }
-
     // Remove newline from text.
+    /// <ParentGroup>String</ParentGroup>
     public static function NewLineTrim(string $text): string
     {
       $retValue = $text;
@@ -232,24 +122,9 @@
       return $retValue;
     }
 
-    // Remove element from string array by value.
-    public static function RemoveString(array &$array, string $value): void
-    {
-      if (self::HasElements($array))
-      {
-        $key = array_search($value, $array);
-
-        // Check empty string because index could be "0" which
-        // evaluates to false.
-        if ($key != "")
-        {
-          unset($array[$key]);
-        }
-      }
-    }
-
     // Returns a scrubbed external value.
     /// <include path='items/Scrub/*' file='Doc/LJCCommon.xml'/>
+    /// <ParentGroup>String</ParentGroup>
     public static function Scrub(string $text): string
     {
       $retValue = trim($text);
@@ -259,6 +134,7 @@
     } // Scrub()
 
     /// <summary>Splits a string on whitespace.</summary>
+    /// <ParentGroup>String</ParentGroup>
     public static function Split(string $text): array
     {
       $retValues = preg_split("/[\s,]+/", $text, 0, PREG_SPLIT_NO_EMPTY);
@@ -267,6 +143,7 @@
 
     // Gets the first index for the search value.
     /// <include path='items/StrPos/*' file='Doc/LJCCommon.xml'/>
+    /// <ParentGroup>String</ParentGroup>
     public static function StrPos(?string $text, ?string $find
       , int $startIndex = 0, bool $exact = false): int
     {
@@ -306,6 +183,7 @@
 
     // Gets the last index for the search value.
     /// <include path='items/StrRPos/*' file='Doc/LJCCommon.xml'/>
+    /// <ParentGroup>String</ParentGroup>
     public static function StrRPos(?string $text, ?string $find, int $startIndex = 0
       , bool $exact = false): int
     {
@@ -349,7 +227,142 @@
       return $retValue;
     } // StrRPos()
 
+    // ---------------
+    // File Name Functions
+
+    // Gets the FileName from the file spec.
+    /// <include path='items/GetFileName/*' file='Doc/LJCCommon.xml'/>
+    /// <ParentGroup>File</ParentGroup>
+    public static function GetFileName(string $fileSpec): string
+    {
+      $retValue = $fileSpec;
+
+      $begin = self::StrRPos($fileSpec, "/");
+      if ($begin < 0)
+      {
+        $begin = -1;
+      }
+      $begin++;
+      $end = self::StrRPos($fileSpec, ".");
+      if ($end < 0)
+      {
+        $end = strlen($fileSpec);
+      }
+      $length = $end - $begin;
+      $retValue = substr($fileSpec, $begin, $length);
+      return $retValue;
+    } // GetFileName()
+
+    // Gets the Path from the file spec.
+    /// <include path='items/GetFileSpecPath/*' file='Doc/LJCCommon.xml'/>
+    /// <ParentGroup>File</ParentGroup>
+    public static function GetFileSpecPath(string $fileSpec): string
+    {
+      $retValue = "";
+
+      $length = LJC::StrRPos($fileSpec, "/");
+      if ($length >= 0)
+      {
+        $retValue = substr($fileSpec, 0, $length);
+      }
+      return $retValue;
+    } // GetFileSpecPath()
+
+    // ---------------
+    // Check Value Functions
+
+    // Checks for array elements.
+    /// <ParentGroup>Check</ParentGroup>
+    public static function HasElements($array): bool
+    {
+      $retValue = false;
+
+      if (is_array($array)
+        && count($array) > 0)
+      {
+        $retValue = true;
+      }
+      return $retValue;
+    }
+
+    // Checks for array elements.
+    /// <ParentGroup>Check</ParentGroup>
+    public static function HasItems($collection): bool
+    {
+      $retValue = false;
+
+      if (isset($collection)
+        && count($collection) > 0)
+      {
+        $retValue = true;
+      }
+      return $retValue;
+    }
+
+    /// <summary>Check for text.</summary>
+    /// <param name="$text"></param>
+    /// <returns>
+    ///   true if the text has other than white space; otherwise false;
+    /// </returns>
+    /// <ParentGroup>Check</ParentGroup>
+    public static function HasValue($text): bool
+    {
+      $retValue = false;
+
+      if ($text != null
+        && strlen(trim($text)) > 0)
+      {
+        $retValue = true;
+      }
+      return $retValue;
+    }
+
+    /// <summary>Checks an XML element for a value.
+    /// <param name="$xmlElement">The simple xml element.</param>
+    /// <returns>
+    ///   true if element text has other than white space; otherwise false;
+    /// </returns>
+    /// <ParentGroup>Check</ParentGroup>
+    public static function HasXML(SimpleXMLElement $xmlElement): bool
+    {
+      $retValue = false;
+
+      if ($xmlElement != null)
+      {
+        $value = self::XMLToString($xmlElement);
+        if (strlen($value) > 0)
+        {
+          $retValue = true;
+        }
+      }
+      return $retValue;
+    }
+
+    // ---------------
+    // Array Functions
+
+    // Remove element from string array by value.
+    /// <ParentGroup>Arr</ParentGroup>
+    public static function RemoveString(array &$array, string $value): void
+    {
+      if (self::HasElements($array))
+      {
+        $key = array_search($value, $array);
+
+        // Check empty string because index could be "0" which
+        // evaluates to false.
+        if ($key != "")
+        {
+          unset($array[$key]);
+        }
+      }
+    }
+
+    // ---------------
+    // Convert Functions
+
     /// <summary>Returns a value as bool.</summary>
+    /// <ParentGroup>Convert</ParentGroup>
     public static function ToBool($value): bool
     {
       $retValue = boolval($value);
@@ -364,6 +377,7 @@
     } // ToBool()
 
     /// <summary>Returns a text value as int boolean.</summary>
+    /// <ParentGroup>Convert</ParentGroup>
     public static function ToBoolInt(?string $text): int
     {
       $retValue = 1;
@@ -386,7 +400,53 @@
       return $retValue;
     } // ToBoolInt()
 
+    // Get a string value from the XML value.
+    /// <ParentGroup>Convert</ParentGroup>
+    public static function XMLToString(SimpleXMLElement $xmlValue
+      , bool $trim = true): ?string
+    {
+      $retValue = null;
+
+      if ($xmlValue != null)
+      {
+        $retValue = (string)$xmlValue;
+        if (true == $trim)
+        {
+          $retValue = trim($retValue);
+        }
+      }
+      return $retValue;
+    } // XMLToString()
+
+    // ---------------
+    // Output Functions
+
+    // Display debug text.
+    /// <ParentGroup>Output</ParentGroup>
+    public static function Debug(int $lineNumber = 0, string $text = ""
+      , $value = null): void
+    {
+      echo("\r\n");
+      if ($lineNumber > 0)
+      {
+        echo("$lineNumber");
+      }
+      if (self::HasValue($text))
+      {
+        echo(" {$text}");
+        if ($value != null)
+        {
+          echo(" = ");
+        }
+      }
+      if ($value != null)
+      {
+        echo("{$value}");
+      }
+    }
+
     // Writes the test compare text.
+    /// <ParentGroup>Output</ParentGroup>
     public static function WriteCompare(string $methodName, string $result
       , string $compare): void
     {
@@ -407,22 +467,5 @@
         echo("$compare\r\n");
       }
     }
-
-    // Get a string value from the XML value.
-    public static function XMLToString(SimpleXMLElement $xmlValue
-      , bool $trim = true): ?string
-    {
-      $retValue = null;
-
-      if ($xmlValue != null)
-      {
-        $retValue = (string)$xmlValue;
-        if (true == $trim)
-        {
-          $retValue = trim($retValue);
-        }
-      }
-      return $retValue;
-    } // Value()
   } // LJCCommon
 ?>
