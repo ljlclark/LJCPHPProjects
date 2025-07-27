@@ -39,6 +39,7 @@
       $this->SchemaColumns = $this->DbAccess->LoadTableSchema($dbName
         , $tableName);
       $this->Joins = null;
+      $this->Limit = 0;
       $this->OrderByNames = null;
       $this->SQL = null;
     } // __construct()
@@ -91,6 +92,12 @@
       $this->SQL = LJCSQLBuilder::CreateSelect($this->TableName
         , $this->SchemaColumns, $keyColumns, $propertyNames, $joins);
       $this->SQL .= LJCSQLBuilder::GetOrderBy($this->OrderByNames);
+      // *** Begin ***
+      if ($this->Limit > 0)
+      {
+        $this->SQL .= "\r\nlimit {$this->Limit}";
+      }
+      // *** End   ***
       $retValue = $this->DbAccess->Load($this->SQL);
       return $retValue;
     } // Load()
