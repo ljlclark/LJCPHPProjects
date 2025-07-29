@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright (c) Lester J. Clark 2022 - All Rights Reserved -->
+<!-- LJCTable.xml -->
+<items>
+  <!-- Table Methods -->
+  <GetRow>
+    <summary>Gets table row by index.</summary>
+    <param name="eTable">The table element.</param>
+    <param name="rowIndex">The row index.</param>
+    <returns>The table row.</returns>
+  </GetRow>
+  <GetRowCount>
+    <summary>Gets the table row count.</summary>
+    <param name="eTable">The table element.</param>
+    <returns>The table row count.</returns>
+  </GetRowCount>
+  <TableSelectRow>
+    <summary>
+      Clears background for previous row and Highlights the current row.
+    </summary>
+    <param name="eTable">The table element.</param>
+    <param name="preRowIndex">The previous row index.</param>
+    <param name="rowIndex">The current row index.</param>
+  </TableSelectRow>
+  <!-- Column Methods -->
+  <GetTable>
+    <summary>
+      Get the HTML table element if the HTML element is a table data row or
+      column.
+    </summary >
+    <param name="element">The HTML element.</param>
+    <returns>The table element if applicable, otherwise null.</returns>
+  </GetTable>
+  <GetTableByID>
+    <summary>
+      Get the HTML table element by ID if the HTML element is a table column.
+    </summary >
+    <param name="element">The HTML element.</param>
+    <param name="tableID">The table element ID.</param>
+    <returns>The table element if applicable, otherwise null.</returns>
+  </GetTableByID>
+  <GetTableRow>
+    <summary>
+      Get the table row element if the element is a table data row or column.
+    </summary >
+    <param name="element">The HTML element.</param>
+    <returns>The table row element if applicable, otherwise null.</returns>
+  </GetTableRow>
+  <SelectRow>
+    <summary>
+      Clears background for previous row and Highlights the current row.
+    </summary>
+    <param name="eTable">The table element.</param>
+    <param name="tableID">The table element ID.</param>
+    <param name="preRowIndex">The previous row index.</param>
+  </SelectRow>
+</items>

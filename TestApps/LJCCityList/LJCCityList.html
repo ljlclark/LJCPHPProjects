@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<!-- Copyright(c) Lester J. Clark and Contributors. -->
+<!-- Licensed under the MIT License. -->
+<!-- LJCCityList.html -->
+<!--  The HTML Table List. -->
+<!-- Used to generate a City Items HTML Table page. -->
+<html lang='en' xmlns='http://www.w3.org/1999/xhtml'>
+<head>
+  <meta charset='utf-8' />
+  <meta name='author' content='Lester J. Clark' />
+  <meta name='viewport' content='width=device-width' initial-scale=1 />
+  <link href='Table.css' rel='stylesheet' />
+  <script src="../../Common/Common.js"></script>
+  <script src="LJCCityListEvents.js"></script>
+  <script src="LJCTable.js"></script>
+</head>
+<body>
+  <div class="page">
+    <h3 id="pageTitle">Items</h3>
+    <div id="dataDiv"></div>
+    <!-- id used for javascript and label "for", name used for post values. -->
+    <form id="hiddenForm" action="LJCDataTableLib.php" method="post">
+      <input type="hidden" id="beginRowID" name="beginRowID"
+             tabindex="-1" autocomplete="off" />
+      <input type="hidden" id="endRowID" name="endRowID"
+             tabindex="-1" autocomplete="off" />
+      <!-- Next, Previous, Top, Bottom -->
+      <input type="hidden" id="paginationAction" name="paginationAction"
+             tabindex="-1" autocomplete="off" />
+    </form>
+    <div id="menu" class="divMenu" style="width:100px">
+      <div class="titleHighlight">Menu</div>
+      <div><hr /></div>
+      <div id="beginning">Beginning</div>
+      <div id="previous">Previous Page</div>
+      <div id="next">Next Page</div>
+      <div id="end">End</div>
+      <div><hr /></div>
+      <div id="refresh">Refresh</div>
+      <div><hr /></div>
+      <div id="new">New</div>
+      <div id="edit">Edit</div>
+      <div><hr /></div>
+      <div id="delete">Delete</div>
+    </div>
+  </div>  <!-- Closes page -->
+  <script>
+    let tableEvents = new LJCCityListEvents();
+    tableEvents.AddEvents();
+    tableEvents.Refresh();
+  </script>
+</body>
+</html>

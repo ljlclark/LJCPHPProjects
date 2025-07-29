@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- DataConfigs.xml -->
+<configs>
+  <config>
+    <name>TestData</name>
+    <dbserver>localhost</dbserver>
+    <dbname>TestData</dbname>
+    <userid>root</userid>
+    <password>Unifies1</password>
+  </config>
+</configs>
