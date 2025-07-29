@@ -4,8 +4,11 @@
 // LJCDataTableEvents.js
 // <script src="../../Common/Common.js"></script>
 //   Element(), TagElements(), GetValue()
-// <script src="Table.js"></script>
-//   GetTableByID(), GetTableRow()
+// <script src="LJCTable.js"></script>
+//   Static: GetTable(), GetTableRow()
+//   Methods: ShowMenu()
+//   Table Methods: SelectRow()
+//   Selected Column Methods: SelectColumnRow()
 
 // ***************
 /// <summary>Contains CityList event handlers.</summary>
