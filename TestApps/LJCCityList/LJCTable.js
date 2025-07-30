@@ -7,6 +7,11 @@
 
 // ***************
 /// <summary>Contains HTML Table methods.</summary>
+//   Static: GetTable(), GetTableRow()
+//   Methods: ShowMenu()
+//   Table Methods: GetRow(), GetRowCount(), MoveNext(), MovePrevious()
+//     SelectRow()
+//   Selected Column Methods: GetTableByID(), SelectColumnRow()
 class LJCTable
 {
   // ---------------
@@ -16,20 +21,20 @@ class LJCTable
     this.BackColor = "";
     this.HighlightColor = "lightsteelblue";
 
-    this.Menu = null;
+    this.EMenu = null;
     if (menuID != null)
     {
       let eMenu = Common.Element(menuID);
       if (eMenu != null
         && "DIV" == eMenu.tagName)
       {
-        this.Menu = eMenu;
+        this.EMenu = eMenu;
       }
     }
 
     this.RowIndex = -1;
 
-    this.Table = null;
+    this.ETable = null;
     this.TableID = tableID;
     if (this.TableID != null)
     {
@@ -37,7 +42,7 @@ class LJCTable
       if (eTable != null
         && "TABLE" == eTable.tagName)
       {
-        this.Table = eTable;
+        this.ETable = eTable;
       }
     }
   }
@@ -82,11 +87,11 @@ class LJCTable
   /// <param name="eColumn">The table column element.</param>
   ShowMenu(location)
   {
-    if (this.Menu != null)
+    if (this.EMenu != null)
     {
-      this.Menu.style.top = `${location.Top}px`;
-      this.Menu.style.left = `${location.Left}px`;
-      Common.Visibility(this.Menu.id, "visible");
+      this.EMenu.style.top = `${location.Top}px`;
+      this.EMenu.style.left = `${location.Left}px`;
+      Common.Visibility(this.EMenu.id, "visible");
     }
   }
 
@@ -99,9 +104,9 @@ class LJCTable
   {
     let retRow = null;
 
-    if (this.Table != null)
+    if (this.ETable != null)
     {
-      retRow = Common.TagElements(this.Table, "TR")[rowIndex];
+      retRow = Common.TagElements(this.ETable, "TR")[rowIndex];
     }
     return retRow;
   }
@@ -112,9 +117,9 @@ class LJCTable
   {
     let retCount = 0;
 
-    if (this.Table != null)
+    if (this.ETable != null)
     {
-      let eRows = Common.TagElements(this.Table, "TR");
+      let eRows = Common.TagElements(this.ETable, "TR");
       if (eRows != null)
       {
         retCount = eRows.length;
@@ -126,7 +131,7 @@ class LJCTable
   // Move selection to next row.
   MoveNext()
   {
-    if (this.Table != null)
+    if (this.ETable != null)
     {
       if (-1 == this.RowIndex)
       {
@@ -146,7 +151,7 @@ class LJCTable
   // Move selection to previous row.
   MovePrevious()
   {
-    if (this.Table != null)
+    if (this.ETable != null)
     {
       if (-1 == this.RowIndex)
       {
@@ -166,7 +171,7 @@ class LJCTable
   /// <include path='items/SelectRow/*' file='Doc/LJCTable.xml'/>
   SelectRow(prevRowIndex, rowIndex)
   {
-    if (this.Table != null)
+    if (this.ETable != null)
     {
       let ePrevRow = this.GetRow(prevRowIndex);
       if (ePrevRow != null)
@@ -207,7 +212,7 @@ class LJCTable
   /// <include path='items/SelectColumnRow/*' file='Doc/LJCTable.xml'/>
   SelectColumnRow(eColumn)
   {
-    if (this.Table != null)
+    if (this.ETable != null)
     {
       let eTableRow = LJCTable.GetTableRow(eColumn);
       if (eTableRow != null)

@@ -44,19 +44,17 @@
     /// <summary>Gets the HTML Table.</summary>
     public function CreateHTMLTable()
     {
-      $retHTMLTable = "";
+      $retValue = "";
 
       // Setup Load.
       $connectionValues = $this->GetConnectionValues($this->ConfigName);  
       $cityManager = new CityManager($connectionValues, $this->TableName);
       $keyColumns = null;
       $cityManager->OrderByNames = array("ProvinceID", "Name");
-      // *** Begin ***
       if ($this->Limit > 0)
       {
         $cityManager->Limit = $this->Limit;
       }
-      // *** Begin ***
 
       // Get Load data results.
       $result = $cityManager->LoadResult($keyColumns);
@@ -83,25 +81,43 @@
 
         // Create HTML table with data collection.
         $textState->IndentCount = 2;
-        $retHTMLTable = $tableBuilder->ResultHTML($result, $textState
+
+        $retObject = new stdClass();
+        $retObject->HTMLTable = $tableBuilder->ResultHTML($result, $textState
           , $propertyNames);
+
+        // Create key values array.
+        $keys = $this->CreateKeys($result);
+        $retObject->Keys = $keys;
+        $retValue = json_encode($retObject);
       }
-      return $retHTMLTable;
+      return $retValue;
     }
 
     // ---------------
     // Helper Methods
 
-    // Create the LJCHTMLTable object.
-    //private function CreateHTMLTable(?array $propertyNames)
-    private function HTMLTableBuilder(?array $propertyNames)
+    // Create the keys from the result.
+    private function CreateKeys($result)
     {
-      // Create table object with column property names.
-      $retTableBuilder = new LJCHTMLTable();
-      //$retTableBuilder = new LJCHTMLTableBuilder();
-      LJC::RemoveString($propertyNames, "CityID");
-      $retTableBuilder->ColumnNames = $propertyNames;
-      return $retTableBuilder;
+      // Create key values array.
+      $retKeys = [];
+      // Get each record.
+      foreach($result as $key => $value)
+      {
+        $key = [];
+        // Get each column.
+        foreach($value as $valueKey => $valueValue)
+        {
+          if ($valueKey == "ProvinceID"
+            || $valueKey == "Name")
+          {
+            $key[$valueKey] = $valueValue;
+          }
+        }
+        $keys[] = $key;
+      }
+      return $retKeys;
     }
 
     // Get connection values for a DataConfig name.
@@ -142,6 +158,18 @@
       //   , id = null
       $retAttribs->Append($hb->TableAttribs());
       return $retAttribs;
+    }
+
+    // Create the LJCHTMLTable object.
+    //private function CreateHTMLTable(?array $propertyNames)
+    private function HTMLTableBuilder(?array $propertyNames)
+    {
+      // Create table object with column property names.
+      $retTableBuilder = new LJCHTMLTable();
+      //$retTableBuilder = new LJCHTMLTableBuilder();
+      LJC::RemoveString($propertyNames, "CityID");
+      $retTableBuilder->ColumnNames = $propertyNames;
+      return $retTableBuilder;
     }
   }
 ?>

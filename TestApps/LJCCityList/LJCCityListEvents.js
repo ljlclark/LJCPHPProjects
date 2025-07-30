@@ -5,10 +5,7 @@
 // <script src="../../Common/Common.js"></script>
 //   Element(), TagElements(), GetValue()
 // <script src="LJCTable.js"></script>
-//   Static: GetTable(), GetTableRow()
-//   Methods: ShowMenu()
-//   Table Methods: SelectRow()
-//   Selected Column Methods: SelectColumnRow()
+//   GetTable(), GetTableRow(), ShowMenu(), SelectRow(), SelectColumnRow()
 
 // ***************
 /// <summary>Contains CityList event handlers.</summary>
@@ -17,6 +14,7 @@ class LJCCityListEvents
   // ---------------
   // The Constructor function.
 
+  /// <summary>Initializes the object instance.</summary>
   constructor()
   {
     this.CityTable = null;
@@ -50,10 +48,8 @@ class LJCCityListEvents
     this.AddEvent("delete", "click", this.DeleteClick);
   }
 
-  /// <summary>Adds an event handler.</summary>
-  /// <param name="elementID"></param>
-  /// <param name="evantName"></param>
-  /// <param name="handler"></param>
+  // Adds an event handler.
+  /// <include path='items/AddEvent/*' file='Doc/LJCCityListEvents.xml'/>
   AddEvent(elementID, eventName, handler)
   {
     let element = Common.Element(elementID);
@@ -66,11 +62,8 @@ class LJCCityListEvents
   // ---------------
   // Document Event Handlers
 
-  /// <summary>Document "click" handler method.</summary>
-  /// <param name="event">The Target event.</param>
-  /// <remarks>
-  ///   Selects the current row.
-  /// </remarks>
+  // Document "click" handler method.
+  /// <include path='items/DocumentClick/*' file='Doc/LJCCityListEvents.xml'/>
   DocumentClick(event)
   {
     Common.Visibility("menu", "hidden");
@@ -78,10 +71,10 @@ class LJCCityListEvents
     // Handle table row click.
     if ("TD" == event.target.tagName)
     {
-      let table = this.SelectedTable(event.target);
-      if (table != null)
+      let ljcTable = this.SelectedTable(event.target);
+      if (ljcTable != null)
       {
-        table.SelectColumnRow(event.target);
+        ljcTable.SelectColumnRow(event.target);
 
         // Move to LJCTable?
         this.SaveRowData(event.target);
@@ -96,17 +89,17 @@ class LJCCityListEvents
     // Handle table row right button click.
     if ("TD" == event.target.tagName)
     {
-      let table = this.SelectedTable(event.target);
-      if (table != null)
+      let ljcTable = this.SelectedTable(event.target);
+      if (ljcTable != null)
       {
         event.preventDefault();
-        table.SelectColumnRow(event.target);
+        ljcTable.SelectColumnRow(event.target);
 
         // Move to LJCTable?
         this.SaveRowData(event.target);
 
         let location = Common.MouseLocation(event);
-        table.ShowMenu(location);
+        ljcTable.ShowMenu(location);
       }
     }
   }
@@ -152,7 +145,8 @@ class LJCCityListEvents
   // ---------------
   // Page Event Handlers
 
-  // Send request for HTML Table page with url data.
+  /// <summary>Send request for HTML Table page with url data.</summary>
+  /// <param name="data">The data object.</param>
   CityPageGet(data)
   {
     // Create data.
@@ -171,7 +165,8 @@ class LJCCityListEvents
     xhr.send();
   }
 
-  // Send request for HTML Table page with JSON data.
+  /// <summary>Send request for HTML Table page with JSON data.</summary>
+  /// <param name="data">The data object.</param>
   CityPageJSON(data)
   {
     const self = this;
@@ -181,7 +176,9 @@ class LJCCityListEvents
     xhr.onload = function ()
     {
       // Creates a new table element.
-      dataDiv.innerHTML = this.responseText;
+      let response = JSON.parse(this.responseText);
+      let keys = response.Keys;
+      dataDiv.innerHTML = response.HTMLTable;
 
       if (null == self.CityTable)
       {
@@ -189,7 +186,7 @@ class LJCCityListEvents
       }
 
       // Reset table to new table element.
-      self.CityTable.Table = Common.Element("dataTable");
+      self.CityTable.ETable = Common.Element("dataTable");
 
       // Saved previous row index.
       let rowIndex = self.CityRowIndex;
@@ -200,7 +197,8 @@ class LJCCityListEvents
     xhr.send(JSON.stringify(data));
   }
 
-  // Send request for HTML Table page with POST data.
+  /// <summary>Send request for HTML Table page with POST data.</summary>
+  /// <param name="data">The data object.</param>
   CityPagePost(data)
   {
     // Create data.
@@ -291,7 +289,8 @@ class LJCCityListEvents
   // ---------------
   // Table Column Methods
 
-  // Gets the selected table object.
+  /// <summary>Gets the selected table object.</summary>
+  /// <param name="eColumn">The table column element.</param>
   SelectedTable(eColumn)
   {
     let retTable = null;
@@ -313,14 +312,14 @@ class LJCCityListEvents
   /// <param name="eColumn">The table column element.</param>
   SaveRowData(eColumn)
   {
-    let table = this.SelectedTable(eColumn);
-    if (table != null)
+    let ljcTable = this.SelectedTable(eColumn);
+    if (ljcTable != null)
     {
       let eTableRow = LJCTable.GetTableRow(eColumn);
       if (eTableRow != null)
       {
         // Save current row index.
-        switch (table.TableID)
+        switch (ljcTable.TableID)
         {
           case "dataTable":
             this.CityRowIndex = eTableRow.rowIndex;
@@ -340,15 +339,15 @@ class LJCCityListEvents
   /// <param name="eTarget">The HTML element.</param>
   SetRowFormValues(eColumn)
   {
-    let table = this.SelectedTable(eColumn);
-    if (table != null)
+    let ljcTable = this.SelectedTable(eColumn);
+    if (ljcTable != null)
     {
       // Set HTML table row index in hidden form.
       let eRowIndex = Common.Element("rowIndex");
       if (eRowIndex != null)
       {
         // Set hidden form value with current value.
-        eRowIndex.value = table.RowIndex;
+        eRowIndex.value = ljcTable.RowIndex;
       }
 
       // Set HTML Table row ID from hidden form.
