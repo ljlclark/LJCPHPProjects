@@ -148,8 +148,6 @@ class LJCCityListEvents
   // ---------------
   // Page Event Handlers
 
-  /// <summary>Get next page for supplied table.
-  /// <param name="ljcTable">The target table.</param>
   NextPage(ljcTable)
   {
     if (ljcTable != null)
@@ -159,7 +157,7 @@ class LJCCityListEvents
         case "dataTable":
           this.CityPageData.Action = "Next";
           this.SetCityValues();
-          this.CityPage(this.CityPageData);
+          this.CityPageJSON(this.CityPageData);
           let rowCount = this.CityTable.RowCount();
           this.CityTable.SelectRow(rowCount, 1);
           break;
@@ -167,8 +165,6 @@ class LJCCityListEvents
     }
   }
 
-  /// <summary>Get previous page for supplied table.
-  /// <param name="ljcTable">The target table.</param>
   PrevPage(ljcTable)
   {
     if (ljcTable != null)
@@ -178,40 +174,35 @@ class LJCCityListEvents
         case "dataTable":
           this.CityPageData.Action = "Previous";
           this.SetCityValues();
-          this.CityPage(this.CityPageData);
+          this.CityPageJSON(this.CityPageData);
           break;
       }
     }
   }
 
-  // Testing
-  ShowCityData(label, responseText, cityPageData)
+  /// <summary>Send request for HTML Table page with url data.</summary>
+  /// <param name="data">The data object.</param>
+  CityPageGet(data)
   {
-    let keys = null;
-    if (responseText != null)
+    // Create data.
+    let url = "LJCCityListGet.php";
+    url += `?configName=${data.ConfigName}`;
+    url += `&beginID=${data.BeginID}`;
+    url += `&endID=${data.EndID}`;
+    url += `&limit=${this.Limit}`;
+
+    let xhr = new XMLHttpRequest();
+    xhr.open("GET", url);
+    xhr.onload = function ()
     {
-      alert(responseText);
-      let index = responseText.indexOf(",\"HTMLTable\":");
-      keys = responseText.substring(0, index);
-    }
-    let beginProvinceID = cityPageData.BeginKeyData.ProvinceID;
-    let beginName = cityPageData.BeginKeyData.Name;
-    let endProvinceID = cityPageData.EndKeyData.ProvinceID;
-    let endName = cityPageData.EndKeyData.Name;
-    let text = `${label}:`;
-    text += `\r\nBegin provinceID: ${beginProvinceID}, Name: ${beginName}`;
-    text += `\r\nEnd provinceID: ${endProvinceID}, Name: ${endName}`;
-    if (keys != null)
-    {
-      text += `\r\n${keys}`;
-    }
-    alert(`${text}`);
+      dataDiv.innerHTML = this.response;
+    };
+    xhr.send();
   }
 
-  /// <summary>Send request for City Table page.</summary>
+  /// <summary>Send request for HTML Table page with JSON data.</summary>
   /// <param name="data">The data object.</param>
-  // Called from NextPage(), PrevPage() and Refesh().
-  CityPage(cityPageData)
+  CityPageJSON(cityPageData)
   {
     // Save a reference to this class for anonymous function.
     const self = this;
@@ -221,27 +212,9 @@ class LJCCityListEvents
     xhr.onload = function ()
     {
       // Get the AJAX response.
+      alert(this.responseText);
       let response = JSON.parse(this.responseText);
-      let sql = response.SQL;
-      if (sql != null)
-      {
-        alert(sql);
-      }
       let keys = response.Keys;
-      // *** Testing ***
-      let reloadBeginArray = response.ReloadBeginArray;
-      let reloadLastLoaded = response.ReloadLastLoaded;
-      if (reloadBeginArray != null)
-      {
-        alert(`ReloadBeginArray: ${reloadBeginArray[0].Name}`);
-      }
-      if (reloadLastLoaded != null)
-      {
-        alert(`ReloadLastLoaded: ${reloadLastLoaded.Name}`);
-      }
-      self.ShowCityData("Before LJCCityList.RetrieveData()", this.responseText
-        , cityPageData);
-      // *** End   ***
 
       // Create new table element.
       dataDiv.innerHTML = response.HTMLTable;
@@ -251,10 +224,6 @@ class LJCCityListEvents
 
       cityTable.SelectRow(rowIndex, rowIndex);
       self.SetCityValues()
-      // *** Testing ***
-      self.ShowCityData("CityPage()-After SetCityValues()", this.responseText
-        , cityPageData);
-      // *** End   ***
       self.FocusTable = cityTable;
     };
     this.CityPageData.Limit = 10;
@@ -285,6 +254,27 @@ class LJCCityListEvents
 
     cityTable.Keys = keys;
     return retRowIndex;
+  }
+
+  /// <summary>Send request for HTML Table page with POST data.</summary>
+  /// <param name="data">The data object.</param>
+  CityPagePost(data)
+  {
+    // Create data.
+    let params = new URLSearchParams();
+    params.append("configName", data.ConfigName);
+    params.append("beginID", data.BeginID);
+    params.append("endID", data.EndID);
+    params.append("limit", data.Limit);
+
+    let xhr = new XMLHttpRequest();
+    xhr.open("POST", "LJCCityListPost.php");
+    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    xhr.onload = function ()
+    {
+      dataDiv.innerHTML = this.response;
+    };
+    xhr.send(params.toString());
   }
 
   // ---------------
@@ -349,9 +339,10 @@ class LJCCityListEvents
   /// <summary>Refreshes the current page.</summary>
   Refresh()
   {
-    // *** Add ***
-    this.CityPageData.Action = "Refresh";
-    this.CityPage(this.CityPageData);
+    //let rowIndex = this.RowIndex;
+    //this.CityPageGet(this.CityPageData);
+    this.CityPageJSON(this.CityPageData);
+    //this.CityPagePost(this.CityPageData);
   }
 
   // ---------------

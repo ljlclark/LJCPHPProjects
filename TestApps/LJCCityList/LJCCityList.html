@@ -18,14 +18,10 @@
   <div class="page">
     <h3 id="pageTitle">Items</h3>
     <div id="dataDiv"></div>
-    <!-- id used for javascript and label "for", name used for post values. -->
+    <!-- Data for Detail form. -->
+    <!-- id is for javascript and label "for", name is for post values. -->
     <form id="hiddenForm" action="LJCDataTableLib.php" method="post">
-      <input type="hidden" id="beginRowID" name="beginRowID"
-             tabindex="-1" autocomplete="off" />
-      <input type="hidden" id="endRowID" name="endRowID"
-             tabindex="-1" autocomplete="off" />
-      <!-- Next, Previous, Top, Bottom -->
-      <input type="hidden" id="paginationAction" name="paginationAction"
+      <input type="hidden" id="primaryKeys" name="primaryKeys"
              tabindex="-1" autocomplete="off" />
     </form>
     <div id="menu" class="divMenu" style="width:100px">

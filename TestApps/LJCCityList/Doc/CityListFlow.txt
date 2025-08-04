@@ -1,0 +1,42 @@
+LJCCityList.html
+- Load
+  LJCCityListEvents.js
+  LJCCityListEvents()
+    AddEvents()
+      AddEvent()
+    Refresh()
+      // Create the City Table.
+      CityPageJSON()
+        - AJAX Post CityPageData
+        LJCCityList.php
+          - Parse CityPageData
+          CityManager = new CityManager()
+          response = CreateHTMLTable()
+            result = RetrieveData()
+            tableBuilder = HTMLTableBuilder()
+            retObject.Keys = ResultKeyArray()
+            retObject.HTMLTable = tableBuilder.ResultHTML();
+            response = json_encode(retObject)
+            return response)
+
+        // Response.
+        - Callback in CityPageJSON()
+        rowIndex = SetCityTable()
+          if (CityTable != null)
+          {
+            retRowIndex = CityTable.RowIndex
+          }
+          if (null == CityTable == null)
+          {
+            CityTable = new LJCTable();
+          }
+          retRowIndex = CityTable.RowIndex
+          CityTable.ETable = "dataTable";
+        CityTable.SelectRow()
+        SetCityValues()
+          - Set "primaryKeys"
+          - Set CityPageData.BeginKeyData
+          - Set CityPageData.EndKeyData
+        FocusTable = CityTable
+
+- Document Click

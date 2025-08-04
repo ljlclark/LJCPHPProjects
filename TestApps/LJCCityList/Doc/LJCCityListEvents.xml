@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright (c) Lester J. Clark 2022 - All Rights Reserved -->
+<!-- LJCTable.xml -->
+<items>
+  <AddEvent>
+    <summary>Adds an event handler.</summary>
+    <param name="elementID"></param>
+    <param name="evantName"></param>
+    <param name="handler"></param>
+  </AddEvent>
+  <!-- Document Event Handlers -->
+  <DocumentClick>
+    <summary>Document "click" handler method.</summary>
+    <param name="event">The Target event.</param>
+    <remarks>Selects the current row.</remarks>
+  </DocumentClick>
+</items>

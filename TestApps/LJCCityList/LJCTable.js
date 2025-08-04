@@ -9,43 +9,11 @@
 /// <summary>Contains HTML Table methods.</summary>
 //   Static: GetTable(), GetTableRow()
 //   Methods: ShowMenu()
-//   Table Methods: GetRow(), GetRowCount(), MoveNext(), MovePrevious()
+//   Table Methods: GetRow(), MoveNext(), MovePrevious(), RowCount()
 //     SelectRow()
 //   Selected Column Methods: GetTableByID(), SelectColumnRow()
 class LJCTable
 {
-  // ---------------
-  // The Constructor method.
-  constructor(tableID, menuID)
-  {
-    this.BackColor = "";
-    this.HighlightColor = "lightsteelblue";
-
-    this.EMenu = null;
-    if (menuID != null)
-    {
-      let eMenu = Common.Element(menuID);
-      if (eMenu != null
-        && "DIV" == eMenu.tagName)
-      {
-        this.EMenu = eMenu;
-      }
-    }
-
-    this.RowIndex = -1;
-
-    this.ETable = null;
-    this.TableID = tableID;
-    if (this.TableID != null)
-    {
-      let eTable = Common.Element(this.TableID);
-      if (eTable != null
-        && "TABLE" == eTable.tagName)
-      {
-        this.ETable = eTable;
-      }
-    }
-  }
 
   // ---------------
   // Static Methods
@@ -81,6 +49,40 @@ class LJCTable
   }
 
   // ---------------
+  // The Constructor methods.
+  constructor(tableID, menuID)
+  {
+    this.BackColor = "";
+    this.HighlightColor = "lightsteelblue";
+
+    this.EMenu = null;
+    if (menuID != null)
+    {
+      let eMenu = Common.Element(menuID);
+      if (eMenu != null
+        && "DIV" == eMenu.tagName)
+      {
+        this.EMenu = eMenu;
+      }
+    }
+
+    this.ETable = null;
+    this.TableID = tableID;
+    if (this.TableID != null)
+    {
+      let eTable = Common.Element(this.TableID);
+      if (eTable != null
+        && "TABLE" == eTable.tagName)
+      {
+        this.ETable = eTable;
+      }
+    }
+
+    this.Keys = [];
+    this.RowIndex = -1;
+  }
+
+  // ---------------
   // Methods
 
   /// <summary>Highlight the selected row.</summary>
@@ -98,46 +100,73 @@ class LJCTable
   // ---------------
   // Table Methods
 
+  // Get cell index with heading text.
+  GetColumnIndex(headingText)
+  {
+    let retIndex = -1;
+
+    let eHead = this.GetRow(0);
+    let eCells = eHead.cells;
+    for (let index = 0; index < eCells.length; index++)
+    {
+      let eCell = eCells[index];
+      if (eCell.innerText == headingText)
+      {
+        retIndex = index;
+        index = eCells.length;
+      }
+    }
+    return retIndex;
+  }
+
+  // Get cell text with heading text
+  GetCellText(headingText, rowIndex = -1)
+  {
+    let retText = "";
+
+    let cellIndex = this.GetColumnIndex(headingText);
+    if (cellIndex > -1)
+    {
+      if (-1 == rowIndex)
+      {
+        rowIndex = this.RowIndex;
+      }
+      let eRow = this.GetRow(rowIndex);
+      let eCells = eRow.cells;
+      retText = eCells[cellIndex].innerText;
+    }
+    return retText;
+  }
+
   // Gets table row by index.
   /// <include path='items/GetRow/*' file='Doc/LJCTable.xml'/>
-  GetRow(rowIndex)
+  GetRow(rowIndex = -1)
   {
     let retRow = null;
 
     if (this.ETable != null)
     {
+      if (-1 == rowIndex)
+      {
+        rowIndex = this.RowIndex;
+      }
       retRow = Common.TagElements(this.ETable, "TR")[rowIndex];
     }
     return retRow;
   }
 
-  // Gets the table row count.
-  /// <include path='items/GetRowCount/*' file='Doc/LJCTable.xml'/>
-  GetRowCount()
-  {
-    let retCount = 0;
-
-    if (this.ETable != null)
-    {
-      let eRows = Common.TagElements(this.ETable, "TR");
-      if (eRows != null)
-      {
-        retCount = eRows.length;
-      }
-    }
-    return retCount;
-  }
-
   // Move selection to next row.
   MoveNext()
   {
+    let retNextPage = false;
+
     if (this.ETable != null)
     {
       if (-1 == this.RowIndex)
       {
         this.RowIndex = 0;
       }
-      let rowCount = this.GetRowCount();
+      let rowCount = this.RowCount();
       if (this.RowIndex < rowCount - 1)
       {
         let prevRowIndex = this.RowIndex;
@@ -145,12 +174,20 @@ class LJCTable
         let rowIndex = this.RowIndex;
         this.SelectRow(prevRowIndex, rowIndex);
       }
+
+      if (this.RowIndex == rowCount - 1)
+      {
+        retNextPage = true;
+      }
     }
+    return retNextPage;
   }
 
   // Move selection to previous row.
   MovePrevious()
   {
+    let retPrevPage = false;
+
     if (this.ETable != null)
     {
       if (-1 == this.RowIndex)
@@ -164,7 +201,30 @@ class LJCTable
         let rowIndex = this.RowIndex;
         this.SelectRow(prevRowIndex, rowIndex);
       }
+
+      if (this.RowIndex == 1)
+      {
+        retPrevPage = true;
+      }
     }
+    return retPrevPage;
+  }
+
+  // Gets the table row count.
+  /// <include path='items/GetRowCount/*' file='Doc/LJCTable.xml'/>
+  RowCount()
+  {
+    let retCount = 0;
+
+    if (this.ETable != null)
+    {
+      let eRows = Common.TagElements(this.ETable, "TR");
+      if (eRows != null)
+      {
+        retCount = eRows.length;
+      }
+    }
+    return retCount;
   }
 
   // Clears background for previous row and Highlights the current row.
