@@ -1,14 +1,23 @@
 "use strict";
 // Copyright(c) Lester J. Clark and Contributors.
 // Licensed under the MIT License.
-// LJCDataTableEvents.js
+// LJCCityListEvents.js
 // <script src="../../Common/Common.js"></script>
-//   Element(), TagElements(), GetValue()
+//   Element(), GetValue()
+//   MouseLocation(), Visibility()
 // <script src="LJCTable.js"></script>
-//   GetTable(), GetTableRow(), ShowMenu(), SelectRow(), SelectColumnRow()
+//   GetTable(), GetTableRow(), ShowMenu()
+//   MoveNext(), MovePrevious(), RowCount(), SelectRow(), SelectColumnRow()
 
 // ***************
 /// <summary>Contains CityList event handlers.</summary>
+//  Add Events: AddEvents(), AddEvent()
+//  Document Handlers: DocumentClick(), DocumentContextMenu()
+//    DocumentDoubleClick(), DocumentKeyDown()
+//  Page Handlers: NextPage(), PrevPage(), CityPage(), UpdateCityTable()
+//  Menu Handlers: Delete(), DoAction(), Edit(), New(), Refresh()
+//  Table Column: SelectedTable()
+//  Page Data: UpdatePageData(), UpdateCityPageData()
 class LJCCityListEvents
 {
   // ---------------
@@ -21,12 +30,13 @@ class LJCCityListEvents
     this.CityPageData = {
       Action: "None", // Next, Previous, Top, Bottom, First?, Last?
       BeginKeyData: { ProvinceID: 0, Name: "" },
+      BeginningOfData: false,
       ConfigName: "TestData",
       EndKeyData: { ProvinceID: 0, Name: "" },
-      Limit: 0,
+      EndOfData: false,
+      Limit: 10,
     };
     this.FocusTable = null;
-    this.Limit = 10;
   }
 
   // ---------------
@@ -42,10 +52,10 @@ class LJCCityListEvents
     document.addEventListener("keydown", this.DocumentKeyDown.bind(this));
 
     // Menu Event Handlers.
+    this.AddEvent("delete", "click", this.Delete);
+    this.AddEvent("edit", "click", this.Edit);
+    this.AddEvent("new", "click", this.New);
     this.AddEvent("refresh", "click", this.Refresh);
-    this.AddEvent("new", "click", this.NewClick);
-    this.AddEvent("edit", "click", this.EditClick);
-    this.AddEvent("delete", "click", this.DeleteClick);
   }
 
   // Adds an event handler.
@@ -76,7 +86,7 @@ class LJCCityListEvents
       if (ljcTable != null)
       {
         ljcTable.SelectColumnRow(eCell);
-        this.SetValues(ljcTable);
+        this.UpdatePageData(ljcTable);
       }
     }
   }
@@ -94,7 +104,7 @@ class LJCCityListEvents
       {
         event.preventDefault();
         ljcTable.SelectColumnRow(eCell);
-        this.SetValues(ljcTable);
+        this.UpdatePageData(ljcTable);
 
         let location = Common.MouseLocation(event);
         ljcTable.ShowMenu(location);
@@ -103,8 +113,7 @@ class LJCCityListEvents
   }
 
   /// <summary>Document "dblclick" handler method.</summary>
-  /// <param name="event">The Target event.</param>
-  DocumentDoubleClick(event)
+  DocumentDoubleClick()
   {
     this.EditClick();
   }
@@ -157,11 +166,27 @@ class LJCCityListEvents
       switch (ljcTable.ETable.id)
       {
         case "dataTable":
-          this.CityPageData.Action = "Next";
-          this.SetCityValues();
-          this.CityPage(this.CityPageData);
-          let rowCount = this.CityTable.RowCount();
-          this.CityTable.SelectRow(rowCount, 1);
+          if (!this.CityPageData.EndOfData)
+          {
+            this.CityPageData.Action = "Next";
+            this.UpdateCityPageData();
+
+            this.CityPage(this.CityPageData);
+            // *** Begin ***
+            this.CityTable.EndOfData = false;
+            if (this.CityTable.Keys.length < this.CityPageData.Length)
+            {
+              this.CityTable.EndOfData = true;
+            }
+            // *** End   ***
+
+
+            // Assume previous was table row count.
+            let rowCount = this.CityTable.RowCount();
+
+            // Select first data row.
+            this.CityTable.SelectRow(rowCount, 1);
+          }
           break;
       }
     }
@@ -177,35 +202,21 @@ class LJCCityListEvents
       {
         case "dataTable":
           this.CityPageData.Action = "Previous";
-          this.SetCityValues();
+          this.UpdateCityPageData();
+
           this.CityPage(this.CityPageData);
+          // *** Begin ***
+          this.CityTable.BeginningOfData = false;
+          this.CityTable.EndOfData = false;
+          if (this.CityTable.Keys.length < this.CityPageData.Length)
+          {
+            this.CityTable.BeginningOfData = true;
+            this.CityTable.EndOfData = true;
+          }
+          // *** End   ***
           break;
       }
     }
-  }
-
-  // Testing
-  ShowCityData(label, responseText, cityPageData)
-  {
-    let keys = null;
-    if (responseText != null)
-    {
-      alert(responseText);
-      let index = responseText.indexOf(",\"HTMLTable\":");
-      keys = responseText.substring(0, index);
-    }
-    let beginProvinceID = cityPageData.BeginKeyData.ProvinceID;
-    let beginName = cityPageData.BeginKeyData.Name;
-    let endProvinceID = cityPageData.EndKeyData.ProvinceID;
-    let endName = cityPageData.EndKeyData.Name;
-    let text = `${label}:`;
-    text += `\r\nBegin provinceID: ${beginProvinceID}, Name: ${beginName}`;
-    text += `\r\nEnd provinceID: ${endProvinceID}, Name: ${endName}`;
-    if (keys != null)
-    {
-      text += `\r\n${keys}`;
-    }
-    alert(`${text}`);
   }
 
   /// <summary>Send request for City Table page.</summary>
@@ -214,7 +225,7 @@ class LJCCityListEvents
   CityPage(cityPageData)
   {
     // Save a reference to this class for anonymous function.
-    const self = this;
+    const saveThis = this;
     let xhr = new XMLHttpRequest();
     xhr.open("POST", "LJCCityList.php");
     xhr.setRequestHeader("Content-Type", "application/json");
@@ -222,62 +233,45 @@ class LJCCityListEvents
     {
       // Get the AJAX response.
       let response = JSON.parse(this.responseText);
-      let sql = response.SQL;
-      if (sql != null)
-      {
-        alert(sql);
-      }
       let keys = response.Keys;
-      // *** Testing ***
-      let reloadBeginArray = response.ReloadBeginArray;
-      let reloadLastLoaded = response.ReloadLastLoaded;
-      if (reloadBeginArray != null)
-      {
-        alert(`ReloadBeginArray: ${reloadBeginArray[0].Name}`);
-      }
-      if (reloadLastLoaded != null)
-      {
-        alert(`ReloadLastLoaded: ${reloadLastLoaded.Name}`);
-      }
-      self.ShowCityData("Before LJCCityList.RetrieveData()", this.responseText
-        , cityPageData);
-      // *** End   ***
 
       // Create new table element.
       dataDiv.innerHTML = response.HTMLTable;
 
-      let rowIndex = self.SetCityTable(self, keys);
-      let cityTable = self.CityTable;
+      // Creates initial CityTable
+      // or Updates with new table element and keys.
+      let rowIndex = saveThis.UpdateCityTable(saveThis, keys);
+      let cityTable = saveThis.CityTable;
 
+      // Select former row.
       cityTable.SelectRow(rowIndex, rowIndex);
-      self.SetCityValues()
-      // *** Testing ***
-      self.ShowCityData("CityPage()-After SetCityValues()", this.responseText
-        , cityPageData);
-      // *** End   ***
-      self.FocusTable = cityTable;
+
+      // Set hidden form primary keys and CityPageData.
+      saveThis.UpdateCityPageData()
+      saveThis.FocusTable = cityTable;
     };
     this.CityPageData.Limit = 10;
     xhr.send(JSON.stringify(cityPageData));
   }
 
   /// <summary>Sets the CityTable values.</summary>
-  /// <param name="self">A reference to this class.</parm>
+  /// <param name="saveThis">A reference to this class.</parm>
   /// <param name="keys">The key values.</parm>
-  SetCityTable(self, keys)
+  UpdateCityTable(saveThis, keys)
   {
     let retRowIndex = -1;
 
-    let cityTable = self.CityTable;
+    let cityTable = saveThis.CityTable;
     if (cityTable != null)
     {
+      // Return existing row index.
       retRowIndex = cityTable.RowIndex;
     }
     if (null == cityTable)
     {
       // Create initial CityTable object.
-      self.CityTable = new LJCTable("dataTable", "menu");
-      cityTable = self.CityTable;
+      saveThis.CityTable = new LJCTable("dataTable", "menu");
+      cityTable = saveThis.CityTable;
     }
 
     // Reset table to new table element.
@@ -293,7 +287,7 @@ class LJCCityListEvents
   /// <summary>
   ///   Submit "hiddenForm" to CityDetail.php with listAction "Delete".
   /// </summary>
-  DeleteClick()
+  Delete()
   {
     this.DoAction("Delete");
   }
@@ -333,7 +327,7 @@ class LJCCityListEvents
   /// <summary>
   ///   Submit "hiddenForm" to CityDetail.php with listAction "Update".
   /// </summary>
-  EditClick()
+  Edit()
   {
     this.DoAction("Update");
   }
@@ -341,7 +335,7 @@ class LJCCityListEvents
   /// <summary>
   ///   Submit "hiddenForm" to CityDetail.php with listAction "Add".
   /// </summary>
-  NewClick()
+  New()
   {
     this.DoAction("Add");
   }
@@ -349,7 +343,6 @@ class LJCCityListEvents
   /// <summary>Refreshes the current page.</summary>
   Refresh()
   {
-    // *** Add ***
     this.CityPageData.Action = "Refresh";
     this.CityPage(this.CityPageData);
   }
@@ -379,24 +372,24 @@ class LJCCityListEvents
   // ---------------
   // Set Values Methods
 
-  SetValues(ljcTable)
+  UpdatePageData(ljcTable)
   {
     switch (ljcTable.ETable.id)
     {
       case "dataTable":
-        this.SetCityValues();
+        this.UpdateCityPageData();
         break;
     }
   }
 
   /// <summary>Sets the form values before a submit.</summary>
   /// <param name="eTarget">The HTML element.</param>
-  SetCityValues()
+  UpdateCityPageData()
   {
     let ljcTable = this.CityTable;
     if (ljcTable != null)
     {
-      // Set selected row primaryKeys in hidden form.
+      // Set selected row primaryKeys in hidden form for detail dialog.
       let ePrimaryKeys = Common.Element("primaryKeys");
       if (ePrimaryKeys != null)
       {

@@ -12,15 +12,17 @@
   include_once "$prefix/LJCPHPCommon/LJCHTMLTableLib.php";
   //include_once "$prefix/LJCPHPCommon/LJCHTMLTableBuilderLib.php";
   include_once "$prefix/RegionApp/City/CityDAL.php";
-  // DataConfigs: DataConfigs 
+  // LJCDataConfigs: DataConfigs 
   // LJCDBAccessLib: LJCConnectionValues
   // LJCHTMLBuilderLib: LJCAttribute, LJCAttributes, LJCHTMLBuilder
   //   , LJCTextState
+  // CityDAL: 
 
   $cityList = new LJCCityList();
   $cityList->Run();
 
   /// <summary>Service to Create an HTML table from City data.
+  //  Main: CreateResponse(), 
   class LJCCityList
   {
     // ---------------
@@ -33,11 +35,6 @@
       $value = file_get_contents('php://input');
       $pageData = json_decode($value);
 
-      // *** Testing ***
-      $this->ReloadBeginArray = null;
-      $this->ReloadLastLoaded = null;
-      // *** End   ***
-
       // Parse input data.
       $this->Action = $pageData->Action;
       $this->BeginKeyData = $pageData->BeginKeyData;
@@ -46,7 +43,8 @@
       $this->Limit = $pageData->Limit;
 
       $this->TableName = City::TableName;
-      $this->SQL = null;
+      $this->SQL1 = null;
+      $this->SQL2 = null;
       $_SESSION["tableName"] = $this->TableName;
 
       $connectionValues = $this->GetConnectionValues($this->ConfigName);  
@@ -90,11 +88,8 @@
         $keyNames = $this->KeyPropertyNames();
         $keyArray = $this->ResultKeyArray($result, $keyNames);
 
-        // *** Testing ***
-        $retObject->ReloadBeginArray = $this->ReloadBeginArray;
-        $retObject->ReloadLastLoaded = $this->ReloadLastLoaded;
-        // *** End   ***
-        $retObject->SQL = $this->SQL;
+        $retObject->SQL1 = $this->SQL1;
+        $retObject->SQL2 = $this->SQL2;
         $retObject->Keys = $keyArray;
         $retObject->HTMLTable = $tableBuilder->ResultHTML($result, $textState
           , $propertyNames);
@@ -163,17 +158,18 @@
           $keyColumns = $this->DbColumnKeys($this->EndKeyData);
           $this->CityManager->OrderByNames = array("ProvinceID", "Name");
           $retResult = $this->CityManager->LoadResult($keyColumns);
-          $this->SQL = $this->CityManager->DataManager->SQL;
+          $this->SQL1 = $this->CityManager->DataManager->SQL;
           break;
 
         case "Previous":
           // Load descending.
-          $keyColumns = $this->DbColumnKeys($this->BeginKeyData, true);
+          $backward = true;
+          $keyColumns = $this->DbColumnKeys($this->BeginKeyData, $backward);
           // *** Change ***
           $this->CityManager->OrderByNames = array("ProvinceID desc"
             , "Name desc");
           $retResult = $this->CityManager->LoadResult($keyColumns);
-          $this->SQL = $this->CityManager->DataManager->SQL;
+          $this->SQL1 = $this->CityManager->DataManager->SQL;
 
           // Flip result.
           //$flipResult = [];
@@ -192,12 +188,14 @@
           // *** Begin *** Add
           if ($this->BeginKeyData->ProvinceID != 0)
           {
-            $keyColumns = $this->DbColumnKeys($this->BeginKeyData, true);
+            // Was incorrectly loading backwards.
+            //$keyColumns = $this->DbColumnKeys($this->BeginKeyData, true);
+            $keyColumns = $this->DbColumnKeys($this->BeginKeyData);
           }
           $this->CityManager->OrderByNames = array("ProvinceID", "Name");
           // *** End   ***
           $retResult = $this->CityManager->LoadResult($keyColumns);
-          $this->SQL = $this->CityManager->DataManager->SQL;
+          $this->SQL1 = $this->CityManager->DataManager->SQL;
           break;
       }
       return $retResult;
@@ -220,13 +218,19 @@
       $keyData = new stdClass();
       $keyData->ProvinceID = $keysArray["ProvinceID"];
       $keyData->Name = $keysArray["Name"];
-      // *****
-      $this->ReloadLastLoaded = $keyData;
 
       // Create LJCDbColumns 
-      $keyColumns = $this->DbColumnKeys($keyData, $this->CityManager);
+      // Was incorrectly reloading backwards because second value was true.
+      //$keyColumns = $this->DbColumnKeys($keyData, $this->CityManager);
+      $keyColumns = $this->DbColumnKeys($keyData);
+      // *** Begin *** Add
+      // Anomaly due to retrieving descending.
+      $keyColumn = $keyColumns->Retrieve("Name");
+      $keyColumn->WhereCompareOperator = ">=";
+      // *** End   ***
       $this->CityManager->OrderByNames = array("ProvinceID", "Name");
       $retResult = $this->CityManager->LoadResult($keyColumns);
+      $this->SQL2 = $this->CityManager->DataManager->SQL;
       return $retResult;
     } // RetrieveDataReload()
 

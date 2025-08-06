@@ -9,12 +9,11 @@
 /// <summary>Contains HTML Table methods.</summary>
 //   Static: GetTable(), GetTableRow()
 //   Methods: ShowMenu()
-//   Table Methods: GetRow(), MoveNext(), MovePrevious(), RowCount()
-//     SelectRow()
-//   Selected Column Methods: GetTableByID(), SelectColumnRow()
+//   Table Methods: GetCellText(), GetColumnIndex(), GetRow()
+//     MoveNext(), MovePrevious(), RowCount(), SelectRow()
+//   Selected Column: GetTableByID(), SelectColumnRow()
 class LJCTable
 {
-
   // ---------------
   // Static Methods
 
@@ -78,6 +77,8 @@ class LJCTable
       }
     }
 
+    this.EndOfData = true;
+    this.BeginningOfData = true;
     this.Keys = [];
     this.RowIndex = -1;
   }
@@ -164,20 +165,28 @@ class LJCTable
     {
       if (-1 == this.RowIndex)
       {
+        // Default to top row.
         this.RowIndex = 0;
       }
-      let rowCount = this.RowCount();
-      if (this.RowIndex < rowCount - 1)
-      {
-        let prevRowIndex = this.RowIndex;
-        this.RowIndex++;
-        let rowIndex = this.RowIndex;
-        this.SelectRow(prevRowIndex, rowIndex);
-      }
 
+      let rowCount = this.RowCount();
+
+      // Index already at bottom so load page.
       if (this.RowIndex == rowCount - 1)
       {
         retNextPage = true;
+      }
+
+      if (!retNextPage)
+      {
+        // Not at bottom so increment row.
+        if (this.RowIndex < rowCount - 1)
+        {
+          let prevRowIndex = this.RowIndex;
+          this.RowIndex++;
+          let rowIndex = this.RowIndex;
+          this.SelectRow(prevRowIndex, rowIndex);
+        }
       }
     }
     return retNextPage;
@@ -192,19 +201,27 @@ class LJCTable
     {
       if (-1 == this.RowIndex)
       {
-        this.RowIndex = 2;
-      }
-      if (this.RowIndex > 1)
-      {
-        let prevRowIndex = this.RowIndex;
-        this.RowIndex--;
-        let rowIndex = this.RowIndex;
-        this.SelectRow(prevRowIndex, rowIndex);
+        // Default to first data row.
+        this.RowIndex = 1;
       }
 
+      // Index already at first data row so load page.
       if (this.RowIndex == 1)
       {
         retPrevPage = true;
+      }
+
+
+      if (!retPrevPage)
+      {
+        // Not at first data row so increment row.
+        if (this.RowIndex > 1)
+        {
+          let prevRowIndex = this.RowIndex;
+          this.RowIndex--;
+          let rowIndex = this.RowIndex;
+          this.SelectRow(prevRowIndex, rowIndex);
+        }
       }
     }
     return retPrevPage;
