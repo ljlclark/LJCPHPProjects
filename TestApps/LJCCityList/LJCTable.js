@@ -11,7 +11,7 @@
 //   Methods: ShowMenu()
 //   Table Methods: GetCellText(), GetColumnIndex(), GetRow()
 //     MoveNext(), MovePrevious(), RowCount(), SelectRow()
-//   Selected Column: GetTableByID(), SelectColumnRow()
+//   Selected Column: IsSelectedTable(), SelectColumnRow()
 class LJCTable
 {
   // ---------------
@@ -49,6 +49,9 @@ class LJCTable
 
   // ---------------
   // The Constructor methods.
+
+  // Initializes the object.
+  /// <include path='items/constructor/*' file='Doc/LJCTable.xml'/>
   constructor(tableID, menuID)
   {
     this.BackColor = "";
@@ -80,14 +83,14 @@ class LJCTable
     this.EndOfData = true;
     this.BeginningOfData = true;
     this.Keys = [];
-    this.RowIndex = -1;
+    this.CurrentRowIndex = -1;
   }
 
   // ---------------
   // Methods
 
-  /// <summary>Highlight the selected row.</summary>
-  /// <param name="eColumn">The table column element.</param>
+  /// <summary>Make the menu visible.</summary>
+  /// <param name="location">The menu loction.</param>
   ShowMenu(location)
   {
     if (this.EMenu != null)
@@ -101,7 +104,28 @@ class LJCTable
   // ---------------
   // Table Methods
 
+  // Get cell text with heading text.
+  /// <include path='items/GetCellText/*' file='Doc/LJCTable.xml'/>
+  GetCellText(headingText, rowIndex = -1)
+  {
+    let retText = "";
+
+    let cellIndex = this.GetColumnIndex(headingText);
+    if (cellIndex > -1)
+    {
+      if (-1 == rowIndex)
+      {
+        rowIndex = this.CurrentRowIndex;
+      }
+      let eRow = this.GetRow(rowIndex);
+      let eCells = eRow.cells;
+      retText = eCells[cellIndex].innerText;
+    }
+    return retText;
+  }
+
   // Get cell index with heading text.
+  /// <include path='items/GetColumnText/*' file='Doc/LJCTable.xml'/>
   GetColumnIndex(headingText)
   {
     let retIndex = -1;
@@ -120,25 +144,6 @@ class LJCTable
     return retIndex;
   }
 
-  // Get cell text with heading text
-  GetCellText(headingText, rowIndex = -1)
-  {
-    let retText = "";
-
-    let cellIndex = this.GetColumnIndex(headingText);
-    if (cellIndex > -1)
-    {
-      if (-1 == rowIndex)
-      {
-        rowIndex = this.RowIndex;
-      }
-      let eRow = this.GetRow(rowIndex);
-      let eCells = eRow.cells;
-      retText = eCells[cellIndex].innerText;
-    }
-    return retText;
-  }
-
   // Gets table row by index.
   /// <include path='items/GetRow/*' file='Doc/LJCTable.xml'/>
   GetRow(rowIndex = -1)
@@ -149,30 +154,30 @@ class LJCTable
     {
       if (-1 == rowIndex)
       {
-        rowIndex = this.RowIndex;
+        rowIndex = this.CurrentRowIndex;
       }
       retRow = Common.TagElements(this.ETable, "TR")[rowIndex];
     }
     return retRow;
   }
 
-  // Move selection to next row.
+  /// <summary>Move selection to next row.</summary>
   MoveNext()
   {
     let retNextPage = false;
 
     if (this.ETable != null)
     {
-      if (-1 == this.RowIndex)
+      if (-1 == this.CurrentRowIndex)
       {
         // Default to top row.
-        this.RowIndex = 0;
+        this.CurrentRowIndex = 0;
       }
 
       let rowCount = this.RowCount();
 
       // Index already at bottom so load page.
-      if (this.RowIndex == rowCount - 1)
+      if (this.CurrentRowIndex == rowCount - 1)
       {
         retNextPage = true;
       }
@@ -180,11 +185,11 @@ class LJCTable
       if (!retNextPage)
       {
         // Not at bottom so increment row.
-        if (this.RowIndex < rowCount - 1)
+        if (this.CurrentRowIndex < rowCount - 1)
         {
-          let prevRowIndex = this.RowIndex;
-          this.RowIndex++;
-          let rowIndex = this.RowIndex;
+          let prevRowIndex = this.CurrentRowIndex;
+          this.CurrentRowIndex++;
+          let rowIndex = this.CurrentRowIndex;
           this.SelectRow(prevRowIndex, rowIndex);
         }
       }
@@ -192,21 +197,21 @@ class LJCTable
     return retNextPage;
   }
 
-  // Move selection to previous row.
+  /// <summary>Move selection to previous row.</summary>
   MovePrevious()
   {
     let retPrevPage = false;
 
     if (this.ETable != null)
     {
-      if (-1 == this.RowIndex)
+      if (-1 == this.CurrentRowIndex)
       {
         // Default to first data row.
-        this.RowIndex = 1;
+        this.CurrentRowIndex = 1;
       }
 
       // Index already at first data row so load page.
-      if (this.RowIndex == 1)
+      if (this.CurrentRowIndex == 1)
       {
         retPrevPage = true;
       }
@@ -215,11 +220,11 @@ class LJCTable
       if (!retPrevPage)
       {
         // Not at first data row so increment row.
-        if (this.RowIndex > 1)
+        if (this.CurrentRowIndex > 1)
         {
-          let prevRowIndex = this.RowIndex;
-          this.RowIndex--;
-          let rowIndex = this.RowIndex;
+          let prevRowIndex = this.CurrentRowIndex;
+          this.CurrentRowIndex--;
+          let rowIndex = this.CurrentRowIndex;
           this.SelectRow(prevRowIndex, rowIndex);
         }
       }
@@ -259,7 +264,7 @@ class LJCTable
       let eTableRow = this.GetRow(rowIndex);
       if (eTableRow != null)
       {
-        this.RowIndex = rowIndex;
+        this.CurrentRowIndex = rowIndex;
         eTableRow.style.backgroundColor = this.HighlightColor;
       }
     }
@@ -268,9 +273,10 @@ class LJCTable
   // ---------------
   // Selected Column Methods
 
-  // Get the HTML table element by ID if the HTML element is a table column.
+  // Checks if the supplied element is a table cell and the table has the
+  // supplied ID.
   /// <include path='items/GetTableByID/*' file='Doc/LJCTable.xml'/>
-  GetTableByID(eColumn, tableID)
+  IsSelectedTable(eColumn, tableID)
   {
     let retValue = null;
 
@@ -286,6 +292,7 @@ class LJCTable
   }
 
   // Clears background for previous row and Highlights the current row.
+  // if the supplied element is a table cell.
   /// <include path='items/SelectColumnRow/*' file='Doc/LJCTable.xml'/>
   SelectColumnRow(eColumn)
   {
@@ -294,9 +301,9 @@ class LJCTable
       let eTableRow = LJCTable.GetTableRow(eColumn);
       if (eTableRow != null)
       {
-        let prevIndex = this.RowIndex;
-        this.RowIndex = eTableRow.rowIndex;
-        this.SelectRow(prevIndex, this.RowIndex);
+        let prevIndex = this.CurrentRowIndex;
+        this.CurrentRowIndex = eTableRow.RowIndex;
+        this.SelectRow(prevIndex, this.CurrentRowIndex);
       }
     }
   }

@@ -21,13 +21,16 @@
   $cityList = new LJCCityList();
   $cityList->Run();
 
-  /// <summary>Service to Create an HTML table from City data.
-  //  Main: CreateResponse(), 
+  /// <summary>Web Service to Create an HTML table from City data.
+  //  Entry: Run()
+  //  Response: CreateResponse(), 
   class LJCCityList
   {
     // ---------------
-    // Entry Method
+    // Entry Methods
 
+    /// <summary>Service start method.</summary>
+    /// <returns>The service response JSON text.</returns.
     public function Run(): void
     {
       // Parameters are passed from a POST in JSON.
@@ -43,8 +46,7 @@
       $this->Limit = $pageData->Limit;
 
       $this->TableName = City::TableName;
-      $this->SQL1 = null;
-      $this->SQL2 = null;
+      $this->SQL = null;
       $_SESSION["tableName"] = $this->TableName;
 
       $connectionValues = $this->GetConnectionValues($this->ConfigName);  
@@ -55,12 +57,22 @@
       }
       $response = $this->CreateResponse();
       echo($response);
-    }
+    }  // Run()
+
+    // Get connection values for a DataConfig name.
+    private function GetConnectionValues(string $configName)
+    {
+      $dataConfigs = "DataConfigs.xml";
+      $configName = "TestData";
+      $retValues = DataConfigs::GetConnectionValues($dataConfigs, $configName);
+      return $retValues;
+    }  // GetConnectionValues()
 
     // ---------------
-    // Public Main Methods
+    // Create Response (Main) Methods
 
-    /// <summary>Gets the HTML Table.</summary>
+    /// <summary>Creates the HTML Table.</summary>
+    /// <returns>The response JSON text.</returns.
     // Called from Run().
     public function CreateResponse()
     {
@@ -88,20 +100,92 @@
         $keyNames = $this->KeyPropertyNames();
         $keyArray = $this->ResultKeyArray($result, $keyNames);
 
-        $retObject->SQL1 = $this->SQL1;
-        $retObject->SQL2 = $this->SQL2;
+        $retObject->SQL = $this->SQL1;
         $retObject->Keys = $keyArray;
         $retObject->HTMLTable = $tableBuilder->ResultHTML($result, $textState
           , $propertyNames);
         $retResponse = json_encode($retObject);
       }
       return $retResponse;
-    } // CreateHTMLTable()
+    } // CreateResponse()
+
+    // Gets the heading attributes.
+    // Called from: CreateResponse()
+    private function GetHeadingAttribs(): LJCAttributes
+    {
+      $retAttribs = new LJCAttributes();
+      $style = "background-color: lightsteelblue";
+      $retAttribs->Add("style", $style);
+      return $retAttribs;
+    } // GetHeadingAttribs()
+
+    // Gets the table attributes.
+    // Called from: CreateResponse()
+    private function GetTableAttribs()
+    {
+      // Root TextState object.
+      $textState = new LJCTextState();
+
+      // Setup table attributes.
+      $hb = new LJCHTMLBuilder($textState);
+      $className = null;
+      $id = "dataTable";
+      $retAttribs = $hb->Attribs($className, $id);
+
+      // Centers to page.
+      $style = "margin: auto";
+      $retAttribs->Add("style", $style);
+
+      // border = 1, cellSpacing = 0, cellPadding = 2, className = null
+      //   , id = null
+      $retAttribs->Append($hb->TableAttribs());
+      return $retAttribs;
+    } // GetTableAttribs()
+
+    // Create the LJCHTMLTable object.
+    //private function CreateHTMLTable(?array $propertyNames)
+    private function HTMLTableBuilder(?array $propertyNames)
+    {
+      // Create table object with column property names.
+      $retTableBuilder = new LJCHTMLTable();
+      //$retTableBuilder = new LJCHTMLTableBuilder();
+      LJC::RemoveString($propertyNames, City::ColumnCityID);
+      $retTableBuilder->ColumnNames = $propertyNames;
+      return $retTableBuilder;
+    } // HTMLTableBuilder()
+
+    // Creates the retrieve property names.
+    // Called from CreateResponse()
+    private function KeyPropertyNames()
+    {
+      $retKeyNames = [
+        City::ColumnCityID,
+        City::ColumnProvinceID,
+        City::ColumnName,
+      ];
+      return $retKeyNames;
+    } // KeyPropertyNames()
+
+    // Creates the table property names.
+    // Called from: CreateResponse()
+    private function TablePropertyNames(): array
+    {
+      $retPropertyNames = [
+        City::ColumnProvinceID,
+        City::ColumnName,
+        City::ColumnDescription,
+        City::ColumnCityFlag,
+        City::ColumnZipCode,
+        City::ColumnDistrict,
+      ];
+      return $retPropertyNames;
+    } // TablePropertyNames()
 
     // ---------------
-    // Private Main Methods
+    // Retrieve Data Methods
 
     // Create DbKeys from keyData object.
+    // Called from RetrieveData(), RetrieveDataReload()
     private function DbColumnKeys($keyData, $backward = false): LJCDbColumns
     {
       $propertyNames = [ "ProvinceID", "Name"];
@@ -124,26 +208,6 @@
       }
       return $retKeys;
     } // DbColumnKeys()
-
-    // Creates the retrieve property names.
-    private function KeyPropertyNames()
-    {
-      $retKeyNames = [
-        City::ColumnCityID,
-        City::ColumnProvinceID,
-        City::ColumnName,
-      ];
-      return $retKeyNames;
-    }
-
-    // Gets the results key array.
-    private function ResultKeyArray($result, $keyNames)
-    {
-      // Create key values array.
-      $dataManager = $this->CityManager->DataManager;
-      $retKeyArray = $dataManager->CreateResultKeys($result, $keyNames);
-      return $retKeyArray;
-    }
 
     // Retrieve data result.
     // Called from CreateResponse().
@@ -202,6 +266,7 @@
     } // RetrieveData()
 
     // Reload ascending from last record.
+    // Called from: RetrieveData()
     private function RetrieveDataReload($result)
     {
       // Get the last element of array of named arrays.
@@ -234,73 +299,17 @@
       return $retResult;
     } // RetrieveDataReload()
 
-    // Creates the table property names.
-    private function TablePropertyNames(): array
-    {
-      $retPropertyNames = [
-        City::ColumnProvinceID,
-        City::ColumnName,
-        City::ColumnDescription,
-        City::ColumnCityFlag,
-        City::ColumnZipCode,
-        City::ColumnDistrict,
-      ];
-      return $retPropertyNames;
-    }
-
     // ---------------
-    // Helper Methods
+    // Other Methods
 
-    // Get connection values for a DataConfig name.
-    private function GetConnectionValues(string $configName)
+    // Gets the results key array.
+    // Called from: CreateResponse(), RetrieveDataReload()
+    private function ResultKeyArray($result, $keyNames)
     {
-      $dataConfigs = "DataConfigs.xml";
-      $configName = "TestData";
-      $retValues = DataConfigs::GetConnectionValues($dataConfigs, $configName);
-      return $retValues;
-    }
-
-    // Gets the heading attributes.
-    private function GetHeadingAttribs(): LJCAttributes
-    {
-      $retAttribs = new LJCAttributes();
-      $style = "background-color: lightsteelblue";
-      $retAttribs->Add("style", $style);
-      return $retAttribs;
-    }
-
-    // Gets the table attributes.
-    private function GetTableAttribs()
-    {
-      // Root TextState object.
-      $textState = new LJCTextState();
-
-      // Setup table attributes.
-      $hb = new LJCHTMLBuilder($textState);
-      $className = null;
-      $id = "dataTable";
-      $retAttribs = $hb->Attribs($className, $id);
-
-      // Centers to page.
-      $style = "margin: auto";
-      $retAttribs->Add("style", $style);
-
-      // border = 1, cellSpacing = 0, cellPadding = 2, className = null
-      //   , id = null
-      $retAttribs->Append($hb->TableAttribs());
-      return $retAttribs;
-    }
-
-    // Create the LJCHTMLTable object.
-    //private function CreateHTMLTable(?array $propertyNames)
-    private function HTMLTableBuilder(?array $propertyNames)
-    {
-      // Create table object with column property names.
-      $retTableBuilder = new LJCHTMLTable();
-      //$retTableBuilder = new LJCHTMLTableBuilder();
-      LJC::RemoveString($propertyNames, City::ColumnCityID);
-      $retTableBuilder->ColumnNames = $propertyNames;
-      return $retTableBuilder;
-    }
+      // Create key values array.
+      $dataManager = $this->CityManager->DataManager;
+      $retKeyArray = $dataManager->CreateResultKeys($result, $keyNames);
+      return $retKeyArray;
+    } // ResultKeyArray()
   }
 ?>

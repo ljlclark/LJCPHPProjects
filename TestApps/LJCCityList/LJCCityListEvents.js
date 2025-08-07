@@ -265,7 +265,7 @@ class LJCCityListEvents
     if (cityTable != null)
     {
       // Return existing row index.
-      retRowIndex = cityTable.RowIndex;
+      retRowIndex = cityTable.CurrentRowIndex;
     }
     if (null == cityTable)
     {
@@ -289,12 +289,35 @@ class LJCCityListEvents
   /// </summary>
   Delete()
   {
-    this.DoAction("Delete");
+    this.SubmitDetail("Delete");
+  }
+
+  /// <summary>
+  ///   Submit "hiddenForm" to CityDetail.php with listAction "Update".
+  /// </summary>
+  Edit()
+  {
+    this.SubmitDetail("Update");
+  }
+
+  /// <summary>
+  ///   Submit "hiddenForm" to CityDetail.php with listAction "Add".
+  /// </summary>
+  New()
+  {
+    this.SubmitDetail("Add");
+  }
+
+  /// <summary>Refreshes the current page.</summary>
+  Refresh()
+  {
+    this.CityPageData.Action = "Refresh";
+    this.CityPage(this.CityPageData);
   }
 
   /// <summary>Submit the hidden form listAction to CityDetail.php.</summary>
   /// <param name="action">The listAction type.</param>
-  DoAction(action)
+  SubmitDetail(action)
   {
     let success = true;
 
@@ -324,29 +347,6 @@ class LJCCityListEvents
     }
   }
 
-  /// <summary>
-  ///   Submit "hiddenForm" to CityDetail.php with listAction "Update".
-  /// </summary>
-  Edit()
-  {
-    this.DoAction("Update");
-  }
-
-  /// <summary>
-  ///   Submit "hiddenForm" to CityDetail.php with listAction "Add".
-  /// </summary>
-  New()
-  {
-    this.DoAction("Add");
-  }
-
-  /// <summary>Refreshes the current page.</summary>
-  Refresh()
-  {
-    this.CityPageData.Action = "Refresh";
-    this.CityPage(this.CityPageData);
-  }
-
   // ---------------
   // Table Column Methods
 
@@ -370,8 +370,9 @@ class LJCCityListEvents
   }
 
   // ---------------
-  // Set Values Methods
+  // Set Page Values Methods
 
+  /// <summary>Updates page data for LJCTable current table.</summary>
   UpdatePageData(ljcTable)
   {
     switch (ljcTable.ETable.id)
@@ -382,7 +383,10 @@ class LJCCityListEvents
     }
   }
 
-  /// <summary>Sets the form values before a submit.</summary>
+  /// <summary>
+  ///   Sets the form values before a detail submit and the page values before
+  ///   a page submit.
+  /// </summary>
   /// <param name="eTarget">The HTML element.</param>
   UpdateCityPageData()
   {
@@ -393,7 +397,7 @@ class LJCCityListEvents
       let ePrimaryKeys = Common.Element("primaryKeys");
       if (ePrimaryKeys != null)
       {
-        let rowKeys = ljcTable.Keys[ljcTable.RowIndex - 1];
+        let rowKeys = ljcTable.Keys[ljcTable.CurrentRowIndex - 1];
         if (rowKeys != null)
         {
           let keys = [];
