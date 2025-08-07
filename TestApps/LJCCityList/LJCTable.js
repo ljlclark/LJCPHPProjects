@@ -57,7 +57,7 @@ class LJCTable
     this.BackColor = "";
     this.BeginningOfData = true;
     this.CurrentRowIndex = -1;
-    this.EndOfData = true;
+    this.EndOfData = false;
 
     this.EMenu = null;
     if (menuID != null)

@@ -30,13 +30,13 @@ class LJCCityListEvents
     this.CityPageData = {
       Action: "None", // Next, Previous, Top, Bottom, First?, Last?
       BeginKeyData: { ProvinceID: 0, Name: "" },
-      BeginningOfData: true,
       ConfigName: "TestData",
       EndKeyData: { ProvinceID: 0, Name: "" },
-      EndOfData: false,
       Limit: 10,
     };
     this.FocusTable = null;
+    this.IsNext = false;
+    this.IsPrevious = false;
   }
 
   // ---------------
@@ -166,20 +166,13 @@ class LJCCityListEvents
       switch (ljcTable.ETable.id)
       {
         case "dataTable":
-          if (!this.CityPageData.EndOfData)
+          if (!this.CityTable.EndOfData)
           {
+            // *** Add ***
+            this.IsNext = true;
             this.CityPageData.Action = "Next";
             this.UpdateCityPageData();
-
             this.CityPage(this.CityPageData);
-            // *** Begin ***
-            this.CityTable.BeginningOfData = false;
-            this.CityTable.EndOfData = false;
-            if (this.CityTable.Keys.length < this.CityPageData.Length)
-            {
-              this.CityTable.EndOfData = true;
-            }
-            // *** End   ***
 
             let prevIndex = prevRowIndex;
             if (-1 == prevRowIndex)
@@ -207,19 +200,11 @@ class LJCCityListEvents
         case "dataTable":
           if (!this.CityTable.BeginningOfData)
           {
+            // *** Add ***
+            this.IsPrevious = true;
             this.CityPageData.Action = "Previous";
             this.UpdateCityPageData();
-
             this.CityPage(this.CityPageData);
-            // *** Begin ***
-            this.CityTable.BeginningOfData = false;
-            this.CityTable.EndOfData = false;
-            if (this.CityTable.Keys.length < this.CityPageData.Length)
-            {
-              this.CityTable.BeginningOfData = true;
-              this.CityTable.EndOfData = true;
-            }
-            // *** End   ***
 
             this.CityTable.CurrentRowIndex = this.CityTable.RowCount() - 1;
           }
@@ -251,6 +236,8 @@ class LJCCityListEvents
       // or Updates with new table element and keys.
       let rowIndex = saveThis.UpdateCityTable(saveThis, keys);
       let cityTable = saveThis.CityTable;
+      // *** Add ***
+      saveThis.UpdateLimitsFlags(cityTable);
 
       // Select former row.
       cityTable.SelectRow(rowIndex, rowIndex);
@@ -266,6 +253,7 @@ class LJCCityListEvents
   /// <summary>Sets the CityTable values.</summary>
   /// <param name="saveThis">A reference to this class.</parm>
   /// <param name="keys">The key values.</parm>
+  /// <returns>The current row index.</returns>
   UpdateCityTable(saveThis, keys)
   {
     let retRowIndex = -1;
@@ -288,6 +276,33 @@ class LJCCityListEvents
 
     cityTable.Keys = keys;
     return retRowIndex;
+  }
+
+  /// <summary>Updates the BeginningOfData and EndOfData flags.</summary>
+  /// <param name="cityTable">The CityTable object.</param>
+  UpdateLimitsFlags(cityTable)
+  {
+    if (this.IsNext)
+    {
+      // Set as IsNext not set unless EndOfData = false.
+      cityTable.BeginningOfData = false;
+      cityTable.EndOfData = false;
+      if (cityTable.Keys.length < this.CityPageData.Limit)
+      {
+        cityTable.EndOfData = true;
+      }
+      this.IsNext = false;
+    }
+
+    if (this.IsPrevious)
+    {
+      this.CityTable.BeginningOfData = false;
+      if (cityTable.Keys.length < this.CityPageData.Limit)
+      {
+        cityTable.BeginningOfData = true;
+      }
+      this.IsPrevious = false;
+    }
   }
 
   // ---------------
