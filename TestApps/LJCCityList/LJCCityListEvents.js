@@ -30,7 +30,7 @@ class LJCCityListEvents
     this.CityPageData = {
       Action: "None", // Next, Previous, Top, Bottom, First?, Last?
       BeginKeyData: { ProvinceID: 0, Name: "" },
-      BeginningOfData: false,
+      BeginningOfData: true,
       ConfigName: "TestData",
       EndKeyData: { ProvinceID: 0, Name: "" },
       EndOfData: false,
@@ -159,7 +159,7 @@ class LJCCityListEvents
 
   /// <summary>Get next page for supplied table.
   /// <param name="ljcTable">The target table.</param>
-  NextPage(ljcTable)
+  NextPage(ljcTable, prevRowIndex = -1)
   {
     if (ljcTable != null)
     {
@@ -173,6 +173,7 @@ class LJCCityListEvents
 
             this.CityPage(this.CityPageData);
             // *** Begin ***
+            this.CityTable.BeginningOfData = false;
             this.CityTable.EndOfData = false;
             if (this.CityTable.Keys.length < this.CityPageData.Length)
             {
@@ -180,12 +181,15 @@ class LJCCityListEvents
             }
             // *** End   ***
 
-
-            // Assume previous was table row count.
-            let rowCount = this.CityTable.RowCount();
+            let prevIndex = prevRowIndex;
+            if (-1 == prevRowIndex)
+            {
+              // Previous was table row count.
+              prevIndex = this.CityTable.RowCount();
+            }
 
             // Select first data row.
-            this.CityTable.SelectRow(rowCount, 1);
+            this.CityTable.SelectRow(prevIndex, 1);
           }
           break;
       }
@@ -201,19 +205,24 @@ class LJCCityListEvents
       switch (ljcTable.ETable.id)
       {
         case "dataTable":
-          this.CityPageData.Action = "Previous";
-          this.UpdateCityPageData();
-
-          this.CityPage(this.CityPageData);
-          // *** Begin ***
-          this.CityTable.BeginningOfData = false;
-          this.CityTable.EndOfData = false;
-          if (this.CityTable.Keys.length < this.CityPageData.Length)
+          if (!this.CityTable.BeginningOfData)
           {
-            this.CityTable.BeginningOfData = true;
-            this.CityTable.EndOfData = true;
+            this.CityPageData.Action = "Previous";
+            this.UpdateCityPageData();
+
+            this.CityPage(this.CityPageData);
+            // *** Begin ***
+            this.CityTable.BeginningOfData = false;
+            this.CityTable.EndOfData = false;
+            if (this.CityTable.Keys.length < this.CityPageData.Length)
+            {
+              this.CityTable.BeginningOfData = true;
+              this.CityTable.EndOfData = true;
+            }
+            // *** End   ***
+
+            this.CityTable.CurrentRowIndex = this.CityTable.RowCount() - 1;
           }
-          // *** End   ***
           break;
       }
     }
@@ -413,9 +422,9 @@ class LJCCityListEvents
         let rowKeys = ljcTable.Keys[0];
         if (rowKeys != null)
         {
-          let CityPageData = this.CityPageData;
-          CityPageData.BeginKeyData.ProvinceID = rowKeys.ProvinceID;
-          CityPageData.BeginKeyData.Name = rowKeys.Name;
+          let cityPageData = this.CityPageData;
+          cityPageData.BeginKeyData.ProvinceID = rowKeys.ProvinceID;
+          cityPageData.BeginKeyData.Name = rowKeys.Name;
         }
 
         // Get last row.
@@ -424,9 +433,9 @@ class LJCCityListEvents
         rowKeys = ljcTable.Keys[lastIndex];
         if (rowKeys != null)
         {
-          let CityPageData = this.CityPageData;
-          CityPageData.EndKeyData.ProvinceID = rowKeys.ProvinceID;
-          CityPageData.EndKeyData.Name = rowKeys.Name;
+          let cityPageData = this.CityPageData;
+          cityPageData.EndKeyData.ProvinceID = rowKeys.ProvinceID;
+          cityPageData.EndKeyData.Name = rowKeys.Name;
         }
       }
     }

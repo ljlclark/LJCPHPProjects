@@ -55,7 +55,9 @@ class LJCTable
   constructor(tableID, menuID)
   {
     this.BackColor = "";
-    this.HighlightColor = "lightsteelblue";
+    this.BeginningOfData = true;
+    this.CurrentRowIndex = -1;
+    this.EndOfData = true;
 
     this.EMenu = null;
     if (menuID != null)
@@ -80,10 +82,8 @@ class LJCTable
       }
     }
 
-    this.EndOfData = true;
-    this.BeginningOfData = true;
+    this.HighlightColor = "lightsteelblue";
     this.Keys = [];
-    this.CurrentRowIndex = -1;
   }
 
   // ---------------
@@ -273,10 +273,10 @@ class LJCTable
   // ---------------
   // Selected Column Methods
 
-  // Checks if the supplied element is a table cell and the table has the
-  // supplied ID.
+  // Gets the selected table if the supplied element is a table column/cell and
+  // the table has the supplied ID.
   /// <include path='items/GetTableByID/*' file='Doc/LJCTable.xml'/>
-  IsSelectedTable(eColumn, tableID)
+  GetSelectedTable(eColumn, tableID)
   {
     let retValue = null;
 
@@ -302,7 +302,7 @@ class LJCTable
       if (eTableRow != null)
       {
         let prevIndex = this.CurrentRowIndex;
-        this.CurrentRowIndex = eTableRow.RowIndex;
+        this.CurrentRowIndex = eTableRow.rowIndex;
         this.SelectRow(prevIndex, this.CurrentRowIndex);
       }
     }
