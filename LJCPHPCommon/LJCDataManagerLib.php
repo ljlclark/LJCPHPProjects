@@ -181,6 +181,31 @@
       return $retValue;
     } // Columns()
 
+    // Create the keys from the result.
+    public function CreateResultKeys($rows, $keyNames)
+    {
+      // Create key columns array.
+      $retKeys = [];
+
+      // Each row contains a columns array.
+      foreach($rows as $rowKey => $columns)
+      {
+        // Get each column.
+        $keys = [];
+        foreach($keyNames as $keyName)
+        {
+          $value = $columns[$keyName]; 
+          if ($value != null)
+          {
+            // Create named array element.
+            $keys[$keyName] = $value;
+          }
+        }
+        $retKeys[] = $keys;
+      }
+      return $retKeys;
+    }
+
     // Creates a PropertyNames list from the data definition.
     /// <ParentGroup>Other</ParentGroup>
     public function PropertyNames(): array
@@ -224,6 +249,9 @@
       $this->CreateJoinData($retValue, $row);
       return $retValue;
     } // CreateDataObject()
+
+    // ---------------
+    // Private Methods - LJCDataManager
 
     // Populates a Data Object with Join values from a Data Result row.
     private function CreateJoinData($dataObject, array $row): void
@@ -346,7 +374,8 @@
 
       $retValue = "select\r\n";
       $retValue .= self::SQLColumns($tableName, $sqlColumns, joins: $joins);
-      $retValue .= "from $tableName \r\n";
+      // *** Change ***
+      $retValue .= "from $tableName ";
       $retValue .= self::GetJoinStatement($tableName, $joins);
       $retValue .= self::WhereClause($tableName, $keyColumns);
       return $retValue;
@@ -536,7 +565,8 @@
 
       if ($keyColumns != null && count($keyColumns) > 0)
       {
-        $retValue = "where ";
+        // *** Change ***
+        $retValue = "\r\nwhere ";
 
         $first = true;
         foreach ($keyColumns as $keyColumn)
@@ -645,6 +675,8 @@
       if ($joins != null && count($joins) > 0)
       {
         $builder = new LJCStringBuilder();
+        // *** Add ***
+        $builder->Line(" ");
         foreach ($joins as $join)
         {
           // Begin the Join.
