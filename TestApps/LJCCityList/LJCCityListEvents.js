@@ -207,6 +207,7 @@ class LJCCityListEvents
             this.UpdateCityPageData();
             this.CityPage(this.CityPageData);
 
+            // Set to last row.
             this.CityTable.CurrentRowIndex = this.CityTable.RowCount() - 1;
           }
           break;
@@ -229,26 +230,53 @@ class LJCCityListEvents
       // Get the AJAX response.
       let response = JSON.parse(this.responseText);
       //alert(`responseSQL: ${response.SQL}`);
-      let keys = response.Keys;
 
       // Create new table element.
-      dataDiv.innerHTML = response.HTMLTable;
+      if (saveThis.HasData(response.HTMLTable))
+      {
+        let keys = response.Keys;
+        dataDiv.innerHTML = response.HTMLTable;
 
-      // Creates initial CityTable
-      // or Updates with new table element and keys.
-      let rowIndex = saveThis.UpdateCityTable(saveThis, keys);
-      let cityTable = saveThis.CityTable;
-      saveThis.UpdateLimitsFlags(cityTable);
+        // Creates initial CityTable
+        // or Updates with new table element and keys.
+        let rowIndex = saveThis.UpdateCityTable(saveThis, keys);
+        let cityTable = saveThis.CityTable;
+        saveThis.UpdateLimitsFlags(cityTable);
 
-      // Select former row.
-      cityTable.SelectRow(rowIndex, rowIndex);
+        // Select former row.
+        cityTable.SelectRow(rowIndex, rowIndex);
 
-      // Set hidden form primary keys and CityPageData.
-      saveThis.UpdateCityPageData()
-      saveThis.FocusTable = cityTable;
+        // Set hidden form primary keys and CityPageData.
+        saveThis.UpdateCityPageData()
+        saveThis.FocusTable = cityTable;
+      }
     };
     this.CityPageData.Limit = 10;
     xhr.send(JSON.stringify(cityPageData));
+  }
+
+  // Clears the Next and Previous settings if no data was returned.
+  HasData(htmlTable)
+  {
+    let retValue = true;
+
+    if (!Common.HasText(htmlTable))
+    {
+      retValue = false;
+      if (this.IsNext)
+      {
+        // Set to last row.
+        this.CityTable.CurrentRowIndex = saveThis.CityTable.RowCount() - 1;
+        this.IsNext = false;
+      }
+      if (this.IsPrevious)
+      {
+        // Set to first row.
+        this.CityTable.CurrentRowIndex = 1;
+        this.IsPrevious = false;
+      }
+    }
+    return retValue;
   }
 
   /// <summary>Sets the CityTable values.</summary>

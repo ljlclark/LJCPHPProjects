@@ -277,9 +277,6 @@
             $flipResult[] = $retResult[$index];
           }
           $retResult = $flipResult;
-
-          // Reload ascending from last record.
-          //$retResult = $this->RetrieveDataReload($retResult);
           break;
 
         default:
@@ -295,30 +292,6 @@
       }
       return $retResult;
     } // RetrieveData()
-
-    // Reload ascending from last record.
-    // Called from: RetrieveData()
-    private function RetrieveDataReload($result)
-    {
-      // Get the last element of array of named arrays.
-      $keyNames = [
-        City::ColumnProvinceID,
-        City::ColumnName,
-      ];
-      $resultKeyArray = $this->ResultKeyArray($result, $keyNames);
-
-      // Get last loaded record.
-      $keysArray = $resultKeyArray[count($resultKeyArray) - 1];
-      $keyData = new stdClass();
-      $keyData->ProvinceID = $keysArray["ProvinceID"];
-      $keyData->Name = $keysArray["Name"];
-
-      $filter = $this->NextFilter($keyData, true);
-      $this->CityManager->OrderByNames = array("ProvinceID", "Name");
-      $retResult = $this->CityManager->LoadResult(null, filter: $filter);
-      //$this->SQL = $this->CityManager->DataManager->SQL;
-      return $retResult;
-    } // RetrieveDataReload()
 
     // ---------------
     // Other Methods
