@@ -21,12 +21,14 @@
 class LJCCityListEvents
 {
   // ---------------
-  // The Constructor function.
+  // The Constructor functions.
 
   /// <summary>Initializes the object instance.</summary>
   constructor()
   {
     this.CityTable = null;
+
+    // Data for LJCCityList.php
     this.CityPageData = {
       Action: "None", // Next, Previous, Top, Bottom, First?, Last?
       BeginKeyData: { ProvinceID: 0, Name: "" },
@@ -34,6 +36,7 @@ class LJCCityListEvents
       EndKeyData: { ProvinceID: 0, Name: "" },
       Limit: 10,
     };
+
     this.FocusTable = null;
     this.IsNext = false;
     this.IsPrevious = false;
@@ -168,7 +171,6 @@ class LJCCityListEvents
         case "dataTable":
           if (!this.CityTable.EndOfData)
           {
-            // *** Add ***
             this.IsNext = true;
             this.CityPageData.Action = "Next";
             this.UpdateCityPageData();
@@ -200,7 +202,6 @@ class LJCCityListEvents
         case "dataTable":
           if (!this.CityTable.BeginningOfData)
           {
-            // *** Add ***
             this.IsPrevious = true;
             this.CityPageData.Action = "Previous";
             this.UpdateCityPageData();
@@ -227,6 +228,7 @@ class LJCCityListEvents
     {
       // Get the AJAX response.
       let response = JSON.parse(this.responseText);
+      //alert(`responseSQL: ${response.SQL}`);
       let keys = response.Keys;
 
       // Create new table element.
@@ -236,7 +238,6 @@ class LJCCityListEvents
       // or Updates with new table element and keys.
       let rowIndex = saveThis.UpdateCityTable(saveThis, keys);
       let cityTable = saveThis.CityTable;
-      // *** Add ***
       saveThis.UpdateLimitsFlags(cityTable);
 
       // Select former row.
@@ -284,7 +285,6 @@ class LJCCityListEvents
   {
     if (this.IsNext)
     {
-      // Set as IsNext not set unless EndOfData = false.
       cityTable.BeginningOfData = false;
       cityTable.EndOfData = false;
       if (cityTable.Keys.length < this.CityPageData.Limit)
@@ -296,7 +296,8 @@ class LJCCityListEvents
 
     if (this.IsPrevious)
     {
-      this.CityTable.BeginningOfData = false;
+      cityTable.BeginningOfData = false;
+      cityTable.EndOfData = false;
       if (cityTable.Keys.length < this.CityPageData.Limit)
       {
         cityTable.BeginningOfData = true;

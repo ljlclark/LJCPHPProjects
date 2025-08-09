@@ -80,7 +80,7 @@
     /// <include path='items/Load/*' file='Doc/LJCDataManager.xml'/>
     /// <ParentGroup>Data</ParentGroup>
     public function Load(?LJCDbColumns $keyColumns = null, ?array $propertyNames = null
-      , ?LJCJoins $joins = null): ?array
+      , ?LJCJoins $joins = null, ?string $filter = null): ?array
     {
       $retValue = null;
       
@@ -88,16 +88,31 @@
       {
         $propertyNames = $this->PropertyNames(); 
       }
+
+      // *** Begin ***
+      if ($filter != null
+        && strlen(trim($filter)) > 0)
+      {
+        $keyColumns = null;
+      }
+      // *** End   ***
+
       $this->Joins = $joins;
       $this->SQL = LJCSQLBuilder::CreateSelect($this->TableName
         , $this->SchemaColumns, $keyColumns, $propertyNames, $joins);
-      $this->SQL .= LJCSQLBuilder::GetOrderBy($this->OrderByNames);
       // *** Begin ***
+      if ($filter != null
+        && strlen(trim($filter)) > 0)
+      {
+        $this->SQL .= " \r\n{$filter}";
+      }
+      // *** End   ***
+
+      $this->SQL .= LJCSQLBuilder::GetOrderBy($this->OrderByNames);
       if ($this->Limit > 0)
       {
         $this->SQL .= "\r\nlimit {$this->Limit}";
       }
-      // *** End   ***
       $retValue = $this->DbAccess->Load($this->SQL);
       return $retValue;
     } // Load()
