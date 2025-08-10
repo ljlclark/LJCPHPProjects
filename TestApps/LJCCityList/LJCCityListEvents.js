@@ -201,8 +201,7 @@ class LJCCityListEvents
             this.CityPage(this.CityPageData);
 
             // Select last data row.
-            let currentRowIndex = this.CityTable.RowCount() - 1;
-            this.CityTable.CurrentRowIndex = currentRowIndex;
+            this.CityTable.CurrentRowIndex = this.CityPageData.Limit;
           }
           break;
       }

@@ -21,9 +21,12 @@
   $cityList = new LJCCityList();
   $cityList->Run();
 
+  // ***************
+  /// <group name="Entry">Entry Methods</group>
+  //    Run()
+  /// <group name="Response">Entry Methods</group>
+  //    CreateResponse(), 
   /// <summary>Web Service to Create an HTML table from City data.
-  //  Entry: Run()
-  //  Response: CreateResponse(), 
   class LJCCityList
   {
     // ---------------
@@ -31,6 +34,7 @@
 
     /// <summary>Service start method.</summary>
     /// <returns>The service response JSON text.</returns.
+    /// <ParentGroup>Entry</ParentGroup>
     public function Run(): void
     {
       // Parameters are passed from a POST in JSON.
@@ -61,6 +65,7 @@
     }  // Run()
 
     // Get connection values for a DataConfig name.
+    // Called from Run()
     private function GetConnectionValues(string $configName)
     {
       $dataConfigs = "DataConfigs.xml";
@@ -74,6 +79,7 @@
 
     /// <summary>Creates the HTML Table.</summary>
     /// <returns>The response JSON text.</returns.
+    /// <ParentGroup>Response</ParentGroup>
     // Called from Run().
     public function CreateResponse()
     {
@@ -144,7 +150,7 @@
     } // GetTableAttribs()
 
     // Create the LJCHTMLTable object.
-    //private function CreateHTMLTable(?array $propertyNames)
+    // Called from: CreateResponse()
     private function HTMLTableBuilder(?array $propertyNames)
     {
       // Create table object with column property names.
@@ -167,7 +173,18 @@
       return $retKeyNames;
     } // KeyPropertyNames()
 
+    // Gets the results key array.
+    // Called from: CreateResponse()
+    private function ResultKeyArray($result, $keyNames)
+    {
+      // Create key values array.
+      $dataManager = $this->CityManager->DataManager;
+      $retKeyArray = $dataManager->CreateResultKeys($result, $keyNames);
+      return $retKeyArray;
+    } // ResultKeyArray()
+
     // Initializes the response object.
+    // Called from CreateResponse()
     private function SetResponse()
     {
       $retResponse = new stdClass();
@@ -175,7 +192,7 @@
       $retResponse->SQL = "";
       $retResponse->HTMLTable = "";
       return $retResponse;
-    }
+    } // SetResponse()
 
     // Creates the table property names.
     // Called from: CreateResponse()
@@ -195,32 +212,8 @@
     // ---------------
     // Retrieve Data Methods
 
-    // Create DbKeys from keyData object.
-    // Called from RetrieveData(), RetrieveDataReload()
-    private function DbColumnKeys($keyData, $backward = false): LJCDbColumns
-    {
-      $propertyNames = [ "ProvinceID", "Name"];
-      $retKeys = $this->CityManager->Columns($propertyNames);
-
-      $dbColumn = $retKeys->Retrieve("ProvinceID");
-      $dbColumn->Value = $keyData->ProvinceID;
-      $dbColumn->WhereCompareOperator = ">=";
-      if ($backward)
-      {
-        $dbColumn->WhereCompareOperator = "<=";
-      }
-
-      $dbColumn = $retKeys->Retrieve("Name");
-      $dbColumn->Value = $keyData->Name;
-      $dbColumn->WhereCompareOperator = ">";
-      if ($backward)
-      {
-        $dbColumn->WhereCompareOperator = "<";
-      }
-      return $retKeys;
-    } // DbColumnKeys()
-
     // Create the "Next" filter.
+    // Called from RetrieveData()
     private function NextFilter($keyData, $backward = false): string
     {
       $retFilter = "where";
@@ -233,9 +226,10 @@
       $retFilter .= $filter;
       $retFilter .= "\r\n  or ProvinceID > {$keyData->ProvinceID}";
       return $retFilter;
-    }
+    } // NextFilter()
 
     // Create the "Previous" filter.
+    // Called from RetrieveData()
     private function PreviousFilter($beginKeyData): string
     {
       $retFilter = "where";
@@ -243,7 +237,7 @@
       $retFilter .= "\r\n   and Name < '{$beginKeyData->Name}')";
       $retFilter .= "\r\n  or ProvinceID < {$beginKeyData->ProvinceID}";
       return $retFilter;
-    }
+    } // PreviousFilter()
 
     // Retrieve data result.
     // Called from CreateResponse().
@@ -294,48 +288,35 @@
     } // RetrieveData()
 
     // ---------------
-    // Other Methods
-
-    // Gets the results key array.
-    // Called from: CreateResponse(), RetrieveDataReload()
-    private function ResultKeyArray($result, $keyNames)
-    {
-      // Create key values array.
-      $dataManager = $this->CityManager->DataManager;
-      $retKeyArray = $dataManager->CreateResultKeys($result, $keyNames);
-      return $retKeyArray;
-    } // ResultKeyArray()
-
-    // ---------------
     // Properties
 
     /// <summary>The data retrieve action.</summary>
     /// <remarks>
     ///   Values: "Next", "Previous", "Top", "Bottom", "First"?, "Last"?
     /// </remarks>
-    //public string $Action;
+    public string $Action;
 
     /// <summary>The find key values for the first table row data.</summary>
     /// <remarks> Properties: ProvinceID, Name</remarks>
-    //public object $BeginKeyData;
+    public object $BeginKeyData;
 
     /// <summary>The CityManager object.</summary>
-    //public CityManager $CityManager;
+    public CityManager $CityManager;
 
     /// <summary>The data config name.</summary>
-    //public string $ConfigName;
+    public string $ConfigName;
 
     /// <summary>The find key values for the last table row data.</summary>
     /// <remarks> Properties: ProvinceID, Name</remarks>
-    //public object $EndKeyData;
+    public object $EndKeyData;
 
     /// <summary>The number of rows per page.</summary>
-    //public int $Limit = 10;
-
-    /// <summary>The db table name.</summary>
-    //public string $TableName;
+    public int $Limit;
 
     /// <summary>The SQL statement.</summary>
-    //public string $SQL;
+    public string $SQL;
+
+    /// <summary>The db table name.</summary>
+    public string $TableName;
   }
 ?>
