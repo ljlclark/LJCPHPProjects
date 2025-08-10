@@ -176,15 +176,8 @@ class LJCCityListEvents
             this.UpdateCityPageData();
             this.CityPage(this.CityPageData);
 
-            let prevIndex = prevRowIndex;
-            if (-1 == prevRowIndex)
-            {
-              // Previous was table row count.
-              prevIndex = this.CityTable.RowCount();
-            }
-
             // Select first data row.
-            this.CityTable.SelectRow(prevIndex, 1);
+            this.CityTable.CurrentRowIndex = 1;
           }
           break;
       }
@@ -207,8 +200,9 @@ class LJCCityListEvents
             this.UpdateCityPageData();
             this.CityPage(this.CityPageData);
 
-            // Set to last row.
-            this.CityTable.CurrentRowIndex = this.CityTable.RowCount() - 1;
+            // Select last data row.
+            let currentRowIndex = this.CityTable.RowCount() - 1;
+            this.CityTable.CurrentRowIndex = currentRowIndex;
           }
           break;
       }
@@ -251,7 +245,6 @@ class LJCCityListEvents
         saveThis.FocusTable = cityTable;
       }
     };
-    this.CityPageData.Limit = 10;
     xhr.send(JSON.stringify(cityPageData));
   }
 
@@ -266,7 +259,7 @@ class LJCCityListEvents
       if (this.IsNext)
       {
         // Set to last row.
-        this.CityTable.CurrentRowIndex = saveThis.CityTable.RowCount() - 1;
+        this.CityTable.CurrentRowIndex = this.CityTable.RowCount() - 1;
         this.IsNext = false;
       }
       if (this.IsPrevious)
