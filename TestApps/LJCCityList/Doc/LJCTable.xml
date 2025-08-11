@@ -2,7 +2,27 @@
 <!-- Copyright (c) Lester J. Clark 2022 - All Rights Reserved -->
 <!-- LJCTable.xml -->
 <items>
-  <!-- Static  Methods -->
+  <!-- Table Methods -->
+  <GetRow>
+    <summary>Gets table row by index.</summary>
+    <param name="eTable">The table element.</param>
+    <param name="rowIndex">The row index.</param>
+    <returns>The table row.</returns>
+  </GetRow>
+  <GetRowCount>
+    <summary>Gets the table row count.</summary>
+    <param name="eTable">The table element.</param>
+    <returns>The table row count.</returns>
+  </GetRowCount>
+  <TableSelectRow>
+    <summary>
+      Clears background for previous row and Highlights the current row.
+    </summary>
+    <param name="eTable">The table element.</param>
+    <param name="preRowIndex">The previous row index.</param>
+    <param name="rowIndex">The current row index.</param>
+  </TableSelectRow>
+  <!-- Column Methods -->
   <GetTable>
     <summary>
       Get the HTML table element if the HTML element is a table data row or
@@ -11,6 +31,14 @@
     <param name="element">The HTML element.</param>
     <returns>The table element if applicable, otherwise null.</returns>
   </GetTable>
+  <GetTableByID>
+    <summary>
+      Get the HTML table element by ID if the HTML element is a table column.
+    </summary >
+    <param name="element">The HTML element.</param>
+    <param name="tableID">The table element ID.</param>
+    <returns>The table element if applicable, otherwise null.</returns>
+  </GetTableByID>
   <GetTableRow>
     <summary>
       Get the table row element if the element is a table data row or column.
@@ -18,59 +46,12 @@
     <param name="element">The HTML element.</param>
     <returns>The table row element if applicable, otherwise null.</returns>
   </GetTableRow>
-  <!-- Constructor Methods -->
-  <constructor>
-    <summary>Initializes the object.</summary>
-    <param name="tableID">The represented table.</param>
-    <param name="menuID">The table menu.</param>
-  </constructor>
-  <!-- Table Methods -->
-  <GetColumnIndex>
-    <summary>Get cell index with heading text.</summary>
-    <param name="headingText">The heading text.</param>
-    <returns>The cell index.</returns>
-  </GetColumnIndex>
-  <GetCellText>
-    <summary>Get cell text with heading text.</summary>
-    <param name="headingText">The heading text.</param>
-    <param name="rowIndex">
-      The optional rowIndex. Uses the current row index if not supplied.
-    </param>
-    <returns>The cell text.</returns>
-  </GetCellText>
-  <GetRow>
-    <summary>Gets table row by index.</summary>
-    <param name="rowIndex">The row index.</param>
-    <returns>The table row.</returns>
-  </GetRow>
-  <RowCount>
-    <summary>Gets the table row count.</summary>
-    <returns>The table row count.</returns>
-  </RowCount>
   <SelectRow>
     <summary>
       Clears background for previous row and Highlights the current row.
     </summary>
-    <param name="preRowIndex">The previous row index.</param>
-    <param name="rowIndex">The current row index.</param>
-  </SelectRow>
-  <!-- Selected Column Methods -->
-  <GetSelectedTable>
-    <summary>
-      Checks if the supplied element is a table cell and the table
-      has the supplied ID.
-    </summary >
-    <param name="eColumn">The HTML cell element.</param>
+    <param name="eTable">The table element.</param>
     <param name="tableID">The table element ID.</param>
-    <returns>
-      true if a cell in the specified table ID; otherwise false.
-    </returns>
-  </GetSelectedTable>
-  <SelectColumnRow>
-    <summary>
-      Clears background for previous row and Highlights the current row.
-      if the supplied element is a table cell.
-    </summary>
-    <param name="eColumn">The HTML cell element.</param>
-  </SelectColumnRow>
+    <param name="preRowIndex">The previous row index.</param>
+  </SelectRow>
 </items>

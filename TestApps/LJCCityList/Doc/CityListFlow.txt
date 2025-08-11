@@ -24,13 +24,13 @@ LJCCityList.html
         rowIndex = SetCityTable()
           if (CityTable != null)
           {
-            retRowIndex = CityTable.CurrentRowIndex
+            retRowIndex = CityTable.RowIndex
           }
           if (null == CityTable == null)
           {
             CityTable = new LJCTable();
           }
-          retRowIndex = CityTable.CurrentRowIndex
+          retRowIndex = CityTable.RowIndex
           CityTable.ETable = "dataTable";
         CityTable.SelectRow()
         SetCityValues()

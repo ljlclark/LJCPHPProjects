@@ -21,12 +21,9 @@
   $cityList = new LJCCityList();
   $cityList->Run();
 
-  // ***************
-  /// <group name="Entry">Entry Methods</group>
-  //    Run()
-  /// <group name="Response">Entry Methods</group>
-  //    CreateResponse(), 
   /// <summary>Web Service to Create an HTML table from City data.
+  //  Entry: Run()
+  //  Response: CreateResponse(), 
   class LJCCityList
   {
     // ---------------
@@ -34,7 +31,6 @@
 
     /// <summary>Service start method.</summary>
     /// <returns>The service response JSON text.</returns.
-    /// <ParentGroup>Entry</ParentGroup>
     public function Run(): void
     {
       // Parameters are passed from a POST in JSON.
@@ -50,8 +46,7 @@
       $this->Limit = $pageData->Limit;
 
       $this->TableName = City::TableName;
-      $this->SQL = "";
-
+      $this->SQL = null;
       $_SESSION["tableName"] = $this->TableName;
 
       $connectionValues = $this->GetConnectionValues($this->ConfigName);  
@@ -65,7 +60,6 @@
     }  // Run()
 
     // Get connection values for a DataConfig name.
-    // Called from Run()
     private function GetConnectionValues(string $configName)
     {
       $dataConfigs = "DataConfigs.xml";
@@ -79,13 +73,11 @@
 
     /// <summary>Creates the HTML Table.</summary>
     /// <returns>The response JSON text.</returns.
-    /// <ParentGroup>Response</ParentGroup>
     // Called from Run().
     public function CreateResponse()
     {
       $retValue = "";
 
-      $response = $this->SetResponse();
       $result = $this->RetrieveData();
       if ($result != null)
       {
@@ -104,15 +96,16 @@
         $textState->IndentCount = 2;
 
         // Create Key array.
+        $retObject = new stdClass();
         $keyNames = $this->KeyPropertyNames();
         $keyArray = $this->ResultKeyArray($result, $keyNames);
 
-        $response->Keys = $keyArray;
-        $response->SQL = $this->SQL;
-        $response->HTMLTable = $tableBuilder->ResultHTML($result, $textState
+        $retObject->SQL = $this->SQL;
+        $retObject->Keys = $keyArray;
+        $retObject->HTMLTable = $tableBuilder->ResultHTML($result, $textState
           , $propertyNames);
+        $retResponse = json_encode($retObject);
       }
-      $retResponse = json_encode($response);
       return $retResponse;
     } // CreateResponse()
 
@@ -150,7 +143,7 @@
     } // GetTableAttribs()
 
     // Create the LJCHTMLTable object.
-    // Called from: CreateResponse()
+    //private function CreateHTMLTable(?array $propertyNames)
     private function HTMLTableBuilder(?array $propertyNames)
     {
       // Create table object with column property names.
@@ -163,7 +156,7 @@
 
     // Creates the retrieve property names.
     // Called from CreateResponse()
-    private function KeyPropertyNames(): array
+    private function KeyPropertyNames()
     {
       $retKeyNames = [
         City::ColumnCityID,
@@ -172,27 +165,6 @@
       ];
       return $retKeyNames;
     } // KeyPropertyNames()
-
-    // Gets the results key array.
-    // Called from: CreateResponse()
-    private function ResultKeyArray($result, $keyNames)
-    {
-      // Create key values array.
-      $dataManager = $this->CityManager->DataManager;
-      $retKeyArray = $dataManager->CreateResultKeys($result, $keyNames);
-      return $retKeyArray;
-    } // ResultKeyArray()
-
-    // Initializes the response object.
-    // Called from CreateResponse()
-    private function SetResponse()
-    {
-      $retResponse = new stdClass();
-      $retResponse->Keys = [];
-      $retResponse->SQL = "";
-      $retResponse->HTMLTable = "";
-      return $retResponse;
-    } // SetResponse()
 
     // Creates the table property names.
     // Called from: CreateResponse()
@@ -212,32 +184,30 @@
     // ---------------
     // Retrieve Data Methods
 
-    // Create the "Next" filter.
-    // Called from RetrieveData()
-    private function NextFilter($keyData, $backward = false): string
+    // Create DbKeys from keyData object.
+    // Called from RetrieveData(), RetrieveDataReload()
+    private function DbColumnKeys($keyData, $backward = false): LJCDbColumns
     {
-      $retFilter = "where";
-      $retFilter .= "\r\n  (ProvinceID >= {$keyData->ProvinceID}";
-      $filter = "\r\n   and Name > '{$keyData->Name}')";
+      $propertyNames = [ "ProvinceID", "Name"];
+      $retKeys = $this->CityManager->Columns($propertyNames);
+
+      $dbColumn = $retKeys->Retrieve("ProvinceID");
+      $dbColumn->Value = $keyData->ProvinceID;
+      $dbColumn->WhereCompareOperator = ">=";
       if ($backward)
       {
-        $filter = "\r\n   and Name >= '{$keyData->Name}')";
+        $dbColumn->WhereCompareOperator = "<=";
       }
-      $retFilter .= $filter;
-      $retFilter .= "\r\n  or ProvinceID > {$keyData->ProvinceID}";
-      return $retFilter;
-    } // NextFilter()
 
-    // Create the "Previous" filter.
-    // Called from RetrieveData()
-    private function PreviousFilter($beginKeyData): string
-    {
-      $retFilter = "where";
-      $retFilter .= "\r\n  (ProvinceID <= {$beginKeyData->ProvinceID}";
-      $retFilter .= "\r\n   and Name < '{$beginKeyData->Name}')";
-      $retFilter .= "\r\n  or ProvinceID < {$beginKeyData->ProvinceID}";
-      return $retFilter;
-    } // PreviousFilter()
+      $dbColumn = $retKeys->Retrieve("Name");
+      $dbColumn->Value = $keyData->Name;
+      $dbColumn->WhereCompareOperator = ">";
+      if ($backward)
+      {
+        $dbColumn->WhereCompareOperator = "<";
+      }
+      return $retKeys;
+    } // DbColumnKeys()
 
     // Retrieve data result.
     // Called from CreateResponse().
@@ -249,74 +219,88 @@
       switch ($this->Action)
       {
         case "Next":
-          $filter = $this->NextFilter($this->EndKeyData);
+          $keyColumns = $this->DbColumnKeys($this->EndKeyData);
           $this->CityManager->OrderByNames = array("ProvinceID", "Name");
-          $retResult = $this->CityManager->LoadResult(null, filter: $filter);
+          $retResult = $this->CityManager->LoadResult($keyColumns);
           $this->SQL = $this->CityManager->DataManager->SQL;
           break;
 
         case "Previous":
           // Load descending.
-          $filter = $this->PreviousFilter($this->BeginKeyData);
+          $backward = true;
+          $keyColumns = $this->DbColumnKeys($this->BeginKeyData, $backward);
           $this->CityManager->OrderByNames = array("ProvinceID desc"
             , "Name desc");
-          $retResult = $this->CityManager->LoadResult(null, filter: $filter);
+          $retResult = $this->CityManager->LoadResult($keyColumns);
           $this->SQL = $this->CityManager->DataManager->SQL;
 
           // Flip result.
-          $flipResult = [];
-          $count = count($retResult);
-          for ($index = $count - 1; $index >= 0; $index--)
-          {
-            $flipResult[] = $retResult[$index];
-          }
-          $retResult = $flipResult;
+          //$flipResult = [];
+          //$count = count($result);
+          //for ($index = $count - 1; $index >= 0; $index--)
+          //{
+          //  $flipResult[] = $result[$index];
+          //}
+          //$result = $flipResult;
+
+          // Reload ascending from last record.
+          $retResult = $this->RetrieveDataReload($retResult);
           break;
 
         default:
-          $filter = "";
           if ($this->BeginKeyData->ProvinceID != 0)
           {
-            $filter = $this->NextFilter($this->BeginKeyData);
+            $keyColumns = $this->DbColumnKeys($this->BeginKeyData);
           }
           $this->CityManager->OrderByNames = array("ProvinceID", "Name");
-          $retResult = $this->CityManager->LoadResult(null, filter: $filter);
+          $retResult = $this->CityManager->LoadResult($keyColumns);
           $this->SQL = $this->CityManager->DataManager->SQL;
           break;
       }
       return $retResult;
     } // RetrieveData()
 
+    // Reload ascending from last record.
+    // Called from: RetrieveData()
+    private function RetrieveDataReload($result)
+    {
+      // Get the last element of array of named arrays.
+      $keyNames = [
+        City::ColumnProvinceID,
+        City::ColumnName,
+      ];
+      $resultKeyArray = $this->ResultKeyArray($result, $keyNames);
+
+      // Get last loaded record.
+      $keysArray = $resultKeyArray[count($resultKeyArray) - 1];
+      $keyData = new stdClass();
+      $keyData->ProvinceID = $keysArray["ProvinceID"];
+      $keyData->Name = $keysArray["Name"];
+
+      // Create LJCDbColumns 
+      $keyColumns = $this->DbColumnKeys($keyData);
+
+      // Change due to retrieving descending.
+      $keyColumn = $keyColumns->Retrieve("Name");
+      $keyColumn->WhereCompareOperator = ">=";
+
+      $this->CityManager->OrderByNames = array("ProvinceID", "Name");
+      $retResult = $this->CityManager->LoadResult($keyColumns);
+      //$this->SQL = $this->CityManager->DataManager->SQL;
+      return $retResult;
+    } // RetrieveDataReload()
+
     // ---------------
-    // Properties
+    // Other Methods
 
-    /// <summary>The data retrieve action.</summary>
-    /// <remarks>
-    ///   Values: "Next", "Previous", "Top", "Bottom", "First"?, "Last"?
-    /// </remarks>
-    public string $Action;
-
-    /// <summary>The find key values for the first table row data.</summary>
-    /// <remarks> Properties: ProvinceID, Name</remarks>
-    public object $BeginKeyData;
-
-    /// <summary>The CityManager object.</summary>
-    public CityManager $CityManager;
-
-    /// <summary>The data config name.</summary>
-    public string $ConfigName;
-
-    /// <summary>The find key values for the last table row data.</summary>
-    /// <remarks> Properties: ProvinceID, Name</remarks>
-    public object $EndKeyData;
-
-    /// <summary>The number of rows per page.</summary>
-    public int $Limit;
-
-    /// <summary>The SQL statement.</summary>
-    public string $SQL;
-
-    /// <summary>The db table name.</summary>
-    public string $TableName;
+    // Gets the results key array.
+    // Called from: CreateResponse(), RetrieveDataReload()
+    private function ResultKeyArray($result, $keyNames)
+    {
+      // Create key values array.
+      $dataManager = $this->CityManager->DataManager;
+      $retKeyArray = $dataManager->CreateResultKeys($result, $keyNames);
+      return $retKeyArray;
+    } // ResultKeyArray()
   }
 ?>
