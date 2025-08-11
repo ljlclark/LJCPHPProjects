@@ -1,0 +1,70 @@
+﻿<!DOCTYPE html>
+<!-- Copyright(c) Lester J. Cla a Contributors. -->
+<!-- Licensed under the MIT License. -->
+<!-- CityDetail.php -->
+
+<!-- The CityDetail HTML head. -->
+<!-- Used in CityDetail.php to generate the CityDetail page. -->
+<html lang='en' xmlns='http://www.w3.org/1999/xhtml'>
+<head>
+  <meta charset='utf-8' />
+  <meta name='author' content='Les Clark' />
+  <meta name='viewport' content='width=device-width' initial-scale=1 />
+  <link rel='stylesheet' type='text/css' href='../../Table.css' />
+  <script src="../../../Common/Common.js"></script>
+  <script src="CityDetailEvents.js"></script>
+  <script>
+    function SetValue(elementID, value)
+    {
+      Common.SetValue(elementID, value);
+    };
+  </script>
+</head>
+<body>
+  <div class="page">
+    <h3 id="pageTitle">City Detail</h3>
+    <form id="cityForm" action="../CityData.php" method="post"
+          autocomplete="off"
+          class="form"
+          style="margin: auto; width: 304px">
+      <ul>
+        <li>
+          <label for="cityID">City ID</label>
+          <input type="text" id="cityID" name="cityID" />
+        </li>
+        <li>
+          <label for="provinceID">Province ID</label>
+          <input type="text" id="provinceID" name="provinceID" />
+        </li>
+        <li>
+          <label for="name">Name</label>
+          <input type="text" id="name" name="name" />
+          <span id="nameError">*</span>
+        </li>
+        <li>
+          <label for="description">Description</label>
+          <input type="text" id="description" name="description" />
+        </li>
+        <li>
+          <label for="cityFlag">City Flag</label>
+          <input type="text" id="cityFlag" name="cityFlag" />
+        </li>
+        <li>
+          <label for="zipCode">ZipCode</label>
+          <input type="text" id="zipCode" name="zipCode" />
+        </li>
+        <li>
+          <label for="district">District</label>
+          <input type="text" id="district" name="district" />
+        </li>
+        <li>
+          <label for="commit">-</label>
+          <input type="button" id="commit" value="Update" />
+          <input type="button" id="cancel" value="Cancel" />
+        </li>
+      </ul>
+      <input type="hidden" id="listAction" name="listAction" tabindex="-1" autocomplete="off" />
+    </form>
+    <!-- Testing -->
+    <p id="debug">
+    </p>

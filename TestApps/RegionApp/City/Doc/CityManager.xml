@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright (c) Lester J. Clark 2022 - All Rights Reserved -->
+<items>
+	<!-- Constructors -->
+	<construct>
+		<summary>The Constructor function.</summary>
+		<param name="$connectionValues">The DB Connection values.</param>
+		<param name="">The table name.</param>
+	</construct>
+
+	<!-- Public Methods -->
+	<Delete>
+		<summary>Deletes the records for the provided values.</summary>
+		<param name="$keyColumns">The where clause key columns.</param>
+		<returns>The count of affected records.</returns>
+	</Delete>
+	<Load>
+		<summary>Loads the records for the provided values.</summary>
+		<param name="$keyColumns">The where clause key columns.</param>
+		<param name="$propertyNames">The included property names.</param>
+		<returns>An array of City records.</returns>
+	</Load>
+	<Retrieve>
+		<summary>Retrieves the record for the provided values.</summary>
+		<param name="$keyColumns">The where clause key columns.</param>
+		<param name="$propertyNames">The included property names.</param>
+		<returns>A City record.</returns>
+	</Retrieve>
+	<Update>
+		<summary>Updates the records for the provided values.</summary>
+		<param name="$keyColumns">The where clause key columns.</param>
+		<param name="$dataColumns">The data column objects.</param>
+		<returns>The count of affected records.</returns>
+	</Update>
+</items>

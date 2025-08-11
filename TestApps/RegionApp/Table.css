@@ -1,0 +1,90 @@
+/* Copyright(c) Lester J. Clark and Contributors.*/
+/* Licensed under the MIT License.*/
+/* Table.css */
+
+/* Class Selectors */
+
+.form {
+  background-color: aliceblue;
+  border: 1px solid black;
+  border-radius: 8px;
+  border-spacing: 6px;
+  text-align: initial;
+}
+
+.page {
+  margin: auto;
+  text-align: center;
+  width: 90%;
+}
+
+.titleHighlight {
+  background-color: lightsteelblue;
+}
+
+/* Element Selectors */
+
+div.divMenu {
+  position: absolute;
+  width: 130px;
+  padding: 5px 5px 5px 8px;
+  font-family: verdana;
+  font-size: 80%;
+  color: black;
+  background-color: white;
+  border-top: 1px #c8e8ff solid;
+  border-left: 1px #c8e8ff solid;
+  border-right: 1px #4480b8 solid;
+  border-bottom: 1px #4480b8 solid;
+  cursor: pointer;
+  text-align: initial;
+  visibility: hidden;
+}
+
+table {
+  background-color: aliceblue;
+  border: 1px solid lightsteelblue;
+  border-collapse: collapse;
+  text-align: initial;
+  width: 60%;
+}
+
+td {
+  border: 1px solid lightsteelblue;
+  padding-left: 4px;
+}
+
+th {
+  border: 1px solid lightsteelblue;
+  background-color: lightsteelblue;
+}
+
+tr:hover {
+  background-color: lightgray;
+}
+
+/* ID Selectors */
+
+#cityForm ul {
+  list-style: none;
+  padding: 0;
+}
+
+#cityForm li {
+  margin-left: 6px;
+  margin-top: 4px;
+}
+
+#cityForm label {
+  float: left;
+  width: 90px;
+  margin-right: 15px;
+}
+
+#menu div:hover {
+  background-color: lightgray;
+}
+
+#pageTitle {
+  background: lightsteelblue;
+}

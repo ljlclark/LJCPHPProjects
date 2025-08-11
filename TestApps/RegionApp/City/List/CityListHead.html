@@ -1,0 +1,33 @@
+﻿<!DOCTYPE html>
+<!-- Copyright(c) Lester J. Clark and Contributors. -->
+<!-- Licensed under the MIT License. -->
+<!-- CityListHead.html -->
+
+<!--  The CityList HTML head. -->
+<!-- Used in CityList.php to generate the CityList page. -->
+<html lang='en' xmlns='http://www.w3.org/1999/xhtml'>
+<head>
+  <meta charset='utf-8' />
+  <meta name='author' content='Les Clark' />
+  <meta name='viewport' content='width=device-width' initial-scale=1 />
+  <link rel='stylesheet' type='text/css' href='../../Table.css' />
+  <script src="../../../Common/Common.js"></script>
+  <script src="CityListEvents.js"></script>
+</head>
+<body>
+  <div class="page">
+    <h3 id="pageTitle">City Item List</h3>
+    <form id="hiddenForm" action="../Detail/CityDetail.php" method="post">
+      <input type="hidden" id="cityRowIndex" name="cityRowIndex" tabindex="-1" autocomplete="off" />
+      <input type="hidden" id="cityID" name="cityID" tabindex="-1" autocomplete="off" />
+      <input type="hidden" id="listAction" name="listAction" tabindex="-1" autocomplete="off" />
+      <input type="hidden" id="verify" name="verify" tabindex="-1" autocomplete="off" />
+    </form>
+    <div id="menu" class="divMenu" style="width:100px">
+      <div class="titleHighlight">City Menu</div>
+      <div><hr /></div>
+      <div id="new">New</div>
+      <div id="edit">Edit</div>
+      <div><hr /></div>
+      <div id="delete">Delete</div>
+    </div>

@@ -1,0 +1,89 @@
+The Region WebApp
+
+--- CityList.php ---
+Entry Page: /RegionApp/City/List/CityList.php
+Includes /RegionApp/RegionConfigLib.php
+Includes /RegionApp/City/List/CityListTable.php
+  Starts a session
+Output: CityListHead.html
+
+--- RegionConfigLib.php ---
+Calls RegionConfig::GetConnectionValues().
+  Sets session values:
+    dbServer = "localhost"
+    dbName = "TestData"
+    userID = "root"
+    password = "Unifies1"
+    tableName = "City"
+  --- LJCDBAccessLib.php ---
+  $connectionValues = new LJCConnectionValues(dbServer, dbName, userID
+    , password)
+  object.
+  returns $connectionValues.
+
+--- CityListTable.php ---
+$cityTable = new CityListTable(connectionValues, tableName)
+$cityTable->CreateHTMLTable()
+  Output: City Table
+Output: CityListTail.html
+
+--- CityListEvents.js ---
+DocumentClick()
+  If clicked on cityTable row then
+    Call SelectRow()
+      If event source is id:cityTable then
+        Get clicked row.
+        Set var:CityRowIndex to clicked row index.
+        Clear highlight from previous row hiddenForm.cityRowIndex.
+        Highlight clicked row.
+        Call SetRowFormValues()
+          If event source is id:cityTable then
+            Set hiddenForm.cityRowIndex = CityRowIndex;
+            Set hiddenForm.cityID = ID (Value of first column in row).
+          
+DeleteClick()
+  Calls DoAction("Delete")
+EditClick()
+  Calls DoAction("Update")
+NewClick()
+  Calls DoAction("Add")
+
+  DoAction(action);
+    hiddenForm.cityID is not set so no selected row.
+      Skip submit for "Delete" and "Update".
+    Set input text hiddenForm.listAction.value.
+    Submit(hiddenForm) to CityDetail.php
+
+--- CityDetail.php ---
+Output: CityDetailHead.html
+Calls RegionConfig::GetConnectionValues().
+  Starts a session.
+CityManager = CityManager(connectionValues, tableName)
+cityID = Post("cityID")
+listAction = Post("listAction")
+commitType = listAction
+cityData = Retrieve(cityID)
+Call SetFormValues(cityData, commitType)
+  Output: Javascript to set CityDetail form values from cityData.
+Output: CityDetailTail.html
+
+--- CityDetailEvents.js ---
+CancelClick()
+  Return to CityList.php.
+CommitClick()
+  Submit(cityForm) to CityData.php
+
+--- CityData.php ---
+Calls RegionConfig::GetConnectionValues().
+  Starts a session.
+CityManager = new CityDAL.CityManager(connectionValues, tableName)
+cityObject = GetPostValues()
+  Get form values posted from cityForm.
+    ToDo: Correct cityFlag.
+listAction = Post("listAction")
+  Call Add(city)
+    CityManager.Add()
+  or Delete(id)
+    CityManager.Delete()
+  or Update(city)
+    CityManager.Update()
