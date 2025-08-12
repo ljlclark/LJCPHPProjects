@@ -17,7 +17,9 @@
 <body>
   <div class="page">
     <h3 id="pageTitle">Items</h3>
-    <div id="dataDiv"></div>
+    <div id="cityTableDiv">
+      <table id="cityTableItem"></table>
+    </div>
     <!-- Data for Detail form. -->
     <!-- id is for javascript and label "for", name is for post values. -->
     <form id="hiddenForm" action="LJCDataTableLib.php" method="post">
@@ -43,6 +45,7 @@
   <script>
     let tableEvents = new LJCCityListEvents();
     tableEvents.AddEvents();
+    tableEvents.CityPageData.Limit = 12;
     tableEvents.Refresh();
   </script>
 </body>
