@@ -37,7 +37,7 @@ class LJCTableData
     let retValue = null;
 
     // Process Table
-    let tableRow = LJCTable.GetTableRow(eColumn);
+    let tableRow = LJCTableData.GetTableRow(eColumn);
     if (tableRow != null)
     {
       // table/tbody/tr
@@ -311,7 +311,7 @@ class LJCTableData
   {
     if (this.ETable != null)
     {
-      let eTableRow = LJCTable.GetTableRow(eColumn);
+      let eTableRow = LJCTableData.GetTableRow(eColumn);
       if (eTableRow != null)
       {
         let prevIndex = this.CurrentRowIndex;

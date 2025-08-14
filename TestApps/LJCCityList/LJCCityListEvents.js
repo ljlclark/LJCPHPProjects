@@ -50,7 +50,7 @@ class LJCCityListEvents
       Limit: 10,
     };
 
-    this.UseNew = false;
+    this.UseNew = true;
 
     if (this.UseNew)
     {
