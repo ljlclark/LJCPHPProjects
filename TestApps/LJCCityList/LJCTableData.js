@@ -1,7 +1,7 @@
 "use strict";
 // Copyright(c) Lester J. Clark and Contributors.
 // Licensed under the MIT License.
-// LJCTable.js
+// LJCTableData.js
 // <script src="../../Common/Common.js"></script>
 //   TagElements()
 
@@ -12,8 +12,21 @@
 //   Table Methods: GetCellText(), GetColumnIndex(), GetRow()
 //     MoveNext(), MovePrevious(), RowCount(), SelectRow()
 //   Selected Column: IsSelectedTable(), SelectColumnRow()
-class LJCTable
+class LJCTableData
 {
+  // ---------------
+  // Properties
+
+  BeginningOfData;
+  CurrentRowIndex;
+  EMenu;
+  EndOfData;
+  ETable;
+  Keys;
+  RowBackColor;
+  RowSelectedColor;
+  TableID;
+
   // ---------------
   // Static Methods
 
@@ -54,7 +67,7 @@ class LJCTable
   /// <include path='items/constructor/*' file='Doc/LJCTable.xml'/>
   constructor(tableID, menuID)
   {
-    this.BackColor = "";
+    this.RowBackColor = "";
     this.BeginningOfData = true;
     this.CurrentRowIndex = -1;
     this.EndOfData = false;
@@ -82,7 +95,7 @@ class LJCTable
       }
     }
 
-    this.HighlightColor = "lightsteelblue";
+    this.RowSelectedColor = "lightsteelblue";
     this.Keys = [];
   }
 
@@ -258,14 +271,14 @@ class LJCTable
       let ePrevRow = this.GetRow(prevRowIndex);
       if (ePrevRow != null)
       {
-        ePrevRow.style.backgroundColor = this.BackColor;
+        ePrevRow.style.backgroundColor = this.RowBackColor;
       }
 
       let eTableRow = this.GetRow(rowIndex);
       if (eTableRow != null)
       {
         this.CurrentRowIndex = rowIndex;
-        eTableRow.style.backgroundColor = this.HighlightColor;
+        eTableRow.style.backgroundColor = this.RowSelectedColor;
       }
     }
   }
