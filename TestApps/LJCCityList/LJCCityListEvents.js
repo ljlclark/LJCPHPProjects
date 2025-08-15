@@ -38,7 +38,6 @@ class LJCCityListEvents
   /// <summary>Initializes the object instance.</summary>
   constructor()
   {
-    //this.CityDivID = "cityTableDiv";
     this.CityTableID = "cityTableItem";
 
     // Data for LJCCityList.php
@@ -54,7 +53,7 @@ class LJCCityListEvents
 
     if (this.UseNew)
     {
-      this.LJCCityTable = new LJCCityTable(this.CityTableID, "menu");
+      this.LJCCityTable = new LJCCityTable(this, "menu");
     }
     this.CityTableData = new LJCTableData(this.CityTableID, "menu");
     this.FocusTableData = null;

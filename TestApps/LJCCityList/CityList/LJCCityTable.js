@@ -211,17 +211,17 @@ class LJCCityTable
         // Updates TableData with new table element and keys.
         let rowIndex = saveThis.UpdateTableData(saveThis, response.Keys);
 
-        let TableData = saveThis.TableData;
+        let tableData = saveThis.TableData;
         if (saveThis.UpdateLimitFlags())
         {
           // Get row index if "NextPage" or "PrevPage";
-          rowIndex = TableData.CurrentRowIndex;
+          rowIndex = tableData.CurrentRowIndex;
         }
-        TableData.SelectRow(rowIndex, rowIndex);
+        tableData.SelectRow(rowIndex, rowIndex);
 
         // Set hidden form primary keys and CityPageData.
         saveThis.UpdatePageData()
-        this.ListEvents.FocusTableData = TableData;
+        saveThis.ListEvents.FocusTableData = tableData;
       }
     };
     xhr.send(JSON.stringify(this.PageData));
