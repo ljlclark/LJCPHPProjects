@@ -18,9 +18,9 @@ class LJCCityTable
   // ---------------
   // Properties
 
-  FocusTableData;
   IsNextPage;
   IsPrevPage;
+  ListEvents;
   MenuID;
   PageData;
   TableID;
@@ -30,14 +30,13 @@ class LJCCityTable
   // The Constructor methods.
 
   /// <summary>Initializes the object instance.</summary>
-  constructor(tableID, menuID)
+  constructor(listEvents, menuID)
   {
-    this.TableID = tableID;
+    this.ListEvents = listEvents;
     this.MenuID = menuID;
 
     this.IsNextPage = false;
     this.IsPrevPage = false;
-    this.TableData = new LJCTableData(this.TableID, this.MenuID);
 
     // Data for LJCCityList.php
     this.PageData = {
@@ -48,7 +47,8 @@ class LJCCityTable
       Limit: 10,
     };
 
-    this.FocusTableData = null;
+    this.TableID = listEvents.CityTableID;
+    this.TableData = new LJCTableData(this.TableID, this.MenuID);
     this.AddEvents();
   }
 
@@ -86,13 +86,13 @@ class LJCCityTable
         this.TableData.SelectColumnRow(eCell);
         this.UpdatePageData();
         // *** Add ***
-        this.FocusTableData = this.TableData;
+        this.ListEvents.FocusTableData = this.TableData;
       }
     }
   }
 
-  /// <summary>Table "keydown" handler method.</summary>
-  /// <param name="event">The Target event.</param>
+  // Table "keydown" handler method.
+  // Event does not fire because table does not receive focus?
   TableKeyDown(event)
   {
     let ESCAPE_KEY = 27;
@@ -221,7 +221,7 @@ class LJCCityTable
 
         // Set hidden form primary keys and CityPageData.
         saveThis.UpdatePageData()
-        //saveThis.FocusTableData = TableData;
+        this.ListEvents.FocusTableData = TableData;
       }
     };
     xhr.send(JSON.stringify(this.PageData));

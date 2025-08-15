@@ -411,8 +411,6 @@ class LJCCityListEvents
       let cityTable = this.LJCCityTable;
       cityTable.PageData.Action = "Refresh";
       cityTable.Page();
-      // *** Add *** ?
-      this.FocusTableData = cityTable.tableData;
     }
     else
     {
