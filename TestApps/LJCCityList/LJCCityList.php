@@ -91,10 +91,7 @@
       $result = $this->RetrieveData();
       if ($result != null)
       {
-        // Root TextState object.
-        $textState = new LJCTextState();
-
-        // Create table object with column property names.
+        // Create table builder with column property names.
         $propertyNames = $this->TablePropertyNames();
         $tableBuilder = $this->HTMLTableBuilder($propertyNames);
 
@@ -102,15 +99,16 @@
         $tableBuilder->TableAttribs = $this->GetTableAttribs();
         $tableBuilder->HeadingAttribs = $this->GetHeadingAttribs();
 
-        // Create HTML table with data collection.
-        $textState->IndentCount = 2;
-
         // Create Key array.
         $keyNames = $this->KeyPropertyNames();
         $keyArray = $this->ResultKeyArray($result, $keyNames);
 
         $response->Keys = $keyArray;
         $response->SQL = $this->SQL;
+
+        // Create HTML table with data collection.
+        $textState = new LJCTextState();
+        $textState->IndentCount = 2;
         $response->HTMLTable = $tableBuilder->ResultHTML($result, $textState
           , $propertyNames);
       }
@@ -243,6 +241,18 @@
       return $retFilter;
     } // PreviousFilter()
 
+    // Create the "Previous" filter.
+    // Called from RetrieveData()
+    private function RefreshFilter($keyData)
+    {
+      $retFilter = "where";
+      $retFilter .= "\r\n  (ProvinceID >= {$keyData->ProvinceID}";
+      $filter = "\r\n   and Name >= '{$keyData->Name}')";
+      $retFilter .= $filter;
+      $retFilter .= "\r\n  or ProvinceID > {$keyData->ProvinceID}";
+      return $retFilter;
+    } // RefreshFilter()
+
     // Retrieve data result.
     // Called from CreateResponse().
     private function RetrieveData()
@@ -281,7 +291,7 @@
           $filter = "";
           if ($this->BeginKeyData->ProvinceID != 0)
           {
-            $filter = $this->NextFilter($this->BeginKeyData);
+            $filter = $this->RefreshFilter($this->BeginKeyData);
           }
           $this->CityManager->OrderByNames = array("ProvinceID", "Name");
           $retResult = $this->CityManager->LoadResult(null, filter: $filter);

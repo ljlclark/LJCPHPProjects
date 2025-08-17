@@ -232,7 +232,7 @@ class LJCTableData
 
       if (!retPrevPage)
       {
-        // Not at first data row so increment row.
+        // Not at first data row so decrement row.
         if (this.CurrentRowIndex > 1)
         {
           let prevRowIndex = this.CurrentRowIndex;

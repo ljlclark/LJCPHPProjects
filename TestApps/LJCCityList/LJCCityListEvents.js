@@ -24,12 +24,12 @@ class LJCCityListEvents
   // Properties
 
   CityPageData;
+  CityTable;
   CityTableData;
   CityTableID;
   FocusTableData;
   IsNextPage;
   IsPrevPage;
-  LJCCityTable;
   UseNew;
 
   // ---------------
@@ -50,8 +50,8 @@ class LJCCityListEvents
     };
 
     // CityTable events.
-    this.LJCCityTable = new LJCCityTable(this, "menu");
-    this.LJCCityTable.PageData.Limit = 15;
+    this.CityTable = new LJCCityTable(this, "menu");
+    this.CityTable.PageData.Limit = 20;
 
     // CityTable data.
     this.CityTableData = new LJCTableData(this.CityTableID, "menu");
@@ -76,6 +76,8 @@ class LJCCityListEvents
     this.AddEvent("delete", "click", this.Delete);
     this.AddEvent("edit", "click", this.Edit);
     this.AddEvent("new", "click", this.New);
+    this.AddEvent("next", "click", this.Next);
+    this.AddEvent("previous", "click", this.Previous);
     this.AddEvent("refresh", "click", this.Refresh);
   }
 
@@ -105,15 +107,11 @@ class LJCCityListEvents
       if (tableData != null)
       {
         event.preventDefault();
+
+        let tableEvents = this.SelectedTableEvents(eCell);
+        tableEvents.UpdatePageData();
+
         tableData.SelectColumnRow(eCell);
-        // *** Begin ***
-        switch (tableData.TableID)
-        {
-          case this.CityTableID:
-            this.LJCCityTable.UpdatePageData();
-            break;
-        }
-        // *** End   ***
         this.FocusTableData = tableData;
 
         let location = Common.MouseLocation(event);
@@ -138,19 +136,10 @@ class LJCCityListEvents
 
     // Table cannot receive focus so set FocusTableData in
     // DocumentClick(), DocumentContextMenu() and CityPage(). 
-    if (this.FocusTableData != null)
+    let ljcTable = this.FocusTable();
+    if (ljcTable != null)
     {
       let tableData = this.FocusTableData;
-      // *** Begin ***
-      let ljcTable = null;
-      switch (tableData.TableID)
-      {
-        case this.CityTableID:
-          ljcTable = this.LJCCityTable;
-          break;
-      }
-      // *** End   ***
-
       switch (event.keyCode)
       {
         case DOWN_ARROW:
@@ -203,12 +192,50 @@ class LJCCityListEvents
     this.SubmitDetail("Add");
   }
 
+  /// <summary>Display the next page.</summary>
+  Next()
+  {
+    let ljcTable = this.FocusTable();
+    if (ljcTable)
+    {
+      ljcTable.NextPage();
+    }
+  }
+
+  /// <summary>Display the previous page.</summary>
+  Previous()
+  {
+    let ljcTable = this.FocusTable();
+    if (ljcTable)
+    {
+      ljcTable.PrevPage();
+    }
+  }
+
   /// <summary>Refreshes the current page.</summary>
   Refresh()
   {
-    let cityTable = this.LJCCityTable;
+    let cityTable = this.CityTable;
     cityTable.PageData.Action = "Refresh";
     cityTable.Page();
+  }
+
+  /// <summary>Retrieves the focus table events object.</summary>
+  FocusTable()
+  {
+    let retTable = null;
+
+    if (this.FocusTableData != null)
+    {
+      let tableData = this.FocusTableData;
+      switch (tableData.TableID)
+      {
+        case this.CityTableID:
+          retTable = this.CityTable;
+          break;
+      }
+    }
+    return retTable;
   }
 
   /// <summary>Submit the hidden form listAction to CityDetail.php.</summary>
@@ -245,6 +272,24 @@ class LJCCityListEvents
 
   // ---------------
   // Table Column Methods
+
+  /// <summary>Retrieves the selected table events object.</summary>
+  SelectedTableEvents(eColumn)
+  {
+    let retTable = null;
+
+    let eTable = LJCTableData.GetTable(eColumn);
+    if (eTable != null)
+    {
+      switch (eTable.id)
+      {
+        case this.CityTableID:
+          retTable = this.CityTable;
+          break;
+      }
+    }
+    return retTable;
+  }
 
   /// <summary>Gets the selected table data object.</summary>
   /// <param name="eColumn">The table column element.</param>

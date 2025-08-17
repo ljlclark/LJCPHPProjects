@@ -177,7 +177,6 @@ class LJCCityTable
         // Create new table element and add new "click" event.
         let eTable = Common.Element(saveThis.TableID);
         eTable.outerHTML = response.HTMLTable;
-        // *** Next Statement *** Change
         saveThis.AddEvent(saveThis.TableID, "click", saveThis.TableClick);
 
         // Updates TableData with new table element and keys.
@@ -193,6 +192,7 @@ class LJCCityTable
 
         // Set hidden form primary keys and CityPageData.
         saveThis.UpdatePageData()
+
         // *** Next Statement *** Add
         saveThis.ListEvents.CityTableData = tableData;
         saveThis.ListEvents.FocusTableData = tableData;
