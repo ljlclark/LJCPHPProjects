@@ -54,8 +54,11 @@ class LJCCityTable
 
   AddEvents()
   {
+    // Document Event Handlers.
+    document.addEventListener("click", this.DocumentClick.bind(this));
+
+    // Table Event Handlers.
     this.AddEvent(this.TableID, "click", this.TableClick);
-    //this.AddEvent(this.TableID, "keydown", this.TableKeyDown);
   }
 
   // Adds an event handler.
@@ -69,13 +72,19 @@ class LJCCityTable
     }
   }
 
+  // Document "click" handler method.
+  DocumentClick()
+  {
+    Common.Visibility(this.MenuID, "hidden");
+  }
+
   // ---------------
   // Event Handlers
 
   // Table "click" handler method.
   TableClick(event)
   {
-    Common.Visibility("menu", "hidden");
+    Common.Visibility(this.MenuID, "hidden");
 
     // Handle table row click.
     if ("TD" == event.target.tagName)
@@ -85,47 +94,8 @@ class LJCCityTable
       {
         this.TableData.SelectColumnRow(eCell);
         this.UpdatePageData();
-        // *** Add ***
         this.ListEvents.FocusTableData = this.TableData;
       }
-    }
-  }
-
-  // Table "keydown" handler method.
-  // Event does not fire because table does not receive focus?
-  TableKeyDown(event)
-  {
-    let ESCAPE_KEY = 27;
-    let UP_ARROW = 38;
-    let DOWN_ARROW = 40;
-
-    switch (event.keyCode)
-    {
-      case DOWN_ARROW:
-        if (this.TableData != null)
-        {
-          // False if at end of page.
-          if (this.TableData.MoveNext())
-          {
-            this.NextPage();
-          }
-        }
-        break;
-
-      case ESCAPE_KEY:
-        Common.Visibility("menu", "hidden");
-        break;
-
-      case UP_ARROW:
-        if (this.TableData != null)
-        {
-          // False if at beginning of page.
-          if (this.TableData.MovePrevious())
-          {
-            this.PrevPage();
-          }
-        }
-        break;
     }
   }
 
@@ -176,7 +146,7 @@ class LJCCityTable
   // Called from DocumentKeyDown().
   PrevPage()
   {
-    if (!this.LJCHelper.BeginningOfData)
+    if (!this.TableData.BeginningOfData)
     {
       this.IsPrevPage = true;
       this.PageData.Action = "Previous";
@@ -198,14 +168,16 @@ class LJCCityTable
     {
       // Get the AJAX response.
       let response = JSON.parse(this.responseText);
+      // *****
       //alert(`responseSQL: ${response.SQL}`);
 
       // Check if there is more data.
       if (saveThis.HasData(response.HTMLTable))
       {
-        // Create new table element.
+        // Create new table element and add new "click" event.
         let eTable = Common.Element(saveThis.TableID);
         eTable.outerHTML = response.HTMLTable;
+        // *** Next Statement *** Change
         saveThis.AddEvent(saveThis.TableID, "click", saveThis.TableClick);
 
         // Updates TableData with new table element and keys.
@@ -221,6 +193,8 @@ class LJCCityTable
 
         // Set hidden form primary keys and CityPageData.
         saveThis.UpdatePageData()
+        // *** Next Statement *** Add
+        saveThis.ListEvents.CityTableData = tableData;
         saveThis.ListEvents.FocusTableData = tableData;
       }
     };
@@ -314,15 +288,15 @@ class LJCCityTable
   {
     let retRowIndex = -1;
 
-    let TableData = saveThis.TableData;
+    let tableData = saveThis.TableData;
 
     // Return existing row index.
-    retRowIndex = TableData.CurrentRowIndex;
+    retRowIndex = tableData.CurrentRowIndex;
 
     // Reset table to new table element.
-    TableData.ETable = Common.Element(this.TableID);
+    tableData.ETable = Common.Element(this.TableID);
 
-    TableData.Keys = keys;
+    tableData.Keys = keys;
     return retRowIndex;
   }
 }
