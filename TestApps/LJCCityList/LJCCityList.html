@@ -12,19 +12,66 @@
   <link href='Table.css' rel='stylesheet' />
   <script src="../../Common/Common.js"></script>
   <script src="LJCCityListEvents.js"></script>
-  <script src="CityList/LJCCityTable.js"></script>
   <script src="LJCTableData.js"></script>
+  <script src="CityList/LJCCityTableEvents.js"></script>
 </head>
 <body>
   <div class="page">
     <h3 id="pageTitle">Items</h3>
     <table id="cityTableItem"></table>
+    <dialog id="cityDialog" class="dialog">
+      <form id="cityForm" action="../CityData.php" method="post"
+        autocomplete="off"
+        class="form"
+        style="margin: auto; width: 304px">
+        <ul>
+          <li>
+            <label for="cityID">City ID</label>
+            <input type="text" id="cityID" name="cityID" />
+          </li>
+          <li>
+            <label for="provinceID">Province ID</label>
+            <input type="text" id="provinceID" name="provinceID" />
+          </li>
+          <li>
+            <label for="name">Name</label>
+            <input type="text" id="name" name="name" />
+            <span id="nameError">*</span>
+          </li>
+          <li>
+            <label for="description">Description</label>
+            <input type="text" id="description" name="description" />
+          </li>
+          <li>
+            <label for="cityFlag">City Flag</label>
+            <input type="text" id="cityFlag" name="cityFlag" />
+          </li>
+          <li>
+            <label for="zipCode">ZipCode</label>
+            <input type="text" id="zipCode" name="zipCode" />
+          </li>
+          <li>
+            <label for="district">District</label>
+            <input type="text" id="district" name="district" />
+          </li>
+          <li>
+            <label for="commit">-</label>
+            <input type="button" id="commit" value="Update" />
+            <input type="button" id="cancel" value="Cancel" />
+          </li>
+        </ul>
+        <input type="hidden" id="listAction" name="listAction" tabindex="-1" autocomplete="off" />
+      </form>
+    </dialog>
+
     <!-- Data for Detail form. -->
     <!-- id is for javascript and label "for", name is for post values. -->
     <form id="hiddenForm" action="LJCDataTableLib.php" method="post">
       <input type="hidden" id="primaryKeys" name="primaryKeys"
              tabindex="-1" autocomplete="off" />
     </form>
+
+    <!-- City Table Menu -->
     <div id="menu" class="divMenu" style="width:100px">
       <div class="titleHighlight">Menu</div>
       <div><hr /></div>

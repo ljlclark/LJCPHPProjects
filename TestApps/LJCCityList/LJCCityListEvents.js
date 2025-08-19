@@ -24,7 +24,7 @@ class LJCCityListEvents
   // Properties
 
   CityPageData;
-  CityTable;
+  CityEvents;
   CityTableData;
   CityTableID;
   FocusTableData;
@@ -50,8 +50,8 @@ class LJCCityListEvents
     };
 
     // CityTable events.
-    this.CityTable = new LJCCityTable(this, "menu");
-    this.CityTable.PageData.Limit = 20;
+    this.CityEvents = new LJCCityTableEvents(this, "menu");
+    this.CityEvents.PageData.Limit = 20;
 
     // CityTable data.
     this.CityTableData = new LJCTableData(this.CityTableID, "menu");
@@ -182,6 +182,7 @@ class LJCCityListEvents
   Edit()
   {
     this.SubmitDetail("Update");
+    //cityDialog.showModal();
   }
 
   /// <summary>
@@ -215,9 +216,9 @@ class LJCCityListEvents
   /// <summary>Refreshes the current page.</summary>
   Refresh()
   {
-    let cityTable = this.CityTable;
-    cityTable.PageData.Action = "Refresh";
-    cityTable.Page();
+    let cityEvents = this.CityEvents;
+    cityEvents.PageData.Action = "Refresh";
+    cityEvents.Page();
   }
 
   /// <summary>Retrieves the focus table events object.</summary>
@@ -231,7 +232,7 @@ class LJCCityListEvents
       switch (tableData.TableID)
       {
         case this.CityTableID:
-          retTable = this.CityTable;
+          retTable = this.CityEvents;
           break;
       }
     }
@@ -256,7 +257,7 @@ class LJCCityListEvents
 
     if (success)
     {
-      // Set hidden form ProgramAction.
+      // Set hidden form listAction.
       let eListAction = Common.Element("listAction");
       if (eListAction != null)
       {
@@ -284,7 +285,7 @@ class LJCCityListEvents
       switch (eTable.id)
       {
         case this.CityTableID:
-          retTable = this.CityTable;
+          retTable = this.CityEvents;
           break;
       }
     }

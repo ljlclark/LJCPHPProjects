@@ -185,10 +185,10 @@
 
       $this->DataManager->SQL = "";
       $this->DataManager->OrderByNames = $this->OrderByNames;
-      if ($this->Limit > 0)
-      {
-        $this->DataManager->Limit = $this->Limit;
-      }
+      //if ($this->Limit > 0)
+      //{
+      //  $this->DataManager->Limit = $this->Limit;
+      //}
 
       $rows = $this->DataManager->Load($keyColumns, $propertyNames
         , filter: $filter);
