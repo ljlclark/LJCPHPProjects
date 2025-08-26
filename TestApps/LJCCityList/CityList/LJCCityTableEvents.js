@@ -47,6 +47,7 @@ class LJCCityTableEvents
     this.AddEvents();
   }
 
+  /// <summary>Adds the HTML event listeners.</summary>
   AddEvents()
   {
     // Document Event Handlers.
@@ -56,16 +57,17 @@ class LJCCityTableEvents
     Common.AddEvent(this.TableID, "click", this.TableClick, this);
   }
 
-  // Document "click" handler method.
+  // ---------------
+  // Event Handlers
+
+  /// <summary>The Document "click" handler method.</summary>
   DocumentClick()
   {
     Common.Visibility(this.MenuID, "hidden");
   }
 
-  // ---------------
-  // Event Handlers
-
-  // Table "click" handler method.
+  /// <summary>The Table "click" handler method.</summary>
+  /// <param name="event">The Target event.</param>
   TableClick(event)
   {
     Common.Visibility(this.MenuID, "hidden");
@@ -84,16 +86,17 @@ class LJCCityTableEvents
   }
 
   // ---------------
-  // Page Event Handlers
+  // Page Methods
 
-  // If no data returned: Clears the Next and Previous settings and keeps the
-  // CurrentRowIndex from moving.
-  HasData(htmlTable)
+  // Checks if the provided table text exists.
+  /// <include path='items/HasData/*' file='Doc/LJCCityTableEvents.xml'/>
+  // Called from Page().
+  HasData(tableText)
   {
     let retValue = true;
 
     // There is no data.
-    if (!Common.HasText(htmlTable))
+    if (!Common.HasText(tableText))
     {
       retValue = false;
       if (this.IsNextPage)
@@ -112,9 +115,8 @@ class LJCCityTableEvents
     return retValue;
   }
 
-  /// <summary>Get next page for supplied table.
-  /// <param name="tableHelper">The target table helper.</param>
-  // Called from TableKeyDown().
+  /// <summary>Get next page for City table.
+  // Called from LJCCityListEvents.DocumentKeyDown().
   NextPage()
   {
     if (!this.TableData.EndOfData)
@@ -126,8 +128,8 @@ class LJCCityTableEvents
     }
   }
 
-  /// <summary>Get previous page for supplied table.
-  // Called from DocumentKeyDown().
+  /// <summary>Get previous page for City table.
+  // Called from LJCCityListEvents.DocumentKeyDown().
   PrevPage()
   {
     if (!this.TableData.BeginningOfData)
@@ -192,7 +194,7 @@ class LJCCityTableEvents
   }
 
   // Updates the BeginningOfData and EndOfData flags.
-  /// <include path='items/UpdateLimitsFlags/*' file='Doc/LJCCityListEvents.xml'/>
+  /// <include path='items/UpdateLimitsFlags/*' file='Doc/LJCCityTableEvents.xml'/>
   UpdateLimitFlags()
   {
     let retValue = false;
@@ -227,10 +229,7 @@ class LJCCityTableEvents
   }
 
   /// <summary>
-  ///   Sets the form values before a detail submit and the page values before
-  ///   a page submit.
-  /// </summary>
-  /// <param name="eTarget">The HTML element.</param>
+  /// <include path='items/UpdatePageData/*' file='Doc/LJCCityTableEvents.xml'/>
   UpdatePageData()
   {
     let TableData = this.TableData;
@@ -273,7 +272,7 @@ class LJCCityTableEvents
   }
 
   // Updates the CityTable ETable and Keys values.
-  /// <include path='items/UpdateCityTable/*' file='Doc/LJCCityListEvents.xml'/>
+  /// <include path='items/UpdateCityTable/*' file='Doc/LJCCityTableEvents.xml'/>
   UpdateTableData(saveThis, keys)
   {
     let retRowIndex = -1;

@@ -1,19 +1,22 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<!-- Copyright (c) Lester J. Clark 2022 - All Rights Reserved -->
+<!-- Copyright(c) Lester J. Clark and Contributors. -->
+<!-- Licensed under the MIT License. -->
 <!-- LJCTable.xml -->
 <items>
-  <AddEvent>
-    <summary>Adds an event handler.</summary>
-    <param name="elementID"></param>
-    <param name="evantName"></param>
-    <param name="handler"></param>
-  </AddEvent>
   <!-- Document Event Handlers -->
-  <DocumentClick>
-    <summary>Document "click" handler method.</summary>
+  <DocumentContextMenu>
+    <summary>The Document "contextmenu" event handler.</summary>
     <param name="event">The Target event.</param>
-    <remarks>Selects the current row.</remarks>
-  </DocumentClick>
+    <remarks>Displays the City context menu.</remarks>
+  </DocumentContextMenu>
+  <DocumentDoubleClick>
+    <summary>The Document "dblclick" handler method.</summary>
+    <remarks>Performs the "Edit" menu selection.</remarks>
+  </DocumentDoubleClick>
+  <DocumentKeyDown>
+    <summary>The Document "keydown" handler method.</summary>
+    <param name="event">The Target event.</param>
+  </DocumentKeyDown>
   <!-- Page Event Handlers -->
   <UpdateCityTable>
     <summary>Updates the CityTable ETable and Keys values.</summary>

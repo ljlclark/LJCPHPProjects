@@ -240,7 +240,7 @@ class LJCCityListEvents
     let cityTable = self.CityTable;
     if (cityTable != null)
     {
-      retRowIndex = cityTable.RowIndex;
+      retRowIndex = cityTable.CurrentRowIndex;
     }
     if (null == cityTable)
     {
@@ -339,7 +339,7 @@ class LJCCityListEvents
   /// <summary>Refreshes the current page.</summary>
   Refresh()
   {
-    //let rowIndex = this.RowIndex;
+    //let rowIndex = this.CurrentRowIndex;
     //this.CityPageGet(this.CityPageData);
     this.CityPageJSON(this.CityPageData);
     //this.CityPagePost(this.CityPageData);
@@ -391,7 +391,7 @@ class LJCCityListEvents
       let ePrimaryKeys = Common.Element("primaryKeys");
       if (ePrimaryKeys != null)
       {
-        let rowKeys = ljcTable.Keys[ljcTable.RowIndex - 1];
+        let rowKeys = ljcTable.Keys[ljcTable.CurrentRowIndex - 1];
         if (rowKeys != null)
         {
           let keys = [];

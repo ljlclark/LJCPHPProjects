@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright(c) Lester J. Clark and Contributors. -->
+<!-- Licensed under the MIT License. -->
+<!-- LJCTable.xml -->
+<items>
+  <!-- Page Methods -->
+  <HasData>
+    <summary>Checks if the provided table text exists.</summary>
+    <param name="tableText">The HTML table text.</param>
+    <remarks>
+      If no table text: Clears the Next and Previous settings and keeps the
+      CurrentRowIndex from moving.
+    </remarks>
+  </HasData>
+  <UpdateLimitsFlags>
+    <summary>Updates the BeginningOfData and EndOfData flags.</summary>
+    <param name="cityTable">The CityTable object.</param>
+    <remarks>
+      Sets the CurrentRowIndex for the next or previous page and clears the
+      IsNextPage or IsPrevPage flags.
+    </remarks >
+  </UpdateLimitsFlags>
+  <UpdatePgeData>
+    <summary>
+      Sets the form values before a detail submit and the page values before
+      a page submit.
+    </summary>
+    <param name="eTarget">The HTML element.</param>
+  </UpdatePgeData>
+  <UpdateTableData>
+    <summary>Updates the CityTable ETable and Keys values.</summary>
+    <param name="saveThis">A reference to this class.</param>
+    <param name="keys">The key values.</param>
+    <returns>The current row index.</returns>
+    <remarks>Creates the initial CityTable object.</remarks >
+  </UpdateTableData>
+</items>

@@ -12,8 +12,8 @@
 // ***************
 /// <summary>Contains CityList event handlers.</summary>
 //  Add Events: AddEvents(), AddEvent()
-//  Document Handlers: DocumentClick(), DocumentContextMenu()
-//    DocumentDoubleClick(), DocumentKeyDown()
+//  Document Handlers: DocumentContextMenu(), DocumentDoubleClick()
+//    , DocumentKeyDown()
 //  Menu Handlers: Delete(), DoAction(), Edit(), New(), Next(), Previous()
 //    , Refresh()
 //  Table Column: SelectedTableData()
@@ -51,9 +51,6 @@ class LJCCityListEvents
     this.AddEvents();
   }
 
-  // ---------------
-  // Add Event Methods
-
   /// <summary>Adds the HTML event listeners.</summary>
   AddEvents()
   {
@@ -74,8 +71,8 @@ class LJCCityListEvents
   // ---------------
   // Document Event Handlers
 
-  /// <summary>Displays the context menu.</summary>
-  /// <param name="event">The Target event.</param>
+  // The Document "contextmenu" event handler.
+  /// <include path='items/DocumentContextMenu/*' file='Doc/LJCCityListEvents.xml'/>
   DocumentContextMenu(event)
   {
     // Handle table row right button click.
@@ -99,13 +96,14 @@ class LJCCityListEvents
     }
   }
 
-  /// <summary>Document "dblclick" handler method.</summary>
+  // The Document "dblclick" handler method.
+  /// <include path='items/DocumentDoubleClick/*' file='Doc/LJCCityListEvents.xml'/>
   DocumentDoubleClick()
   {
-    this.EditClick();
+    this.Edit();
   }
 
-  /// <summary>Document "keydown" handler method.</summary>
+  // The Document "keydown" handler method.
   /// <param name="event">The Target event.</param>
   DocumentKeyDown(event)
   {
@@ -114,7 +112,7 @@ class LJCCityListEvents
     let DOWN_ARROW = 40;
 
     // Table cannot receive focus so set FocusTableData in
-    // DocumentClick(), DocumentContextMenu() and CityPage(). 
+    // DocumentClick(), DocumentContextMenu() and LJCCityTableevents.Page().
     let ljcTable = this.FocusTable();
     if (ljcTable != null)
     {
@@ -160,8 +158,8 @@ class LJCCityListEvents
   /// </summary>
   Edit()
   {
-    this.SubmitDetail("Update");
-    //cityDialog.showModal();
+    //this.SubmitDetail("Update");
+    cityDialog.showModal();
   }
 
   /// <summary>
