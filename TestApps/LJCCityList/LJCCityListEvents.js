@@ -14,18 +14,16 @@
 //  Add Events: AddEvents(), AddEvent()
 //  Document Handlers: DocumentClick(), DocumentContextMenu()
 //    DocumentDoubleClick(), DocumentKeyDown()
-//  Page Handlers: NextPage(), PrevPage(), CityPage(), UpdateCityTable()
-//  Menu Handlers: Delete(), DoAction(), Edit(), New(), Refresh()
+//  Menu Handlers: Delete(), DoAction(), Edit(), New(), Next(), Previous()
+//    , Refresh()
 //  Table Column: SelectedTableData()
-//  Page Data: UpdatePageData(), UpdateCityPageData()
 class LJCCityListEvents
 {
   // ---------------
   // Properties
 
-  CityPageData;
-  CityEvents;
   CityTableData;
+  CityTableEvents;
   CityTableID;
   FocusTableData;
   IsNextPage;
@@ -40,22 +38,14 @@ class LJCCityListEvents
   {
     this.CityTableID = "cityTableItem";
 
-    // Data for LJCCityList.php
-    this.CityPageData = {
-      Action: "None", // Next, Previous, Top, Bottom, First?, Last?
-      BeginKeyData: { ProvinceID: 0, Name: "" },
-      ConfigName: "TestData",
-      EndKeyData: { ProvinceID: 0, Name: "" },
-      Limit: 10,
-    };
-
-    // CityTable events.
-    this.CityEvents = new LJCCityTableEvents(this, "menu");
-    this.CityEvents.PageData.Limit = 20;
-
     // CityTable data.
     this.CityTableData = new LJCTableData(this.CityTableID, "menu");
     this.FocusTableData = null;
+
+    // CityTable events.
+    this.CityTableEvents = new LJCCityTableEvents(this, "menu");
+    this.CityTableEvents.PageData.Limit = 20;
+
     this.IsNextPage = false;
     this.IsPrevPage = false;
     this.AddEvents();
@@ -64,7 +54,7 @@ class LJCCityListEvents
   // ---------------
   // Add Event Methods
 
-  /// <summary>Adds the HTML event handlers.</summary>
+  /// <summary>Adds the HTML event listeners.</summary>
   AddEvents()
   {
     // Document Event Handlers.
@@ -73,23 +63,12 @@ class LJCCityListEvents
     document.addEventListener("keydown", this.DocumentKeyDown.bind(this));
 
     // Menu Event Handlers.
-    this.AddEvent("delete", "click", this.Delete);
-    this.AddEvent("edit", "click", this.Edit);
-    this.AddEvent("new", "click", this.New);
-    this.AddEvent("next", "click", this.Next);
-    this.AddEvent("previous", "click", this.Previous);
-    this.AddEvent("refresh", "click", this.Refresh);
-  }
-
-  // Adds an event handler.
-  /// <include path='items/AddEvent/*' file='Doc/LJCCityListEvents.xml'/>
-  AddEvent(elementID, eventName, handler)
-  {
-    let element = Common.Element(elementID);
-    if (element != null)
-    {
-      element.addEventListener(eventName, handler.bind(this));
-    }
+    Common.AddEvent("delete", "click", this.Delete, this);
+    Common.AddEvent("edit", "click", this.Edit, this);
+    Common.AddEvent("new", "click", this.New, this);
+    Common.AddEvent("next", "click", this.Next, this);
+    Common.AddEvent("previous", "click", this.Previous, this);
+    Common.AddEvent("refresh", "click", this.Refresh, this);
   }
 
   // ---------------
@@ -216,7 +195,7 @@ class LJCCityListEvents
   /// <summary>Refreshes the current page.</summary>
   Refresh()
   {
-    let cityEvents = this.CityEvents;
+    let cityEvents = this.CityTableEvents;
     cityEvents.PageData.Action = "Refresh";
     cityEvents.Page();
   }
@@ -232,7 +211,7 @@ class LJCCityListEvents
       switch (tableData.TableID)
       {
         case this.CityTableID:
-          retTable = this.CityEvents;
+          retTable = this.CityTableEvents;
           break;
       }
     }
@@ -285,7 +264,7 @@ class LJCCityListEvents
       switch (eTable.id)
       {
         case this.CityTableID:
-          retTable = this.CityEvents;
+          retTable = this.CityTableEvents;
           break;
       }
     }

@@ -1,8 +1,9 @@
 <?php
   // Copyright(c) Lester J. Clark and Contributors.
   // Licensed under the MIT License.
-  // LJCCityList.php
+  // LJCCityTable.php
   declare(strict_types=1);
+  header("Access-Control-Allow-Origin: *");
   session_start();
   include_once "LJCRoot.php";
   $prefix = RelativePrefix();
@@ -17,8 +18,8 @@
   //   , LJCTextState
   // CityDAL: 
 
-  $cityList = new LJCCityList();
-  $cityList->Run();
+  $cityTable = new LJCCityTable();
+  $cityTable->Run();
 
   // ***************
   /// <group name="Entry">Entry Methods</group>
@@ -26,7 +27,7 @@
   /// <group name="Response">Entry Methods</group>
   //    CreateResponse(), 
   /// <summary>Web Service to Create an HTML table from City data.
-  class LJCCityList
+  class LJCCityTable
   {
     // ---------------
     // Entry Methods
@@ -44,15 +45,14 @@
       // Parse input data.
       $this->Action = $pageData->Action;
       $this->BeginKeyData = $pageData->BeginKeyData;
+      $this->ConfigFile = $pageData->ConfigFile;
       $this->ConfigName = $pageData->ConfigName;
       $this->EndKeyData = $pageData->EndKeyData;
       $this->Limit = $pageData->Limit;
 
-      // *** Add ***
       $this->CityTableID = "cityTableItem";
       $this->TableName = City::TableName;
       $this->SQL = "";
-
       $_SESSION["tableName"] = $this->TableName;
 
       $connectionValues = $this->GetConnectionValues($this->ConfigName);  
@@ -69,9 +69,9 @@
     // Called from Run()
     private function GetConnectionValues(string $configName)
     {
-      $dataConfigs = "DataConfigs.xml";
+      $configFile = $this->ConfigFile;
       $configName = "TestData";
-      $retValues = DataConfigs::GetConnectionValues($dataConfigs, $configName);
+      $retValues = DataConfigs::GetConnectionValues($configFile, $configName);
       return $retValues;
     }  // GetConnectionValues()
 
@@ -135,8 +135,6 @@
       // Setup table attributes.
       $hb = new LJCHTMLBuilder($textState);
       $className = null;
-      // *** Change ***
-      //$id = "cityTableItem";
       $id = $this->CityTableID;
       $retAttribs = $hb->Attribs($className, $id);
 
@@ -315,6 +313,9 @@
 
     /// <summary>The CityManager object.</summary>
     public CityManager $CityManager;
+
+    /// <summary>The data config file name.</summary>
+    public string $ConfigFile;
 
     /// <summary>The data config name.</summary>
     public string $ConfigName;

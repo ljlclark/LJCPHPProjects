@@ -1,0 +1,109 @@
+/* Copyright(c) Lester J. Clark and Contributors.*/
+/* Licensed under the MIT License.*/
+/* Table.css */
+
+/* Background when "dialog" element is displayed. */
+::backdrop {
+  background-color: rgba(0, 0, 0, 0.5);
+  /*background-color: grey;*/
+  opacity: 0.75;
+}
+
+/* Class Selectors */
+
+/* The "dialog" background. */
+.dialog {
+  border: 0px;
+  border-radius: 8px;
+  padding: 0px;
+}
+
+.form {
+  background: linear-gradient(to bottom, aliceblue, rgba(176,196,222, 0.8));
+  border: 1px solid black;
+  border-radius: 8px;
+  border-spacing: 6px;
+  text-align: initial;
+}
+
+/* The "page" div. */
+.page {
+  margin: auto;
+  text-align: center;
+  width: 90%;
+}
+
+/* The menu title div. */
+.titleHighlight {
+  background-color: lightsteelblue;
+}
+
+/* Element Selectors */
+
+/* "div" element with class "divMenu" */
+div.divMenu {
+  background-color: white;
+  border-top: 1px #c8e8ff solid;
+  border-left: 1px #c8e8ff solid;
+  border-right: 1px #4480b8 solid;
+  border-bottom: 1px #4480b8 solid;
+  color: black;
+  cursor: pointer;
+  font-family: verdana;
+  font-size: 80%;
+  padding: 5px 5px 5px 8px;
+  position: absolute;
+  text-align: initial;
+  top: 0;
+  visibility: hidden;
+  width: 130px;
+}
+
+table {
+  background-color: aliceblue;
+  border: 1px solid lightsteelblue;
+  border-collapse: collapse;
+  text-align: initial;
+  width: 60%;
+}
+
+td {
+  border: 1px solid lightsteelblue;
+  padding-left: 4px;
+}
+
+th {
+  border: 1px solid lightsteelblue;
+  background-color: lightsteelblue;
+}
+
+tr:hover {
+  background-color: rgba(176,196,222, 0.2);
+}
+
+/* ID Selectors */
+
+#cityForm ul {
+  list-style: none;
+  padding: 0;
+}
+
+#cityForm li {
+  margin-left: 6px;
+  margin-top: 4px;
+}
+
+#cityForm label {
+  float: left;
+  width: 90px;
+  margin-right: 15px;
+}
+
+/* Hover over div "menu" */
+#menu div:hover {
+  background-color: rgba(176,196,222, 0.5);
+}
+
+#pageTitle {
+  background: lightsteelblue;
+}

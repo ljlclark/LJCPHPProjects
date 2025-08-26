@@ -4,6 +4,7 @@
 // LJCCityTableEvents.js
 // <script src="../../Common/Common.js"></script>
 //   Element(), Visibility()
+// <script src="City/LJCCityPageData.js"></script>
 // <script src="LJCTableData.js"></script>
 //   MoveNext(), MovePrevious(), SelectRow(), SelectColumnRow()
 
@@ -38,14 +39,8 @@ class LJCCityTableEvents
     this.IsNextPage = false;
     this.IsPrevPage = false;
 
-    // Data for LJCCityList.php
-    this.PageData = {
-      Action: "None", // Next, Previous, Top, Bottom, First?, Last?
-      BeginKeyData: { ProvinceID: 0, Name: "" },
-      ConfigName: "TestData",
-      EndKeyData: { ProvinceID: 0, Name: "" },
-      Limit: 10,
-    };
+    // Data for LJCCityTable.php
+    this.PageData = new LJCCityPageData();
 
     this.TableID = listEvents.CityTableID;
     this.TableData = new LJCTableData(this.TableID, this.MenuID);
@@ -58,18 +53,7 @@ class LJCCityTableEvents
     document.addEventListener("click", this.DocumentClick.bind(this));
 
     // Table Event Handlers.
-    this.AddEvent(this.TableID, "click", this.TableClick);
-  }
-
-  // Adds an event handler.
-  /// <include path='items/AddEvent/*' file='Doc/LJCCityListEvents.xml'/>
-  AddEvent(elementID, eventName, handler)
-  {
-    let element = Common.Element(elementID);
-    if (element != null)
-    {
-      element.addEventListener(eventName, handler.bind(this));
-    }
+    Common.AddEvent(this.TableID, "click", this.TableClick, this);
   }
 
   // Document "click" handler method.
@@ -162,13 +146,16 @@ class LJCCityTableEvents
     // Save a reference to this class for anonymous function.
     const saveThis = this;
     let xhr = new XMLHttpRequest();
-    xhr.open("POST", "LJCCityTable.php");
+    xhr.open("POST", "CityList/LJCCityTable.php");
     xhr.setRequestHeader("Content-Type", "application/json");
     xhr.onload = function ()
     {
+      // *** Get Program Errors ***
+      //alert(`responseText: ${this.responseText}`);
+
       // Get the AJAX response.
       let response = JSON.parse(this.responseText);
-      // *****
+      // *** Get Response Errors ***
       //alert(`responseSQL: ${response.SQL}`);
 
       // Check if there is more data.
@@ -177,7 +164,8 @@ class LJCCityTableEvents
         // Create new table element and add new "click" event.
         let eTable = Common.Element(saveThis.TableID);
         eTable.outerHTML = response.HTMLTable;
-        saveThis.AddEvent(saveThis.TableID, "click", saveThis.TableClick);
+        Common.AddEvent(saveThis.TableID, "click", saveThis.TableClick
+          , saveThis);
 
         // Updates TableData with new table element and keys.
         let rowIndex = saveThis.UpdateTableData(saveThis, response.Keys);
@@ -198,8 +186,9 @@ class LJCCityTableEvents
         saveThis.ListEvents.FocusTableData = tableData;
       }
     };
-    //alert(this.PageData.Action);
-    xhr.send(JSON.stringify(this.PageData));
+    let pageData = this.PageData.Clone();
+    pageData.ConfigFile = "../DataConfigs.xml";
+    xhr.send(JSON.stringify(pageData));
   }
 
   // Updates the BeginningOfData and EndOfData flags.
