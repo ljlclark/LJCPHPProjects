@@ -17,7 +17,7 @@
     </div>
     <div class="Text">
     </div>
-    <br />
+    <h4>App Files</h4>
     <table>
       <tr>
         <th class="CodeTable">File Name</th>
@@ -36,26 +36,6 @@
         <td>
           Creates the main LJCCityList.html event listeners and contains the event
           handler methods.
-        </td>
-      </tr>
-      <tr>
-        <td>CityList/LJCCityTableEvents.js</td>
-        <td>
-          Creates the city HTML table event listeners and contains the event handler
-          methods.
-        </td>
-      </tr>
-      <tr>
-        <td>CityList/LJCCityPageData.js</td>
-        <td>
-          The data for LJCCityTable.php.
-        </td>
-      </tr>
-      <tr>
-        <td>City/LJCCityTable.php</td>
-        <td>
-          Retrieves the City data and builds the City HTML table text. The table
-          text is returned to the caller to be added to the HTML Document.
         </td>
       </tr>
       <tr>
@@ -80,6 +60,52 @@
       <tr>
         <td>CSS/Table.css</td>
         <td>The LJCCityList.html CSS file.</td>
+      </tr>
+    </table>
+    <h4>City Files</h4>
+    <table>
+      <tr>
+        <th class="CodeTable">File Name</th>
+        <th class="CodeTable">Description</th>
+      </tr>
+      <tr>
+        <td>CityList/LJCCityTableEvents.js</td>
+        <td>
+          Creates the city HTML table event listeners and contains the event handler
+          methods.
+        </td>
+      </tr>
+      <tr>
+        <td colspan="2"> - CityTable Web Service -</td>
+      </tr>
+      <tr>
+        <td>CityList/LJCCityTable.php</td>
+        <td>
+          The web service for creating a City HTML table.<br />
+          It Retrieves the City data and builds the City HTML table text. The table
+          text is returned to the caller to be added to the HTML Document.
+        </td>
+      </tr>
+      <tr>
+        <td>CityList/LJCCityPageData.js</td>
+        <td>
+          The request data for web service LJCCityTable.php.
+        </td>
+      </tr>
+      <tr>
+        <td colspan="2"> - CityData Web Service -</td>
+      </tr>
+      <tr>
+        <td>CityList/LJCCityData.php</td>
+        <td>
+          The web service for City data.
+        </td>
+      </tr>
+      <tr>
+        <td>CityList/LJCCityRequest.js</td>
+        <td>
+          The request data for web service LJCCityData.php.
+        </td>
       </tr>
     </table>
   </div> <!-- page -->

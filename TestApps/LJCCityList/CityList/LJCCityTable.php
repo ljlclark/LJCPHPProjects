@@ -3,7 +3,7 @@
   // Licensed under the MIT License.
   // LJCCityTable.php
   declare(strict_types=1);
-  header("Access-Control-Allow-Origin: *");
+  //header("Access-Control-Allow-Origin: *");
   session_start();
   include_once "LJCRoot.php";
   $prefix = RelativePrefix();
@@ -37,7 +37,7 @@
     /// <ParentGroup>Entry</ParentGroup>
     public function Run(): void
     {
-      // Parameters are passed from a POST in JSON.
+      // Parameters are passed from a POST with JSON data.
       header("Content-Type: application/json; charset=UTF-8");
       $value = file_get_contents('php://input');
       $pageData = json_decode($value);
@@ -61,6 +61,7 @@
       {
         $this->CityManager->Limit = $this->Limit;
       }
+
       $response = $this->CreateResponse();
       echo($response);
     }  // Run()
@@ -78,7 +79,7 @@
     // ---------------
     // Create Response (Main) Methods
 
-    /// <summary>Creates the HTML Table.</summary>
+    /// <summary>Creates the Response data.</summary>
     /// <returns>The response JSON text.</returns.
     /// <ParentGroup>Response</ParentGroup>
     // Called from Run().
@@ -98,18 +99,18 @@
         $tableBuilder->TableAttribs = $this->GetTableAttribs();
         $tableBuilder->HeadingAttribs = $this->GetHeadingAttribs();
 
+        // Create HTML table with data collection.
+        $textState = new LJCTextState();
+        $textState->IndentCount = 2;
+        $response->HTMLTable = $tableBuilder->ResultHTML($result, $textState
+          , $propertyNames);
+
         // Create Key array.
         $keyNames = $this->KeyPropertyNames();
         $keyArray = $this->ResultKeyArray($result, $keyNames);
 
         $response->Keys = $keyArray;
         $response->SQL = $this->SQL;
-
-        // Create HTML table with data collection.
-        $textState = new LJCTextState();
-        $textState->IndentCount = 2;
-        $response->HTMLTable = $tableBuilder->ResultHTML($result, $textState
-          , $propertyNames);
       }
       $retResponse = json_encode($response);
       return $retResponse;

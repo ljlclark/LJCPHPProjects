@@ -8,6 +8,8 @@
 // <script src="LJCTableData.js"></script>
 //   GetTable(), GetTableRow(), ShowMenu()
 //   MoveNext(), MovePrevious(), RowCount(), SelectRow(), SelectColumnRow()
+// <script src="CityList/LJCCityRequest.js"></script>
+
 
 // ***************
 /// <summary>Contains CityList event handlers.</summary>
@@ -25,6 +27,7 @@ class LJCCityListEvents
   CityTableData;
   CityTableEvents;
   CityTableID;
+  DataResponse;
   FocusTableData;
   IsNextPage;
   IsPrevPage;
@@ -84,11 +87,11 @@ class LJCCityListEvents
       {
         event.preventDefault();
 
-        let tableEvents = this.SelectedTableEvents(eCell);
-        tableEvents.UpdatePageData();
-
         tableData.SelectColumnRow(eCell);
         this.FocusTableData = tableData;
+
+        let tableEvents = this.SelectedTableEvents(eCell);
+        tableEvents.UpdatePageData();
 
         let location = Common.MouseLocation(event);
         tableData.ShowMenu(location);
@@ -96,14 +99,14 @@ class LJCCityListEvents
     }
   }
 
-  // The Document "dblclick" handler method.
+  // The Document "dblclick" event handler.
   /// <include path='items/DocumentDoubleClick/*' file='Doc/LJCCityListEvents.xml'/>
   DocumentDoubleClick()
   {
     this.Edit();
   }
 
-  // The Document "keydown" handler method.
+  // The Document "keydown" event handler.
   /// <param name="event">The Target event.</param>
   DocumentKeyDown(event)
   {
@@ -158,8 +161,21 @@ class LJCCityListEvents
   /// </summary>
   Edit()
   {
-    //this.SubmitDetail("Update");
-    cityDialog.showModal();
+    let cityRequest = new LJCCityRequest();
+    cityRequest.Action = "Retrieve";
+    cityRequest.ConfigFile = "DataConfigs.xml";
+    cityRequest.ConfigName = "TestData";
+
+    // Create key columns.
+    // Get key value from hidden form.
+    let keyColumns = new LJCDataColumns();
+    let dataColumn = new LJCDataColumn("CityID");
+    dataColumn.Value = rowCityID.value;
+    keyColumns.AddObject(dataColumn);
+
+    cityRequest.KeyColumns = keyColumns;
+    cityRequest.TableName = "City";
+    this.DataRequest(cityRequest);
   }
 
   /// <summary>
@@ -246,6 +262,59 @@ class LJCCityListEvents
       let form = Common.Element("hiddenForm");
       form.submit();
     }
+  }
+
+  // ---------------
+  // Web Service Methods
+
+  /// <summary>Call the web service.</summary>
+  DataRequest(cityRequest)
+  {
+    // Save a reference to this class for anonymous function.
+    const saveThis = this;
+    let xhr = new XMLHttpRequest();
+    xhr.open("POST", "CityList/LJCCityData.php");
+    xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.onload = function ()
+    {
+      // Get the AJAX response.
+      if (LJC.HasText(this.responseText))
+      {
+        let response = JSON.parse(this.responseText);
+        //alert(`ListEvents: responseText: ${this.responseText}\r\n`);
+        //alert(`ListEvents: responseSQL: ${response.SQL}`);
+        saveThis.DataResponse = response;
+        saveThis.Response();
+      }
+    }
+    xhr.send(JSON.stringify(cityRequest));
+  }
+
+  /// <summary>Process the web service response.</summary>
+  Response()
+  {
+    let response = this.DataResponse;
+    switch (response.Action.toLowerCase())
+    {
+      case "retrieve":
+        let cities = response.ResultItems;
+        let city = cities[0];
+        this.SetCityForm(city);
+        cityDialog.showModal();
+        break;
+    }
+  }
+
+  /// <summary>Set the City Form values.</summary>
+  SetCityForm(city)
+  {
+    cityID.value = city.CityID;
+    provinceID.value = city.ProvinceID;
+    LJC.SetValue("name", city.Name);
+    LJC.SetValue("description", city.Description);
+    LJC.SetValue("cityFlag", city.CityFlag);
+    LJC.SetValue("zipCode", city.ZipCode);
+    LJC.SetValue("district", city.District);
   }
 
   // ---------------

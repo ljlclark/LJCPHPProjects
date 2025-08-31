@@ -238,6 +238,25 @@
   /// <include path='items/LJCDbColumn/*' file='Doc/LJCDbColumn.xml'/>
   class LJCDbColumn
   {
+    // *** New Method ***
+    /// <summary>Creates a new object with existing object values.</summary>
+    /// <param name="dataColumn"></param>
+    /// <returns>The new LJCDbColumn object.</returns>
+    public static function Copy($dataColumn)
+    {
+      $retDataColumn = new LJCDbColumn();
+
+      foreach ($dataColumn as $propertyName => $value)
+      {
+        if (property_exists($dataColumn, $propertyName))
+        {
+          //$retDataColumn[$propertyName] = $dataColumn[propertyName];
+          $retDataColumn[$propertyName] = $value;
+        }
+      }
+      return retDataColumn;
+    }
+
     // Coverts MySQL type names to PHP type names.
     /// <include path='items/GetDataType/*' file='Doc/LJCDbColumn.xml'/>
     public static function GetDataType(string $mySQLTypeName): string
@@ -380,8 +399,6 @@
       $retValue = new self();
       foreach ($this->Items as $key => $item)
       {
-        // *** Change ***
-        //$retValue->AddObject($item);
         $retValue->AddObject($item, key: $key);
       }
       unset($item);

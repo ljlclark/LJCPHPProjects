@@ -60,13 +60,13 @@ class LJCCityTableEvents
   // ---------------
   // Event Handlers
 
-  /// <summary>The Document "click" handler method.</summary>
+  /// <summary>The Document "click" handler.</summary>
   DocumentClick()
   {
     Common.Visibility(this.MenuID, "hidden");
   }
 
-  /// <summary>The Table "click" handler method.</summary>
+  /// <summary>The Table "click" handler.</summary>
   /// <param name="event">The Target event.</param>
   TableClick(event)
   {
@@ -88,7 +88,7 @@ class LJCCityTableEvents
   // ---------------
   // Page Methods
 
-  // Checks if the provided table text exists.
+  // Checks if the provided table text exists.</summary>
   /// <include path='items/HasData/*' file='Doc/LJCCityTableEvents.xml'/>
   // Called from Page().
   HasData(tableText)
@@ -115,7 +115,7 @@ class LJCCityTableEvents
     return retValue;
   }
 
-  /// <summary>Get next page for City table.
+  /// <summary>Get next page for City table.</summary>
   // Called from LJCCityListEvents.DocumentKeyDown().
   NextPage()
   {
@@ -128,7 +128,7 @@ class LJCCityTableEvents
     }
   }
 
-  /// <summary>Get previous page for City table.
+  /// <summary>Get previous page for City table.</summary>
   // Called from LJCCityListEvents.DocumentKeyDown().
   PrevPage()
   {
@@ -152,13 +152,10 @@ class LJCCityTableEvents
     xhr.setRequestHeader("Content-Type", "application/json");
     xhr.onload = function ()
     {
-      // *** Get Program Errors ***
-      //alert(`responseText: ${this.responseText}`);
-
       // Get the AJAX response.
       let response = JSON.parse(this.responseText);
-      // *** Get Response Errors ***
-      //alert(`responseSQL: ${response.SQL}`);
+      //alert(`TableEvents: responseText: ${this.responseText}\r\n`);
+      //alert(`TableEvents: responseSQL: ${response.SQL}`);
 
       // Check if there is more data.
       if (saveThis.HasData(response.HTMLTable))
@@ -193,7 +190,7 @@ class LJCCityTableEvents
     xhr.send(JSON.stringify(pageData));
   }
 
-  // Updates the BeginningOfData and EndOfData flags.
+  // Updates the BeginningOfData and EndOfData flags.</summary>
   /// <include path='items/UpdateLimitsFlags/*' file='Doc/LJCCityTableEvents.xml'/>
   UpdateLimitFlags()
   {
@@ -228,30 +225,26 @@ class LJCCityTableEvents
     return retValue;
   }
 
-  /// <summary>
+  /// <summary></summary>
   /// <include path='items/UpdatePageData/*' file='Doc/LJCCityTableEvents.xml'/>
   UpdatePageData()
   {
-    let TableData = this.TableData;
+    let tableData = this.TableData;
 
     // Set selected row primaryKeys in hidden form for detail dialog.
-    let ePrimaryKeys = Common.Element("primaryKeys");
-    if (ePrimaryKeys != null)
+    let rowKeys = tableData.Keys[tableData.CurrentRowIndex - 1];
+    if (rowKeys != null)
     {
-      let rowKeys = TableData.Keys[TableData.CurrentRowIndex - 1];
-      if (rowKeys != null)
-      {
-        let keys = [];
-        keys.push({ Name: "CityID", Value: rowKeys.CityID });
-        let keysJSON = JSON.stringify(keys);
-        ePrimaryKeys.value = keysJSON;
-      }
+      // Set current row keys.
+      rowCityID.value = rowKeys.CityID;
+      rowProvinceID.value = rowKeys.ProvinceID;
+      rowName.value = rowKeys.Name;
     }
 
     if (this.PageData != null)
     {
       // Get first row key.
-      let rowKeys = TableData.Keys[0];
+      let rowKeys = tableData.Keys[0];
       if (rowKeys != null)
       {
         let pageData = this.PageData;
@@ -260,8 +253,8 @@ class LJCCityTableEvents
       }
 
       // Get last row key.
-      let lastIndex = TableData.Keys.length - 1;
-      rowKeys = TableData.Keys[lastIndex];
+      let lastIndex = tableData.Keys.length - 1;
+      rowKeys = tableData.Keys[lastIndex];
       if (rowKeys != null)
       {
         let pageData = this.PageData;
@@ -271,7 +264,7 @@ class LJCCityTableEvents
     }
   }
 
-  // Updates the CityTable ETable and Keys values.
+  // Updates the CityTable ETable and Keys values.</summary>
   /// <include path='items/UpdateCityTable/*' file='Doc/LJCCityTableEvents.xml'/>
   UpdateTableData(saveThis, keys)
   {

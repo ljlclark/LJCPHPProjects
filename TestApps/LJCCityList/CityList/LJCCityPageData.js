@@ -8,7 +8,7 @@
 //   MoveNext(), MovePrevious(), SelectRow(), SelectColumnRow()
 
 // ***************
-/// <summary>Contains City HTML Table methods.</summary>
+/// <summary>Contains City HTML Table web service request data.</summary>
 //  Constructor: constructor(), AddEvent()
 //  Event Handlers: TableClick(), TableKeyDown()
 //  Page Event Handlers: NextPage(), PrevPage(), Page()
