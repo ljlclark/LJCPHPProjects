@@ -2,7 +2,7 @@
 // Copyright(c) Lester J. Clark and Contributors.
 // Licensed under the MIT License.
 // LJCCityTableEvents.js
-// <script src="../../Common/Common.js"></script>
+// <script src="../../LJCJSCommon/LJCJSCommonLib.js"></script>
 //   Element(), Visibility()
 // <script src="City/LJCCityPageData.js"></script>
 // <script src="LJCTableData.js"></script>
@@ -54,7 +54,7 @@ class LJCCityTableEvents
     document.addEventListener("click", this.DocumentClick.bind(this));
 
     // Table Event Handlers.
-    Common.AddEvent(this.TableID, "click", this.TableClick, this);
+    LJC.AddEvent(this.TableID, "click", this.TableClick, this);
   }
 
   // ---------------
@@ -63,14 +63,14 @@ class LJCCityTableEvents
   /// <summary>The Document "click" handler.</summary>
   DocumentClick()
   {
-    Common.Visibility(this.MenuID, "hidden");
+    LJC.Visibility(this.MenuID, "hidden");
   }
 
   /// <summary>The Table "click" handler.</summary>
   /// <param name="event">The Target event.</param>
   TableClick(event)
   {
-    Common.Visibility(this.MenuID, "hidden");
+    LJC.Visibility(this.MenuID, "hidden");
 
     // Handle table row click.
     if ("TD" == event.target.tagName)
@@ -96,7 +96,7 @@ class LJCCityTableEvents
     let retValue = true;
 
     // There is no data.
-    if (!Common.HasText(tableText))
+    if (!LJC.HasText(tableText))
     {
       retValue = false;
       if (this.IsNextPage)
@@ -161,9 +161,9 @@ class LJCCityTableEvents
       if (saveThis.HasData(response.HTMLTable))
       {
         // Create new table element and add new "click" event.
-        let eTable = Common.Element(saveThis.TableID);
+        let eTable = LJC.Element(saveThis.TableID);
         eTable.outerHTML = response.HTMLTable;
-        Common.AddEvent(saveThis.TableID, "click", saveThis.TableClick
+        LJC.AddEvent(saveThis.TableID, "click", saveThis.TableClick
           , saveThis);
 
         // Updates TableData with new table element and keys.
@@ -276,7 +276,7 @@ class LJCCityTableEvents
     retRowIndex = tableData.CurrentRowIndex;
 
     // Reset table to new table element.
-    tableData.ETable = Common.Element(this.TableID);
+    tableData.ETable = LJC.Element(this.TableID);
 
     tableData.Keys = keys;
     return retRowIndex;

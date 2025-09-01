@@ -2,8 +2,8 @@
 // Copyright(c) Lester J. Clark and Contributors.
 // Licensed under the MIT License.
 // LJCTableData.js
-// <script src="../../Common/Common.js"></script>
-//   TagElements()
+// <script src="../../LJCJSCommon/LJCJSCommonLib.js"></script>
+//   Element(), TagElements(), Visibility()
 
 // ***************
 /// <summary>Contains HTML Table methods.</summary>
@@ -75,7 +75,7 @@ class LJCTableData
     this.EMenu = null;
     if (menuID != null)
     {
-      let eMenu = Common.Element(menuID);
+      let eMenu = LJC.Element(menuID);
       if (eMenu != null
         && "DIV" == eMenu.tagName)
       {
@@ -87,7 +87,7 @@ class LJCTableData
     this.TableID = tableID;
     if (this.TableID != null)
     {
-      let eTable = Common.Element(this.TableID);
+      let eTable = LJC.Element(this.TableID);
       if (eTable != null
         && "TABLE" == eTable.tagName)
       {
@@ -110,7 +110,7 @@ class LJCTableData
     {
       this.EMenu.style.top = `${location.Top}px`;
       this.EMenu.style.left = `${location.Left}px`;
-      Common.Visibility(this.EMenu.id, "visible");
+      LJC.Visibility(this.EMenu.id, "visible");
     }
   }
 
@@ -169,7 +169,7 @@ class LJCTableData
       {
         rowIndex = this.CurrentRowIndex;
       }
-      retRow = Common.TagElements(this.ETable, "TR")[rowIndex];
+      retRow = LJC.TagElements(this.ETable, "TR")[rowIndex];
     }
     return retRow;
   }
@@ -253,7 +253,7 @@ class LJCTableData
 
     if (this.ETable != null)
     {
-      let eRows = Common.TagElements(this.ETable, "TR");
+      let eRows = LJC.TagElements(this.ETable, "TR");
       if (eRows != null)
       {
         retCount = eRows.length;

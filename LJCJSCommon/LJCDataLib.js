@@ -1,10 +1,10 @@
 "use strict";
 // Copyright(c) Lester J. Clark and Contributors.
 // Licensed under the MIT License.
-// LJCData.js
+// LJCDataLib.js
 
 /// <summary>The Data Definition Library</summary>
-/// LibName: LJCData
+/// LibName: LJCDataLib
 //  Classes: LJCDataColumn, LJCDataColumns
 
 // ***************

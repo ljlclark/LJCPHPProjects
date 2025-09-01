@@ -2,7 +2,7 @@
 // Copyright(c) Lester J. Clark and Contributors.
 // Licensed under the MIT License.
 // LJCCityListEvents.js
-// <script src="../../Common/Common.js"></script>
+// <script src="../../LJCJSCommon/LJCJSCommonLib.js"></script>
 //   Element(), GetValue()
 //   MouseLocation(), Visibility()
 // <script src="LJCTableData.js"></script>
@@ -63,12 +63,12 @@ class LJCCityListEvents
     document.addEventListener("keydown", this.DocumentKeyDown.bind(this));
 
     // Menu Event Handlers.
-    Common.AddEvent("delete", "click", this.Delete, this);
-    Common.AddEvent("edit", "click", this.Edit, this);
-    Common.AddEvent("new", "click", this.New, this);
-    Common.AddEvent("next", "click", this.Next, this);
-    Common.AddEvent("previous", "click", this.Previous, this);
-    Common.AddEvent("refresh", "click", this.Refresh, this);
+    LJC.AddEvent("delete", "click", this.Delete, this);
+    LJC.AddEvent("edit", "click", this.Edit, this);
+    LJC.AddEvent("new", "click", this.New, this);
+    LJC.AddEvent("next", "click", this.Next, this);
+    LJC.AddEvent("previous", "click", this.Previous, this);
+    LJC.AddEvent("refresh", "click", this.Refresh, this);
   }
 
   // ---------------
@@ -93,7 +93,7 @@ class LJCCityListEvents
         let tableEvents = this.SelectedTableEvents(eCell);
         tableEvents.UpdatePageData();
 
-        let location = Common.MouseLocation(event);
+        let location = LJC.MouseLocation(event);
         tableData.ShowMenu(location);
       }
     }
@@ -131,7 +131,7 @@ class LJCCityListEvents
           break;
 
         case ESCAPE_KEY:
-          Common.Visibility("menu", "hidden");
+          LJC.Visibility("menu", "hidden");
           break;
 
         case UP_ARROW:
@@ -239,7 +239,7 @@ class LJCCityListEvents
     let success = true;
 
     // Get hidden form row ID.
-    if ("" == Common.GetValue("rowID"))
+    if ("" == LJC.GetValue("rowID"))
     {
       // No selected row so do not allow delete or update.
       if ("Delete" == action || "Update" == action)
@@ -251,7 +251,7 @@ class LJCCityListEvents
     if (success)
     {
       // Set hidden form listAction.
-      let eListAction = Common.Element("listAction");
+      let eListAction = LJC.Element("listAction");
       if (eListAction != null)
       {
         eListAction.value = action;
@@ -259,7 +259,7 @@ class LJCCityListEvents
 
       // Submit the form.
       rowID.value++;
-      let form = Common.Element("hiddenForm");
+      let form = LJC.Element("hiddenForm");
       form.submit();
     }
   }

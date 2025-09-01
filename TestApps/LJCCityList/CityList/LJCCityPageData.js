@@ -2,8 +2,6 @@
 // Copyright(c) Lester J. Clark and Contributors.
 // Licensed under the MIT License.
 // LJCCityPageData.js
-// <script src="../../Common/Common.js"></script>
-//   Element(), Visibility()
 // <script src="LJCTableData.js"></script>
 //   MoveNext(), MovePrevious(), SelectRow(), SelectColumnRow()
 

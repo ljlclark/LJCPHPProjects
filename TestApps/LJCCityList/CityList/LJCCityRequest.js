@@ -2,8 +2,6 @@
 // Copyright(c) Lester J. Clark and Contributors.
 // Licensed under the MIT License.
 // LJCCityRequest.js
-// <script src="../../Common/Common.js"></script>
-//   Element(), Visibility()
 
 // ***************
 /// <summary>Contains CityData web service request data.</summary>
