@@ -4,7 +4,7 @@
 // LJCCityTableEvents.js
 // <script src="../../LJCJSCommon/LJCJSCommonLib.js"></script>
 //   Element(), Visibility()
-// <script src="City/LJCCityPageData.js"></script>
+// <script src="City/LJCCityPageRequest.js"></script>
 // <script src="LJCTableData.js"></script>
 //   MoveNext(), MovePrevious(), SelectRow(), SelectColumnRow()
 
@@ -40,7 +40,7 @@ class LJCCityTableEvents
     this.IsPrevPage = false;
 
     // Data for LJCCityTable.php
-    this.PageData = new LJCCityPageData();
+    this.PageData = new LJCCityPageRequest();
 
     this.TableID = listEvents.CityTableID;
     this.TableData = new LJCTableData(this.TableID, this.MenuID);

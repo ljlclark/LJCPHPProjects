@@ -11,7 +11,7 @@
 //  Event Handlers: TableClick(), TableKeyDown()
 //  Page Event Handlers: NextPage(), PrevPage(), Page()
 //    UpdateLimitFlags(), UpdatePageData(), UpdateTableData()
-class LJCCityPageData
+class LJCCityPageRequest
 {
   // ---------------
   // Properties
