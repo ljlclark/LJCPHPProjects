@@ -1,12 +1,12 @@
 "use strict";
 // Copyright(c) Lester J. Clark and Contributors.
 // Licensed under the MIT License.
-// LJCCityRequest.js
+// LJCCityDataRequest.js
 
 // ***************
 /// <summary>Contains CityData web service request data.</summary>
 //  Constructor: constructor(), Clone()
-class LJCCityRequest
+class LJCCityDataRequest
 {
   // ---------------
   // Properties

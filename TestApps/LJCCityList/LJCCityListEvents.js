@@ -8,7 +8,7 @@
 // <script src="LJCTableData.js"></script>
 //   GetTable(), GetTableRow(), ShowMenu()
 //   MoveNext(), MovePrevious(), RowCount(), SelectRow(), SelectColumnRow()
-// <script src="CityList/LJCCityRequest.js"></script>
+// <script src="CityList/LJCCityDataRequest.js"></script>
 
 
 // ***************
@@ -161,7 +161,7 @@ class LJCCityListEvents
   /// </summary>
   Edit()
   {
-    let cityRequest = new LJCCityRequest();
+    let cityRequest = new LJCCityDataRequest();
     cityRequest.Action = "Retrieve";
     cityRequest.ConfigFile = "DataConfigs.xml";
     cityRequest.ConfigName = "TestData";
