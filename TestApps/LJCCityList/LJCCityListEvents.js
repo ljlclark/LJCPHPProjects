@@ -34,9 +34,9 @@ class LJCCityListEvents
   // The data service response.
   DataResponse;
 
-  FocusTableData;
-  IsNextPage;
-  IsPrevPage;
+  FocusTable;
+  //IsNextPage;
+  //IsPrevPage;
   UseNew;
 
   // ---------------
@@ -49,14 +49,14 @@ class LJCCityListEvents
 
     // CityTable data.
     this.CityTable = new LJCTable(this.CityTableID, "menu");
-    this.FocusTableData = null;
+    this.FocusTable = null;
 
     // CityTable events.
     this.CityTableEvents = new LJCCityTableEvents(this, "menu");
     this.CityTableEvents.TableRequest.Limit = 20;
 
-    this.IsNextPage = false;
-    this.IsPrevPage = false;
+    //this.IsNextPage = false;
+    //this.IsPrevPage = false;
     this.AddEvents();
   }
 
@@ -94,7 +94,7 @@ class LJCCityListEvents
         event.preventDefault();
 
         ljcTable.SelectColumnRow(eCell);
-        this.FocusTableData = ljcTable;
+        this.FocusTable = ljcTable;
 
         let tableEvents = this.SelectedTableEvents(eCell);
         tableEvents.UpdateTableRequest();
@@ -120,12 +120,12 @@ class LJCCityListEvents
     let UP_ARROW = 38;
     let DOWN_ARROW = 40;
 
-    // Table cannot receive focus so set FocusTableData in
+    // Table cannot receive focus so set FocusTable in
     // DocumentClick(), DocumentContextMenu() and LJCCityTableEvents.Page().
     let tableEvents = this.FocusTableEvents();
     if (tableEvents != null)
     {
-      let ljcTable = this.FocusTableData;
+      let ljcTable = this.FocusTable;
       switch (event.keyCode)
       {
         case DOWN_ARROW:
@@ -225,9 +225,9 @@ class LJCCityListEvents
   {
     let retTableEvents = null;
 
-    if (this.FocusTableData != null)
+    if (this.FocusTable != null)
     {
-      let ljcTable = this.FocusTableData;
+      let ljcTable = this.FocusTable;
       switch (ljcTable.TableID)
       {
         case this.CityTableID:

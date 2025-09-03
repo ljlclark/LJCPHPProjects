@@ -19,16 +19,23 @@ class LJCCityTableEvents
   // ---------------
   // Properties
 
+  // The associated LJCTable object.
   CityTable;
 
+  // Flags set in NextPage() and PrevPage().
+  // Used in HasData() and UpdateLimitFlags() which are called in the Page()
+  // response.
+  // Called from CityListEvents.DocumentKeyDown().
   IsNextPage;
   IsPrevPage;
 
   // The LJCCityListEvents JS object.
   ListEvents;
 
+  // The associated menu ID name.
   MenuID;
 
+  // The associated table ID name.
   TableID;
 
   // The LJCCityTableRequest JS object.
@@ -87,7 +94,7 @@ class LJCCityTableEvents
       {
         this.CityTable.SelectColumnRow(eCell);
         this.UpdateTableRequest();
-        this.ListEvents.FocusTableData = this.CityTable;
+        this.ListEvents.FocusTable = this.CityTable;
       }
     }
   }
@@ -189,7 +196,7 @@ class LJCCityTableEvents
 
         // *** Next Statement *** Add
         saveThis.ListEvents.CityTable = cityTable;
-        saveThis.ListEvents.FocusTableData = cityTable;
+        saveThis.ListEvents.FocusTable = cityTable;
       }
     };
     let tableRequest = this.TableRequest.Clone();
@@ -200,7 +207,7 @@ class LJCCityTableEvents
   }
 
   // Updates the BeginningOfData and EndOfData flags.</summary>
-  /// <include path='items/UpdateLimitsFlags/*' file='Doc/LJCCityTableEvents.xml'/>
+  /// <include path='items/UpdateLimitFlags/*' file='Doc/LJCCityTableEvents.xml'/>
   UpdateLimitFlags()
   {
     let retValue = false;
