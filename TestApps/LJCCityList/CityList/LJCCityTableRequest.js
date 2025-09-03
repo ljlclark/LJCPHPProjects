@@ -1,8 +1,8 @@
 "use strict";
 // Copyright(c) Lester J. Clark and Contributors.
 // Licensed under the MIT License.
-// LJCCityPageData.js
-// <script src="LJCTableData.js"></script>
+// LJCCityTableRequest.js
+// <script src="LJCCityTableRequest.js"></script>
 //   MoveNext(), MovePrevious(), SelectRow(), SelectColumnRow()
 
 // ***************
@@ -11,7 +11,7 @@
 //  Event Handlers: TableClick(), TableKeyDown()
 //  Page Event Handlers: NextPage(), PrevPage(), Page()
 //    UpdateLimitFlags(), UpdatePageData(), UpdateTableData()
-class LJCCityPageRequest
+class LJCCityTableRequest
 {
   // ---------------
   // Properties

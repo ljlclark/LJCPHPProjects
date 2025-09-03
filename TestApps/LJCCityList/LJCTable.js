@@ -1,18 +1,22 @@
 "use strict";
 // Copyright(c) Lester J. Clark and Contributors.
 // Licensed under the MIT License.
-// LJCTableData.js
+// LJCTable.js
 // <script src="../../LJCJSCommon/LJCJSCommonLib.js"></script>
 //   Element(), TagElements(), Visibility()
 
 // ***************
-/// <summary>Contains HTML Table methods.</summary>
+/// <summary>Represents an HTML Table.</summary>
+/// <remarks>
+///   Contains methods for utilizing an HTML Table and associated context menu
+//    including data paging.
+/// </remarks>
 //   Static: GetTable(), GetTableRow()
 //   Methods: ShowMenu()
 //   Table Methods: GetCellText(), GetColumnIndex(), GetRow()
 //     MoveNext(), MovePrevious(), RowCount(), SelectRow()
 //   Selected Column: IsSelectedTable(), SelectColumnRow()
-class LJCTableData
+class LJCTable
 {
   // ---------------
   // Properties
@@ -37,7 +41,7 @@ class LJCTableData
     let retValue = null;
 
     // Process Table
-    let tableRow = LJCTableData.GetTableRow(eColumn);
+    let tableRow = LJCTable.GetTableRow(eColumn);
     if (tableRow != null)
     {
       // table/tbody/tr
@@ -311,7 +315,7 @@ class LJCTableData
   {
     if (this.ETable != null)
     {
-      let eTableRow = LJCTableData.GetTableRow(eColumn);
+      let eTableRow = LJCTable.GetTableRow(eColumn);
       if (eTableRow != null)
       {
         let prevIndex = this.CurrentRowIndex;

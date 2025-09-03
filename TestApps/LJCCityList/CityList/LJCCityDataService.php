@@ -1,7 +1,7 @@
 <?php
   // Copyright(c) Lester J. Clark and Contributors.
   // Licensed under the MIT License.
-  // LJCCityData.php
+  // LJCCityDataService.php
   declare(strict_types=1);
   include_once "LJCRoot.php";
   $prefix = RelativePrefix();
@@ -12,7 +12,7 @@
   // LJCDBAccessLib: LJCConnectionValues
   // CityDAL: City, Cities, CityManager
 
-  $cityItem = new LJCCityData();
+  $cityItem = new LJCCityDataService();
   $cityItem->Run();
 
   // ***************
@@ -21,7 +21,7 @@
   /// <group name="Response">Entry Methods</group>
   //    CreateResponse(), 
   /// <summary>Web Service for City table data.</summary>
-  class LJCCityData
+  class LJCCityDataService
   {
     // ---------------
     // Entry Methods
@@ -34,6 +34,7 @@
       // Parameters are passed from a POST with JSON data.
       header("Content-Type: application/json; charset=UTF-8");
       $value = file_get_contents('php://input');
+      //print_r("CityDataService input: {$value}");
       $itemData = json_decode($value);
 
       // Parse input data.
@@ -47,7 +48,7 @@
       foreach ($dataColumns as $objDataColumn)
       {
         // Create typed object from stdClass.
-        $keyColumn = LJCCityData::Copy($objDataColumn[0]);
+        $keyColumn = LJCCityDataService::Copy($objDataColumn[0]);
         $keyColumns->AddObject($keyColumn);
       }
       $this->KeyColumns = $keyColumns;

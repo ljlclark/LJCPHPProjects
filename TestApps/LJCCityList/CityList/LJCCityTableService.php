@@ -1,7 +1,7 @@
 <?php
   // Copyright(c) Lester J. Clark and Contributors.
   // Licensed under the MIT License.
-  // LJCCityTable.php
+  // LJCCityTableService.php
   declare(strict_types=1);
   //header("Access-Control-Allow-Origin: *");
   session_start();
@@ -18,7 +18,7 @@
   //   , LJCTextState
   // CityDAL: 
 
-  $cityTable = new LJCCityTable();
+  $cityTable = new LJCCityTableService();
   $cityTable->Run();
 
   // ***************
@@ -27,7 +27,7 @@
   /// <group name="Response">Entry Methods</group>
   //    CreateResponse(), 
   /// <summary>Web Service to Create an HTML table from City data.
-  class LJCCityTable
+  class LJCCityTableService
   {
     // ---------------
     // Entry Methods
