@@ -346,7 +346,7 @@ class LJCCityListEvents
     return retTable;
   }
 
-  /// <summary>Gets the selected table data object.</summary>
+  /// <summary>Gets the selected LJCTable object.</summary>
   /// <param name="eColumn">The table column element.</param>
   SelectedTable(eColumn)
   {
