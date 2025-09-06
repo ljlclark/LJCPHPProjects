@@ -1,7 +1,7 @@
 <?php
   // Copyright (c) Lester J.Clark and Contributors.
   // Licensed under the MIT License.
-  // CityDAL.php
+  // ProvinceDAL.php
   declare(strict_types=1);
   include_once "LJCRoot.php";
   $prefix = RelativePrefix();
@@ -11,14 +11,14 @@
   // LJCDBAccessLib: LJCConnectionValues, LJCDbColumns
   // LJCDataManager: LJCDataManager
 
-  /// <summary>The City Data Access Layer Library</summary>
-  /// LibName: CityDAL
+  /// <summary>The Province Data Access Layer Library</summary>
+  /// LibName: ProvinceDAL
   //  Classes:
-  //    City, Cities, CityManager
+  //    Province, Provinces, ProvinceManager
 
   // ***************
-  /// <summary>The City data object class.</summary> 
-  class City
+  /// <summary>The Province data object class.</summary> 
+  class Province
   {
     // ---------------
     // Static Methods
@@ -27,25 +27,25 @@
     /// <summary>
     ///   Creates a new typed object with existing standard object values.
     /// </summary>
-    /// <param name="objCity"></param>
-    /// <returns>The new City object.</returns>
-    public static function Copy($objCity): ?City
+    /// <param name="objProvince"></param>
+    /// <returns>The new Province object.</returns>
+    public static function Copy($objProvince): ?Province
     {
-      $retCity = null;
+      $retProvince = null;
 
-      if (property_exists($objCity, "Name"))
+      if (property_exists($objProvince, "Name"))
       {
-        $retCity = new City($objCity->Name);
+        $retProvince = new Province($objProvince->Name);
 
-        foreach ($objCity as $propertyName => $value)
+        foreach ($objProvince as $propertyName => $value)
         {
-          if (property_exists($retCity, $propertyName))
+          if (property_exists($retProvince, $propertyName))
           {
-            $retCity->$propertyName = $value;
+            $retProvince->$propertyName = $value;
           }
         }
       }
-      return $retCity;
+      return $retProvince;
     }
 
     // ---------------
@@ -54,14 +54,12 @@
     /// <summary>Initializes a class instance.</summary>
     public function __construct()
     {
-      $this->CityID = 0;
       $this->ProvinceID = 0;
+      $this->RegionID = 0;
       $this->Name = "";
       $this->Description = null;
 
-      $this->CityFlag = 0;
-      $this->District = 0;
-      $this->ZipCode = null;
+      $this->Abbreviation = null;
     }
 
     // ---------------
@@ -71,14 +69,12 @@
     public function Clone() : self
     {
       $retValue = new self();
-      $retValue->CityID = $this->CityID;
       $retValue->ProvinceID = $this->ProvinceID;
+      $retValue->RegionID = $this->RegionID;
       $retValue->Name = $this->Name;
       $retValue->Description = $this->Description;
 
-      $retValue->CityFlag = $this->CityFlag;
-      $retValue->District = $this->District;
-      $retValue->ZipCode = $this->ZipCode;
+      $retValue->Abbreviation = $this->Abbreviation;
       return $retValue;
     }
 
@@ -88,12 +84,12 @@
     // Primary Keys
 
     /// <summary>The ID value.</summary> 
-    public int $CityID;
+    public int $ProvinceID;
 
     // Parent Keys
 
-    /// <summary>The ProvinceID value.</summary> 
-    public int $ProvinceID;
+    /// <summary>The RegionID value.</summary>
+    public int $RegionID;
 
     // Unique Keys
 
@@ -102,43 +98,37 @@
     public string $Name;
 
     // varchar(100)
-    /// <summary>The Description value.</summary>
+    /// <summary>The Description value.</summary> 
     public ?string $Description;
 
     // Other Properties
 
-    // bit(1)
-    /// <summary>The CityFlag value.</summary> 
-    public int $CityFlag;
-
-    // smallint
-    /// <summary>The District value.</summary> 
-    public int $District;
-
-    // char(4) ?
-    /// <summary>The ZipCode value.</summary> 
-    public ?string $ZipCode;
+    /// <summary>The Abbreviation value.</summary> 
+    public ?string $Abbreviation;
 
     // ---------------
     // Constants
 
-    public const TableName = "City";
-    public const ColumnCityID = "CityID";
-    public const ColumnProvinceID = "ProvinceID";
+    public const TableName = "Region";
+    public const ColumnID = "ProvinceID";
+    public const ColumnRegionID = "RegionID";
     public const ColumnName = "Name";
     public const ColumnDescription = "Description";
+    public const ColumnAbbreviation = "Abbreviation";
 
-    public const ColumnCityFlag = "CityFlag";
-    public const ColumnDistrict = "District";
-    public const ColumnZipCode = "ZipCode";
+    /// <summary>The Description column length.</summary>
     public const DescriptionLength = 100;
-    public const NameLength = 60;
-    public const ZipCodeLength = 4; // ?
-  }  // City
 
+    /// <summary>The Name column length.</summary>
+    public const NameLength = 60;
+
+    /// <summary>The Number column length.</summary>
+    public const NumberLength = 5;
+  }  // Province
+  
   // ***************
-  /// <summary>Represents a collection of City objects.</summary> 
-  class Cities extends LJCCollectionBase
+  /// <summary>Represents a collection of Province objects.</summary> 
+  class Provinces extends LJCCollectionBase
   {
     // ---------------
     // Static Methods
@@ -147,34 +137,34 @@
     /// <summary>Create collection from array.</summary>
     /// <param name="items">The items array.</param>
     /// <returns>The collection></returns.
-    public static function Collection($items): ?Cities
+    public static function Collection($items): ?Provinces
     {
-      $retCities = new Cities();
+      $retProvinces = null;
 
       if (isset($items)
         && LJC::HasElements($items->Items))
       {
+        $retProvinces = new Provinces();
         foreach ($$items->Items as $objDataObject)
         {
           // Create typed object from stdClass.
-          $city = City::Copy($objDataObject[0]);
-          $retCities->AddObject($city);
+          $province = Province::Copy($objDataObject[0]);
+          $retProvinces->AddObject($province);
         }
       }
-      return $retCities;
+      return $retProvinces;
     }
 
     // ---------------
-    // Collection Methods
+    // Data Object Methods
 
     // Adds an object and key value.
     /// <include path='items/AddObject/*' file='Doc/LJCDbColumns.xml'/>
-    public function AddObject(City $item, $key = null)
+    public function AddObject(Province $item, $key = null)
     {
       if (null == $key)
       {
-        //$key = $item->Name;
-        $key = $this->count();
+        $key = $item->Name;
       }
 			if ($this->HasKey($key))
 			{
@@ -183,11 +173,11 @@
       $retValue = $this->AddItem($item, $key);
       return $retValue;
     }
-  }  // Cities
+  }  // Provinces
 
   // ***************
-  /// <summary>Contains City DB Table methods.</summary> 
-  class CityManager
+  /// <summary>Contains Province DB Table methods.</summary> 
+  class ProvinceManager
   {
     // ---------------
     // Constructor Methods
@@ -198,11 +188,10 @@
     {
       if (!LJC::HasValue($tableName))
       {
-        $tableName = City::TableName;
+        $tableName = Region::TableName;
       }
-      $this->DataManager = new LJCDataManager($connectionValues, $tableName);
-      $this->Limit = 0;
       $this->OrderByNames = null;
+      $this->DataManager = new LJCDataManager($connectionValues, $tableName);
     }
   
     // ---------------
@@ -211,7 +200,7 @@
     /// <summary>Adds a new record for the provided values.</summary>
     /// <param name="$dataColumns"></parm>
     /// <returns>The added record data object.</returns>
-    public function Add(LJCDbColumns $dataColumns): ?City
+    public function Add(LJCDbColumns $dataColumns): int
     {
       $retValue = 0;
 
@@ -231,18 +220,18 @@
       return $retValue;
     }
 
-    // Loads the data and creates the records for the provided values.
+    // Loads the records for the provided values.
     /// <include path='items/Load/*' file='Doc/CityManger/CityManger.xml'/>
     public function Load(?LJCDbColumns $keyColumns, array $propertyNames = null
-      , ?string $filter = null): ?Cities
+      , ?string $filter = null): ?Provinces
     {
       $retValue = null;
       
       $rows = $this->LoadResult($keyColumns, $propertyNames, $filter);
 
-      $cities = new Cities();
-      $city = new City();
-      $retValue = $this->DataManager->CreateDataCollection($cities, $city
+      $provinces = new Provinces();
+      $province = new Province();
+      $retValue = $this->DataManager->CreateDataCollection($provinces, $province
         , $rows);
       return $retValue;
     }
@@ -268,7 +257,7 @@
     // Retrieves the record for the provided values.
     /// <include path='items/Retrieve/*' file='Doc/CityManger/CityManger.xml'/>
     public function Retrieve(LJCDbColumns $keyColumns
-      , array $propertyNames = null): ?City
+      , array $propertyNames = null): ?Region
     {
       $retValue = null;
       
@@ -276,7 +265,7 @@
       $this->DataManager->OrderByNames = $this->OrderByNames;
       $row = $this->DataManager->Retrieve($keyColumns, $propertyNames);
 
-      $retValue = $this->DataManager->CreateDataObject(new City(), $row);
+      $retValue = $this->DataManager->CreateDataObject(new Province(), $row);
       return $retValue;
     }
 
@@ -321,10 +310,7 @@
     /// <summary>The Data Manager object.</summary>
     public LJCDataManager $DataManager;
 
-    /// <summary>The load limit.</summary>
-    public int $Limit;
-
-    /// <summary>The order names array.</summary> 
+    // 
     public ?array $OrderByNames;
-  }  // CityManager
+  }  // ProvinceManager
 ?>

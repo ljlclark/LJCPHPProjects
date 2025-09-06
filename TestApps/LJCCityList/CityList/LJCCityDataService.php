@@ -7,7 +7,7 @@
   $prefix = RelativePrefix();
   include_once "$prefix/ATestForm/CityList/LJCDataConfigs.php";
   include_once "$prefix/LJCPHPCommon/LJCDBAccessLib.php";
-  include_once "$prefix/RegionApp/City/CityDAL.php";
+  include_once "$prefix/RegionApp/City/RegionTablesDAL.php";
   // LJCDataConfigs: DataConfigs 
   // LJCDBAccessLib: LJCConnectionValues
   // CityDAL: City, Cities, CityManager
