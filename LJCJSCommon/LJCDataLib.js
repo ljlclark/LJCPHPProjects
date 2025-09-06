@@ -33,7 +33,7 @@ class LJCDataColumn
   // ---------------
   // Static Methods
 
-  // Creates a new object with existing object values.
+  // Creates a new object with existing standard object values.
   /// <include path='items/Copy/*' file='Doc/LJCDataColumn.xml'/>
   static Copy(dataColumn)
   {
@@ -156,7 +156,7 @@ class LJCDataColumns
   }
 
   /// <summary>Adds the supplied column to the list.</summary>
-  /// <param name="dbColumn">The column object.</param>
+  /// <param name="dataColumn">The column object.</param>
   AddObject(dataColumn)
   {
     this.Items.push(dataColumn);

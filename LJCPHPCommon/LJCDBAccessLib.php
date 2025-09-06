@@ -238,23 +238,33 @@
   /// <include path='items/LJCDbColumn/*' file='Doc/LJCDbColumn.xml'/>
   class LJCDbColumn
   {
-    // *** New Method ***
-    /// <summary>Creates a new object with existing object values.</summary>
-    /// <param name="dataColumn"></param>
-    /// <returns>The new LJCDbColumn object.</returns>
-    public static function Copy($dataColumn)
-    {
-      $retDataColumn = new LJCDbColumn();
+    // ---------------
+    // Static Methods
 
-      foreach ($dataColumn as $propertyName => $value)
+    // *** New Method ***
+    /// <summary>
+    ///   Creates a new typed object with existing standard object values.
+    /// </summary>
+    /// <param name="objColumn"></param>
+    /// <returns>The new LJCDbColumn object.</returns>
+    public static function Copy($objColumn)
+    {
+      $retDataColumn = null;
+
+      //if (array_key_exists("PropertyName", $dataColumn))
+      if (property_exists($objColumn, "PropertyName"))
       {
-        if (property_exists($dataColumn, $propertyName))
+        $retColumn = new LJCDbColumn($objColumn->PropertyName);
+
+        foreach ($objColumn as $propertyName => $value)
         {
-          //$retDataColumn[$propertyName] = $dataColumn[propertyName];
-          $retDataColumn[$propertyName] = $value;
+          if (property_exists($retColumn, $propertyName))
+          {
+            $retColumn->$propertyName = $value;
+          }
         }
       }
-      return retDataColumn;
+      return $retColumn;
     }
 
     // Coverts MySQL type names to PHP type names.
@@ -380,6 +390,30 @@
   //    DebugDbColumns(), DebugKeys(), DebugPropertyNames()
   class LJCDbColumns extends LJCCollectionBase
   {
+    // ---------------
+    // Static Methods
+
+    // *** New Method ***
+    /// <summary>Create collection from array.</summary>
+    /// <param name="items">The items array.</param>
+    /// <returns>The collection></returns.
+    public static function Collection($items)
+    {
+      $retColumns = new LJCDbColumns();
+
+      if (isset($items)
+        && LJC::HasElements($items->Items))
+      {
+        foreach ($items->Items as $objColumn)
+        {
+          // Create typed object from stdClass.
+          $dataColumn = LJCDbColumn::Copy($objColumn);
+          $retColumns->AddObject($dataColumn);
+        }
+      }
+      return $retColumns;
+    }
+
     // ---------------
     // Constructor Methods
 

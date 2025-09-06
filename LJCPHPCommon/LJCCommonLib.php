@@ -361,6 +361,18 @@
     // ---------------
     // Convert Functions
 
+    /// <summary>Copy collection items to an indexed array.</summary>
+    public static function ItemsToArray($items)
+    {
+      $retArray = [];
+
+      foreach ($items as $item)
+      {
+        $retArray[] = $item;
+      }
+      return $retArray;
+    }
+
     /// <summary>Returns a value as bool.</summary>
     /// <ParentGroup>Convert</ParentGroup>
     public static function ToBool($value): bool
@@ -420,6 +432,17 @@
 
     // ---------------
     // Output Functions
+
+    /// <summary>Display object debug text.</summary>
+    /// <ParentGroup>Output</ParentGroup>
+    public static function DebugObject(string $location, $object)
+    {
+      if ($location != null)
+      {
+        print_r("\r\n{$location}\r\n");
+      }
+      print_r($object);
+    }
 
     // Display debug text.
     /// <ParentGroup>Output</ParentGroup>

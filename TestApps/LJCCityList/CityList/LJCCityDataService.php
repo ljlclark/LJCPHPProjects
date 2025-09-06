@@ -41,19 +41,8 @@
       $this->Action = $itemData->Action;
       $this->ConfigFile = $itemData->ConfigFile;
       $this->ConfigName = $itemData->ConfigName;
-
-      // Convert array of single object arrays to LJCDbColumns
-      $dataColumns = $itemData->KeyColumns;
-      $keyColumns = new LJCDbColumns();
-      foreach ($dataColumns as $objDataColumn)
-      {
-        // Create typed object from stdClass.
-        $keyColumn = LJCCityDataService::Copy($objDataColumn[0]);
-        $keyColumns->AddObject($keyColumn);
-      }
-      $this->KeyColumns = $keyColumns;
-
-      //$this->RequestItems = $itemData->RequestItems;
+      $this->KeyColumns = LJCDbColumns::Collection($itemData->KeyColumns);
+      $this->RequestItems = Cities::Collection($itemData->RequestItems);
       $this->OrderByNames = $itemData->OrderByNames;
       $this->PropertyNames = $itemData->PropertyNames;
       $this->TableName = $itemData->TableName;
@@ -64,25 +53,6 @@
       $response = $this->CreateResponse();
       echo($response);
     }  // Run()
-
-    public static function Copy($dataColumn)
-    {
-      $retDataColumn = null;
-
-      if (property_exists($dataColumn, "PropertyName"))
-      {
-        $retDataColumn = new LJCDbColumn($dataColumn->PropertyName);
-
-        foreach ($dataColumn as $propertyName => $value)
-        {
-          if (property_exists($dataColumn, $propertyName))
-          {
-            $retDataColumn->$propertyName = $value;
-          }
-        }
-      }
-      return $retDataColumn;
-    }
 
     // Get connection values for a DataConfig name.
     // Called from Run()
@@ -120,6 +90,8 @@
           break;
 
         case "update":
+          $this->Update();
+          $result = $this->CreateResult();
           break;
       }
       if ($result->Action != "")
@@ -127,34 +99,6 @@
         $retResponse = json_encode($result);
       }
       return $retResponse;
-    }
-
-    /// <summary>Get the requested item.</summary>
-    private function Retrieve()
-    {
-      if ($this->OrderByNames != null)
-      {
-        $this->CityManager->OrderByNames = $this->OrderByNames;
-      }
-      $resultItem = $this->CityManager->Retrieve($this->KeyColumns
-        , $this->PropertyNames);
-      if ($resultItem != null)
-      {
-        $this->ResultItems->AddObject($resultItem);
-      }
-      $this->SQL = $this->CityManager->DataManager->SQL;
-    }
-
-    /// <summary>Copy collection items to an indexed array.</summary>
-    private function ItemsToArray($items)
-    {
-      $retArray = [];
-
-      foreach ($items as $item)
-      {
-        $retArray[] = $item;
-      }
-      return $retArray;
     }
 
     /// <summary>Clear the Result properties.</summary>
@@ -176,10 +120,34 @@
       $retResult = new stdClass();
       $retResult->Action = $this->Action;
       $retResult->AffectedCount = $this->AffectedCount;
-      //$retResult->ResultItems = $this->ResultItems;
-      $retResult->ResultItems = $this->ItemsToArray($this->ResultItems);
+      $items = LJC::ItemsToArray($this->ResultItems);
+      $retResult->ResultItems = $items;
       $retResult->SQL = $this->SQL;
       return $retResult;
+    }
+
+    /// <summary>Get the requested item.</summary>
+    private function Retrieve()
+    {
+      if ($this->OrderByNames != null)
+      {
+        $this->CityManager->OrderByNames = $this->OrderByNames;
+      }
+      $resultItem = $this->CityManager->Retrieve($this->KeyColumns
+        , $this->PropertyNames);
+      if ($resultItem != null)
+      {
+        $this->ResultItems->AddObject($resultItem);
+      }
+      $this->SQL = $this->CityManager->DataManager->SQL;
+    }
+
+    /// <summary>Update the requested item.</summary>
+    private function Update()
+    {
+      $this->AffectedCount = $this->CityManager->Update($this->KeyColumns
+        , $this->PropertyNames);
+      $this->SQL = $this->CityManager->DataManager->SQL;
     }
 
     // ---------------

@@ -32,7 +32,7 @@ class LJCCityListEvents
   CityTableID;
 
   // The data service response.
-  DataResponse;
+  //DataResponse;
 
   FocusTable;
   //IsNextPage;
@@ -178,8 +178,8 @@ class LJCCityListEvents
     let dataColumn = new LJCDataColumn("CityID");
     dataColumn.Value = rowCityID.value;
     keyColumns.AddObject(dataColumn);
-
     cityRequest.KeyColumns = keyColumns;
+
     cityRequest.TableName = "City";
     this.DataRequest(cityRequest);
   }
@@ -273,6 +273,14 @@ class LJCCityListEvents
   // ---------------
   // Web Service Methods
 
+  CreateJSON(value)
+  {
+    let retJSON = "";
+
+    retJSON = JSON.stringify(value);
+    return retJSON;
+  }
+
   /// <summary>Call the web service.</summary>
   DataRequest(cityRequest)
   {
@@ -286,11 +294,10 @@ class LJCCityListEvents
       // Get the AJAX response.
       if (LJC.HasText(this.responseText))
       {
-        //alert(`ListEvents responseText: ${this.responseText}\r\n`);
+        alert(`ListEvents responseText: ${this.responseText}\r\n`);
         let response = JSON.parse(this.responseText);
         //alert(`ListEvents responseSQL: ${response.SQL}`);
-        saveThis.DataResponse = response;
-        saveThis.Response();
+        saveThis.ShowCityDetail(response);
       }
     }
     let request = JSON.stringify(cityRequest);
@@ -298,31 +305,35 @@ class LJCCityListEvents
     xhr.send(request);
   }
 
-  /// <summary>Process the web service response.</summary>
-  Response()
-  {
-    let response = this.DataResponse;
-    switch (response.Action.toLowerCase())
-    {
-      case "retrieve":
-        let cities = response.ResultItems;
-        let city = cities[0];
-        this.SetCityForm(city);
-        cityDialog.showModal();
-        break;
-    }
-  }
-
   /// <summary>Set the City Form values.</summary>
   SetCityForm(city)
   {
-    cityID.value = city.CityID;
+    LJC.SetValue("cityID", city.CityID);
     provinceID.value = city.ProvinceID;
     LJC.SetValue("name", city.Name);
     LJC.SetValue("description", city.Description);
     LJC.SetValue("cityFlag", city.CityFlag);
     LJC.SetValue("zipCode", city.ZipCode);
     LJC.SetValue("district", city.District);
+  }
+
+  /// <summary>Process the web service response.</summary>
+  ShowCityDetail(response)
+  {
+    switch (response.Action.toLowerCase())
+    {
+      case "retrieve":
+        let cities = response.ResultItems;
+        if (cities != null)
+        {
+          let city = cities[0];
+          this.SetCityForm(city);
+          // *** Next Statement *** Add
+          let cityDetailEvents = new LJCCityDetailEvents();
+          cityDialog.showModal();
+        }
+        break;
+    }
   }
 
   // ---------------

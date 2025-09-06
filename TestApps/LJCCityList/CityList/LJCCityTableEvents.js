@@ -3,14 +3,14 @@
 // Licensed under the MIT License.
 // LJCCityTableEvents.js
 // <script src="../../LJCJSCommon/LJCJSCommonLib.js"></script>
-//   Element(), Visibility()
-// <script src="City/LJCCityPageRequest.js"></script>
+//   AddEvent(), Element(), Visibility()
+// <script src="City/LJCCityTableRequest.js"></script>
 // <script src="LJCTable.js"></script>
 //   MoveNext(), MovePrevious(), SelectRow(), SelectColumnRow()
 
 // ***************
 /// <summary>Contains City HTML Table methods.</summary>
-//  Constructor: constructor(), AddEvent()
+//  Constructor: constructor(), AddEvents()
 //  Event Handlers: TableClick(), TableKeyDown()
 //  Page Event Handlers: NextPage(), PrevPage(), Page()
 //    UpdateLimitFlags(), UpdateTableRequest(), UpdateCityTable()

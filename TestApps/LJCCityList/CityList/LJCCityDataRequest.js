@@ -32,7 +32,8 @@ class LJCCityDataRequest
     this.ConfigFile = "DataConfigs.xml";
     this.ConfigName = "TestData";
     this.KeyColumns = new LJCDataColumns();
-    this.RequestItems = new LJCDataColumns();
+    //this.RequestItems = new LJCDataColumns();
+    this.RequestItems = new Cities();
     this.OrderByNames = [];
     this.PropertyNames = [];
     this.TableName = "";
