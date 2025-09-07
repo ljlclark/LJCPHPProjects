@@ -23,7 +23,6 @@
     // ---------------
     // Static Methods
 
-    // *** New Method ***
     /// <summary>
     ///   Creates a new typed object with existing standard object values.
     /// </summary>
@@ -103,6 +102,7 @@
 
     // Other Properties
 
+    // char(3)
     /// <summary>The Abbreviation value.</summary> 
     public ?string $Abbreviation;
 
@@ -114,7 +114,11 @@
     public const ColumnRegionID = "RegionID";
     public const ColumnName = "Name";
     public const ColumnDescription = "Description";
+
     public const ColumnAbbreviation = "Abbreviation";
+
+    /// <summary>The Abbreviation column length.</summary>
+    public const AbbreviationLength = 3;
 
     /// <summary>The Description column length.</summary>
     public const DescriptionLength = 100;
@@ -133,9 +137,10 @@
     // ---------------
     // Static Methods
 
-    // *** New Method ***
-    /// <summary>Create collection from array.</summary>
-    /// <param name="items">The items array.</param>
+    /// <summary>
+    ///   Create typed collection from deserialized JavasScript object.
+    /// </summary>
+    /// <param name="items">The items object.</param>
     /// <returns>The collection></returns.
     public static function Collection($items): ?Provinces
     {
@@ -145,10 +150,10 @@
         && LJC::HasElements($items->Items))
       {
         $retProvinces = new Provinces();
-        foreach ($$items->Items as $objDataObject)
+        foreach ($items->Items as $objDataObject)
         {
           // Create typed object from stdClass.
-          $province = Province::Copy($objDataObject[0]);
+          $province = Province::Copy($objDataObject);
           $retProvinces->AddObject($province);
         }
       }
@@ -156,10 +161,10 @@
     }
 
     // ---------------
-    // Data Object Methods
+    // Collection Methods
 
     // Adds an object and key value.
-    /// <include path='items/AddObject/*' file='Doc/LJCDbColumns.xml'/>
+    /// <include path='items/AddObject/*' file='Doc/Provinces.xml'/>
     public function AddObject(Province $item, $key = null)
     {
       if (null == $key)
@@ -183,7 +188,7 @@
     // Constructor Methods
 
     // The Constructor function.
-    /// <include path='items/construct/*' file='Doc/CityManger/CityManger.xml'/>
+    /// <include path='items/construct/*' file='Doc/ProvinceManger.xml'/>
     public function __construct($connectionValues, string $tableName = null)
     {
       if (!LJC::HasValue($tableName))
@@ -210,7 +215,7 @@
     }
   
     // Deletes the records for the provided values.
-    /// <include path='items/Delete/*' file='Doc/CityManger/CityManger.xml'/>
+    /// <include path='items/Delete/*' file='Doc/ProvinceManger.xml'/>
     public function Delete(LJCDbColumns $keyColumns): int
     {
       $retValue = 0;
@@ -221,7 +226,7 @@
     }
 
     // Loads the records for the provided values.
-    /// <include path='items/Load/*' file='Doc/CityManger/CityManger.xml'/>
+    /// <include path='items/Load/*' file='Doc/ProvinceManger.xml'/>
     public function Load(?LJCDbColumns $keyColumns, array $propertyNames = null
       , ?string $filter = null): ?Provinces
     {
@@ -255,7 +260,7 @@
     }
 
     // Retrieves the record for the provided values.
-    /// <include path='items/Retrieve/*' file='Doc/CityManger/CityManger.xml'/>
+    /// <include path='items/Retrieve/*' file='Doc/ProvinceManger.xml'/>
     public function Retrieve(LJCDbColumns $keyColumns
       , array $propertyNames = null): ?Region
     {

@@ -23,7 +23,6 @@
     // ---------------
     // Static Methods
 
-    // *** New Method ***
     /// <summary>
     ///   Creates a new typed object with existing standard object values.
     /// </summary>
@@ -145,9 +144,10 @@
     // ---------------
     // Static Methods
 
-    // *** New Method ***
-    /// <summary>Create collection from array.</summary>
-    /// <param name="items">The items array.</param>
+    /// <summary>
+    ///   Create typed collection from deserialized JavasScript object.
+    /// </summary>
+    /// <param name="items">The items object.</param>
     /// <returns>The collection></returns.
     public static function Collection($items): ?CitySections
     {
@@ -156,10 +156,10 @@
       if (isset($items)
         && LJC::HasElements($items->Items))
       {
-        foreach ($$items->Items as $objDataObject)
+        foreach ($items->Items as $objDataObject)
         {
           // Create typed object from stdClass.
-          $city = CitySection::Copy($objDataObject[0]);
+          $city = CitySection::Copy($objDataObject);
           $retCities->AddObject($city);
         }
       }
@@ -170,7 +170,7 @@
     // Collection Methods
 
     // Adds an object and key value.
-    /// <include path='items/AddObject/*' file='Doc/LJCDbColumns.xml'/>
+    /// <include path='items/AddObject/*' file='Doc/CitySections.xml'/>
     public function AddObject(City $item, $key = null)
     {
       if (null == $key)
@@ -194,7 +194,7 @@
     // Constructor Methods
 
     // The Constructor function.
-    /// <include path='items/construct/*' file='Doc/CityManger/CityManger.xml'/>
+    /// <include path='items/construct/*' file='Doc/CitySectionManger.xml'/>
     public function __construct($connectionValues, string $tableName = null)
     {
       if (!LJC::HasValue($tableName))
@@ -221,7 +221,7 @@
     }
   
     // Deletes the records for the provided values.
-    /// <include path='items/Delete/*' file='Doc/CityManger/CityManger.xml'/>
+    /// <include path='items/Delete/*' file='Doc/CitySectionManger.xml'/>
     public function Delete(LJCDbColumns $keyColumns): int
     {
       $retValue = 0;
@@ -232,7 +232,7 @@
     }
 
     // Loads the records for the provided values.
-    /// <include path='items/Load/*' file='Doc/CityManger/CityManger.xml'/>
+    /// <include path='items/Load/*' file='Doc/CitySectionManger.xml'/>
     public function Load(?LJCDbColumns $keyColumns, array $propertyNames = null
       , ?string $filter = null): ?CitySections
     {
@@ -266,7 +266,7 @@
     }
 
     // Retrieves the record for the provided values.
-    /// <include path='items/Retrieve/*' file='Doc/CityManger/CityManger.xml'/>
+    /// <include path='items/Retrieve/*' file='Doc/CitySectionManger.xml'/>
     public function Retrieve(LJCDbColumns $keyColumns
       , array $propertyNames = null): ?CitySection
     {
@@ -281,7 +281,7 @@
     }
 
     // Updates the records for the provided values.
-    /// <include path='items/Update/*' file='Doc/CityManger/CityManger.xml'/>
+    /// <include path='items/Update/*' file='Doc/CitySectionManger.xml'/>
     public function Update(LJCDbColumns $keyColumns, LJCDbColumns $dataColumns)
       : int
     {

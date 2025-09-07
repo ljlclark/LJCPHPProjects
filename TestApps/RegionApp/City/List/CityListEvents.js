@@ -33,7 +33,7 @@ class CityListEvents
   /// <param name="handler"></param>
   AddEvent(elementID, eventName, handler)
   {
-    let element = Common.Element(elementID);
+    let element = LJC.Element(elementID);
     if (element != null)
     {
       element.addEventListener(eventName, handler.bind(this));
@@ -70,7 +70,7 @@ class CityListEvents
       event.preventDefault();
 
       this.SelectRow(srcElement);
-      let menu = Common.Element("menu");
+      let menu = LJC.Element("menu");
       if (menu != null)
       {
         menu.style.top = `${event.pageY}px`;
@@ -124,7 +124,7 @@ class CityListEvents
     let success = true;
 
     // No selected row so do not allow delete or update.
-    if ("" == Common.GetValue("cityID"))
+    if ("" == LJC.GetValue("cityID"))
     {
       if ("Delete" == action || "Update" == action)
       {
@@ -135,14 +135,14 @@ class CityListEvents
     if (success)
     {
       // Set form ProgramAction.
-      let eListAction = Common.Element("listAction");
+      let eListAction = LJC.Element("listAction");
       if (eListAction != null)
       {
         eListAction.value = action;
       }
 
       // Submit the form.
-      let form = Common.Element("hiddenForm");
+      let form = LJC.Element("hiddenForm");
       form.submit();
     }
   }
@@ -213,7 +213,7 @@ class CityListEvents
     if (table != null)
     {
       // Clear highlight from previous row.
-      let prevRow = Common.TagElements(table, "TR")[this.CityRowIndex];
+      let prevRow = LJC.TagElements(table, "TR")[this.CityRowIndex];
       prevRow.style.backgroundColor = "";
 
       // Highlight current row.
@@ -237,14 +237,14 @@ class CityListEvents
     if (table != null)
     {
       // Set HTML table row index.
-      let cityRowIndex = Common.Element("cityRowIndex");
+      let cityRowIndex = LJC.Element("cityRowIndex");
       if (cityRowIndex != null)
       {
         cityRowIndex.value = this.CityRowIndex;
       }
 
       // Set HTML Table row CityID.
-      let cityID = Common.Element("cityID");
+      let cityID = LJC.Element("cityID");
       if (cityID != null)
       {
         let row = this.GetTableRow(srcElement);
@@ -261,7 +261,7 @@ class CityListEvents
   /// <param name="value">"visible" to show the element, "hidden" to hide.</param>
   SetVisibility(elementID, value)
   {
-    let element = Common.Element(elementID);
+    let element = LJC.Element(elementID);
     if (element != null)
     {
       element.style.visibility = value;

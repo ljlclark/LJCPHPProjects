@@ -26,7 +26,7 @@ class CityDetailEvents
   /// <param name="handler"></param>
   AddEvent(elementID, eventName, handler)
   {
-    let element = Common.Element(elementID);
+    let element = LJC.Element(elementID);
     if (element != null)
     {
       element.addEventListener(eventName, handler.bind(this));
@@ -45,7 +45,7 @@ class CityDetailEvents
     // Enter key clicks the "commit" button.
     if (13 == code)
     {
-      let button = Common.Element("commit");
+      let button = LJC.Element("commit");
       if (button != null)
       {
         button.click();
@@ -73,7 +73,7 @@ class CityDetailEvents
     if (success)
     {
       // Submit the form.
-      let form = Common.Element("cityForm");
+      let form = LJC.Element("cityForm");
       if (form != null)
       {
         form.action = "CityData.php";
@@ -90,12 +90,12 @@ class CityDetailEvents
   {
     let retValue = true;
 
-    Common.SetText(errorElementID, "*");
-    let value = Common.GetValue(elementID);
+    LJC.SetText(errorElementID, "*");
+    let value = LJC.GetValue(elementID);
     if ("" == value.trim())
     {
       retValue = false;
-      Common.SetText(errorElementID, "* Missing Value");
+      LJC.SetText(errorElementID, "* Missing Value");
     }
     return retValue;
   }
