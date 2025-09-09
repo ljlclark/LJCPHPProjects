@@ -23,14 +23,20 @@ class LJCCityListEvents
   // ---------------
   // Properties
 
-  CityTable;
+  CityTable = "";
 
   // The LJCCityTableEvents JS object.
   CityTableEvents;
 
-  CityTableID;
+  CityTableID = 0;
+
+  ConfigFile = "";
+
+  ConfigName = "";
 
   FocusTable;
+
+  IsNew = false;
 
   // ---------------
   // The Constructor functions.
@@ -39,6 +45,8 @@ class LJCCityListEvents
   constructor()
   {
     this.CityTableID = "cityTableItem";
+    this.ConfigFile = "DataConfigs.xml";
+    this.ConfigName = "TestData";
 
     // CityTable data.
     this.CityTable = new LJCTable(this.CityTableID, "menu");
@@ -152,7 +160,11 @@ class LJCCityListEvents
   /// </summary>
   Delete()
   {
-    this.SubmitDetail("Delete");
+    this.IsNew = false;
+    let cityRequest = this.CityRequest();
+    cityRequest.Action = "Delete";
+    cityRequest.KeyColumns = this.PrimaryKeyColumns();
+    this.DataRequest(cityRequest);
   }
 
   /// <summary>
@@ -160,20 +172,10 @@ class LJCCityListEvents
   /// </summary>
   Edit()
   {
-    let cityRequest = new LJCCityDataRequest();
+    this.IsNew = false;
+    let cityRequest = this.CityRequest();
     cityRequest.Action = "Retrieve";
-    cityRequest.ConfigFile = "DataConfigs.xml";
-    cityRequest.ConfigName = "TestData";
-
-    // Create key columns.
-    // Get key value from hidden form.
-    let keyColumns = new LJCDataColumns();
-    let dataColumn = new LJCDataColumn("CityID");
-    dataColumn.Value = rowCityID.value;
-    keyColumns.AddObject(dataColumn);
-    cityRequest.KeyColumns = keyColumns;
-
-    cityRequest.TableName = "City";
+    cityRequest.KeyColumns = this.PrimaryKeyColumns();
     this.DataRequest(cityRequest);
   }
 
@@ -182,12 +184,9 @@ class LJCCityListEvents
   /// </summary>
   New()
   {
-    let cityRequest = new LJCCityDataRequest();
-    cityRequest.Action = "New";
-    cityRequest.ConfigFile = "DataConfigs.xml";
-    cityRequest.ConfigName = "TestData";
-
-    cityRequest.TableName = "City";
+    this.IsNew = true;
+    let cityRequest = this.CityRequest();
+    cityRequest.Action = "Insert";
     this.DataRequest(cityRequest);
   }
 
@@ -222,6 +221,16 @@ class LJCCityListEvents
   // ---------------
   // Other Menu Methods
 
+  /// <summary>Creates the city request.</summary>
+  CityRequest()
+  {
+    let retCityRequest = new LJCCityDataRequest();
+    retCityRequest.ConfigFile = "DataConfigs.xml";
+    retCityRequest.ConfigName = "TestData";
+    retCityRequest.TableName = "City";
+    return retCityRequest;
+  }
+
   /// <summary>Retrieves the focus table events object.</summary>
   FocusTableEvents()
   {
@@ -240,50 +249,55 @@ class LJCCityListEvents
     return retTableEvents;
   }
 
+  /// <summary>Get the primary key columns.</summary>
+  PrimaryKeyColumns()
+  {
+    let retKeyColumns = new LJCDataColumns();
+
+    // Get key value from hidden form.
+    let dataColumn = new LJCDataColumn("CityID");
+    dataColumn.Value = rowCityID.value;
+    retKeyColumns.AddObject(dataColumn);
+    return retKeyColumns;
+  }
+
   /// <summary>Submit the hidden form listAction to CityDetail.php.</summary>
   /// <param name="action">The listAction type.</param>
-  SubmitDetail(action)
-  {
-    let success = true;
+  //SubmitDetail(action)
+  //{
+  //  let success = true;
 
-    // Get hidden form row ID.
-    if ("" == LJC.GetValue("rowID"))
-    {
-      // No selected row so do not allow delete or update.
-      if ("Delete" == action || "Update" == action)
-      {
-        success = false;
-      }
-    }
+  //  // Get hidden form row ID.
+  //  if ("" == LJC.GetValue("rowID"))
+  //  {
+  //    // No selected row so do not allow delete or update.
+  //    if ("Delete" == action || "Update" == action)
+  //    {
+  //      success = false;
+  //    }
+  //  }
 
-    if (success)
-    {
-      // Set hidden form listAction.
-      let eListAction = LJC.Element("listAction");
-      if (eListAction != null)
-      {
-        eListAction.value = action;
-      }
+  //  if (success)
+  //  {
+  //    // Set hidden form listAction.
+  //    let eListAction = LJC.Element("listAction");
+  //    if (eListAction != null)
+  //    {
+  //      eListAction.value = action;
+  //    }
 
-      // Submit the form.
-      rowID.value++;
-      let form = LJC.Element("hiddenForm");
-      form.submit();
-    }
-  }
+  //    // Submit the form.
+  //    rowID.value++;
+  //    let form = LJC.Element("hiddenForm");
+  //    form.submit();
+  //  }
+  //}
 
   // ---------------
   // Web Service Methods
 
-  CreateJSON(value)
-  {
-    let retJSON = "";
-
-    retJSON = JSON.stringify(value);
-    return retJSON;
-  }
-
   /// <summary>Call the web service.</summary>
+  // Called from Delete(), Edit(), New()
   DataRequest(cityRequest)
   {
     // Save a reference to this class for anonymous function.
@@ -311,7 +325,7 @@ class LJCCityListEvents
   SetCityForm(city)
   {
     LJC.SetValue("cityID", city.CityID);
-    provinceID.value = city.ProvinceID;
+    LJC.SetValue("provinceID", city.ProvinceID);
     LJC.SetValue("name", city.Name);
     LJC.SetValue("description", city.Description);
     LJC.SetValue("cityFlag", city.CityFlag);
@@ -320,6 +334,9 @@ class LJCCityListEvents
   }
 
   /// <summary>Process the web service response.</summary>
+  /// <remarks>
+  ///   Called from DataRequest() with LJCCityDataService response.
+  /// </remarks>
   ShowCityDetail(response)
   {
     switch (response.Action.toLowerCase())
@@ -330,8 +347,9 @@ class LJCCityListEvents
         {
           let city = cities[0];
           this.SetCityForm(city);
-          // *** Next Statement *** Add
           let cityDetailEvents = new LJCCityDetailEvents();
+          // *** Next Statement *** Add
+          cityDetailEvents.IsNew = this.IsNew;
           cityDialog.showModal();
         }
         break;

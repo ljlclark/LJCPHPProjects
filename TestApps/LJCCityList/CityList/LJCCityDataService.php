@@ -20,7 +20,7 @@
   //    Run()
   /// <group name="Response">Response Methods</group>
   //    CreateResponse(), 
-  /// <summary>Web Service for City table data.</summary>
+  /// <summary>Web Service for City entity data.</summary>
   class LJCCityDataService
   {
     // ---------------
@@ -190,7 +190,6 @@
         , value: strval($city->ProvinceID));
       $retDataColumns->Add("Name", value: $city->Name);
       $retDataColumns->Add("Description", value: $city->Description);
-      // *** Testing ***
       //$retDataColumns->Add("CityFlag", dataTypeName: "bool"
       //  , value: strval($city->CityFlag));
       $retDataColumns->Add("CityFlag", dataTypeName: "int"

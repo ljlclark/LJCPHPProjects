@@ -194,7 +194,6 @@ class LJCCityTableEvents
         // Set hidden form primary keys and CityTableRequest.
         saveThis.UpdateTableRequest()
 
-        // *** Next Statement *** Add
         saveThis.ListEvents.CityTable = cityTable;
         saveThis.ListEvents.FocusTable = cityTable;
       }

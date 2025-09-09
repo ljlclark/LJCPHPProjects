@@ -14,16 +14,18 @@ class LJCCityDetailEvents
   // Properties
 
   // The associated cancel button ID name.
-  CancelID;
+  CancelID = "";
 
   // The associated commit button ID name.
-  CommitID;
+  CommitID = "";
+
+  IsNew = false;
 
   // ---------------
   // The Constructor methods.
 
   /// <summary>Initializes the object instance.</summary>
-  constructor()
+  constructor(cityID = 0)
   {
     this.CityRequest = new LJCCityDataRequest();
     this.CityRequest.ConfigFile = "../DataConfigs.xml";
@@ -53,26 +55,34 @@ class LJCCityDetailEvents
   {
     let city = this.GetCityFormData();
     this.CityRequest.Action = "Update";
+    // *** Next Statement *** Add
+    if (this.IsNew)
+    {
+      this.CityRequest.Action = "Insert";
+    }
+    this.CityRequest.KeyColumns = this.PrimaryKeyColumns();
 
-    // Create key columns.
-    // Get key value from hidden form.
-    let keyColumns = new LJCDataColumns();
-    let dataColumn = new LJCDataColumn("CityID");
-    dataColumn.Value = rowCityID.value;
-    keyColumns.AddObject(dataColumn);
-    this.CityRequest.KeyColumns = keyColumns;
-
-    // *** Begin *** Add
     // Create request items.
     let cities = new Cities();
     cities.AddObject(city);
     this.CityRequest.RequestItems = cities;
-    // *** End   ***
 
     this.DataRequest(this.CityRequest);
 
     // If successful.
     cityDialog.close();
+  }
+
+  /// <summary>Get the primary key columns.</summary>
+  PrimaryKeyColumns()
+  {
+    let retKeyColumns = new LJCDataColumns();
+
+    // Get key value from hidden form.
+    let dataColumn = new LJCDataColumn("CityID");
+    dataColumn.Value = rowCityID.value;
+    retKeyColumns.AddObject(dataColumn);
+    return retKeyColumns;
   }
 
   // ---------------
