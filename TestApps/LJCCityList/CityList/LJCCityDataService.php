@@ -83,7 +83,7 @@
 
         case "insert":
           $this->Add();
-          //$result = $this->CreateResult();
+          $result = $this->CreateResult();
           break;
 
         case "retrieve":
@@ -106,7 +106,13 @@
     // Inserts the new items.
     private function Add()
     {
-
+      $this->SQL = "";
+      foreach ($this->RequestItems as $city)
+      {
+        $dataColumns = $this->DataColumns($city);
+        $this->AffectedCount = $this->CityManager->Add($dataColumns);
+        $this->SQL .= "\r\n{$this->CityManager->DataManager->SQL}";
+      }
     }
 
     // Deletes the selected items.

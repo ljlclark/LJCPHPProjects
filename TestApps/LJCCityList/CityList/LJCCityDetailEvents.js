@@ -85,6 +85,7 @@ class LJCCityDetailEvents
     let cityFlag = LJC.GetValue("cityFlag");
     let cityID = LJC.GetValue("cityID");
     let retCity = new City(provinceID, name, cityFlag, cityID);
+
     retCity.Description = LJC.GetValue("description");
     retCity.ZipCode = LJC.GetValue("zipCode");
     retCity.District = LJC.GetValue("district");

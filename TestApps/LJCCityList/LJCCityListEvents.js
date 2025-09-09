@@ -182,7 +182,13 @@ class LJCCityListEvents
   /// </summary>
   New()
   {
-    this.SubmitDetail("Add");
+    let cityRequest = new LJCCityDataRequest();
+    cityRequest.Action = "New";
+    cityRequest.ConfigFile = "DataConfigs.xml";
+    cityRequest.ConfigName = "TestData";
+
+    cityRequest.TableName = "City";
+    this.DataRequest(cityRequest);
   }
 
   /// <summary>Display the next page.</summary>
