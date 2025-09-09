@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright(c) Lester J. Clark and Contributors. -->
+<!-- Licensed under the MIT License. -->
+<!-- LJCDataColumn.xml -->
+<items>
+  <!-- Static Methods -->
+  <Copy>
+    <summary>
+      Creates a new object with existing object values.
+    </summary>
+    <param name="dataColumn">The existing object.</param>
+    <returns>The new copied object.</returns>
+  </Copy>
+  <GetDataType>
+    <summary>
+      Converts MySQL type names to JavaScript type names.
+    </summary>
+    <param name="mySQLTypeName"></param>
+    <returns>The JavaScript type name.</returns>
+  </GetDataType>
+  <!-- Constructor Methods -->
+  <constructor>
+    <summary>
+      Initializes a class instance.
+    </summary>
+    <param name="propertyName">The data object property name.</param>
+    <param name="columnName">The data source column name.</param>
+    <param name="renameAs">The data source rename value.</param>
+    <param name="dataTypeName">The data source data type name.</param>
+    <param name="value">The column value.</param>
+    <returns>The added column.</returns>
+  </constructor>
+</items>

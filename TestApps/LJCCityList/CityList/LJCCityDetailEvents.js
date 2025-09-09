@@ -107,10 +107,9 @@ class LJCCityDetailEvents
       // Get the AJAX response.
       if (LJC.HasText(this.responseText))
       {
-        //alert(`DetailEvents responseText: ${this.responseText}\r\n`);
+        alert(`DetailEvents responseText: ${this.responseText}\r\n`);
         let response = JSON.parse(this.responseText);
-        //alert(`DetailEvents responseSQL: ${response.SQL}`);
-        //saveThis.ShowCityDetail(response);
+        alert(`DetailEvents responseSQL: ${response.SQL}`);
       }
     }
     let request = JSON.stringify(cityRequest);

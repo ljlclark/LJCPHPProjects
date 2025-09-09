@@ -3,12 +3,24 @@
 // Licensed under the MIT License.
 // LJCCityDAL.js
 
-/// <summary>The Retion Data Access Layer Library</summary>
-/// LibNmae: LJCCityDAL
+/// <summary>The City Data Access Layer Library</summary>
+/// LibName: LJCCityDAL
 //  Classes:
 //    City, Cities
-//    CitySection, CitySections
-//    Region, Regions
+
+// A data object is a user defined data type that contains a group of
+// related values. Each contained value has a unique name and a data type.
+// It is a convenient way to represent a data entity.
+
+// Data objects simplify the organization of related data, creating a
+// structured and consistent way to manage information within an
+// application.
+
+// In object-oriented programming, a data object may also contain
+// methods that operate on or access the data it contains.
+
+// A data object can be reused across different parts of an application,
+// which saves development effort and ensures data consistency. 
 
 // ***************
 /// <summary>The City data object class.</summary>
@@ -18,51 +30,76 @@ class City
   // ---------------
   // Properties
 
-  CityID;
-  ProvinceID;
-  Name;
-  Description;
-  CityFlag;
-  ZipCode;
-  District;
+  /// <summary>The city primary key.</summary>
+  CityID = 0;
 
-  // Creates a new object with existing standard object values.
-  /// <include path='items/Copy/*' file='Doc/LJCDataColumn.xml'/>
-  static Copy(cityObject)
+  /// <summary>The province parent key.</summary>
+  ProvinceID = 0;
+
+  /// <summary>The unique city name.</summary>
+  Name = "";
+
+  /// <summary>The city description.</summary>
+  Description = "";
+
+  /// <summary>The city flag.</summary>
+  /// <remarks>1 = city, 0 = municipality.</remarks>
+  CityFlag = 0;
+
+  /// <summary>The city zip code.</summary>
+  ZipCode = 0;
+
+  /// <summary>The city district number.</summary>
+  District = 0;
+
+  // ---------------
+  // Static Methods
+
+  // Creates a new object with the supplied object values.
+  /// <include path='items/Copy/*' file='Doc/City.xml'/>
+  static Copy(objCity)
   {
     let retCity = new City();
 
+    // Update properties of new object from provided object.
     for (let propertyName in this)
     {
-      if (propertyName in cityObject)
+      if (propertyName in objCity)
       {
-        retCity[propertyname] = cityObject[propertyName];
+        retCity[propertyname] = objCity[propertyName];
       }
     }
     return retCity;
   }
 
   // ---------------
-  // The Constructor methods.
+  // Constructor methods.
 
-  /// <summary>Initializes the object instance.</summary>
+  // Initializes the object instance.
+  /// <include path='items/constructor/*' file='Doc/City.xml'/>
   constructor(provinceID, name, cityFlag = 0, cityID = 0)
   {
+    this.CityID = cityID;
     this.ProvinceID = provinceID;
     this.Name = name;
-    this.CityFlag = cityFlag;
-    this.CityID = cityID;
     this.Description = "";
-    this.ZipCode = "";
-    this.District = "";
+
+    this.CityFlag = cityFlag;
+    this.ZipCode = 0;
+    this.District = 0;
   }
 
+  // ---------------
+  // Data Object Methods
+
   /// <summary>Creates a clone of this object.</summary>
+  /// <returns>The new cloned object.</returns>
   Clone()
   {
     let retCity = new City(this.ProvinceID, this.Name, this.CityFlag
       , this.CityID)
     retCity.Description = this.Description;
+
     retCity.ZipCode = this.ZipCode;
     retCity.District = this.District;
     return retCity;
@@ -71,19 +108,20 @@ class City
 
 // ***************
 /// <summary>Represents a collection of city data objects.</summary>
-//  Add(), AddObject(), Clear(), Columns(), GetIndex(), PropertytNames()
-//  Remove(), Retrieve(), RetrieveWithIndex()
+//  Collection: Add(), AddObject(), Clear(), Columns(), GetIndex(),
+//  Names(), Remove(), Retrieve(), RetrieveWithIndex()
 class Cities
 {
   // ---------------
   // Properties
 
+  // The internal collection item array.
   Items = [];
 
   // ---------------
-  // Methods
+  // Collection Methods
 
-  // Creates and adds the data object to the list.
+  // Creates and adds the item to the list.
   /// <include path='items/Add/*' file='Doc/Cities.xml'/>
   Add(provinceID, name, cityFlag = 0, cityID = 0)
   {
@@ -92,7 +130,7 @@ class Cities
     return retCity;
   }
 
-  /// <summary>Adds the supplied column to the list.</summary>
+  /// <summary>Adds the supplied city to the list.</summary>
   /// <param name="city">The City data object.</param>
   AddObject(city)
   {
@@ -105,9 +143,26 @@ class Cities
     this.Items = [];
   }
 
-  // Gets the data objects that match the property names.
-  /// <include path='items/Columns/*' file='Doc/Cities.xml'/>
-  Columns(names)
+  // Gets the index of the item with the supplied name.
+  /// <include path='items/GetIndex/*' file='Doc/Cities.xml'/>
+  GetIndex(name)
+  {
+    let retIndex = -1;
+
+    for (let index = 0; index < this.Items.length; index++)
+    {
+      if (this.Items.Name == name)
+      {
+        retIndex = index;
+        break;
+      }
+    }
+    return retIndex;
+  }
+
+  // Gets the items that match the supplied names.
+  /// <include path='items/Items/*' file='Doc/Cities.xml'/>
+  Items(names)
   {
     let retCities = null;
 
@@ -131,23 +186,6 @@ class Cities
     return retCities;
   }
 
-  // Gets the data object with the supplied property name.
-  /// <include path='items/GetIndex/*' file='Doc/Cities.xml'/>
-  GetIndex(name)
-  {
-    let retIndex = -1;
-
-    for (let index = 0; index < this.Items.length; index++)
-    {
-      if (this.Items.Name == name)
-      {
-        retIndex = index;
-        break;
-      }
-    }
-    return retIndex;
-  }
-
   /// <summary>Gets an array of names.</summary>
   /// <returns>The name array.</returns>
   Names()
@@ -162,8 +200,8 @@ class Cities
     return retNames;
   }
 
-  // Removes the column object with the supplied property name.
-  /// <include path='items/Remove/*' file='Doc/Cities.xml'/>
+  /// <summary>Removes the item with the supplied name.</summary>
+  /// <param name="name">The data object name.</param>
   Remove(name)
   {
     let itemIndex = this.GetIndex(name);
@@ -174,8 +212,8 @@ class Cities
     }
   }
 
-  // Retrieves the column object with the supplied property name.
-  /// <include path='items/Retrieve/*' file='Doc/LJCDataColumns.xml'/>
+  // Retrieves the item with the supplied name.
+  /// <include path='items/Retrieve/*' file='Doc/Cities.xml'/>
   Retrieve(name)
   {
     let retCity = this.Items.find(item =>
@@ -183,13 +221,14 @@ class Cities
     return retCity;
   }
 
-  // Retrieves the data object with the supplied index.
+  // Retrieves the item at the supplied index.
   /// <include path='items/RetrieveWithIndex/*' file='Doc/Cities.xml'/>
   RetrieveWithIndex(index)
   {
     let retCity = null;
 
-    if (index >= 0 && this.Items.length > index)
+    if (index >= 0
+      && this.Items.length > index)
     {
       retCity = this.Items[index];
     }

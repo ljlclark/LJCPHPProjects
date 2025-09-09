@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright(c) Lester J. Clark and Contributors. -->
+<!-- Licensed under the MIT License. -->
+<!-- City.xml -->
+<items>
+  <!-- Static Methods -->
+  <Copy>
+    <summary>Creates a new object with the supplied object values.</summary>
+    <param name="objCity">The existing object.</param>
+    <returns>The new copied object.</returns>
+  </Copy>
+  <!-- Constructor Methods -->
+  <constructor>
+    <summary>Initializes the object instance.</summary>
+    <param name="provinceID">The province ID parent key.</param>
+    <param name="name">The unique city name.</param>
+    <param name="cityFlag">
+      The optional city flag where 1 = city and 0 = municipality.
+    </param>
+    <param name="cityID">The optional city ID primary key.</param>
+  </constructor>
+</items>

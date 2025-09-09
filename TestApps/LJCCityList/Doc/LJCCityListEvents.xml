@@ -17,20 +17,4 @@
     <summary>The Document "keydown" handler method.</summary>
     <param name="event">The Target event.</param>
   </DocumentKeyDown>
-  <!-- Page Event Handlers -->
-  <UpdateCityTable>
-    <summary>Updates the CityTable ETable and Keys values.</summary>
-    <param name="saveThis">A reference to this class.</param>
-    <param name="keys">The key values.</param>
-    <returns>The current row index.</returns>
-    <remarks>Creates the initial CityTable object.</remarks >
-  </UpdateCityTable>
-  <UpdateLimitsFlags>
-    <summary>Updates the BeginningOfData and EndOfData flags.</summary>
-    <param name="cityTable">The CityTable object.</param>
-    <remarks>
-      Sets the CurrentRowIndex for the next or previous page and clears the
-      IsNextPage or IsPrevPage flags.
-    </remarks >
-  </UpdateLimitsFlags>
 </items>

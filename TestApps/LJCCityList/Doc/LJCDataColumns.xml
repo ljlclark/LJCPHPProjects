@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright(c) Lester J. Clark and Contributors. -->
+<!-- Licensed under the MIT License. -->
+<!-- LJCDbColumns.xml -->
+<items>
+  <Add>
+    <summary>
+      Creates and adds the column object to the list.
+    </summary>
+    <param name="propertyName">The data object property name.</param>
+    <param name="columnName">The data source column name.</param>
+    <param name="renameAs">The data source rename value.</param>
+    <param name="dataTypeName">The data source data type name.</param>
+    <param name="value">The column value.</param>
+    <returns>The added column.</returns>
+  </Add>
+  <Columns>
+    <summary>
+      Gets the column objects that match the property names.
+    </summary>
+    <param name="propertyNames">The data object property names array.</param>
+    <returns>The LJCDataColumns collection.</returns>
+  </Columns>
+  <GetIndex>
+    <summary>
+      Gets the column object with the supplied property name.
+    </summary>
+    <param name="propertyName">The data object property name.</param>
+    <returns>The column object index.</returns>
+  </GetIndex>
+  <Remove>
+    <summary>
+      Removes the column object with the supplied property name.
+    </summary>
+    <param name="propertyName">The data object property name.</param>
+  </Remove>
+  <Retrieve>
+    <summary>
+      Retrieves the column object with the supplied property name.
+    </summary>
+    <param name="propertyName">The data object property name.</param>
+    <returns>The column object.</returns>
+  </Retrieve>
+  <RetrieveWithIndex>
+    <summary>
+      Retrieves the column object at the supplied index.
+    </summary>
+    <param name="propertyName">The data object property name.</param>
+    <returns>The column object.</returns>
+  </RetrieveWithIndex>
+</items>

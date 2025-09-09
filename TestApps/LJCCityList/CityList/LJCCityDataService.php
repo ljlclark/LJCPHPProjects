@@ -18,7 +18,7 @@
   // ***************
   /// <group name="Entry">Entry Methods</group>
   //    Run()
-  /// <group name="Response">Entry Methods</group>
+  /// <group name="Response">Response Methods</group>
   //    CreateResponse(), 
   /// <summary>Web Service for City table data.</summary>
   class LJCCityDataService
@@ -55,7 +55,6 @@
     }  // Run()
 
     // Get connection values for a DataConfig name.
-    // Called from Run()
     private function GetConnectionValues(string $configName)
     {
       $configFile = $this->ConfigFile;
@@ -65,12 +64,11 @@
     }  // GetConnectionValues()
 
     // ---------------
-    // Create Response (Main) Methods
+    // Response Methods
 
     /// <summary>Creates the HTML Table.</summary>
     /// <returns>The response JSON text.</returns.
     /// <ParentGroup>Response</ParentGroup>
-    // Called from Run().
     public function CreateResponse()
     {
       $retResponse = "";
@@ -79,9 +77,13 @@
       switch (strtolower($this->Action))
       {
         case "delete":
+          $this->Delete();
+          //$result = $this->CreateResult();
           break;
 
         case "insert":
+          $this->Add();
+          //$result = $this->CreateResult();
           break;
 
         case "retrieve":
@@ -101,32 +103,19 @@
       return $retResponse;
     }
 
-    /// <summary>Clear the Result properties.</summary>
-    private function ClearResultValues()
+    // Inserts the new items.
+    private function Add()
     {
-      $action = $this->Action;
-      $this->Action = "";
-      $this->AffectedCount = 0;
-      $this->ResultItems = new Cities();
-      $this->SQL = "";
-      $retResult = $this->CreateResult();
-      $this->Action = $action;
-      return $retResult;
+
     }
 
-    /// <summary>Create the Result object.</summary>
-    private function CreateResult()
+    // Deletes the selected items.
+    private function Delete()
     {
-      $retResult = new stdClass();
-      $retResult->Action = $this->Action;
-      $retResult->AffectedCount = $this->AffectedCount;
-      $items = LJC::ItemsToArray($this->ResultItems);
-      $retResult->ResultItems = $items;
-      $retResult->SQL = $this->SQL;
-      return $retResult;
+
     }
 
-    /// <summary>Get the requested item.</summary>
+    // Get the requested item.
     private function Retrieve()
     {
       if ($this->OrderByNames != null)
@@ -142,12 +131,77 @@
       $this->SQL = $this->CityManager->DataManager->SQL;
     }
 
-    /// <summary>Update the requested item.</summary>
+    // Updates the requested items.
     private function Update()
     {
-      $this->AffectedCount = $this->CityManager->Update($this->KeyColumns
-        , $this->PropertyNames);
-      $this->SQL = $this->CityManager->DataManager->SQL;
+      $this->SQL = "";
+      foreach ($this->RequestItems as $city)
+      {
+        $keyColumns = $this->KeyColumns($city);
+        $dataColumns = $this->DataColumns($city);
+        $this->AffectedCount = $this->CityManager->Update($keyColumns
+          , $dataColumns);
+        $this->SQL .= "\r\n{$this->CityManager->DataManager->SQL}";
+      }
+    }
+
+    // ---------------
+    // Other Methods
+
+    // Create the Result object.
+    private function CreateResult()
+    {
+      $retResult = new stdClass();
+      $retResult->Action = $this->Action;
+      $retResult->AffectedCount = $this->AffectedCount;
+      $items = LJC::ItemsToArray($this->ResultItems);
+      $retResult->ResultItems = $items;
+      $retResult->SQL = $this->SQL;
+      return $retResult;
+    }
+
+    // Clear the Result properties.
+    private function ClearResultValues()
+    {
+      $action = $this->Action;
+      $this->Action = "";
+      $this->AffectedCount = 0;
+      $this->ResultItems = new Cities();
+      $this->SQL = "";
+      $retResult = $this->CreateResult();
+      $this->Action = $action;
+      return $retResult;
+    }
+
+    // Create the data columns.
+    private function DataColumns($city)
+    {
+      $retDataColumns = new LJCDbColumns();
+
+      $retDataColumns->Add("CityID", dataTypeName: "int"
+        , value: strval($city->CityID));
+      $retDataColumns->Add("ProvinceID", dataTypeName: "int"
+        , value: strval($city->ProvinceID));
+      $retDataColumns->Add("Name", value: $city->Name);
+      $retDataColumns->Add("Description", value: $city->Description);
+      // *** Testing ***
+      //$retDataColumns->Add("CityFlag", dataTypeName: "bool"
+      //  , value: strval($city->CityFlag));
+      $retDataColumns->Add("CityFlag", dataTypeName: "int"
+        , value: strval($city->CityFlag));
+      $retDataColumns->Add("ZipCode", value: $city->ZipCode);
+      $retDataColumns->Add("District", value: strval($city->District));
+      return $retDataColumns;
+    }
+
+    // Create the key columns.
+    private function KeyColumns($city)
+    {
+      $retKeyColumns = new LJCDbColumns();
+
+      $retKeyColumns->Add("CityID", dataTypeName: "int"
+        , value: strval($city->CityID));
+      return $retKeyColumns;
     }
 
     // ---------------
@@ -168,14 +222,14 @@
     /// <summary>The item unique keys.</summary>
     public LJCDbColumns $KeyColumns;
 
-    /// <summary>The City request DataObjects.</summary>
-    public Cities $RequestItems;
-
     /// <summary>The OrderBy names.</summary>
     public ?array $OrderByNames;
 
     /// <summary>The OrderBy names.</summary>
     public ?array $PropertyNames;
+
+    /// <summary>The City request DataObjects.</summary>
+    public Cities $RequestItems;
 
     /// <summary>The table name.</summary>
     public string $TableName;
@@ -191,19 +245,5 @@
 
     /// <summary>The executed SQL statement.</summary>
     public string $SQL;
-
-    // A data object is a user defined data type that contains a group of
-    // related values. Each contained value has a unique name and a data type.
-    // It is a convenient way to represent a data entity.
-
-    // Data objects simplify the organization of related data, creating a
-    // structured and consistent way to manage information within an
-    // application.
-
-    // In object-oriented programming, a data object may also contain
-    // methods (procedures) that operate on or access the data it contains. 
-
-    // A data object can be reused across different parts of an application,
-    // which saves development effort and ensures data consistency. 
   }
 ?>

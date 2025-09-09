@@ -10,7 +10,6 @@
 //   MoveNext(), MovePrevious(), RowCount(), SelectRow(), SelectColumnRow()
 // <script src="CityList/LJCCityDataRequest.js"></script>
 
-
 // ***************
 /// <summary>Contains CityList event handlers.</summary>
 //  Add Events: AddEvents(), AddEvent()
@@ -31,13 +30,7 @@ class LJCCityListEvents
 
   CityTableID;
 
-  // The data service response.
-  //DataResponse;
-
   FocusTable;
-  //IsNextPage;
-  //IsPrevPage;
-  UseNew;
 
   // ---------------
   // The Constructor functions.
@@ -220,6 +213,9 @@ class LJCCityListEvents
     cityEvents.Page();
   }
 
+  // ---------------
+  // Other Menu Methods
+
   /// <summary>Retrieves the focus table events object.</summary>
   FocusTableEvents()
   {
@@ -339,24 +335,6 @@ class LJCCityListEvents
   // ---------------
   // Table Column Methods
 
-  /// <summary>Retrieves the selected table events object.</summary>
-  SelectedTableEvents(eColumn)
-  {
-    let retTable = null;
-
-    let eTable = LJCTable.GetTable(eColumn);
-    if (eTable != null)
-    {
-      switch (eTable.id)
-      {
-        case this.CityTableID:
-          retTable = this.CityTableEvents;
-          break;
-      }
-    }
-    return retTable;
-  }
-
   /// <summary>Gets the selected LJCTable object.</summary>
   /// <param name="eColumn">The table column element.</param>
   SelectedTable(eColumn)
@@ -374,5 +352,23 @@ class LJCCityListEvents
       }
     }
     return retLJCTable;
+  }
+
+  /// <summary>Retrieves the selected table events object.</summary>
+  SelectedTableEvents(eColumn)
+  {
+    let retTable = null;
+
+    let eTable = LJCTable.GetTable(eColumn);
+    if (eTable != null)
+    {
+      switch (eTable.id)
+      {
+        case this.CityTableID:
+          retTable = this.CityTableEvents;
+          break;
+      }
+    }
+    return retTable;
   }
 }

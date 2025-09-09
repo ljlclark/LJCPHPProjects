@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright(c) Lester J. Clark and Contributors. -->
+<!-- Licensed under the MIT License. -->
+<!-- Cities.xml -->
+<items>
+  <!-- Collection Methods -->
+  <Add>
+    <summary>Creates and adds the data object to the list.</summary>
+    <param name="provinceID">The province ID parent key.</param>
+    <param name="name">The unique city name.</param>
+    <param name="cityFlag">
+      The optional city flag where 1 = city and 0 = municipality.
+    </param>
+    <param name="cityID">The optional city ID primary key.</param>
+  </Add>
+  <GetIndex>
+    <summary>Gets the index of the item with the supplied name.</summary>
+    <param name="name">The data object name.</param>
+    <returns>The data object index.</returns>
+  </GetIndex>
+  <Items>
+    <summary>Gets the items that match the supplied names.</summary>
+    <param name="names">The data object names array.</param>
+    <returns>The Cities collection.</returns>
+    <remarks>
+      Creates the collection of cities with names that match the supplied
+      names list.
+    </remarks>
+  </Items>
+  <Retrieve>
+    <summary>
+      Retrieves the column object with the supplied name.
+    </summary>
+    <param name="name">The data object name.</param>
+    <returns>
+      Returns the data object with the supplied name.
+    </returns>
+  </Retrieve>
+  <RetrieveWithIndex>
+    <summary>Retrieves the data object at the supplied index.</summary>
+    <param name="index">The collection index value.</param>
+    <returns>
+      Returns the data object at the supplied index.
+    </returns>
+  </RetrieveWithIndex>
+</items>
