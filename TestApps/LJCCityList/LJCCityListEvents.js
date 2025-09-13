@@ -23,12 +23,14 @@ class LJCCityListEvents
   // ---------------
   // Properties
 
+  CityDetailEvents;
+
   CityTable = "";
 
   // The LJCCityTableEvents JS object.
   CityTableEvents;
 
-  CityTableID = 0;
+  CityTableID = "";
 
   ConfigFile = "";
 
@@ -36,28 +38,30 @@ class LJCCityListEvents
 
   FocusTable;
 
+  // *** Add ***
   IsNew = false;
 
   // ---------------
   // The Constructor functions.
 
   /// <summary>Initializes the object instance.</summary>
-  constructor()
+  constructor(cityTableID, configName = "", configFile = "DataConfigs.xml")
   {
-    this.CityTableID = "cityTableItem";
-    this.ConfigFile = "DataConfigs.xml";
-    this.ConfigName = "TestData";
+    this.CityTableID = cityTableID;
+    this.ConfigName = configName;
+    this.ConfigFile = configFile;
 
     // CityTable data.
     this.CityTable = new LJCTable(this.CityTableID, "menu");
     this.FocusTable = null;
 
     // CityTable events.
-    this.CityTableEvents = new LJCCityTableEvents(this, "menu");
+    this.CityTableEvents = new LJCCityTableEvents(this, "menu", configName
+      , configFile);
     this.CityTableEvents.TableRequest.Limit = 20;
 
-    //this.IsNextPage = false;
-    //this.IsPrevPage = false;
+    this.CityDetailEvents = new LJCCityDetailEvents();
+
     this.AddEvents();
   }
 
@@ -224,10 +228,8 @@ class LJCCityListEvents
   /// <summary>Creates the city request.</summary>
   CityRequest()
   {
-    let retCityRequest = new LJCCityDataRequest();
-    retCityRequest.ConfigFile = "DataConfigs.xml";
-    retCityRequest.ConfigName = "TestData";
-    retCityRequest.TableName = "City";
+    let retCityRequest = new LJCCityDataRequest("TestData"
+      , "../DataConfigs.xml");
     return retCityRequest;
   }
 
@@ -261,38 +263,6 @@ class LJCCityListEvents
     return retKeyColumns;
   }
 
-  /// <summary>Submit the hidden form listAction to CityDetail.php.</summary>
-  /// <param name="action">The listAction type.</param>
-  //SubmitDetail(action)
-  //{
-  //  let success = true;
-
-  //  // Get hidden form row ID.
-  //  if ("" == LJC.GetValue("rowID"))
-  //  {
-  //    // No selected row so do not allow delete or update.
-  //    if ("Delete" == action || "Update" == action)
-  //    {
-  //      success = false;
-  //    }
-  //  }
-
-  //  if (success)
-  //  {
-  //    // Set hidden form listAction.
-  //    let eListAction = LJC.Element("listAction");
-  //    if (eListAction != null)
-  //    {
-  //      eListAction.value = action;
-  //    }
-
-  //    // Submit the form.
-  //    rowID.value++;
-  //    let form = LJC.Element("hiddenForm");
-  //    form.submit();
-  //  }
-  //}
-
   // ---------------
   // Web Service Methods
 
@@ -305,19 +275,31 @@ class LJCCityListEvents
     let xhr = new XMLHttpRequest();
     xhr.open("POST", "CityList/LJCCityDataService.php");
     xhr.setRequestHeader("Content-Type", "application/json");
+
     xhr.onload = function ()
     {
       // Get the AJAX response.
       if (LJC.HasText(this.responseText))
       {
-        alert(`ListEvents responseText: ${this.responseText}\r\n`);
-        let response = JSON.parse(this.responseText);
-        //alert(`ListEvents responseSQL: ${response.SQL}`);
+        let text = "LJCCityListEvents.DataRequest() this.responseText";
+        LJC.Message(text, this.responseText);
+
+        let response = LJC.ParseJSON(this.responseText);
+
+        text = "LJCCityListEvents.DataRequest() response.DebugText";
+        LJC.Message(text, response.DebugText);
+        text = "LJCCityListEvents.DataRequest() response.SQL";
+        LJC.Message(text, response.SQL);
+
         saveThis.ShowCityDetail(response);
       }
     }
-    let request = JSON.stringify(cityRequest);
-    //alert(`ListEvents request: ${request}`);
+
+    let request = LJC.CreateJSON(cityRequest);
+
+    let text = "LJCCityListEvents.DataRequest() request";
+    LJC.Message(text, request);
+
     xhr.send(request);
   }
 
@@ -347,9 +329,8 @@ class LJCCityListEvents
         {
           let city = cities[0];
           this.SetCityForm(city);
-          let cityDetailEvents = new LJCCityDetailEvents();
           // *** Next Statement *** Add
-          cityDetailEvents.IsNew = this.IsNew;
+          this.CityDetailEvents.IsNew = this.IsNew;
           cityDialog.showModal();
         }
         break;

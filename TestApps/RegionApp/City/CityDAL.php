@@ -36,17 +36,29 @@
       {
         $retCity = new City($objCity->Name);
 
+        // Look for properties of standard object in typed object.
         foreach ($objCity as $propertyName => $value)
         {
           if (property_exists($retCity, $propertyName))
           {
-            if (is_int($retCity->$propertyName))
+            // Update new typed object properties from the standard object.
+            $success = false;
+            $cityValue = $retCity->$propertyName;
+            $objValue = $objCity->$propertyName;
+            if (is_int($cityValue))
             {
-              $retCity->$propertyName = (int)$value;
+              $retCity->$propertyName = (int)$objValue;
+              $success = true;
             }
-            else
+            if (!$success
+              && is_float($cityValue))
             {
-              $retCity->$propertyName = $value;
+              $retCity->$propertyName = (float)$objValue;
+              $success = true;
+            }
+            if (!$success)
+            {
+              $retCity->$propertyName = $objValue;
             }
           }
         }
@@ -58,11 +70,12 @@
     // Constructor Methods
 
     /// <summary>Initializes a class instance.</summary>
-    public function __construct()
+    public function __construct($name = "", $provinceID = 0)
     {
+      $this->Name = $name;
+      $this->ProvinceID = $provinceID;
+
       $this->CityID = 0;
-      $this->ProvinceID = 0;
-      $this->Name = "";
       $this->Description = null;
 
       $this->CityFlag = 0;

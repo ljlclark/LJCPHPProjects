@@ -19,18 +19,16 @@ class LJCCityDetailEvents
   // The associated commit button ID name.
   CommitID = "";
 
+  // *** Add ***
   IsNew = false;
 
   // ---------------
   // The Constructor methods.
 
   /// <summary>Initializes the object instance.</summary>
-  constructor(cityID = 0)
+  constructor()
   {
-    this.CityRequest = new LJCCityDataRequest();
-    this.CityRequest.ConfigFile = "../DataConfigs.xml";
-    this.CityRequest.ConfigName = "TestData";
-    this.CityRequest.TableName = "City";
+    this.CityRequest = new LJCCityDataRequest("TestData", "../DataConfigs.xml");
     this.AddEvents();
   }
 
@@ -51,9 +49,10 @@ class LJCCityDetailEvents
     cityDialog.close();
   }
 
+  /// <summary>Update data and close dialog.</summary>
   CommitClick(event)
   {
-    let city = this.GetCityFormData();
+    let city = this.CityFormData();
     this.CityRequest.Action = "Update";
     // *** Next Statement *** Add
     if (this.IsNew)
@@ -86,9 +85,10 @@ class LJCCityDetailEvents
   }
 
   // ---------------
-  // Event Handlers
+  // Other Event Handler Methods
 
-  GetCityFormData()
+  // Creates a City object from the form data.
+  CityFormData()
   {
     let provinceID = LJC.GetValue("provinceID");
     let name = LJC.GetValue("name");
@@ -97,9 +97,22 @@ class LJCCityDetailEvents
     let retCity = new City(provinceID, name, cityFlag, cityID);
 
     retCity.Description = LJC.GetValue("description");
-    retCity.ZipCode = LJC.GetValue("zipCode");
     retCity.District = LJC.GetValue("district");
+    retCity.ZipCode = LJC.GetValue("zipCode");
     return retCity;
+  }
+
+  // Clears the City form data.
+  ClearCityFormData()
+  {
+    LJC.SetValue("cityID", "0");
+    LJC.SetValue("provinceID", "");
+    LJC.SetValue("name", "");
+
+    LJC.SetValue("cityFlag", "0");
+    LJC.SetValue("description", "");
+    LJC.SetValue("district", "0");
+    LJC.SetValue("zipCode", "0");
   }
 
   // ---------------
@@ -113,18 +126,29 @@ class LJCCityDetailEvents
     let xhr = new XMLHttpRequest();
     xhr.open("POST", "CityList/LJCCityDataService.php");
     xhr.setRequestHeader("Content-Type", "application/json");
+
     xhr.onload = function ()
     {
       // Get the AJAX response.
       if (LJC.HasText(this.responseText))
       {
-        alert(`DetailEvents responseText: ${this.responseText}\r\n`);
-        let response = JSON.parse(this.responseText);
-        alert(`DetailEvents responseSQL: ${response.SQL}`);
+        let text = "LJCCityDetailEvents.DataRequest() this.responseText";
+        LJC.Message(text, this.responseText);
+
+        let response = LJC.ParseJSON(this.responseText);
+
+        text = "LJCCityDetailEvents.DataRequest() response.DebugText";
+        LJC.Message(text, response.DebugText);
+        text = "LJCCityDetailEvents.DataRequest() response.SQL";
+        LJC.Message(text, response.SQL);
       }
     }
-    let request = JSON.stringify(cityRequest);
-    //alert(`DetailEvents request: ${request}`);
+
+    let request = LJC.CreateJSON(cityRequest);
+
+    let text = "LJCCityDetailEvents.DataRequest() request";
+    LJC.Message(text, request);
+
     xhr.send(request);
   }
 }

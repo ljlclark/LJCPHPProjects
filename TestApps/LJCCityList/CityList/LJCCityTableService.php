@@ -40,7 +40,7 @@
       // Parameters are passed from a POST with JSON data.
       header("Content-Type: application/json; charset=UTF-8");
       $value = file_get_contents('php://input');
-      $pageData = json_decode($value);
+      $pageData = LJC::ParseJSON($value);
 
       // Parse input data.
       $this->Action = $pageData->Action;
@@ -112,7 +112,7 @@
         $response->Keys = $keyArray;
         $response->SQL = $this->SQL;
       }
-      $retResponse = json_encode($response);
+      $retResponse = LJC::CreateJSON($response);
       return $retResponse;
     } // CreateResponse()
 
@@ -188,6 +188,8 @@
     private function SetResponse()
     {
       $retResponse = new stdClass();
+      $retResponse->ServiceName = "LJCCityTable";
+      $retResponse->MessageEncoding = "JSON";
       $retResponse->Keys = [];
       $retResponse->SQL = "";
       $retResponse->HTMLTable = "";

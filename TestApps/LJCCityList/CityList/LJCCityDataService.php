@@ -31,26 +31,35 @@
     /// <ParentGroup>Entry</ParentGroup>
     public function Run(): void
     {
+      // Initialize Response properties.
+      $this->ServiceName = "LJCCityData";
+      $this->MessageEncoding = "JSON";
+      $this->AffectedCount = 0;
+      $this->DebugText = "";
+      $this->ResultCities = null;
+      $this->ResultItems = [];
+      $this->SQL = "";
+
       // Parameters are passed from a POST with JSON data.
       header("Content-Type: application/json; charset=UTF-8");
       $value = file_get_contents('php://input');
-      //print_r("CityDataService input: {$value}");
-      $itemData = json_decode($value);
+      $request = LJC::ParseJSON($value);
 
-      // Parse input data.
-      $this->Action = $itemData->Action;
-      $this->ConfigFile = $itemData->ConfigFile;
-      $this->ConfigName = $itemData->ConfigName;
-      $this->KeyColumns = LJCDbColumns::Collection($itemData->KeyColumns);
-      $this->RequestItems = Cities::Collection($itemData->RequestItems);
-      $this->OrderByNames = $itemData->OrderByNames;
-      $this->PropertyNames = $itemData->PropertyNames;
-      $this->TableName = $itemData->TableName;
+      // Initialize Request properties.
+      $this->Action = $request->Action;
+      $this->ConfigFile = $request->ConfigFile;
+      $this->ConfigName = $request->ConfigName;
+      $this->KeyColumns = LJCDbColumns::Collection($request->KeyColumns);
+
+      $this->RequestItems = LJC::Collection($request->RequestItems);
+      $this->OrderByNames = $request->OrderByNames;
+      $this->PropertyNames = $request->PropertyNames;
+      $this->TableName = $request->TableName;
 
       $connectionValues = $this->GetConnectionValues($this->ConfigName);  
       $this->CityManager = new CityManager($connectionValues, $this->TableName);
 
-      $response = $this->CreateResponse();
+      $response = $this->GetResponse();
       echo($response);
     }  // Run()
 
@@ -69,36 +78,36 @@
     /// <summary>Creates the HTML Table.</summary>
     /// <returns>The response JSON text.</returns.
     /// <ParentGroup>Response</ParentGroup>
-    public function CreateResponse()
+    public function GetResponse()
     {
       $retResponse = "";
 
-      $result = $this->ClearResultValues();
+      $response = $this->ClearResponseValues();
       switch (strtolower($this->Action))
       {
         case "delete":
           $this->Delete();
-          //$result = $this->CreateResult();
+          //$response = $this->CreateResponse();
           break;
 
         case "insert":
           $this->Add();
-          $result = $this->CreateResult();
+          $response = $this->CreateResponse();
           break;
 
         case "retrieve":
           $this->Retrieve();
-          $result = $this->CreateResult();
+          $response = $this->CreateResponse();
           break;
 
         case "update":
           $this->Update();
-          $result = $this->CreateResult();
+          $response = $this->CreateResponse();
           break;
       }
-      if ($result->Action != "")
+      if ($response->Action != "")
       {
-        $retResponse = json_encode($result);
+        $retResponse = LJC::CreateJSON($response);
       }
       return $retResponse;
     }
@@ -128,11 +137,12 @@
       {
         $this->CityManager->OrderByNames = $this->OrderByNames;
       }
-      $resultItem = $this->CityManager->Retrieve($this->KeyColumns
+      $this->ResultCities = new Cities();
+      $resultCity = $this->CityManager->Retrieve($this->KeyColumns
         , $this->PropertyNames);
-      if ($resultItem != null)
+      if ($resultCity != null)
       {
-        $this->ResultItems->AddObject($resultItem);
+        $this->ResultCities->AddObject($resultCity);
       }
       $this->SQL = $this->CityManager->DataManager->SQL;
     }
@@ -155,28 +165,32 @@
     // Other Methods
 
     // Create the Result object.
-    private function CreateResult()
+    private function CreateResponse()
     {
-      $retResult = new stdClass();
-      $retResult->Action = $this->Action;
-      $retResult->AffectedCount = $this->AffectedCount;
-      $items = LJC::ItemsToArray($this->ResultItems);
-      $retResult->ResultItems = $items;
-      $retResult->SQL = $this->SQL;
-      return $retResult;
+      $retResponse = new stdClass();
+      $retResponse->ServiceName = "LJCCityData";
+      $retResponse->MessageEncoding = "JSON";
+      $retResponse->Action = $this->Action;
+      $retResponse->AffectedCount = $this->AffectedCount;
+      $retResponse->DebugText = $this->DebugText;
+      $items = LJC::ItemsToArray($this->ResultCities);
+      $retResponse->ResultItems = $items;
+      $retResponse->SQL = $this->SQL;
+      return $retResponse;
     }
 
     // Clear the Result properties.
-    private function ClearResultValues()
+    private function ClearResponseValues()
     {
       $action = $this->Action;
       $this->Action = "";
       $this->AffectedCount = 0;
-      $this->ResultItems = new Cities();
+      $this->ResultCities = new Cities();
+      $this->ResultItems = [];
       $this->SQL = "";
-      $retResult = $this->CreateResult();
+      $retResponse = $this->CreateResponse();
       $this->Action = $action;
-      return $retResult;
+      return $retResponse;
     }
 
     // Create the data columns.
@@ -190,8 +204,6 @@
         , value: strval($city->ProvinceID));
       $retDataColumns->Add("Name", value: $city->Name);
       $retDataColumns->Add("Description", value: $city->Description);
-      //$retDataColumns->Add("CityFlag", dataTypeName: "bool"
-      //  , value: strval($city->CityFlag));
       $retDataColumns->Add("CityFlag", dataTypeName: "int"
         , value: strval($city->CityFlag));
       $retDataColumns->Add("ZipCode", value: $city->ZipCode);
@@ -245,10 +257,54 @@
     /// <summary>The affected count for "Delete" and "Update".</summary>
     public int $AffectedCount;
 
+    public string $DebugText;
+
     /// <summary>The City result DataObjects.</summary>
-    public Cities $ResultItems;
+    public ?Cities $ResultCities;
+
+    /// <summary>The result DataObjects.</summary>
+    public array $ResultItems;
 
     /// <summary>The executed SQL statement.</summary>
     public string $SQL;
   }
+
+
+// ***************
+/// <summary>Contains CityData web service response data.</summary>
+//  Constructor: constructor(), Clone()
+class LJCCityDataResponse
+{
+  // ---------------
+  // Constructor methods.
+
+  /// <summary>Initializes the object instance.</summary>
+  public function __construct($action = "", $affectedCount = 0)
+  {
+    $this->Action = $action;
+    $this->AffectedCount = $affectedCount;
+    $this->DebugText = "";
+    $this->ResultItems = [];
+    $this->SQL = "";
+  }
+
+  /// <summary>Creates a clone of this object.</summary>
+  public function Clone()
+  {
+    $retResponse = null;
+
+    $json = LJC::CreateJSON(this);
+    $retResponse = LJC::ParseJSON($json);
+    return $retResponse;
+  }
+
+  // ---------------
+  // Properties
+
+  public string $Action;
+  public int $AffectedCount;
+  public string $DebugText;
+  public array $ResultItems;
+  public string $SQL;
+}
 ?>

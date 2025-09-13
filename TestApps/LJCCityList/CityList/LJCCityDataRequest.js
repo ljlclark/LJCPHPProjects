@@ -11,39 +11,71 @@ class LJCCityDataRequest
   // ---------------
   // Properties
 
-  // Values: "Delete", "Insert", "Retrieve", "Update"
-  Action;
-  ConfigFile;
-  ConfigName;
-  KeyColumns;
-  RequestItems;
-  OrderByNames;
-  PropertyNames;
-  TableName;
-  UniqueColumns;
+  /// <summary>The service name.</summary>
+  ServiceName = "LJCCityData";
+
+  /// <summary>The message encoding type name.</summary>
+  /// <remarks>"JSON" or "XML".</summary>
+  MessageEncoding = "JSON";
+
+  /// <summary>The action type name.</summary>
+  /// <remarks>"Delete", "Insert", "Retrieve" or "Update".</summary>
+  Action = "";
+
+  /// <summary>The data access configuration file name.</summary>
+  ConfigFile = "";
+
+  /// <summary>The data access configuration name.</summary>
+  ConfigName = "";
+
+  /// <summary>
+  ///   The primary keys where clause LJCDataColumns collection.
+  /// </summary>
+  /// <remarks>Required for "Delete", "Retrieve" and "Update".</remarks>
+  KeyColumns = null;
+
+  /// <summary>The request items.</summary>
+  /// <remarks>
+  ///   Insert - A Cities collection of items to insert.<br />
+  ///   Update - A Cities collection of items to update.
+  /// </remarks>
+  RequestItems = null;
+
+  /// <summary>The array of "Order By" names.</summary>
+  OrderByNames = [];
+
+  /// <summary>The array of property names.</summary>
+  PropertyNames = [];
+
+  /// <summary>The table names.</summary>
+  TableName = "City";
+
+  /// <summary>
+  ///   The unique keys where clause LJCDataColumns collection.
+  /// </summary >
+  UniqueColumns = null;
 
   // ---------------
   // The Constructor methods.
 
   /// <summary>Initializes the object instance.</summary>
-  constructor(listEvents, menuID)
+  constructor(configName = "", configFile = "DataConfigs.xml")
   {
-    this.Action = "";
-    this.ConfigFile = "DataConfigs.xml";
-    this.ConfigName = "TestData";
+    this.ConfigName = configName;
+    this.ConfigFile = configFile;
+
     this.KeyColumns = new LJCDataColumns();
-    //this.RequestItems = new LJCDataColumns();
     this.RequestItems = new Cities();
-    this.OrderByNames = [];
-    this.PropertyNames = [];
-    this.TableName = "";
     this.UniqueColumns = new LJCDataColumns();
   }
 
   /// <summary>Creates a clone of this object.</summary>
   Clone()
   {
-    return JSON.parse(JSON.stringify(this));
+    let retRequest = null;
+
+    let json = LJC.CreateJSON(this);
+    retRequest = LJC.ParseJSON(json);
+    return retRequest;
   }
 }
-

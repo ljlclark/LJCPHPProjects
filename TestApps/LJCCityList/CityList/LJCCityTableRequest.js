@@ -16,31 +16,55 @@ class LJCCityTableRequest
   // ---------------
   // Properties
 
-  Action;
-  BeginKeyData;
-  ConfigFile;
-  ConfigName;
-  EndKeyData
-  Limit;
+  /// <summary>The service name.</summary>
+  ServiceName = "LJCCityTable";
+
+  /// <summary>The message encoding type name.</summary>
+  /// <remarks>"JSON" or "XML".</summary>
+  MessageEncoding = "JSON";
+
+  /// <summary>The action type name.</summary>
+  /// <remarks>
+  ///   "Next", "Previous", "Top"?, "Bottom"?, "First"?, "Last"?
+  /// </remarks>
+  Action = "";
+
+  /// <summary>The unique key of the first page item.</summary>
+  BeginKeyData = null;
+
+  /// <summary>The data access configuration file name.</summary>
+  ConfigFile = "";
+
+  /// <summary>The data access configuration name.</summary>
+  ConfigName = "";
+
+  /// <summary>The unique key of the last page item.</summary>
+  EndKeyData = null;
+
+  /// <summary>The page item count limit.<summary>
+  Limit = 20;
 
   // ---------------
   // The Constructor methods.
 
   /// <summary>Initializes the object instance.</summary>
-  constructor(listEvents, menuID)
+  constructor(configName = "", configFile = "DataConfigs.xml")
   {
-    this.Action = "None"; // Next, Previous, Top, Bottom, First?, Last?
+    this.ConfigName = configName;
+    this.ConfigFile = configFile;
+
     this.BeginKeyData = { ProvinceID: 0, Name: "" };
-    this.ConfigFile = "DataConfigs.xml";
-    this.ConfigName = "TestData";
     this.EndKeyData = { ProvinceID: 0, Name: "" };
-    this.Limit = 10;
   }
 
   /// <summary>Creates a clone of this object.</summary>
   Clone()
   {
-    return JSON.parse(JSON.stringify(this));
+    let retRequest = null;
+
+    let json = LJC.CreateJSON(this);
+    retRequest = LJC.ParseJSON(json);
+    return retRequest;
   }
 }
 

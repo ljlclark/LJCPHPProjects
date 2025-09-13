@@ -25,6 +25,14 @@
     <h3 id="pageTitle">Items</h3>
     <table id="cityTableItem"></table>
 
+    <dialog id="textDialog"
+            style="border: none; padding: 0px">
+      <textarea id="text" rows="25" cols="80" autocorrect="off"
+                autocapitalize="off" spellcheck="false" readonly
+                style="border: none; padding: 10px">
+      </textarea>
+    </dialog>
+
     <dialog id="cityDialog" class="dialog">
       <form id="cityForm" action="../CityData.php" method="post"
             class="form" autocomplete="off"
@@ -101,7 +109,7 @@
     </div>
   </div>  <!-- Closes page -->
   <script>
-    let tableEvents = new LJCCityListEvents();
+    let tableEvents = new LJCCityListEvents("cityTableItem");
     tableEvents.Refresh();
   </script>
 </body>

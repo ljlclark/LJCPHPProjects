@@ -22,6 +22,12 @@ class LJCCityTableEvents
   // The associated LJCTable object.
   CityTable;
 
+  /// <summary>The data access configuration file name.</summary>
+  ConfigFile = "";
+
+  /// <summary>The data access configuration name.</summary>
+  ConfigName = "";
+
   // Flags set in NextPage() and PrevPage().
   // Used in HasData() and UpdateLimitFlags() which are called in the Page()
   // response.
@@ -45,7 +51,8 @@ class LJCCityTableEvents
   // The Constructor methods.
 
   /// <summary>Initializes the object instance.</summary>
-  constructor(listEvents, menuID)
+  constructor(listEvents, menuID, configName = ""
+    , configFile = "DataConfigs.xml")
   {
     this.ListEvents = listEvents;
     this.MenuID = menuID;
@@ -54,7 +61,7 @@ class LJCCityTableEvents
     this.IsPrevPage = false;
 
     // Data for LJCCityTableService.php
-    this.TableRequest = new LJCCityTableRequest();
+    this.TableRequest = new LJCCityTableRequest(configName, configFile);
 
     this.TableID = listEvents.CityTableID;
     this.CityTable = new LJCTable(this.TableID, this.MenuID);
@@ -164,12 +171,19 @@ class LJCCityTableEvents
     let xhr = new XMLHttpRequest();
     xhr.open("POST", "CityList/LJCCityTableService.php");
     xhr.setRequestHeader("Content-Type", "application/json");
+
     xhr.onload = function ()
     {
+      let text = "LJCCityTableEvents.Page() this.responseText";
+      LJC.Message(text, this.responseText);
+
       // Get the AJAX response.
-      //alert(`TableEvents responseText: ${this.responseText}\r\n`);
       let response = JSON.parse(this.responseText);
-      //alert(`TableEvents responseSQL: ${response.SQL}`);
+
+      text = "LJCCityTableEvents.Page() response.DebugText";
+      LJC.Message(text, response.DebugText);
+      text = "LJCCityTableEvents.Page() response.SQL";
+      LJC.Message(text, response.SQL);
 
       // Check if there is more data.
       if (saveThis.HasData(response.HTMLTable))
@@ -198,11 +212,33 @@ class LJCCityTableEvents
         saveThis.ListEvents.FocusTable = cityTable;
       }
     };
+
     let tableRequest = this.TableRequest.Clone();
     tableRequest.ConfigFile = "../DataConfigs.xml";
-    let request = JSON.stringify(tableRequest);
-    //alert(`CityTableEvents request: ${request}`);
+    let request = LJC.CreateJSON(tableRequest);
+
+    let text = "LJCCityTableEvents.Page() request";
+    LJC.Message(text, request);
+
     xhr.send(request);
+  }
+
+  /// <summary>Show the text dialog.</summary>
+  /// <param name="text">The text value.</param>
+  ShowText(textValue, useAlert = true)
+  {
+    if (LJC.HasValue(textValue))
+    {
+      if (useAlert)
+      {
+        alert(textValue);
+      }
+      else
+      {
+        text.value = textValue;
+        textDialog.showModal();
+      }
+    }
   }
 
   // Updates the BeginningOfData and EndOfData flags.</summary>
