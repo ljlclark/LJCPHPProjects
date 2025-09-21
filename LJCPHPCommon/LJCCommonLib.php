@@ -28,6 +28,17 @@
     // ---------------
     // String Functions
 
+    /// <summary>Creates JSON from the provided value.</summary>
+    /// <param name="value">The object value.</param>
+    /// <returns>The JSON text.</returns>
+    public static function CreateJSON($value)
+    {
+      $retJSON = "";
+
+      $retJSON = json_encode($value);
+      return $retJSON;
+    }
+
     // Indicates if the builder text ends with a newline.
     /// <ParentGroup>String</ParentGroup>
     public static function EndsWithNewLine(string $text): bool
@@ -120,6 +131,17 @@
         $retValue = $text;
       }
       return $retValue;
+    }
+
+    /// <summary>Parses JSON into an object.</summary>
+    /// <param name="json">The json text.</param>
+    /// <returns>The parsed object.</returns>
+    public static function ParseJSON($json)
+    {
+      $retObject = null;
+
+      $retObject = json_decode($json);
+      return $retObject;
     }
 
     // Returns a scrubbed external value.
@@ -437,11 +459,18 @@
     /// <ParentGroup>Output</ParentGroup>
     public static function DebugObject(string $location, $object)
     {
+      $retDebugText = "";
+
       if ($location != null)
       {
-        print_r("\r\n{$location}\r\n");
+        $retDebugText = "\r\n{$location}";
       }
-      print_r($object);
+      if ($object != null)
+      {
+        $retDebugText .= "\r\n";
+        $retDebugText .= print_r($object, true);
+      }
+      return $retDebugText;
     }
 
     // Display debug text.
@@ -466,6 +495,32 @@
       {
         echo("{$value}");
       }
+    }
+
+    // Add to common.
+    public static function Location($className, $methodName, $valueName = null)
+    {
+      $retLocation = "";
+
+      if (LJC::HasValue($className))
+      {
+        $retLocation .= $className;
+      }
+      if (LJC::HasValue($retLocation)
+        && LJC::HasValue($methodName))
+      {
+        $retLocation .= ".{$methodName}";
+      }
+      if (LJC::HasValue($retLocation)
+        && LJC::HasValue($valueName))
+      {
+        $retLocation .= " {$valueName}";
+      }
+      if (LJC::HasValue($retLocation))
+      {
+        $retLocation .= ":";
+      }
+      return $retLocation;
     }
 
     // Writes the test compare text.

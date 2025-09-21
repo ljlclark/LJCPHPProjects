@@ -15,31 +15,36 @@
 //  Add Events: AddEvents(), AddEvent()
 //  Document Handlers: DocumentContextMenu(), DocumentDoubleClick()
 //    , DocumentKeyDown()
-//  Menu Handlers: Delete(), DoAction(), Edit(), New(), Next(), Previous()
-//    , Refresh()
+//  Menu Handlers: Delete(), Edit(), New(), Next(), Previous(), Refresh()
 //  Table Column: SelectedTable()
 class LJCCityListEvents
 {
   // ---------------
   // Properties
 
+  // The detail dialog JavaScript events.
   CityDetailEvents;
 
+  // The city table helper object.
   CityTable = "";
 
-  // The LJCCityTableEvents JS object.
+  // The city table JavaScript events.
   CityTableEvents;
 
+  // The city table ID name.
   CityTableID = "";
 
+  // The debug location class name.
+  ClassName = "";
+
+  // The database configuration file.
   ConfigFile = "";
 
+  // The database configuration name.
   ConfigName = "";
 
+  // The active table.
   FocusTable;
-
-  // *** Add ***
-  IsNew = false;
 
   // ---------------
   // The Constructor functions.
@@ -47,39 +52,54 @@ class LJCCityListEvents
   /// <summary>Initializes the object instance.</summary>
   constructor(cityTableID, configName = "", configFile = "DataConfigs.xml")
   {
+    this.ClassName = "LJCCityListEvents";
+    let methodName = "constructor()";
+
+    // Set properties from parameters.
     this.CityTableID = cityTableID;
     this.ConfigName = configName;
     this.ConfigFile = configFile;
 
-    // CityTable data.
+    // City Table helper object.
     this.CityTable = new LJCTable(this.CityTableID, "menu");
     this.FocusTable = null;
 
-    // CityTable events.
+    // City Table events.
     this.CityTableEvents = new LJCCityTableEvents(this, "menu", configName
       , configFile);
     this.CityTableEvents.TableRequest.Limit = 20;
 
+    // City Detail events.
     this.CityDetailEvents = new LJCCityDetailEvents();
 
-    this.AddEvents();
+    this.#AddEvents();
   }
 
   /// <summary>Adds the HTML event listeners.</summary>
-  AddEvents()
+  #AddEvents()
   {
+    let methodName = "AddEvents()";
+
     // Document Event Handlers.
     document.addEventListener("dblclick", this.DocumentDoubleClick.bind(this));
     document.addEventListener("contextmenu", this.DocumentContextMenu.bind(this));
     document.addEventListener("keydown", this.DocumentKeyDown.bind(this));
 
     // Menu Event Handlers.
-    LJC.AddEvent("delete", "click", this.Delete, this);
-    LJC.AddEvent("edit", "click", this.Edit, this);
-    LJC.AddEvent("new", "click", this.New, this);
-    LJC.AddEvent("next", "click", this.Next, this);
-    LJC.AddEvent("previous", "click", this.Previous, this);
+    LJC.AddEvent("delete", "click", this.#Delete, this);
+    LJC.AddEvent("edit", "click", this.#Edit, this);
+    LJC.AddEvent("new", "click", this.#New, this);
+    LJC.AddEvent("next", "click", this.#Next, this);
+    LJC.AddEvent("previous", "click", this.#Previous, this);
     LJC.AddEvent("refresh", "click", this.Refresh, this);
+  }
+
+  // Standard debug method for each class.
+  #Debug(methodName, valueName, value, force = false)
+  {
+    let text = LJC.Location(this.ClassName, methodName, valueName);
+    // Does not show alert if no value unless force = true.
+    LJC.Message(text, value, force);
   }
 
   // ---------------
@@ -89,6 +109,8 @@ class LJCCityListEvents
   /// <include path='items/DocumentContextMenu/*' file='Doc/LJCCityListEvents.xml'/>
   DocumentContextMenu(event)
   {
+    let methodName = "DocumentContextMenu()";
+
     // Handle table row right button click.
     if ("TD" == event.target.tagName)
     {
@@ -114,13 +136,15 @@ class LJCCityListEvents
   /// <include path='items/DocumentDoubleClick/*' file='Doc/LJCCityListEvents.xml'/>
   DocumentDoubleClick()
   {
-    this.Edit();
+    this.#Edit();
   }
 
   // The Document "keydown" event handler.
   /// <param name="event">The Target event.</param>
   DocumentKeyDown(event)
   {
+    let methodName = "DocumentKeyDown()";
+
     let ESCAPE_KEY = 27;
     let UP_ARROW = 38;
     let DOWN_ARROW = 40;
@@ -159,44 +183,48 @@ class LJCCityListEvents
   // ---------------
   // Menu Event Handlers
 
-  /// <summary>
-  ///   Submit "hiddenForm" to CityDetail.php with listAction "Delete".
-  /// </summary>
-  Delete()
+  /// <summary>Deletes the selected item.</summary>
+  #Delete()
   {
-    this.IsNew = false;
+    let methodName = "Delete()";
+
+    this.CityDetailEvents.Action = "Delete";
     let cityRequest = this.CityRequest();
     cityRequest.Action = "Delete";
     cityRequest.KeyColumns = this.PrimaryKeyColumns();
-    this.DataRequest(cityRequest);
+    this.CityDataRequest(cityRequest);
   }
 
   /// <summary>
-  ///   Submit "hiddenForm" to CityDetail.php with listAction "Update".
+  ///   Displays the CityDetail form for editing the selected item.
   /// </summary>
-  Edit()
+  #Edit()
   {
-    this.IsNew = false;
+    let methodName = "Edit()";
+
+    this.CityDetailEvents.Action = "Retrieve";
     let cityRequest = this.CityRequest();
     cityRequest.Action = "Retrieve";
     cityRequest.KeyColumns = this.PrimaryKeyColumns();
-    this.DataRequest(cityRequest);
+    this.CityDataRequest(cityRequest);
   }
 
-  /// <summary>
-  ///   Submit "hiddenForm" to CityDetail.php with listAction "Add".
-  /// </summary>
-  New()
+  /// <summary>Displays the CityDetail form for adding a new item.</summary>
+  #New()
   {
-    this.IsNew = true;
+    let methodName = "New()";
+
+    this.CityDetailEvents.Action = "Insert";
     let cityRequest = this.CityRequest();
     cityRequest.Action = "Insert";
-    this.DataRequest(cityRequest);
+    this.CityDataRequest(cityRequest);
   }
 
-  /// <summary>Display the next page.</summary>
-  Next()
+  /// <summary>Displays the next page.</summary>
+  #Next()
   {
+    let methodName = "Next()";
+
     let tableEvents = this.FocusTableEvents();
     if (tableEvents)
     {
@@ -204,9 +232,11 @@ class LJCCityListEvents
     }
   }
 
-  /// <summary>Display the previous page.</summary>
-  Previous()
+  /// <summary>Displays the previous page.</summary>
+  #Previous()
   {
+    let methodName = "Previous()";
+
     let tableEvents = this.FocusTableEvents();
     if (tableEvents)
     {
@@ -217,6 +247,8 @@ class LJCCityListEvents
   /// <summary>Refreshes the current page.</summary>
   Refresh()
   {
+    let methodName = "Refresh()";
+
     let cityEvents = this.CityTableEvents;
     cityEvents.TableRequest.Action = "Refresh";
     cityEvents.Page();
@@ -226,16 +258,21 @@ class LJCCityListEvents
   // Other Menu Methods
 
   /// <summary>Creates the city request.</summary>
+  /// <returns>The CityData service request.</returns>
   CityRequest()
   {
+    let methodName = "CityRequest()";
+
     let retCityRequest = new LJCCityDataRequest("TestData"
       , "../DataConfigs.xml");
     return retCityRequest;
   }
 
   /// <summary>Retrieves the focus table events object.</summary>
+  /// <returns>The CityTable events object.</returns>
   FocusTableEvents()
   {
+    let methodName = "FocusTableEvents()";
     let retTableEvents = null;
 
     if (this.FocusTable != null)
@@ -251,9 +288,11 @@ class LJCCityListEvents
     return retTableEvents;
   }
 
-  /// <summary>Get the primary key columns.</summary>
+  /// <summary>Get the primary key DataColumns.</summary>
+  /// <returns>The primary key DataColumns.</returns>
   PrimaryKeyColumns()
   {
+    let methodName = "PrimaryKeyColumns()";
     let retKeyColumns = new LJCDataColumns();
 
     // Get key value from hidden form.
@@ -266,12 +305,34 @@ class LJCCityListEvents
   // ---------------
   // Web Service Methods
 
-  /// <summary>Call the web service.</summary>
-  // Called from Delete(), Edit(), New()
-  DataRequest(cityRequest)
+  /// <summary>Clears the City form data.</summary>
+  ClearCityFormData()
   {
+    let methodName = "ClearCityFormData()";
+
+    LJC.SetValue("cityID", "0");
+    LJC.SetValue("provinceID", "");
+    LJC.SetValue("name", "");
+
+    LJC.SetValue("cityFlag", "0");
+    LJC.SetValue("description", "");
+    LJC.SetValue("district", "0");
+    LJC.SetValue("zipCode", "0");
+    LJC.SetValue("commit", "Create");
+  }
+
+  /// <summary>Call the CityData web service.</summary>
+  /// <param name="cityRequest">
+  ///   The CityData service request object.
+  /// </param>
+  // Called from Delete(), Edit(), New()
+  CityDataRequest(cityRequest)
+  {
+    let methodName = "CityDataRequest()";
+
     // Save a reference to this class for anonymous function.
     const saveThis = this;
+
     let xhr = new XMLHttpRequest();
     xhr.open("POST", "CityList/LJCCityDataService.php");
     xhr.setRequestHeader("Content-Type", "application/json");
@@ -281,31 +342,27 @@ class LJCCityListEvents
       // Get the AJAX response.
       if (LJC.HasText(this.responseText))
       {
-        let text = "LJCCityListEvents.DataRequest() this.responseText";
-        LJC.Message(text, this.responseText);
+        saveThis.#Debug(methodName, "responseText", this.responseText);
 
         let response = LJC.ParseJSON(this.responseText);
 
-        text = "LJCCityListEvents.DataRequest() response.DebugText";
-        LJC.Message(text, response.DebugText);
-        text = "LJCCityListEvents.DataRequest() response.SQL";
-        LJC.Message(text, response.SQL);
+        saveThis.#Debug(methodName, "response.DebugText", response.DebugText);
+        saveThis.#Debug(methodName, "response.SQL", response.SQL);
 
         saveThis.ShowCityDetail(response);
       }
     }
 
     let request = LJC.CreateJSON(cityRequest);
-
-    let text = "LJCCityListEvents.DataRequest() request";
-    LJC.Message(text, request);
-
     xhr.send(request);
   }
 
   /// <summary>Set the City Form values.</summary>
+  /// <param name="city">The CityData object.</param>
   SetCityForm(city)
   {
+    let methodName = "SetCityForm()";
+
     LJC.SetValue("cityID", city.CityID);
     LJC.SetValue("provinceID", city.ProvinceID);
     LJC.SetValue("name", city.Name);
@@ -316,21 +373,28 @@ class LJCCityListEvents
   }
 
   /// <summary>Process the web service response.</summary>
-  /// <remarks>
-  ///   Called from DataRequest() with LJCCityDataService response.
-  /// </remarks>
-  ShowCityDetail(response)
+  /// <param name="cityResponse">
+  ///   The CityData service response object.
+  /// </param>
+  // Called from CityDataRequest() with LJCCityDataService response.
+  ShowCityDetail(cityResponse)
   {
-    switch (response.Action.toLowerCase())
+    let methodName = "ShowCityDetail()";
+
+    switch (cityResponse.Action.toLowerCase())
     {
+      case "insert":
+        // Sets commit button text to "Create".
+        this.ClearCityFormData();
+        cityDialog.showModal();
+        break;
+
       case "retrieve":
-        let cities = response.ResultItems;
+        let cities = cityResponse.ResultItems;
         if (cities != null)
         {
           let city = cities[0];
           this.SetCityForm(city);
-          // *** Next Statement *** Add
-          this.CityDetailEvents.IsNew = this.IsNew;
           cityDialog.showModal();
         }
         break;
@@ -342,8 +406,10 @@ class LJCCityListEvents
 
   /// <summary>Gets the selected LJCTable object.</summary>
   /// <param name="eColumn">The table column element.</param>
+  /// <returns>The selected table LJCTable object.</returns>
   SelectedTable(eColumn)
   {
+    let methodName = "SelectedTable()";
     let retLJCTable = null;
 
     let eTable = LJCTable.GetTable(eColumn);
@@ -360,8 +426,11 @@ class LJCCityListEvents
   }
 
   /// <summary>Retrieves the selected table events object.</summary>
+  /// <param name="eColumn">The table column element.</param>
+  /// <returns>The selected table events object.</returns>
   SelectedTableEvents(eColumn)
   {
+    let methodName = "SelectedTableEvents()";
     let retTable = null;
 
     let eTable = LJCTable.GetTable(eColumn);

@@ -14,9 +14,9 @@
   include_once "$prefix/RegionApp/City/RegionTablesDAL.php";
   // LJCDataConfigs: DataConfigs 
   // LJCDBAccessLib: LJCConnectionValues
-  // LJCHTMLBuilderLib: LJCAttribute, LJCAttributes, LJCHTMLBuilder
-  //   , LJCTextState
-  // CityDAL: 
+  // LJCHTMLBuilderLib: LJCAttributes, LJCHTMLBuilder, LJCTextState
+  // LJCHTMLTableLib: LJCHTMLTable
+  // CityDAL: City, CityManager
 
   $cityTable = new LJCCityTableService();
   $cityTable->Run();
@@ -37,12 +37,18 @@
     /// <ParentGroup>Entry</ParentGroup>
     public function Run(): void
     {
+      $this->ClassName = "LJCCityTableService";
+      $methodName = "Run()";
+
+      // Initialize response properties.
+      $this->DebugText = "";
+
       // Parameters are passed from a POST with JSON data.
       header("Content-Type: application/json; charset=UTF-8");
       $value = file_get_contents('php://input');
       $pageData = LJC::ParseJSON($value);
 
-      // Parse input data.
+      // Initialize Request properties.
       $this->Action = $pageData->Action;
       $this->BeginKeyData = $pageData->BeginKeyData;
       $this->ConfigFile = $pageData->ConfigFile;
@@ -62,32 +68,45 @@
         $this->CityManager->Limit = $this->Limit;
       }
 
-      $response = $this->CreateResponse();
+      $response = $this->GetResponse();
       echo($response);
-    }  // Run()
+    } // Run()
+
+    // Standard debug method for each class.
+    private function AddDebug($methodName, $valueName, $value = "null")
+    {
+      $retDebugText = "";
+
+      $location = LJC::Location($this->ClassName, $methodName
+        , $valueName);
+      $this->DebugText .= LJC::DebugObject($location, $value);
+    } // AddDebug()
 
     // Get connection values for a DataConfig name.
     // Called from Run()
     private function GetConnectionValues(string $configName)
     {
+      $methodName = "GetConnectionValues()";
+
       $configFile = $this->ConfigFile;
       $configName = "TestData";
       $retValues = DataConfigs::GetConnectionValues($configFile, $configName);
       return $retValues;
-    }  // GetConnectionValues()
+    } // GetConnectionValues()
 
     // ---------------
     // Create Response (Main) Methods
 
-    /// <summary>Creates the Response data.</summary>
+    /// <summary>Creates the HTML Table.</summary>
     /// <returns>The response JSON text.</returns.
     /// <ParentGroup>Response</ParentGroup>
     // Called from Run().
-    public function CreateResponse()
+    public function GetResponse()
     {
-      $retValue = "";
+      $methodName = "GetResponse()";
+      $retResponse = "";
 
-      $response = $this->SetResponse();
+      $response = $this->InitResponse();
       $result = $this->RetrieveData();
       if ($result != null)
       {
@@ -114,12 +133,14 @@
       }
       $retResponse = LJC::CreateJSON($response);
       return $retResponse;
-    } // CreateResponse()
+    } // GetResponse()
 
     // Gets the heading attributes.
-    // Called from: CreateResponse()
+    // Called from: GetResponse()
     private function GetHeadingAttribs(): LJCAttributes
     {
+      $methodName = "GetHeadingAttribs()";
+
       $retAttribs = new LJCAttributes();
       $style = "background-color: lightsteelblue";
       $retAttribs->Add("style", $style);
@@ -127,9 +148,11 @@
     } // GetHeadingAttribs()
 
     // Gets the table attributes.
-    // Called from: CreateResponse()
+    // Called from: GetResponse()
     private function GetTableAttribs()
     {
+      $methodName = "GetTableAttribs()";
+
       // Root TextState object.
       $textState = new LJCTextState();
 
@@ -150,9 +173,11 @@
     } // GetTableAttribs()
 
     // Create the LJCHTMLTable object.
-    // Called from: CreateResponse()
+    // Called from: GetResponse()
     private function HTMLTableBuilder(?array $propertyNames)
     {
+      $methodName = "HTMLTableBuilder()";
+
       // Create table object with column property names.
       $retTableBuilder = new LJCHTMLTable();
       //$retTableBuilder = new LJCHTMLTableBuilder();
@@ -162,9 +187,11 @@
     } // HTMLTableBuilder()
 
     // Creates the retrieve property names.
-    // Called from CreateResponse()
+    // Called from GetResponse()
     private function KeyPropertyNames(): array
     {
+      $methodName = "KeyPropertyNames()";
+
       $retKeyNames = [
         City::ColumnCityID,
         City::ColumnProvinceID,
@@ -174,9 +201,11 @@
     } // KeyPropertyNames()
 
     // Gets the results key array.
-    // Called from: CreateResponse()
+    // Called from: GetResponse()
     private function ResultKeyArray($result, $keyNames)
     {
+      $methodName = "ResultKeyArray()";
+
       // Create key values array.
       $dataManager = $this->CityManager->DataManager;
       $retKeyArray = $dataManager->CreateResultKeys($result, $keyNames);
@@ -184,12 +213,13 @@
     } // ResultKeyArray()
 
     // Initializes the response object.
-    // Called from CreateResponse()
-    private function SetResponse()
+    // Called from GetResponse()
+    private function InitResponse()
     {
+      $methodName = "InitResponse()";
+
       $retResponse = new stdClass();
       $retResponse->ServiceName = "LJCCityTable";
-      $retResponse->MessageEncoding = "JSON";
       $retResponse->Keys = [];
       $retResponse->SQL = "";
       $retResponse->HTMLTable = "";
@@ -197,9 +227,11 @@
     } // SetResponse()
 
     // Creates the table property names.
-    // Called from: CreateResponse()
+    // Called from: GetResponse()
     private function TablePropertyNames(): array
     {
+      $methodName = "TablePropertyNames()";
+
       $retPropertyNames = [
         City::ColumnProvinceID,
         City::ColumnName,
@@ -218,6 +250,8 @@
     // Called from RetrieveData()
     private function NextFilter($keyData, $backward = false): string
     {
+      $methodName = "NextFilter()";
+
       $retFilter = "where";
       $retFilter .= "\r\n  (ProvinceID >= {$keyData->ProvinceID}";
       $filter = "\r\n   and Name > '{$keyData->Name}')";
@@ -234,6 +268,8 @@
     // Called from RetrieveData()
     private function PreviousFilter($beginKeyData): string
     {
+      $methodName = "PreviousFilter()";
+
       $retFilter = "where";
       $retFilter .= "\r\n  (ProvinceID <= {$beginKeyData->ProvinceID}";
       $retFilter .= "\r\n   and Name < '{$beginKeyData->Name}')";
@@ -245,6 +281,8 @@
     // Called from RetrieveData()
     private function RefreshFilter($keyData)
     {
+      $methodName = "RefreshFilter()";
+
       $retFilter = "where";
       $retFilter .= "\r\n  (ProvinceID >= {$keyData->ProvinceID}";
       $filter = "\r\n   and Name >= '{$keyData->Name}')";
@@ -254,9 +292,10 @@
     } // RefreshFilter()
 
     // Retrieve data result.
-    // Called from CreateResponse().
+    // Called from GetResponse().
     private function RetrieveData()
     {
+      $methodName = "RetrieveData()";
       $retResult = null;
 
       $keyColumns = null;

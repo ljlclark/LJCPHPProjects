@@ -251,16 +251,35 @@
     {
       $retDataColumn = null;
 
-      //if (array_key_exists("PropertyName", $dataColumn))
+      // Check for required values.
       if (property_exists($objColumn, "PropertyName"))
       {
         $retColumn = new LJCDbColumn($objColumn->PropertyName);
 
+        // Look for properties of standard object in typed object.
         foreach ($objColumn as $propertyName => $value)
         {
           if (property_exists($retColumn, $propertyName))
           {
-            $retColumn->$propertyName = $value;
+            // Update new typed object properties from the standard object.
+            $success = false;
+            $columnValue = $retColumn->$propertyName;
+            $objValue = $objColumn->$propertyName;
+            if (is_int($columnValue))
+            {
+              $retColumn->$propertyName = (int)$objValue;
+              $success = true;
+            }
+            if (!$success
+              && is_float($columnValue))
+            {
+              $retColumn->$propertyName = (float)$objValue;
+              $success = true;
+            }
+            if (!$success)
+            {
+              $retColumn->$propertyName = $objValue;
+            }
           }
         }
       }
@@ -404,10 +423,10 @@
       if (isset($items)
         && LJC::HasElements($items->Items))
       {
-        foreach ($items->Items as $objColumn)
+        foreach ($items->Items as $objDataColumn)
         {
           // Create typed object from stdClass.
-          $dataColumn = LJCDbColumn::Copy($objColumn);
+          $dataColumn = LJCDbColumn::Copy($objDataColumn);
           $retColumns->AddObject($dataColumn);
         }
       }

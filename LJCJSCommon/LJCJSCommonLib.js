@@ -51,7 +51,9 @@ class LJC
   {
     let retValue = false;
 
+    // *** Change ***
     if (text != null
+      && this.IsString(text)
       && text.trim().length > 0)
     {
       retValue = true;
@@ -70,6 +72,12 @@ class LJC
       retValue = true;
     }
     return retValue;
+  }
+
+  // Checks if the values is a string.
+  static IsString(value)
+  {
+    return typeof value === 'string';
   }
 
   // ---------------
@@ -221,6 +229,70 @@ class LJC
   // ---------------
   // Other Methods
 
+  /// <summary>Creates JSON from the provided value.</summary>
+  /// <param name="value">The object value.</param>
+  /// <returns>The JSON text.</returns>
+  static CreateJSON(value)
+  {
+    let retJSON = "";
+
+    retJSON = JSON.stringify(value);
+    return retJSON;
+  }
+
+  // Add to common.
+  static Location(className, methodName, valueName = null)
+  {
+    let retLocation = "";
+
+    if (LJC.HasText(className))
+    {
+      retLocation += className;
+    }
+    if (LJC.HasText(retLocation)
+      && LJC.HasText(methodName))
+    {
+      retLocation += `.${methodName}`;
+    }
+    if (LJC.HasText(retLocation)
+      && LJC.HasText(valueName))
+    {
+      retLocation += ` ${valueName}`;
+    }
+    if (LJC.HasText(retLocation))
+    {
+      retLocation += ":";
+    }
+    return retLocation;
+  }
+
+  /// <summary>Show the service message.</summary>
+  /// <param name="location">The code location.</param>
+  /// <param name="textValue">The text value.</param>
+  /// <param name="force">Force the text to show.</param>
+  static Message(location, textValue, force = false)
+  {
+    let show = force;
+
+    if (LJC.HasText(textValue))
+    {
+      let text = textValue.toLowerCase();
+      if (!text.startsWith("{\"servicename\":")
+        && !text.startsWith("delete")
+        && !text.startsWith("insert")
+        && !text.startsWith("select")
+        && !text.startsWith("update"))
+      {
+        show = true;
+      }
+    }
+
+    if (show)
+    {
+      alert(`${location} ${textValue}`);
+    }
+  }
+
   /// <summary>Create a mouse location object.</summary.
   /// <param name="event">The event object.</param>
   /// <returns>The mouse location object.</returns>
@@ -232,6 +304,17 @@ class LJC
       Left: event.pageX,
     };
     return retLocation;
+  }
+
+  /// <summary>Parses JSON into an object.</summary>
+  /// <param name="json">The json text.</param>
+  /// <returns>The parsed object.</returns>
+  static ParseJSON(json)
+  {
+    let retObject = "";
+
+    retObject = JSON.parse(json);
+    return retObject;
   }
 
   /// <summary>Sets the element visibility.</summary>

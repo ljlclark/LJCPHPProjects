@@ -14,10 +14,6 @@ class LJCCityDataRequest
   /// <summary>The service name.</summary>
   ServiceName = "LJCCityData";
 
-  /// <summary>The message encoding type name.</summary>
-  /// <remarks>"JSON" or "XML".</summary>
-  MessageEncoding = "JSON";
-
   /// <summary>The action type name.</summary>
   /// <remarks>"Delete", "Insert", "Retrieve" or "Update".</summary>
   Action = "";

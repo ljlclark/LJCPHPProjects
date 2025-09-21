@@ -19,10 +19,6 @@ class LJCCityTableRequest
   /// <summary>The service name.</summary>
   ServiceName = "LJCCityTable";
 
-  /// <summary>The message encoding type name.</summary>
-  /// <remarks>"JSON" or "XML".</summary>
-  MessageEncoding = "JSON";
-
   /// <summary>The action type name.</summary>
   /// <remarks>
   ///   "Next", "Previous", "Top"?, "Bottom"?, "First"?, "Last"?
