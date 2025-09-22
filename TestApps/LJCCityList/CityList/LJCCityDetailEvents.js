@@ -170,7 +170,7 @@ class LJCCityDetailEvents
       // Get the AJAX response.
       if (LJC.HasText(this.responseText))
       {
-        saveThis.Debug(methodName, responseText, this.responseText);
+        saveThis.Debug(methodName, "responseText", this.responseText);
 
         let response = LJC.ParseJSON(this.responseText);
 
