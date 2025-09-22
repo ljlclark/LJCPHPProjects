@@ -115,8 +115,14 @@ class Cities
   // ---------------
   // Properties
 
+  // The current items count.
+  Count = 0;
+
+  // The current #Items clone.
+  ReadItems = [];
+
   // The internal collection item array.
-  Items = [];
+  #Items = [];
 
   // ---------------
   // Collection Methods
@@ -134,13 +140,28 @@ class Cities
   /// <param name="city">The City data object.</param>
   AddObject(city)
   {
-    this.Items.push(city);
+    this.#Items.push(city);
+    this.Count = this.#Items.length;
+    // *** Add ***
+    this.ReadItems = Array.from(this.#Items);
   }
 
   /// <summary>Clears the collection list.</summary>
   Clear()
   {
-    this.Items = [];
+    this.#Items = [];
+    this.Count = this.#Items.length;
+    // *** Add ***
+    this.ReadItems = Array.from(this.#Items);
+  }
+
+  /// <summary>Returns the collection element count.</summary>
+  Count()
+  {
+    let retCount = 0;
+
+    retCount = this.#Items.length;
+    return retCount;
   }
 
   // Gets the index of the item with the supplied name.
@@ -149,9 +170,9 @@ class Cities
   {
     let retIndex = -1;
 
-    for (let index = 0; index < this.Items.length; index++)
+    for (let index = 0; index < this.#Items.length; index++)
     {
-      if (this.Items.Name == name)
+      if (this.#Items.Name == name)
       {
         retIndex = index;
         break;
@@ -168,7 +189,7 @@ class Cities
 
     if (null == names)
     {
-      retCities = this.Items;
+      retCities = this.#Items;
     }
     else
     {
@@ -192,9 +213,9 @@ class Cities
   {
     let retNames = [];
 
-    for (let index = 0; index < this.Items.length; index++)
+    for (let index = 0; index < this.#Items.length; index++)
     {
-      let city = this.Items[index];
+      let city = this.#Items[index];
       retPropertyNames.push(city.Name);
     }
     return retNames;
@@ -208,7 +229,10 @@ class Cities
     if (itemIndex > -1)
     {
       let beginIndex = 0;
-      this.Items.splice(beginIndex, itemIndex);
+      this.#Items.splice(beginIndex, itemIndex);
+      this.Count = this.#Items.length;
+      // *** Add ***
+      this.ReadItems = Array.from(this.#Items);
     }
   }
 
@@ -216,7 +240,7 @@ class Cities
   /// <include path='items/Retrieve/*' file='Doc/Cities.xml'/>
   Retrieve(name)
   {
-    let retCity = this.Items.find(item =>
+    let retCity = this.#Items.find(item =>
       item.Name == name);
     return retCity;
   }
@@ -228,9 +252,9 @@ class Cities
     let retCity = null;
 
     if (index >= 0
-      && this.Items.length > index)
+      && this.#Items.length > index)
     {
-      retCity = this.Items[index];
+      retCity = this.#Items[index];
     }
     return retCity;
   }

@@ -7,23 +7,21 @@
 
 // ***************
 /// <summary>Contains City HTML Table methods.</summary>
-//  Constructor: constructor(), AddEvents()
+//  Constructor: constructor(), #AddEvents()
 class LJCCityDetailEvents
 {
   // ---------------
   // Properties
 
-  // The detail action.
+  /// <summary>The detail action.</summary>
+  // Used in LJCCityListEvents #Delete(), #Edit() and #New().
   Action = "";
 
-  // The associated cancel button ID name.
-  CancelID = "";
+  // ---------------
+  // Private Properties
 
-  // The class name for debug text.
-  ClassName = "";
-
-  // The associated commit button ID name.
-  CommitID = "";
+  // The debug location class name.
+  #ClassName = "";
 
   // ---------------
   // The Constructor methods.
@@ -31,27 +29,27 @@ class LJCCityDetailEvents
   /// <summary>Initializes the object instance.</summary>
   constructor()
   {
-    this.ClassName = "LJCCityDetailEvents";
+    this.#ClassName = "LJCCityDetailEvents";
     let methodName = "constructor()";
 
     this.CityRequest = new LJCCityDataRequest("TestData", "../DataConfigs.xml");
-    this.AddEvents();
+    this.#AddEvents();
   }
 
-  /// <summary>Adds the HTML event listeners.</summary>
-  AddEvents()
+  // Adds the HTML event listeners.
+  #AddEvents()
   {
     let methodName = "AddEvents()";
 
     // Button Event Handlers.
-    LJC.AddEvent("cancel", "click", this.CancelClick, this);
-    LJC.AddEvent("commit", "click", this.CommitClick, this);
+    LJC.AddEvent("cancel", "click", this.#CancelClick, this);
+    LJC.AddEvent("commit", "click", this.#CommitClick, this);
   }
 
   // Standard debug method for each class.
-  Debug(methodName, valueName, value, force = false)
+  #Debug(methodName, valueName, value, force = false)
   {
-    let text = LJC.Location(this.ClassName, methodName, valueName);
+    let text = LJC.Location(this.#ClassName, methodName, valueName);
     // Does not show alert if no value unless force = true.
     LJC.Message(text, value, force);
   }
@@ -60,32 +58,32 @@ class LJCCityDetailEvents
   // Event Handlers
 
   // Close the dialog without updating the data.
-  CancelClick(event)
+  #CancelClick(event)
   {
     cityDialog.close();
   }
 
-  /// <summary>Update data and close dialog.</summary>
-  CommitClick(event)
+  // Update data and close dialog.
+  #CommitClick(event)
   {
     let methodName = "CommitClick()";
 
     this.CityRequest.Action = this.Action;
-    let city = this.CityFormData();
-    if (this.ValidFormValues(city))
+    let city = this.#CityFormData();
+    if (this.#ValidFormValues(city))
     {
       if ("Retrieve" == this.CityRequest.Action)
       {
         this.CityRequest.Action = "Update";
       }
-      this.CityRequest.KeyColumns = this.PrimaryKeyColumns();
+      this.CityRequest.KeyColumns = this.#PrimaryKeyColumns();
 
       // Create request items.
       let cities = new Cities();
       cities.AddObject(city);
       this.CityRequest.RequestItems = cities;
 
-      this.DataRequest(this.CityRequest);
+      this.#DataRequest(this.CityRequest);
 
       // If successful.
       cityDialog.close();
@@ -96,7 +94,7 @@ class LJCCityDetailEvents
   // Other Methods
 
   // Creates a City object from the form data.
-  CityFormData()
+  #CityFormData()
   {
     let methodName = "CityFormData()";
 
@@ -112,8 +110,8 @@ class LJCCityDetailEvents
     return retCity;
   }
 
-  /// <summary>Get the primary key columns.</summary>
-  PrimaryKeyColumns()
+  // Get the primary key columns.
+  #PrimaryKeyColumns()
   {
     let methodName = "PrimaryKeyColumns()";
 
@@ -126,9 +124,8 @@ class LJCCityDetailEvents
     return retKeyColumns;
   }
 
-  /// <summary>Checks the form values.</summary>
-  /// <returns>The City data object.</returns>
-  ValidFormValues(city)
+  // Checks the form values.
+  #ValidFormValues(city)
   {
     let retSuccess = true;
 
@@ -152,9 +149,9 @@ class LJCCityDetailEvents
   // ---------------
   // Web Service Methods
 
-  /// <summary>Call the web service.</summary>
+  // Sends data request to CityData web service.
   // Called from CommitClick().
-  DataRequest(cityRequest)
+  #DataRequest(cityRequest)
   {
     let methodName = "DataRequest()";
 
@@ -170,12 +167,12 @@ class LJCCityDetailEvents
       // Get the AJAX response.
       if (LJC.HasText(this.responseText))
       {
-        saveThis.Debug(methodName, "responseText", this.responseText);
+        saveThis.#Debug(methodName, "responseText", this.responseText);
 
         let response = LJC.ParseJSON(this.responseText);
 
-        saveThis.Debug(methodName, "response.DebugText", response.DebugText);
-        saveThis.Debug(methodName, "response.SQL", response.SQL);
+        saveThis.#Debug(methodName, "response.DebugText", response.DebugText);
+        saveThis.#Debug(methodName, "response.SQL", response.SQL);
       }
     }
 

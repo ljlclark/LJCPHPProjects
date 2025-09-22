@@ -30,8 +30,11 @@
     /// <returns>The new City object.</returns>
     public static function Copy($objCity): ?City
     {
+      $className = "City";
+      $methodName = "Copy()";
       $retCity = null;
 
+      // Check for required values.
       if (property_exists($objCity, "Name"))
       {
         $retCity = new City($objCity->Name);
@@ -72,6 +75,8 @@
     /// <summary>Initializes a class instance.</summary>
     public function __construct($name = "", $provinceID = 0)
     {
+      $this->ClassName = "City";
+
       $this->Name = $name;
       $this->ProvinceID = $provinceID;
 
@@ -81,7 +86,19 @@
       $this->CityFlag = 0;
       $this->District = 0;
       $this->ZipCode = null;
+
+      $this->DebugText = "";
     }
+
+    // Standard debug method for each class.
+    private function AddDebug($methodName, $valueName, $value = null)
+    {
+      $retDebugText = "";
+
+      $location = LJC::Location($this->ClassName, $methodName
+        , $valueName);
+      $this->DebugText .= LJC::DebugObject($location, $value);
+    } // AddDebug()
 
     // ---------------
     // Data Object Methods
@@ -89,6 +106,8 @@
     /// <summary>Creates an object clone.</summary>
     public function Clone() : self
     {
+      $methodName = "Clone()";
+
       $retValue = new self();
       $retValue->CityID = $this->CityID;
       $retValue->ProvinceID = $this->ProvinceID;
@@ -138,6 +157,11 @@
     /// <summary>The ZipCode value.</summary> 
     public ?string $ZipCode;
 
+    // Class Properties
+
+    /// <summary>The debug text.</summary>
+    public string $DebugText;
+
     // ---------------
     // Constants
 
@@ -170,12 +194,14 @@
     /// <returns>The collection></returns.
     public static function Collection($items): ?Cities
     {
+      $className = "Cities";
+      $methodName = "Collection()";
       $retCities = new Cities();
 
       if (isset($items)
-        && LJC::HasElements($items->Items))
+        && $items->Count > 0)
       {
-        foreach ($items->Items as $objDataObject)
+        foreach ($items->ReadItems as $objDataObject)
         {
           // Create typed object from stdClass.
           $city = City::Copy($objDataObject);
@@ -186,15 +212,35 @@
     }
 
     // ---------------
+    // Constructor Methods
+
+    /// <summary>Initializes a class instance.</summary>
+    public function __construct()
+    {
+      $this->ClassName = "Cities";
+    }
+
+    // Standard debug method for each class.
+    private function AddDebug($methodName, $valueName, $value = null)
+    {
+      $retDebugText = "";
+
+      $location = LJC::Location($this->ClassName, $methodName
+        , $valueName);
+      $this->DebugText .= LJC::DebugObject($location, $value);
+    } // AddDebug()
+
+    // ---------------
     // Collection Methods
 
     // Adds an object and key value.
     /// <include path='items/AddObject/*' file='Doc/Cities.xml'/>
     public function AddObject(City $item, $key = null)
     {
+      $methodName = "AddObject()";
+
       if (null == $key)
       {
-        //$key = $item->Name;
         $key = $this->count();
       }
 			if ($this->HasKey($key))
@@ -217,14 +263,27 @@
     /// <include path='items/construct/*' file='Doc/CityManger.xml'/>
     public function __construct($connectionValues, string $tableName = null)
     {
+      $this->ClassName = "CityManager";
+
       if (!LJC::HasValue($tableName))
       {
         $tableName = City::TableName;
       }
       $this->DataManager = new LJCDataManager($connectionValues, $tableName);
+      $this->DebugText = "";
       $this->Limit = 0;
       $this->OrderByNames = null;
     }
+
+    // Standard debug method for each class.
+    private function AddDebug($methodName, $valueName, $value = "null")
+    {
+      $retDebugText = "";
+
+      $location = LJC::Location($this->ClassName, $methodName
+        , $valueName);
+      $this->DebugText .= LJC::DebugObject($location, $value);
+    } // AddDebug()
   
     // ---------------
     // Data Methods
@@ -234,17 +293,23 @@
     /// <returns>The added record data object.</returns>
     public function Add(LJCDbColumns $dataColumns): ?City
     {
-      $retValue = 0;
+      $methodName = "Add()";
+      $retCount = 0;
 
+        // ***** Begin
+      $this->AddDebug($methodName, "Here");
+      $this->AddDebug($methodName, "\$dataColumns", $dataColumns);
+        // ***** End
       $this->DataManager->SQL = "";
-      $retValue = $this->DataManager->Add($dataColumns);
-      return $retValue;
+      $retCount = $this->DataManager->Add($dataColumns);
+      return $retCount;
     }
   
     // Deletes the records for the provided values.
     /// <include path='items/Delete/*' file='Doc/CityManger.xml'/>
     public function Delete(LJCDbColumns $keyColumns): int
     {
+      $methodName = "Delete()";
       $retValue = 0;
 
       $this->DataManager->SQL = "";
@@ -257,6 +322,7 @@
     public function Load(?LJCDbColumns $keyColumns, array $propertyNames = null
       , ?string $filter = null): ?Cities
     {
+      $methodName = "Load()";
       $retValue = null;
       
       $rows = $this->LoadResult($keyColumns, $propertyNames, $filter);
@@ -272,6 +338,7 @@
     public function LoadResult(?LJCDbColumns $keyColumns
       , array $propertyNames = null, ?string $filter = null): ?array
     {
+      $methodName = "LoadResult()";
       $retValue = null;
 
       $this->DataManager->SQL = "";
@@ -291,6 +358,7 @@
     public function Retrieve(LJCDbColumns $keyColumns
       , array $propertyNames = null): ?City
     {
+      $methodName = "Retrieve()";
       $retValue = null;
       
       $this->DataManager->SQL = "";
@@ -306,6 +374,7 @@
     public function Update(LJCDbColumns $keyColumns, LJCDbColumns $dataColumns)
       : int
     {
+      $methodName = "Update()";
       $retValue = 0;
 
       $this->DataManager->SQL = "";
@@ -341,6 +410,9 @@
 
     /// <summary>The Data Manager object.</summary>
     public LJCDataManager $DataManager;
+
+    /// <summary>The debug text.</summary>
+    public string $DebugText;
 
     /// <summary>The load limit.</summary>
     public int $Limit;

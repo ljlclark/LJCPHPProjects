@@ -155,7 +155,7 @@ class LJCCityTableEvents
   // ---------------
   // Web Service Methods
 
-  /// <summary>Send request for a City Table page.</summary>
+  /// <summary>Sends page request to CityData web service.</summary>
   // Called from NextPage(), PrevPage() and CityListEvents #Refesh().
   Page()
   {

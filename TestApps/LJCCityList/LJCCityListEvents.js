@@ -314,7 +314,7 @@ class LJCCityListEvents
     LJC.SetValue("commit", "Create");
   }
 
-  // Call the CityData web service.
+  // Sends data request to CityData web service.
   // Called from Delete(), Edit(), New()
   #CityDataRequest(cityRequest)
   {
