@@ -8,12 +8,17 @@
 // <script src="LJCTable.js"></script>
 //   MoveNext(), MovePrevious(), SelectRow(), SelectColumnRow()
 
+/// <summary>The City Table Events</summary>
+/// LibName: LJCCityTableEvents
+//  Classes: LJCCityTableEvents
+
 // ***************
 /// <summary>Contains City HTML Table methods.</summary>
 //  Constructor: constructor(), #AddEvents()
 //  Event Handlers: #DocumentClick, #TableClick()
-//  Page Event Handlers: NextPage(), PrevPage(), Page()
-//    UpdateTableRequest(), #HasData(), #UpdateLimitFlags(), #UpdateCityTable()
+//  Page Event Handlers: NextPage(), PrevPage()
+//  Web Service: Page(), UpdateTableRequest(), #HasData(), #UpdateLimitFlags()
+//    #UpdateCityTable()
 class LJCCityTableEvents
 {
   // ---------------
@@ -191,11 +196,14 @@ class LJCCityTableEvents
         let rowIndex = saveThis.#UpdateCityTable(saveThis, response.Keys);
 
         let cityTable = saveThis.CityTable;
+
+        // Updates the BeginningOfData and EndOfData flags.
         if (saveThis.#UpdateLimitFlags())
         {
           // Get row index if "NextPage" or "PrevPage";
           rowIndex = cityTable.CurrentRowIndex;
         }
+
         cityTable.SelectRow(rowIndex, rowIndex);
 
         // Set hidden form primary keys and CityTableRequest.
@@ -279,7 +287,7 @@ class LJCCityTableEvents
   //  }
   //}
 
-  // Checks if the provided table text exists.</summary>
+  // Checks if the provided table text exists.
   // Called from Page().
   #HasData(tableText)
   {
@@ -306,7 +314,7 @@ class LJCCityTableEvents
     return retValue;
   }
 
-  // Updates the BeginningOfData and EndOfData flags.</summary>
+  // Updates the BeginningOfData and EndOfData flags.
   // Called from Page().
   #UpdateLimitFlags()
   {
@@ -342,7 +350,7 @@ class LJCCityTableEvents
     return retValue;
   }
 
-  // Updates the CityTable ETable and Keys values.</summary>
+  // Updates the CityTable ETable and Keys values.
   // Called from Page().
   #UpdateCityTable(saveThis, keys)
   {

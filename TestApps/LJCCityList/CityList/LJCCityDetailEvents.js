@@ -5,9 +5,16 @@
 // <script src="../../LJCJSCommon/LJCJSCommonLib.js"></script>
 //   AddEvent()
 
+/// <summary>The City Detail Events</summary>
+/// LibName: LJCCityDetailEvents
+//  Classes: LJCCityDetailEvents
+
 // ***************
-/// <summary>Contains City HTML Table methods.</summary>
+/// <summary>Contains City detail dialog events handlers.</summary>
 //  Constructor: constructor(), #AddEvents()
+//  Event Handlers: #CancelClick(), #CommitClick()
+//  Other: #CityFormData(), #PrimaryKeyColumns(), #ValidFormValues()
+//  Web Service: #DataRequest()
 class LJCCityDetailEvents
 {
   // ---------------

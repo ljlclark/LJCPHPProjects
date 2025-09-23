@@ -89,7 +89,7 @@
     } // GetConnectionValues()
 
     // ---------------
-    // Response (Main) Methods
+    // Response Methods
 
     /// <summary>Gets the Response data.</summary>
     /// <returns>The response JSON text.</returns.
@@ -167,8 +167,13 @@
         $this->CityManager->OrderByNames = $this->OrderByNames;
       }
       $this->ResultCities = new Cities();
+      // *** Add ***
+      //$joins = $this->CityManager->CreateJoins();
+      $joins = null;
+      // ***** 
+      $this->AddDebug($methodName, "\$joins", $joins);
       $resultCity = $this->CityManager->Retrieve($this->KeyColumns
-        , $this->PropertyNames);
+        , $this->PropertyNames, $joins);
       if ($resultCity != null)
       {
         $this->ResultCities->AddObject($resultCity);
@@ -263,10 +268,8 @@
     // ---------------
     // Request Properties
 
-    /// <summary>The data request action.</summary>
-    /// <remarks>
-    ///   Values: "Delete", "Insert", "Retrieve", "Update"
-    /// </remarks>
+    // The data request action.
+    /// <include path='items/Action/*' file='Doc/LJCCityDataService.xml'/>
     public string $Action;
 
     /// <summary>The data config file name.</summary>

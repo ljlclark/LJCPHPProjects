@@ -5,8 +5,7 @@
 
 /// <summary>The City Data Access Layer Library</summary>
 /// LibName: LJCCityDAL
-//  Classes:
-//    City, Cities
+//  Classes: City, Cities
 
 // A data object is a user defined data type that contains a group of
 // related values. Each contained value has a unique name and a data type.

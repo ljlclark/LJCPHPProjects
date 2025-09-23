@@ -3,7 +3,7 @@
 // Licensed under the MIT License.
 // LJCCityDataRequest.js
 
-/// <summary>The City Data Access Layer Library</summary>
+/// <summary>The City Data Request</summary>
 /// LibName: LJCCityDataRequest
 //  Classes: LJCCityDataRequest
 

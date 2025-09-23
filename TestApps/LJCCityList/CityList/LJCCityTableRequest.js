@@ -3,6 +3,10 @@
 // Licensed under the MIT License.
 // LJCCityTableRequest.js
 
+/// <summary>The City Table Request</summary>
+/// LibName: LJCCityTableRequest
+//  Classes: LJCCityTableRequest
+
 // ***************
 /// <summary>Contains City HTML Table web service request data.</summary>
 //  Constructor: constructor(), Clone()
