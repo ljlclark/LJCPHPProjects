@@ -133,6 +133,10 @@
     /// <summary>The ProvinceID value.</summary> 
     public int $ProvinceID;
 
+    // varchar(60)
+    /// <summary>The province name.</summary>
+    public string $ProvinceName;
+
     // Unique Keys
 
     // varchar(60)
@@ -177,6 +181,7 @@
 
     public const DescriptionLength = 100;
     public const NameLength = 60;
+    public const ProvinceNameLength = 60;
     public const ZipCodeLength = 4; // ?
   }  // City
 
@@ -356,14 +361,15 @@
     // Retrieves the record for the provided values.
     /// <include path='items/Retrieve/*' file='Doc/CityManger.xml'/>
     public function Retrieve(LJCDbColumns $keyColumns
-      , array $propertyNames = null): ?City
+      , array $propertyNames = null, LJCJoins $joins = null): ?City
     {
       $methodName = "Retrieve()";
       $retValue = null;
       
       $this->DataManager->SQL = "";
       $this->DataManager->OrderByNames = $this->OrderByNames;
-      $row = $this->DataManager->Retrieve($keyColumns, $propertyNames);
+      // *** Change ***
+      $row = $this->DataManager->Retrieve($keyColumns, $propertyNames, $joins);
 
       $retValue = $this->DataManager->CreateDataObject(new City(), $row);
       return $retValue;
@@ -390,6 +396,23 @@
     {
       $retValue = $this->DataManager->Columns($propertyNames);
       return $retValue;
+    }
+
+    /// <summary>Gets the Joins.</summary>
+    public function CreateJoins(): LJCJoins
+    {
+      $retJoins = new LJCJoins();
+      $join = $retJoins->Add("Province");
+
+      $joinOns = new LJCJoinOns();
+      $joinOn = $joinOns->Add(City::ColumnProvinceID, Province::ColumnID);
+      $join->JoinOns = $joinOns;
+
+      $dataColumns = new LJCDbColumns();
+      $dataColumn = $dataColumns->Add(Province::ColumnName, "ProvinceName"
+        , "ProvinceName");
+      $join->Columns = $dataColumns;
+      return $retJoins;
     }
 
     // Creates a PropertyNames list from the data definition.
