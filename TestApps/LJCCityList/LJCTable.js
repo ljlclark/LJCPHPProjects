@@ -21,14 +21,31 @@ class LJCTable
   // ---------------
   // Properties
 
+  /// <summary>Indicates if paging is at the beginning of the data.</summary>
   BeginningOfData;
+
+  /// <summary>The current row index.</summary>
   CurrentRowIndex;
+
+  /// <summary>The associated menu element.</summary>
   EMenu;
+
+  /// <summary>Indicates if paging is at the end of the data.</summary>
   EndOfData;
+
+  /// <summary>The associated table element.</summary>
   ETable;
+
+  /// <summary>The current page primary keys.</summary>
   Keys;
+
+  /// <summary>The unselected row background color.</summary>
   RowBackColor;
+
+  /// <summary>The selected row background color.</summary>
   RowSelectedColor;
+
+  /// <summary>The associated table element ID name.</summary>
   TableID;
 
   // ---------------

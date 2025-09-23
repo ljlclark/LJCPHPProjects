@@ -3,6 +3,10 @@
 // Licensed under the MIT License.
 // LJCCityDataRequest.js
 
+/// <summary>The City Data Access Layer Library</summary>
+/// LibName: LJCCityDataRequest
+//  Classes: LJCCityDataRequest
+
 // ***************
 /// <summary>Contains CityData web service request data.</summary>
 //  Constructor: constructor(), Clone()
@@ -24,17 +28,12 @@ class LJCCityDataRequest
   /// <summary>The data access configuration name.</summary>
   ConfigName = "";
 
-  /// <summary>
-  ///   The primary keys where clause LJCDataColumns collection.
-  /// </summary>
-  /// <remarks>Required for "Delete", "Retrieve" and "Update".</remarks>
+  // The primary keys where clause LJCDataColumns collection.
+  /// <include path='items/KeyColumns/*' file='Doc/LJCCityDataRequest.xml'/>
   KeyColumns = null;
 
-  /// <summary>The request items.</summary>
-  /// <remarks>
-  ///   Insert - A Cities collection of items to insert.<br />
-  ///   Update - A Cities collection of items to update.
-  /// </remarks>
+  // The request Cities collection.
+  /// <include path='items/RequestItems/*' file='Doc/LJCCityDataRequest.xml'/>
   RequestItems = null;
 
   /// <summary>The array of "Order By" names.</summary>
@@ -46,15 +45,15 @@ class LJCCityDataRequest
   /// <summary>The table names.</summary>
   TableName = "City";
 
-  /// <summary>
-  ///   The unique keys where clause LJCDataColumns collection.
-  /// </summary >
+  // The unique keys where clause LJCDataColumns collection.
+  /// <include path='items/UniqueColumns/*' file='Doc/LJCCityDataRequest.xml'/>
   UniqueColumns = null;
 
   // ---------------
   // The Constructor methods.
 
   /// <summary>Initializes the object instance.</summary>
+  /// <include path='items/constructor/*' file='Doc/LJCCityTableRequest.xml'/>
   constructor(configName = "", configFile = "DataConfigs.xml")
   {
     this.ConfigName = configName;

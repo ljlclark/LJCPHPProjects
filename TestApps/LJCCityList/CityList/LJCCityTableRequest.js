@@ -2,15 +2,10 @@
 // Copyright(c) Lester J. Clark and Contributors.
 // Licensed under the MIT License.
 // LJCCityTableRequest.js
-// <script src="LJCCityTableRequest.js"></script>
-//   MoveNext(), MovePrevious(), SelectRow(), SelectColumnRow()
 
 // ***************
 /// <summary>Contains City HTML Table web service request data.</summary>
-//  Constructor: constructor(), AddEvent()
-//  Event Handlers: TableClick(), TableKeyDown()
-//  Page Event Handlers: NextPage(), PrevPage(), Page()
-//    UpdateLimitFlags(), UpdatePageData(), UpdateTableData()
+//  Constructor: constructor(), Clone()
 class LJCCityTableRequest
 {
   // ---------------
@@ -19,10 +14,8 @@ class LJCCityTableRequest
   /// <summary>The service name.</summary>
   ServiceName = "LJCCityTable";
 
-  /// <summary>The action type name.</summary>
-  /// <remarks>
-  ///   "Next", "Previous", "Top"?, "Bottom"?, "First"?, "Last"?
-  /// </remarks>
+  // The action type name.
+  /// <include path='items/Action/*' file='Doc/LJCCityTableRequest.xml'/>
   Action = "";
 
   /// <summary>The unique key of the first page item.</summary>
@@ -43,7 +36,8 @@ class LJCCityTableRequest
   // ---------------
   // The Constructor methods.
 
-  /// <summary>Initializes the object instance.</summary>
+  // Initializes the object instance.
+  /// <include path='items/constructor/*' file='Doc/LJCCityTableRequest.xml'/>
   constructor(configName = "", configFile = "DataConfigs.xml")
   {
     this.ConfigName = configName;

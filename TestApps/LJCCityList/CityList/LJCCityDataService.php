@@ -104,7 +104,7 @@
       {
         case "delete":
           $this->Delete();
-          //$response = $this->CreateResponse();
+          $response = $this->CreateResponse();
           break;
 
         case "insert":
@@ -148,6 +148,11 @@
     private function Delete()
     {
       $methodName = "Delete()";
+
+      $this->SQL = "";
+
+      $this->AffectedCount = $this->CityManager->Delete($this->KeyColumns);
+      $this->SQL .= "\r\n{$this->CityManager->DataManager->SQL}";
       $this->DebugText .= $this->CityManager->DebugText;
     } // Delete()
 
@@ -156,6 +161,7 @@
     {
       $methodName = "Retrieve()";
 
+      $this->SQL = "";
       if ($this->OrderByNames != null)
       {
         $this->CityManager->OrderByNames = $this->OrderByNames;

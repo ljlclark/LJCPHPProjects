@@ -142,7 +142,6 @@ class Cities
   {
     this.#Items.push(city);
     this.Count = this.#Items.length;
-    // *** Add ***
     this.ReadItems = Array.from(this.#Items);
   }
 
@@ -151,7 +150,6 @@ class Cities
   {
     this.#Items = [];
     this.Count = this.#Items.length;
-    // *** Add ***
     this.ReadItems = Array.from(this.#Items);
   }
 
@@ -231,7 +229,6 @@ class Cities
       let beginIndex = 0;
       this.#Items.splice(beginIndex, itemIndex);
       this.Count = this.#Items.length;
-      // *** Add ***
       this.ReadItems = Array.from(this.#Items);
     }
   }
