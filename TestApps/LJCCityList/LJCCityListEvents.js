@@ -10,12 +10,19 @@
 //   MoveNext(), MovePrevious(), RowCount(), SelectRow(), SelectColumnRow()
 // <script src="CityList/LJCCityDataRequest.js"></script>
 
+/// <summary>The City List Events</summary>
+/// LibName: LJCCityListEvents
+//  Classes: LJCCityListEvents
+
 // ***************
 /// <summary>Contains CityList event handlers.</summary>
 //  Constructor: constructor(), #AddEvents()
 //  Document Handlers: #DocumentContextMenu(), #DocumentDoubleClick()
 //    , #DocumentKeyDown()
 //  Menu Handlers: #Delete(), #Edit(), #New(), #Next(), #Previous(), #Refresh()
+//  Other Menu: $CityRequest(), #FocusTableEvents(), #PrimaryKeyColumns()
+//  Web Service: #ClearCityFormData(), #CityDataRequest(), #SetCityForm()
+//    , #ShowCityDetail()
 //  Table Column: #SelectedTable(), #SelectedTableEvents()
 class LJCCityListEvents
 {

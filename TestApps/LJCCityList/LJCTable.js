@@ -5,6 +5,10 @@
 // <script src="../../LJCJSCommon/LJCJSCommonLib.js"></script>
 //   Element(), TagElements(), Visibility()
 
+/// <summary>The Table Helper Class</summary>
+/// LibName: LJCTable
+//  Classes: LJCTable
+
 // ***************
 /// <summary>Represents an HTML Table.</summary>
 /// <remarks>
