@@ -70,8 +70,6 @@
     // Standard debug method for each class.
     private function AddDebug($methodName, $valueName, $value = null)
     {
-      $retDebugText = "";
-
       $location = LJC::Location($this->ClassName, $methodName
         , $valueName);
       $this->DebugText .= LJC::DebugObject($location, $value);
@@ -171,7 +169,6 @@
       //$joins = $this->CityManager->CreateJoins();
       $joins = null;
       // ***** 
-      $this->AddDebug($methodName, "\$joins", $joins);
       $resultCity = $this->CityManager->Retrieve($this->KeyColumns
         , $this->PropertyNames, $joins);
       if ($resultCity != null)

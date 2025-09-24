@@ -22,7 +22,6 @@
     private function AddDebug($methodName, $valueName, $value = "null")
     {
       $this->ClassName = "DataConfigs";
-      $retDebugText = "";
 
       $location = LJC::Location($this->ClassName, $methodName
         , $valueName);
@@ -81,5 +80,11 @@
       }
       return $retConfig;
     } // GetDataConfig()
+
+    // ---------------
+    // Result Properties
+
+    /// <summary>The debug text.</summary>
+    public string $DebugText;
   }
 ?>

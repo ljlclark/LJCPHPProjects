@@ -75,8 +75,6 @@
     // Standard debug method for each class.
     private function AddDebug($methodName, $valueName, $value = "null")
     {
-      $retDebugText = "";
-
       $location = LJC::Location($this->ClassName, $methodName
         , $valueName);
       $this->DebugText .= LJC::DebugObject($location, $value);
@@ -369,10 +367,16 @@
     /// <summary>The number of rows per page.</summary>
     public int $Limit;
 
-    /// <summary>The SQL statement.</summary>
-    public string $SQL;
-
     /// <summary>The db table name.</summary>
     public string $TableName;
+
+    // ---------------
+    // Result Properties
+
+    /// <summary>The debug text.</summary>
+    public string $DebugText;
+
+    /// <summary>The SQL statement.</summary>
+    public string $SQL;
   }
 ?>
