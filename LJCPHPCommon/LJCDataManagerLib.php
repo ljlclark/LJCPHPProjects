@@ -5,6 +5,7 @@
   declare(strict_types=1);
   include_once "LJCRoot.php";
   $prefix = RelativePrefix();
+  include_once "$prefix/LJCPHPCommon/LJCCommonLib.php";
   include_once "$prefix/LJCPHPCommon/LJCDBAccessLib.php";
   include_once "$prefix/LJCPHPCommon/LJCTextLib.php";
   // LJCDBAccessLib: LJCConnectionValues, LJCDbAccess
@@ -29,10 +30,16 @@
   //    CreateDataCollection(), CreateDataObject()
   class LJCDataManager
   {
+    // ---------------
+    // Constructor Methods
+
     // Initializes a class instance with the provided values.
     /// <include path='items/construct/*' file='Doc/LJCDataManager.xml'/>
     public function __construct($connectionValues, string $tableName)
     {
+      $this->ClassName = "LJCDataManager";
+      $this->DebugText = "";
+
       $this->DbAccess= new LJCDbAccess($connectionValues);
       $this->TableName = $tableName;
       $dbName= $connectionValues->DbName;
@@ -43,6 +50,14 @@
       $this->OrderByNames = null;
       $this->SQL = null;
     } // __construct()
+
+    // Standard debug method for each class.
+    private function AddDebug($methodName, $valueName, $value = "null")
+    {
+      $location = LJC::Location($this->ClassName, $methodName
+        , $valueName);
+      $this->DebugText .= LJC::DebugObject($location, $value);
+    } // AddDebug()
 
     // ---------------
     // Data Methods - LJCDataManager
@@ -89,24 +104,20 @@
         $propertyNames = $this->PropertyNames(); 
       }
 
-      // *** Begin ***
       if ($filter != null
         && strlen(trim($filter)) > 0)
       {
         $keyColumns = null;
       }
-      // *** End   ***
 
       $this->Joins = $joins;
       $this->SQL = LJCSQLBuilder::CreateSelect($this->TableName
         , $this->SchemaColumns, $keyColumns, $propertyNames, $joins);
-      // *** Begin ***
       if ($filter != null
         && strlen(trim($filter)) > 0)
       {
         $this->SQL .= " \r\n{$filter}";
       }
-      // *** End   ***
 
       $this->SQL .= LJCSQLBuilder::GetOrderBy($this->OrderByNames);
       if ($this->Limit > 0)
@@ -123,6 +134,7 @@
     public function Retrieve(LJCDbColumns $keyColumns
       , array $propertyNames = null, LJCJoins $joins = null): ?array
     {
+      $methodName = "Retrieve()";
       $retValue = null;
 
       if (null == $propertyNames)
@@ -143,6 +155,7 @@
     public function Update(LJCDbColumns $keyColumns, LJCDbColumns $dataColumns)
       : int
     {
+      $methodName = "Retrieve()";
       $retValue = 0;
       
       if (null == $keyColumns || 0 == count($keyColumns))
@@ -317,8 +330,14 @@
     // ---------------
     // Public Properties - LJCDataManager
 
+    /// <summary>The class name for debugging.</summary>
+    public string $ClassName;
+
     /// <summary>The DbAccess object.</summary>
     public LJCDbAccess $DbAccess;
+
+    /// <summary>The debug text.</summary>
+    public string $DebugText;
 
     /// <summary>The Join definitions.</summary>
     public ?LJCJoins $Joins;
@@ -389,7 +408,6 @@
 
       $retValue = "select\r\n";
       $retValue .= self::SQLColumns($tableName, $sqlColumns, joins: $joins);
-      // *** Change ***
       $retValue .= "from $tableName ";
       $retValue .= self::GetJoinStatement($tableName, $joins);
       $retValue .= self::WhereClause($tableName, $keyColumns);
@@ -580,7 +598,6 @@
 
       if ($keyColumns != null && count($keyColumns) > 0)
       {
-        // *** Change ***
         $retValue = "\r\nwhere ";
 
         $first = true;
@@ -690,7 +707,6 @@
       if ($joins != null && count($joins) > 0)
       {
         $builder = new LJCStringBuilder();
-        // *** Add ***
         $builder->Line(" ");
         foreach ($joins as $join)
         {

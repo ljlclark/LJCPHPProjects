@@ -35,12 +35,12 @@
     public function Run(): void
     {
       $this->ClassName = "LJCCityDataService";
+      $this->DebugText = "";
       $methodName = "Run()";
 
       // Initialize response properties.
       $this->ServiceName = "LJCCityData";
       $this->AffectedCount = 0;
-      $this->DebugText = "";
       $this->ResultCities = null;
       $this->ResultItems = [];
       $this->SQL = "";
@@ -168,7 +168,6 @@
       // *** Add ***
       //$joins = $this->CityManager->CreateJoins();
       $joins = null;
-      // ***** 
       $resultCity = $this->CityManager->Retrieve($this->KeyColumns
         , $this->PropertyNames, $joins);
       if ($resultCity != null)
@@ -268,6 +267,9 @@
     // The data request action.
     /// <include path='items/Action/*' file='Doc/LJCCityDataService.xml'/>
     public string $Action;
+
+    /// <summary>The class name for debugging.</summary>
+    public string $ClassName;
 
     /// <summary>The data config file name.</summary>
     public string $ConfigFile;

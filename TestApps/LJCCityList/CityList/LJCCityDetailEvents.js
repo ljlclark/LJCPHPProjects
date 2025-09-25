@@ -105,10 +105,11 @@ class LJCCityDetailEvents
   {
     let methodName = "CityFormData()";
 
+    let cityID = LJC.GetValue("cityID");
     let provinceID = LJC.GetValue("provinceID");
     let name = LJC.GetValue("name");
+
     let cityFlag = LJC.GetValue("cityFlag");
-    let cityID = LJC.GetValue("cityID");
     let retCity = new City(provinceID, name, cityFlag, cityID);
 
     retCity.Description = LJC.GetValue("description");

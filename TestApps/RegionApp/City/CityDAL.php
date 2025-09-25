@@ -5,6 +5,7 @@
   declare(strict_types=1);
   include_once "LJCRoot.php";
   $prefix = RelativePrefix();
+  include_once "$prefix/LJCPHPCommon/LJCCommonLib.php";
   include_once "$prefix/LJCPHPCommon/LJCCollectionLib.php";
   include_once "$prefix/LJCPHPCommon/LJCDBAccessLib.php";
   include_once "$prefix/LJCPHPCommon/LJCDataManagerLib.php";
@@ -93,8 +94,6 @@
     // Standard debug method for each class.
     private function AddDebug($methodName, $valueName, $value = null)
     {
-      $retDebugText = "";
-
       $location = LJC::Location($this->ClassName, $methodName
         , $valueName);
       $this->DebugText .= LJC::DebugObject($location, $value);
@@ -228,8 +227,6 @@
     // Standard debug method for each class.
     private function AddDebug($methodName, $valueName, $value = null)
     {
-      $retDebugText = "";
-
       $location = LJC::Location($this->ClassName, $methodName
         , $valueName);
       $this->DebugText .= LJC::DebugObject($location, $value);
@@ -255,6 +252,12 @@
       $retValue = $this->AddItem($item, $key);
       return $retValue;
     }
+
+    // ---------------
+    // Properties
+
+    /// <summary>The debug text.</summary>
+    public string $DebugText;
   }  // Cities
 
   // ***************
@@ -269,13 +272,14 @@
     public function __construct($connectionValues, string $tableName = null)
     {
       $this->ClassName = "CityManager";
+      $this->DebugText = "";
 
       if (!LJC::HasValue($tableName))
       {
         $tableName = City::TableName;
       }
       $this->DataManager = new LJCDataManager($connectionValues, $tableName);
-      $this->DebugText = "";
+      $this->DebugText .= $this->DataManager->DebugText;
       $this->Limit = 0;
       $this->OrderByNames = null;
     }
@@ -283,8 +287,6 @@
     // Standard debug method for each class.
     private function AddDebug($methodName, $valueName, $value = "null")
     {
-      $retDebugText = "";
-
       $location = LJC::Location($this->ClassName, $methodName
         , $valueName);
       $this->DebugText .= LJC::DebugObject($location, $value);
@@ -301,12 +303,9 @@
       $methodName = "Add()";
       $retCount = 0;
 
-        // ***** Begin
-      $this->AddDebug($methodName, "Here");
-      $this->AddDebug($methodName, "\$dataColumns", $dataColumns);
-        // ***** End
       $this->DataManager->SQL = "";
       $retCount = $this->DataManager->Add($dataColumns);
+      $this->DebugText .= $this->DataManager->DebugText;
       return $retCount;
     }
   
@@ -319,6 +318,7 @@
 
       $this->DataManager->SQL = "";
       $retValue = $this->DataManager->Delete($keyColumns);
+      $this->DebugText .= $this->DataManager->DebugText;
       return $retValue;
     }
 
@@ -336,6 +336,7 @@
       $city = new City();
       $retValue = $this->DataManager->CreateDataCollection($cities, $city
         , $rows);
+      $this->DebugText .= $this->DataManager->DebugText;
       return $retValue;
     }
 
@@ -355,6 +356,7 @@
 
       $retValue = $this->DataManager->Load($keyColumns, $propertyNames
         , filter: $filter);
+      $this->DebugText .= $this->DataManager->DebugText;
       return $retValue;
     }
 
@@ -368,10 +370,10 @@
       
       $this->DataManager->SQL = "";
       $this->DataManager->OrderByNames = $this->OrderByNames;
-      // *** Change ***
       $row = $this->DataManager->Retrieve($keyColumns, $propertyNames, $joins);
 
       $retValue = $this->DataManager->CreateDataObject(new City(), $row);
+      $this->DebugText .= $this->DataManager->DebugText;
       return $retValue;
     }
 
@@ -385,6 +387,7 @@
 
       $this->DataManager->SQL = "";
       $retValue = $this->DataManager->Update($keyColumns, $dataColumns);
+      $this->DebugText .= $this->DataManager->DebugText;
       return $retValue;
     }
 
@@ -395,6 +398,7 @@
     public function Columns(array $propertyNames = null): ?LJCDbColumns
     {
       $retValue = $this->DataManager->Columns($propertyNames);
+      $this->DebugText .= $this->DataManager->DebugText;
       return $retValue;
     }
 
@@ -419,6 +423,7 @@
     public function PropertyNames(): array
     {
       $retNames = $this->DataManager->PropertyNames();
+      $this->DebugText .= $this->DataManager->DebugText;
       return $retNames;
     }
 
@@ -430,6 +435,9 @@
 
     // ---------------
     // Public Properties
+
+    /// <summary>The class name for debugging.</summary>
+    public string $ClassName;
 
     /// <summary>The Data Manager object.</summary>
     public LJCDataManager $DataManager;
