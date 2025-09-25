@@ -107,8 +107,8 @@ class City
 
 // ***************
 /// <summary>Represents a collection of city data objects.</summary>
-//  Collection: Add(), AddObject(), Clear(), Columns(), GetIndex(),
-//  Names(), Remove(), Retrieve(), RetrieveWithIndex()
+//  Collection: Add(), AddObject(), Clear(), Count(), GetIndex(), Items()
+//    Names(), Remove(), Retrieve(), RetrieveWithIndex()
 class Cities
 {
   // ---------------

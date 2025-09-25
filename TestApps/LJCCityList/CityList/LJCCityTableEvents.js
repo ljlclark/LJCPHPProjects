@@ -54,7 +54,7 @@ class LJCCityTableEvents
   #TableID;
 
   // ---------------
-  // The Constructor methods.
+  // Constructor methods.
 
   /// <summary>Initializes the object instance.</summary>
   constructor(listEvents, menuID, configName = ""

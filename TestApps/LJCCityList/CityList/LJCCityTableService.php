@@ -24,7 +24,7 @@
   // ***************
   /// <group name="Entry">Entry Methods</group>
   //    Run()
-  /// <group name="Response">Entry Methods</group>
+  /// <group name="Response">Response Methods</group>
   //    CreateResponse(), 
   /// <summary>Web Service to Create an HTML table from City data.
   class LJCCityTableService
@@ -93,7 +93,7 @@
     } // GetConnectionValues()
 
     // ---------------
-    // Create Response (Main) Methods
+    // Response Methods
 
     /// <summary>Creates the HTML Table.</summary>
     /// <returns>The response JSON text.</returns.
@@ -339,7 +339,7 @@
     } // RetrieveData()
 
     // ---------------
-    // Properties
+    // Request Properties
 
     /// <summary>The data retrieve action.</summary>
     /// <remarks>

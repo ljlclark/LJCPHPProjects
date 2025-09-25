@@ -18,11 +18,11 @@
 /// <summary>Contains CityList event handlers.</summary>
 //  Constructor: constructor(), #AddEvents()
 //  Document Handlers: #DocumentContextMenu(), #DocumentDoubleClick()
-//    , #DocumentKeyDown()
+//    #DocumentKeyDown()
 //  Menu Handlers: #Delete(), #Edit(), #New(), #Next(), #Previous(), #Refresh()
 //  Other Menu: $CityRequest(), #FocusTableEvents(), #PrimaryKeyColumns()
 //  Web Service: #ClearCityFormData(), #CityDataRequest(), #SetCityForm()
-//    , #ShowCityDetail()
+//    #ShowCityDetail()
 //  Table Column: #SelectedTable(), #SelectedTableEvents()
 class LJCCityListEvents
 {

@@ -38,7 +38,7 @@ class LJCCityTableRequest
   Limit = 20;
 
   // ---------------
-  // The Constructor methods.
+  // Constructor methods.
 
   // Initializes the object instance.
   /// <include path='items/constructor/*' file='Doc/LJCCityTableRequest.xml'/>

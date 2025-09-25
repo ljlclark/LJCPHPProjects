@@ -15,11 +15,11 @@
 ///   Contains methods for utilizing an HTML Table and associated context menu
 //    including data paging.
 /// </remarks>
-//   Static: GetTable(), GetTableRow()
-//   Methods: ShowMenu()
-//   Table Methods: GetCellText(), GetColumnIndex(), GetRow()
-//     MoveNext(), MovePrevious(), RowCount(), SelectRow()
-//   Selected Column: IsSelectedTable(), SelectColumnRow()
+//  Static: GetTable(), GetTableRow()
+//  Methods: ShowMenu()
+//  Table Methods: GetCellText(), GetColumnIndex(), GetRow()
+//    MoveNext(), MovePrevious(), RowCount(), SelectRow()
+//  Selected Column: IsSelectedTable(), SelectColumnRow()
 class LJCTable
 {
   // ---------------
@@ -86,7 +86,7 @@ class LJCTable
   }
 
   // ---------------
-  // The Constructor methods.
+  // Constructor methods.
 
   // Initializes the object.
   /// <include path='items/constructor/*' file='Doc/LJCTable.xml'/>

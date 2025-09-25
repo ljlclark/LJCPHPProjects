@@ -76,6 +76,7 @@
     } // AddDebug()
 
     // Get connection values for a DataConfig name.
+    // Called from Run()
     private function GetConnectionValues(string $configName)
     {
       $methodName = "GetConnectionValues()";
@@ -92,6 +93,7 @@
     /// <summary>Gets the Response data.</summary>
     /// <returns>The response JSON text.</returns.
     /// <ParentGroup>Response</ParentGroup>
+    // Called from Run().
     public function GetResponse()
     {
       $methodName = "GetResponse()";
@@ -100,13 +102,13 @@
       $response = $this->ClearResponseValues();
       switch (strtolower($this->Action))
       {
-        case "delete":
-          $this->Delete();
+        case "insert":
+          $this->Add();
           $response = $this->CreateResponse();
           break;
 
-        case "insert":
-          $this->Add();
+        case "delete":
+          $this->Delete();
           $response = $this->CreateResponse();
           break;
 
@@ -128,6 +130,7 @@
     } // GetResponse()
 
     // Inserts the new items.
+    // Called from GetResponse().
     private function Add()
     {
       $methodName = "Add()";
@@ -143,6 +146,7 @@
     } // Add()
 
     // Deletes the selected items.
+    // Called from GetResponse().
     private function Delete()
     {
       $methodName = "Delete()";
@@ -155,6 +159,7 @@
     } // Delete()
 
     // Get the requested item.
+    // Called from GetResponse().
     private function Retrieve()
     {
       $methodName = "Retrieve()";
@@ -166,8 +171,7 @@
       }
       $this->ResultCities = new Cities();
       // *** Add ***
-      //$joins = $this->CityManager->CreateJoins();
-      $joins = null;
+      $joins = $this->CityManager->CreateJoins();
       $resultCity = $this->CityManager->Retrieve($this->KeyColumns
         , $this->PropertyNames, $joins);
       if ($resultCity != null)
@@ -179,6 +183,7 @@
     } // Retrieve()
 
     // Updates the requested items.
+    // Called from GetResponse().
     private function Update()
     {
       $methodName = "Update()";

@@ -50,7 +50,7 @@ class LJCCityDataRequest
   UniqueColumns = null;
 
   // ---------------
-  // The Constructor methods.
+  // Constructor methods.
 
   /// <summary>Initializes the object instance.</summary>
   /// <include path='items/constructor/*' file='Doc/LJCCityTableRequest.xml'/>
@@ -65,6 +65,7 @@ class LJCCityDataRequest
   }
 
   /// <summary>Creates a clone of this object.</summary>
+  /// <returns>The new cloned object.</returns>
   Clone()
   {
     let retRequest = null;
