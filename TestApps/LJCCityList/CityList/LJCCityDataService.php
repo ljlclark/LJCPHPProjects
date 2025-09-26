@@ -99,6 +99,7 @@
       $methodName = "GetResponse()";
       $retResponse = "";
 
+      // Gets response without data but preserves existing Action.
       $response = $this->ClearResponseValues();
       switch (strtolower($this->Action))
       {
@@ -189,12 +190,21 @@
       $methodName = "Update()";
 
       $this->SQL = "";
+
+      // Intended to support updating multiple records.
+      $this->ResultCities = new Cities();
       foreach ($this->RequestCities as $city)
       {
         $keyColumns = $this->KeyColumns($city);
         $dataColumns = $this->DataColumns($city);
-        $this->AffectedCount = $this->CityManager->Update($keyColumns
+        $this->AffectedCount += $this->CityManager->Update($keyColumns
           , $dataColumns);
+        // *** Begin *** Add
+        //if ($this->AffectedCount > 0)
+        //{
+          $this->ResultCities->AddObject($city);
+        //}
+        // *** End ***
         $this->SQL .= "\r\n{$this->CityManager->DataManager->SQL}";
         $this->DebugText .= $this->CityManager->DebugText;
       }
@@ -213,8 +223,17 @@
       $retResponse->Action = $this->Action;
       $retResponse->AffectedCount = $this->AffectedCount;
       $retResponse->DebugText = $this->DebugText;
-      $items = LJC::ItemsToArray($this->ResultCities);
-      $retResponse->ResultItems = $items;
+      // Copies a collection of items to an array.
+      $arrItems = LJC::ItemsToArray($this->ResultCities);
+      $retResponse->ResultItems = $arrItems;
+      // ***** Begin
+      $this->AddDebug($methodName, "\$this->Action", $this->Action);
+      //if ("Update" == $this->Action)
+      //{
+        $this->AddDebug($methodName, "\$retResponse->ResultItems"
+          , $retResponse->ResultItems);
+      //}
+      // ***** End
       $retResponse->SQL = $this->SQL;
       return $retResponse;
     } // CreateResponse()

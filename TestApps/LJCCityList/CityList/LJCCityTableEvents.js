@@ -87,14 +87,6 @@ class LJCCityTableEvents
     LJC.AddEvent(this.#TableID, "click", this.#TableClick, this);
   }
 
-  // Standard debug method for each class.
-  #Debug(methodName, valueName, value, force = false)
-  {
-    let text = LJC.Location(this.#ClassName, methodName, valueName);
-    // Does not show alert if no value unless force = true.
-    LJC.Message(text, value, force);
-  }
-
   // ---------------
   // Event Handlers
 
@@ -175,13 +167,16 @@ class LJCCityTableEvents
 
     xhr.onload = function ()
     {
-      saveThis.#Debug(methodName, "responseText", this.responseText);
+      LJC.ShowText(saveThis.#ClassName, methodName, "this.responseText"
+        , this.responseText);
 
       // Get the AJAX response.
       let response = JSON.parse(this.responseText);
 
-      saveThis.#Debug(methodName, "response.DebugText", response.DebugText);
-      saveThis.#Debug(methodName, "response.SQL", response.SQL);
+      LJC.ShowText(saveThis.#ClassName, methodName, "response.DebugText"
+        , response.DebugText);
+      LJC.ShowText(saveThis.#ClassName, methodName, "response.SQL"
+        , response.SQL);
 
       // Check if there is more data.
       if (saveThis.#HasData(response.HTMLTable))
@@ -266,26 +261,6 @@ class LJCCityTableEvents
       }
     }
   }
-
-  // Show the text dialog.
-  // <param name="textValue">The text value.</param>
-  //ShowText(textValue, useAlert = true)
-  //{
-  //  let methodName = "ShowText()";
-  //
-  //  if (LJC.HasValue(textValue))
-  //  {
-  //    if (useAlert)
-  //    {
-  //      alert(textValue);
-  //    }
-  //    else
-  //    {
-  //      text.value = textValue;
-  //      textDialog.showModal();
-  //    }
-  //  }
-  //}
 
   // Checks if the provided table text exists.
   // Called from Page().

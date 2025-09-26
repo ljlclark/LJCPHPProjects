@@ -101,14 +101,6 @@ class LJCCityListEvents
     LJC.AddEvent("refresh", "click", this.#Refresh, this);
   }
 
-  // Standard debug method for each class.
-  #Debug(methodName, valueName, value, force = false)
-  {
-    let text = LJC.Location(this.#ClassName, methodName, valueName);
-    // Does not show alert if no value unless force = true.
-    LJC.Message(text, value, force);
-  }
-
   // ---------------
   // Document Event Handlers
 
@@ -339,12 +331,15 @@ class LJCCityListEvents
       // Get the AJAX response.
       if (LJC.HasText(this.responseText))
       {
-        saveThis.#Debug(methodName, "responseText", this.responseText);
+        LJC.ShowText(saveThis.#ClassName, methodName, "this.responseText"
+          , this.responseText);
 
         let response = LJC.ParseJSON(this.responseText);
 
-        saveThis.#Debug(methodName, "response.DebugText", response.DebugText);
-        saveThis.#Debug(methodName, "response.SQL", response.SQL);
+        LJC.ShowText(saveThis.#ClassName, methodName, "response.DebugText"
+          , response.DebugText);
+        LJC.ShowText(saveThis.#ClassName, methodName, "response.SQL"
+          , response.SQL);
 
         saveThis.#ShowCityDetail(response);
       }
@@ -361,6 +356,8 @@ class LJCCityListEvents
 
     LJC.SetValue("cityID", city.CityID);
     LJC.SetValue("provinceID", city.ProvinceID);
+
+    LJC.SetValue("province", city.ProvinceName);
     LJC.SetValue("name", city.Name);
     LJC.SetValue("description", city.Description);
     LJC.SetValue("cityFlag", city.CityFlag);

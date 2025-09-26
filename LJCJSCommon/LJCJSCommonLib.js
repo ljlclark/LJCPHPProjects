@@ -276,7 +276,7 @@ class LJC
 
     if (LJC.HasText(textValue))
     {
-      let text = textValue.toLowerCase();
+      let text = textValue.toLowerCase().trim();
       if (!text.startsWith("{\"servicename\":")
         && !text.startsWith("delete")
         && !text.startsWith("insert")
@@ -315,6 +315,25 @@ class LJC
 
     retObject = JSON.parse(json);
     return retObject;
+  }
+
+  /// <summary>Show text in textArea element.</summary>
+  static ShowText(className, methodName, valueName, objValue, textDialogID = null
+    , force = false)
+  {
+    let text = LJC.Location(className, methodName, valueName);
+    if (null == textDialogID)
+    {
+      // Does not show alert if no value unless force = true.
+      LJC.Message(text, objValue, force);
+    }
+    else
+    {
+      let eText = LJC.Element("text");
+      eText.value = `${text} \r\n${objValue}`;
+      let eTextDialog = LJC.Element(textDialogID);
+      eTextDialog.showModal();
+    }
   }
 
   /// <summary>Sets the element visibility.</summary>
@@ -466,6 +485,75 @@ class LJC
       {
         alert(`${page} ${results}`);
       }
+    }
+  }
+}
+
+// ***************
+/// <summary>Common Debug Class</summary>
+class Debug
+{
+  // ---------------
+  // Private Properties
+
+  /// <summary>The debug location class name.</summary>
+  ClassName = "";
+
+  /// <summary>The debug location method name.</summary>
+  MethodName = "";
+
+  /// <summary>The text dialog ID.</summary>
+  TextDialogID = "";
+
+  /// <summary>The text value ID.</summary>
+  TextValueID = "";
+
+  #SaveTextDialogID = "";
+
+  // ---------------
+  // Constructor methods.
+
+  /// <summary>Initializes the object instance.</summary>
+  constructor(className)
+  {
+    this.ClassName = className;
+  }
+
+  // ---------------
+  // Methods.
+
+  /// <summary>Sets the TextDialogID value from the saved value.</summary>
+  SetActive()
+  {
+    if (LJC.HasValue(this.#SaveTextDialogID))
+    {
+      this.TextDialogID = this.#SaveTextDialogID;
+    }
+  }
+
+  /// <summary>Sets the saved value from the TextDialogID value.</summary>
+  SetInactive()
+  {
+    this.#SaveTextDialogID = this.TextDialogID;
+    this.TextDialogID = "";
+  }
+
+  /// <summary>Show text in textArea element.</summary>
+  ShowText(valueName, objValue, force = false)
+  {
+    let text = LJC.Location(this.ClassName, this.MethodName, valueName);
+    if (!LJC.HasValue(this.TextDialogID))
+    {
+      // Does not show alert if no value, ServiceName, Delete, Insert, Select
+      // or Update unless force = true.
+      LJC.Message(text, objValue, force);
+    }
+    else
+    {
+      let eText = LJC.Element(this.TextValueID);
+      eText.value = `${text} \r\n${objValue}`;
+      let eTextDialog = LJC.Element(this.TextDialogID);
+      eTextDialog.showModal();
     }
   }
 }
