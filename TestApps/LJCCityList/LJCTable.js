@@ -2,7 +2,7 @@
 // Copyright(c) Lester J. Clark and Contributors.
 // Licensed under the MIT License.
 // LJCTable.js
-// <script src="../../LJCJSCommon/LJCJSCommonLib.js"></script>
+// <script src="../../LJCJSCommon/LJCCommonLib.js"></script>
 //   Element(), TagElements(), Visibility()
 
 /// <summary>The Table Helper Class</summary>

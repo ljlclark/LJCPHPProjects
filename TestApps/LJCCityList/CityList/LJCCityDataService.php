@@ -126,6 +126,7 @@
       if ($response->Action != "")
       {
         $retResponse = LJC::CreateJSON($response);
+        $this->AddDebug($methodName, "\$retresponse", $retResponse);
       }
       return $retResponse;
     } // GetResponse()
@@ -171,7 +172,6 @@
         $this->CityManager->OrderByNames = $this->OrderByNames;
       }
       $this->ResultCities = new Cities();
-      // *** Add ***
       $joins = $this->CityManager->CreateJoins();
       $resultCity = $this->CityManager->Retrieve($this->KeyColumns
         , $this->PropertyNames, $joins);
@@ -222,19 +222,23 @@
       $retResponse->ServiceName = "LJCCityData";
       $retResponse->Action = $this->Action;
       $retResponse->AffectedCount = $this->AffectedCount;
-      $retResponse->DebugText = $this->DebugText;
       // Copies a collection of items to an array.
       $arrItems = LJC::ItemsToArray($this->ResultCities);
       $retResponse->ResultItems = $arrItems;
-      // ***** Begin
-      $this->AddDebug($methodName, "\$this->Action", $this->Action);
-      //if ("Update" == $this->Action)
-      //{
-        $this->AddDebug($methodName, "\$retResponse->ResultItems"
-          , $retResponse->ResultItems);
-      //}
-      // ***** End
+      // Debug if not called from ClearResponseValues().
+      if (LJC::HasValue($this->Action))
+      {
+        // ***** Begin
+        $this->AddDebug($methodName, "\$this->Action", $this->Action);
+        //if ("Update" == $this->Action)
+        //{
+          $this->AddDebug($methodName, "\$retResponse->ResultItems"
+            , $retResponse->ResultItems);
+        //}
+        // ***** End
+      }
       $retResponse->SQL = $this->SQL;
+      $retResponse->DebugText = $this->DebugText;
       return $retResponse;
     } // CreateResponse()
 
@@ -244,12 +248,16 @@
       $methodName = "ClearResponseValues()";
 
       $action = $this->Action;
+
       $this->Action = "";
       $this->AffectedCount = 0;
       $this->ResultCities = new Cities();
       $this->ResultItems = [];
       $this->SQL = "";
+      // ***** 
+      $this->AddDebug($methodName, "Here", "Here");
       $retResponse = $this->CreateResponse();
+
       $this->Action = $action;
       return $retResponse;
     } // ClearResponseValues()

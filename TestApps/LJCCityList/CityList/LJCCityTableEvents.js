@@ -2,7 +2,7 @@
 // Copyright(c) Lester J. Clark and Contributors.
 // Licensed under the MIT License.
 // LJCCityTableEvents.js
-// <script src="../../LJCJSCommon/LJCJSCommonLib.js"></script>
+// <script src="../../LJCJSCommon/LJCCommonLib.js"></script>
 //   AddEvent(), Element(), Visibility()
 // <script src="City/LJCCityTableRequest.js"></script>
 // <script src="LJCTable.js"></script>
@@ -159,7 +159,7 @@ class LJCCityTableEvents
     let methodName = "Page()";
 
     // Save a reference to this class for anonymous function.
-    const saveThis = this;
+    const self = this;
 
     let xhr = new XMLHttpRequest();
     xhr.open("POST", "CityList/LJCCityTableService.php");
@@ -167,33 +167,33 @@ class LJCCityTableEvents
 
     xhr.onload = function ()
     {
-      LJC.ShowText(saveThis.#ClassName, methodName, "this.responseText"
+      LJC.ShowText(self.#ClassName, methodName, "this.responseText"
         , this.responseText);
 
       // Get the AJAX response.
       let response = JSON.parse(this.responseText);
 
-      LJC.ShowText(saveThis.#ClassName, methodName, "response.DebugText"
+      LJC.ShowText(self.#ClassName, methodName, "response.DebugText"
         , response.DebugText);
-      LJC.ShowText(saveThis.#ClassName, methodName, "response.SQL"
+      LJC.ShowText(self.#ClassName, methodName, "response.SQL"
         , response.SQL);
 
       // Check if there is more data.
-      if (saveThis.#HasData(response.HTMLTable))
+      if (self.#HasData(response.HTMLTable))
       {
         // Create new table element and add new "click" event.
-        let eTable = LJC.Element(saveThis.#TableID);
+        let eTable = LJC.Element(self.#TableID);
         eTable.outerHTML = response.HTMLTable;
-        LJC.AddEvent(saveThis.#TableID, "click", saveThis.#TableClick
-          , saveThis);
+        LJC.AddEvent(self.#TableID, "click", self.#TableClick
+          , self);
 
         // Updates CityTable with new table element and keys.
-        let rowIndex = saveThis.#UpdateCityTable(saveThis, response.Keys);
+        let rowIndex = self.#UpdateCityTable(self, response.Keys);
 
-        let cityTable = saveThis.CityTable;
+        let cityTable = self.CityTable;
 
         // Updates the BeginningOfData and EndOfData flags.
-        if (saveThis.#UpdateLimitFlags())
+        if (self.#UpdateLimitFlags())
         {
           // Get row index if "NextPage" or "PrevPage";
           rowIndex = cityTable.CurrentRowIndex;
@@ -202,10 +202,10 @@ class LJCCityTableEvents
         cityTable.SelectRow(rowIndex, rowIndex);
 
         // Set hidden form primary keys and CityTableRequest.
-        saveThis.UpdateTableRequest()
+        self.UpdateTableRequest()
 
-        saveThis.#ListEvents.CityTable = cityTable;
-        saveThis.#ListEvents.FocusTable = cityTable;
+        self.#ListEvents.CityTable = cityTable;
+        self.#ListEvents.FocusTable = cityTable;
       }
     };
 
@@ -327,12 +327,12 @@ class LJCCityTableEvents
 
   // Updates the CityTable ETable and Keys values.
   // Called from Page().
-  #UpdateCityTable(saveThis, keys)
+  #UpdateCityTable(self, keys)
   {
     let methodName = "UpdateCityTable()";
     let retRowIndex = -1;
 
-    let cityTable = saveThis.CityTable;
+    let cityTable = self.CityTable;
 
     // Return existing row index.
     retRowIndex = cityTable.CurrentRowIndex;

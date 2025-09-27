@@ -2,7 +2,7 @@
 // Copyright(c) Lester J. Clark and Contributors.
 // Licensed under the MIT License.
 // LJCCityListEvents.js
-// <script src="../../LJCJSCommon/LJCJSCommonLib.js"></script>
+// <script src="../../LJCJSCommon/LJCCommonLib.js"></script>
 //   Element(), GetValue()
 //   MouseLocation(), Visibility()
 // <script src="LJCTable.js"></script>
@@ -320,7 +320,7 @@ class LJCCityListEvents
     let methodName = "#CityDataRequest()";
 
     // Save a reference to this class for anonymous function.
-    const saveThis = this;
+    const self = this;
 
     let xhr = new XMLHttpRequest();
     xhr.open("POST", "CityList/LJCCityDataService.php");
@@ -331,17 +331,17 @@ class LJCCityListEvents
       // Get the AJAX response.
       if (LJC.HasText(this.responseText))
       {
-        LJC.ShowText(saveThis.#ClassName, methodName, "this.responseText"
+        LJC.ShowText(self.#ClassName, methodName, "this.responseText"
           , this.responseText);
 
         let response = LJC.ParseJSON(this.responseText);
 
-        LJC.ShowText(saveThis.#ClassName, methodName, "response.DebugText"
+        LJC.ShowText(self.#ClassName, methodName, "response.DebugText"
           , response.DebugText);
-        LJC.ShowText(saveThis.#ClassName, methodName, "response.SQL"
+        LJC.ShowText(self.#ClassName, methodName, "response.SQL"
           , response.SQL);
 
-        saveThis.#ShowCityDetail(response);
+        self.#ShowCityDetail(response);
       }
     }
 
