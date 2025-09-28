@@ -185,18 +185,14 @@ class LJCCityDetailEvents
       {
         let prev = self.Debug.SetMethodName("#DataRequest");
         self.Debug.ShowText("this.responseText", this.responseText
-          , true);
+          , false);
 
         let response = LJC.ParseJSON(this.responseText);
-        // ***** Begin
-        let jsonResultItems = LJC.CreateJSON(response.ResultItems);
-        self.Debug.ShowText("response.ResultItems", jsonResultItems
-          , true);
-        // ***** end
         self.#UpdateRow(response);
 
-        self.Debug.ShowText("response.DebugText", response.DebugText);
-        self.Debug.ShowText("response.SQL", response.SQL);
+        self.Debug.ShowText("response.DebugText", response.DebugText
+          , false);
+        self.Debug.ShowText("response.SQL", response.SQL, false);
         self.Debug.ResetMethodName(prev);
       }
     }
@@ -209,12 +205,10 @@ class LJCCityDetailEvents
   {
     let prev = this.Debug.SetMethodName("#UpdateRow");
 
-    this.Debug.ShowText("#UpdateRow", "#UpdateRow");
     if ("Update" == response.Action.trim())
     {
       let objCity = response.ResultItems[0];
-      let jsonCity = LJC.CreateJSON(objCity);
-      this.Debug.ShowText("objCity", jsonCity, true);
+      //this.Debug.ShowText("objCity", objCity, true);
     }
 
     this.Debug.ResetMethodName(prev);

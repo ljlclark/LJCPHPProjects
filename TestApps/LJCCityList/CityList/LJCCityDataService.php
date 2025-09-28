@@ -228,14 +228,6 @@
       // Debug if not called from ClearResponseValues().
       if (LJC::HasValue($this->Action))
       {
-        // ***** Begin
-        $this->AddDebug($methodName, "\$this->Action", $this->Action);
-        //if ("Update" == $this->Action)
-        //{
-          $this->AddDebug($methodName, "\$retResponse->ResultItems"
-            , $retResponse->ResultItems);
-        //}
-        // ***** End
       }
       $retResponse->SQL = $this->SQL;
       $retResponse->DebugText = $this->DebugText;
@@ -254,8 +246,6 @@
       $this->ResultCities = new Cities();
       $this->ResultItems = [];
       $this->SQL = "";
-      // ***** 
-      $this->AddDebug($methodName, "Here", "Here");
       $retResponse = $this->CreateResponse();
 
       $this->Action = $action;
