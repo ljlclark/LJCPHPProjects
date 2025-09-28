@@ -37,7 +37,7 @@ class LJCCityDetailEvents
   // Constructor methods.
 
   /// <summary>Initializes the object instance.</summary>
-  constructor(cityTableID, cityMenuID)
+  constructor(cityTable)
   {
     this.#Debug = new Debug("LJCCityDetailEvents");
     let prev = this.#Debug.SetMethodName("constructor()");
@@ -47,11 +47,18 @@ class LJCCityDetailEvents
     this.#Debug.SetInactive();
 
     this.CityRequest = new LJCCityDataRequest("TestData", "../DataConfigs.xml");
-    this.#CityTable = new LJCTable(cityTableID, cityMenuID);
+    //this.#CityTable = new LJCTable(cityTableID, cityMenuID);
+    this.UpdateTable(cityTable);
     this.#AddEvents();
 
     // End of root method.
     this.#Debug.ResetMethodName("");
+  }
+
+  /// <summary>Updates the table helper class after paging.</summary>
+  UpdateTable(cityTable)
+  {
+    this.#CityTable = cityTable;
   }
 
   // Adds the HTML event listeners.
@@ -179,8 +186,8 @@ class LJCCityDetailEvents
     const self = this;
 
     // Update to latest. Make method in LJCTable?
-    let eTable = LJC.Element(this.#CityTable.TableID);
-    this.#CityTable.ETable = eTable;
+    //let eTable = LJC.Element(this.#CityTable.TableID);
+    //this.#CityTable.ETable = eTable;
 
     let xhr = new XMLHttpRequest();
     xhr.open("POST", "CityList/LJCCityDataService.php");
@@ -196,7 +203,12 @@ class LJCCityDetailEvents
           , false);
 
         let response = LJC.ParseJSON(this.responseText);
-        self.#UpdateRow(response);
+
+        if ("Update" == response.Action.trim())
+        {
+          let objCity = response.ResultItems[0];
+          self.#CityTable.UpdateRow(objCity);
+        }
 
         self.#Debug.ShowText("response.DebugText", response.DebugText
           , false);
@@ -207,36 +219,5 @@ class LJCCityDetailEvents
 
     let request = LJC.CreateJSON(cityRequest);
     xhr.send(request);
-  }
-
-  #UpdateRow(response)
-  {
-    let prev = this.#Debug.SetMethodName("#UpdateRow");
-
-    if ("Update" == response.Action.trim())
-    {
-      let objCity = response.ResultItems[0];
-
-      let cityTable = this.#CityTable;
-
-      // What if the name was changed?
-      let headingText = "Name";
-      let eRow = cityTable.GetRowMatch(headingText, objCity.Name);
-      if (eRow != null)
-      {
-        let cells = eRow.cells;
-        for (let propertyName in objCity)
-        {
-          // Headings same as property name.
-          let cellIndex = cityTable.GetColumnIndex(propertyName);
-          if (cellIndex > -1)
-          {
-            cells[cellIndex].innerText = objCity[propertyName];
-          }
-        }
-      }
-    }
-
-    this.#Debug.ResetMethodName(prev);
   }
 }

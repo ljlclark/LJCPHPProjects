@@ -189,7 +189,6 @@ class LJCCityTableEvents
 
         // Updates CityTable with new table element and keys.
         let rowIndex = self.#UpdateCityTable(self, response.Keys);
-
         let cityTable = self.CityTable;
 
         // Updates the BeginningOfData and EndOfData flags.

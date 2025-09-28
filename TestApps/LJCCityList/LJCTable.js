@@ -195,7 +195,11 @@ class LJCTable
       {
         rowIndex = this.CurrentRowIndex;
       }
-      retRow = LJC.TagElements(this.ETable, "TR")[rowIndex];
+      let eRows = LJC.TagElements(this.ETable, "TR");
+      if (eRows != null)
+      {
+        retRow = eRows[rowIndex];
+      }
     }
     return retRow;
   }
@@ -310,6 +314,66 @@ class LJCTable
       }
     }
     return retCount;
+  }
+
+  /// <summary>Get the row index by unique key values.</summary>
+  RowUniqueKeyIndex(objCity)
+  {
+    let retIndex = -1;
+
+    for (let index = 0; index < this.Keys.length; index++)
+    {
+      let key = this.Keys[index];
+      if (key.ProvinceID == objCity.ProvinceID
+        && key.Name == objCity.Name)
+      {
+        // Skip heading row.
+        retIndex = index + 1;
+        break;
+      }
+    }
+    return retIndex;
+  }
+
+  /// <summary>Update the row for the data object.</summary>
+  UpdateRow(objCity)
+  {
+    let rowIndex = this.RowUniqueKeyIndex(objCity);
+    if (rowIndex > -1)
+    {
+      let eRow = this.GetRow(rowIndex);
+      let cells = eRow.cells;
+      for (let propertyName in objCity)
+      {
+        // Headings same as property name.
+        let cellIndex = this.GetColumnIndex(propertyName);
+        if (cellIndex > -1)
+        {
+          cells[cellIndex].innerText = objCity[propertyName];
+        }
+      }
+    }
+  }
+
+  // Update the row for the data object.
+  UpdateRowOld(objCity)
+  {
+    // What if the name was changed?
+    let headingText = "Name";
+    let eRow = this.GetRowMatch(headingText, objCity.Name);
+    if (eRow != null)
+    {
+      let cells = eRow.cells;
+      for (let propertyName in objCity)
+      {
+        // Headings same as property name.
+        let cellIndex = this.GetColumnIndex(propertyName);
+        if (cellIndex > -1)
+        {
+          cells[cellIndex].innerText = objCity[propertyName];
+        }
+      }
+    }
   }
 
   // Clears background for previous row and Highlights the current row.
