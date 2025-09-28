@@ -57,12 +57,12 @@ class LJCTable
 
   // Get the HTML table element if the HTML element is table data row or column.
   /// <include path='items/GetTable/*' file='Doc/LJCTable.xml'/>
-  static GetTable(eColumn)
+  static GetTable(eCell)
   {
     let retValue = null;
 
     // Process Table
-    let tableRow = LJCTable.GetTableRow(eColumn);
+    let tableRow = LJCTable.GetTableRow(eCell);
     if (tableRow != null)
     {
       // table/tbody/tr
@@ -73,12 +73,12 @@ class LJCTable
 
   // Get the table row element if the element is a table data row or column.
   /// <include path='items/GetTableRow/*' file='Doc/LJCTable.xml'/>
-  static GetTableRow(eColumn)
+  static GetTableRow(eCell)
   {
     let retValue = null;
 
-    let tableRow = eColumn.parentElement;
-    if ("TD" == eColumn.tagName)
+    let tableRow = eCell.parentElement;
+    if ("TD" == eCell.tagName)
     {
       retValue = tableRow;
     }
@@ -162,7 +162,7 @@ class LJCTable
     return retText;
   }
 
-  // Get cell index with heading text.
+  // Get column index with heading text.
   /// <include path='items/GetColumnText/*' file='Doc/LJCTable.xml'/>
   GetColumnIndex(headingText)
   {
@@ -177,6 +177,7 @@ class LJCTable
       {
         retIndex = index;
         index = eCells.length;
+        break;
       }
     }
     return retIndex;
@@ -195,6 +196,30 @@ class LJCTable
         rowIndex = this.CurrentRowIndex;
       }
       retRow = LJC.TagElements(this.ETable, "TR")[rowIndex];
+    }
+    return retRow;
+  }
+
+  // Get row where cell has the search text.
+  GetRowMatch(headingText, searchText)
+  {
+    let retRow = null;
+
+    let cellIndex = this.GetColumnIndex(headingText, 0);
+    if (cellIndex > -1)
+    {
+      let eRows = LJC.TagElements(this.ETable, "TR");
+      for (let rowIndex = 1; rowIndex < eRows.length; rowIndex++)
+      {
+        let eRow = eRows[rowIndex];
+        let eCell = eRow.cells[cellIndex];
+        let cellText = eCell.innerText;
+        if (cellText == searchText)
+        {
+          retRow = eRow;
+          break;
+        }
+      }
     }
     return retRow;
   }
@@ -311,14 +336,14 @@ class LJCTable
   // ---------------
   // Selected Column Methods
 
-  // Gets the selected table if the supplied element is a table column/cell and
+  // Gets the selected table if the supplied element is a table cell and
   // the table has the supplied ID.
   /// <include path='items/GetTableByID/*' file='Doc/LJCTable.xml'/>
-  GetSelectedTable(eColumn, tableID)
+  GetSelectedTable(eCell, tableID)
   {
     let retValue = null;
 
-    let table = LJCTable.GetTable(eColumn);
+    let table = LJCTable.GetTable(eCell);
     if (table != null)
     {
       if (tableID == table.id)
@@ -332,11 +357,11 @@ class LJCTable
   // Clears background for previous row and Highlights the current row.
   // if the supplied element is a table cell.
   /// <include path='items/SelectColumnRow/*' file='Doc/LJCTable.xml'/>
-  SelectColumnRow(eColumn)
+  SelectColumnRow(eCell)
   {
     if (this.ETable != null)
     {
-      let eTableRow = LJCTable.GetTableRow(eColumn);
+      let eTableRow = LJCTable.GetTableRow(eCell);
       if (eTableRow != null)
       {
         let prevIndex = this.CurrentRowIndex;

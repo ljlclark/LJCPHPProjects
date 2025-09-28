@@ -25,7 +25,7 @@ class LJCCityTableEvents
   // Properties
 
   // The associated city table helper object.
-  // Where is this used as public?
+  // Used in Page() and #TableClick.
   CityTable;
 
   // The city table data request.

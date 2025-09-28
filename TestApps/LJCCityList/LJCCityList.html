@@ -6,8 +6,10 @@
 <!-- Used to generate a City Items HTML Table page. -->
 <html lang='en' xmlns='http://www.w3.org/1999/xhtml'>
 <head>
+  <title>City Maintenance</title>
   <meta charset='utf-8' />
   <meta name='author' content='Lester J. Clark' />
+  <meta name="description" content="City Table Maintenance" />
   <meta name='viewport' content='width=device-width' initial-scale=1 />
   <link href='CSS/Table.css' rel='stylesheet' />
   <script src="../../LJCJSCommon/LJCCommonLib.js"></script>
@@ -25,6 +27,7 @@
     <h3 id="pageTitle">Items</h3>
     <table id="cityTableItem"></table>
 
+    <!-- The dialog for debug and other display text. -->
     <dialog id="textDialog"
             style="border: none; padding: 0px">
       <textarea id="text" rows="25" cols="80" autocorrect="off"
@@ -33,6 +36,7 @@
       </textarea>
     </dialog>
 
+    <!-- The detail dialog. -->
     <dialog id="cityDialog" class="dialog">
       <form id="cityForm" action="../CityData.php" method="post"
             class="form" autocomplete="off"
@@ -76,11 +80,8 @@
       </form>
     </dialog>
 
-    <!-- Data for Detail form. -->
-    <!--form id="hiddenForm" action="LJCDataTableLib.php" method="post"-->
+    <!-- Data for Detail dialog. -->
     <form id="hiddenForm">
-      <!--input type="hidden" id="primaryKeys" name="primaryKeys"
-             tabindex="-1" autocomplete="off" /-->
       <!-- Primary Keys -->
       <input type="hidden" id="rowCityID" />
 

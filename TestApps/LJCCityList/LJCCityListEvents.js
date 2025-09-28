@@ -30,7 +30,7 @@ class LJCCityListEvents
   // Properties
 
   // The city table helper object.
-  // Where is this used as public?
+  // Used in LJCCityTableEvents Page().
   CityTable = "";
 
   // The city table ID name.
@@ -76,7 +76,7 @@ class LJCCityListEvents
     this.#CityTableEvents.TableRequest.Limit = 20;
 
     // City Detail events.
-    this.#CityDetailEvents = new LJCCityDetailEvents();
+    this.#CityDetailEvents = new LJCCityDetailEvents(this.CityTableID, "menu");
 
     this.#AddEvents();
     this.#Refresh();
@@ -394,13 +394,13 @@ class LJCCityListEvents
   // ---------------
   // Table Column Methods
 
-  // Gets the selected LJCTable object.
-  #SelectedTable(eColumn)
+  // Gets the LJCTable object based on the selected table cell.
+  #SelectedTable(eCell)
   {
     let methodName = "SelectedTable()";
     let retLJCTable = null;
 
-    let eTable = LJCTable.GetTable(eColumn);
+    let eTable = LJCTable.GetTable(eCell);
     if (eTable != null)
     {
       switch (eTable.id)
@@ -413,13 +413,13 @@ class LJCCityListEvents
     return retLJCTable;
   }
 
-  // Retrieves the selected table events object.
-  #SelectedTableEvents(eColumn)
+  // Retrieves the table events object based on the selected table cell.
+  #SelectedTableEvents(eCell)
   {
     let methodName = "SelectedTableEvents()";
     let retTable = null;
 
-    let eTable = LJCTable.GetTable(eColumn);
+    let eTable = LJCTable.GetTable(eCell);
     if (eTable != null)
     {
       switch (eTable.id)
