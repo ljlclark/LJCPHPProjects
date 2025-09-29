@@ -31,7 +31,7 @@ class LJCCityListEvents
 
   // The city table helper object.
   // Used in LJCCityTableEvents Page().
-  CityTable = "";
+  CityTable = null; // LJCTable
 
   // The city table ID name.
   // Used in LJCCityTableEvents constructor().
@@ -39,16 +39,22 @@ class LJCCityListEvents
 
   // The active table.
   // Used in LJCCityTableEvents Page() and #TableClick().
-  FocusTable;
+  FocusTable = null; // LJCTable
+
+  /// <summary>The text area element ID.</summary>
+  TextAreaID = "";
+
+  /// <summary>The text dialog element ID.</summary>
+  TextDialogID = "";
 
   // ---------------
   // Private Properties
 
   // The detail dialog events.
-  #CityDetailEvents;
+  #CityDetailEvents = null; // LJCCityDetailEvents
 
   // The city table events.
-  #CityTableEvents;
+  #CityTableEvents = null; // LJCCityTableEvents
 
   // The debug location class name.
   #ClassName = "";
@@ -341,15 +347,15 @@ class LJCCityListEvents
       // Get the AJAX response.
       if (LJC.HasText(this.responseText))
       {
-        LJC.ShowText(self.#ClassName, methodName, "this.responseText"
-          , this.responseText);
+        LJC.ShowText(self.#ClassName, methodName
+          , "this.responseText", this.responseText, false);
 
         let response = LJC.ParseJSON(this.responseText);
 
-        LJC.ShowText(self.#ClassName, methodName, "response.DebugText"
-          , response.DebugText);
-        LJC.ShowText(self.#ClassName, methodName, "response.SQL"
-          , response.SQL);
+        LJC.ShowText(self.#ClassName, methodName
+          , "response.DebugText", response.DebugText, false);
+        LJC.ShowText(self.#ClassName, methodName
+          , "response.SQL", response.SQL, false);
 
         self.#ShowCityDetail(response);
       }

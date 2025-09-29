@@ -24,14 +24,20 @@ class LJCCityDetailEvents
   // Used in LJCCityListEvents #Delete(), #Edit() and #New().
   Action = "";
 
+  /// <summary>The text area element ID.</summary>
+  TextAreaID = "";
+
+  /// <summary>The text dialog element ID.</summary>
+  TextDialogID = "";
+
   // ---------------
   // Private Properties
 
   // The associated city table helper object.
-  #CityTable = null;
+  #CityTable = null; // LJCTable
 
-  // Displays the debug/display text.
-  #Debug = null;
+  // The debug location class name.
+  #ClassName = "";
 
   // ---------------
   // Constructor methods.
@@ -39,20 +45,13 @@ class LJCCityDetailEvents
   /// <summary>Initializes the object instance.</summary>
   constructor(cityTable)
   {
-    this.#Debug = new Debug("LJCCityDetailEvents");
-    let prev = this.#Debug.SetMethodName("constructor()");
-
-    this.#Debug.TextDialogID = "textDialog";
-    this.#Debug.TextValueID = "text";
-    this.#Debug.SetInactive();
+    this.#ClassName = "LJCCityDetailEvents";
+    let methodName = "constructor()";
 
     this.CityRequest = new LJCCityDataRequest("TestData", "../DataConfigs.xml");
     //this.#CityTable = new LJCTable(cityTableID, cityMenuID);
     this.UpdateTable(cityTable);
     this.#AddEvents();
-
-    // End of root method.
-    this.#Debug.ResetMethodName("");
   }
 
   /// <summary>Updates the table helper class after paging.</summary>
@@ -64,13 +63,11 @@ class LJCCityDetailEvents
   // Adds the HTML event listeners.
   #AddEvents()
   {
-    let prev = this.#Debug.SetMethodName("AddEvents()");
+    let methodName = "AddEvents()";
 
     // Button Event Handlers.
     LJC.AddEvent("cancel", "click", this.#CancelClick, this);
     LJC.AddEvent("commit", "click", this.#CommitClick, this);
-
-    this.#Debug.ResetMethodName(prev);
   }
 
   // ---------------
@@ -85,7 +82,7 @@ class LJCCityDetailEvents
   // Update data and close dialog.
   #CommitClick(event)
   {
-    let prev = this.#Debug.SetMethodName("CommitClick()");
+    let methodName = "CommitClick()";
 
     this.CityRequest.Action = this.Action;
     let city = this.#CityFormData();
@@ -107,9 +104,6 @@ class LJCCityDetailEvents
       // If successful.
       cityDialog.close();
     }
-
-    // End of root method.
-    this.#Debug.ResetMethodName("");
   }
 
   // ---------------
@@ -118,7 +112,7 @@ class LJCCityDetailEvents
   // Creates a City object from the form data.
   #CityFormData()
   {
-    let prev = this.#Debug.SetMethodName("CityFormData()");
+    let methodName = "CityFormData()";
 
     let cityID = LJC.GetValue("cityID");
     let provinceID = LJC.GetValue("provinceID");
@@ -130,15 +124,13 @@ class LJCCityDetailEvents
     retCity.Description = LJC.GetValue("description");
     retCity.District = LJC.GetValue("district");
     retCity.ZipCode = LJC.GetValue("zipCode");
-
-    this.#Debug.ResetMethodName(prev);
     return retCity;
   }
 
   // Get the primary key columns.
   #PrimaryKeyColumns()
   {
-    let prev = this.#Debug.SetMethodName("PrimaryKeyColumns()");
+    let methodName = "PrimaryKeyColumns()";
 
     let retKeyColumns = new LJCDataColumns();
 
@@ -146,8 +138,6 @@ class LJCCityDetailEvents
     let dataColumn = new LJCDataColumn("CityID");
     dataColumn.Value = rowCityID.value;
     retKeyColumns.AddObject(dataColumn);
-
-    this.#Debug.ResetMethodName(prev);
     return retKeyColumns;
   }
 
@@ -180,7 +170,7 @@ class LJCCityDetailEvents
   // Called from CommitClick().
   #DataRequest(cityRequest)
   {
-    let prev = this.#Debug.SetMethodName("#DataRequest");
+    let methodName = "#DataRequest()";
 
     // Save a reference to this class for anonymous function.
     const self = this;
@@ -198,9 +188,8 @@ class LJCCityDetailEvents
       // Get the AJAX response.
       if (LJC.HasText(this.responseText))
       {
-        let prev = self.#Debug.SetMethodName("#DataRequest");
-        self.#Debug.ShowText("this.responseText", this.responseText
-          , false);
+        LJC.ShowText(self.#ClassName, methodName
+          , "this.responseText", this.responseText, false);
 
         let response = LJC.ParseJSON(this.responseText);
 
@@ -210,10 +199,10 @@ class LJCCityDetailEvents
           self.#CityTable.UpdateUniqueRow(objCity);
         }
 
-        self.#Debug.ShowText("response.DebugText", response.DebugText
-          , false);
-        self.#Debug.ShowText("response.SQL", response.SQL, false);
-        self.#Debug.ResetMethodName(prev);
+        LJC.ShowText(self.#ClassName, methodName
+          , "response.DebugText", response.DebugText, false);
+        LJC.ShowText(self.#ClassName, methodName
+          , "response.SQL", response.SQL, false);
       }
     }
 

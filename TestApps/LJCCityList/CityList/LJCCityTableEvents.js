@@ -26,11 +26,17 @@ class LJCCityTableEvents
 
   // The associated city table helper object.
   // Used in Page() and #TableClick.
-  CityTable;
+  CityTable = null; // LJCTable;
 
   // The city table data request.
   // Used in CityListEvents constructor(), #Refresh().
-  TableRequest;
+  TableRequest = null; // LJCCityTableRequest;
+
+  /// <summary>The text area element ID.</summary>
+  TextAreaID = "";
+
+  /// <summary>The text dialog element ID.</summary>
+  TextDialogID = "";
 
   // ---------------
   // Private Properties
@@ -41,17 +47,17 @@ class LJCCityTableEvents
   // Flags set in NextPage() and PrevPage().
   // Used in #HasData() and #UpdateLimitFlags() which are called in the Page()
   // response.
-  #IsNextPage;
-  #IsPrevPage;
+  #IsNextPage = false;
+  #IsPrevPage = false;
 
   // The city list events.
-  #ListEvents;
+  #ListEvents = null; // LJCCityListEvents;
 
   // The associated menu ID name.
-  #MenuID;
+  #MenuID = "";
 
   // The associated table ID name.
-  #TableID;
+  #TableID = "";
 
   // ---------------
   // Constructor methods.
@@ -187,13 +193,12 @@ class LJCCityTableEvents
         LJC.AddEvent(self.#TableID, "click", self.#TableClick
           , self);
 
-        // Updates CityTable with new table element and keys.
+        // Updates CityTable with new table element, keys and data columns.
         let rowIndex = self.#UpdateCityTable(self, response.Keys);
         let cityTable = self.CityTable;
-
         // *** Begin ***
-        let tableColumns = response.TableColumns;
-        cityTable.DataColumns = LJCDataColumns.Collection(tableColumns);
+        let dataColumnsArray = response.DataColumnsArray;
+        cityTable.DataColumns = LJCDataColumns.Collection(dataColumnsArray);
         // *** End **
 
         // Updates the BeginningOfData and EndOfData flags.

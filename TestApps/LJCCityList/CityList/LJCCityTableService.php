@@ -141,7 +141,7 @@
         $response->Keys = $keyArray;
         // *** Begin *** Add
         $response->DebugText = $this->DebugText;
-        $response->TableColumns = LJC::ItemsToArray($this->DataColumns);
+        $response->DataColumnsArray = LJC::ItemsToArray($this->DataColumns);
         // *** End ***
         $response->SQL = $this->SQL;
       }
@@ -239,7 +239,8 @@
       $retResponse->HTMLTable = "";
       // *** Begin *** Add
       $retResponse->DebugText = "";
-      $retResponse->TableColumns = [];
+      //$retResponse->TableColumns = [];
+      $retResponse->DataColumnsArray = [];
       // *** End ***
       return $retResponse;
     } // SetResponse()
