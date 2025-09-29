@@ -207,7 +207,7 @@ class LJCCityDetailEvents
         if ("Update" == response.Action.trim())
         {
           let objCity = response.ResultItems[0];
-          self.#CityTable.UpdateRow(objCity);
+          self.#CityTable.UpdateUniqueRow(objCity);
         }
 
         self.#Debug.ShowText("response.DebugText", response.DebugText

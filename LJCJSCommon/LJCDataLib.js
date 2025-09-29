@@ -194,6 +194,11 @@ class LJCDataColumns
     return retDataColumns;
   }
 
+  Count()
+  {
+    return this.Items.length;
+  }
+
   // Gets the column object with the supplied property name.
   /// <include path='items/GetIndex/*' file='Doc/LJCDataColumns.xml'/>
   GetIndex(propertyName)
@@ -202,7 +207,8 @@ class LJCDataColumns
 
     for (let index = 0; index < this.Items.length; index++)
     {
-      if (this.Items.PropertyName == propertyName)
+      let item = this.Items[index];
+      if (item.PropertyName == propertyName)
       {
         retIndex = index;
         break;

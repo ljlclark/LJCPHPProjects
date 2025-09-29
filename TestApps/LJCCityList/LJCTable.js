@@ -4,6 +4,8 @@
 // LJCTable.js
 // <script src="../../LJCJSCommon/LJCCommonLib.js"></script>
 //   Element(), TagElements(), Visibility()
+// <script src="../../LJCJSCommon/LJCDataLib.js"></script>
+//   LJCDataColumn, LJCDataColumns
 
 /// <summary>The Table Helper Class</summary>
 /// LibName: LJCTable
@@ -17,7 +19,7 @@
 /// </remarks>
 //  Static: GetTable(), GetTableRow()
 //  Methods: ShowMenu()
-//  Table Methods: GetCellText(), GetColumnIndex(), GetRow()
+//  Table Methods: CellText(), HeadingIndex(), GetRow()
 //    MoveNext(), MovePrevious(), RowCount(), SelectRow()
 //  Selected Column: IsSelectedTable(), SelectColumnRow()
 class LJCTable
@@ -30,6 +32,9 @@ class LJCTable
 
   /// <summary>The current row index.</summary>
   CurrentRowIndex;
+
+  /// <summary>The table data column definitions.</summary>
+  DataColumns = new LJCDataColumns();
 
   /// <summary>The associated menu element.</summary>
   EMenu;
@@ -140,15 +145,15 @@ class LJCTable
   }
 
   // ---------------
-  // Table Methods
+  // Cell by property name or heading text Methods
 
   // Get cell text with heading text.
-  /// <include path='items/GetCellText/*' file='Doc/LJCTable.xml'/>
-  GetCellText(headingText, rowIndex = -1)
+  /// <include path='items/CellText/*' file='Doc/LJCTable.xml'/>
+  CellText(propertyName, rowIndex = -1)
   {
     let retText = "";
 
-    let cellIndex = this.GetColumnIndex(headingText);
+    let cellIndex = this.ColumnIndex(propertyName);
     if (cellIndex > -1)
     {
       if (-1 == rowIndex)
@@ -164,7 +169,7 @@ class LJCTable
 
   // Get column index with heading text.
   /// <include path='items/GetColumnText/*' file='Doc/LJCTable.xml'/>
-  GetColumnIndex(headingText)
+  HeadingIndex(headingText)
   {
     let retIndex = -1;
 
@@ -183,6 +188,96 @@ class LJCTable
     return retIndex;
   }
 
+  /// <summary>Get row where cell has the search text.</summary>
+  /// <returns>A row element object.</returns>
+  RowMatch(propertyName, searchText)
+  {
+    let retRow = null;
+
+    let cellIndex = this.ColumnIndex(propertyName, 0);
+    if (cellIndex > -1)
+    {
+      let eRows = LJC.TagElements(this.ETable, "TR");
+      for (let rowIndex = 1; rowIndex < eRows.length; rowIndex++)
+      {
+        let eRow = eRows[rowIndex];
+        let eCell = eRow.cells[cellIndex];
+        let cellText = eCell.innerText;
+        if (cellText == searchText)
+        {
+          retRow = eRow;
+          break;
+        }
+      }
+    }
+    return retRow;
+  }
+
+  // ---------------
+  // Cell index by property name methods.
+
+  /// <summary>Get column index with property name.
+  ColumnIndex(propertyName)
+  {
+    let retIndex = -1;
+
+    if (this.DataColumns != null
+      && this.DataColumns.Count() > 0)
+    {
+      retIndex = this.DataColumns.GetIndex(propertyName);
+    }
+    else
+    {
+      retIndex = this.HeadingIndex(propertyName);
+    }
+    return retIndex;
+  }
+
+  // ---------------
+  // Row by Unique Key Methods
+
+  /// <summary>Get the row index by unique key values.</summary>
+  UniqueRowIndex(objCity)
+  {
+    let retIndex = -1;
+
+    for (let index = 0; index < this.Keys.length; index++)
+    {
+      let key = this.Keys[index];
+      if (key.ProvinceID == objCity.ProvinceID
+        && key.Name == objCity.Name)
+      {
+        // Skip heading row.
+        retIndex = index + 1;
+        break;
+      }
+    }
+    return retIndex;
+  }
+
+  /// <summary>Update the row for data object unique keys.</summary>
+  UpdateUniqueRow(objCity)
+  {
+    let rowIndex = this.UniqueRowIndex(objCity);
+    if (rowIndex > -1)
+    {
+      let eRow = this.GetRow(rowIndex);
+      let cells = eRow.cells;
+      for (let propertyName in objCity)
+      {
+        // Headings same as property name.
+        let cellIndex = this.ColumnIndex(propertyName);
+        if (cellIndex > -1)
+        {
+          cells[cellIndex].innerText = objCity[propertyName];
+        }
+      }
+    }
+  }
+
+  // ---------------
+  // Other Methods
+
   // Gets table row by index.
   /// <include path='items/GetRow/*' file='Doc/LJCTable.xml'/>
   GetRow(rowIndex = -1)
@@ -199,30 +294,6 @@ class LJCTable
       if (eRows != null)
       {
         retRow = eRows[rowIndex];
-      }
-    }
-    return retRow;
-  }
-
-  // Get row where cell has the search text.
-  GetRowMatch(headingText, searchText)
-  {
-    let retRow = null;
-
-    let cellIndex = this.GetColumnIndex(headingText, 0);
-    if (cellIndex > -1)
-    {
-      let eRows = LJC.TagElements(this.ETable, "TR");
-      for (let rowIndex = 1; rowIndex < eRows.length; rowIndex++)
-      {
-        let eRow = eRows[rowIndex];
-        let eCell = eRow.cells[cellIndex];
-        let cellText = eCell.innerText;
-        if (cellText == searchText)
-        {
-          retRow = eRow;
-          break;
-        }
       }
     }
     return retRow;
@@ -314,66 +385,6 @@ class LJCTable
       }
     }
     return retCount;
-  }
-
-  /// <summary>Get the row index by unique key values.</summary>
-  RowUniqueKeyIndex(objCity)
-  {
-    let retIndex = -1;
-
-    for (let index = 0; index < this.Keys.length; index++)
-    {
-      let key = this.Keys[index];
-      if (key.ProvinceID == objCity.ProvinceID
-        && key.Name == objCity.Name)
-      {
-        // Skip heading row.
-        retIndex = index + 1;
-        break;
-      }
-    }
-    return retIndex;
-  }
-
-  /// <summary>Update the row for the data object.</summary>
-  UpdateRow(objCity)
-  {
-    let rowIndex = this.RowUniqueKeyIndex(objCity);
-    if (rowIndex > -1)
-    {
-      let eRow = this.GetRow(rowIndex);
-      let cells = eRow.cells;
-      for (let propertyName in objCity)
-      {
-        // Headings same as property name.
-        let cellIndex = this.GetColumnIndex(propertyName);
-        if (cellIndex > -1)
-        {
-          cells[cellIndex].innerText = objCity[propertyName];
-        }
-      }
-    }
-  }
-
-  // Update the row for the data object.
-  UpdateRowOld(objCity)
-  {
-    // What if the name was changed?
-    let headingText = "Name";
-    let eRow = this.GetRowMatch(headingText, objCity.Name);
-    if (eRow != null)
-    {
-      let cells = eRow.cells;
-      for (let propertyName in objCity)
-      {
-        // Headings same as property name.
-        let cellIndex = this.GetColumnIndex(propertyName);
-        if (cellIndex > -1)
-        {
-          cells[cellIndex].innerText = objCity[propertyName];
-        }
-      }
-    }
   }
 
   // Clears background for previous row and Highlights the current row.
