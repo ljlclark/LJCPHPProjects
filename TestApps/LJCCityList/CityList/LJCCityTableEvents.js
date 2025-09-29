@@ -178,7 +178,7 @@ class LJCCityTableEvents
       LJC.ShowText(self.#ClassName, methodName, "response.SQL"
         , response.SQL);
 
-      // Check if there is more data.
+      // Handle new table HTML and associated values.
       if (self.#HasData(response.HTMLTable))
       {
         // Create new table element and add new "click" event.
@@ -190,6 +190,11 @@ class LJCCityTableEvents
         // Updates CityTable with new table element and keys.
         let rowIndex = self.#UpdateCityTable(self, response.Keys);
         let cityTable = self.CityTable;
+
+        // *** Begin ***
+        let tableColumns = response.TableColumns;
+        cityTable.DataColumns = LJCDataColumns.Collection(tableColumns);
+        // *** End **
 
         // Updates the BeginningOfData and EndOfData flags.
         if (self.#UpdateLimitFlags())
@@ -203,6 +208,7 @@ class LJCCityTableEvents
         // Set hidden form primary keys and CityTableRequest.
         self.UpdateTableRequest()
 
+        // Must assign public data.
         self.#ListEvents.CityTable = cityTable;
         self.#ListEvents.FocusTable = cityTable;
       }

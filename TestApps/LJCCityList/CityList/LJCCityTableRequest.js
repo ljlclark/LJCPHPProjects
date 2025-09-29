@@ -37,6 +37,10 @@ class LJCCityTableRequest
   /// <summary>The page item count limit.<summary>
   Limit = 20;
 
+  // *** Add ***
+  /// <summary>The table column property names.</summary>
+  PropertyNames = [];
+
   // ---------------
   // Constructor methods.
 

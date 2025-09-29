@@ -39,11 +39,11 @@ class LJCDataColumn
   {
     let retDataColumn = new LJCDataColumn();
 
-    for (let propertyName in this)
+    for (let propertyName in dataColumn)
     {
-      if (propertyName in dataColumn)
+      if (propertyName in retDataColumn)
       {
-        retDataColumn[propertyname] = dataColumn[propertyName];
+        retDataColumn[propertyName] = dataColumn[propertyName];
       }
     }
     return retDataColumn;
@@ -140,6 +140,32 @@ class LJCDataColumns
       dataColumn.Value = value;
     }
   }
+  // ---------------
+  // Static Methods
+
+  /// <summary>
+  ///   Create typed collection from deserialized JavasScript array.
+  /// </summary>
+  /// <param name="items">The items object.</param>
+  /// <returns>The collection></returns.
+  static Collection(items)
+  {
+    let retDataColumns = new LJCDataColumns();
+
+    if (items != null
+      && items.length > 0)
+    {
+      for (let index = 0; index < items.length; index++)
+      {
+        let objItem = items[index];
+
+        // Create typed object from stdClass.
+        let dataColumn = LJCDataColumn.Copy(objItem);
+        retDataColumns.AddObject(dataColumn);
+      }
+    }
+    return retDataColumns;
+  }
 
   // ---------------
   // Methods
@@ -194,6 +220,7 @@ class LJCDataColumns
     return retDataColumns;
   }
 
+  /// <summary>Get the item count.</summary>
   Count()
   {
     return this.Items.length;

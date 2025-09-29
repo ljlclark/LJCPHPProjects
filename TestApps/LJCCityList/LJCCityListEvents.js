@@ -76,7 +76,6 @@ class LJCCityListEvents
     this.#CityTableEvents.TableRequest.Limit = 20;
 
     // City Detail events.
-    //this.#CityDetailEvents = new LJCCityDetailEvents(this.CityTableID, "menu");
     this.#CityDetailEvents = new LJCCityDetailEvents(this.CityTable);
 
     this.#AddEvents();
@@ -224,7 +223,8 @@ class LJCCityListEvents
     if (tableEvents)
     {
       tableEvents.NextPage();
-      // *** Add ***
+
+      // Update the table with new values ETable and Keys.
       this.#CityDetailEvents.UpdateTable(tableEvents.CityTable);
     }
   }
@@ -238,7 +238,8 @@ class LJCCityListEvents
     if (tableEvents)
     {
       tableEvents.PrevPage();
-      // *** Add ***
+
+      // Update the table with new values ETable and Keys.
       this.#CityDetailEvents.UpdateTable(tableEvents.CityTable);
     }
   }
@@ -251,7 +252,8 @@ class LJCCityListEvents
     let tableEvents = this.#CityTableEvents;
     tableEvents.TableRequest.Action = "Refresh";
     tableEvents.Page();
-    // *** Add ***
+
+    // Update the table with new values ETable and Keys.
     this.#CityDetailEvents.UpdateTable(tableEvents.CityTable);
 
   }

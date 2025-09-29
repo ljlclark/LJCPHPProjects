@@ -55,6 +55,13 @@
       $this->ConfigName = $pageData->ConfigName;
       $this->EndKeyData = $pageData->EndKeyData;
       $this->Limit = $pageData->Limit;
+      // *** Begin *** Add
+      $this->PropertyNames = $pageData->PropertyNames;
+      if (null == $pageData->PropertyNames)
+      {
+        $this->PropertyNames = $this->TablePropertyNames();
+      }
+      // *** End ***
 
       $this->CityTableID = "cityTableItem";
       $this->TableName = City::TableName;
@@ -63,10 +70,14 @@
 
       $connectionValues = $this->GetConnectionValues($this->ConfigName);  
       $this->CityManager = new CityManager($connectionValues, $this->TableName);
+      $manager = $this->CityManager;
       if ($this->Limit > 0)
       {
-        $this->CityManager->Limit = $this->Limit;
+        $manager->Limit = $this->Limit;
       }
+      // *** Add ***
+      // Get table column definitions.
+      $this->DataColumns = $manager->Columns($this->PropertyNames);
 
       $response = $this->GetResponse();
       echo($response);
@@ -109,7 +120,8 @@
       if ($result != null)
       {
         // Create table builder with column property names.
-        $propertyNames = $this->TablePropertyNames();
+        // *** Change ***
+        $propertyNames = $this->PropertyNames;
         $tableBuilder = $this->HTMLTableBuilder($propertyNames);
 
         // Setup attributes.
@@ -127,6 +139,10 @@
         $keyArray = $this->ResultKeyArray($result, $keyNames);
 
         $response->Keys = $keyArray;
+        // *** Begin *** Add
+        $response->DebugText = $this->DebugText;
+        $response->TableColumns = LJC::ItemsToArray($this->DataColumns);
+        // *** End ***
         $response->SQL = $this->SQL;
       }
       $retResponse = LJC::CreateJSON($response);
@@ -221,6 +237,10 @@
       $retResponse->Keys = [];
       $retResponse->SQL = "";
       $retResponse->HTMLTable = "";
+      // *** Begin *** Add
+      $retResponse->DebugText = "";
+      $retResponse->TableColumns = [];
+      // *** End ***
       return $retResponse;
     } // SetResponse()
 
@@ -296,23 +316,24 @@
       $methodName = "RetrieveData()";
       $retResult = null;
 
-      $keyColumns = null;
+      //$keyColumns = null;
+      $manager = $this->CityManager;
       switch ($this->Action)
       {
         case "Next":
           $filter = $this->NextFilter($this->EndKeyData);
-          $this->CityManager->OrderByNames = array("ProvinceID", "Name");
-          $retResult = $this->CityManager->LoadResult(null, filter: $filter);
-          $this->SQL = $this->CityManager->DataManager->SQL;
+          $manager->OrderByNames = array("ProvinceID", "Name");
+          $retResult = $manager->LoadResult(null, filter: $filter);
+          $this->SQL = $manager->DataManager->SQL;
           break;
 
         case "Previous":
           // Load descending.
           $filter = $this->PreviousFilter($this->BeginKeyData);
-          $this->CityManager->OrderByNames = array("ProvinceID desc"
+          $manager->OrderByNames = array("ProvinceID desc"
             , "Name desc");
-          $retResult = $this->CityManager->LoadResult(null, filter: $filter);
-          $this->SQL = $this->CityManager->DataManager->SQL;
+          $retResult = $manager->LoadResult(null, filter: $filter);
+          $this->SQL = $manager->DataManager->SQL;
 
           // Flip result.
           $flipResult = [];
@@ -330,9 +351,9 @@
           {
             $filter = $this->RefreshFilter($this->BeginKeyData);
           }
-          $this->CityManager->OrderByNames = array("ProvinceID", "Name");
-          $retResult = $this->CityManager->LoadResult(null, filter: $filter);
-          $this->SQL = $this->CityManager->DataManager->SQL;
+          $manager->OrderByNames = array("ProvinceID", "Name");
+          $retResult = $manager->LoadResult(null, filter: $filter);
+          $this->SQL = $manager->DataManager->SQL;
           break;
       }
       return $retResult;
@@ -373,10 +394,18 @@
     // ---------------
     // Result Properties
 
+    // *** Add ***
+    /// <summary>The HTML Table column definitions.
+    public LJCDbColumns $DataColumns;
+
     /// <summary>The debug text.</summary>
     public string $DebugText;
 
     /// <summary>The SQL statement.</summary>
     public string $SQL;
+
+    // *** Add ***
+    /// <summary>The table columns array.</summary>
+    public array $TableColumns;
   }
 ?>
