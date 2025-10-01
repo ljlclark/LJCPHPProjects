@@ -10,7 +10,7 @@
 //  Classes: LJCCityDetailEvents
 
 // ***************
-/// <summary>Contains City detail dialog events handlers.</summary>
+/// <summary>Contains City detail dialog event handlers.</summary>
 //  Constructor: constructor(), #AddEvents()
 //  Event Handlers: #CancelClick(), #CommitClick()
 //  Other: #CityFormData(), #PrimaryKeyColumns(), #ValidFormValues()
@@ -24,12 +24,6 @@ class LJCCityDetailEvents
   // Used in LJCCityListEvents #Delete(), #Edit() and #New().
   Action = "";
 
-  /// <summary>The text area element ID.</summary>
-  TextAreaID = "";
-
-  /// <summary>The text dialog element ID.</summary>
-  TextDialogID = "";
-
   // ---------------
   // Private Properties
 
@@ -39,22 +33,25 @@ class LJCCityDetailEvents
   // The debug location class name.
   #ClassName = "";
 
+  // The show debug text object.
+  #Debug = null;
+
   // ---------------
   // Constructor methods.
 
   /// <summary>Initializes the object instance.</summary>
   constructor(cityTable)
   {
-    this.#ClassName = "LJCCityDetailEvents";
-    let methodName = "constructor()";
+    this.#Debug = new Debug("LJCCityDetailEvents");
 
     this.CityRequest = new LJCCityDataRequest("TestData", "../DataConfigs.xml");
-    //this.#CityTable = new LJCTable(cityTableID, cityMenuID);
     this.UpdateTable(cityTable);
+
     this.#AddEvents();
   }
 
   /// <summary>Updates the table helper class after paging.</summary>
+  // Called from LJCCityListEvents #Next(), #Previous() and #Refresh().
   UpdateTable(cityTable)
   {
     this.#CityTable = cityTable;
@@ -175,10 +172,6 @@ class LJCCityDetailEvents
     // Save a reference to this class for anonymous function.
     const self = this;
 
-    // Update to latest. Make method in LJCTable?
-    //let eTable = LJC.Element(this.#CityTable.TableID);
-    //this.#CityTable.ETable = eTable;
-
     let xhr = new XMLHttpRequest();
     xhr.open("POST", "CityList/LJCCityDataService.php");
     xhr.setRequestHeader("Content-Type", "application/json");
@@ -188,8 +181,8 @@ class LJCCityDetailEvents
       // Get the AJAX response.
       if (LJC.HasText(this.responseText))
       {
-        LJC.ShowText(self.#ClassName, methodName
-          , "this.responseText", this.responseText, false);
+        self.#Debug.ShowText(methodName, "this.responseText"
+          , this.responseText, false);
 
         let response = LJC.ParseJSON(this.responseText);
 
@@ -199,10 +192,10 @@ class LJCCityDetailEvents
           self.#CityTable.UpdateUniqueRow(objCity);
         }
 
-        LJC.ShowText(self.#ClassName, methodName
-          , "response.DebugText", response.DebugText, false);
-        LJC.ShowText(self.#ClassName, methodName
-          , "response.SQL", response.SQL, false);
+        self.#Debug.ShowText(methodName, "response.DebugText"
+          , response.DebugText, false);
+        self.#Debug.ShowText(methodName, "response.SQL"
+          , response.SQL, false);
       }
     }
 

@@ -51,6 +51,13 @@ class City
   /// <summary>The city district number.</summary>
   District = 0;
 
+  static PropertyProvinceID = "ProvinceID";
+  static PropertyName = "Name";
+  static PropertyDescription = "Description";
+  static PropertyCityFlag = "CityFlag";
+  static PropertyZipCode = "ZipCode";
+  static PropertyDistrict = "District";
+
   // ---------------
   // Static Methods
 

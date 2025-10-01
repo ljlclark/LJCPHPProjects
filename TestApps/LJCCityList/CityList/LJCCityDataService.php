@@ -35,8 +35,8 @@
     public function Run(): void
     {
       $this->ClassName = "LJCCityDataService";
-      $this->DebugText = "";
       $methodName = "Run()";
+      $this->DebugText = "";
 
       // Initialize response properties.
       $this->ServiceName = "LJCCityData";
