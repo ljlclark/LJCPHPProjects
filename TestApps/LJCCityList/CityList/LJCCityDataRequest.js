@@ -5,15 +5,12 @@
 
 /// <summary>The City Data Request</summary>
 /// LibName: LJCCityDataRequest
-//  Classes: LJCCityDataRequest
 
 // ***************
 /// <summary>Contains CityData web service request data.</summary>
-//  Constructor: constructor(), Clone()
 class LJCCityDataRequest
 {
-  // ---------------
-  // Properties
+  // #region Properties
 
   /// <summary>The service name.</summary>
   ServiceName = "LJCCityData";
@@ -48,9 +45,9 @@ class LJCCityDataRequest
   // The unique keys where clause LJCDataColumns collection.
   /// <include path='items/UniqueColumns/*' file='Doc/LJCCityDataRequest.xml'/>
   UniqueColumns = null;
+  // #endregion
 
-  // ---------------
-  // Constructor methods.
+  // #region Constructor Methods.
 
   /// <summary>Initializes the object instance.</summary>
   /// <include path='items/constructor/*' file='Doc/LJCCityTableRequest.xml'/>
@@ -63,6 +60,9 @@ class LJCCityDataRequest
     this.RequestItems = new Cities();
     this.UniqueColumns = new LJCDataColumns();
   }
+  // #endregion
+
+  // #region Data Object Methods
 
   /// <summary>Creates a clone of this object.</summary>
   /// <returns>The new cloned object.</returns>
@@ -74,4 +74,5 @@ class LJCCityDataRequest
     retRequest = LJC.ParseJSON(json);
     return retRequest;
   }
+  // #endregion
 }

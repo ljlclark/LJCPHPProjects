@@ -5,15 +5,12 @@
 
 /// <summary>The City Table Request</summary>
 /// LibName: LJCCityTableRequest
-//  Classes: LJCCityTableRequest
 
 // ***************
 /// <summary>Contains City HTML Table web service request data.</summary>
-//  Constructor: constructor(), Clone()
 class LJCCityTableRequest
 {
-  // ---------------
-  // Properties
+  // #region Properties
 
   /// <summary>The service name.</summary>
   ServiceName = "LJCCityTable";
@@ -40,9 +37,9 @@ class LJCCityTableRequest
   // *** Add ***
   /// <summary>The table column property names.</summary>
   PropertyNames = [];
+  // #endregion
 
-  // ---------------
-  // Constructor methods.
+  // #region Constructor Methods.
 
   // Initializes the object instance.
   /// <include path='items/constructor/*' file='Doc/LJCCityTableRequest.xml'/>
@@ -54,6 +51,9 @@ class LJCCityTableRequest
     this.BeginKeyData = { ProvinceID: 0, Name: "" };
     this.EndKeyData = { ProvinceID: 0, Name: "" };
   }
+  // #endregion
+
+  // #region Data Object Methods
 
   /// <summary>Creates a clone of this object.</summary>
   Clone()
@@ -64,5 +64,6 @@ class LJCCityTableRequest
     retRequest = LJC.ParseJSON(json);
     return retRequest;
   }
+  // #endregion
 }
 

@@ -2,27 +2,24 @@
 // Copyright(c) Lester J. Clark and Contributors.
 // Licensed under the MIT License.
 // LJCCityTableEvents.js
+
+// #region External
 // <script src="../../LJCJSCommon/LJCCommonLib.js"></script>
-//   AddEvent(), Element(), Visibility()
+//   LJC: AddEvent(), Element(), HasElements(), Visibility()
 // <script src="City/LJCCityTableRequest.js"></script>
+//   LJCCityTableRequest: Clone()
 // <script src="LJCTable.js"></script>
-//   MoveNext(), MovePrevious(), SelectRow(), SelectColumnRow()
+//   LJCTable: SelectRow(), SelectColumnRow()
+// #endregion
 
 /// <summary>The City Table Events</summary>
 /// LibName: LJCCityTableEvents
-//  Classes: LJCCityTableEvents
 
 // ***************
 /// <summary>Contains City HTML Table event handlers.</summary>
-//  Constructor: constructor(), #AddEvents()
-//  Event Handlers: #DocumentClick, #TableClick()
-//  Page Event Handlers: NextPage(), PrevPage()
-//  Web Service: Page(), UpdateTableRequest(), #HasData(), #UpdateLimitFlags()
-//    #UpdateCityTable()
 class LJCCityTableEvents
 {
-  // ---------------
-  // Properties
+  // #region Properties
 
   /// <summary>The associated city table helper object.</summary>
   // Used in Page() and #TableClick.
@@ -31,9 +28,9 @@ class LJCCityTableEvents
   /// <summary> The city table data request.</summary>
   // Used in CityListEvents constructor(), #Refresh().
   TableRequest = null; // LJCCityTableRequest;
+  // #endregion
 
-  // ---------------
-  // Private Properties
+  // #region Private Properties
 
   // The show debug text object.
   #Debug = null;
@@ -52,9 +49,9 @@ class LJCCityTableEvents
 
   // The associated table ID name.
   #TableID = "";
+  // #endregion
 
-  // ---------------
-  // Constructor methods.
+  // #region Constructor Methods.
 
   /// <summary>Initializes the object instance.</summary>
   constructor(cityListEvents, menuID, configName = ""
@@ -93,9 +90,9 @@ class LJCCityTableEvents
     // Table Event Handlers.
     LJC.AddEvent(this.#TableID, "click", this.#TableClick, this);
   }
+  // #endregion
 
-  // ---------------
-  // Event Handlers
+  // #region Event Handlers
 
   // The Document "click" handler.
   #DocumentClick()
@@ -120,9 +117,9 @@ class LJCCityTableEvents
       }
     }
   }
+  // #endregion
 
-  // ---------------
-  // Page Methods
+  // #region Page Methods
 
   /// <summary>Get next page for City table.</summary>
   // Called from LJCCityListEvents.DocumentKeyDown().
@@ -149,9 +146,9 @@ class LJCCityTableEvents
       this.Page(this.TableRequest);
     }
   }
+  // #endregion
 
-  // ---------------
-  // Web Service Methods
+  // #region Web Service Methods
 
   /// <summary>Sends page request to CityData web service.</summary>
   // Called from NextPage(), PrevPage() and CityListEvents #Refesh().
@@ -193,10 +190,8 @@ class LJCCityTableEvents
           // Updates CityTable with new table element, keys and data columns.
           let rowIndex = self.#UpdateCityTable(self, response.Keys);
           let cityTable = self.CityTable;
-          // *** Begin ***
           let dataColumnsArray = response.DataColumnsArray;
           cityTable.DataColumns = LJCDataColumns.Collection(dataColumnsArray);
-          // *** End **
 
           // Updates the BeginningOfData and EndOfData flags.
           if (self.#UpdateLimitFlags())
@@ -360,4 +355,5 @@ class LJCCityTableEvents
     cityTable.Keys = keys;
     return retRowIndex;
   }
+  // #endregion
 }

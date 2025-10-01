@@ -2,42 +2,37 @@
 // Copyright(c) Lester J. Clark and Contributors.
 // Licensed under the MIT License.
 // LJCCityDetailEvents.js
+
+// #region External
+
 // <script src="../../LJCJSCommon/LJCCommonLib.js"></script>
-//   AddEvent()
+//   LJC: AddEvent(), CreateJSON(), GetValue(), HasText(), ParseJSON()
+// #endregion
 
 /// <summary>The City Detail Events</summary>
 /// LibName: LJCCityDetailEvents
-//  Classes: LJCCityDetailEvents
 
 // ***************
 /// <summary>Contains City detail dialog event handlers.</summary>
-//  Constructor: constructor(), #AddEvents()
-//  Event Handlers: #CancelClick(), #CommitClick()
-//  Other: #CityFormData(), #PrimaryKeyColumns(), #ValidFormValues()
-//  Web Service: #DataRequest()
 class LJCCityDetailEvents
 {
-  // ---------------
-  // Properties
+  // #region Properties
 
   /// <summary>The detail action.</summary>
   // Used in LJCCityListEvents #Delete(), #Edit() and #New().
   Action = "";
+  // #endregion
 
-  // ---------------
-  // Private Properties
+  // #region Private Properties
 
   // The associated city table helper object.
   #CityTable = null; // LJCTable
 
-  // The debug location class name.
-  #ClassName = "";
-
   // The show debug text object.
   #Debug = null;
+  // #endregion
 
-  // ---------------
-  // Constructor methods.
+  // #region Constructor Methods.
 
   /// <summary>Initializes the object instance.</summary>
   constructor(cityTable)
@@ -60,15 +55,13 @@ class LJCCityDetailEvents
   // Adds the HTML event listeners.
   #AddEvents()
   {
-    let methodName = "AddEvents()";
-
     // Button Event Handlers.
     LJC.AddEvent("cancel", "click", this.#CancelClick, this);
     LJC.AddEvent("commit", "click", this.#CommitClick, this);
   }
+  // #endregion
 
-  // ---------------
-  // Event Handlers
+  // #region Event Handlers
 
   // Close the dialog without updating the data.
   #CancelClick(event)
@@ -79,8 +72,6 @@ class LJCCityDetailEvents
   // Update data and close dialog.
   #CommitClick(event)
   {
-    let methodName = "CommitClick()";
-
     this.CityRequest.Action = this.Action;
     let city = this.#CityFormData();
     if (this.#ValidFormValues(city))
@@ -102,15 +93,13 @@ class LJCCityDetailEvents
       cityDialog.close();
     }
   }
+  // #endregion
 
-  // ---------------
-  // Other Methods
+  // #region Other Methods
 
   // Creates a City object from the form data.
   #CityFormData()
   {
-    let methodName = "CityFormData()";
-
     let cityID = LJC.GetValue("cityID");
     let provinceID = LJC.GetValue("provinceID");
     let name = LJC.GetValue("name");
@@ -127,8 +116,6 @@ class LJCCityDetailEvents
   // Get the primary key columns.
   #PrimaryKeyColumns()
   {
-    let methodName = "PrimaryKeyColumns()";
-
     let retKeyColumns = new LJCDataColumns();
 
     // Get key value from hidden form.
@@ -159,9 +146,9 @@ class LJCCityDetailEvents
     }
     return retSuccess;
   }
+  // #endregion
 
-  // ---------------
-  // Web Service Methods
+  // #region Web Service Methods
 
   // Sends data request to CityData web service.
   // Called from CommitClick().
@@ -202,4 +189,5 @@ class LJCCityDetailEvents
     let request = LJC.CreateJSON(cityRequest);
     xhr.send(request);
   }
+  // #endregion
 }

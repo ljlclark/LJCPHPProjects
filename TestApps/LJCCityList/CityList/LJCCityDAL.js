@@ -5,7 +5,6 @@
 
 /// <summary>The City Data Access Layer Library</summary>
 /// LibName: LJCCityDAL
-//  Classes: City, Cities
 
 // A data object is a user defined data type that contains a group of
 // related values. Each contained value has a unique name and a data type.
@@ -23,11 +22,9 @@
 
 // ***************
 /// <summary>The City data object class.</summary>
-//  Constructor: constructor(), Clone()
 class City
 {
-  // ---------------
-  // Properties
+  // #region Properties
 
   /// <summary>The city primary key.</summary>
   CityID = 0;
@@ -48,7 +45,7 @@ class City
   Description = "";
 
   // bit(1)
- /// <summary>The city flag.</summary>
+  /// <summary>The city flag.</summary>
   /// <remarks>1 = city, 0 = municipality.</remarks>
   CityFlag = 0;
 
@@ -75,9 +72,9 @@ class City
   static NameLength = 60;
   static DescriptionLength = 60;
   static ZipCodeLength = 4;
+  // #endregion
 
-  // ---------------
-  // Static Methods
+  // #region Static Methods
 
   // Creates a new object with the supplied object values.
   /// <include path='items/Copy/*' file='Doc/City.xml'/>
@@ -95,9 +92,9 @@ class City
     }
     return retCity;
   }
+  // #endregion
 
-  // ---------------
-  // Constructor methods.
+  // #region Constructor Methods.
 
   // Initializes the object instance.
   /// <include path='items/constructor/*' file='Doc/City.xml'/>
@@ -112,9 +109,9 @@ class City
     this.ZipCode = 0;
     this.District = 0;
   }
+  // #endregion
 
-  // ---------------
-  // Data Object Methods
+  // #region Data Object Methods
 
   /// <summary>Creates a clone of this object.</summary>
   /// <returns>The new cloned object.</returns>
@@ -128,16 +125,14 @@ class City
     retCity.District = this.District;
     return retCity;
   }
+  // #endregion
 }
 
 // ***************
 /// <summary>Represents a collection of city data objects.</summary>
-//  Collection: Add(), AddObject(), Clear(), Count(), GetIndex(), Items()
-//    Names(), Remove(), Retrieve(), RetrieveWithIndex()
 class Cities
 {
-  // ---------------
-  // Properties
+  // #region Properties
 
   // The current items count.
   Count = 0;
@@ -147,9 +142,9 @@ class Cities
 
   // The internal collection item array.
   #Items = [];
+  // #endregion
 
-  // ---------------
-  // Collection Methods
+  // #region Collection Methods
 
   // Creates and adds the item to the list.
   /// <include path='items/Add/*' file='Doc/Cities.xml'/>
@@ -279,4 +274,5 @@ class Cities
     }
     return retCity;
   }
+  // #endregion
 }

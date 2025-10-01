@@ -2,32 +2,24 @@
 // Copyright(c) Lester J. Clark and Contributors.
 // Licensed under the MIT License.
 // LJCCityListEvents.js
+
+// #region External
 // <script src="../../LJCJSCommon/LJCCommonLib.js"></script>
-//   Element(), GetValue()
-//   MouseLocation(), Visibility()
+//   LJC: MouseLocation(), Visibility()
 // <script src="CityList/LJCCityDataRequest.js"></script>
 // <script src="LJCTable.js"></script>
-//   GetTable(), GetTableRow(), ShowMenu()
-//   MoveNext(), MovePrevious(), RowCount(), SelectRow(), SelectColumnRow()
+//   LJCTable: GetTable(), ShowMenu() MoveNext(), MovePrevious()
+//   SelectColumnRow()
+// #endregion
 
 /// <summary>The City List Events</summary>
 /// LibName: LJCCityListEvents
-//  Classes: LJCCityListEvents
 
 // ***************
 /// <summary>Contains CityList event handlers.</summary>
-//  Constructor: constructor(), #AddEvents()
-//  Document Handlers: #DocumentContextMenu(), #DocumentDoubleClick()
-//    #DocumentKeyDown()
-//  Menu Handlers: #Delete(), #Edit(), #New(), #Next(), #Previous(), #Refresh()
-//  Other Menu: $CityRequest(), #FocusTableEvents(), #PrimaryKeyColumns()
-//  Web Service: #ClearCityFormData(), #CityDataRequest(), #SetCityForm()
-//    #ShowCityDetail()
-//  Table Column: #SelectedTable(), #SelectedTableEvents()
 class LJCCityListEvents
 {
-  // ---------------
-  // Properties
+  // #region Properties
 
   // The city table helper object.
   // Used in LJCCityTableEvents Page().
@@ -40,9 +32,9 @@ class LJCCityListEvents
   // The active table.
   // Used in LJCCityTableEvents Page() and #TableClick().
   FocusTable = null; // LJCTable
+  // #endregion
 
-  // ---------------
-  // Private Properties
+  // #region Private Properties
 
   // The detail dialog events.
   #CityDetailEvents = null; // LJCCityDetailEvents
@@ -52,9 +44,9 @@ class LJCCityListEvents
 
   // The show debug text object.
   #Debug = null;
+  // #endregion
 
-  // ---------------
-  // Constructor functions.
+  // #region Constructor Methods.
 
   // Initializes the object instance.
   /// <include path='items/constructor/*' file='Doc/LJCCityListEvents.xml'/>
@@ -117,9 +109,9 @@ class LJCCityListEvents
     ];
     return retPropertyNames;
   }
+  // #endregion
 
-  // ---------------
-  // Document Event Handlers
+  // #region Document Event Handlers
 
   // The Document "contextmenu" event handler.
   #DocumentContextMenu(event)
@@ -188,9 +180,9 @@ class LJCCityListEvents
       }
     }
   }
+  // #endregion
 
-  // ---------------
-  // Menu Event Handlers
+  // #region Menu Event Handlers
 
   // Deletes the selected item.
   #Delete()
@@ -257,9 +249,9 @@ class LJCCityListEvents
     // Update the table with new values ETable and Keys.
     this.#CityDetailEvents.UpdateTable(tableEvents.CityTable);
   }
+  // #endregion
 
-  // ---------------
-  // Other Menu Methods
+  // #region Other Menu Methods
 
   // Creates the city request.
   #CityRequest()
@@ -299,9 +291,9 @@ class LJCCityListEvents
     retKeyColumns.AddObject(dataColumn);
     return retKeyColumns;
   }
+  // #endregion
 
-  // ---------------
-  // Web Service Methods
+  // #region Web Service Methods
 
   // Clears the City form data.
   #ClearCityFormData()
@@ -390,9 +382,9 @@ class LJCCityListEvents
         break;
     }
   }
+  // #endregion
 
-  // ---------------
-  // Table Column Methods
+  // #region Table Column Methods
 
   // Gets the LJCTable object based on the selected table cell.
   #SelectedTable(eCell)
@@ -429,4 +421,5 @@ class LJCCityListEvents
     }
     return retTable;
   }
+  // #endregion
 }

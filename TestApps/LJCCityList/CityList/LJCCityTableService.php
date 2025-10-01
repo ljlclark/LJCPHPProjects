@@ -55,13 +55,11 @@
       $this->ConfigName = $pageData->ConfigName;
       $this->EndKeyData = $pageData->EndKeyData;
       $this->Limit = $pageData->Limit;
-      // *** Begin *** Add
       $this->PropertyNames = $pageData->PropertyNames;
       if (null == $pageData->PropertyNames)
       {
         $this->PropertyNames = $this->TablePropertyNames();
       }
-      // *** End ***
 
       $this->CityTableID = "cityTableItem";
       $this->TableName = City::TableName;
