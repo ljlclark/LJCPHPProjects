@@ -32,31 +32,49 @@ class City
   /// <summary>The city primary key.</summary>
   CityID = 0;
 
-  /// <summary>The province parent key.</summary>
+  /// <summary>The province parent key and partial unique key.</summary>
   ProvinceID = 0;
 
-  /// <summary>The unique city name.</summary>
+  // varchar(60)
+  /// <summary>The province name.</summary>
+  ProvinceName = "";
+
+  // varchar(60)
+  /// <summary>The partial unique key.</summary>
   Name = "";
 
+  // varchar(100)
   /// <summary>The city description.</summary>
   Description = "";
 
-  /// <summary>The city flag.</summary>
+  // bit(1)
+ /// <summary>The city flag.</summary>
   /// <remarks>1 = city, 0 = municipality.</remarks>
   CityFlag = 0;
 
-  /// <summary>The city zip code.</summary>
-  ZipCode = 0;
-
+  // smallint
   /// <summary>The city district number.</summary>
   District = 0;
 
+  // char(4) ?
+  /// <summary>The city zip code.</summary>
+  ZipCode = 0;
+
+  static TableName = "City";
+  static PropertyCityID = "CityID";
   static PropertyProvinceID = "ProvinceID";
+  static PropertyProvinceName = "ProvinceName";
   static PropertyName = "Name";
   static PropertyDescription = "Description";
+
   static PropertyCityFlag = "CityFlag";
-  static PropertyZipCode = "ZipCode";
   static PropertyDistrict = "District";
+  static PropertyZipCode = "ZipCode";
+
+  static ProvinceNameLength = 60;
+  static NameLength = 60;
+  static DescriptionLength = 60;
+  static ZipCodeLength = 4;
 
   // ---------------
   // Static Methods

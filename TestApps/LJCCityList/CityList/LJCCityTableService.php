@@ -195,7 +195,7 @@
       // Create table object with column property names.
       $retTableBuilder = new LJCHTMLTable();
       //$retTableBuilder = new LJCHTMLTableBuilder();
-      LJC::RemoveString($propertyNames, City::ColumnCityID);
+      LJC::RemoveString($propertyNames, City::PropertyCityID);
       $retTableBuilder->ColumnNames = $propertyNames;
       return $retTableBuilder;
     } // HTMLTableBuilder()
@@ -207,9 +207,9 @@
       $methodName = "KeyPropertyNames()";
 
       $retKeyNames = [
-        City::ColumnCityID,
-        City::ColumnProvinceID,
-        City::ColumnName,
+        City::PropertyCityID,
+        City::PropertyProvinceID,
+        City::PropertyName,
       ];
       return $retKeyNames;
     } // KeyPropertyNames()
@@ -252,12 +252,12 @@
       $methodName = "TablePropertyNames()";
 
       $retPropertyNames = [
-        City::ColumnProvinceID,
-        City::ColumnName,
-        City::ColumnDescription,
-        City::ColumnCityFlag,
-        City::ColumnZipCode,
-        City::ColumnDistrict,
+        City::PropertyProvinceID,
+        City::PropertyName,
+        City::PropertyDescription,
+        City::PropertyCityFlag,
+        City::PropertyZipCode,
+        City::PropertyDistrict,
       ];
       return $retPropertyNames;
     } // TablePropertyNames()
