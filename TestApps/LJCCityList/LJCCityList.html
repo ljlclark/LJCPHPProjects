@@ -30,7 +30,7 @@
     <!-- The dialog for debug and other display text. -->
     <dialog id="textDialog"
             style="border: none; padding: 0px">
-      <textarea id="text" rows="25" cols="80" autocorrect="off"
+      <textarea id="textArea" rows="25" cols="80" autocorrect="off"
                 autocapitalize="off" spellcheck="false" readonly
                 style="border: none; padding: 10px">
       </textarea>
@@ -109,8 +109,7 @@
   </div>  <!-- Closes page -->
   <script>
     let listEvents = new LJCCityListEvents("cityTableItem");
-    listEvents.TextDialogID = "textDialog";
-    listEvents.TextAreaID = "text";
+    listEvents.SetDialogValues("textDialog", "textArea");
   </script>
 </body>
 </html>

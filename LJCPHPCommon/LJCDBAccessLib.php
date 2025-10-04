@@ -567,13 +567,11 @@
       {
         if ($propertyName != null)
         {
-          // *** Begin *** Add
           // Change Key
           $dbColumn = $dbColumn->Clone();
           $dbColumn->PropertyName = $propertyName;
           $this->DeleteItem($columnName);
           $this->AddObject($dbColumn);
-          // *** End   ***
         }
         if ($renameAs != null)
         {

@@ -22,6 +22,8 @@ class LJCCityTableRequest
   /// <summary>The unique key of the first page item.</summary>
   BeginKeyData = null;
 
+  CityTableID = "";
+
   /// <summary>The data access configuration file name.</summary>
   ConfigFile = "";
 
@@ -34,9 +36,14 @@ class LJCCityTableRequest
   /// <summary>The page item count limit.<summary>
   Limit = 20;
 
+  /// <summary>The data column property names.</summary>
+  PropertyNames = [];
+
+  TableName = "";
+
   // *** Add ***
   /// <summary>The table column property names.</summary>
-  PropertyNames = [];
+  TableColumnNames = [];
   // #endregion
 
   // #region Constructor Methods.

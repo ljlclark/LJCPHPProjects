@@ -19,11 +19,11 @@
   // CityDAL: City, CityManager
 
   $cityTable = new LJCCityTableService();
-  $cityTable->Run();
+  $cityTable->Request();
 
   // ***************
   /// <group name="Entry">Entry Methods</group>
-  //    Run()
+  //    Request()
   /// <group name="Response">Response Methods</group>
   //    CreateResponse(), 
   /// <summary>Web Service to Create an HTML table from City data.
@@ -35,51 +35,44 @@
     /// <summary>Service start method.</summary>
     /// <returns>The service response JSON text.</returns.
     /// <ParentGroup>Entry</ParentGroup>
-    public function Run(): void
+    public function Request(): void
     {
       $this->ClassName = "LJCCityTableService";
-      $methodName = "Run()";
+      $methodName = "Request()";
 
-      // Initialize response properties.
-      $this->DebugText = "";
+      $this->InitResponseProperties();
 
       // Parameters are passed from a POST with JSON data.
       header("Content-Type: application/json; charset=UTF-8");
       $value = file_get_contents('php://input');
       $pageData = LJC::ParseJSON($value);
 
-      // Initialize Request properties.
-      $this->Action = $pageData->Action;
-      $this->BeginKeyData = $pageData->BeginKeyData;
-      $this->ConfigFile = $pageData->ConfigFile;
-      $this->ConfigName = $pageData->ConfigName;
-      $this->EndKeyData = $pageData->EndKeyData;
-      $this->Limit = $pageData->Limit;
-      $this->PropertyNames = $pageData->PropertyNames;
-      if (null == $pageData->PropertyNames)
-      {
-        $this->PropertyNames = $this->TablePropertyNames();
-      }
-
-      $this->CityTableID = "cityTableItem";
-      $this->TableName = City::TableName;
-      $this->SQL = "";
+      $this->SetRequestProperties($pageData);
       $_SESSION["tableName"] = $this->TableName;
 
       $connectionValues = $this->GetConnectionValues($this->ConfigName);  
       $this->CityManager = new CityManager($connectionValues, $this->TableName);
+
+      // *** Begin *** Add
+      // Add join column definition.
+      $dataManager = $this->CityManager->DataManager;
+      $schemaColumns =  $dataManager->SchemaColumns;
+      $schemaColumns->Add("Name", "ProvinceName", "ProvinceName");
+      // *** End ***
+
       $manager = $this->CityManager;
       if ($this->Limit > 0)
       {
         $manager->Limit = $this->Limit;
       }
-      // *** Add ***
-      // Get table column definitions.
-      $this->DataColumns = $manager->Columns($this->PropertyNames);
+      $this->TableColumns = $manager->Columns($this->TableColumnNames);
+      // ***** 
+      $this->AddDebug($methodName, "\$this->TableColumns"
+        , $this->TableColumns);
 
       $response = $this->GetResponse();
       echo($response);
-    } // Run()
+    } // Request()
 
     // Standard debug method for each class.
     private function AddDebug($methodName, $valueName, $value = "null")
@@ -90,7 +83,7 @@
     } // AddDebug()
 
     // Get connection values for a DataConfig name.
-    // Called from Run()
+    // Called from Request()
     private function GetConnectionValues(string $configName)
     {
       $methodName = "GetConnectionValues()";
@@ -101,13 +94,62 @@
       return $retValues;
     } // GetConnectionValues()
 
+    // Initializes the response properties.
+    private function InitResponseProperties()
+    {
+      $this->DebugText = "";
+      $this->HTMLTable = "";
+      $this->Keys = [];
+      $this->ServiceName = "LJCCityTable";
+      $this->SQL = "";
+      $this->TableColumnsArray = [];
+    }
+
+    // Sets the request property values.
+    private function SetRequestProperties($pageData)
+    {
+      $methodName = "SetRequestProperties";
+
+      $this->Action = $pageData->Action;
+      $this->BeginKeyData = $pageData->BeginKeyData;
+      $this->CityTableID = $pageData->CityTableID;
+      $this->ConfigFile = $pageData->ConfigFile;
+      $this->ConfigName = $pageData->ConfigName;
+      $this->EndKeyData = $pageData->EndKeyData;
+      $this->Limit = $pageData->Limit;
+      $this->PropertyNames = $pageData->PropertyNames;
+      $this->TableName = $pageData->TableName;
+      $this->TableColumnNames = $pageData->TableColumnNames;
+      if (null == $pageData->TableColumnNames)
+      {
+        $this->TableColumnNames = $this->TableColumnNames();
+      }
+    }
+
+    // Creates the default HTML table column property names.
+    // Called from: SetRequestProperties()
+    private function TableColumnNames(): array
+    {
+      $methodName = "TableColumnNames()";
+
+      $retPropertyNames = [
+        City::PropertyProvinceName,
+        City::PropertyName,
+        City::PropertyDescription,
+        City::PropertyCityFlag,
+        City::PropertyZipCode,
+        City::PropertyDistrict,
+      ];
+      return $retPropertyNames;
+    } // TableColumnNames()
+
     // ---------------
     // Response Methods
 
     /// <summary>Creates the HTML Table.</summary>
     /// <returns>The response JSON text.</returns.
     /// <ParentGroup>Response</ParentGroup>
-    // Called from Run().
+    // Called from Request().
     public function GetResponse()
     {
       $methodName = "GetResponse()";
@@ -118,9 +160,8 @@
       if ($result != null)
       {
         // Create table builder with column property names.
-        // *** Change ***
-        $propertyNames = $this->PropertyNames;
-        $tableBuilder = $this->HTMLTableBuilder($propertyNames);
+        $tableColumnNames = $this->TableColumnNames;
+        $tableBuilder = $this->HTMLTableBuilder($tableColumnNames);
 
         // Setup attributes.
         $tableBuilder->TableAttribs = $this->GetTableAttribs();
@@ -130,19 +171,20 @@
         $textState = new LJCTextState();
         $textState->IndentCount = 2;
         $response->HTMLTable = $tableBuilder->ResultHTML($result, $textState
-          , $propertyNames);
+          , $tableColumnNames);
 
         // Create Key array.
         $keyNames = $this->KeyPropertyNames();
         $keyArray = $this->ResultKeyArray($result, $keyNames);
-
         $response->Keys = $keyArray;
-        // *** Begin *** Add
-        $response->DebugText = $this->DebugText;
-        $response->DataColumnsArray = LJC::ItemsToArray($this->DataColumns);
-        // *** End ***
-        $response->SQL = $this->SQL;
+
+        // Create TableColumns.
+        // *** Change ***
+        $response->TableColumnsArray = LJC::ItemsToArray($this->TableColumns);
       }
+
+      $response->DebugText = $this->DebugText;
+      $response->SQL = $this->SQL;
       $retResponse = LJC::CreateJSON($response);
       return $retResponse;
     } // GetResponse()
@@ -198,6 +240,23 @@
       return $retTableBuilder;
     } // HTMLTableBuilder()
 
+    // Initializes the response object.
+    // Called from GetResponse()
+    private function InitResponse()
+    {
+      $methodName = "InitResponse()";
+
+      // The definition order sets the serialization order.
+      $retResponse = new stdClass();
+      $retResponse->ServiceName = $this->ServiceName;
+      $retResponse->Keys = [];
+      $retResponse->SQL = "";
+      $retResponse->HTMLTable = "";
+      $retResponse->TableColumnsArray = [];
+      $retResponse->DebugText = "";
+      return $retResponse;
+    } // SetResponse()
+
     // Creates the retrieve property names.
     // Called from GetResponse()
     private function KeyPropertyNames(): array
@@ -224,42 +283,6 @@
       return $retKeyArray;
     } // ResultKeyArray()
 
-    // Initializes the response object.
-    // Called from GetResponse()
-    private function InitResponse()
-    {
-      $methodName = "InitResponse()";
-
-      $retResponse = new stdClass();
-      $retResponse->ServiceName = "LJCCityTable";
-      $retResponse->Keys = [];
-      $retResponse->SQL = "";
-      $retResponse->HTMLTable = "";
-      // *** Begin *** Add
-      $retResponse->DebugText = "";
-      //$retResponse->TableColumns = [];
-      $retResponse->DataColumnsArray = [];
-      // *** End ***
-      return $retResponse;
-    } // SetResponse()
-
-    // Creates the table property names.
-    // Called from: GetResponse()
-    private function TablePropertyNames(): array
-    {
-      $methodName = "TablePropertyNames()";
-
-      $retPropertyNames = [
-        City::PropertyProvinceID,
-        City::PropertyName,
-        City::PropertyDescription,
-        City::PropertyCityFlag,
-        City::PropertyZipCode,
-        City::PropertyDistrict,
-      ];
-      return $retPropertyNames;
-    } // TablePropertyNames()
-
     // ---------------
     // Retrieve Data Methods
 
@@ -270,14 +293,14 @@
       $methodName = "NextFilter()";
 
       $retFilter = "where";
-      $retFilter .= "\r\n  (ProvinceID >= {$keyData->ProvinceID}";
-      $filter = "\r\n   and Name > '{$keyData->Name}')";
+      $retFilter .= "\r\n  (City.ProvinceID >= {$keyData->ProvinceID}";
+      $filter = "\r\n   and City.Name > '{$keyData->Name}')";
       if ($backward)
       {
-        $filter = "\r\n   and Name >= '{$keyData->Name}')";
+        $filter = "\r\n   and City.Name >= '{$keyData->Name}')";
       }
       $retFilter .= $filter;
-      $retFilter .= "\r\n  or ProvinceID > {$keyData->ProvinceID}";
+      $retFilter .= "\r\n   or City.ProvinceID > {$keyData->ProvinceID}";
       return $retFilter;
     } // NextFilter()
 
@@ -288,9 +311,9 @@
       $methodName = "PreviousFilter()";
 
       $retFilter = "where";
-      $retFilter .= "\r\n  (ProvinceID <= {$beginKeyData->ProvinceID}";
-      $retFilter .= "\r\n   and Name < '{$beginKeyData->Name}')";
-      $retFilter .= "\r\n  or ProvinceID < {$beginKeyData->ProvinceID}";
+      $retFilter .= "\r\n  (City.ProvinceID <= {$beginKeyData->ProvinceID}";
+      $retFilter .= "\r\n   and City.Name < '{$beginKeyData->Name}')";
+      $retFilter .= "\r\n   or City.ProvinceID < {$beginKeyData->ProvinceID}";
       return $retFilter;
     } // PreviousFilter()
 
@@ -301,10 +324,10 @@
       $methodName = "RefreshFilter()";
 
       $retFilter = "where";
-      $retFilter .= "\r\n  (ProvinceID >= {$keyData->ProvinceID}";
-      $filter = "\r\n   and Name >= '{$keyData->Name}')";
+      $retFilter .= "\r\n  (City.ProvinceID >= {$keyData->ProvinceID}";
+      $filter = "\r\n   and City.Name >= '{$keyData->Name}')";
       $retFilter .= $filter;
-      $retFilter .= "\r\n  or ProvinceID > {$keyData->ProvinceID}";
+      $retFilter .= "\r\n   or City.ProvinceID > {$keyData->ProvinceID}";
       return $retFilter;
     } // RefreshFilter()
 
@@ -315,14 +338,17 @@
       $methodName = "RetrieveData()";
       $retResult = null;
 
-      //$keyColumns = null;
       $manager = $this->CityManager;
+      $joins = $manager->CreateJoins();
+      $propertyNames = $this->PropertyNames;
+
       switch ($this->Action)
       {
         case "Next":
           $filter = $this->NextFilter($this->EndKeyData);
           $manager->OrderByNames = array("ProvinceID", "Name");
-          $retResult = $manager->LoadResult(null, filter: $filter);
+          $retResult = $manager->LoadResult(null, $propertyNames, $joins
+            , $filter);
           $this->SQL = $manager->DataManager->SQL;
           break;
 
@@ -331,7 +357,8 @@
           $filter = $this->PreviousFilter($this->BeginKeyData);
           $manager->OrderByNames = array("ProvinceID desc"
             , "Name desc");
-          $retResult = $manager->LoadResult(null, filter: $filter);
+          $retResult = $manager->LoadResult(null, $propertyNames, $joins
+            , $filter);
           $this->SQL = $manager->DataManager->SQL;
 
           // Flip result.
@@ -351,7 +378,8 @@
             $filter = $this->RefreshFilter($this->BeginKeyData);
           }
           $manager->OrderByNames = array("ProvinceID", "Name");
-          $retResult = $manager->LoadResult(null, filter: $filter);
+          $retResult = $manager->LoadResult(null, $propertyNames, $joins
+            , $filter);
           $this->SQL = $manager->DataManager->SQL;
           break;
       }
@@ -371,8 +399,8 @@
     /// <remarks> Properties: ProvinceID, Name</remarks>
     public object $BeginKeyData;
 
-    /// <summary>The CityManager object.</summary>
-    public CityManager $CityManager;
+    /// <summary>The HTML city table element ID.</summary>
+    public string $CityTableID;
 
     /// <summary>The data config file name.</summary>
     public string $ConfigFile;
@@ -387,24 +415,43 @@
     /// <summary>The number of rows per page.</summary>
     public int $Limit;
 
-    /// <summary>The db table name.</summary>
+    /// <summary>The data object property names.</summary>
+    public array $PropertyNames;
+
+    /// <summary>The HTML table column property names.</summary>
+    public array $TableColumnNames;
+
+    /// <summary>The source table name.</summary>
     public string $TableName;
 
     // ---------------
-    // Result Properties
-
-    // *** Add ***
-    /// <summary>The HTML Table column definitions.
-    public LJCDbColumns $DataColumns;
+    // Response Properties
 
     /// <summary>The debug text.</summary>
     public string $DebugText;
 
+    /// <summary>The HTML table text.</summary>
+    public string $HTMLTable;
+
+    /// <summary>The table item keys.</summary>
+    public array $Keys;
+
+    /// <summary>The service name.</summary>
+    public string $ServiceName;
+
     /// <summary>The SQL statement.</summary>
     public string $SQL;
 
-    // *** Add ***
-    /// <summary>The table columns array.</summary>
-    public array $TableColumns;
+    /// <summary>The HTML Table column definitions.
+    public array $TableColumnsArray;
+
+    // ---------------
+    // Other Properties
+
+    /// <summary>The CityManager object.</summary>
+    public CityManager $CityManager;
+
+    /// <summary>The HTML Table column definition collection.
+    public LJCDbColumns $TableColumns;
   }
 ?>

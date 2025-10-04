@@ -4,7 +4,6 @@
 // LJCTable.js
 
 // #region External
-
 // <script src="../../LJCJSCommon/LJCCommonLib.js"></script>
 //   LJC: Element(), TagElements(), Visibility()
 // <script src="../../LJCJSCommon/LJCDataLib.js"></script>
@@ -31,7 +30,7 @@ class LJCTable
   CurrentRowIndex;
 
   /// <summary>The table data column definitions.</summary>
-  DataColumns = new LJCDataColumns();
+  TableColumns = new LJCDataColumns();
 
   /// <summary>The associated menu element.</summary>
   EMenu;
@@ -169,10 +168,10 @@ class LJCTable
   {
     let retIndex = -1;
 
-    if (this.DataColumns != null
-      && this.DataColumns.Count() > 0)
+    if (this.TableColumns != null
+      && this.TableColumns.Count() > 0)
     {
-      retIndex = this.DataColumns.GetIndex(propertyName);
+      retIndex = this.TableColumns.GetIndex(propertyName);
     }
     else
     {

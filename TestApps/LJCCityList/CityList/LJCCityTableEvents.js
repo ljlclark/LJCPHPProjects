@@ -6,6 +6,7 @@
 // #region External
 // <script src="../../LJCJSCommon/LJCCommonLib.js"></script>
 //   LJC: AddEvent(), Element(), HasElements(), Visibility()
+//   Debug: ShowText(), ShowDialog()
 // <script src="City/LJCCityTableRequest.js"></script>
 //   LJCCityTableRequest: Clone()
 // <script src="LJCTable.js"></script>
@@ -65,12 +66,13 @@ class LJCCityTableEvents
 
     this.#IsNextPage = false;
     this.#IsPrevPage = false;
-
-    // Data for LJCCityTableService.php
-    this.TableRequest = new LJCCityTableRequest(configName, configFile);
-
     this.#TableID = this.#CityListEvents.CityTableID;
+
     this.CityTable = new LJCTable(this.#TableID, this.#MenuID);
+
+    // Service request for LJCCityTableService.php
+    this.TableRequest = new LJCCityTableRequest(configName, configFile);
+    this.TableRequest.CityTableID = this.#TableID;
 
     this.#AddEvents();
   }
@@ -173,7 +175,7 @@ class LJCCityTableEvents
 
         let response = JSON.parse(this.responseText);
 
-        self.#Debug.ShowText(methodName, "response.DebugText"
+        self.#Debug.ShowDialog(methodName, "response.DebugText"
           , response.DebugText, false);
         self.#Debug.ShowText(methodName, "response.SQL"
           , response.SQL, false);
@@ -190,8 +192,11 @@ class LJCCityTableEvents
           // Updates CityTable with new table element, keys and data columns.
           let rowIndex = self.#UpdateCityTable(self, response.Keys);
           let cityTable = self.CityTable;
-          let dataColumnsArray = response.DataColumnsArray;
-          cityTable.DataColumns = LJCDataColumns.Collection(dataColumnsArray);
+
+          // *****
+          // This is comming back without ProvinceName.
+          let tableColumnsArray = response.TableColumnsArray;
+          cityTable.TableColumns = LJCDataColumns.Collection(tableColumnsArray);
 
           // Updates the BeginningOfData and EndOfData flags.
           if (self.#UpdateLimitFlags())
@@ -213,10 +218,15 @@ class LJCCityTableEvents
     };
 
     let tableRequest = this.TableRequest.Clone();
+    tableRequest.TableName = City.TableName;
     tableRequest.ConfigFile = "../DataConfigs.xml";
     if (!LJC.HasElements(tableRequest.PropertyNames))
     {
       tableRequest.PropertyNames = this.#DefaultPropertyNames();
+    }
+    if (!LJC.HasElements(tableRequest.TableColumnNames))
+    {
+      tableRequest.TableColumnNames = this.#DefaultTableColumnNames();
     }
     let request = LJC.CreateJSON(tableRequest);
     xhr.send(request);
@@ -225,7 +235,8 @@ class LJCCityTableEvents
   // Sets the form values before a detail submit and the page values before
   // a page submit.
   /// <include path='items/UpdateTableRequest/*' file='Doc/LJCCityTableEvents.xml'/>
-  // Called from LJCCityListEvents #DocumentContextMenu().
+  // Called from LJCCityListEvents #DocumentContextMenu()
+  // #TableClick(), NextPage(), PrevPage(), Page().
   UpdateTableRequest()
   {
     let cityTable = this.CityTable;
@@ -234,7 +245,7 @@ class LJCCityTableEvents
     let rowKeys = cityTable.Keys[cityTable.CurrentRowIndex - 1];
     if (rowKeys != null)
     {
-      // Set current row keys.
+      // Set HTML current row keys.
       rowCityID.value = rowKeys.CityID;
       rowProvinceID.value = rowKeys.ProvinceID;
       rowName.value = rowKeys.Name;
@@ -267,7 +278,9 @@ class LJCCityTableEvents
   #DefaultPropertyNames()
   {
     let retPropertyNames = [
+      City.PropertyCityID,
       City.PropertyProvinceID,
+      City.PropertyProvinceName,
       City.PropertyName,
       City.PropertyDescription,
       City.PropertyCityFlag,
@@ -275,6 +288,20 @@ class LJCCityTableEvents
       City.PropertyDistrict,
     ];
     return retPropertyNames;
+  }
+
+  // Creates the table column names.
+  #DefaultTableColumnNames()
+  {
+    let retColumnNames = [
+      City.PropertyProvinceName,
+      City.PropertyName,
+      City.PropertyDescription,
+      City.PropertyCityFlag,
+      City.PropertyZipCode,
+      City.PropertyDistrict,
+    ];
+    return retColumnNames;
   }
 
   // Checks if the provided table text exists.

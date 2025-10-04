@@ -99,6 +99,18 @@
     {
       $retValue = null;
       
+      $this->SQL = $this->LoadSQL($keyColumns, $propertyNames, $joins, $filter);
+      $retValue = $this->DbAccess->Load($this->SQL);
+      return $retValue;
+    } // Load()
+
+    /// <summary>Creates the Load SQL.</summary>
+    /// <ParentGroup>Data</ParentGroup>
+    public function LoadSQL(?LJCDbColumns $keyColumns = null, ?array $propertyNames = null
+      , ?LJCJoins $joins = null, ?string $filter = null) : string
+    {
+      $retSQL = "";
+
       if (null == $propertyNames)
       {
         $propertyNames = $this->PropertyNames(); 
@@ -111,22 +123,21 @@
       }
 
       $this->Joins = $joins;
-      $this->SQL = LJCSQLBuilder::CreateSelect($this->TableName
+      $retSQL = LJCSQLBuilder::CreateSelect($this->TableName
         , $this->SchemaColumns, $keyColumns, $propertyNames, $joins);
       if ($filter != null
         && strlen(trim($filter)) > 0)
       {
-        $this->SQL .= " \r\n{$filter}";
+        $retSQL .= " \r\n{$filter}";
       }
 
-      $this->SQL .= LJCSQLBuilder::GetOrderBy($this->OrderByNames);
+      $retSQL .= LJCSQLBuilder::GetOrderBy($this->OrderByNames);
       if ($this->Limit > 0)
       {
-        $this->SQL .= "\r\nlimit {$this->Limit}";
+        $retSQL .= "\r\nlimit {$this->Limit}";
       }
-      $retValue = $this->DbAccess->Load($this->SQL);
-      return $retValue;
-    } // Load()
+      return $retSQL;
+    }
 
     // Retrieves the record for the provided values.
     /// <include path='items/Retrieve/*' file='Doc/LJCDataManager.xml'/>
@@ -137,17 +148,28 @@
       $methodName = "Retrieve()";
       $retValue = null;
 
+      $this->SQL = $this->RetrieveSQL($keyColumns, $propertyNames, $joins);
+      $retValue = $this->DbAccess->Retrieve($this->SQL);
+      return $retValue;
+    } // Retrieve()
+
+    /// <summary>Creates the Load SQL.</summary>
+    /// <ParentGroup>Data</ParentGroup>
+    public function RetrieveSQL(LJCDbColumns $keyColumns
+      , array $propertyNames = null, LJCJoins $joins = null)
+    {
+      $retSQL = "";
+
       if (null == $propertyNames)
       {
         $propertyNames = $this->PropertyNames(); 
       }
       $this->Joins = $joins;
-      $this->SQL = LJCSQLBuilder::CreateSelect($this->TableName
+      $retSQL = LJCSQLBuilder::CreateSelect($this->TableName
         , $this->SchemaColumns, $keyColumns, $propertyNames, $joins);
-      $this->SQL .= LJCSQLBuilder::GetOrderBy($this->OrderByNames);
-      $retValue = $this->DbAccess->Retrieve($this->SQL);
-      return $retValue;
-    } // Retrieve()
+      $retSQL .= LJCSQLBuilder::GetOrderBy($this->OrderByNames);
+      return $retSQL;
+    }
 
     // Updates the records for the provided values.
     /// <include path='items/Update/*' file='Doc/LJCDataManager.xml'/>
@@ -212,6 +234,8 @@
     // Create the keys from the result.
     public function CreateResultKeys($rows, $keyNames)
     {
+      $methodName = "CreateResultKeys()";
+
       // Create key columns array.
       $retKeys = [];
 
@@ -222,16 +246,34 @@
         $keys = [];
         foreach($keyNames as $keyName)
         {
-          $value = $columns[$keyName]; 
-          if ($value != null)
+          // *** Add ***
+          if (array_key_exists($keyName, $columns))
           {
-            // Create named array element.
-            $keys[$keyName] = $value;
+            $value = $columns[$keyName]; 
+            if ($value != null)
+            {
+              // Create named array element.
+              $keys[$keyName] = $value;
+            }
           }
         }
         $retKeys[] = $keys;
       }
       return $retKeys;
+    }
+
+    /// <summary>
+    ///   Sets the PropertyName, RenameAs and Caption values for a column.
+    /// </summary>
+    /// <param name="">The column name.</param>
+    /// <param name="">The property name.</param>
+    /// <param name="">The rename as value.</param>
+    /// <param name="">The caption value.</param>
+    public function MapNames(string $columnName, ?string $propertyName = null
+      , ?string $renameAs = null, ?string $caption = null)
+    {
+      $this->SchemaColumns.MapNames($columnName, $propertyName, $renameAs
+        , $caption);
     }
 
     // Creates a PropertyNames list from the data definition.
@@ -711,7 +753,8 @@
         foreach ($joins as $join)
         {
           // Begin the Join.
-          if ($builder->Length() > 0)
+          $value = trim($builder->ToString());
+          if (strlen($value) > 0)
           {
             $builder->Line(" ");
           }
@@ -720,7 +763,6 @@
           $builder->Text(" on ");
           $builder->Text(self::GetJoinOns($tableName, $join));
         }
-        $builder->Line(" ");
         $retValue = $builder->ToString();
       }
       return $retValue;

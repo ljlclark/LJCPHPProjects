@@ -7,6 +7,7 @@
 
 // <script src="../../LJCJSCommon/LJCCommonLib.js"></script>
 //   LJC: AddEvent(), CreateJSON(), GetValue(), HasText(), ParseJSON()
+//   Debug: ShowText(), ShowDialog()
 // #endregion
 
 /// <summary>The City Detail Events</summary>
@@ -43,6 +44,12 @@ class LJCCityDetailEvents
     this.UpdateTable(cityTable);
 
     this.#AddEvents();
+  }
+
+  /// <summary>Sets the dialog values.</summary>
+  SetDialogValues(textDialogID, textAreaID)
+  {
+    this.#Debug.SetDialogValues(textDialogID, textAreaID);
   }
 
   /// <summary>Updates the table helper class after paging.</summary>
@@ -106,7 +113,6 @@ class LJCCityDetailEvents
 
     let cityFlag = LJC.GetValue("cityFlag");
     let retCity = new City(provinceID, name, cityFlag, cityID);
-
     retCity.Description = LJC.GetValue("description");
     retCity.District = LJC.GetValue("district");
     retCity.ZipCode = LJC.GetValue("zipCode");

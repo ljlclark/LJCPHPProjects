@@ -5,7 +5,9 @@
 
 // #region External
 // <script src="../../LJCJSCommon/LJCCommonLib.js"></script>
-//   LJC: MouseLocation(), Visibility()
+//   LJC: AddEvent(), CreateJSON(), HasText(), MouseLocation(), ParseJSON()
+//   Visibility()
+//   Debug: ShowText(), ShowDialog()
 // <script src="CityList/LJCCityDataRequest.js"></script>
 // <script src="LJCTable.js"></script>
 //   LJCTable: GetTable(), ShowMenu() MoveNext(), MovePrevious()
@@ -64,19 +66,23 @@ class LJCCityListEvents
     // City Table events.
     this.#CityTableEvents = new LJCCityTableEvents(this, "menu", configName
       , configFile);
-    let tableEvents = this.#CityTableEvents;
-    tableEvents.SetDialogValues("textDialog", "text");
     let tableRequest = this.#CityTableEvents.TableRequest;
     tableRequest.Limit = 20;
     tableRequest.PropertyNames = this.#PropertyNames();
 
     // City Detail events.
     this.#CityDetailEvents = new LJCCityDetailEvents(this.CityTable);
-    // ToDo
-    //this.#CityDetailEvents.SetDialogValues("textDialog", "text");
 
     this.#AddEvents();
     this.#Refresh();
+  }
+
+  /// <summary>Sets the dialog values.</summary>
+  SetDialogValues(textDialogID, textAreaID)
+  {
+    this.#Debug.SetDialogValues(textDialogID, textAreaID);
+    this.#CityTableEvents.SetDialogValues(textDialogID, textAreaID);
+    this.#CityDetailEvents.SetDialogValues(textDialogID, textAreaID);
   }
 
   // Adds the HTML event listeners.
@@ -100,7 +106,9 @@ class LJCCityListEvents
   #PropertyNames()
   {
     let retPropertyNames = [
+      City.PropertyCityID,
       City.PropertyProvinceID,
+      City.PropertyProvinceName,
       City.PropertyName,
       City.PropertyDescription,
       City.PropertyCityFlag,
@@ -256,8 +264,10 @@ class LJCCityListEvents
   // Creates the city request.
   #CityRequest()
   {
-    let retCityRequest = new LJCCityDataRequest("TestData"
-      , "../DataConfigs.xml");
+    let configFile = "../DataConfigs.xml";
+    let configName = "TestData";
+    let retCityRequest = new LJCCityDataRequest(configName, configFile);
+    retCityRequest.TableName = City.TableName;
     return retCityRequest;
   }
 

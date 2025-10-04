@@ -12,9 +12,6 @@ class LJCCityDataRequest
 {
   // #region Properties
 
-  /// <summary>The service name.</summary>
-  ServiceName = "LJCCityData";
-
   /// <summary>The action type name.</summary>
   /// <remarks>"Delete", "Insert", "Retrieve" or "Update".</summary>
   Action = "";
@@ -29,15 +26,18 @@ class LJCCityDataRequest
   /// <include path='items/KeyColumns/*' file='Doc/LJCCityDataRequest.xml'/>
   KeyColumns = null;
 
-  // The request Cities collection.
-  /// <include path='items/RequestItems/*' file='Doc/LJCCityDataRequest.xml'/>
-  RequestItems = null;
-
   /// <summary>The array of "Order By" names.</summary>
   OrderByNames = [];
 
   /// <summary>The array of property names.</summary>
   PropertyNames = [];
+
+  // The request Cities collection.
+  /// <include path='items/RequestItems/*' file='Doc/LJCCityDataRequest.xml'/>
+  RequestItems = null;
+
+  /// <summary>The service name.</summary>
+  ServiceName = "LJCCityData";
 
   /// <summary>The table names.</summary>
   TableName = "City";
