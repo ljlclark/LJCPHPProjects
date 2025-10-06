@@ -19,9 +19,9 @@
   /// <group name="Arr">Arrays Functions</group>
   //    RemoveString()
   /// <group name="Convert">Conversion Functions</group>
-  //    ToBool(), ToBoolInt(), XMLToString()
+  //    ItemsToArray(), ToBool(), ToBoolInt(), XMLToString()
   /// <group name="Output">Output Functions</group>
-  //    Debug(), WriteCompare()
+  //    Debug(), DebugObject(), Location(), WriteCompare()
   /// <summary>Contains common functions.</summary>
   class LJC
   {
@@ -455,24 +455,6 @@
     // ---------------
     // Output Functions
 
-    /// <summary>Display object debug text.</summary>
-    /// <ParentGroup>Output</ParentGroup>
-    public static function DebugObject(string $location, $object)
-    {
-      $retDebugText = "";
-
-      if ($location != null)
-      {
-        $retDebugText = "\r\n{$location}";
-      }
-      if ($object != null)
-      {
-        $retDebugText .= "\r\n";
-        $retDebugText .= print_r($object, true);
-      }
-      return $retDebugText;
-    }
-
     // Display debug text.
     /// <ParentGroup>Output</ParentGroup>
     public static function Debug(int $lineNumber = 0, string $text = ""
@@ -495,6 +477,24 @@
       {
         echo("{$value}");
       }
+    }
+
+    /// <summary>Display object debug text.</summary>
+    /// <ParentGroup>Output</ParentGroup>
+    public static function DebugObject(string $location, $object)
+    {
+      $retDebugText = "";
+
+      if ($location != null)
+      {
+        $retDebugText = "\r\n{$location}";
+      }
+      if ($object != null)
+      {
+        $retDebugText .= "\r\n";
+        $retDebugText .= print_r($object, true);
+      }
+      return $retDebugText;
     }
 
     // Add to common.

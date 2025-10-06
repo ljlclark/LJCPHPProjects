@@ -175,7 +175,7 @@ class LJCDataColumns
   Add(propertyName, columnName = null, renameAs = null
     , dataTypeName = "string", value = null)
   {
-    let retDataColumn = new LJCDbColumn(propertyName, columnName, renameAs
+    let retDataColumn = new LJCDataColumn(propertyName, columnName, renameAs
       , dataTypeName, value);
     this.AddObject(retDataColumn);
     return retDataColumn;

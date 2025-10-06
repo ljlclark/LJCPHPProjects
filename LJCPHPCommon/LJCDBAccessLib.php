@@ -318,8 +318,10 @@
       $this->ColumnName = $columnName;
       $this->DataTypeName = $dataTypeName;
       $this->DefaultValue = null;
+      $this->InsertIndex = 0;
       $this->MaxLength = 0;
       $this->MySQLTypeName = null;
+      $this->Position = 0;
       if (null == $propertyName)
       {
         $propertyName = $columnName;
@@ -373,11 +375,17 @@
     /// <summary>The Default value.</summary>
     public $DefaultValue;
 
+    /// <summary>The insert index used in LJCDbColumns.InsertObject()</summary>
+    public ?int $InsertIndex;
+
     /// <summary>The MaxLength value.</summary>
-    public $MaxLength;
+    public ?int $MaxLength;
 
     /// <summary>The MySQL Type name.</summary>
     public ?string $MySQLTypeName;
+
+    /// <summary>The fixed length field position value.</summary>
+    public ?int $Position;
 
     /// <summary>The Property name.</summary>
     public string $PropertyName;
@@ -474,7 +482,7 @@
       {
         $propertyName = $columnName;
       }
-      // *** Add ***
+
       $caption = $propertyName;
       if (null == $key)
       {
@@ -483,7 +491,6 @@
 
       $item = new LJCDbColumn($columnName, $propertyName, $renameAs
         , $dataTypeName, $value);
-      // *** Add ***
       $item->Caption = $caption;
       $retValue = $this->AddObject($item , $key);
       return $retValue;
@@ -494,7 +501,6 @@
     /// <ParentGroup>Data</ParentGroup>
     public function AddObject(LJCDbColumn $item, $key = null): ?LJCDbColumn
     {
-      // *** Begin *** Add
       if (null == $item->PropertyName)
       {
         $item->PropertyName = $item->ColumnName;
@@ -503,19 +509,85 @@
       {
         $item->Caption = $item->PropertyName;
       }
-      // *** End   ***
       if (null == $key)
       {
         $key = $item->PropertyName;
       }
+      // AddItem() is in LJCCollectionBase.
       $retValue = $this->AddItem($item, $key);
       return $retValue;
     } // AddObject()
+
+    /// <summary>
+    ///   Adds another collection of objects to this collection.
+    /// </summary>
+    public function AddObjects(LJCDbColumns $items)
+    {
+      foreach ($items as $item)
+      {
+        $this->AddObject($item);
+      }
+    }
+
+    /// <summary>Inserts an object at the provided insert index.</summary>
+    /// <param name="$insertItem>The insert item.</param>
+    /// <param name="$key">The insert item key.</param>
+    /// <returns>The inserted item.</returns>
+    public function InsertObject(LJCDbColumn $insertItem, int $insertIndex
+      , $key = null): ?LJCDbColumn
+    {
+      $process = true;
+      $retItem = null;
+
+      if (null == $key)
+      {
+        $key = $insertItem->PropertyName;
+      }
+
+      // Just add object if insert index is beyond end of the array.
+      if ($insertIndex > count($this->Items) - 1)
+      {
+        $this->AddObject($insertItem);
+        $process = false;
+      }
+
+      if ($process
+        && $insertIndex >= 0)
+      {
+        // Create new items with inserted item.
+        $tempItems = [];
+        for ($index = 0; $index < count($this->Items); $index++)
+        {
+          // RetrieveIndex() is in LJCCollectionBase.
+          $item = $this->RetrieveIndex($index);
+
+          // Insert before insert index.
+          if ($index == $insertIndex)
+          {
+            $key = $insertItem->PropertyName;
+
+            if (isset($this->Items[$key]))
+            {
+              throw new Exception("Key: {$key} is already in use.");
+            }
+            $tempItems[$key] = $insertItem;
+            $retItem = $insertItem;
+          }
+
+          $tempItems[$item->PropertyName] = $item;
+        }
+
+        // Replace items with new items.
+        $this->Items = $tempItems;
+      }
+      return $retItem;
+    }
 
     // Delete the item by Key value.
     /// <ParentGroup>Data</ParentGroup>
     public function Delete($key, bool $throwError = true): void
     {
+      // DeleteItem() is in LJCCollectionBase.
       $this->DeleteItem($key, $throwError);
     }
 
@@ -524,6 +596,7 @@
     /// <ParentGroup>Data</ParentGroup>
     public function Retrieve($key, bool $throwError = true): ?LJCDbColumn
     {
+      // RetrieveItem() is in LJCCollectionBase.
       $retValue = $this->RetrieveItem($key, $throwError);
       return $retValue;
     } // Retrieve()
@@ -595,6 +668,17 @@
         $retValue[] = $dbColumn->PropertyName;
       }
       return $retValue;
+    }
+
+    /// <summary>Get a clone of item objects.</summary>
+    public function ReadItems()
+    {
+      $retArray = [];
+
+      foreach ($this->Items as $dbColumn) {
+        $retArray[] = clone $dbColumn;
+      }
+     return $retArray;
     }
 
     // Sets the Where Clause operators.

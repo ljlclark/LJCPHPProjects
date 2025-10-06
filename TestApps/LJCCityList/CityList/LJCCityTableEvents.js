@@ -72,7 +72,24 @@ class LJCCityTableEvents
 
     // Service request for LJCCityTableService.php
     this.TableRequest = new LJCCityTableRequest(configName, configFile);
-    this.TableRequest.CityTableID = this.#TableID;
+    let tableRequest = this.TableRequest;
+    tableRequest.CityTableID = this.#TableID;
+    tableRequest.TableName = City.TableName;
+
+    // Set retrieve property names.
+    // null includes all columns.
+    tableRequest.PropertyNames = null;
+
+    // Get table columns.
+    // Includes join column names.
+    tableRequest.TableColumnNames = this.#TableColumnNames();
+
+    // Add join table columns.
+    let addColumns = new LJCDataColumns()
+    let joinName = City.PropertyProvinceName;
+    let addColumn = addColumns.Add(joinName, joinName, joinName);
+    addColumn.InsertIndex = 0;
+    tableRequest.AddColumns = LJC.ItemsToArray(addColumns);
 
     this.#AddEvents();
   }
@@ -193,8 +210,6 @@ class LJCCityTableEvents
           let rowIndex = self.#UpdateCityTable(self, response.Keys);
           let cityTable = self.CityTable;
 
-          // *****
-          // This is comming back without ProvinceName.
           let tableColumnsArray = response.TableColumnsArray;
           cityTable.TableColumns = LJCDataColumns.Collection(tableColumnsArray);
 
@@ -218,16 +233,7 @@ class LJCCityTableEvents
     };
 
     let tableRequest = this.TableRequest.Clone();
-    tableRequest.TableName = City.TableName;
     tableRequest.ConfigFile = "../DataConfigs.xml";
-    if (!LJC.HasElements(tableRequest.PropertyNames))
-    {
-      tableRequest.PropertyNames = this.#DefaultPropertyNames();
-    }
-    if (!LJC.HasElements(tableRequest.TableColumnNames))
-    {
-      tableRequest.TableColumnNames = this.#DefaultTableColumnNames();
-    }
     let request = LJC.CreateJSON(tableRequest);
     xhr.send(request);
   }
@@ -290,20 +296,6 @@ class LJCCityTableEvents
     return retPropertyNames;
   }
 
-  // Creates the table column names.
-  #DefaultTableColumnNames()
-  {
-    let retColumnNames = [
-      City.PropertyProvinceName,
-      City.PropertyName,
-      City.PropertyDescription,
-      City.PropertyCityFlag,
-      City.PropertyZipCode,
-      City.PropertyDistrict,
-    ];
-    return retColumnNames;
-  }
-
   // Checks if the provided table text exists.
   // Called from Page().
   #HasData(tableText)
@@ -328,6 +320,20 @@ class LJCCityTableEvents
       }
     }
     return retValue;
+  }
+
+  // Creates the table column names.
+  #TableColumnNames()
+  {
+    let retColumnNames = [
+      City.PropertyProvinceName,
+      City.PropertyName,
+      City.PropertyDescription,
+      City.PropertyCityFlag,
+      City.PropertyZipCode,
+      City.PropertyDistrict,
+    ];
+    return retColumnNames;
   }
 
   // Updates the BeginningOfData and EndOfData flags.

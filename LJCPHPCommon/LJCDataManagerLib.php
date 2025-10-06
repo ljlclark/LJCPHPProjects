@@ -94,20 +94,23 @@
     // Loads the records for the provided values.
     /// <include path='items/Load/*' file='Doc/LJCDataManager.xml'/>
     /// <ParentGroup>Data</ParentGroup>
-    public function Load(?LJCDbColumns $keyColumns = null, ?array $propertyNames = null
-      , ?LJCJoins $joins = null, ?string $filter = null): ?array
+    public function Load(?LJCDbColumns $keyColumns = null
+      , ?array $propertyNames = null, ?LJCJoins $joins = null
+      , ?string $filter = null): ?array
     {
       $retValue = null;
       
-      $this->SQL = $this->LoadSQL($keyColumns, $propertyNames, $joins, $filter);
+      $this->SQL = $this->LoadSQL($keyColumns, $propertyNames, $joins
+        , $filter);
       $retValue = $this->DbAccess->Load($this->SQL);
       return $retValue;
     } // Load()
 
     /// <summary>Creates the Load SQL.</summary>
     /// <ParentGroup>Data</ParentGroup>
-    public function LoadSQL(?LJCDbColumns $keyColumns = null, ?array $propertyNames = null
-      , ?LJCJoins $joins = null, ?string $filter = null) : string
+    public function LoadSQL(?LJCDbColumns $keyColumns = null
+      , ?array $propertyNames = null, ?LJCJoins $joins = null
+      , ?string $filter = null) : string
     {
       $retSQL = "";
 
@@ -221,7 +224,7 @@
     } // SQLRetrieve()
 
     // ---------------
-    // Other Methods - LJCDataManager
+    // Schema Methods
 
     // Get the column definitions that match the property names.
     /// <ParentGroup>Other</ParentGroup>
@@ -230,6 +233,53 @@
       $retValue = $this->SchemaColumns->Columns($propertyNames);
       return $retValue;
     } // Columns()
+
+    // Creates a PropertyNames list from the data definition.
+    /// <ParentGroup>Other</ParentGroup>
+    public function PropertyNames(): array
+    {
+      $retNames = $this->SchemaColumns->PropertyNames();
+      return $retNames;
+    } // PropertyNames()
+
+    // ---------------
+    // ORM Methods - LJCDataManager
+
+    // Creates an array of Data Objects from a Data Result rows array.
+    /// <include path='items/CreateDataCollection/*' file='Doc/LJCDataManager.xml'/>
+    /// <ParentGroup>ORM</ParentGroup>
+    public function CreateDataCollection(object $collection
+      , object $dataObject, array $rows)
+    {
+      $retValue = $collection;
+
+      if ($rows != null && count($rows) > 0)
+      {
+        foreach ($rows as $row)
+        {
+          $data = $dataObject->Clone();
+          $data = $this->CreateDataObject($data, $row);
+          $retValue->AddObject($data);
+        }
+        $values = $collection->GetValues();
+      }
+      return $retValue;
+    } // CreateDataCollection()
+
+    // Populates a Data Object with values from a Data Result row.
+    /// <include path='items/CreateDataObject/*' file='Doc/LJCDataManager.xml'/>
+    /// <ParentGroup>ORM</ParentGroup>
+    public function CreateDataObject($dataObject, array $row)
+    {
+      $retValue = $dataObject;
+
+      $this->SetData($this->SchemaColumns, $dataObject, $row);
+      $this->CreateJoinData($retValue, $row);
+      return $retValue;
+    } // CreateDataObject()
+
+    // ---------------
+    // Other Methods - LJCDataManager
 
     // Create the keys from the result.
     public function CreateResultKeys($rows, $keyNames)
@@ -275,50 +325,6 @@
       $this->SchemaColumns.MapNames($columnName, $propertyName, $renameAs
         , $caption);
     }
-
-    // Creates a PropertyNames list from the data definition.
-    /// <ParentGroup>Other</ParentGroup>
-    public function PropertyNames(): array
-    {
-      $retNames = $this->SchemaColumns->PropertyNames();
-      return $retNames;
-    } // PropertyNames()
-
-    // ---------------
-    // ORM Methods - LJCDataManager
-
-    // Creates an array of Data Objects from a Data Result rows array.
-    /// <include path='items/CreateDataCollection/*' file='Doc/LJCDataManager.xml'/>
-    /// <ParentGroup>ORM</ParentGroup>
-    public function CreateDataCollection(object $collection
-      , object $dataObject, array $rows)
-    {
-      $retValue = $collection;
-
-      if ($rows != null && count($rows) > 0)
-      {
-        foreach ($rows as $row)
-        {
-          $data = $dataObject->Clone();
-          $data = $this->CreateDataObject($data, $row);
-          $retValue->AddObject($data);
-        }
-        $values = $collection->GetValues();
-      }
-      return $retValue;
-    } // CreateDataCollection()
-
-    // Populates a Data Object with values from a Data Result row.
-    /// <include path='items/CreateDataObject/*' file='Doc/LJCDataManager.xml'/>
-    /// <ParentGroup>ORM</ParentGroup>
-    public function CreateDataObject($dataObject, array $row)
-    {
-      $retValue = $dataObject;
-
-      $this->SetData($this->SchemaColumns, $dataObject, $row);
-      $this->CreateJoinData($retValue, $row);
-      return $retValue;
-    } // CreateDataObject()
 
     // ---------------
     // Private Methods - LJCDataManager

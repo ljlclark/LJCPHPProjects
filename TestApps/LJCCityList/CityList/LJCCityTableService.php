@@ -47,28 +47,31 @@
       $value = file_get_contents('php://input');
       $pageData = LJC::ParseJSON($value);
 
+      // Set class properties from request data.
       $this->SetRequestProperties($pageData);
       $_SESSION["tableName"] = $this->TableName;
 
       $connectionValues = $this->GetConnectionValues($this->ConfigName);  
       $this->CityManager = new CityManager($connectionValues, $this->TableName);
 
-      // *** Begin *** Add
-      // Add join column definition.
-      $dataManager = $this->CityManager->DataManager;
-      $schemaColumns =  $dataManager->SchemaColumns;
-      $schemaColumns->Add("Name", "ProvinceName", "ProvinceName");
-      // *** End ***
-
       $manager = $this->CityManager;
       if ($this->Limit > 0)
       {
         $manager->Limit = $this->Limit;
       }
-      $this->TableColumns = $manager->Columns($this->TableColumnNames);
-      // ***** 
-      $this->AddDebug($methodName, "\$this->TableColumns"
-        , $this->TableColumns);
+
+      // Create table columns.
+      $this->TableColumns = new LJCDbColumns();
+      $columns = $manager->Columns($this->TableColumnNames);
+      $this->TableColumns->AddObjects($columns);
+
+      // Insert join table columns.
+      foreach ($this->AddColumns as $column)
+      {
+        $dataColumn = LJCDbColumn::Copy($column);
+        $insertIndex = $dataColumn->InsertIndex;
+        $this->TableColumns->InsertObject($dataColumn, $insertIndex);
+      }
 
       $response = $this->GetResponse();
       echo($response);
@@ -111,6 +114,7 @@
       $methodName = "SetRequestProperties";
 
       $this->Action = $pageData->Action;
+      $this->AddColumns = $pageData->AddColumns;
       $this->BeginKeyData = $pageData->BeginKeyData;
       $this->CityTableID = $pageData->CityTableID;
       $this->ConfigFile = $pageData->ConfigFile;
@@ -122,13 +126,13 @@
       $this->TableColumnNames = $pageData->TableColumnNames;
       if (null == $pageData->TableColumnNames)
       {
-        $this->TableColumnNames = $this->TableColumnNames();
+        $this->TableColumnNames = $this->DefaultTableColumnNames();
       }
     }
 
     // Creates the default HTML table column property names.
     // Called from: SetRequestProperties()
-    private function TableColumnNames(): array
+    private function DefaultTableColumnNames(): array
     {
       $methodName = "TableColumnNames()";
 
@@ -179,7 +183,6 @@
         $response->Keys = $keyArray;
 
         // Create TableColumns.
-        // *** Change ***
         $response->TableColumnsArray = LJC::ItemsToArray($this->TableColumns);
       }
 
@@ -394,6 +397,9 @@
     ///   Values: "Next", "Previous", "Top", "Bottom", "First"?, "Last"?
     /// </remarks>
     public string $Action;
+
+    /// <summary>Column definitions to add to the data manager.</summary>
+    public array $AddColumns;
 
     /// <summary>The find key values for the first table row data.</summary>
     /// <remarks> Properties: ProvinceID, Name</remarks>
