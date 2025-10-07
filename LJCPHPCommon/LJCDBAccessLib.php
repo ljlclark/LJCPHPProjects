@@ -404,42 +404,45 @@
   }  // LJCDbColumn
 
   // ***************
-  // Represents a collection of LJCDbColumn objects.
+  /// <summary>Represents a collection of LJCDbColumn objects.</summary>
   /// <include path='items/LJCDbColumns/*' file='Doc/LJCDbColumns.xml'/>
   /// <group name="Constructor">Constructor Methods</group>
+  /// <group name="Static">Static Methods</group>
+  //    ToCollection()
   /// <group name="DataClass">Data Class Methods</group>
   //    Clone()
-  /// <group name="Data">Data Methods</group>
-  //    Add(), AddObject(), Delete(), Retrieve()
+  /// <group name="Data">Content Methods</group>
+  //    Add(), AddObject(), Remove(), Retrieve()
   /// <group name="Other">Other Methods</group>
-  //    Columns(), MapNames(), PropertyNames(), SetWhereOperators()
+  //    SelectItems(), MapNames(), KeyNames(), SetWhereOperators(), ToArray()
   /// <group name="Debug">Debug Methods</group>
-  //    DebugDbColumns(), DebugKeys(), DebugPropertyNames()
+  //    DebugItems(), DebugKeys(), DebugPropertyNames()
   class LJCDbColumns extends LJCCollectionBase
   {
     // ---------------
     // Static Methods
 
-    // *** New Method ***
-    /// <summary>Create collection from array.</summary>
-    /// <param name="items">The items array.</param>
-    /// <returns>The collection></returns.
+    // Create collection from deserialized JavasScript collection.
+    /// <include path='items/ToCollection/*' file='Doc/LJCDbColumns.xml'/>
+    /// <ParentGroup>Static</ParentGroup>
     public static function ToCollection($items)
     {
-      $retColumns = new LJCDbColumns();
+      $className = "LJCDbColumns";
+      $methodName = "ToCollection()";
+      $retCollection = new LJCDbColumns();
 
       if (isset($items)
         && LJC::HasElements($items->Items))
       {
-        foreach ($items->Items as $objDataColumn)
+        foreach ($items->Items as $objItem)
         {
           // Create typed object from stdClass.
-          $dataColumn = LJCDbColumn::Copy($objDataColumn);
-          $retColumns->AddObject($dataColumn);
+          $item = LJCDbColumn::Copy($objItem);
+          $retCollection->AddObject($item);
         }
       }
-      return $retColumns;
-    }
+      return $retCollection;
+    } // ToCollection()
 
     // ---------------
     // Constructor Methods
@@ -448,7 +451,16 @@
     /// <ParentGroup>Constructor</ParentGroup>
     public function __construct()
     {
+      $this->ClassName = "LJCDbColumns";
     } // __construct()
+
+    // Standard debug method for each class.
+    private function AddDebug($methodName, $valueName, $value = null)
+    {
+      $location = LJC::Location($this->ClassName, $methodName
+        , $valueName);
+      $this->DebugText .= LJC::DebugObject($location, $value);
+    } // AddDebug()
 
     // ---------------
     // Data Class Methods
@@ -457,13 +469,14 @@
     /// <ParentGroup>DataClass</ParentGroup>
     public function Clone(): self
     {
-      $retValue = new self();
+      $retCollection = new self();
+
       foreach ($this->Items as $key => $item)
       {
-        $retValue->AddObject($item, key: $key);
+        $retCollection->AddObject($item, $key);
       }
       unset($item);
-      return $retValue;
+      return $retCollection;
     } // Clone()
 
     // ---------------
@@ -476,14 +489,15 @@
       , ?string $renameAs = null, string $dataTypeName = "string"
       , ?string $value = null, $key = null): ?LJCDbColumn
     {
-      $retValue = null;
+      $methodName = "Add()";
+      $retItem = null;
 
       if (null == $propertyName)
       {
         $propertyName = $columnName;
       }
-
       $caption = $propertyName;
+
       if (null == $key)
       {
         $key = $propertyName;
@@ -492,8 +506,8 @@
       $item = new LJCDbColumn($columnName, $propertyName, $renameAs
         , $dataTypeName, $value);
       $item->Caption = $caption;
-      $retValue = $this->AddObject($item , $key);
-      return $retValue;
+      $retItem = $this->AddObject($item, $key);
+      return $retItem;
     } // Add()
 
     // Adds an object and key value.
@@ -501,6 +515,8 @@
     /// <ParentGroup>Data</ParentGroup>
     public function AddObject(LJCDbColumn $item, $key = null): ?LJCDbColumn
     {
+      $methodName = "AddObject()";
+
       if (null == $item->PropertyName)
       {
         $item->PropertyName = $item->ColumnName;
@@ -509,18 +525,20 @@
       {
         $item->Caption = $item->PropertyName;
       }
+
       if (null == $key)
       {
         $key = $item->PropertyName;
       }
+
       // AddItem() is in LJCCollectionBase.
-      $retValue = $this->AddItem($item, $key);
-      return $retValue;
+      $retItem = $this->AddItem($item, $key);
+      return $retItem;
     } // AddObject()
 
-    /// <summary>
-    ///   Adds another collection of objects to this collection.
-    /// </summary>
+    // Adds another collection of objects to this collection.
+    /// <include path='items/AddObjects/*' file='Doc/LJCDbColumns.xml'/>
+    /// <ParentGroup>Data</ParentGroup>
     public function AddObjects(LJCDbColumns $items)
     {
       foreach ($items as $item)
@@ -529,13 +547,13 @@
       }
     }
 
-    /// <summary>Inserts an object at the provided insert index.</summary>
-    /// <param name="$insertItem>The insert item.</param>
-    /// <param name="$key">The insert item key.</param>
-    /// <returns>The inserted item.</returns>
+    // Inserts an object at the provided insert index.
+    /// <include path='items/InsertObject/*' file='Doc/LJCDbColumns.xml'/>
+    /// <ParentGroup>Data</ParentGroup>
     public function InsertObject(LJCDbColumn $insertItem, int $insertIndex
       , $key = null): ?LJCDbColumn
     {
+      $methodName = "InsertObject()";
       $process = true;
       $retItem = null;
 
@@ -584,6 +602,7 @@
     }
 
     // Removes the item by Key value.
+    /// <include path='items/Remove/*' file='Doc/LJCDbColumns.xml'/>
     /// <ParentGroup>Data</ParentGroup>
     public function Remove($key, bool $throwError = true): void
     {
@@ -597,8 +616,8 @@
     public function Retrieve($key, bool $throwError = true): ?LJCDbColumn
     {
       // RetrieveItem() is in LJCCollectionBase.
-      $retValue = $this->RetrieveItem($key, $throwError);
-      return $retValue;
+      $retItem = $this->RetrieveItem($key, $throwError);
+      return $retItem;
     } // Retrieve()
 
     // ---------------
@@ -700,28 +719,28 @@
     // ---------------
     // Debug Methods
 
-    // Output DbColumn information.
+    // Output LJCDbColumns information.
     /// <ParentGroup>Debug</ParentGroup>
-    public static function DebugDbColumns(LJCDbColumns $dbColumns
+    public static function DebugItems(LJCDbColumns $dbColumns
       , string $location = null): void
     {
-      $text = "DebugDbColumns:";
+      $text = "DebugLJCDbColumns:";
       if ($location != null)
       {
         $text .= " {$location}";
       }
       LJC::Debug(0, $text);
-      foreach ($dbColumns as $dbColumn)
+      foreach ($dbColumns as $item)
       {
-        LJC::Debug(0, "dbColumn-ColumnName", $dbColumn->ColumnName);
-        LJC::Debug(0, "dbColumn-PropertyName", $dbColumn->PropertyName);
-        if ($dbColumn->Value != null)
+        LJC::Debug(0, "\$item-ColumnName", $item->ColumnName);
+        LJC::Debug(0, "\$item-PropertyName", $item->PropertyName);
+        if ($item->Value != null)
         {
-          LJC::Debug(0, "dbColumn-Value", $dbColumn->Value);
+          LJC::Debug(0, "\$item-Value", $item->Value);
         }
       }
       LJC::Debug();
-    }
+    } // DebugItems()
 
     // Output Collection Keys information.
     /// <ParentGroup>Debug</ParentGroup>
@@ -759,6 +778,12 @@
       }
       LJC::Debug();
     }
+
+    // ---------------
+    // Properties
+
+    /// <summary>The debug text.</summary>
+    public string $DebugText;
   }  // LJCDbColumns
 
   // ***************
@@ -814,15 +839,18 @@
 
   // ***************
   /// <summary>Represents a collection of LJCJoin objects.</summary>
+  /// <group name="Constructor">Constructor Methods</group>
   /// <group name="DataClass">Data Class Methods</group>
   //    Clone()
-  /// <group name="Data">Data Methods</group>
+  /// <group name="Data">Content Methods</group>
   //    Add(), AddObject(), Retrieve()
   class LJCJoins extends LJCCollectionBase
   {
     /// <summary>Initializes a class instance.</summary>
+    /// <ParentGroup>Constructor</ParentGroup>
     public function __construct()
     {
+      $this->ClassName = "LJCJoins";
     } // __construct()
 
     // ---------------
@@ -832,14 +860,14 @@
     /// <ParentGroup>DataClass</ParentGroup>
     public function Clone(): self
     {
-      $retValue = new self();
+      $retCollection = new self();
 
       foreach ($this->Items as $key => $item)
       {
-        $retValue->AddObject($item, $key);
+        $retCollection->AddObject($item, $key);
       }
       unset($item);
-      return $retValue;
+      return $retCollection;
     } // Clone()
 
     // ---------------
@@ -851,15 +879,16 @@
     public function Add(string $tableName, string $tableAlias = null
       , $key = null): ?LJCJoin
     {
-      $retValue = null;
+      $retItem = null;
 
       if (null == $key)
       {
         $key = $tableName;
       }
+
       $item = new LJCJoin($tableName, $tableAlias);
-      $retValue = $this->AddObject($item , $key);
-      return $retValue;
+      $retItem = $this->AddObject($item , $key);
+      return $retItem;
     } // Add()
 
     // Adds an object and key value.
@@ -867,12 +896,15 @@
     /// <ParentGroup>Data</ParentGroup>
     public function AddObject(LJCJoin $item, $key = null): ?LJCJoin
     {
+      $methodName = "AddObject()";
+
       if (null == $key)
       {
         $key = $item->TableName;
       }
-      $retValue = $this->AddItem($item, $key);
-      return $retValue;
+
+      $retItem = $this->AddItem($item, $key);
+      return $retItem;
     } // AddObject()
 
     // Retrieves the item by Key value.
@@ -883,6 +915,12 @@
       $retValue = $this->RetrieveItem($key, $throwError);
       return $retValue;
     } // Retrieve()
+
+    // ---------------
+    // Properties
+
+    /// <summary>The debug text.</summary>
+    public string $DebugText;
   } // LJCJoins
 
   // ***************
@@ -934,17 +972,19 @@
   } // LJCJoinOn
 
   // ***************
-  // Methods: Add(), AddObject(), Retrieve()
   /// <summary>Represents a collection of LJCJoin objects.</summary>
+  /// <group name="Constructor">Constructor Methods</group>
   /// <group name="DataClass">Data Class Methods</group>
   //    Clone()
-  /// <group name="Data">Data Methods</group>
+  /// <group name="Data">Content Methods</group>
   //    Add(), AddObject(), Retrieve()
   class LJCJoinOns extends LJCCollectionBase
   {
     /// <summary>Initializes a class instance.</summary>
+    /// <ParentGroup>Constructor</ParentGroup>
     public function __construct()
     {
+      $this->ClassName = "LJCJoinOns";
     } // __construct()
 
     // ---------------
@@ -964,6 +1004,14 @@
       return $retValue;
     } // Clone()
 
+    // Standard debug method for each class.
+    private function AddDebug($methodName, $valueName, $value = null)
+    {
+      $location = LJC::Location($this->ClassName, $methodName
+        , $valueName);
+      $this->DebugText .= LJC::DebugObject($location, $value);
+    } // AddDebug()
+
     // ---------------
     // Data Methods
 
@@ -973,15 +1021,17 @@
     public function Add(string $fromColumnName, string $toColumnName
       , $key = null): ?LJCJoinOn
     {
-      $retValue = null;
+      $methodName = "Add()";
+      $retItem = null;
 
       if (null == $key)
       {
         $key = $fromColumnName;
       }
+
       $item = new LJCJoinOn($fromColumnName, $toColumnName);
-      $retValue = $this->AddObject($item, $key);
-      return $retValue;
+      $retItem = $this->AddObject($item, $key);
+      return $retItem;
     } // Add()
 
     // Adds an object and key value.
@@ -989,12 +1039,16 @@
     /// <ParentGroup>Data</ParentGroup>
     public function AddObject(LJCJoinOn $item, $key = null): ?LJCJoinOn
     {
+      $methodName = "AddObject()";
+
       if (null == $key)
       {
         $key = $item->FromColumnName;
       }
-      $retValue = $this->AddItem($item, $key);
-      return $retValue;
+
+      // AddItem() is in LJCCollectionBase.
+      $retItem = $this->AddItem($item, $key);
+      return $retItem;
     } // AddObject()
 
     // Retrieves the item by Key value.
@@ -1002,8 +1056,15 @@
     /// <ParentGroup>Data</ParentGroup>
     public function Retrieve($key, bool $throwError = true): ?LJCJoinOn
     {
-      $retValue = $this->RetrieveItem($key, $throwError);
-      return $retValue;
+      // RetrieveItem() is in LJCCollectionBase.
+      $retItem = $this->RetrieveItem($key, $throwError);
+      return $retItem;
     } // Retrieve()
+
+    // ---------------
+    // Properties
+
+    /// <summary>The debug text.</summary>
+    public string $DebugText;
   } // LJCJoinOns
 ?>
