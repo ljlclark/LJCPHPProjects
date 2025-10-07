@@ -14,11 +14,11 @@
   // CityDAL: City, Cities, CityManager
 
   $cityItem = new LJCCityDataService();
-  $cityItem->Run();
+  $cityItem->Request();
 
   // ***************
   /// <group name="Entry">Entry Methods</group>
-  //    Run()
+  //    Request()
   /// <group name="Response">Response Methods</group>
   //    CreateResponse(), 
   /// <summary>Web Service for City entity data.</summary>
@@ -32,33 +32,21 @@
     /// <summary>Service start method.</summary>
     /// <returns>The service response JSON text.</returns.
     /// <ParentGroup>Entry</ParentGroup>
-    public function Run(): void
+    public function Request(): void
     {
       $this->ClassName = "LJCCityDataService";
-      $methodName = "Run()";
+      $methodName = "Request()";
       $this->DebugText = "";
 
-      // Initialize response properties.
-      $this->ServiceName = "LJCCityData";
-      $this->AffectedCount = 0;
-      $this->ResultCities = null;
-      $this->ResultItems = [];
-      $this->SQL = "";
+      $this->InitResponseProperties();
 
       // Parameters are passed from a POST with JSON data.
       header("Content-Type: application/json; charset=UTF-8");
       $value = file_get_contents('php://input');
       $request = LJC::ParseJSON($value);
 
-      // Initialize Request properties.
-      $this->Action = $request->Action;
-      $this->ConfigFile = $request->ConfigFile;
-      $this->ConfigName = $request->ConfigName;
-      $this->KeyColumns = LJCDbColumns::Collection($request->KeyColumns);
-      $this->RequestCities = Cities::Collection($request->RequestItems);
-      $this->OrderByNames = $request->OrderByNames;
-      $this->PropertyNames = $request->PropertyNames;
-      $this->TableName = $request->TableName;
+      // Set class properties from request data.
+      $this->SetRequestProperties($request);
 
       $connectionValues = $this->GetConnectionValues($this->ConfigName);  
       $this->CityManager = new CityManager($connectionValues, $this->TableName);
@@ -87,13 +75,38 @@
       return $retValues;
     } // GetConnectionValues()
 
+    // Initializes the response properties.
+    private function InitResponseProperties()
+    {
+      $this->AffectedCount = 0;
+      $this->ResultCities = null;
+      $this->ResultItems = [];
+      $this->ServiceName = "LJCCityData";
+      $this->SQL = "";
+    }
+
+    // Sets the request property values.
+    private function SetRequestProperties($request)
+    {
+      $methodName = "SetRequestProperties";
+
+      $this->Action = $request->Action;
+      $this->ConfigFile = $request->ConfigFile;
+      $this->ConfigName = $request->ConfigName;
+      $this->KeyColumns = LJCDbColumns::Collection($request->KeyColumns);
+      $this->OrderByNames = $request->OrderByNames;
+      $this->PropertyNames = $request->PropertyNames;
+      $this->RequestCities = Cities::Collection($request->RequestItems);
+      $this->TableName = $request->TableName;
+    }
+
     // ---------------
     // Response Methods
 
     /// <summary>Gets the Response data.</summary>
     /// <returns>The response JSON text.</returns.
     /// <ParentGroup>Response</ParentGroup>
-    // Called from Run().
+    // Called from Request().
     public function GetResponse()
     {
       $methodName = "GetResponse()";
@@ -125,10 +138,9 @@
       }
       if ($response->Action != "")
       {
-        $retResponse = LJC::CreateJSON($response);
-        $this->AddDebug($methodName, "\$retresponse", $retResponse);
+        $retResponseJSON = LJC::CreateJSON($response);
       }
-      return $retResponse;
+      return $retResponseJSON;
     } // GetResponse()
 
     // Inserts the new items.
@@ -199,12 +211,11 @@
         $dataColumns = $this->DataColumns($city);
         $this->AffectedCount += $this->CityManager->Update($keyColumns
           , $dataColumns);
-        // *** Begin *** Add
+        // ***** ToDo: Why always zero?
         //if ($this->AffectedCount > 0)
         //{
           $this->ResultCities->AddObject($city);
         //}
-        // *** End ***
         $this->SQL .= "\r\n{$this->CityManager->DataManager->SQL}";
         $this->DebugText .= $this->CityManager->DebugText;
       }
@@ -222,10 +233,8 @@
       $retResponse->ServiceName = "LJCCityData";
       $retResponse->Action = $this->Action;
       $retResponse->AffectedCount = $this->AffectedCount;
-      // Copies a collection of items to an array.
-      $arrItems = LJC::ItemsToArray($this->ResultCities);
+      $arrItems = LJC::ToArray($this->ResultCities);
       $retResponse->ResultItems = $arrItems;
-      // Debug if not called from ClearResponseValues().
       if (LJC::HasValue($this->Action))
       {
       }

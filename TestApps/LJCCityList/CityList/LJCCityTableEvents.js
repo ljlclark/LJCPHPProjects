@@ -86,10 +86,9 @@ class LJCCityTableEvents
 
     // Add join table columns.
     let addColumns = new LJCDataColumns()
-    let joinName = City.PropertyProvinceName;
-    let addColumn = addColumns.Add(joinName, joinName, joinName);
-    addColumn.InsertIndex = 0;
-    tableRequest.AddColumns = LJC.ItemsToArray(addColumns);
+    let addColumn = addColumns.Add(City.PropertyProvinceName);
+    addColumn.InsertIndex = 0; // Default
+    tableRequest.AddColumns = LJC.ToArray(addColumns);
 
     this.#AddEvents();
   }

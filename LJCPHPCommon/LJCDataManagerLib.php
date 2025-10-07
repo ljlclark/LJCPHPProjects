@@ -21,13 +21,18 @@
   // ***************
   // Provides Standard DB Table methods.
   /// <include path='items/LJCDataManager/*' file='Doc/LJCDataManager.xml'/>
+  /// <group name="Construct">Constructor Methods</group>
+  //    __construct()
   /// <group name="Data">Data Methods</group>
-  //    Add(), Delete(), Load(), Retrieve(), Update(), SQLExecute(), SQLLoad()
-  //      , SQLRetrieve()
-  /// <group name="Other">Other Methods</group>
-  //    Columns(), PropertyNames()
+  //    Add(), Delete(), DeleteSQL(), Load(), LoadSQL(), Retrieve()
+  //    RetrieveSQL(), Update(), UpdateSQL(), SQLExecute(), SQLLoad()
+  //    SQLRetrieve()
+  /// <group name="Schema">Schema Methods</group>
+  //    Columns(), MapNames(), PropertyNames()
   /// <group name="ORM">ORM Methods</group>
   //    CreateDataCollection(), CreateDataObject()
+  /// <group name="Other">Other Methods</group>
+  //    CreateResultKeys()
   class LJCDataManager
   {
     // ---------------
@@ -35,6 +40,7 @@
 
     // Initializes a class instance with the provided values.
     /// <include path='items/construct/*' file='Doc/LJCDataManager.xml'/>
+    /// <ParentGroup>Construct</ParentGroup>
     public function __construct($connectionValues, string $tableName)
     {
       $this->ClassName = "LJCDataManager";
@@ -82,14 +88,24 @@
     {
       $retValue = 0;
       
+      $this->SQL = $this->DeleteSQL($keyColumns);
+      $retValue = $this->DbAccess->Execute($this->SQL);
+      return $retValue;
+    } // Delete()
+
+    /// <summary>Creates the Delete SQL.</summary>
+    /// <ParentGroup>Data</ParentGroup>
+    public function DeleteSQL(LJCDbColumns $keyColumns)
+    {
+      $retSQL = null;
+
       if (null == $keyColumns || 0 == count($keyColumns))
       {
         throw new Exception("LJCDataManager-Delete: keyColumns cannot be null.");
       }
-      $this->SQL = LJCSQLBuilder::CreateDelete($this->TableName, $keyColumns);
-      $retValue = $this->DbAccess->Execute($this->SQL);
-      return $retValue;
-    } // Delete()
+      $retSQL = LJCSQLBuilder::CreateDelete($this->TableName, $keyColumns);
+      return $retSQL;
+    }
 
     // Loads the records for the provided values.
     /// <include path='items/Load/*' file='Doc/LJCDataManager.xml'/>
@@ -183,15 +199,26 @@
       $methodName = "Retrieve()";
       $retValue = 0;
       
+      $this->SQL = $this->UpdateSQL($keyColumns, $dataColumns);
+      $retValue = $this->DbAccess->Execute($this->SQL);
+      return $retValue;
+    } // Update()
+
+    /// <summary>Creates the Update SQL.</summary>
+    /// <ParentGroup>Data</ParentGroup>
+    public function UpdateSQL(LJCDbColumns $keyColumns
+      , LJCDbColumns $dataColumns)
+    {
+      $retSQL = "";
+
       if (null == $keyColumns || 0 == count($keyColumns))
       {
         throw new Exception("LJCDataManager-Update: keyColumns cannot be null.");
       }
-      $this->SQL = LJCSQLBuilder::CreateUpdate($this->TableName, $keyColumns
+      $retSQL = LJCSQLBuilder::CreateUpdate($this->TableName, $keyColumns
         , $dataColumns);
-      $retValue = $this->DbAccess->Execute($this->SQL);
-      return $retValue;
-    } // Update()
+      return $retSQL;
+    }
 
     // Executes an Add, Delete or Update SQL statement.
     /// <include path='items/SQLExecute/*' file='Doc/LJCDataManager.xml'/>
@@ -206,7 +233,7 @@
     // Executes a Select SQL statement.
     /// <include path='items/SQLLoad/*' file='Doc/LJCDataManager.xml'/>
     /// <ParentGroup>Data</ParentGroup>
-    public function SQLLoad(): ?array
+    public function SQLLoad(sting $sql): ?array
     {
       $this->SQL = $sql;
       $retValue = $this->DbAccess->Load($this->SQL);
@@ -216,7 +243,7 @@
     // Executes a Select SQL statement.
     /// <include path='items/SQLRetrieve/*' file='Doc/LJCDataManager.xml'/>
     /// <ParentGroup>Data</ParentGroup>
-    public function SQLRetrieve(): ?array
+    public function SQLRetrieve(string $sql): ?array
     {
       $this->SQL = $sql;
       $retValue = $this->DbAccess->Retrieve($this->SQL);
@@ -227,15 +254,31 @@
     // Schema Methods
 
     // Get the column definitions that match the property names.
-    /// <ParentGroup>Other</ParentGroup>
+    /// <ParentGroup>Schema</ParentGroup>
     public function Columns(array $propertyNames = null): LJCDbColumns
     {
       $retValue = $this->SchemaColumns->Columns($propertyNames);
       return $retValue;
     } // Columns()
 
+    /// <summary>
+    ///   Sets the PropertyName, RenameAs and Caption values for a column.
+    /// </summary>
+    /// <param name="">The column name.</param>
+    /// <param name="">The property name.</param>
+    /// <param name="">The rename as value.</param>
+    /// <param name="">The caption value.</param>
+    /// <ParentGroup>Schema</ParentGroup>
+    public function MapNames(string $columnName, ?string $propertyName = null
+      , ?string $renameAs = null, ?string $caption = null)
+    {
+      $this->SchemaColumns.MapNames($columnName, $propertyName, $renameAs
+        , $caption);
+    }
+
     // Creates a PropertyNames list from the data definition.
     /// <ParentGroup>Other</ParentGroup>
+    /// <ParentGroup>Schema</ParentGroup>
     public function PropertyNames(): array
     {
       $retNames = $this->SchemaColumns->PropertyNames();
@@ -282,6 +325,7 @@
     // Other Methods - LJCDataManager
 
     // Create the keys from the result.
+    /// <ParentGroup>Other</ParentGroup>
     public function CreateResultKeys($rows, $keyNames)
     {
       $methodName = "CreateResultKeys()";
@@ -311,23 +355,6 @@
       }
       return $retKeys;
     }
-
-    /// <summary>
-    ///   Sets the PropertyName, RenameAs and Caption values for a column.
-    /// </summary>
-    /// <param name="">The column name.</param>
-    /// <param name="">The property name.</param>
-    /// <param name="">The rename as value.</param>
-    /// <param name="">The caption value.</param>
-    public function MapNames(string $columnName, ?string $propertyName = null
-      , ?string $renameAs = null, ?string $caption = null)
-    {
-      $this->SchemaColumns.MapNames($columnName, $propertyName, $renameAs
-        , $caption);
-    }
-
-    // ---------------
-    // Private Methods - LJCDataManager
 
     // Populates a Data Object with Join values from a Data Result row.
     private function CreateJoinData($dataObject, array $row): void

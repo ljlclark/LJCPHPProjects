@@ -384,7 +384,7 @@
     // Convert Functions
 
     /// <summary>Copy collection items to an indexed array.</summary>
-    public static function ItemsToArray($items)
+    public static function ToArray($items)
     {
       $retArray = [];
 

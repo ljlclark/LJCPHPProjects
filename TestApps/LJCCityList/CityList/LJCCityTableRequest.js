@@ -41,7 +41,6 @@ class LJCCityTableRequest
 
   TableName = "";
 
-  // *** Add ***
   /// <summary>The table column property names.</summary>
   TableColumnNames = [];
   // #endregion

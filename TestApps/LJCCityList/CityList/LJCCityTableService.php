@@ -45,10 +45,10 @@
       // Parameters are passed from a POST with JSON data.
       header("Content-Type: application/json; charset=UTF-8");
       $value = file_get_contents('php://input');
-      $pageData = LJC::ParseJSON($value);
+      $request = LJC::ParseJSON($value);
 
       // Set class properties from request data.
-      $this->SetRequestProperties($pageData);
+      $this->SetRequestProperties($request);
       $_SESSION["tableName"] = $this->TableName;
 
       $connectionValues = $this->GetConnectionValues($this->ConfigName);  
@@ -183,7 +183,7 @@
         $response->Keys = $keyArray;
 
         // Create TableColumns.
-        $response->TableColumnsArray = LJC::ItemsToArray($this->TableColumns);
+        $response->TableColumnsArray = LJC::ToArray($this->TableColumns);
       }
 
       $response->DebugText = $this->DebugText;
