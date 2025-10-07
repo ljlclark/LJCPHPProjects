@@ -424,7 +424,7 @@
     /// <summary>Create collection from array.</summary>
     /// <param name="items">The items array.</param>
     /// <returns>The collection></returns.
-    public static function Collection($items)
+    public static function ToCollection($items)
     {
       $retColumns = new LJCDbColumns();
 
@@ -558,8 +558,8 @@
         $tempItems = [];
         for ($index = 0; $index < count($this->Items); $index++)
         {
-          // RetrieveIndex() is in LJCCollectionBase.
-          $item = $this->RetrieveIndex($index);
+          // RetrieveWithIndex() is in LJCCollectionBase.
+          $item = $this->RetrieveWithIndex($index);
 
           // Insert before insert index.
           if ($index == $insertIndex)
@@ -583,9 +583,9 @@
       return $retItem;
     }
 
-    // Delete the item by Key value.
+    // Removes the item by Key value.
     /// <ParentGroup>Data</ParentGroup>
-    public function Delete($key, bool $throwError = true): void
+    public function Remove($key, bool $throwError = true): void
     {
       // DeleteItem() is in LJCCollectionBase.
       $this->DeleteItem($key, $throwError);
@@ -604,30 +604,18 @@
     // ---------------
     // Other Methods
 
-    // Get the column definitions that match the property names.
-    /// <include path='items/GetColumns/*' file='Doc/LJCDbColumns.xml'/>
+    // Creates a KeyNames list from the data definition.
     /// <ParentGroup>Other</ParentGroup>
-    public function Columns(array $propertyNames = null): self
+    public function KeyNames(): array
     {
-      $retValue = null;
+      $retKeyNames = [];
 
-      if (null == $propertyNames)
+      foreach ($this as $item)
       {
-        $retValue = $this->Clone();
+        $retKeyNames[] = $item->PropertyName;
       }
-      else
-      {
-        $retValue = new self();
-        foreach ($propertyNames as $propertyName)
-        {
-          if (array_key_exists($propertyName, $this->Items))
-          {
-            $retValue->AddObject($this->Items[$propertyName]);
-          }
-        }
-      }
-      return $retValue;
-    } // GetColumns()
+      return $retKeyNames;
+    } // KeyNames()
 
     // Sets the PropertyName, RenameAs and Caption values for a column.
     /// <include path='items/MapNames/*' file='Doc/LJCDbColumns.xml'/>
@@ -657,29 +645,30 @@
       }
     } // MapNames()
 
-    // Creates a PropertyNames list from the data definition.
+    // Get the column definitions that match the property names.
+    /// <include path='items/GetColumns/*' file='Doc/LJCDbColumns.xml'/>
     /// <ParentGroup>Other</ParentGroup>
-    public function PropertyNames(): array
+    public function SelectItems(array $keyNames = null): self
     {
-      $retValue = [];
+      $retItems = null;
 
-      foreach ($this as $dbColumn)
+      if (null == $keyNames)
       {
-        $retValue[] = $dbColumn->PropertyName;
+        $retItems = $this->Clone();
       }
-      return $retValue;
-    }
-
-    /// <summary>Get a clone of item objects.</summary>
-    public function ReadItems()
-    {
-      $retArray = [];
-
-      foreach ($this->Items as $dbColumn) {
-        $retArray[] = clone $dbColumn;
+      else
+      {
+        $retItems = new self();
+        foreach ($keyNames as $keyName)
+        {
+          if (array_key_exists($keyName, $this->Items))
+          {
+            $retItems->AddObject($this->Items[$keyName]);
+          }
+        }
       }
-     return $retArray;
-    }
+      return $retItems;
+    } // SelectItems()
 
     // Sets the Where Clause operators.
     /// <include path='items/SetWhereOperators/*' file='Doc/LJCDbColumns.xml'/>
@@ -694,6 +683,19 @@
         $item->WhereCompareOperator = $compareOperator;
       }
     } // SetWhereOperators()
+
+    /// <summary>Get an array of item objects.</summary>
+    /// <ParentGroup>Other</ParentGroup>
+    public function ToArray()
+    {
+      $retArray = [];
+
+      foreach ($this->Items as $item)
+      {
+        $retArray[] = clone $item;
+      }
+      return $retArray;
+    }
 
     // ---------------
     // Debug Methods
@@ -834,7 +836,7 @@
 
       foreach ($this->Items as $key => $item)
       {
-        $retValue->AddObject($item);
+        $retValue->AddObject($item, $key);
       }
       unset($item);
       return $retValue;
@@ -855,7 +857,6 @@
       {
         $key = $tableName;
       }
-
       $item = new LJCJoin($tableName, $tableAlias);
       $retValue = $this->AddObject($item , $key);
       return $retValue;
@@ -957,7 +958,7 @@
 
       foreach ($this->Items as $key => $item)
       {
-        $retValue->AddObject($item);
+        $retValue->AddObject($item, $key);
       }
       unset($item);
       return $retValue;
@@ -978,9 +979,8 @@
       {
         $key = $fromColumnName;
       }
-
       $item = new LJCJoinOn($fromColumnName, $toColumnName);
-      $retValue = $this->AddObject($item , $key);
+      $retValue = $this->AddObject($item, $key);
       return $retValue;
     } // Add()
 

@@ -15,7 +15,7 @@
   //  Classes: DataConfigs
 
   // ***************
-  /// <summary>Contains method to retrieve the DB config values.</summary>
+  /// <summary>Contains methods to retrieve the DB config values.</summary>
   class DataConfigs
   {
     // Standard debug method for each class.

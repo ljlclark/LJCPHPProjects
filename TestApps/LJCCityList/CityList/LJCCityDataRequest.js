@@ -34,7 +34,7 @@ class LJCCityDataRequest
 
   // The request Cities collection.
   /// <include path='items/RequestItems/*' file='Doc/LJCCityDataRequest.xml'/>
-  RequestItems = null;
+  RequestItems = [];
 
   /// <summary>The service name.</summary>
   ServiceName = "LJCCityData";

@@ -144,7 +144,27 @@ class Cities
   #Items = [];
   // #endregion
 
-  // #region Collection Methods
+  // #region Data Class Methods
+
+  /// <summary>Creates a clone of this object.</summary>
+  /// <returns>The new cloned object.</returns>
+  Clone()
+  {
+    let retCities = new Cities();
+
+    for (let index = 0; index < names.length; index++)
+    {
+      let city = this.#Items[index];
+      if (city != null)
+      {
+        retCities.AddObject(city.Clone());
+      }
+    }
+    return retCities;
+  }
+  // #endregion
+
+  // #region Collection Data Methods
 
   // Creates and adds the item to the list.
   /// <include path='items/Add/*' file='Doc/Cities.xml'/>
@@ -162,80 +182,6 @@ class Cities
     this.#Items.push(city);
     this.Count = this.#Items.length;
     this.ReadItems = Array.from(this.#Items);
-  }
-
-  /// <summary>Clears the collection list.</summary>
-  Clear()
-  {
-    this.#Items = [];
-    this.Count = this.#Items.length;
-    this.ReadItems = Array.from(this.#Items);
-  }
-
-  /// <summary>Returns the collection element count.</summary>
-  Count()
-  {
-    let retCount = 0;
-
-    retCount = this.#Items.length;
-    return retCount;
-  }
-
-  // Gets the index of the item with the supplied name.
-  /// <include path='items/GetIndex/*' file='Doc/Cities.xml'/>
-  GetIndex(name)
-  {
-    let retIndex = -1;
-
-    for (let index = 0; index < this.#Items.length; index++)
-    {
-      if (this.#Items.Name == name)
-      {
-        retIndex = index;
-        break;
-      }
-    }
-    return retIndex;
-  }
-
-  // Gets the items that match the supplied names.
-  /// <include path='items/Items/*' file='Doc/Cities.xml'/>
-  Items(names)
-  {
-    let retCities = null;
-
-    if (null == names)
-    {
-      retCities = this.#Items;
-    }
-    else
-    {
-      retCities = new Cities();
-      for (let index = 0; index < names.length; index++)
-      {
-        let name = names[index];
-        let city = this.Retrieve(name);
-        if (city != null)
-        {
-          retCities.AddObject(city);
-        }
-      }
-    }
-    return retCities;
-  }
-
-  /// <summary>Gets an array of names.</summary>
-  /// <returns>The name array.</returns>
-  Names()
-  {
-    let retNames = [];
-
-    for (let index = 0; index < this.#Items.length; index++)
-    {
-      let city = this.#Items[index];
-      retPropertyNames.push(city.Name);
-    }
-    return retNames;
   }
 
   /// <summary>Removes the item with the supplied name.</summary>
@@ -273,6 +219,83 @@ class Cities
       retCity = this.#Items[index];
     }
     return retCity;
+  }
+  #endregion
+
+  // #region Other Methods
+
+  /// <summary>Clears the collection list.</summary>
+  Clear()
+  {
+    this.#Items = [];
+    this.Count = this.#Items.length;
+    this.ReadItems = Array.from(this.#Items);
+  }
+
+  /// <summary>Returns the collection element count.</summary>
+  Count()
+  {
+    let retCount = 0;
+
+    retCount = this.#Items.length;
+    return retCount;
+  }
+
+  // Gets the index of the item with the supplied name.
+  /// <include path='items/GetIndex/*' file='Doc/Cities.xml'/>
+  GetIndex(name)
+  {
+    let retIndex = -1;
+
+    for (let index = 0; index < this.#Items.length; index++)
+    {
+      if (this.#Items.Name == name)
+      {
+        retIndex = index;
+        break;
+      }
+    }
+    return retIndex;
+  }
+
+  /// <summary>Gets an array of property names.</summary>
+  /// <returns>The property name array.</returns>
+  PropertyNames()
+  {
+    let retNames = [];
+
+    for (let index = 0; index < this.#Items.length; index++)
+    {
+      let city = this.#Items[index];
+      retNames.push(city.Name);
+    }
+    return retNames;
+  }
+
+  // Gets the items that match the supplied names.
+  /// <include path='items/Items/*' file='Doc/Cities.xml'/>
+  SelectItems(propertyNames)
+  {
+    let retCities = null;
+
+    if (null == propertyNames)
+    {
+      retCities = this.#Items;
+    }
+    else
+    {
+      retCities = new Cities();
+      for (let index = 0; index < names.length; index++)
+      {
+        let name = propertyNames[index];
+        let city = this.Retrieve(name);
+        if (city != null)
+        {
+          retCities.AddObject(city);
+        }
+      }
+    }
+    return retCities;
   }
   // #endregion
 }

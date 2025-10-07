@@ -69,23 +69,6 @@
       }
     } // DeleteItem()
 
-    // Change to RetrieveIndex()?
-    // Retrieves the item by index.
-    /// <include path='items/RetrieveIndex/*' file='Doc/LJCCollectionBase.xml'/>
-    /// <ParentGroup>Data</ParentGroup>
-    public function RetrieveIndex($index)
-    {
-      $retItem = null;
-
-      $keys = self::GetKeys();
-      if (count($keys) > $index)
-      {
-        $key = $keys[$index];
-        $retItem = $this->Items[$key];
-      }
-      return $retItem;
-    } // Item()
-
     // Retrieves the item by Key value.
     /// <include path='items/RetrieveItem/*' file='Doc/LJCCollectionBase.xml'/>
     /// <ParentGroup>Data</ParentGroup>
@@ -108,6 +91,22 @@
       }
       return $retValue;
     } // RetrieveItem()
+
+    // Retrieves the item by index.
+    /// <include path='items/RetrieveIndex/*' file='Doc/LJCCollectionBase.xml'/>
+    /// <ParentGroup>Data</ParentGroup>
+    public function RetrieveWithIndex($index)
+    {
+      $retItem = null;
+
+      $keys = self::GetKeys();
+      if (count($keys) > $index)
+      {
+        $key = $keys[$index];
+        $retItem = $this->Items[$key];
+      }
+      return $retItem;
+    } // Item()
 
     // ---------------
     // Other Methods

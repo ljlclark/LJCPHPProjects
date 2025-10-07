@@ -93,10 +93,10 @@
       $this->Action = $request->Action;
       $this->ConfigFile = $request->ConfigFile;
       $this->ConfigName = $request->ConfigName;
-      $this->KeyColumns = LJCDbColumns::Collection($request->KeyColumns);
+      $this->KeyColumns = LJCDbColumns::ToCollection($request->KeyColumns);
       $this->OrderByNames = $request->OrderByNames;
       $this->PropertyNames = $request->PropertyNames;
-      $this->RequestCities = Cities::Collection($request->RequestItems);
+      $this->RequestCities = Cities::ToCollection($request->RequestItems);
       $this->TableName = $request->TableName;
     }
 

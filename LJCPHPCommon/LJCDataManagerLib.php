@@ -257,7 +257,7 @@
     /// <ParentGroup>Schema</ParentGroup>
     public function Columns(array $propertyNames = null): LJCDbColumns
     {
-      $retValue = $this->SchemaColumns->Columns($propertyNames);
+      $retValue = $this->SchemaColumns->SelectItems($propertyNames);
       return $retValue;
     } // Columns()
 
@@ -281,7 +281,7 @@
     /// <ParentGroup>Schema</ParentGroup>
     public function PropertyNames(): array
     {
-      $retNames = $this->SchemaColumns->PropertyNames();
+      $retNames = $this->SchemaColumns->KeyNames();
       return $retNames;
     } // PropertyNames()
 
@@ -478,7 +478,7 @@
       $sqlColumns = $schemaColumns;
       if ($propertyNames != null)
       {
-        $sqlColumns = $schemaColumns->Columns($propertyNames);
+        $sqlColumns = $schemaColumns->SelectItems($propertyNames);
       }
 
       $retValue = "select\r\n";
