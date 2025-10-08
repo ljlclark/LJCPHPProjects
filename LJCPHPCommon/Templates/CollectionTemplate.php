@@ -241,7 +241,7 @@
 
       if (null == $keyNames)
       {
-        $retItems = $this->Clone();
+        $retItems = $this->Clone(); // ?
       }
       else
       {

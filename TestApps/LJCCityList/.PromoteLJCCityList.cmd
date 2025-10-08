@@ -39,4 +39,3 @@ copy LJCHTMLTableLib.php %servicePath%
 copy LJCRoot.php %servicePath%
 copy LJCTextLib.php %servicePath%
 copy Templates\*.* %servicePath%\Templates\
-pause
