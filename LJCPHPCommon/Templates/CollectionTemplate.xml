@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- #SectionBegin Collection -->
+<!-- #Value _CollectionName_ -->
+<!-- Copyright(c) Lester J. Clark and Contributors. -->
+<!-- Licensed under the MIT License. -->
+<!-- _CollectionName_.xml -->
+<items>
+  <_CollectionName_>
+    <summary>Represents a typed Collection of _ItemName_ objects.</summary>
+    <remarks>
+      It extends (inherits) from class LJCCollectionLib-LJCCollectionBase which
+      provides the "foreach" and "count" functionality.
+      &lt;p&gt;
+      It includes an AddObject() method that requires the strongly typed
+      _ItemName_ object. This is what makes the collection strongly typed.
+      &lt;/p&gt;
+      The Retrieve() method retrieves the internal array element by key.
+    </remarks>
+  </_CollectionName_>
+
+  <!-- Static Methods -->
+  <ToCollection>
+    <summary>
+      Create typed collection from deserialized JavasScript collection.
+    </summary>
+    <param name="items">The items array.</param>
+    <returns>The collection.</returns>
+  </ToCollection>
+
+  <!-- Data Methods -->
+  <Add>
+    <summary>Creates an object and adds it to the collection.</summary>
+    <param name="$name">The item name.</param>
+    <param name="$description">The item description.</param>
+    <returns>The added item.</returns>
+  </Add>
+  <AddObject>
+    <summary>Adds an object and key value.</summary>
+    <param name="$item">The DbColumn definition.</param>
+    <param name="$key">The optional key value.</param>
+    <returns>The added item.</returns>
+  </AddObject>
+  <AddObjects>
+    <summary>Adds another collection of objects to this collection.</summary>
+    <param name="$items">The add items.</param>
+  </AddObjects>
+  <InsertObject>
+    <summary>Inserts an object at the provided insert index.</summary>
+    <param name="$insertItem>The insert item."</param>
+    <param name="$insertIndex">The insert index.</param>
+    <param name="$key">The insert item key.</param>
+    <returns>The inserted item.</returns>
+  </InsertObject>
+  <Remove>
+    <summary>Removes the item by Key value.</summary>
+    <param name="$key">The collection array key.</param>
+  </Remove>
+  <Retrieve>
+    <summary>Retrieves the item by Key value.</summary>
+    <param name="$key">The collection array key.</param>
+    <returns>The collection item.</returns>
+  </Retrieve>
+  <SelectItems>
+    <summary>Get the items that match the key names array values.</summary>
+    <param name="$keyNames">The collection array key values.</param>
+    <returns>The selected items.</returns>
+  </SelectItems>
+</items>
+<!-- #SectionEnd -->

@@ -5,8 +5,10 @@
   declare(strict_types=1);
   include_once "LJCRoot.php";
   $prefix = RelativePrefix();
+  include_once "$prefix/LJCPHPCommon/LJCCommonLib.php";
   include_once "$prefix/LJCPHPCommon/LJCCollectionLib.php";
   include_once "$prefix/LJCPHPCommon/LJCTextLib.php";
+  // LJCCommonLib: LJC
   // LJCCollectionLib: LJCCollectionBase
   // LJCTextLib: LJCWriter
 
