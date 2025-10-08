@@ -1,5 +1,5 @@
 "use strict";
-// Copyright(c) Lester J. Clark and Contributors.
+// Copyright (c) Lester J. Clark and Contributors.
 // Licensed under the MIT License.
 // LJCCityDAL.js
 
@@ -150,17 +150,17 @@ class Cities
   /// <returns>The new cloned object.</returns>
   Clone()
   {
-    let retCities = new Cities();
+    let retCollection = new Cities();
 
     for (let index = 0; index < names.length; index++)
     {
-      let city = this.#Items[index];
-      if (city != null)
+      let item = this.#Items[index];
+      if (item != null)
       {
-        retCities.AddObject(city.Clone());
+        retCollection.AddObject(item.Clone());
       }
     }
-    return retCities;
+    return retCollection;
   }
   // #endregion
 
@@ -170,18 +170,24 @@ class Cities
   /// <include path='items/Add/*' file='Doc/Cities.xml'/>
   Add(provinceID, name, cityFlag = 0, cityID = 0)
   {
-    let retCity = new City(provinceID, name, cityFlag, cityID);
-    this.AddObject(retCity);
-    return retCity;
+    let methodName = "Add()";
+    let retItem = null;
+
+    let item = new City(provinceID, name, cityFlag, cityID);
+    retItem = this.AddObject(item);
+    return retItem;
   }
 
-  /// <summary>Adds the supplied city to the list.</summary>
-  /// <param name="city">The City data object.</param>
-  AddObject(city)
+  /// <summary>Adds the supplied item to the list.</summary>
+  /// <param name="item">The data object.</param>
+  AddObject(item)
   {
-    this.#Items.push(city);
+    let methodName = "AddObject()";
+
+    this.#Items.push(item);
     this.Count = this.#Items.length;
     this.ReadItems = Array.from(this.#Items);
+    return item;
   }
 
   /// <summary>Removes the item with the supplied name.</summary>
@@ -202,25 +208,25 @@ class Cities
   /// <include path='items/Retrieve/*' file='Doc/Cities.xml'/>
   Retrieve(name)
   {
-    let retCity = this.#Items.find(item =>
+    let retItem = this.#Items.find(item =>
       item.Name == name);
-    return retCity;
+    return retItem;
   }
 
   // Retrieves the item at the supplied index.
   /// <include path='items/RetrieveWithIndex/*' file='Doc/Cities.xml'/>
   RetrieveWithIndex(index)
   {
-    let retCity = null;
+    let retItem = null;
 
     if (index >= 0
       && this.#Items.length > index)
     {
-      retCity = this.#Items[index];
+      retItem = this.#Items[index];
     }
-    return retCity;
+    return retItem;
   }
-  #endregion
+  // #endregion
 
   // #region Other Methods
 
@@ -266,8 +272,8 @@ class Cities
 
     for (let index = 0; index < this.#Items.length; index++)
     {
-      let city = this.#Items[index];
-      retNames.push(city.Name);
+      let item = this.#Items[index];
+      retNames.push(item.Name);
     }
     return retNames;
   }
@@ -276,26 +282,26 @@ class Cities
   /// <include path='items/Items/*' file='Doc/Cities.xml'/>
   SelectItems(propertyNames)
   {
-    let retCities = null;
+    let retItems = null;
 
     if (null == propertyNames)
     {
-      retCities = this.#Items;
+      retItems = this.#Items.Clone();
     }
     else
     {
-      retCities = new Cities();
+      retItems = new Cities();
       for (let index = 0; index < names.length; index++)
       {
         let name = propertyNames[index];
-        let city = this.Retrieve(name);
-        if (city != null)
+        let item = this.Retrieve(name);
+        if (item != null)
         {
-          retCities.AddObject(city);
+          retItems.AddObject(item);
         }
       }
     }
-    return retCities;
+    return retItems;
   }
   // #endregion
 }
