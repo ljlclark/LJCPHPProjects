@@ -26,6 +26,7 @@ set root=..\..
 set servicePath=%root%\LJCPHPProjects\LJCJSCommon
 copy LJCDataLib.js %servicePath%
 copy LJCJSCommonLib.js %servicePath%
+copy Templates\*.* %servicePath%\Templates\
 
 cd ..\LJCPHPCommon
 set root=..\..

@@ -9,7 +9,7 @@
 // _FileName_
 
 // ***************
-/// <summary>Represents a collection of _ItemName_ objects.</summary>
+/// <summary>Represents a collection of _ItemName_ data objects.</summary>
 class _CollectionName_
 {
   // #region Properties
@@ -47,7 +47,7 @@ class _CollectionName_
   // #region Collection Data Methods
 
   // Creates and adds the item to the list.
-  /// <include path='items/Add/*' file='Doc/Cities.xml'/>
+  /// <include path='items/Add/*' file='Doc/_CollectionName_.xml'/>
   Add(name, description)
   {
     let methodName = "Add()";
@@ -58,8 +58,8 @@ class _CollectionName_
     return retItem;
   }
 
-  /// <summary>Adds the supplied city to the list.</summary>
-  /// <param name="_ItemName_">The data object.</param>
+  /// <summary>Adds the supplied item to the list.</summary>
+  /// <param name="item">The data object.</param>
   AddObject(item)
   {
     let methodName = "AddObject()";
@@ -85,7 +85,7 @@ class _CollectionName_
   }
 
   // Retrieves the item with the supplied name.
-  /// <include path='items/Retrieve/*' file='Doc/Cities.xml'/>
+  /// <include path='items/Retrieve/*' file='Doc/_CollectionName_.xml'/>
   Retrieve(name)
   {
     let retItem = this.#Items.find(item =>
@@ -94,7 +94,7 @@ class _CollectionName_
   }
 
   // Retrieves the item at the supplied index.
-  /// <include path='items/RetrieveWithIndex/*' file='Doc/Cities.xml'/>
+  /// <include path='items/RetrieveWithIndex/*' file='Doc/_CollectionName_.xml'/>
   RetrieveWithIndex(index)
   {
     let retItem = null;
@@ -106,7 +106,7 @@ class _CollectionName_
     }
     return retItem;
   }
-  #endregion
+  // #endregion
 
   // #region Other Methods
 
@@ -128,7 +128,7 @@ class _CollectionName_
   }
 
   // Gets the index of the item with the supplied name.
-  /// <include path='items/GetIndex/*' file='Doc/Cities.xml'/>
+  /// <include path='items/GetIndex/*' file='Doc/_CollectionName_.xml'/>
   GetIndex(name)
   {
     let retIndex = -1;
@@ -170,7 +170,7 @@ class _CollectionName_
     }
     else
     {
-      retItems = new Cities();
+      retItems = new _CollectionName_();
       for (let index = 0; index < names.length; index++)
       {
         let name = propertyNames[index];
