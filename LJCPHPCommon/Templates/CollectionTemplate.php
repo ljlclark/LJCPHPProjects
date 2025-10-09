@@ -1,9 +1,9 @@
 <?php
   // #SectionBegin Collection
-  // #Value _CollectionName_
-  // #Value _FileName_
-  // #Value _ItemName_
-  // #Value _KeyPropertyName_
+  // #Value _CollectionName_ Cities
+  // #Value _FileName_ CityDAL.php
+  // #Value _ItemName_ City
+  // #Value _KeyPropertyName_ 
   // Copyright (c) Lester J. Clark and Contributors.
   // Licensed under the MIT License.
   // _FileName_
@@ -15,6 +15,11 @@
   include_once "$prefix/LJCPHPCommon/LJCDBAccessLib.php";
   // LJCCommonLib: LJC
   // LJCDBAccessLib: LJCConnectionValues
+
+  /// <summary>The City Data Access Layer Library</summary>
+  /// LibName: CityDAL
+  //  Classes:
+  //    _ItemName_, _CollectionName_, _ItemName_Manager
 
   // ***************
   /// <summary>Represents a collection of _ItemName_ objects.</summary>
@@ -45,9 +50,9 @@
       $retCollection = new _CollectionName_();
 
       if (isset($items)
-        && LJC::HasElements($items->Items))
+        && LJC::HasElements($items->ReadItems))
       {
-        foreach ($items->Items as $objItem)
+        foreach ($items->ReadItems as $objItem)
         {
           // Create typed object from stdClass.
           $item = _ItemName_::Copy($objItem);
@@ -124,7 +129,8 @@
       if (null == $key)
       {
         // ToDo: Handle multiple properties?
-        $key = $item->_KeyPropertyName_;
+        //$key = $item->_KeyPropertyName_;
+        $key = $this->count();
       }
 
       // AddItem() is in LJCCollectionBase.

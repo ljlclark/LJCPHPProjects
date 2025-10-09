@@ -231,7 +231,7 @@ class LJCDataColumns
     if (itemIndex > -1)
     {
       let beginIndex = 0;
-      this.Items.splice(beginIndex, itemIndex);
+      this.#Items.splice(beginIndex, itemIndex);
       this.Count = this.#Items.length;
       this.ReadItems = Array.from(this.#Items);
     }
@@ -241,7 +241,7 @@ class LJCDataColumns
   /// <include path='items/Retrieve/*' file='Doc/LJCDataColumns.xml'/>
   Retrieve(propertyName)
   {
-    let retDataColumn = this.Items.find(item =>
+    let retDataColumn = this.#Items.find(item =>
       item.PropertyName == propertyName);
     return retDataColumn;
   }
@@ -271,6 +271,15 @@ class LJCDataColumns
     this.ReadItems = Array.from(this.#Items);
   }
 
+  /// <summary>Returns the collection element count.</summary>
+  Count()
+  {
+    let retCount = 0;
+
+    retCount = this.#Items.length;
+    return retCount;
+  }
+
   // Gets the column object with the supplied property name.
   /// <include path='items/GetIndex/*' file='Doc/LJCDataColumns.xml'/>
   GetIndex(propertyName)
@@ -295,9 +304,9 @@ class LJCDataColumns
   {
     let retNames = [];
 
-    for (let index = 0; index < this.Items.length; index++)
+    for (let index = 0; index < this.#Items.length; index++)
     {
-      let dataColumn = this.Items[index];
+      let dataColumn = this.#Items[index];
       retNames.push(dataColumn.PropertyName);
     }
     return retNames;

@@ -168,7 +168,8 @@ class _CollectionName_
 
     for (let index = 0; index < this.#Items.length; index++)
     {
-      if (this.#Items.Name == _KeyPropertyLocal_)
+      let item = this.#Items[index];
+      if (item._KeyPropertyName == _KeyPropertyLocal_)
       {
         retIndex = index;
         break;
