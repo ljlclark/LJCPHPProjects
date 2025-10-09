@@ -169,7 +169,7 @@ class LJCTable
     let retIndex = -1;
 
     if (this.TableColumns != null
-      && this.TableColumns.Count() > 0)
+      && this.TableColumns.Count > 0)
     {
       retIndex = this.TableColumns.GetIndex(propertyName);
     }

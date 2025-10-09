@@ -4,10 +4,14 @@
 // LJCCityTableEvents.js
 
 // #region External
+
 // <script src="../../LJCJSCommon/LJCCommonLib.js"></script>
 //   LJC: AddEvent(), Element(), HasElements(), Visibility()
 //   Debug: ShowText(), ShowDialog()
-// <script src="City/LJCCityTableRequest.js"></script>
+// <script src="../../LJCJSCommon/LJCDataLib.js"></script>
+//   LJCDataColumn: 
+//   LJCDataColumns: Add(), Count()
+// <script src="CityList/LJCCityTableRequest.js"></script>
 //   LJCCityTableRequest: Clone()
 // <script src="LJCTable.js"></script>
 //   LJCTable: SelectRow(), SelectColumnRow()
@@ -210,7 +214,7 @@ class LJCCityTableEvents
           let cityTable = self.CityTable;
 
           let tableColumnsArray = response.TableColumnsArray;
-          cityTable.TableColumns = LJCDataColumns.Collection(tableColumnsArray);
+          cityTable.TableColumns = LJCDataColumns.ToCollection(tableColumnsArray);
 
           // Updates the BeginningOfData and EndOfData flags.
           if (self.#UpdateLimitFlags())

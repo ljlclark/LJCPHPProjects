@@ -1,5 +1,5 @@
 "use strict";
-// Copyright(c) Lester J. Clark and Contributors.
+// Copyright (c) Lester J. Clark and Contributors.
 // Licensed under the MIT License.
 // LJCDataLib.js
 
@@ -13,8 +13,7 @@
 //  Data Object: Clone(), Copy()
 class LJCDataColumn
 {
-  // ---------------
-  // Properties
+  // #region Properties
 
   AllowDbNull;
   AutoIncrement;
@@ -29,9 +28,9 @@ class LJCDataColumn
   WhereBoolOperator;
   WhereCompareOperator;
   Value;
+  // #endregion
 
-  // ---------------
-  // Static Methods
+  // #region Static Methods
 
   // Creates a new object with existing standard object values.
   /// <include path='items/Copy/*' file='Doc/LJCDataColumn.xml'/>
@@ -68,9 +67,9 @@ class LJCDataColumn
     }
     return retValue;
   }
+  // #endregion
 
-  // ---------------
-  // Constructor Methods
+  // #region Constructor Methods
 
   /// <summary>Initializes a class instance.</summary>
   /// <include path='items/constructor/*' file='Doc/LJCDataColumn.xml'/>
@@ -96,9 +95,9 @@ class LJCDataColumn
     this.WhereBoolOperator = "and";
     this.WhereCompareOperator = "=";
   }
+  // #endregion
 
-  // ---------------
-  // Data Object Methods
+  // #region Data Object Methods
 
   /// <summary>Creates an object clone.</summary>
   /// <returns>The new cloned object.</returns>
@@ -117,38 +116,45 @@ class LJCDataColumn
     retDataColumn.Value = this.Value;
     return retDataColumn;
   }
+  // #endregion
 }
 
 // ***************
-/// <summary>Represents a collection of data column definitions.</summary>
-//  Add(), AddObject(), Clear(), Columns(), GetIndex(), PropertytNames()
-//  Remove(), Retrieve(), RetrieveWithIndex()
+/// <summary>Represents a collection of LJCDataColumn data objects.</summary>
 class LJCDataColumns
 {
-  // ---------------
-  // Properties
+  // #region Properties
 
-  Items = [];
+  // The current items count.
+  Count = 0;
 
-  // ---------------
-  // Static Methods
+  // The current #Items clone.
+  ReadItems = [];
+
+  // *** Change ***
+  #Items = [];
+  // #endregion
+
+  // #region Static Methods
+
+  /// <summary>Adds an item value.</summary>
+  /// <param name="propertyName">The item PropertyName value.</param>
+  /// <param name="value">The added value.</param>
   static AddValue(propertyName, value)
   {
-    let dataColumn = this.Retrieve(propertyName);
-    if (dataColumn != null)
+    let itemDataColumn = this.Retrieve(propertyName);
+    if (itemDataColumn != null)
     {
-      dataColumn.Value = value;
+      itemDataColumn.Value = value;
     }
   }
-  // ---------------
-  // Static Methods
 
   /// <summary>
   ///   Create typed collection from deserialized JavasScript array.
   /// </summary>
   /// <param name="items">The items object.</param>
   /// <returns>The collection></returns.
-  static Collection(items)
+  static ToCollection(items)
   {
     let retDataColumns = new LJCDataColumns();
 
@@ -166,18 +172,42 @@ class LJCDataColumns
     }
     return retDataColumns;
   }
+  // #endregion
 
-  // ---------------
-  // Methods
+  // #region Data Class Methods
 
-  // Creates and adds the column object to the list.
+  /// <summary>Creates a clone of this object.</summary>
+  /// <returns>The new cloned object.</returns>
+  Clone()
+  {
+    let retDataColumns = new LJCDataColumns();
+
+    let names = this.PropertyNames();
+    for (let index = 0; index < names.length; index++)
+    {
+      let dataColumn = this.#Items[index];
+      if (dataColumn != null)
+      {
+        retDataColumns.AddObject(dataColumn.Clone());
+      }
+    }
+    return retDataColumns;
+  }
+  // #endregion
+
+  // #region Collection Data Methods
+
+  // Creates and adds the item to the list.
   /// <include path='items/Add/*' file='Doc/LJCDataColumns.xml'/>
   Add(propertyName, columnName = null, renameAs = null
     , dataTypeName = "string", value = null)
   {
-    let retDataColumn = new LJCDataColumn(propertyName, columnName, renameAs
+    let methodName = "Add()";
+    let retDataColumn = null;
+
+    let dataColumn = new LJCDataColumn(propertyName, columnName, renameAs
       , dataTypeName, value);
-    this.AddObject(retDataColumn);
+    retDataColumn = this.AddObject(dataColumn);
     return retDataColumn;
   }
 
@@ -185,77 +215,12 @@ class LJCDataColumns
   /// <param name="dataColumn">The column object.</param>
   AddObject(dataColumn)
   {
-    this.Items.push(dataColumn);
-  }
+    let methodName = "AddObject()";
 
-  /// <summary>Clears the collection list.</summary>
-  Clear()
-  {
-    this.Items = [];
-  }
-
-  // Gets the column objects that match the property names.
-  /// <include path='items/Columns/*' file='Doc/LJCDataColumns.xml'/>
-  Columns(propertyNames)
-  {
-    let retDataColumns = null;
-
-    if (null == propertyNames)
-    {
-      retDataColumns = this.Items;
-    }
-    else
-    {
-      retDataColumns = new LJCDataColumns();
-      for (let index = 0; index < propertyNames.length; index++)
-      {
-        let propertyName = propertyNames[index];
-        let dataColumn = this.Retrieve(propertyName);
-        if (dataColumn != null)
-        {
-          retDataColumns.AddObject(dataColumn);
-        }
-      }
-    }
-    return retDataColumns;
-  }
-
-  /// <summary>Get the item count.</summary>
-  Count()
-  {
-    return this.Items.length;
-  }
-
-  // Gets the column object with the supplied property name.
-  /// <include path='items/GetIndex/*' file='Doc/LJCDataColumns.xml'/>
-  GetIndex(propertyName)
-  {
-    let retIndex = -1;
-
-    for (let index = 0; index < this.Items.length; index++)
-    {
-      let item = this.Items[index];
-      if (item.PropertyName == propertyName)
-      {
-        retIndex = index;
-        break;
-      }
-    }
-    return retIndex;
-  }
-
-  /// <summary>Gets an array of property names.</summary>
-  /// <returns>The property name array.</returns>
-  PropertyNames()
-  {
-    let retPropertyNames = [];
-
-    for (let index = 0; index < this.Items.length; index++)
-    {
-      let dataColumn = this.Items[index];
-      retPropertyNames.push(dataColumn.PropertyName);
-    }
-    return retPropertyNames;
+    this.#Items.push(dataColumn);
+    this.Count = this.#Items.length;
+    this.ReadItems = Array.from(this.#Items);
+    return dataColumn;
   }
 
   // Removes the column object with the supplied property name.
@@ -267,6 +232,8 @@ class LJCDataColumns
     {
       let beginIndex = 0;
       this.Items.splice(beginIndex, itemIndex);
+      this.Count = this.#Items.length;
+      this.ReadItems = Array.from(this.#Items);
     }
   }
 
@@ -285,10 +252,81 @@ class LJCDataColumns
   {
     let retDataColumn = null;
 
-    if (index >= 0 && this.Items.length > index)
+    if (index >= 0
+      && this.#Items.length > index)
     {
-      retDataColumn = this.Items[index];
+      retDataColumn = this.#Items[index];
     }
     return retDataColumn;
   }
+  // #endregion
+
+  // #region Other Methods
+
+  /// <summary>Clears the collection list.</summary>
+  Clear()
+  {
+    this.#Items = [];
+    this.Count = this.#Items.length;
+    this.ReadItems = Array.from(this.#Items);
+  }
+
+  // Gets the column object with the supplied property name.
+  /// <include path='items/GetIndex/*' file='Doc/LJCDataColumns.xml'/>
+  GetIndex(propertyName)
+  {
+    let retIndex = -1;
+
+    for (let index = 0; index < this.#Items.length; index++)
+    {
+      let item = this.#Items[index];
+      if (item.PropertyName == propertyName)
+      {
+        retIndex = index;
+        break;
+      }
+    }
+    return retIndex;
+  }
+
+  /// <summary>Gets an array of property names.</summary>
+  /// <returns>The property name array.</returns>
+  PropertyNames()
+  {
+    let retNames = [];
+
+    for (let index = 0; index < this.Items.length; index++)
+    {
+      let dataColumn = this.Items[index];
+      retNames.push(dataColumn.PropertyName);
+    }
+    return retNames;
+  }
+
+  // Gets the items that match the supplied names.
+  /// <include path='items/Items/*' file='Doc/Cities.xml'/>
+  SelectItems(propertyNames)
+  {
+    let retDataColumns = null;
+
+    if (null == propertyNames)
+    {
+      retDataColumns = this.#Items.Clone();
+    }
+    else
+    {
+      retDataColumns = new LJCDataColumns();
+      for (let index = 0; index < names.length; index++)
+      {
+        let propertyName = propertyNames[index];
+        let dataColumn = this.Retrieve(propertyName);
+        if (dataColumn != null)
+        {
+          retDataColumns.AddObject(dataColumn);
+        }
+      }
+    }
+    return retDataColumns;
+  }
+  // #endregion
 }

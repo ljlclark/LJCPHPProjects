@@ -434,9 +434,9 @@
       $retCollection = new LJCDbColumns();
 
       if (isset($items)
-        && LJC::HasElements($items->Items))
+        && $items->Count > 0)
       {
-        foreach ($items->Items as $objItem)
+        foreach ($items->ReadItems as $objItem)
         {
           // Create typed object from stdClass.
           $item = LJCDbColumn::Copy($objItem);

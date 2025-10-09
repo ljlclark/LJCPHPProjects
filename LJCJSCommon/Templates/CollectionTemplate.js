@@ -1,9 +1,14 @@
 "use strict";
 // #SectionBegin Collection
-// #Value _CollectionName_
-// #Value _FileName_
-// #Value _ItemName_
-// #Value _KeyPropertyName_
+// #Value _CollectionName_ LJCDataColumns
+// #Value _CollectionVar_ DataColumns
+// #Value _CollectionLocal_ dataColumns
+// #Value _FileName_ LJCDataLib.js
+// #Value _ItemName_ LJCDataColumn
+// #Value _ItemVar_ DataColumn
+// #Value _ItemLocal_ dataColumn
+// #Value _KeyPropertyName_ PropertyName
+// #Value _KeyPropertyLocal_ propertyName
 // Copyright (c) Lester J. Clark and Contributors.
 // Licensed under the MIT License.
 // _FileName_
@@ -24,23 +29,51 @@ class _CollectionName_
   #Items = [];
   // #endregion
 
+  // #region Static Methods
+
+  /// <summary>
+  ///   Create typed collection from deserialized JavasScript array.
+  /// </summary>
+  /// <param name="items">The items object.</param>
+  /// <returns>The collection></returns.
+  static ToCollection(items)
+  {
+    let ret_CollectionVar_ = new LJCDataColumns();
+
+    if (items != null
+      && items.length > 0)
+    {
+      for (let index = 0; index < items.length; index++)
+      {
+        let objItem = items[index];
+
+        // Create typed object from stdClass.
+        let _ItemLocal_ = LJCDataColumn.Copy(objItem);
+        ret_CollectionVar_.AddObject(_ItemLocal_);
+      }
+    }
+    return ret_CollectionVar_;
+  }
+  // #endregion
+
   // #region Data Class Methods
 
   /// <summary>Creates a clone of this object.</summary>
   /// <returns>The new cloned object.</returns>
   Clone()
   {
-    let retCollection = new _CollectionName_();
+    let ret_CollectionVar_ = new _CollectionName_();
 
+    let names = this.PropertyNames();
     for (let index = 0; index < names.length; index++)
     {
-      let item = this.#Items[index];
-      if (item != null)
+      let _ItemLocal_ = this.#Items[index];
+      if (_ItemLocal_ != null)
       {
-        retCollection.AddObject(item.Clone());
+        ret_CollectionVar_.AddObject(_ItemLocal_.Clone());
       }
     }
-    return retCollection;
+    return ret_CollectionVar_;
   }
   // #endregion
 
@@ -51,30 +84,30 @@ class _CollectionName_
   Add(name, description)
   {
     let methodName = "Add()";
-    let retItem = null;
+    let ret_ItemVar_ = null;
 
-    let item = new _ItemName_(name, description);
-    retItem = this.AddObject(item);
-    return retItem;
+    let _ItemLocal_ = new _ItemName_(name, description);
+    ret_ItemVar_ = this.AddObject(_ItemLocal_);
+    return ret_ItemVar_;
   }
 
   /// <summary>Adds the supplied item to the list.</summary>
   /// <param name="item">The data object.</param>
-  AddObject(item)
+  AddObject(_ItemLocal_)
   {
     let methodName = "AddObject()";
 
-    this.#Items.push(item);
+    this.#Items.push(_ItemLocal_);
     this.Count = this.#Items.length;
     this.ReadItems = Array.from(this.#Items);
-    return item;
+    return _ItemLocal_;
   }
 
   /// <summary>Removes the item with the supplied name.</summary>
   /// <param name="name">The data object name.</param>
-  Remove(name)
+  Remove(_KeyPropertyLocal_)
   {
-    let itemIndex = this.GetIndex(name);
+    let itemIndex = this.GetIndex(_KeyPropertyLocal_);
     if (itemIndex > -1)
     {
       let beginIndex = 0;
@@ -86,25 +119,25 @@ class _CollectionName_
 
   // Retrieves the item with the supplied name.
   /// <include path='items/Retrieve/*' file='Doc/_CollectionName_.xml'/>
-  Retrieve(name)
+  Retrieve(_KeyPropertyLocal_)
   {
-    let retItem = this.#Items.find(item =>
-      item.Name == name);
-    return retItem;
+    let ret_ItemVarName_ = this.#Items.find(item =>
+      item.Name == _KeyPropertyLocal_);
+    return ret_ItemVarName_;
   }
 
   // Retrieves the item at the supplied index.
   /// <include path='items/RetrieveWithIndex/*' file='Doc/_CollectionName_.xml'/>
   RetrieveWithIndex(index)
   {
-    let retItem = null;
+    let ret_ItemVarName_ = null;
 
     if (index >= 0
       && this.#Items.length > index)
     {
-      retItem = this.#Items[index];
+      ret_ItemVarName_ = this.#Items[index];
     }
-    return retItem;
+    return ret_ItemVarName_;
   }
   // #endregion
 
@@ -129,13 +162,13 @@ class _CollectionName_
 
   // Gets the index of the item with the supplied name.
   /// <include path='items/GetIndex/*' file='Doc/_CollectionName_.xml'/>
-  GetIndex(name)
+  GetIndex(_KeyPropertyLocal_)
   {
     let retIndex = -1;
 
     for (let index = 0; index < this.#Items.length; index++)
     {
-      if (this.#Items.Name == name)
+      if (this.#Items.Name == _KeyPropertyLocal_)
       {
         retIndex = index;
         break;
@@ -152,8 +185,8 @@ class _CollectionName_
 
     for (let index = 0; index < this.#Items.length; index++)
     {
-      let item = this.#Items[index];
-      retNames.push(item._KeyPropertyName_);
+      let _KeyPropertyLocal_ = this.#Items[index];
+      retNames.push(_KeyPropertyLocal_._KeyPropertyName_);
     }
     return retNames;
   }
@@ -162,26 +195,27 @@ class _CollectionName_
   /// <include path='items/Items/*' file='Doc/Cities.xml'/>
   SelectItems(propertyNames)
   {
-    let retItems = null;
+    let ret_CollectionVarName_ = null;
 
     if (null == propertyNames)
     {
-      retItems = this.#Items.Clone();
+      ret_CollectionVarName_ = this.#Items.Clone();
     }
     else
     {
-      retItems = new _CollectionName_();
+      ret_CollectionVarName_ = new _CollectionName_();
       for (let index = 0; index < names.length; index++)
       {
-        let name = propertyNames[index];
-        let item = this.Retrieve(name);
-        if (item != null)
+        let _KeyPropertyLocal_ = propertyNames[index];
+        let _ItemLocal_ = this.Retrieve(_KeyPropertyLocal_);
+        if (_ItemLocal_ != null)
         {
-          retItems.AddObject(item);
+          ret_CollectionVarName_.AddObject(_ItemLocal_);
         }
       }
     }
-    return retItems;
+    return ret_CollectionVarName_;
   }
   // #endregion
 }
+// #SectionEnd Collection
