@@ -1,9 +1,14 @@
 <?php
   // #SectionBegin Collection
   // #Value _CollectionName_ Cities
+  // #Value _CollectionVar_ Cities
+  // #Value _CollectionLocal_ cities
   // #Value _FileName_ CityDAL.php
   // #Value _ItemName_ City
-  // #Value _KeyPropertyName_ 
+  // #Value _ItemVar_ City
+  // #Value _ItemLocal_ city
+  // #Value _KeyPropertyName_ Name
+  // #Value _KeyPropertyLocal_ name
   // Copyright (c) Lester J. Clark and Contributors.
   // Licensed under the MIT License.
   // _FileName_
@@ -14,10 +19,11 @@
   include_once "$prefix/LJCPHPCommon/LJCCollectionLib.php";
   include_once "$prefix/LJCPHPCommon/LJCDBAccessLib.php";
   // LJCCommonLib: LJC
+  // LJCCollectionLib: LJCCollectionBase
   // LJCDBAccessLib: LJCConnectionValues
 
-  /// <summary>The City Data Access Layer Library</summary>
-  /// LibName: CityDAL
+  /// <summary>The _ItemName_ Data Access Layer Library</summary>
+  /// LibName: _ItemName_DAL
   //  Classes:
   //    _ItemName_, _CollectionName_, _ItemName_Manager
 
@@ -45,21 +51,21 @@
     /// <ParentGroup>Static</ParentGroup>
     public static function ToCollection($items): ?_CollectionName_
     {
-      $className = "_CollectionName_";
-      $methodName = "ToCollection()";
-      $retCollection = new _CollectionName_();
+      $ret_CollectionName_ = null;
 
+      // ReadItems is in the JavaScript collection.
       if (isset($items)
         && LJC::HasElements($items->ReadItems))
       {
+        $ret_CollectionName_ = new _CollectionName_();
         foreach ($items->ReadItems as $objItem)
         {
           // Create typed object from stdClass.
-          $item = _ItemName_::Copy($objItem);
-          $retCollection->AddObject($item);
+          $_ItemLocal_ = _ItemName_::Copy($objItem);
+          $retCollection->AddObject($_ItemLocal_);
         }
       }
-      return $retCollection;
+      return $ret_CollectionName_;
     } // ToCollection()
 
     // ---------------
@@ -112,6 +118,7 @@
       if (null == $key)
       {
         $key = $_KeyPropertyName_;
+        //$key = $this->count();
       }
 
       $item = new _ItemName_($name, $description);
@@ -132,6 +139,12 @@
         //$key = $item->_KeyPropertyName_;
         $key = $this->count();
       }
+
+      // HasKey() is in LJCCollectionBase.
+			if ($this->HasKey($key))
+			{
+				throw new Exception("Key: {$key} already in use.");
+			}
 
       // AddItem() is in LJCCollectionBase.
       $retItem = $this->AddItem($item, $key);
@@ -170,9 +183,12 @@
         $this->AddObject($insertItem);
         $process = false;
       }
+      if ($insertIndex < 0)
+      {
+        $insertIndex = 0;
+      }
 
-      if ($process
-        && $insertIndex >= 0)
+      if ($process)
       {
         // Create new items with inserted item.
         $tempItems = [];
@@ -247,7 +263,7 @@
 
       if (null == $keyNames)
       {
-        $retItems = $this->Clone(); // ?
+        $retItems = $this->Clone();
       }
       else
       {

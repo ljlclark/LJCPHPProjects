@@ -8,6 +8,7 @@ copy LJCCityList.html %servicePath%
 copy LJCCityListEvents.js %servicePath%
 copy LJCDataConfigs.php %servicePath%
 copy LJCTable.js %servicePath%
+copy CSS\Table.css %servicePath%\CSS\
 
 cd CityList
 set root=..\..\..\..\..\..\..\..
@@ -19,6 +20,12 @@ copy LJCCityDetailEvents.js %servicePath%
 copy LJCCityTableEvents.js %servicePath%
 copy LJCCityTableRequest.js %servicePath%
 copy LJCCityTableService.php %servicePath%
+
+cd ..\RegionList
+set servicePath=%root%\inetpub\wwwroot\ATestForm\CityList\RegionList
+copy LJCRegionTableEvents.js %servicePath%
+copy LJCRegionTableRequest.js %servicePath%
+copy LJCRegionTableService.php %servicePath%
 
 rem 1\2Users\3Les\4Documents\5Visual Studio 2022\6wwwrootDev\7LJCJSCommon
 cd ..\..\..\LJCJSCommon

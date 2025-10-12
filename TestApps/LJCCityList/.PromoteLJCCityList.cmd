@@ -21,6 +21,12 @@ copy LJCCityTableEvents.js %servicePath%
 copy LJCCityTableRequest.js %servicePath%
 copy LJCCityTableService.php %servicePath%
 
+cd ..\RegionList
+set servicePath=%root%\LJCPHPProjects\TestApps\LJCCityList\RegionList
+copy LJCRegionTableEvents.js %servicePath%
+copy LJCRegionTableRequest.js %servicePath%
+copy LJCRegionTableService.php %servicePath%
+
 cd ..\..\..\LJCJSCommon
 set root=..\..
 set servicePath=%root%\LJCPHPProjects\LJCJSCommon

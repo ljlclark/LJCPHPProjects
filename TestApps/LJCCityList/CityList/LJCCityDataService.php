@@ -318,7 +318,7 @@
     public ?array $PropertyNames;
 
     /// <summary>The City request data objects.</summary>
-    public Cities $RequestCities;
+    public ?Cities $RequestCities;
 
     /// <summary>The table name.</summary>
     public string $TableName;

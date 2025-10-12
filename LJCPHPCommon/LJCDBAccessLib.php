@@ -424,15 +424,14 @@
     // ---------------
     // Static Methods
 
-    // Create collection from deserialized JavasScript collection.
+    // Create typed collection from deserialized JavasScript collection.
     /// <include path='items/ToCollection/*' file='Doc/LJCDbColumns.xml'/>
     /// <ParentGroup>Static</ParentGroup>
     public static function ToCollection($items)
     {
-      $className = "LJCDbColumns";
-      $methodName = "ToCollection()";
       $retCollection = new LJCDbColumns();
 
+      // ReadItems is in the JavaScript collection.
       if (isset($items)
         && $items->Count > 0)
       {
@@ -570,9 +569,12 @@
         $this->AddObject($insertItem);
         $process = false;
       }
+      if ($insertIndex < 0)
+      {
+        $insertIndex = 0;
+      }
 
-      if ($process
-        && $insertIndex >= 0)
+      if ($process)
       {
         // Create new items with inserted item.
         $tempItems = [];
@@ -601,7 +603,7 @@
         $this->Items = $tempItems;
       }
       return $retItem;
-    }
+    } // InsertObject()
 
     // Removes the item by Key value.
     /// <include path='items/Remove/*' file='Doc/LJCDbColumns.xml'/>
@@ -625,7 +627,7 @@
     // ---------------
     // Other Methods
 
-    // Creates a KeyNames list from the data definition.
+    // Creates a KeyNames list from the collection.
     /// <ParentGroup>Other</ParentGroup>
     public function KeyNames(): array
     {
@@ -666,7 +668,7 @@
       }
     } // MapNames()
 
-    // Get the column definitions that match the property names.
+    // Get the items that match the key names array values.
     /// <include path='items/GetColumns/*' file='Doc/LJCDbColumns.xml'/>
     /// <ParentGroup>Other</ParentGroup>
     public function SelectItems(array $keyNames = null): self

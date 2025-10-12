@@ -108,15 +108,14 @@ class LJCCityDetailEvents
   #CityFormData()
   {
     let cityID = LJC.GetValue("cityID");
-    let provinceID = LJC.GetValue("provinceID");
-    let name = LJC.GetValue("name");
+    let provinceID = LJC.GetValue("cityProvinceID");
+    let name = LJC.GetValue("cityName");
 
     let cityFlag = LJC.GetValue("cityFlag");
     let retCity = new City(provinceID, name, cityFlag, cityID);
-    retCity.Description = LJC.GetValue("description");
+    retCity.Description = LJC.GetValue("cityDescription");
     retCity.District = LJC.GetValue("district");
-    // *** Add ***
-    retCity.ProvinceName = LJC.GetValue("province");
+    retCity.ProvinceName = LJC.GetValue("cityProvinceName");
     retCity.ZipCode = LJC.GetValue("zipCode");
     return retCity;
   }

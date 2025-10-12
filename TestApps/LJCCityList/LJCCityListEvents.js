@@ -44,6 +44,9 @@ class LJCCityListEvents
   // The city table events.
   #CityTableEvents = null; // LJCCityTableEvents
 
+  // The region table events.
+  #RegionTableEvents = null; // LJCRegionTableEvents
+
   // The show debug text object.
   #Debug = null;
   // #endregion
@@ -60,11 +63,11 @@ class LJCCityListEvents
     this.CityTableID = cityTableID;
 
     // City Table helper object.
-    this.CityTable = new LJCTable(this.CityTableID, "menu");
+    this.CityTable = new LJCTable(this.CityTableID, "cityMenu");
     this.FocusTable = null;
 
     // City Table events.
-    this.#CityTableEvents = new LJCCityTableEvents(this, "menu", configName
+    this.#CityTableEvents = new LJCCityTableEvents(this, "cityMenu", configName
       , configFile);
     let tableRequest = this.#CityTableEvents.TableRequest;
     tableRequest.Limit = 20;
@@ -72,6 +75,13 @@ class LJCCityListEvents
 
     // City Detail events.
     this.#CityDetailEvents = new LJCCityDetailEvents(this.CityTable);
+
+    // Region Table Events
+    //this.#RegionTableEvents = new LJCRegionTableEvents(this, "regionMenu", configName
+    //  , configFile);
+    //let regionTableRequest = this.#RegionTableEvents.TableRequest;
+    //regionTableRequest.Limit = 20;
+    //regionTableRequest.PropertyNames = this.#RegionPropertyNames();
 
     this.#AddEvents();
     this.#Refresh();
@@ -93,13 +103,19 @@ class LJCCityListEvents
     document.addEventListener("dblclick", this.#DocumentDoubleClick.bind(this));
     document.addEventListener("keydown", this.#DocumentKeyDown.bind(this));
 
-    // Menu Event Handlers.
+    LJC.AddEvent("regionButton", "click", this.#RegionButton, this);
+    LJC.AddEvent("provinceButton", "click", this.#ProvinceButton, this);
+
+    // City Menu Event Handlers.
     LJC.AddEvent("delete", "click", this.#Delete, this);
     LJC.AddEvent("edit", "click", this.#Edit, this);
     LJC.AddEvent("new", "click", this.#New, this);
     LJC.AddEvent("next", "click", this.#Next, this);
     LJC.AddEvent("previous", "click", this.#Previous, this);
     LJC.AddEvent("refresh", "click", this.#Refresh, this);
+
+    // Region Menu Event Handlers.
+    LJC.AddEvent("regionRefresh", "click", this.#RegionRefresh, this);
   }
 
   // Creates the table property names.
@@ -114,6 +130,18 @@ class LJCCityListEvents
       City.PropertyCityFlag,
       City.PropertyZipCode,
       City.PropertyDistrict,
+    ];
+    return retPropertyNames;
+  }
+
+  // Creates the table property names.
+  #RegionPropertyNames()
+  {
+    let retPropertyNames = [
+      Region.PropertyRegionID,
+      Region.PropertyNumber,
+      Region.PropertyName,
+      Region.PropertyDescription,
     ];
     return retPropertyNames;
   }
@@ -175,7 +203,7 @@ class LJCCityListEvents
           break;
 
         case ESCAPE_KEY:
-          LJC.Visibility("menu", "hidden");
+          LJC.Visibility("cityMenu", "hidden");
           break;
 
         case UP_ARROW:
@@ -190,7 +218,22 @@ class LJCCityListEvents
   }
   // #endregion
 
-  // #region Menu Event Handlers
+  // #region City List Event Handlers
+
+  // Displays the Region Selection table.
+  #RegionButton()
+  {
+    this.#RegionRefresh();
+  }
+
+  // Displays the Province Selection table.
+  #ProvinceButton()
+  {
+    alert("Province Button");
+  }
+  // #endregion
+
+  // #region City Menu Event Handlers
 
   // Deletes the selected item.
   #Delete()
@@ -259,6 +302,20 @@ class LJCCityListEvents
   }
   // #endregion
 
+  // #region Region Menu Event Handlers
+
+  // Refreshes the current page.
+  #RegionRefresh()
+  {
+    let tableEvents = this.#RegionTableEvents;
+    tableEvents.TableRequest.Action = "Refresh";
+    tableEvents.Page();
+
+    // Update the table with new values ETable and Keys.
+    //this.#CityDetailEvents.UpdateTable(tableEvents.CityTable);
+  }
+  // #endregion
+
   // #region Other Menu Methods
 
   // Creates the city request.
@@ -309,13 +366,14 @@ class LJCCityListEvents
   #ClearCityFormData()
   {
     LJC.SetValue("cityID", "0");
-    LJC.SetValue("provinceID", "");
-    LJC.SetValue("name", "");
+    LJC.SetValue("cityProvinceID", "");
+    LJC.SetValue("cityName", "");
 
     LJC.SetValue("cityFlag", "0");
-    LJC.SetValue("description", "");
+    LJC.SetValue("cityDescription", "");
     LJC.SetValue("district", "0");
     LJC.SetValue("zipCode", "0");
+
     LJC.SetValue("commit", "Create");
   }
 
@@ -359,14 +417,14 @@ class LJCCityListEvents
   #SetCityForm(city)
   {
     LJC.SetValue("cityID", city.CityID);
-    LJC.SetValue("provinceID", city.ProvinceID);
+    LJC.SetValue("cityProvinceID", city.ProvinceID);
+    LJC.SetValue("cityName", city.Name);
 
-    LJC.SetValue("province", city.ProvinceName);
-    LJC.SetValue("name", city.Name);
-    LJC.SetValue("description", city.Description);
     LJC.SetValue("cityFlag", city.CityFlag);
-    LJC.SetValue("zipCode", city.ZipCode);
+    LJC.SetValue("cityDescription", city.Description);
+    LJC.SetValue("cityProvinceName", city.ProvinceName);
     LJC.SetValue("district", city.District);
+    LJC.SetValue("zipCode", city.ZipCode);
   }
 
   // Process the web service response.
