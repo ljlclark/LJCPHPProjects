@@ -71,7 +71,7 @@ class LJCCityListEvents
       , configFile);
     let tableRequest = this.#CityTableEvents.CityTableRequest;
     tableRequest.Limit = 20;
-    tableRequest.PropertyNames = this.#PropertyNames();
+    tableRequest.PropertyNames = this.#CityPropertyNames();
 
     // City Detail events.
     this.#CityDetailEvents = new LJCCityDetailEvents(this.CityTable);
@@ -119,7 +119,7 @@ class LJCCityListEvents
   }
 
   // Creates the table property names.
-  #PropertyNames()
+  #CityPropertyNames()
   {
     let retPropertyNames = [
       City.PropertyCityID,
@@ -374,7 +374,7 @@ class LJCCityListEvents
     LJC.SetValue("district", "0");
     LJC.SetValue("zipCode", "0");
 
-    LJC.SetValue("commit", "Create");
+    LJC.SetValue("cityCommit", "Create");
   }
 
   // Sends data request to CityData web service.

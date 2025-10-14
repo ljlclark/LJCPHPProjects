@@ -63,8 +63,8 @@ class LJCCityDetailEvents
   #AddEvents()
   {
     // Button Event Handlers.
-    LJC.AddEvent("cancel", "click", this.#CancelClick, this);
-    LJC.AddEvent("commit", "click", this.#CommitClick, this);
+    LJC.AddEvent("cityCancel", "click", this.#CancelClick, this);
+    LJC.AddEvent("cityCommit", "click", this.#CommitClick, this);
   }
   // #endregion
 

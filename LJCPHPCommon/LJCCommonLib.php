@@ -299,7 +299,8 @@
     {
       $retValue = false;
 
-      if (is_array($array)
+      if (isset($array)
+        && is_array($array)
         && count($array) > 0)
       {
         $retValue = true;
@@ -307,7 +308,7 @@
       return $retValue;
     }
 
-    // Checks for array elements.
+    // Checks for collection items.
     /// <ParentGroup>Check</ParentGroup>
     public static function HasItems($collection): bool
     {

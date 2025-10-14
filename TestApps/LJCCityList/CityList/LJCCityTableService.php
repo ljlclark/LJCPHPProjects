@@ -66,11 +66,14 @@
       $this->TableColumns->AddObjects($columns);
 
       // Insert join table columns.
-      foreach ($this->AddColumns as $column)
+      if (LJC::HasElements($this->AddColumns))
       {
-        $dataColumn = LJCDbColumn::Copy($column);
-        $insertIndex = $dataColumn->InsertIndex;
-        $this->TableColumns->InsertObject($dataColumn, $insertIndex);
+        foreach ($this->AddColumns as $column)
+        {
+          $dataColumn = LJCDbColumn::Copy($column);
+          $insertIndex = $dataColumn->InsertIndex;
+          $this->TableColumns->InsertObject($dataColumn, $insertIndex);
+        }
       }
 
       $response = $this->GetResponse();
@@ -114,7 +117,10 @@
       $methodName = "SetRequestProperties";
 
       $this->Action = $pageData->Action;
-      $this->AddColumns = $pageData->AddColumns;
+      if (LJC::HasElements($pageData->AddColumns))
+      {
+        $this->AddColumns = $pageData->AddColumns;
+      }
       $this->BeginKeyData = $pageData->BeginKeyData;
       $this->CityTableID = $pageData->CityTableID;
       $this->ConfigFile = $pageData->ConfigFile;
@@ -399,7 +405,7 @@
     public string $Action;
 
     /// <summary>Column definitions to add to the data manager.</summary>
-    public array $AddColumns;
+    public array $AddColumns = [];
 
     /// <summary>The find key values for the first table row data.</summary>
     /// <remarks> Properties: ProvinceID, Name</remarks>

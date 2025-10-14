@@ -19,6 +19,8 @@ class LJCCityTableRequest
   /// <include path='items/Action/*' file='Doc/LJCCityTableRequest.xml'/>
   Action = "";
 
+  AddColumns = [];
+
   /// <summary>The unique key of the first page item.</summary>
   BeginKeyData = null;
 
@@ -54,6 +56,7 @@ class LJCCityTableRequest
     this.ConfigName = configName;
     this.ConfigFile = configFile;
 
+    this.AddColumns = [];
     this.BeginKeyData = { ProvinceID: 0, Name: "" };
     this.EndKeyData = { ProvinceID: 0, Name: "" };
   }

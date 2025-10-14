@@ -85,14 +85,14 @@ class LJCCityTableEvents
     tableRequest.PropertyNames = null;
 
     // Get table columns.
-    // Includes join column names.
+    // Can include join column names.
     tableRequest.TableColumnNames = this.#TableColumnNames();
 
     // Add join table columns.
-    let addColumns = new LJCDataColumns()
-    let addColumn = addColumns.Add(City.PropertyProvinceName);
-    addColumn.InsertIndex = 0; // Default
-    tableRequest.AddColumns = LJC.ToArray(addColumns);
+    //let addColumns = new LJCDataColumns()
+    //let addColumn = addColumns.Add(City.PropertyProvinceName);
+    //addColumn.InsertIndex = 0; // Default
+    //tableRequest.AddColumns = LJC.ToArray(addColumns);
 
     this.#AddEvents();
   }
@@ -329,7 +329,7 @@ class LJCCityTableEvents
   #TableColumnNames()
   {
     let retColumnNames = [
-      City.PropertyProvinceName,
+      //City.PropertyProvinceName,
       City.PropertyName,
       City.PropertyDescription,
       City.PropertyCityFlag,
