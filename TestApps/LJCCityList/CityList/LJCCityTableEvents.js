@@ -32,7 +32,7 @@ class LJCCityTableEvents
 
   /// <summary> The city table data request.</summary>
   // Used in CityListEvents constructor(), #Refresh().
-  TableRequest = null; // LJCCityTableRequest;
+  CityTableRequest = null; // LJCCityTableRequest;
   // #endregion
 
   // #region Private Properties
@@ -75,8 +75,8 @@ class LJCCityTableEvents
     this.CityTable = new LJCTable(this.#TableID, this.#MenuID);
 
     // Service request for LJCCityTableService.php
-    this.TableRequest = new LJCCityTableRequest(configName, configFile);
-    let tableRequest = this.TableRequest;
+    this.CityTableRequest = new LJCCityTableRequest(configName, configFile);
+    let tableRequest = this.CityTableRequest;
     tableRequest.CityTableID = this.#TableID;
     tableRequest.TableName = City.TableName;
 
@@ -150,9 +150,9 @@ class LJCCityTableEvents
     if (!this.CityTable.EndOfData)
     {
       this.#IsNextPage = true;
-      this.TableRequest.Action = "Next";
+      this.CityTableRequest.Action = "Next";
       this.UpdateTableRequest();
-      this.Page(this.TableRequest);
+      this.Page(this.CityTableRequest);
     }
   }
 
@@ -163,9 +163,9 @@ class LJCCityTableEvents
     if (!this.CityTable.BeginningOfData)
     {
       this.#IsPrevPage = true;
-      this.TableRequest.Action = "Previous";
+      this.CityTableRequest.Action = "Previous";
       this.UpdateTableRequest();
-      this.Page(this.TableRequest);
+      this.Page(this.CityTableRequest);
     }
   }
   // #endregion
@@ -235,7 +235,7 @@ class LJCCityTableEvents
       }
     };
 
-    let tableRequest = this.TableRequest.Clone();
+    let tableRequest = this.CityTableRequest.Clone();
     tableRequest.ConfigFile = "../DataConfigs.xml";
     let request = LJC.CreateJSON(tableRequest);
     xhr.send(request);
@@ -260,13 +260,13 @@ class LJCCityTableEvents
       rowName.value = rowKeys.Name;
     }
 
-    if (this.TableRequest != null)
+    if (this.CityTableRequest != null)
     {
       // Get first row key.
       let rowKeys = cityTable.Keys[0];
       if (rowKeys != null)
       {
-        let tableRequest = this.TableRequest;
+        let tableRequest = this.CityTableRequest;
         tableRequest.BeginKeyData.ProvinceID = rowKeys.ProvinceID;
         tableRequest.BeginKeyData.Name = rowKeys.Name;
       }
@@ -276,7 +276,7 @@ class LJCCityTableEvents
       rowKeys = cityTable.Keys[lastIndex];
       if (rowKeys != null)
       {
-        let tableRequest = this.TableRequest;
+        let tableRequest = this.CityTableRequest;
         tableRequest.EndKeyData.ProvinceID = rowKeys.ProvinceID;
         tableRequest.EndKeyData.Name = rowKeys.Name;
       }
@@ -312,7 +312,7 @@ class LJCCityTableEvents
       if (this.#IsNextPage)
       {
         // Keep at last row.
-        this.CityTable.CurrentRowIndex = this.TableRequest.Limit - 1;
+        this.CityTable.CurrentRowIndex = this.CityTableRequest.Limit - 1;
         this.#IsNextPage = false;
       }
       if (this.#IsPrevPage)
@@ -351,7 +351,7 @@ class LJCCityTableEvents
       retValue = true;
       cityTable.BeginningOfData = false;
       cityTable.EndOfData = false;
-      if (cityTable.Keys.length < this.TableRequest.Limit)
+      if (cityTable.Keys.length < this.CityTableRequest.Limit)
       {
         cityTable.EndOfData = true;
       }
@@ -364,11 +364,11 @@ class LJCCityTableEvents
       retValue = true;
       cityTable.BeginningOfData = false;
       cityTable.EndOfData = false;
-      if (cityTable.Keys.length < this.TableRequest.Limit)
+      if (cityTable.Keys.length < this.CityTableRequest.Limit)
       {
         cityTable.BeginningOfData = true;
       }
-      cityTable.CurrentRowIndex = this.TableRequest.Limit;
+      cityTable.CurrentRowIndex = this.CityTableRequest.Limit;
       this.#IsPrevPage = false;
     }
     return retValue;

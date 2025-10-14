@@ -45,8 +45,7 @@
     </div>
 
     <!-- City Table -->
-    <table id="cityTableItem"></table>
-    <!--table id="cityTable"></table-->
+    <table id="cityTableID"></table>
 
     <!-- Select Table Dialog -->
     <dialog id="selectDialog"
@@ -273,8 +272,8 @@
 
   </div>  <!-- Closes page -->
   <script>
-    let listEvents = new LJCCityListEvents("cityTableItem");
-    listEvents.SetDialogValues("textDialog", "textArea");
+    let cityListEvents = new LJCCityListEvents("cityTableID");
+    cityListEvents.SetDialogValues("textDialog", "textArea");
   </script>
 </body>
 </html>

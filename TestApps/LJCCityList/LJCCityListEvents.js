@@ -69,7 +69,7 @@ class LJCCityListEvents
     // City Table events.
     this.#CityTableEvents = new LJCCityTableEvents(this, "cityMenu", configName
       , configFile);
-    let tableRequest = this.#CityTableEvents.TableRequest;
+    let tableRequest = this.#CityTableEvents.CityTableRequest;
     tableRequest.Limit = 20;
     tableRequest.PropertyNames = this.#PropertyNames();
 
@@ -294,7 +294,7 @@ class LJCCityListEvents
   #Refresh()
   {
     let tableEvents = this.#CityTableEvents;
-    tableEvents.TableRequest.Action = "Refresh";
+    tableEvents.CityTableRequest.Action = "Refresh";
     tableEvents.Page();
 
     // Update the table with new values ETable and Keys.
