@@ -14,12 +14,12 @@ cd CityList
 set root=..\..\..\..\..\..\..\..
 set servicePath=%root%\inetpub\wwwroot\ATestForm\CityList\CityList
 copy LJCCityDAL.js %servicePath%
-copy LJCRegionDAL.js %servicePath%
 rem copy LJCCityDataRequest.js %servicePath%
 copy LJCCityDataService.php %servicePath%
 copy LJCCityDetailEvents.js %servicePath%
 copy LJCCityTableEvents.js %servicePath%
 copy LJCCityTableService.php %servicePath%
+copy LJCRegionDAL.js %servicePath%
 
 cd ..\RegionList
 set servicePath=%root%\inetpub\wwwroot\ATestForm\CityList\RegionList

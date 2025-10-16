@@ -18,9 +18,12 @@ copy LJCCityDataService.php %servicePath%
 copy LJCCityDetailEvents.js %servicePath%
 copy LJCCityTableEvents.js %servicePath%
 copy LJCCityTableService.php %servicePath%
+copy LJCRegionDAL.js %servicePath%
 
 cd ..\RegionList
 set servicePath=%root%\LJCPHPProjects\TestApps\LJCCityList\RegionList
+copy LJCRegionDataService.php %servicePath%
+copy LJCRegionDetailEvents.js %servicePath%
 copy LJCRegionTableEvents.js %servicePath%
 copy LJCRegionTableService.php %servicePath%
 
