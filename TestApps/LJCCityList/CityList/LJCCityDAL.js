@@ -118,7 +118,7 @@ class City
   Clone()
   {
     let retCity = new City(this.ProvinceID, this.Name, this.CityFlag
-      , this.CityID)
+      , this.CityID);
     retCity.Description = this.Description;
 
     retCity.ZipCode = this.ZipCode;
@@ -183,6 +183,11 @@ class Cities
   AddObject(item)
   {
     let methodName = "AddObject()";
+
+    if (!item instanceof City)
+    {
+      throw new Exception("item is not of type City.");
+    }
 
     this.#Items.push(item);
     this.Count = this.#Items.length;

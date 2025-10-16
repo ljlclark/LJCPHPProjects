@@ -295,7 +295,7 @@
 
     // Checks for array elements.
     /// <ParentGroup>Check</ParentGroup>
-    public static function HasElements($array): bool
+    public static function HasElements(?array $array): bool
     {
       $retValue = false;
 

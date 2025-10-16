@@ -13,8 +13,8 @@
   // LJCDBAccessLib: LJCConnectionValues
   // CityDAL: City, Cities, CityManager
 
-  $cityItem = new LJCCityDataService();
-  $cityItem->Request();
+  $cityDataService = new LJCCityDataService();
+  $cityDataService->Request();
 
   // ***************
   /// <group name="Entry">Entry Methods</group>
@@ -81,7 +81,7 @@
       $this->AffectedCount = 0;
       $this->ResultCities = null;
       $this->ResultItems = [];
-      $this->ServiceName = "LJCCityData";
+      $this->ServiceName = "LJCCityDataService";
       $this->SQL = "";
     }
 
@@ -230,7 +230,7 @@
       $methodName = "CreateResponse()";
 
       $retResponse = new stdClass();
-      $retResponse->ServiceName = "LJCCityData";
+      $retResponse->ServiceName = "LJCCityDataService";
       $retResponse->Action = $this->Action;
       $retResponse->AffectedCount = $this->AffectedCount;
       $arrItems = LJC::ToArray($this->ResultCities);

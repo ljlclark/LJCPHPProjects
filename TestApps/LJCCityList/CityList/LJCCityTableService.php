@@ -18,8 +18,8 @@
   // LJCHTMLTableLib: LJCHTMLTable
   // CityDAL: City, CityManager
 
-  $cityTable = new LJCCityTableService();
-  $cityTable->Request();
+  $cityTableService = new LJCCityTableService();
+  $cityTableService->Request();
 
   // ***************
   /// <group name="Entry">Entry Methods</group>
@@ -106,7 +106,7 @@
       $this->DebugText = "";
       $this->HTMLTable = "";
       $this->Keys = [];
-      $this->ServiceName = "LJCCityTable";
+      $this->ServiceName = "LJCCityTableService";
       $this->SQL = "";
       $this->TableColumnsArray = [];
     }
@@ -117,7 +117,8 @@
       $methodName = "SetRequestProperties";
 
       $this->Action = $pageData->Action;
-      if (LJC::HasElements($pageData->AddColumns))
+      if (isset($pageData->AddColumns)
+        && LJC::HasElements($pageData->AddColumns))
       {
         $this->AddColumns = $pageData->AddColumns;
       }
@@ -428,7 +429,7 @@
     public int $Limit;
 
     /// <summary>The data object property names.</summary>
-    public array $PropertyNames;
+    public ?array $PropertyNames;
 
     /// <summary>The HTML table column property names.</summary>
     public array $TableColumnNames;

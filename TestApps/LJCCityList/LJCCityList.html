@@ -15,14 +15,17 @@
   <script src="../../LJCJSCommon/LJCCommonLib.js"></script>
   <script src="../../LJCJSCommon/LJCDataLib.js"></script>
   <script src="LJCTable.js"></script>
-  <script src="LJCCityListEvents.js"></script>
+
   <script src="CityList/LJCCityDAL.js"></script>
-  <script src="CityList/LJCCityDataRequest.js"></script>
-  <script src="CityList/LJCCityDetailEvents.js"></script>
+  <script src="LJCCityListEvents.js"></script>
   <script src="CityList/LJCCityTableEvents.js"></script>
-  <script src="CityList/LJCCityTableRequest.js"></script>
+  <!--script src="CityList/LJCCityDataRequest.js"></script-->
+  <script src="CityList/LJCCityDetailEvents.js"></script>
+
+  <script src="CityList/LJCRegionDAL.js"></script>
   <script src="RegionList/LJCRegionTableEvents.js"></script>
-  <script src="RegionList/LJCRegionTableRequest.js"></script>
+  <!--script src="RegionList/LJCRegionDataRequest.js"></script-->
+  <script src="RegionList/LJCRegionDetailEvents.js"></script>
 </head>
 <body>
   <div class="page">
@@ -50,7 +53,16 @@
     <!-- Select Table Dialog -->
     <dialog id="selectDialog"
             style="border: none; padding: 0px">
-      <table id="selectTable"></table>
+      <table id="selectTable">
+        <tr>
+          <td>One</td>
+          <td>This is the one.</td>
+        </tr>
+        <tr>
+          <td>Two</td>
+          <td>This is the other.</td>
+        </tr>
+      </table>
     </dialog>
 
     <!-- The dialog for debug and other display text. -->
@@ -111,14 +123,16 @@
       </form>
     </dialog>
 
-    <!-- Data for the City Detail dialog. -->
+    <!-- Data for Detail dialogs. -->
     <form id="hiddenForm">
       <!-- Primary Keys -->
       <input type="hidden" id="rowCityID" />
+      <input type="hidden" id="rowRegionID" />
 
       <!-- Unique Keys -->
       <input type="hidden" id="rowProvinceID" />
       <input type="hidden" id="rowName" />
+      <input type="hidden" id="rowRegionName" />
     </form>
 
     <!-- City Table Menu -->

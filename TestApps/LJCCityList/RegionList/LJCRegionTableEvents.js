@@ -9,8 +9,10 @@
 //   LJC: AddEvent(), Element(), HasElements(), Visibility()
 //   Debug: ShowText(), ShowDialog()
 // <script src="../../LJCJSCommon/LJCDataLib.js"></script>
-//   LJCDataColumn: 
+//   LJCDataColumn:
 //   LJCDataColumns: Add(), Count()
+// <script src="CityList/LJCRegionDAL.js"></script>
+//   Region
 // <script src="RegionList/LJCRegionTableRequest.js"></script>
 //   LJCRegionTableRequest: Clone()
 // <script src="LJCTable.js"></script>
@@ -78,7 +80,7 @@ class LJCRegionTableEvents
     this.RegionTableRequest = new LJCRegionTableRequest(configName, configFile);
     let tableRequest = this.RegionTableRequest;
     tableRequest.RegionTableID = this.#RegionTableID;
-    tableRequest.RegionTableName = Region.TableName;
+    tableRequest.RegionTableName = LJCRegion.TableName;
 
     // Set retrieve property names.
     // null includes all columns.
@@ -175,7 +177,7 @@ class LJCRegionTableEvents
     const self = this;
 
     let xhr = new XMLHttpRequest();
-    xhr.open("POST", "CityList/LJCRegionTableService.php");
+    xhr.open("POST", "RegionList/LJCRegionTableService.php");
     xhr.setRequestHeader("Content-Type", "application/json");
 
     xhr.onload = function ()
@@ -277,10 +279,10 @@ class LJCRegionTableEvents
   #DefaultPropertyNames()
   {
     let retPropertyNames = [
-      Region.PropertyRegionID,
-      Region.PropertyNumber,
-      Region.PropertyName,
-      Region.PropertyDescription,
+      LJCRegion.PropertyRegionID,
+      LJCRegion.PropertyNumber,
+      LJCRegion.PropertyName,
+      LJCRegion.PropertyDescription,
     ];
     return retPropertyNames;
   }
@@ -315,9 +317,9 @@ class LJCRegionTableEvents
   #TableColumnNames()
   {
     let retColumnNames = [
-      Region.PropertyNumber,
-      Region.PropertyName,
-      Region.PropertyDescription,
+      LJCRegion.PropertyNumber,
+      LJCRegion.PropertyName,
+      LJCRegion.PropertyDescription,
     ];
     return retColumnNames;
   }
@@ -373,6 +375,73 @@ class LJCRegionTableEvents
 
     regionTable.Keys = keys;
     return retRowIndex;
+  }
+  // #endregion
+}
+
+// ***************
+/// <summary>Contains Region HTML Table web service request data.</summary>
+class LJCRegionTableRequest
+{
+  // #region Properties
+
+  /// <summary>The service name.</summary>
+  ServiceName = "LJCRegionTable";
+
+  // The action type name.
+  /// <include path='items/Action/*' file='Doc/LJCRegionTableRequest.xml'/>
+  Action = "";
+
+  /// <summary>The unique key of the first page item.</summary>
+  BeginKeyData = null;
+
+  RegionTableID = "";
+
+  /// <summary>The data access configuration file name.</summary>
+  ConfigFile = "";
+
+  /// <summary>The data access configuration name.</summary>
+  ConfigName = "";
+
+  /// <summary>The unique key of the last page item.</summary>
+  EndKeyData = null;
+
+  /// <summary>The page item count limit.<summary>
+  Limit = 20;
+
+  /// <summary>The data column property names.</summary>
+  PropertyNames = [];
+
+  TableName = "";
+
+  /// <summary>The table column property names.</summary>
+  TableColumnNames = [];
+  // #endregion
+
+  // #region Constructor Methods.
+
+  // Initializes the object instance.
+  /// <include path='items/constructor/*' file='Doc/LJCCityTableRequest.xml'/>
+  constructor(configName = "", configFile = "DataConfigs.xml")
+  {
+    this.ConfigName = configName;
+    this.ConfigFile = configFile;
+
+    this.BeginKeyData = { Name: "" };
+    this.EndKeyData = { Name: "" };
+  }
+  // #endregion
+
+  // #region Data Object Methods
+
+  /// <summary>Creates a clone of this object.</summary>
+  Clone()
+  {
+    let retRequest = null;
+
+    let json = LJC.CreateJSON(this);
+    retRequest = LJC.ParseJSON(json);
+    return retRequest;
   }
   // #endregion
 }

@@ -14,17 +14,19 @@ cd CityList
 set root=..\..\..\..\..\..\..\..
 set servicePath=%root%\inetpub\wwwroot\ATestForm\CityList\CityList
 copy LJCCityDAL.js %servicePath%
-copy LJCCityDataRequest.js %servicePath%
+copy LJCRegionDAL.js %servicePath%
+rem copy LJCCityDataRequest.js %servicePath%
 copy LJCCityDataService.php %servicePath%
 copy LJCCityDetailEvents.js %servicePath%
 copy LJCCityTableEvents.js %servicePath%
-copy LJCCityTableRequest.js %servicePath%
 copy LJCCityTableService.php %servicePath%
 
 cd ..\RegionList
 set servicePath=%root%\inetpub\wwwroot\ATestForm\CityList\RegionList
+copy LJCRegionDataRequest.js %servicePath%
+copy LJCRegionDataService.php %servicePath%
+copy LJCRegionDetailEvents.js %servicePath%
 copy LJCRegionTableEvents.js %servicePath%
-copy LJCRegionTableRequest.js %servicePath%
 copy LJCRegionTableService.php %servicePath%
 
 rem 1\2Users\3Les\4Documents\5Visual Studio 2022\6wwwrootDev\7LJCJSCommon
@@ -51,3 +53,4 @@ cd ..\RegionApp\City
 set root=..\..\..\..\..\..\..
 set servicePath=%root%\inetpub\wwwroot\RegionApp\City
 copy CityDAL.php %servicePath%
+copy RegionDAL.php %servicePath%

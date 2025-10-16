@@ -22,36 +22,62 @@
 class LJCCityListEvents
 {
   // #region Properties
+  // ---------------
 
   // The city table helper object.
   // Used in LJCCityTableEvents Page().
   CityTable = null; // LJCTable
 
-  // The city table ID name.
+  // The city HTML Table ID.
   // Used in LJCCityTableEvents constructor().
   CityTableID = "";
 
   // The active table.
   // Used in LJCCityTableEvents Page() and #TableClick().
   FocusTable = null; // LJCTable
+
+  // Used in LJCRegionTableEvents Page().
+  RegionTable = null // LJCTable
+
+  // The region HTML Table ID.
+  RegionTableID = "";
   // #endregion
 
   // #region Private Properties
+  // ---------------
 
   // The detail dialog events.
   #CityDetailEvents = null; // LJCCityDetailEvents
 
+  // The city HTML menu ID.
+  #CityMenuID = "";
+
   // The city table events.
   #CityTableEvents = null; // LJCCityTableEvents
+
+  // The data configuration file.
+  #ConfigFile = "";
+
+  // The data configuration name.
+  #ConfigName = "";
+
+  // The show debug text object.
+  #Debug = null;
+
+  // The detail dialog events.
+  #RegionDetailEvents = null; // LJCRegionDetailEvents
+
+  // The region HTML menu ID.
+  #RegionMenuID = "";
 
   // The region table events.
   #RegionTableEvents = null; // LJCRegionTableEvents
 
-  // The show debug text object.
-  #Debug = null;
+
   // #endregion
 
   // #region Constructor Methods.
+  // ---------------
 
   // Initializes the object instance.
   /// <include path='items/constructor/*' file='Doc/LJCCityListEvents.xml'/>
@@ -59,29 +85,16 @@ class LJCCityListEvents
   {
     this.#Debug = new Debug("LJCCityListEvents");
 
-    // Set properties from parameters.
     this.CityTableID = cityTableID;
+    this.#ConfigName = configName;
+    this.#ConfigFile = configFile;
 
-    // City Table helper object.
-    this.CityTable = new LJCTable(this.CityTableID, "cityMenu");
-    this.FocusTable = null;
+    this.RegionTableID = "selectTable";
+    this.#CityMenuID = "cityMenu";
+    this.#RegionMenuID = "regionMenu";
 
-    // City Table events.
-    this.#CityTableEvents = new LJCCityTableEvents(this, "cityMenu", configName
-      , configFile);
-    let tableRequest = this.#CityTableEvents.CityTableRequest;
-    tableRequest.Limit = 20;
-    tableRequest.PropertyNames = this.#CityPropertyNames();
-
-    // City Detail events.
-    this.#CityDetailEvents = new LJCCityDetailEvents(this.CityTable);
-
-    // Region Table Events
-    //this.#RegionTableEvents = new LJCRegionTableEvents(this, "regionMenu", configName
-    //  , configFile);
-    //let regionTableRequest = this.#RegionTableEvents.TableRequest;
-    //regionTableRequest.Limit = 20;
-    //regionTableRequest.PropertyNames = this.#RegionPropertyNames();
+    this.#SetupCity();
+    this.#SetupRegion();
 
     this.#AddEvents();
     this.#Refresh();
@@ -145,9 +158,46 @@ class LJCCityListEvents
     ];
     return retPropertyNames;
   }
+
+  // Setup City Table and Detail.
+  #SetupCity()
+  {
+    // City Table helper object.
+    this.CityTable = new LJCTable(this.CityTableID, this.#CityMenuID);
+    this.FocusTable = null;
+
+    // City Table events.
+    this.#CityTableEvents = new LJCCityTableEvents(this, this.#CityMenuID
+      , this.#ConfigName, this.#ConfigFile);
+    let tableRequest = this.#CityTableEvents.CityTableRequest;
+    tableRequest.Limit = 18;
+    tableRequest.PropertyNames = this.#CityPropertyNames();
+
+    // City Detail events.
+    this.#CityDetailEvents = new LJCCityDetailEvents(this.CityTable);
+  }
+
+  // Setup Region Table and Detail.
+  #SetupRegion()
+  {
+    // Region Table helper object.
+    this.RegionTable = new LJCTable(this.RegionTableID, this.#RegionMenuID);
+
+    // Region Table Events
+    this.#RegionTableEvents = new LJCRegionTableEvents(this, this.#RegionMenuID
+      , this.#ConfigName, this.#ConfigFile);
+    let regionTableRequest = this.#RegionTableEvents.RegionTableRequest;
+    regionTableRequest.Limit = 18;
+    // No join columns so leave null to use all columns.
+    //regionTableRequest.PropertyNames = this.#RegionPropertyNames();
+
+    // Region Detail events.
+    this.#RegionDetailEvents = new LJCRegionDetailEvents(this.RegionTable);
+  }
   // #endregion
 
   // #region Document Event Handlers
+  // ---------------
 
   // The Document "contextmenu" event handler.
   #DocumentContextMenu(event)
@@ -219,11 +269,13 @@ class LJCCityListEvents
   // #endregion
 
   // #region City List Event Handlers
+  // ---------------
 
   // Displays the Region Selection table.
   #RegionButton()
   {
     this.#RegionRefresh();
+    selectDialog.showModal();
   }
 
   // Displays the Province Selection table.
@@ -234,6 +286,7 @@ class LJCCityListEvents
   // #endregion
 
   // #region City Menu Event Handlers
+  // ---------------
 
   // Deletes the selected item.
   #Delete()
@@ -303,20 +356,22 @@ class LJCCityListEvents
   // #endregion
 
   // #region Region Menu Event Handlers
+  // ---------------
 
   // Refreshes the current page.
   #RegionRefresh()
   {
     let tableEvents = this.#RegionTableEvents;
-    tableEvents.TableRequest.Action = "Refresh";
+    tableEvents.RegionTableRequest.Action = "Refresh";
     tableEvents.Page();
 
     // Update the table with new values ETable and Keys.
-    //this.#CityDetailEvents.UpdateTable(tableEvents.CityTable);
+    this.#RegionDetailEvents.UpdateRegionTable(tableEvents.RegionTable);
   }
   // #endregion
 
   // #region Other Menu Methods
+  // ---------------
 
   // Creates the city request.
   #CityRequest()
@@ -361,6 +416,7 @@ class LJCCityListEvents
   // #endregion
 
   // #region Web Service Methods
+  // ---------------
 
   // Clears the City form data.
   #ClearCityFormData()

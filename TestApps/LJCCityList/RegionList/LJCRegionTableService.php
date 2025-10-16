@@ -18,8 +18,8 @@
   // LJCHTMLTableLib: LJCHTMLTable
   // RegionDAL: Region, RegionManager
 
-  $service = new LJCRegionTableService();
-  $service->Request();
+  $regionTableService = new LJCRegionTableService();
+  $regionTableService->Request();
 
   // ***************
   /// <group name="Entry">Entry Methods</group>
@@ -95,7 +95,7 @@
       $this->HTMLTable = "";
       $this->DebugText = "";
       $this->Keys = [];
-      $this->ServiceName = "LJCCityTable";
+      $this->ServiceName = "LJCRegionTableService";
       $this->SQL = "";
       $this->TableColumnsArray = [];
     }
@@ -106,7 +106,11 @@
       $methodName = "SetRequestProperties";
 
       $this->Action = $pageData->Action;
-      $this->AddColumns = $pageData->AddColumns;
+      if (isset($pageData->AddColumns)
+        && LJC::HasElements($pageData->AddColumns))
+      {
+        $this->AddColumns = $pageData->AddColumns;
+      }
       $this->BeginKeyData = $pageData->BeginKeyData;
       $this->ConfigFile = $pageData->ConfigFile;
       $this->ConfigName = $pageData->ConfigName;
@@ -331,7 +335,8 @@
       {
         case "Next":
           $filter = $this->NextFilter($this->EndKeyData);
-          $manager->OrderByNames = array("Number");
+          //$manager->OrderByNames = array("Number");
+          $manager->OrderByNames = array("Name");
           $retResult = $manager->LoadResult(null, $propertyNames, $joins
             , $filter);
           $this->SQL = $manager->DataManager->SQL;
@@ -340,8 +345,9 @@
         case "Previous":
           // Load descending.
           $filter = $this->PreviousFilter($this->BeginKeyData);
-          $manager->OrderByNames = array("Number desc"
-            , "Name desc");
+          //$manager->OrderByNames = array("Number desc"
+          //  , "Name desc");
+          $manager->OrderByNames = array("Name desc");
           $retResult = $manager->LoadResult(null, $propertyNames, $joins
             , $filter);
           $this->SQL = $manager->DataManager->SQL;
@@ -358,11 +364,8 @@
 
         default:
           $filter = "";
-          if ($this->BeginKeyData->ProvinceID != 0)
-          {
-            $filter = $this->RefreshFilter($this->BeginKeyData);
-          }
-          $manager->OrderByNames = array("Number");
+          //$manager->OrderByNames = array("Number");
+          $manager->OrderByNames = array("Name");
           $retResult = $manager->LoadResult(null, $propertyNames, $joins
             , $filter);
           $this->SQL = $manager->DataManager->SQL;
@@ -381,7 +384,7 @@
     public string $Action;
 
     /// <summary>Column definitions to add to the data manager.</summary>
-    public array $AddColumns;
+    public array $AddColumns = [];
 
     /// <summary>The find key values for the first table row data.</summary>
     /// <remarks> Properties: ProvinceID, Name</remarks>
@@ -404,7 +407,7 @@
     public int $Limit;
 
     /// <summary>The data object property names.</summary>
-    public array $PropertyNames;
+    public ?array $PropertyNames;
 
     /// <summary>The HTML table column property names.</summary>
     public array $TableColumnNames;

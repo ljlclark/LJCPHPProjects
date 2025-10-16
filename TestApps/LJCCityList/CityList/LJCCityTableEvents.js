@@ -9,8 +9,10 @@
 //   LJC: AddEvent(), Element(), HasElements(), Visibility()
 //   Debug: ShowText(), ShowDialog()
 // <script src="../../LJCJSCommon/LJCDataLib.js"></script>
-//   LJCDataColumn: 
+//   LJCDataColumn:
 //   LJCDataColumns: Add(), Count()
+// <script src="CityList/LJCCityDAL.js"></script>
+//   City
 // <script src="CityList/LJCCityTableRequest.js"></script>
 //   LJCCityTableRequest: Clone()
 // <script src="LJCTable.js"></script>
@@ -88,7 +90,7 @@ class LJCCityTableEvents
     // Can include join column names.
     tableRequest.TableColumnNames = this.#TableColumnNames();
 
-    // Add join table columns.
+    // Insert join table columns.
     //let addColumns = new LJCDataColumns()
     //let addColumn = addColumns.Add(City.PropertyProvinceName);
     //addColumn.InsertIndex = 0; // Default
@@ -390,6 +392,76 @@ class LJCCityTableEvents
 
     cityTable.Keys = keys;
     return retRowIndex;
+  }
+  // #endregion
+}
+
+// ***************
+/// <summary>Contains City HTML Table web service request data.</summary>
+class LJCCityTableRequest
+{
+  // #region Properties
+
+  /// <summary>The service name.</summary>
+  ServiceName = "LJCCityTable";
+
+  // The action type name.
+  /// <include path='items/Action/*' file='Doc/LJCCityTableRequest.xml'/>
+  Action = "";
+
+  AddColumns = [];
+
+  /// <summary>The unique key of the first page item.</summary>
+  BeginKeyData = null;
+
+  CityTableID = "";
+
+  /// <summary>The data access configuration file name.</summary>
+  ConfigFile = "";
+
+  /// <summary>The data access configuration name.</summary>
+  ConfigName = "";
+
+  /// <summary>The unique key of the last page item.</summary>
+  EndKeyData = null;
+
+  /// <summary>The page item count limit.<summary>
+  Limit = 20;
+
+  /// <summary>The data column property names.</summary>
+  PropertyNames = [];
+
+  TableName = "";
+
+  /// <summary>The table column property names.</summary>
+  TableColumnNames = [];
+  // #endregion
+
+  // #region Constructor Methods.
+
+  // Initializes the object instance.
+  /// <include path='items/constructor/*' file='Doc/LJCCityTableRequest.xml'/>
+  constructor(configName = "", configFile = "DataConfigs.xml")
+  {
+    this.ConfigName = configName;
+    this.ConfigFile = configFile;
+
+    this.AddColumns = [];
+    this.BeginKeyData = { ProvinceID: 0, Name: "" };
+    this.EndKeyData = { ProvinceID: 0, Name: "" };
+  }
+  // #endregion
+
+  // #region Data Object Methods
+
+  /// <summary>Creates a clone of this object.</summary>
+  Clone()
+  {
+    let retRequest = null;
+
+    let json = LJC.CreateJSON(this);
+    retRequest = LJC.ParseJSON(json);
+    return retRequest;
   }
   // #endregion
 }
