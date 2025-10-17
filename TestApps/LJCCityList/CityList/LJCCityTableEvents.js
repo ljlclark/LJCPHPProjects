@@ -13,8 +13,6 @@
 //   LJCDataColumns: Add(), Count()
 // <script src="CityList/LJCCityDAL.js"></script>
 //   City
-// <script src="CityList/LJCCityTableRequest.js"></script>
-//   LJCCityTableRequest: Clone()
 // <script src="LJCTable.js"></script>
 //   LJCTable: SelectRow(), SelectColumnRow()
 // #endregion
@@ -192,10 +190,14 @@ class LJCCityTableEvents
       // Get the AJAX response.
       if (LJC.HasText(this.responseText))
       {
-        self.#Debug.ShowText(methodName, "this.responseText"
-          , this.responseText, false);
+        if (!LJCCityTableResponse.IsValidResponse(this.responseText))
+        {
+          // ToDo: Remove response check?
+          self.#Debug.ShowText(methodName, "this.responseText"
+            , this.responseText, false);
+        }
 
-        let response = JSON.parse(this.responseText);
+        let response = new LJCCityTableResponse(this.responseText);
 
         self.#Debug.ShowDialog(methodName, "response.DebugText"
           , response.DebugText, false);
@@ -215,8 +217,7 @@ class LJCCityTableEvents
           let rowIndex = self.#UpdateCityTable(self, response.Keys);
           let cityTable = self.CityTable;
 
-          let tableColumnsArray = response.TableColumnsArray;
-          cityTable.TableColumns = LJCDataColumns.ToCollection(tableColumnsArray);
+          cityTable.TableColumns = response.TableColumns;
 
           // Updates the BeginningOfData and EndOfData flags.
           if (self.#UpdateLimitFlags())
@@ -239,7 +240,7 @@ class LJCCityTableEvents
 
     let tableRequest = this.CityTableRequest.Clone();
     tableRequest.ConfigFile = "../DataConfigs.xml";
-    let request = LJC.CreateJSON(tableRequest);
+    let request = tableRequest.Request();
     xhr.send(request);
   }
 
@@ -331,7 +332,6 @@ class LJCCityTableEvents
   #TableColumnNames()
   {
     let retColumnNames = [
-      //City.PropertyProvinceName,
       City.PropertyName,
       City.PropertyDescription,
       City.PropertyCityFlag,
@@ -397,23 +397,23 @@ class LJCCityTableEvents
 }
 
 // ***************
-/// <summary>Contains City HTML Table web service request data.</summary>
+/// <summary>The City HTML Table web service request.</summary>
 class LJCCityTableRequest
 {
   // #region Properties
-
-  /// <summary>The service name.</summary>
-  ServiceName = "LJCCityTable";
 
   // The action type name.
   /// <include path='items/Action/*' file='Doc/LJCCityTableRequest.xml'/>
   Action = "";
 
+  /// <summary>The array of LJCDataColumn objects to add to the table.</summary>
   AddColumns = [];
+  //AddTableColumns = [];
 
   /// <summary>The unique key of the first page item.</summary>
   BeginKeyData = null;
 
+  /// <summary>The HTML city table element ID.
   CityTableID = "";
 
   /// <summary>The data access configuration file name.</summary>
@@ -426,15 +426,19 @@ class LJCCityTableRequest
   EndKeyData = null;
 
   /// <summary>The page item count limit.<summary>
-  Limit = 20;
+  Limit = 18;
 
   /// <summary>The data column property names.</summary>
   PropertyNames = [];
 
-  TableName = "";
+  /// <summary>The service name.</summary>
+  ServiceName = "LJCCityTableService";
 
   /// <summary>The table column property names.</summary>
   TableColumnNames = [];
+
+  /// <summary>The data source table name.</summary>
+  TableName = "";
   // #endregion
 
   // #region Constructor Methods.
@@ -457,11 +461,106 @@ class LJCCityTableRequest
   /// <summary>Creates a clone of this object.</summary>
   Clone()
   {
-    let retRequest = null;
+    let retRequest = new LJCCityTableRequest(this.ConfigName, this.ConfigFile);
 
-    let json = LJC.CreateJSON(this);
-    retRequest = LJC.ParseJSON(json);
+    retRequest.Action = this.Action;
+
+    // Array of LJCDataColumn objects.
+    retRequest.AddColumns = [];
+    for (let index = 0; index < this.AddColumns.length; index++)
+    {
+      retRequest.AddColumns.push(this.AddColumns[index].Clone());
+    }
+    retRequest.BeginKeyData = structuredClone(this.BeginKeyData);
+    retRequest.CityTableID = this.CityTableID;
+    retRequest.EndKeyData = structuredClone(this.EndKeyData);
+    retRequest.Limit = this.Limit;
+    retRequest.PropertyNames = structuredClone(this.PropertyNames);
+    retRequest.ServiceName = this.ServiceName;
+    retRequest.TableColumnNames = structuredClone(this.TableColumnNames);
+    retRequest.TableName = this.TableName;
     return retRequest;
+  }
+  // #endregion
+
+  // #region Methods
+
+  /// <summary>Creates the JSON request.</summary>
+  /// <returns>The request as JSON.</returns>
+  Request()
+  {
+    let retRequest = "";
+
+    retRequest = LJC.CreateJSON(this);
+    return retRequest;
+  }
+  // #endregion
+}
+
+// ***************
+/// <summary>The City HTML Table web service response.</summary>
+class LJCCityTableResponse
+{
+  // #region Properties
+
+  /// <summary>The service debug text.</summary>
+  DebugText = "";
+
+  /// <summary>The created HTML table text.</summary>
+  HTMLTable = "";
+
+  /// <summary>The keys that correspond to the HTML table text.</summary>
+  Keys = [];
+
+  /// <summary>The service name.</summary>
+  ServiceName = "";
+
+  /// <summary>The executed SQL statement.</summary>
+  SQL = "";
+
+  /// <summary>The table columns collection.</summary>
+  TableColumns = null; // LJCDataColumns
+  // #endregion
+
+  // #region Static Methods
+
+  /// <summary>Checks if the response is valid.</summary>
+  /// <param name="responseText">The response text.</param>
+  /// <returns>true if valid; otherwise false.</returns>
+  static IsValidResponse(responseText)
+  {
+    let retValid = false;
+
+    if (LJC.HasText(responseText))
+    {
+      let text = responseText.toLowerCase().trim();
+      if (text.startsWith("{\"servicename\":"))
+      {
+        retValid = true;
+      }
+    }
+    return retValid;
+  }
+  // #endregion
+
+  // #region Constructor Methods.
+
+  /// <summary>Initializes the object instance.</summary>
+  /// <param name="responseText">The response text.</param>
+  constructor(responseText)
+  {
+    if (LJCCityTableResponse.IsValidResponse(responseText))
+    {
+      let response = JSON.parse(responseText);
+
+      this.DebugText = response.DebugText;
+      this.HTMLTable = response.HTMLTable;
+      this.Keys = response.Keys;
+      this.ServiceName = response.ServiceName;
+      this.SQL = response.SQL;
+      let tableColumnsArray = response.TableColumnsArray;
+      this.TableColumns = LJCDataColumns.ToCollection(tableColumnsArray);
+    }
   }
   // #endregion
 }
