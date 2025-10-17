@@ -13,14 +13,13 @@
 //   LJCDataColumns: Add(), Count()
 // <script src="CityList/LJCRegionDAL.js"></script>
 //   Region
-// <script src="RegionList/LJCRegionTableRequest.js"></script>
-//   LJCRegionTableRequest: Clone()
 // <script src="LJCTable.js"></script>
 //   LJCTable: SelectRow(), SelectColumnRow()
 // #endregion
 
 /// <summary>The Region Table Events</summary>
 /// LibName: LJCRegionTableEvents
+//  Classes: LJCRegionTableEvents, LJCRegionTableRequest, LJCRegionTableResponse
 
 // ***************
 /// <summary>Contains Region HTML Table event handlers.</summary>

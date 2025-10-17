@@ -19,6 +19,7 @@
 
 /// <summary>The City Table Events</summary>
 /// LibName: LJCCityTableEvents
+//  Classes: LJCCityTableEvents, LJCCityTableRequest, LJCCityTableResponse
 
 // ***************
 /// <summary>Contains City HTML Table event handlers.</summary>
