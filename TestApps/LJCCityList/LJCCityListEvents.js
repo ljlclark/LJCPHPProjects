@@ -8,7 +8,8 @@
 //   LJC: AddEvent(), CreateJSON(), HasText(), MouseLocation(), ParseJSON()
 //   Visibility()
 //   Debug: ShowText(), ShowDialog()
-// <script src="CityList/LJCCityDataRequest.js"></script>
+// <script src="CityList/LJCCityDetailEvents.js"></script>
+//   LJCCityDataRequest:
 // <script src="LJCTable.js"></script>
 //   LJCTable: GetTable(), ShowMenu() MoveNext(), MovePrevious()
 //   SelectColumnRow()
@@ -169,7 +170,7 @@ class LJCCityListEvents
     // City Table events.
     this.#CityTableEvents = new LJCCityTableEvents(this, this.#CityMenuID
       , this.#ConfigName, this.#ConfigFile);
-    let tableRequest = this.#CityTableEvents.CityTableRequest;
+    let tableRequest = this.#CityTableEvents.TableRequest;
     tableRequest.Limit = 18;
     tableRequest.PropertyNames = this.#CityPropertyNames();
 
@@ -186,10 +187,10 @@ class LJCCityListEvents
     // Region Table Events
     this.#RegionTableEvents = new LJCRegionTableEvents(this, this.#RegionMenuID
       , this.#ConfigName, this.#ConfigFile);
-    let regionTableRequest = this.#RegionTableEvents.RegionTableRequest;
-    regionTableRequest.Limit = 18;
+    let tableRequest = this.#RegionTableEvents.TableRequest;
+    tableRequest.Limit = 18;
     // No join columns so leave null to use all columns.
-    //regionTableRequest.PropertyNames = this.#RegionPropertyNames();
+    //tableRequest.PropertyNames = this.#RegionPropertyNames();
 
     // Region Detail events.
     this.#RegionDetailEvents = new LJCRegionDetailEvents(this.RegionTable);
@@ -347,7 +348,7 @@ class LJCCityListEvents
   #Refresh()
   {
     let tableEvents = this.#CityTableEvents;
-    tableEvents.CityTableRequest.Action = "Refresh";
+    tableEvents.TableRequest.Action = "Refresh";
     tableEvents.Page();
 
     // Update the table with new values ETable and Keys.

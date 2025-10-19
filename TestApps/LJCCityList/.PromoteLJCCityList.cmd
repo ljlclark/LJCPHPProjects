@@ -8,6 +8,7 @@ copy .UpdateCityListService.cmd %servicePath%
 copy LJCCityList.html %servicePath%
 copy LJCCityListEvents.js %servicePath%
 copy LJCDataConfigs.php %servicePath%
+copy LJCTableMessageLib.js %servicePath%
 copy LJCTable.js %servicePath%
 
 cd CityList

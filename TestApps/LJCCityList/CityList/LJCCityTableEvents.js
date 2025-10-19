@@ -15,11 +15,14 @@
 //   City
 // <script src="LJCTable.js"></script>
 //   LJCTable: SelectRow(), SelectColumnRow()
+// <script src="LJCTableMessageLib.js"></script>
+//   LJCTableResponse:
+//   LJCTableRequest: Request()
 // #endregion
 
 /// <summary>The City Table Events</summary>
 /// LibName: LJCCityTableEvents
-//  Classes: LJCCityTableEvents, LJCCityTableRequest, LJCCityTableResponse
+//  Classes: LJCCityTableEvents
 
 // ***************
 /// <summary>Contains City HTML Table event handlers.</summary>
@@ -33,7 +36,7 @@ class LJCCityTableEvents
 
   /// <summary> The city table data request.</summary>
   // Used in CityListEvents constructor(), #Refresh().
-  CityTableRequest = null; // LJCCityTableRequest;
+  TableRequest = null; // LJCTableRequest;
   // #endregion
 
   // #region Private Properties
@@ -51,34 +54,35 @@ class LJCCityTableEvents
   #CityListEvents = null; // LJCCityListEvents;
 
   // The associated menu ID name.
-  #MenuID = "";
+  #HTMLMenuID = "";
 
   // The associated table ID name.
-  #TableID = "";
+  #HTMLTableID = "";
   // #endregion
 
   // #region Constructor Methods.
 
   /// <summary>Initializes the object instance.</summary>
-  constructor(cityListEvents, menuID, configName = ""
+  constructor(cityListEvents, htmlMenuID, configName = ""
     , configFile = "DataConfigs.xml")
   {
     this.#Debug = new Debug("LJCCityTableEvents");
 
     // Set properties from parameters.
     this.#CityListEvents = cityListEvents;
-    this.#MenuID = menuID;
+    this.#HTMLMenuID = htmlMenuID;
 
     this.#IsNextPage = false;
     this.#IsPrevPage = false;
-    this.#TableID = this.#CityListEvents.CityTableID;
+    this.#HTMLTableID = this.#CityListEvents.CityTableID;
 
-    this.CityTable = new LJCTable(this.#TableID, this.#MenuID);
+    this.CityTable = new LJCTable(this.#HTMLTableID, this.#HTMLMenuID);
 
     // Service request for LJCCityTableService.php
-    this.CityTableRequest = new LJCCityTableRequest(configName, configFile);
-    let tableRequest = this.CityTableRequest;
-    tableRequest.CityTableID = this.#TableID;
+    this.TableRequest = new LJCTableRequest("LJCCityTableService", configName
+      , configFile);
+    let tableRequest = this.TableRequest;
+    tableRequest.HTMLTableID = this.#HTMLTableID;
     tableRequest.TableName = City.TableName;
 
     // Set retrieve property names.
@@ -93,7 +97,7 @@ class LJCCityTableEvents
     //let addColumns = new LJCDataColumns()
     //let addColumn = addColumns.Add(City.PropertyProvinceName);
     //addColumn.InsertIndex = 0; // Default
-    //tableRequest.AddColumns = LJC.ToArray(addColumns);
+    //tableRequest.AddTableColumns = LJC.ToArray(addColumns);
 
     this.#AddEvents();
   }
@@ -111,7 +115,7 @@ class LJCCityTableEvents
     document.addEventListener("click", this.#DocumentClick.bind(this));
 
     // Table Event Handlers.
-    LJC.AddEvent(this.#TableID, "click", this.#TableClick, this);
+    LJC.AddEvent(this.#HTMLTableID, "click", this.#TableClick, this);
   }
   // #endregion
 
@@ -120,13 +124,13 @@ class LJCCityTableEvents
   // The Document "click" handler.
   #DocumentClick()
   {
-    LJC.Visibility(this.#MenuID, "hidden");
+    LJC.Visibility(this.#HTMLMenuID, "hidden");
   }
 
   // The Table "click" handler.
   #TableClick(event)
   {
-    LJC.Visibility(this.#MenuID, "hidden");
+    LJC.Visibility(this.#HTMLMenuID, "hidden");
 
     // Handle table row click.
     if ("TD" == event.target.tagName)
@@ -151,9 +155,9 @@ class LJCCityTableEvents
     if (!this.CityTable.EndOfData)
     {
       this.#IsNextPage = true;
-      this.CityTableRequest.Action = "Next";
+      this.TableRequest.Action = "Next";
       this.UpdateTableRequest();
-      this.Page(this.CityTableRequest);
+      this.Page(this.TableRequest);
     }
   }
 
@@ -164,9 +168,9 @@ class LJCCityTableEvents
     if (!this.CityTable.BeginningOfData)
     {
       this.#IsPrevPage = true;
-      this.CityTableRequest.Action = "Previous";
+      this.TableRequest.Action = "Previous";
       this.UpdateTableRequest();
-      this.Page(this.CityTableRequest);
+      this.Page(this.TableRequest);
     }
   }
   // #endregion
@@ -191,14 +195,14 @@ class LJCCityTableEvents
       // Get the AJAX response.
       if (LJC.HasText(this.responseText))
       {
-        if (!LJCCityTableResponse.IsValidResponse(this.responseText))
+        if (!LJCTableResponse.IsValidResponse(this.responseText))
         {
           // ToDo: Remove response check?
           self.#Debug.ShowText(methodName, "this.responseText"
             , this.responseText, false);
         }
 
-        let response = new LJCCityTableResponse(this.responseText);
+        let response = new LJCTableResponse(this.responseText);
 
         self.#Debug.ShowDialog(methodName, "response.DebugText"
           , response.DebugText, false);
@@ -209,9 +213,9 @@ class LJCCityTableEvents
         if (self.#HasData(response.HTMLTable))
         {
           // Create new table element and add new "click" event.
-          let eTable = LJC.Element(self.#TableID);
+          let eTable = LJC.Element(self.#HTMLTableID);
           eTable.outerHTML = response.HTMLTable;
-          LJC.AddEvent(self.#TableID, "click", self.#TableClick
+          LJC.AddEvent(self.#HTMLTableID, "click", self.#TableClick
             , self);
 
           // Updates CityTable with new table element, keys and data columns.
@@ -229,7 +233,7 @@ class LJCCityTableEvents
 
           cityTable.SelectRow(rowIndex, rowIndex);
 
-          // Set hidden form primary keys and CityTableRequest.
+          // Set hidden form primary keys and TableRequest.
           self.UpdateTableRequest()
 
           // Can only assign public data.
@@ -239,7 +243,7 @@ class LJCCityTableEvents
       }
     };
 
-    let tableRequest = this.CityTableRequest.Clone();
+    let tableRequest = this.TableRequest.Clone();
     tableRequest.ConfigFile = "../DataConfigs.xml";
     let request = tableRequest.Request();
     xhr.send(request);
@@ -264,13 +268,13 @@ class LJCCityTableEvents
       rowName.value = rowKeys.Name;
     }
 
-    if (this.CityTableRequest != null)
+    if (this.TableRequest != null)
     {
       // Get first row key.
       let rowKeys = cityTable.Keys[0];
       if (rowKeys != null)
       {
-        let tableRequest = this.CityTableRequest;
+        let tableRequest = this.TableRequest;
         tableRequest.BeginKeyData.ProvinceID = rowKeys.ProvinceID;
         tableRequest.BeginKeyData.Name = rowKeys.Name;
       }
@@ -280,7 +284,7 @@ class LJCCityTableEvents
       rowKeys = cityTable.Keys[lastIndex];
       if (rowKeys != null)
       {
-        let tableRequest = this.CityTableRequest;
+        let tableRequest = this.TableRequest;
         tableRequest.EndKeyData.ProvinceID = rowKeys.ProvinceID;
         tableRequest.EndKeyData.Name = rowKeys.Name;
       }
@@ -316,7 +320,7 @@ class LJCCityTableEvents
       if (this.#IsNextPage)
       {
         // Keep at last row.
-        this.CityTable.CurrentRowIndex = this.CityTableRequest.Limit - 1;
+        this.CityTable.CurrentRowIndex = this.TableRequest.Limit - 1;
         this.#IsNextPage = false;
       }
       if (this.#IsPrevPage)
@@ -354,7 +358,7 @@ class LJCCityTableEvents
       retValue = true;
       cityTable.BeginningOfData = false;
       cityTable.EndOfData = false;
-      if (cityTable.Keys.length < this.CityTableRequest.Limit)
+      if (cityTable.Keys.length < this.TableRequest.Limit)
       {
         cityTable.EndOfData = true;
       }
@@ -367,11 +371,11 @@ class LJCCityTableEvents
       retValue = true;
       cityTable.BeginningOfData = false;
       cityTable.EndOfData = false;
-      if (cityTable.Keys.length < this.CityTableRequest.Limit)
+      if (cityTable.Keys.length < this.TableRequest.Limit)
       {
         cityTable.BeginningOfData = true;
       }
-      cityTable.CurrentRowIndex = this.CityTableRequest.Limit;
+      cityTable.CurrentRowIndex = this.TableRequest.Limit;
       this.#IsPrevPage = false;
     }
     return retValue;
@@ -389,179 +393,10 @@ class LJCCityTableEvents
     retRowIndex = cityTable.CurrentRowIndex;
 
     // Reset table to new table element.
-    cityTable.ETable = LJC.Element(this.#TableID);
+    cityTable.ETable = LJC.Element(this.#HTMLTableID);
 
     cityTable.Keys = keys;
     return retRowIndex;
-  }
-  // #endregion
-}
-
-// ***************
-/// <summary>The City HTML Table web service request.</summary>
-class LJCCityTableRequest
-{
-  // #region Properties
-
-  // The action type name.
-  /// <include path='items/Action/*' file='Doc/LJCCityTableRequest.xml'/>
-  Action = "";
-
-  /// <summary>The array of LJCDataColumn objects to add to the table.</summary>
-  AddColumns = [];
-  //AddTableColumns = [];
-
-  /// <summary>The unique key of the first page item.</summary>
-  BeginKeyData = null;
-
-  /// <summary>The HTML city table element ID.
-  CityTableID = "";
-
-  /// <summary>The data access configuration file name.</summary>
-  ConfigFile = "";
-
-  /// <summary>The data access configuration name.</summary>
-  ConfigName = "";
-
-  /// <summary>The unique key of the last page item.</summary>
-  EndKeyData = null;
-
-  /// <summary>The page item count limit.<summary>
-  Limit = 18;
-
-  /// <summary>The data column property names.</summary>
-  PropertyNames = [];
-
-  /// <summary>The service name.</summary>
-  ServiceName = "LJCCityTableService";
-
-  /// <summary>The table column property names.</summary>
-  TableColumnNames = [];
-
-  /// <summary>The data source table name.</summary>
-  TableName = "";
-  // #endregion
-
-  // #region Constructor Methods.
-
-  // Initializes the object instance.
-  /// <include path='items/constructor/*' file='Doc/LJCCityTableRequest.xml'/>
-  constructor(configName = "", configFile = "DataConfigs.xml")
-  {
-    this.ConfigName = configName;
-    this.ConfigFile = configFile;
-
-    this.AddColumns = [];
-    this.BeginKeyData = { ProvinceID: 0, Name: "" };
-    this.EndKeyData = { ProvinceID: 0, Name: "" };
-  }
-  // #endregion
-
-  // #region Data Object Methods
-
-  /// <summary>Creates a clone of this object.</summary>
-  Clone()
-  {
-    let retRequest = new LJCCityTableRequest(this.ConfigName, this.ConfigFile);
-
-    retRequest.Action = this.Action;
-
-    // Array of LJCDataColumn objects.
-    retRequest.AddColumns = [];
-    for (let index = 0; index < this.AddColumns.length; index++)
-    {
-      retRequest.AddColumns.push(this.AddColumns[index].Clone());
-    }
-    retRequest.BeginKeyData = structuredClone(this.BeginKeyData);
-    retRequest.CityTableID = this.CityTableID;
-    retRequest.EndKeyData = structuredClone(this.EndKeyData);
-    retRequest.Limit = this.Limit;
-    retRequest.PropertyNames = structuredClone(this.PropertyNames);
-    retRequest.ServiceName = this.ServiceName;
-    retRequest.TableColumnNames = structuredClone(this.TableColumnNames);
-    retRequest.TableName = this.TableName;
-    return retRequest;
-  }
-  // #endregion
-
-  // #region Methods
-
-  /// <summary>Creates the JSON request.</summary>
-  /// <returns>The request as JSON.</returns>
-  Request()
-  {
-    let retRequest = "";
-
-    retRequest = LJC.CreateJSON(this);
-    return retRequest;
-  }
-  // #endregion
-}
-
-// ***************
-/// <summary>The City HTML Table web service response.</summary>
-class LJCCityTableResponse
-{
-  // #region Properties
-
-  /// <summary>The service debug text.</summary>
-  DebugText = "";
-
-  /// <summary>The created HTML table text.</summary>
-  HTMLTable = "";
-
-  /// <summary>The keys that correspond to the HTML table text.</summary>
-  Keys = [];
-
-  /// <summary>The service name.</summary>
-  ServiceName = "";
-
-  /// <summary>The executed SQL statement.</summary>
-  SQL = "";
-
-  /// <summary>The table columns collection.</summary>
-  TableColumns = null; // LJCDataColumns
-  // #endregion
-
-  // #region Static Methods
-
-  /// <summary>Checks if the response is valid.</summary>
-  /// <param name="responseText">The response text.</param>
-  /// <returns>true if valid; otherwise false.</returns>
-  static IsValidResponse(responseText)
-  {
-    let retValid = false;
-
-    if (LJC.HasText(responseText))
-    {
-      let text = responseText.toLowerCase().trim();
-      if (text.startsWith("{\"servicename\":"))
-      {
-        retValid = true;
-      }
-    }
-    return retValid;
-  }
-  // #endregion
-
-  // #region Constructor Methods.
-
-  /// <summary>Initializes the object instance.</summary>
-  /// <param name="responseText">The response text.</param>
-  constructor(responseText)
-  {
-    if (LJCCityTableResponse.IsValidResponse(responseText))
-    {
-      let response = JSON.parse(responseText);
-
-      this.DebugText = response.DebugText;
-      this.HTMLTable = response.HTMLTable;
-      this.Keys = response.Keys;
-      this.ServiceName = response.ServiceName;
-      this.SQL = response.SQL;
-      let tableColumnsArray = response.TableColumnsArray;
-      this.TableColumns = LJCDataColumns.ToCollection(tableColumnsArray);
-    }
   }
   // #endregion
 }

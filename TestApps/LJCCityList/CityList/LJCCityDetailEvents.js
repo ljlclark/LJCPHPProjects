@@ -175,14 +175,18 @@ class LJCCityDetailEvents
       // Get the AJAX response.
       if (LJC.HasText(this.responseText))
       {
-        self.#Debug.ShowText(methodName, "this.responseText"
-          , this.responseText, false);
-
-        let response = LJC.ParseJSON(this.responseText);
-
-        if ("Update" == response.Action.trim())
+        if (!LJCCityDataResponse.IsValidResponse(this.responseText))
         {
-          let objCity = response.ResultItems[0];
+          // ToDo: Remove response check?
+          self.#Debug.ShowText(methodName, "this.responseText"
+            , this.responseText, false);
+        }
+
+        let response = new LJCCityDataResponse(this.responseText);
+
+        if ("Update" == response.Action)
+        {
+          let objCity = response.ResultCities.RetrieveWithIndex(0);
           self.#CityTable.UpdateUniqueRow(objCity);
         }
 
@@ -193,7 +197,7 @@ class LJCCityDetailEvents
       }
     }
 
-    let request = LJC.CreateJSON(cityRequest);
+    let request = cityRequest.Request();
     xhr.send(request);
   }
   // #endregion
@@ -222,12 +226,13 @@ class LJCCityDataRequest
   /// <summary>The array of "Order By" names.</summary>
   OrderByNames = [];
 
-  /// <summary>The array of property names.</summary>
+  /// <summary>The data column property names.</summary>
   PropertyNames = [];
 
   // The request Cities collection.
   /// <include path='items/RequestItems/*' file='Doc/LJCCityDataRequest.xml'/>
-  RequestItems = [];
+  //RequestItems = [];
+  RequestItems = null; // Cities
 
   /// <summary>The service name.</summary>
   ServiceName = "LJCCityData";
@@ -261,11 +266,122 @@ class LJCCityDataRequest
   /// <returns>The new cloned object.</returns>
   Clone()
   {
-    let retRequest = null;
+    let retRequest = new LJCCityDataRequest(this.ConfigName, this.ConfigFile);
 
-    let json = LJC.CreateJSON(this);
-    retRequest = LJC.ParseJSON(json);
+    retRequest.Action = this.Action;
+    retRequest.ConfigFile = this.ConfigFile;
+    retRequest.ConfigName = this.ConfigName;
+
+    // Collection of LJCDataColumn objects.
+    retRequest.KeyColumns = new LJCDataColumns();
+    for (let index = 0; index < this.KeyColumns.Count; index++)
+    {
+      let keyColumn = this.KeyColumns[index].Clone()
+      retRequest.KeyColumns.AddObject(keyColumn);
+    }
+
+    retRequest.PropertyNames = structuredClone(this.PropertyNames);
+
+    // Collection of City objects.
+    retRequest.RequestItems = new Cities();
+    for (let index = 0; index < this.UniqueColumns.Count; index++)
+    {
+      let city = this.RequestItems[index].Clone();
+      retRequest.RequestItems.AddObject(city);
+    }
+
+    retRequest.ServiceName = this.ServiceName;
+    retRequest.TableName = this.TableName;
+
+    // Collection of LJCDataColumn objects.
+    retRequest.UniqueColumns = new LJCDataColumns();
+    for (let index = 0; index < this.UniqueColumns.Count; index++)
+    {
+      let uniqueColumn = this.UniqueColumns[index].Clone();
+      retRequest.UniqueColumns.AddObject(uniqueColumn);
+    }
     return retRequest;
+  }
+  // #endregion
+
+  // #region Methods
+
+  /// <summary>Creates the JSON request.</summary>
+  /// <returns>The request as JSON.</returns>
+  Request()
+  {
+    let retRequest = "";
+
+    retRequest = LJC.CreateJSON(this);
+    return retRequest;
+  }
+  // #endregion
+}
+
+// ***************
+/// <summary>The City detail web service response.</summary>
+class LJCCityDataResponse
+{
+  // #region Properties
+
+  // The action type name.
+  Action = "";
+
+  AffectedCount = 0;
+
+  /// <summary>The service debug text.</summary>
+  DebugText = "";
+
+  /// <summary>The result cities collection.</summary>
+  ResultCities = null;
+
+  /// <summary>The service name.</summary>
+  ServiceName = "";
+
+  /// <summary>The executed SQL statement.</summary>
+  SQL = "";
+  // #endregion
+
+  // #region Static Methods
+
+  /// <summary>Checks if the response is valid.</summary>
+  /// <param name="responseText">The response text.</param>
+  /// <returns>true if valid; otherwise false.</returns>
+  static IsValidResponse(responseText)
+  {
+    let retValid = false;
+
+    if (LJC.HasText(responseText))
+    {
+      let text = responseText.toLowerCase().trim();
+      if (text.startsWith("{\"servicename\":"))
+      {
+        retValid = true;
+      }
+    }
+    return retValid;
+  }
+  // #endregion
+
+  // #region Constructor Methods.
+
+  /// <summary>Initializes the object instance.</summary>
+  /// <param name="responseText">The response text.</param>
+  constructor(responseText)
+  {
+    if (LJCCityDataResponse.IsValidResponse(responseText))
+    {
+      let response = JSON.parse(responseText);
+
+      this.Action = response.Action.trim();
+      this.DebugText = response.DebugText;
+
+      let resultItems = response.ResultItems;
+      this.ResultCities = Cities.ToCollection(resultItems);
+
+      this.ServiceName = response.ServiceName;
+      this.SQL = response.SQL;
+    }
   }
   // #endregion
 }

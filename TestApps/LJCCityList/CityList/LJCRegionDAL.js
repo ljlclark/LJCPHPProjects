@@ -47,11 +47,11 @@ class LJCRegion
     let retRegion = new LJCRegion();
 
     // Update properties of new object from provided object.
-    for (let propertyName in this)
+    for (let propertyName in retRegion)
     {
       if (propertyName in objRegion)
       {
-        retRegion[propertyname] = objRegion[propertyName];
+        retRegion[propertyName] = objRegion[propertyName];
       }
     }
     return retRegion;

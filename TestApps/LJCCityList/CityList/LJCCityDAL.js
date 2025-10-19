@@ -83,11 +83,11 @@ class City
     let retCity = new City();
 
     // Update properties of new object from provided object.
-    for (let propertyName in this)
+    for (let propertyName in retCity)
     {
       if (propertyName in objCity)
       {
-        retCity[propertyname] = objCity[propertyName];
+        retCity[propertyName] = objCity[propertyName];
       }
     }
     return retCity;
@@ -142,6 +142,33 @@ class Cities
 
   // The internal collection item array.
   #Items = [];
+  // #endregion
+
+  // #region Static Methods
+
+  /// <summary>
+  ///   Create typed collection from deserialized JavasScript array.
+  /// </summary>
+  /// <param name="items">The items object.</param>
+  /// <returns>The collection></returns.
+  static ToCollection(items)
+  {
+    let retCities = new Cities();
+
+    if (items != null
+      && items.length > 0)
+    {
+      for (let index = 0; index < items.length; index++)
+      {
+        let objItem = items[index];
+
+        // Create typed object from stdClass.
+        let city = City.Copy(objItem);
+        retCities.AddObject(city);
+      }
+    }
+    return retCities;
+  }
   // #endregion
 
   // #region Data Class Methods

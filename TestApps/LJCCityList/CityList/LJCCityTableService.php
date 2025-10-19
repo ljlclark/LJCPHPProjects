@@ -117,13 +117,13 @@
       $methodName = "SetRequestProperties";
 
       $this->Action = $pageData->Action;
-      if (isset($pageData->AddColumns)
-        && LJC::HasElements($pageData->AddColumns))
+      if (isset($pageData->AddTableColumns)
+        && LJC::HasElements($pageData->AddTableColumns))
       {
-        $this->AddColumns = $pageData->AddColumns;
+        $this->AddColumns = $pageData->AddTableColumns;
       }
       $this->BeginKeyData = $pageData->BeginKeyData;
-      $this->CityTableID = $pageData->CityTableID;
+      $this->CityTableID = $pageData->HTMLTableID;
       $this->ConfigFile = $pageData->ConfigFile;
       $this->ConfigName = $pageData->ConfigName;
       $this->EndKeyData = $pageData->EndKeyData;

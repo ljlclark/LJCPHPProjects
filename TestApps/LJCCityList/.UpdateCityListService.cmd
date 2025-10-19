@@ -8,6 +8,7 @@ copy LJCCityList.html %servicePath%
 copy LJCCityListEvents.js %servicePath%
 copy LJCDataConfigs.php %servicePath%
 copy LJCTable.js %servicePath%
+copy LJCTableMessageLib.js %servicePath%
 copy CSS\Table.css %servicePath%\CSS\
 
 cd CityList
