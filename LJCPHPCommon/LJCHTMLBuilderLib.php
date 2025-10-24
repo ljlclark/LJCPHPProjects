@@ -53,11 +53,36 @@
     // Adds an object and key value.
     public function AddObject(LJCAttribute $item, $key = null): ?LJCAttribute
     {
+      $retValue = null;
+
       if (null == $key)
       {
         $key = $item->Name;
       }
-      $retValue = $this->AddItem($item, $key);
+
+      $process = true;
+
+      // *** Begin ***
+      // Append new styles to existing styles.
+      if ("style" == $key
+        && $this->HasKey($key))
+      {
+        $prevItem = $this->Retrieve($key);
+        $prevValue = trim($prevItem->Value);
+        if (!str_ends_with($prevValue, ";"))
+        {
+          $prevValue .= "; ";
+        }
+        $newItemValue = $prevValue . trim($item->Value);
+        $prevItem->Value = $newItemValue;
+        $process = false;
+      }
+      // *** End ***
+
+      if ($process)
+      {
+        $retValue = $this->AddItem($item, $key);
+      }
       return $retValue;
     }// AddObject()
 
@@ -305,7 +330,7 @@
             if (LJC::HasValue($value)
               && strlen($value) > 35)
             {
-              $hb->AddText("\r\n{$GetIndentString()}");
+              $hb->AddText("\r\n{$this->GetIndentString()}");
             }
           }
           $isFirst = false;
@@ -650,14 +675,25 @@
     // Gets common table attributes.
     /// <include path='items/TableAttribs/*' file='Doc/LJCHTMLBuilder.xml'/>
     /// <ParentGroup>GetAttribs</ParentGroup>
-    public function TableAttribs(int $border = 1, int $cellSpacing = 0
+    public function TableAttribs(int $border = 1, int $borderSpacing = 0
       , int $cellPadding = 2, string $className = null, string $id = null)
       : LJCAttributes
     {
       $retAttribs = $this->Attribs($className, $id);
-      $retAttribs->Add("border", strval($border));
-      $retAttribs->Add("cellspacing", strval($cellSpacing));
-      $retAttribs->Add("cellpadding", strval($cellPadding));
+
+      $value = strval($border);
+      $style = "border: {$value}px solid;";
+      $value = strval($borderSpacing);
+      $style .= " borderspacing: {$value}px;";
+      $value = strval($cellPadding);
+      $style .= " cellpadding: {$value}px;";
+
+      $retAttribs->Add("style", $style);
+
+      //$retAttribs->Add("border", strval($border));
+      //$retAttribs->Add("cellspacing", strval($cellSpacing));
+      //$retAttribs->Add("borderspacing", strval($borderSpacing));
+      //$retAttribs->Add("cellpadding", strval($cellPadding));
       return $retAttribs;
     }
 

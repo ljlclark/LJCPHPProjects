@@ -104,10 +104,16 @@ class LJCRegionTableEvents
   // Adds the HTML event listeners.
   #AddEvents()
   {
-    // Document Event Handlers.
+    //window.addEventListener('resize', this.#ResizeDialog.bind(this));
+
+    // Call this function after any significant change to the table's content
+    // For example, after adding new rows:
+    // addRowsToTable();
+    // resizeDialogToTable();    // Document Event Handlers.
     document.addEventListener("click", this.#DocumentClick.bind(this));
 
     // Table Event Handlers.
+    //LJC.AddEvent(selectTable, "resize", this.#DialogResize, this);
     LJC.AddEvent(this.#HTMLTableID, "click", this.#TableClick, this);
   }
   // #endregion
@@ -169,9 +175,9 @@ class LJCRegionTableEvents
 
   // #region Web Service Methods
 
-  /// <summary>Sends page request to CityData web service.</summary>
-  // Called from NextPage(), PrevPage() and CityListEvents #Refesh().
-  Page()
+  /// <summary>Sends page request to RegionTable web service.</summary>
+  // Called from NextPage(), PrevPage() and CityListEvents.#TableDataRequest().
+  Page(pageDone)
   {
     let methodName = "Page()";
 
@@ -206,15 +212,17 @@ class LJCRegionTableEvents
         {
           // Create new table element and add new "click" event.
           let eTable = LJC.Element(self.#HTMLTableID);
-          eTable.outerHTML = response.HTMLTable;
+          eTable.innerHTML = response.HTMLTable;
           LJC.AddEvent(self.#HTMLTableID, "click", self.#TableClick
             , self);
 
-          // Updates CityTable with new table element, keys and data columns.
+          // Updates LJCTable with new table element, keys and data columns.
           let rowIndex = self.#UpdateRegionTable(self, response.Keys);
           let regionTable = self.RegionTable;
-
           regionTable.TableColumns = response.TableColumns;
+
+          // Update the detail with new values ETable and Keys.
+          //self.#RegionDetailEvents.UpdateTable(regionTable);
 
           // Updates the BeginningOfData and EndOfData flags.
           if (self.#UpdateLimitFlags())
@@ -230,6 +238,7 @@ class LJCRegionTableEvents
 
           // Can only assign public data.
           self.#CityListEvents.RegionTable = regionTable;
+          pageDone(self);
         }
       }
     };

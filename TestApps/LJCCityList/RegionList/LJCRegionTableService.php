@@ -106,10 +106,10 @@
       $methodName = "SetRequestProperties";
 
       $this->Action = $pageData->Action;
-      if (isset($pageData->AddColumns)
-        && LJC::HasElements($pageData->AddColumns))
+      if (isset($pageData->AddTableColumns)
+        && LJC::HasElements($pageData->AddTableColumns))
       {
-        $this->AddColumns = $pageData->AddColumns;
+        $this->AddColumns = $pageData->AddTableColumns;
       }
       $this->BeginKeyData = $pageData->BeginKeyData;
       $this->ConfigFile = $pageData->ConfigFile;
@@ -117,7 +117,7 @@
       $this->EndKeyData = $pageData->EndKeyData;
       $this->Limit = $pageData->Limit;
       $this->PropertyNames = $pageData->PropertyNames;
-      $this->RegionTableID = $pageData->RegionTableID;
+      $this->RegionTableID = $pageData->HTMLTableID;
       $this->TableName = $pageData->TableName;
       $this->TableColumnNames = $pageData->TableColumnNames;
       if (null == $pageData->TableColumnNames)
@@ -213,12 +213,14 @@
       $retAttribs = $hb->Attribs($className, $id);
 
       // Centers to page.
-      $style = "margin: auto";
+      // *** Next Statement *** Change
+      $style = "margin: auto; border: 1px solid";
       $retAttribs->Add("style", $style);
 
       // border = 1, cellSpacing = 0, cellPadding = 2, className = null
       //   , id = null
-      $retAttribs->Append($hb->TableAttribs());
+      // *** Next Statement *** Delete
+      //$retAttribs->Append($hb->TableAttribs());
       return $retAttribs;
     } // GetTableAttribs()
 

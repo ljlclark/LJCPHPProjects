@@ -21,18 +21,17 @@
   <script src="CityList/LJCCityDAL.js"></script>
   <script src="LJCCityListEvents.js"></script>
   <script src="CityList/LJCCityTableEvents.js"></script>
-  <!--script src="CityList/LJCCityDataRequest.js"></script-->
   <script src="CityList/LJCCityDetailEvents.js"></script>
 
   <script src="CityList/LJCRegionDAL.js"></script>
   <script src="RegionList/LJCRegionTableEvents.js"></script>
-  <!--script src="RegionList/LJCRegionDataRequest.js"></script-->
   <script src="RegionList/LJCRegionDetailEvents.js"></script>
 </head>
 <body>
   <div class="page">
     <h3 id="pageTitle">City Maintenance</h3>
 
+    <!-- Region and Province controls. -->
     <!-- Must have a width for "margin: auto" to work. -->
     <div class="data" style="width: 350px">
       <ul>
@@ -50,21 +49,11 @@
     </div>
 
     <!-- City Table -->
-    <table id="cityTableID"></table>
+    <table id="cityTableID" class="table"></table>
 
     <!-- Select Table Dialog -->
-    <dialog id="selectDialog"
-            style="border: none; padding: 0px">
-      <table id="selectTable">
-        <tr>
-          <td>One</td>
-          <td>This is the one.</td>
-        </tr>
-        <tr>
-          <td>Two</td>
-          <td>This is the other.</td>
-        </tr>
-      </table>
+    <dialog id="selectDialog" class="dialog">
+      <table id="selectTable" class="table"></table>
     </dialog>
 
     <!-- The dialog for debug and other display text. -->

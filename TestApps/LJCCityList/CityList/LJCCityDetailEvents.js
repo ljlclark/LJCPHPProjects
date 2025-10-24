@@ -27,7 +27,7 @@ class LJCCityDetailEvents
   // #region Private Properties
 
   // The associated city table helper object.
-  #CityTable = null; // LJCTable
+  #CityPaging = null; // LJCTable
 
   // The show debug text object.
   #Debug = null;
@@ -36,12 +36,12 @@ class LJCCityDetailEvents
   // #region Constructor Methods.
 
   /// <summary>Initializes the object instance.</summary>
-  constructor(cityTable)
+  constructor(cityPaging)
   {
     this.#Debug = new Debug("LJCCityDetailEvents");
 
     this.CityRequest = new LJCCityDataRequest("TestData", "../DataConfigs.xml");
-    this.UpdateTable(cityTable);
+    this.UpdateTable(cityPaging);
 
     this.#AddEvents();
   }
@@ -54,9 +54,9 @@ class LJCCityDetailEvents
 
   /// <summary>Updates the table helper class after paging.</summary>
   // Called from LJCCityListEvents #Next(), #Previous() and #Refresh().
-  UpdateTable(cityTable)
+  UpdateTable(cityPaging)
   {
-    this.#CityTable = cityTable;
+    this.#CityPaging = cityPaging;
   }
 
   // Adds the HTML event listeners.
@@ -187,7 +187,7 @@ class LJCCityDetailEvents
         if ("Update" == response.Action)
         {
           let objCity = response.ResultCities.RetrieveWithIndex(0);
-          self.#CityTable.UpdateUniqueRow(objCity);
+          self.#CityPaging.UpdateUniqueRow(objCity);
         }
 
         self.#Debug.ShowText(methodName, "response.DebugText"

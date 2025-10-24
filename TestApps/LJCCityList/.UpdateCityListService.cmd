@@ -1,5 +1,6 @@
 set linePath="\Users\Les\Documents\Visual Studio 2022\wwwrootDev\LJCDataTableTestApp"
 set projectPath=%linePath%\LJCCityList
+
 cd %projectPath%
 rem 1\2Users\3Les\4Documents\5Visual Studio 2022\6wwwrootDev\7LJCDataTableTestApp\8LJCCityList
 set root=..\..\..\..\..\..\..

@@ -212,6 +212,8 @@ class LJCCityTableEvents
         // Handle new table HTML and associated values.
         if (self.#HasData(response.HTMLTable))
         {
+          // ***** 
+          self.#Debug.ShowText(methodName, "response.HTMLTable", response.HTMLTable);
           // Create new table element and add new "click" event.
           let eTable = LJC.Element(self.#HTMLTableID);
           eTable.outerHTML = response.HTMLTable;

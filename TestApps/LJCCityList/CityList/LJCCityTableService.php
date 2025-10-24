@@ -232,7 +232,7 @@
 
       // border = 1, cellSpacing = 0, cellPadding = 2, className = null
       //   , id = null
-      $retAttribs->Append($hb->TableAttribs());
+      $retAttribs->Append($hb->TableAttribs(className: "table"));
       return $retAttribs;
     } // GetTableAttribs()
 

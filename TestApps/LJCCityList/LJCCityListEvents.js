@@ -10,6 +10,7 @@
 //   Debug: ShowText(), ShowDialog()
 // <script src="CityList/LJCCityDetailEvents.js"></script>
 //   LJCCityDataRequest:
+//   LJCCityDetailEvents: UpdateTable()
 // <script src="LJCTable.js"></script>
 //   LJCTable: GetTable(), ShowMenu() MoveNext(), MovePrevious()
 //   SelectColumnRow()
@@ -27,7 +28,7 @@ class LJCCityListEvents
 
   // The city table helper object.
   // Used in LJCCityTableEvents Page().
-  CityTable = null; // LJCTable
+  CityPaging = null; // LJCTable
 
   // The city HTML Table ID.
   // Used in LJCCityTableEvents constructor().
@@ -164,7 +165,7 @@ class LJCCityListEvents
   #SetupCity()
   {
     // City Table helper object.
-    this.CityTable = new LJCTable(this.CityTableID, this.#CityMenuID);
+    this.CityPaging = new LJCTable(this.CityTableID, this.#CityMenuID);
     this.FocusTable = null;
 
     // City Table events.
@@ -175,7 +176,7 @@ class LJCCityListEvents
     tableRequest.PropertyNames = this.#CityPropertyNames();
 
     // City Detail events.
-    this.#CityDetailEvents = new LJCCityDetailEvents(this.CityTable);
+    this.#CityDetailEvents = new LJCCityDetailEvents(this.CityPaging);
   }
 
   // Setup Region Table and Detail.
@@ -276,7 +277,7 @@ class LJCCityListEvents
   #RegionButton()
   {
     this.#RegionRefresh();
-    selectDialog.showModal();
+    //selectDialog.showModal();
   }
 
   // Displays the Province Selection table.
@@ -327,7 +328,7 @@ class LJCCityListEvents
       tableEvents.NextPage();
 
       // Update the table with new values ETable and Keys.
-      this.#CityDetailEvents.UpdateTable(tableEvents.CityTable);
+      this.#CityDetailEvents.UpdateTable(tableEvents.CityPaging);
     }
   }
 
@@ -340,7 +341,7 @@ class LJCCityListEvents
       tableEvents.PrevPage();
 
       // Update the table with new values ETable and Keys.
-      this.#CityDetailEvents.UpdateTable(tableEvents.CityTable);
+      this.#CityDetailEvents.UpdateTable(tableEvents.CityPaging);
     }
   }
 
@@ -352,23 +353,84 @@ class LJCCityListEvents
     tableEvents.Page();
 
     // Update the table with new values ETable and Keys.
-    this.#CityDetailEvents.UpdateTable(tableEvents.CityTable);
+    this.#CityDetailEvents.UpdateTable(tableEvents.CityPaging);
   }
   // #endregion
 
   // #region Region Menu Event Handlers
   // ---------------
 
+  static #DialogResize()
+  {
+    const tableWidth = selectTable.offsetWidth;
+    const tableHeight = selectTable.offsetHeight;
+    selectDialog.style.width = tableWidth + 'px';
+    selectDialog.style.height = tableHeight + 'px';
+  }
+
   // Refreshes the current page.
   #RegionRefresh()
   {
     let tableEvents = this.#RegionTableEvents;
-    tableEvents.RegionTableRequest.Action = "Refresh";
-    tableEvents.Page();
-
-    // Update the table with new values ETable and Keys.
-    this.#RegionDetailEvents.UpdateRegionTable(tableEvents.RegionTable);
+    tableEvents.TableRequest.Action = "Refresh";
+    this.#TableDataRequest(tableEvents);
   }
+
+  GetValue(htmlValue)
+  {
+    let retValue = htmlValue.trim();
+
+    // Strip suffix.
+    let length = retValue.length;
+    if (retValue.includes("%"))
+    {
+      retValue = value.substring(0, length - 1);
+    }
+    if (retValue.includes("px"))
+    {
+      retValue = retValue.substring(0, length - 2);
+    }
+
+    // Convert to value.
+    if (retValue.includes("."))
+    {
+      retValue = retValue.parseFloat(value);
+    }
+    else
+    {
+      retValue = retValue.parseInt(value);
+    }
+
+    return retValue;
+  }
+
+  PageDone(regionTableEvents)
+  {
+    // Set attributes including column widths.
+    let regionTable = regionTableEvents.RegionTable;
+
+    regionTable.SetColumnWidth(0, "103px");
+    regionTable.SetColumnWidth(1, "200px");
+    regionTable.SetColumnWidth(2, "200px");
+
+    // Column widths are set.
+    let width1 = regionTable.ColumnWidth(0);
+    let width2 = regionTable.ColumnWidth(1);
+    let width3 = regionTable.ColumnWidth(2);
+
+    // Show the parent dialog.
+    selectDialog.showModal();
+    //LJCCityListEvents.#DialogResize();
+    //LJC.AddEvent("selectTable", "resize", LJCCityListEvents.#DialogResize
+    //  , this);
+  }
+
+  // Sends page request to RegionTable web service.
+  #TableDataRequest(tableEvents)
+  {
+    tableEvents.Page(this.PageDone);
+  }
+
   // #endregion
 
   // #region Other Menu Methods
@@ -522,7 +584,7 @@ class LJCCityListEvents
       switch (eTable.id)
       {
         case this.CityTableID:
-          retLJCTable = this.CityTable;
+          retLJCTable = this.CityPaging;
           break;
       }
     }

@@ -163,7 +163,7 @@ class LJCTable
     return retText;
   }
 
-  /// <summary>Get column index with property name.
+  /// <summary>Gets the column index by property name.
   ColumnIndex(propertyName)
   {
     let retIndex = -1;
@@ -180,6 +180,21 @@ class LJCTable
     return retIndex;
   }
 
+  // *** New Method ***
+  /// <summary>Gets the column width.</summary>
+  ColumnWidth(columnIndex)
+  {
+    let retWidth = 0;
+
+    if (this.HasColumnIndex(columnIndex))
+    {
+      let row = this.GetRow(0);
+      let cell = row.cells[columnIndex];      
+      retWidth = LJC.ElementStyle(cell, "width");
+    }
+    return retWidth;
+  }
+
   // Get column index with heading text.
   /// <include path='items/GetColumnText/*' file='Doc/LJCTable.xml'/>
   HeadingIndex(headingText)
@@ -187,18 +202,66 @@ class LJCTable
     let retIndex = -1;
 
     let eHead = this.GetRow(0);
-    let eCells = eHead.cells;
-    for (let index = 0; index < eCells.length; index++)
+    if (eHead != null)
     {
-      let eCell = eCells[index];
-      if (eCell.innerText == headingText)
+      let eCells = eHead.cells;
+      for (let index = 0; index < eCells.length; index++)
       {
-        retIndex = index;
-        index = eCells.length;
-        break;
+        let eCell = eCells[index];
+        if (eCell.innerText == headingText)
+        {
+          retIndex = index;
+          index = eCells.length;
+          break;
+        }
       }
     }
     return retIndex;
+  }
+
+  // *** New Method ***
+  /// <summary>Sets the row[0] cell width.</summary>
+  SetColumnWidth(columnIndex, width)
+  {
+    if (this.HasColumnIndex(columnIndex))
+    {
+      let row = this.GetRow(0);
+      let cell = row.cells[columnIndex];
+      cell.style.width = width;
+    }
+  }
+
+  // *** New Method ***
+  /// <summary>Sets the row[0] cell width by property name.</summary>
+  SetColumnNameWidth(propertyName, width)
+  {
+    let columnIndex = this.ColumnIndex(propertyName);
+    if (this.HasColumnIndex(columnIndex))
+    {
+      this.SetColumnWidth(columnIndex, width);
+    }
+  }
+
+  // *** New Method ***
+  /// <summary>Checks if the column index exists.</summary>
+  /// <returns>true if the column exists; otherwise false.</returns.
+  HasColumnIndex(index)
+  {
+    let retValue = false;
+
+    if (this.ETable != null
+      && this.RowCount() > 0)
+    {
+      let row = this.GetRow(0);
+      let cellCount = row.cells.length;
+      if (cellCount > 0
+        && index >= 0
+        && index < cellCount)
+      {
+        retValue = true;
+      }
+    }
+    return retValue;
   }
   // #endregion
 
