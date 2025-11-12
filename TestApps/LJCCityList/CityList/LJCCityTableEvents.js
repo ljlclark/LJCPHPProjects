@@ -71,42 +71,6 @@ class LJCCityTableEvents
   // #region Constructor Methods.
   // ---------------
 
-  // Call this after constructor to test generic.
-  /// <summary>Generic values.</summary>
-  SetTableValues(htmlTableID, tableName, tableColumnNames, propertyNames = null
-    , joinPropertyNames = null)
-  {
-    this.#HTMLTableID = htmlTableID;
-    this.TableName = tableName;
-
-    // Service request for LJCTableService.php
-    this.TableRequest = new LJCTableRequest("LJCTableService", this.#ConfigName
-      , this.#ConfigFile);
-    let tableRequest = this.TableRequest;
-    tableRequest.HTMLTableID = this.#HTMLTableID;
-    tableRequest.TableName = this.TableName;
-
-    // Set retrieve property names.
-    // null includes all columns.
-    tableRequest.PropertyNames = propertyNames;
-
-    // Get table columns.
-    // Can include join column names.
-    tableRequest.TableColumnNames = tableColumnNames;
-
-    // Insert join table columns.
-    if (joinPropertyNames != null)
-    {
-      let addColumns = new LJCDataColumns()
-      for (const propertyName of joinPropertyNames)
-      {
-        let addColumn = addColumns.Add(propertyName);
-        //addColumn.InsertIndex = 0; // Default
-      }
-      tableRequest.AddTableColumns = LJC.ToArray(addColumns);
-    }
-  }
-
   /// <summary>Initializes the object instance.</summary>
   constructor(cityListEvents, htmlMenuID, configName = ""
     , configFile = "DataConfigs.xml")
@@ -153,6 +117,42 @@ class LJCCityTableEvents
   SetDialogValues(textDialogID, textAreaID)
   {
     this.#Debug.SetDialogValues(textDialogID, textAreaID);
+  }
+
+  // Call this after constructor to test generic.
+  /// <summary>Generic values.</summary>
+  SetTableValues(htmlTableID, tableName, tableColumnNames, propertyNames = null
+    , joinPropertyNames = null)
+  {
+    this.#HTMLTableID = htmlTableID;
+    this.TableName = tableName;
+
+    // Service request for LJCTableService.php
+    this.TableRequest = new LJCTableRequest("LJCTableService", this.#ConfigName
+      , this.#ConfigFile);
+    let tableRequest = this.TableRequest;
+    tableRequest.HTMLTableID = this.#HTMLTableID;
+    tableRequest.TableName = this.TableName;
+
+    // Set retrieve property names.
+    // null includes all columns.
+    tableRequest.PropertyNames = propertyNames;
+
+    // Get table columns.
+    // Can include join column names.
+    tableRequest.TableColumnNames = tableColumnNames;
+
+    // Insert join table columns.
+    if (joinPropertyNames != null)
+    {
+      let addColumns = new LJCDataColumns()
+      for (const propertyName of joinPropertyNames)
+      {
+        let addColumn = addColumns.Add(propertyName);
+        //addColumn.InsertIndex = 0; // Default
+      }
+      tableRequest.AddTableColumns = LJC.ToArray(addColumns);
+    }
   }
 
   // Adds the HTML event listeners.
@@ -412,22 +412,6 @@ class LJCCityTableEvents
         tableRequest.EndKeyData.Name = rowKeys.Name;
       }
     }
-  }
-
-  // Creates the table property names.
-  #DefaultPropertyNames()
-  {
-    let retPropertyNames = [
-      City.PropertyCityID,
-      City.PropertyProvinceID,
-      City.PropertyProvinceName,
-      City.PropertyName,
-      City.PropertyDescription,
-      City.PropertyCityFlag,
-      City.PropertyZipCode,
-      City.PropertyDistrict,
-    ];
-    return retPropertyNames;
   }
 
   // Checks if the provided table text exists.

@@ -187,6 +187,8 @@ class LJCCityListEvents
       City.PropertyZipCode,
       City.PropertyDistrict,
     ];
+    // *** Default ***
+    retQueryProperties = null;
     return retQueryProperties;
   }
 
