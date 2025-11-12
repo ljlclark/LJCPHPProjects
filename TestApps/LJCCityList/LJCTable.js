@@ -14,76 +14,106 @@
 /// LibName: LJCTable
 
 // ***************
-/// <summary>Represents an HTML Table.</summary>
-/// <remarks>
-///   Contains methods for utilizing an HTML Table and associated context menu
-//    including data paging.
-/// </remarks>
+// Represents an HTML Table.
+/// <include path='items/LJCTable/*' file='Doc/LJCTable.xml'/>
 class LJCTable
 {
   // #region Properties
 
-  /// <summary>Indicates if paging is at the beginning of the data.</summary>
-  BeginningOfData;
-
   /// <summary>The current row index.</summary>
-  CurrentRowIndex;
+  /// <remarks>
+  ///   The value must be updated after a new table page has been generated.
+  /// </remarks>
+  CurrentRowIndex = 0;
+
+  /// <summary>The associated menu element ID.</summary>
+  MenuID = "";
+
+  /// <summary>The unselected row background color.</summary>
+  RowBackColor = "";
+
+  /// <summary>The selected row background color.</summary>
+  RowSelectedColor = "";
 
   /// <summary>The table data column definitions.</summary>
   TableColumns = new LJCDataColumns();
 
-  /// <summary>The associated menu element.</summary>
-  EMenu;
+  /// <summary>The associated table element ID.</summary>
+  TableID = "";
+  // #endregion
+
+  // #region Paging Properties
+
+  /// <summary>Indicates if paging is at the beginning of the data.</summary>
+  /// <remarks>
+  ///   This value must be updated after a new table page has been generated.
+  /// </remarks>
+  BeginningOfData;
 
   /// <summary>Indicates if paging is at the end of the data.</summary>
+  /// <remarks>
+  ///   This value must be updated after a new table page has been generated.
+  /// </remarks>
   EndOfData;
 
-  /// <summary>The associated table element.</summary>
-  ETable;
-
-  /// <summary>The current page primary keys.</summary>
+  /// <summary>The current page keys.</summary>
+  /// <remarks>
+  ///   This value must be updated after a new table page has been generated.
+  /// </remarks>
   Keys;
 
-  /// <summary>The unselected row background color.</summary>
-  RowBackColor;
-
-  /// <summary>The selected row background color.</summary>
-  RowSelectedColor;
-
-  /// <summary>The associated table element ID name.</summary>
-  TableID;
+  /// <summary>The data object unique property names.</summary>
+  UniqueProperties = [];
   // #endregion
 
   // #region Static Methods
 
-  // Get the HTML table element if the HTML element is table data row or column.
+  // Gets HTML table element if the supplied element is a table cell and
+  // the table has the supplied ID.
+  /// <include path='items/GetSelectedTable/*' file='Doc/LJCTable.xml'/>
+  static GetSelectedTable(eCell, tableID)
+  {
+    let retTable = null;
+
+    let eTable = LJCTable.GetTable(eCell);
+    if (eTable != null)
+    {
+      if (tableID == eTable.id)
+      {
+        retTable = eTable;
+      }
+    }
+    return retTable;
+  }
+
+  // Gets the HTML table element if the supplied element is a table cell.
   /// <include path='items/GetTable/*' file='Doc/LJCTable.xml'/>
   static GetTable(eCell)
   {
-    let retValue = null;
+    let retTable = null;
 
     // Process Table
-    let tableRow = LJCTable.GetTableRow(eCell);
-    if (tableRow != null)
+    const eRow = LJCTable.GetTableRow(eCell);
+    if (eRow != null)
     {
       // table/tbody/tr
-      retValue = tableRow.parentElement.parentElement;
+      retTable = eRow.parentElement.parentElement;
     }
-    return retValue;
+    return retTable;
   }
 
-  // Get the table row element if the element is a table data row or column.
+  // Gets the table row element if the suppliled element is a table cell.
   /// <include path='items/GetTableRow/*' file='Doc/LJCTable.xml'/>
   static GetTableRow(eCell)
   {
-    let retValue = null;
+    let retRow = null;
 
-    let tableRow = eCell.parentElement;
+    const eRow = eCell.parentElement;
     if ("TD" == eCell.tagName)
     {
-      retValue = tableRow;
+      retRow = eRow;
     }
-    return retValue;
+    return retRow;
   }
   // #endregion
 
@@ -93,77 +123,75 @@ class LJCTable
   /// <include path='items/constructor/*' file='Doc/LJCTable.xml'/>
   constructor(tableID, menuID)
   {
-    this.RowBackColor = "";
     this.BeginningOfData = true;
     this.CurrentRowIndex = -1;
     this.EndOfData = false;
+    this.Keys = [];
 
-    this.EMenu = null;
     if (menuID != null)
     {
-      let eMenu = LJC.Element(menuID);
+      const eMenu = LJC.Element(menuID);
       if (eMenu != null
         && "DIV" == eMenu.tagName)
       {
-        this.EMenu = eMenu;
-      }
-    }
-
-    this.ETable = null;
-    this.TableID = tableID;
-    if (this.TableID != null)
-    {
-      let eTable = LJC.Element(this.TableID);
-      if (eTable != null
-        && "TABLE" == eTable.tagName)
-      {
-        this.ETable = eTable;
+        this.MenuID = menuID;
       }
     }
 
     this.RowSelectedColor = "lightsteelblue";
-    this.Keys = [];
+
+    if (tableID != null)
+    {
+      const eTable = LJC.Element(tableID);
+      if (eTable != null
+        && "TABLE" == eTable.tagName)
+      {
+        this.TableID = tableID;
+      }
+    }
   }
   // #endregion
 
   // #region Methods
 
-  /// <summary>Make the menu visible.</summary>
-  /// <param name="location">The menu loction.</param>
+  // Makes the menu visible.
+  /// <include path='items/ShowMenu/*' file='Doc/LJCTable.xml'/>
   ShowMenu(location)
   {
-    if (this.EMenu != null)
+    const eMenu = LJC.Element(this.MenuID);
+    if (eMenu != null)
     {
-      this.EMenu.style.top = `${location.Top}px`;
-      this.EMenu.style.left = `${location.Left}px`;
-      LJC.Visibility(this.EMenu.id, "visible");
+      eMenu.style.top = `${location.Top}px`;
+      eMenu.style.left = `${location.Left}px`;
+      LJC.Visibility(eMenu.id, "visible");
     }
   }
   // #endregion
 
   // #region Cell Methods
 
-  // Get cell text with heading text.
+  // Gets cell text by property name or heading text.
   /// <include path='items/CellText/*' file='Doc/LJCTable.xml'/>
   CellText(propertyName, rowIndex = -1)
   {
     let retText = "";
 
-    let cellIndex = this.ColumnIndex(propertyName);
+    const cellIndex = this.ColumnIndex(propertyName);
     if (cellIndex > -1)
     {
       if (-1 == rowIndex)
       {
         rowIndex = this.CurrentRowIndex;
       }
-      let eRow = this.GetRow(rowIndex);
-      let eCells = eRow.cells;
+      const eRow = this.GetRow(rowIndex);
+      const eCells = eRow.cells;
       retText = eCells[cellIndex].innerText;
     }
     return retText;
   }
 
-  /// <summary>Gets the column index by property name.
+  // Gets the column index by property name or heading text.
+  /// <include path='items/ColumnIndex/*' file='Doc/LJCTable.xml'/>
   ColumnIndex(propertyName)
   {
     let retIndex = -1;
@@ -180,34 +208,34 @@ class LJCTable
     return retIndex;
   }
 
-  // *** New Method ***
-  /// <summary>Gets the column width.</summary>
+  // Gets the column width.
+  /// <include path='items/ColumnWidth/*' file='Doc/LJCTable.xml'/>
   ColumnWidth(columnIndex)
   {
     let retWidth = 0;
 
     if (this.HasColumnIndex(columnIndex))
     {
-      let row = this.GetRow(0);
-      let cell = row.cells[columnIndex];      
-      retWidth = LJC.ElementStyle(cell, "width");
+      const eRow = this.GetRow(0);
+      const eCell = eRow.cells[columnIndex];
+      retWidth = LJC.ElementStyle(eCell, "width");
     }
     return retWidth;
   }
 
-  // Get column index with heading text.
-  /// <include path='items/GetColumnText/*' file='Doc/LJCTable.xml'/>
+  // Gets column index by the heading text.
+  /// <include path='items/HeadingIndex/*' file='Doc/LJCTable.xml'/>
   HeadingIndex(headingText)
   {
     let retIndex = -1;
 
-    let eHead = this.GetRow(0);
+    const eHead = this.GetRow(0);
     if (eHead != null)
     {
-      let eCells = eHead.cells;
+      const eCells = eHead.cells;
       for (let index = 0; index < eCells.length; index++)
       {
-        let eCell = eCells[index];
+        const eCell = eCells[index];
         if (eCell.innerText == headingText)
         {
           retIndex = index;
@@ -219,44 +247,42 @@ class LJCTable
     return retIndex;
   }
 
-  // *** New Method ***
-  /// <summary>Sets the row[0] cell width.</summary>
+  // Sets the row[0] cell width by the column index value.
+  /// <include path='items/SetColumnWidth/*' file='Doc/LJCTable.xml'/>
   SetColumnWidth(columnIndex, width)
   {
     if (this.HasColumnIndex(columnIndex))
     {
-      let row = this.GetRow(0);
+      const row = this.GetRow(0);
       let cell = row.cells[columnIndex];
       cell.style.width = width;
     }
   }
 
-  // *** New Method ***
-  /// <summary>Sets the row[0] cell width by property name.</summary>
-  SetColumnNameWidth(propertyName, width)
+  // Sets the row[0] cell width by the column property name.
+  /// <include path='items/SetColumnWidthByName/*' file='Doc/LJCTable.xml'/>
+  SetColumnWidthByName(propertyName, width)
   {
-    let columnIndex = this.ColumnIndex(propertyName);
+    const columnIndex = this.ColumnIndex(propertyName);
     if (this.HasColumnIndex(columnIndex))
     {
       this.SetColumnWidth(columnIndex, width);
     }
   }
 
-  // *** New Method ***
-  /// <summary>Checks if the column index exists.</summary>
-  /// <returns>true if the column exists; otherwise false.</returns.
-  HasColumnIndex(index)
+  // Checks if the column index exists.
+  /// <include path='items/HasColumnIndex/*' file='Doc/LJCTable.xml'/>
+  HasColumnIndex(columnIndex)
   {
     let retValue = false;
 
-    if (this.ETable != null
-      && this.RowCount() > 0)
+    if (this.RowCount() > 0)
     {
-      let row = this.GetRow(0);
-      let cellCount = row.cells.length;
+      const eRow = this.GetRow(0);
+      const cellCount = eRow.cells.length;
       if (cellCount > 0
-        && index >= 0
-        && index < cellCount)
+        && columnIndex >= 0
+        && columnIndex < cellCount)
       {
         retValue = true;
       }
@@ -267,19 +293,20 @@ class LJCTable
 
   // #region Row Methods
 
-  // Gets table row by index.
+  // Gets the table row element by index.
   /// <include path='items/GetRow/*' file='Doc/LJCTable.xml'/>
   GetRow(rowIndex = -1)
   {
     let retRow = null;
 
-    if (this.ETable != null)
+    const eTable = LJC.Element(this.TableID);
+    if (eTable != null)
     {
       if (-1 == rowIndex)
       {
         rowIndex = this.CurrentRowIndex;
       }
-      let eRows = LJC.TagElements(this.ETable, "TR");
+      const eRows = LJC.TagElements(eTable, "TR");
       if (eRows != null)
       {
         retRow = eRows[rowIndex];
@@ -294,9 +321,10 @@ class LJCTable
   {
     let retCount = 0;
 
-    if (this.ETable != null)
+    const eTable = LJC.Element(this.TableID);
+    if (eTable != null)
     {
-      let eRows = LJC.TagElements(this.ETable, "TR");
+      const eRows = LJC.TagElements(eTable, "TR");
       if (eRows != null)
       {
         retCount = eRows.length;
@@ -305,21 +333,22 @@ class LJCTable
     return retCount;
   }
 
-  /// <summary>Get row where cell has the search text.</summary>
-  /// <returns>A row element object.</returns>
+  // Gets the row where the matching cell has the search text.
+  /// <include path='items/RowMatch/*' file='Doc/LJCTable.xml'/>
   RowMatch(propertyName, searchText)
   {
     let retRow = null;
 
-    let cellIndex = this.ColumnIndex(propertyName, 0);
+    const cellIndex = this.ColumnIndex(propertyName, 0);
     if (cellIndex > -1)
     {
-      let eRows = LJC.TagElements(this.ETable, "TR");
+      const eTable = LJC.Element(this.TableID);
+      const eRows = LJC.TagElements(eTable, "TR");
       for (let rowIndex = 1; rowIndex < eRows.length; rowIndex++)
       {
-        let eRow = eRows[rowIndex];
-        let eCell = eRow.cells[cellIndex];
-        let cellText = eCell.innerText;
+        const eRow = eRows[rowIndex];
+        const eCell = eRow.cells[cellIndex];
+        const cellText = eCell.innerText;
         if (cellText == searchText)
         {
           retRow = eRow;
@@ -330,20 +359,17 @@ class LJCTable
     return retRow;
   }
 
-  // Clears background for previous row and Highlights the current row.
+  // Clears background for previous row and Highlights the current row
   // if the supplied element is a table cell.
   /// <include path='items/SelectColumnRow/*' file='Doc/LJCTable.xml'/>
   SelectColumnRow(eCell)
   {
-    if (this.ETable != null)
+    const eTableRow = LJCTable.GetTableRow(eCell);
+    if (eTableRow != null)
     {
-      let eTableRow = LJCTable.GetTableRow(eCell);
-      if (eTableRow != null)
-      {
-        let prevIndex = this.CurrentRowIndex;
-        this.CurrentRowIndex = eTableRow.rowIndex;
-        this.SelectRow(prevIndex, this.CurrentRowIndex);
-      }
+      const prevIndex = this.CurrentRowIndex;
+      this.CurrentRowIndex = eTableRow.rowIndex;
+      this.SelectRow(prevIndex, this.CurrentRowIndex);
     }
   }
 
@@ -351,149 +377,159 @@ class LJCTable
   /// <include path='items/SelectRow/*' file='Doc/LJCTable.xml'/>
   SelectRow(prevRowIndex, rowIndex)
   {
-    if (this.ETable != null)
+    const ePrevRow = this.GetRow(prevRowIndex);
+    if (ePrevRow != null)
     {
-      let ePrevRow = this.GetRow(prevRowIndex);
-      if (ePrevRow != null)
-      {
-        ePrevRow.style.backgroundColor = this.RowBackColor;
-      }
+      ePrevRow.style.backgroundColor = this.RowBackColor;
+    }
 
-      let eTableRow = this.GetRow(rowIndex);
-      if (eTableRow != null)
-      {
-        this.CurrentRowIndex = rowIndex;
-        eTableRow.style.backgroundColor = this.RowSelectedColor;
-      }
+    let eTableRow = this.GetRow(rowIndex);
+    if (eTableRow != null)
+    {
+      this.CurrentRowIndex = rowIndex;
+      eTableRow.style.backgroundColor = this.RowSelectedColor;
     }
   }
 
-  /// <summary>Get the row index by unique key values.</summary>
-  UniqueRowIndex(objCity)
+  /// <summary>
+  ///   Gets the row index by unique key values.
+  /// <include path='items/UniqueRowIndex/*' file='Doc/LJCTable.xml'/>
+  UniqueRowIndex(dataObject)
   {
     let retIndex = -1;
 
-    for (let index = 0; index < this.Keys.length; index++)
+    if (Array.isArray(this.UniqueProperties)
+      && this.UniqueProperties.length > 0)
     {
-      let key = this.Keys[index];
-      if (key.ProvinceID == objCity.ProvinceID
-        && key.Name == objCity.Name)
+      for (let keyIndex = 0; keyIndex < this.Keys.length; keyIndex++)
       {
-        // Skip heading row.
-        retIndex = index + 1;
-        break;
+        let keyMatch = true;
+        const key = this.Keys[keyIndex];
+        for (const propertyName of this.UniqueProperties)
+        {
+          if (key[propertyName] != dataObject[propertyName])
+          {
+            keyMatch = false;
+            break;
+          }
+        }
+
+        if (keyMatch)
+        {
+          // Skip heading row.
+          retIndex = keyIndex + 1;
+          break;
+        }
       }
     }
     return retIndex;
   }
 
-  /// <summary>Update the row for data object unique keys.</summary>
-  UpdateUniqueRow(objCity)
+  /// <summary>
+  ///   Updates the row for data object unique keys.
+  /// </summary>
+  /// <param name="dataObject">The data object.</param>
+  UpdateUniqueRow(dataObject)
   {
-    let rowIndex = this.UniqueRowIndex(objCity);
+    const rowIndex = this.UniqueRowIndex(dataObject);
     if (rowIndex > -1)
     {
-      let eRow = this.GetRow(rowIndex);
-      let cells = eRow.cells;
-      for (let propertyName in objCity)
+      const eRow = this.GetRow(rowIndex);
+      const cells = eRow.cells;
+      for (const propertyName in dataObject)
       {
         // Headings same as property name.
-        let cellIndex = this.ColumnIndex(propertyName);
+        const cellIndex = this.ColumnIndex(propertyName);
         if (cellIndex > -1)
         {
-          cells[cellIndex].innerText = objCity[propertyName];
+          cells[cellIndex].innerText = dataObject[propertyName];
         }
       }
     }
   }
   // #endregion
 
-  // #region Other Methods
+  // #region Paging Methods
 
-  // Gets the selected table if the supplied element is a table cell and
-  // the table has the supplied ID.
-  /// <include path='items/GetTableByID/*' file='Doc/LJCTable.xml'/>
-  GetSelectedTable(eCell, tableID)
-  {
-    let retValue = null;
-
-    let table = LJCTable.GetTable(eCell);
-    if (table != null)
-    {
-      if (tableID == table.id)
-      {
-        retValue = table;
-      }
-    }
-    return retValue;
-  }
-
-  /// <summary>Move selection to next row.</summary>
+  /// <summary>
+  ///   Moves selection to next row.
+  /// </summary>
+  /// <returns>
+  ///   false if selection was moved to the next item; otherwise true for next
+  ///   page.
+  /// </returns>
+  /// <remarks>
+  ///   Moves the selection to the next row if available and increments
+  ///   CurrentRowIndex.
+  /// </remarks>
   MoveNext()
   {
     let retNextPage = false;
 
-    if (this.ETable != null)
+    if (-1 == this.CurrentRowIndex)
     {
-      if (-1 == this.CurrentRowIndex)
-      {
-        // Default to top row.
-        this.CurrentRowIndex = 0;
-      }
+      // Default to top row.
+      this.CurrentRowIndex = 0;
+    }
 
-      let rowCount = this.RowCount();
+    const rowCount = this.RowCount();
 
-      // Index already at bottom so load page.
-      if (this.CurrentRowIndex == rowCount - 1)
-      {
-        retNextPage = true;
-      }
+    // Index already at bottom so load page.
+    if (this.CurrentRowIndex == rowCount - 1)
+    {
+      retNextPage = true;
+    }
 
-      if (!retNextPage)
+    if (!retNextPage)
+    {
+      // Not at bottom so increment row.
+      if (this.CurrentRowIndex < rowCount - 1)
       {
-        // Not at bottom so increment row.
-        if (this.CurrentRowIndex < rowCount - 1)
-        {
-          let prevRowIndex = this.CurrentRowIndex;
-          this.CurrentRowIndex++;
-          let rowIndex = this.CurrentRowIndex;
-          this.SelectRow(prevRowIndex, rowIndex);
-        }
+        const prevRowIndex = this.CurrentRowIndex;
+        this.CurrentRowIndex++;
+        const rowIndex = this.CurrentRowIndex;
+        this.SelectRow(prevRowIndex, rowIndex);
       }
     }
     return retNextPage;
   }
 
-  /// <summary>Move selection to previous row.</summary>
+  /// <summary>
+  ///   Moves selection to previous row.
+  /// </summary>
+  /// <returns>
+  ///   false if selection was moved to the previous item; otherwise true for
+  ///   previous page.
+  /// </returns>
+  /// <remarks>
+  ///   Moves the selection to the previous row if available and decrements
+  ///   CurrentRowIndex.
+  /// </remarks>
   MovePrevious()
   {
     let retPrevPage = false;
 
-    if (this.ETable != null)
+    if (-1 == this.CurrentRowIndex)
     {
-      if (-1 == this.CurrentRowIndex)
-      {
-        // Default to first data row.
-        this.CurrentRowIndex = 1;
-      }
+      // Default to first data row.
+      this.CurrentRowIndex = 1;
+    }
 
-      // Index already at first data row so load page.
-      if (this.CurrentRowIndex == 1)
-      {
-        retPrevPage = true;
-      }
+    // Index already at first data row so load page.
+    if (this.CurrentRowIndex == 1)
+    {
+      retPrevPage = true;
+    }
 
-
-      if (!retPrevPage)
+    if (!retPrevPage)
+    {
+      // Not at first data row so decrement row.
+      if (this.CurrentRowIndex > 1)
       {
-        // Not at first data row so decrement row.
-        if (this.CurrentRowIndex > 1)
-        {
-          let prevRowIndex = this.CurrentRowIndex;
-          this.CurrentRowIndex--;
-          let rowIndex = this.CurrentRowIndex;
-          this.SelectRow(prevRowIndex, rowIndex);
-        }
+        const prevRowIndex = this.CurrentRowIndex;
+        this.CurrentRowIndex--;
+        const rowIndex = this.CurrentRowIndex;
+        this.SelectRow(prevRowIndex, rowIndex);
       }
     }
     return retPrevPage;

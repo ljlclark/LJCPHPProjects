@@ -28,12 +28,23 @@
     /// <include path='items/construct/*' file='Doc/LJCDataManager.xml'/>
     public function __construct()
     {
+      $this->ClassName = "LJCHTMLTable";
+      $this->DebugText = "";
+
       $this->MaxRows = 0;
       $this->ColumnNames = [];
       $this->DataAttribs = new LJCAttributes();
       $this->HeadingAttribs = new LJCAttributes();
       $this->TableAttribs = new LJCAttributes();
     } // __construct()
+
+    // Standard debug method for each class.
+    private function AddDebug($methodName, $valueName, $value = null)
+    {
+      $location = LJC::Location($this->ClassName, $methodName
+        , $valueName);
+      $this->DebugText .= LJC::DebugObject($location, $value);
+    } // AddDebug()
 
     // ----------
     // Collection Functions
@@ -197,6 +208,7 @@
     /// <ParentGroup>Rows</ParentGroup>
     public function ResultHTML(array $rows, LJCTextState $textState): string
     {
+      $methodName = "ResultHTML()";
       $retValue = null;
 
       if (LJC::HasElements($rows))
@@ -208,6 +220,7 @@
         $text = $this->ResultRows($rows, $textState);
         $hb->Text($text, false);
         $hb->End("table", $textState);
+        $this->DebugText .= $hb->DebugText;
         $retValue = $hb->ToString();
       }
       return $retValue;
@@ -350,9 +363,15 @@
 
     // --------------------
     // Properties
+    
+    /// <summary>The class name for debugging.</summary>
+    public string $ClassName;
 
     // The table column property names.
     public array $ColumnNames;
+
+    /// <summary>The debug text.</summary>
+    public string $DebugText;
 
     // The heading attributes.
     public LJCAttributes $HeadingAttribs;

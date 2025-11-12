@@ -34,6 +34,24 @@
   /// <summary>Represents a collection of node or element attributes.</summary>
   class LJCAttributes extends LJCCollectionBase
   {
+    // Initializes an object instance.
+    public function __construct()
+    {
+      $this->ClassName = "LJCAttributes";
+      $this->DebugText = "";
+    }
+
+    // Standard debug method for each class.
+    private function AddDebug($methodName, $valueName, $value = null)
+    {
+      $location = LJC::Location($this->ClassName, $methodName
+        , $valueName);
+      $this->DebugText .= LJC::DebugObject($location, $value);
+    } // AddDebug()
+
+    // ----------
+    // Collection Methods
+
     // Creates an object and adds it to the collection.
     public function Add(string $name, string $value = null, $key = null)
       : ?LJCAttribute
@@ -51,39 +69,41 @@
     }
 
     // Adds an object and key value.
-    public function AddObject(LJCAttribute $item, $key = null): ?LJCAttribute
+    public function AddObject(LJCAttribute $attrib, $key = null): ?LJCAttribute
     {
-      $retValue = null;
+      $methodName = "AddObject()";
+      $retAttrib = null;
 
       if (null == $key)
       {
-        $key = $item->Name;
+        $key = $attrib->Name;
       }
 
       $process = true;
 
       // *** Begin ***
-      // Append new styles to existing styles.
+      // Merge new styles with existing styles.
       if ("style" == $key
         && $this->HasKey($key))
       {
-        $prevItem = $this->Retrieve($key);
-        $prevValue = trim($prevItem->Value);
-        if (!str_ends_with($prevValue, ";"))
+        $existingAttrib = $this->Retrieve($key);
+        if ($existingAttrib != null)
         {
-          $prevValue .= "; ";
+          $process = false;
+          $mergedValue = $this->MergeStyle($existingAttrib, $attrib);
+          if (LJC::HasValue($mergedValue))
+          {
+            $existingAttrib->Value = $mergedValue;
+          }
         }
-        $newItemValue = $prevValue . trim($item->Value);
-        $prevItem->Value = $newItemValue;
-        $process = false;
       }
       // *** End ***
 
       if ($process)
       {
-        $retValue = $this->AddItem($item, $key);
+        $retValue = $this->AddItem($attrib, $key);
       }
-      return $retValue;
+      return $retAttrib;
     }// AddObject()
 
     // Append items.
@@ -95,6 +115,15 @@
       }
     }
 
+    // Removes the item by Key value.
+    /// <include path='items/Remove/*' file='Doc/_CollectionName_.xml'/>
+    /// <ParentGroup>Data</ParentGroup>
+    public function Remove($key, bool $throwError = true): void
+    {
+      // DeleteItem() is in LJCCollectionBase.
+      $this->DeleteItem($key, $throwError);
+    }
+
     // Gets an item by key.
     public function Retrieve($key)
     {
@@ -103,6 +132,143 @@
       $retValue = $this->RetrieveItem($key);
       return $retValue;
     }
+
+    // ----------
+    // Other Methods
+
+    // Merge "style" attrib rules.
+    public function MergeStyle($existingAttrib, $newAttrib)
+    {
+      $methodName = "MergeStyle()";
+      $retMergedRules = $this->SingleValue($existingAttrib, $newAttrib);
+
+      if (!LJC::HasValue($retMergedRules))
+      {
+        // Get existing style rules.
+        $existingValue = trim($existingAttrib->Value);
+        $existingRules = explode(";", $existingValue);
+
+        // Get new style rules.
+        $newValue = trim($newAttrib->Value);
+        $newRules = explode(";", $newValue);
+
+        // Save previous rule unless overriden by new rule.
+        foreach ($existingRules as $existingRule)
+        {
+          if ($existingRule != null)
+          {
+            // 0 = Property, 1 = Value.
+            $values = explode(":", $existingRule);
+            $property = self::TrimElement($values, 0);
+
+              // Check for override.
+            $newRule = $this->FindRule($newRules, $property);
+            if ($newRule != null)
+            {
+              $values = explode(":", $newRule);
+              $index = $this->FindRuleIndex($newRules, $property);
+              unset($newRules[index]);
+            }
+
+            $property = self::TrimElement($values, 0);
+            $value = self::TrimElement($values, 1);
+            $retMergedRules .= "{$property}: {$value}; ";
+          }
+        }
+
+        // Add remaining new rules.
+        foreach ($newRules as $newRule)
+        {
+          $values = explode(":", $newRule);
+          $property = self::TrimElement($values, 0);
+          if (LJC::HasValue($property))
+          {
+            $value = self::TrimElement($values, 1);
+            $retMergedRules .= "{$property}: {$value}; ";
+          }
+        }
+      }
+      return $retMergedRules;
+    }
+
+    // Trims element value or if null, returns null.
+    private static function TrimElement($values, $index)
+    {
+      $retValue = null;
+
+      if ($values != null)
+      {
+        if (count($values) > $index)
+        {
+          $retValue = trim($values[$index]);
+        }
+      }
+      return $retValue;
+    }
+
+    // Finds the rule with the supplied property name.
+    private function FindRule($rules, $property)
+    {
+      $retRule = "";
+
+      $property = trim($property);
+      foreach ($rules as $rule)
+      {
+        $values = explode(":", $rule);
+        if (trim($values[0]) == $property)
+        {
+          $retRule = $rule;
+          break;
+        }
+      }
+      return $retRule;
+    }
+
+    // Finds the rule index with the supplied property name.
+    private function GetRuleIndex($rules, $property)
+    {
+      $retIndex = -1;
+
+      for ($index = 0; $index < count($rules); $index++)
+      {
+        $rule = $rules[$index];
+        $values = explode(":", $rule);
+        if (trim($values[0]) == $property)
+        {
+          $retIndex = $index;
+          break;
+        }
+      }
+      return $retIndex;
+    }
+
+    // Returns the existing value if only one exists.
+    // Otherwise returns an empty string.
+    private function SingleValue($existingAttrib, $newAttrib)
+    {
+      $retRules = "";
+
+      if (null == $existingAttrib
+        && $newAttrib != null)
+      {
+        $retRules = $newAttrib->Value;
+      }
+      if (null == $newAttrib
+        && $existingAttrib != null)
+      {
+        $retRules = $existingAttrib->Value;
+      }
+      return $retRules;
+    }
+
+    // ---------------
+    // Properties
+
+    /// <summary>The class name for debugging.</summary>
+    public string $ClassName;
+
+    /// <summary>The debug text.</summary>
+    public string $DebugText;
   }
 
   // ********************
@@ -134,6 +300,9 @@
     /// <ParentGroup>Constructor</ParentGroup>
     public function __construct(?LJCTextState $textState = null)
     {
+      $this->ClassName = "LJCHTMLBuilder";
+      $this->DebugText = "";
+
       $this->BuilderValue = "";
       $this->IndentCharCount = 2;
       $this->IndentCount = 0;
@@ -658,6 +827,8 @@
       {
         $retAttribs->Add("class", $className);
       }
+        // *** Add ***
+      $this->DebugText .= $retAttribs->DebugText;
       return $retAttribs;
     }
 
@@ -669,6 +840,8 @@
       $retAttribs = new LJCAttributes();
       $retAttribs->Add("lang", "en");
       $retAttribs->Add("xmlns", "http://www.w3.org/1999/xhtml");
+        // *** Add ***
+      $this->DebugText .= $retAttribs->DebugText;
       return $retAttribs;
     }
 
@@ -689,11 +862,9 @@
       $style .= " cellpadding: {$value}px;";
 
       $retAttribs->Add("style", $style);
-
-      //$retAttribs->Add("border", strval($border));
-      //$retAttribs->Add("cellspacing", strval($cellSpacing));
-      //$retAttribs->Add("borderspacing", strval($borderSpacing));
-      //$retAttribs->Add("cellpadding", strval($cellPadding));
+      // *** Add ***
+      $this->DebugText .= "TableAttribs\r\n";
+      $this->DebugText .= $retAttribs->DebugText;
       return $retAttribs;
     }
 
@@ -843,6 +1014,12 @@
 
     // ----------
     // Properties
+
+    /// <summary>The class name for debugging.</summary>
+    public string $ClassName;
+
+    /// <summary>The debug text.</summary>
+    public string $DebugText;
 
     // <summary>The indent character count.</summary>
     public int $IndentCharCount;

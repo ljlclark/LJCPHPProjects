@@ -26,22 +26,23 @@ class LJCCityListEvents
   // #region Properties
   // ---------------
 
-  // The city table helper object.
+  /// <summary>The city table helper object.</summary>
   // Used in LJCCityTableEvents Page().
-  CityPaging = null; // LJCTable
+  CityTable = null; // LJCTable
 
-  // The city HTML Table ID.
+  /// <summary>The city HTML Table ID.</summary>
   // Used in LJCCityTableEvents constructor().
   CityTableID = "";
 
-  // The active table.
+  /// <summary>The active table.</summary>
   // Used in LJCCityTableEvents Page() and #TableClick().
   FocusTable = null; // LJCTable
 
+  /// <summary>The region table helper object.</summary>
   // Used in LJCRegionTableEvents Page().
   RegionTable = null // LJCTable
 
-  // The region HTML Table ID.
+  /// <summary>The region HTML Table ID.</summary>
   RegionTableID = "";
   // #endregion
 
@@ -74,8 +75,6 @@ class LJCCityListEvents
 
   // The region table events.
   #RegionTableEvents = null; // LJCRegionTableEvents
-
-
   // #endregion
 
   // #region Constructor Methods.
@@ -92,6 +91,7 @@ class LJCCityListEvents
     this.#ConfigFile = configFile;
 
     this.RegionTableID = "selectTable";
+
     this.#CityMenuID = "cityMenu";
     this.#RegionMenuID = "regionMenu";
 
@@ -102,7 +102,8 @@ class LJCCityListEvents
     this.#Refresh();
   }
 
-  /// <summary>Sets the dialog values.</summary>
+  // Sets the dialog values.
+  /// <include path='items/SetDialogValues/*' file='Doc/LJCCityListEvents.xml'/>
   SetDialogValues(textDialogID, textAreaID)
   {
     this.#Debug.SetDialogValues(textDialogID, textAreaID);
@@ -133,23 +134,7 @@ class LJCCityListEvents
     LJC.AddEvent("regionRefresh", "click", this.#RegionRefresh, this);
   }
 
-  // Creates the table property names.
-  #CityPropertyNames()
-  {
-    let retPropertyNames = [
-      City.PropertyCityID,
-      City.PropertyProvinceID,
-      City.PropertyProvinceName,
-      City.PropertyName,
-      City.PropertyDescription,
-      City.PropertyCityFlag,
-      City.PropertyZipCode,
-      City.PropertyDistrict,
-    ];
-    return retPropertyNames;
-  }
-
-  // Creates the table property names.
+  // Creates the region table property names.
   #RegionPropertyNames()
   {
     let retPropertyNames = [
@@ -160,26 +145,91 @@ class LJCCityListEvents
     ];
     return retPropertyNames;
   }
+  // #endregion
 
-  // Setup City Table and Detail.
+  // #region Setup City Table and Detail.
+
+  // Creates the primary key DataColumns.
+  #CityPrimaryKeys()
+  {
+    let retKeyColumns = new LJCDataColumns();
+
+    // Get key value from hidden form.
+    let dataColumn = new LJCDataColumn("CityID");
+    dataColumn.Value = rowCityID.value;
+    retKeyColumns.AddObject(dataColumn);
+    return retKeyColumns;
+  }
+
+  // Creates the table column property names.
+  #CityTableColumnNames()
+  {
+    let retTableColumnNames = [
+      City.PropertyName,
+      City.PropertyDescription,
+      City.PropertyCityFlag,
+      City.PropertyZipCode,
+      City.PropertyDistrict,
+    ];
+    return retTableColumnNames;
+  }
+
+  // Creates the city table property names.
+  #CityQueryProperties()
+  {
+    let retQueryProperties = [
+      City.PropertyCityID,
+      City.PropertyProvinceID,
+      City.PropertyProvinceName,
+      City.PropertyName,
+      City.PropertyDescription,
+      City.PropertyCityFlag,
+      City.PropertyZipCode,
+      City.PropertyDistrict,
+    ];
+    return retQueryProperties;
+  }
+
+  // Creates the city unique property nanes.
+  #CityUniqueProperties()
+  {
+    let retUniqueProperties = [
+      "ProvinceID",
+      "Name",
+    ];
+    return retUniqueProperties;
+  }
+
   #SetupCity()
   {
     // City Table helper object.
-    this.CityPaging = new LJCTable(this.CityTableID, this.#CityMenuID);
+    this.CityTable = new LJCTable(this.CityTableID, this.#CityMenuID);
+    const uniqueProperties = this.#CityUniqueProperties();
+    this.CityTable.UniqueProperties = uniqueProperties;
     this.FocusTable = null;
 
     // City Table events.
     this.#CityTableEvents = new LJCCityTableEvents(this, this.#CityMenuID
       , this.#ConfigName, this.#ConfigFile);
+    let htmlTableID = this.CityTableID;
+    let tableName = City.TableName;
+    let tableColumnNames = this.#CityTableColumnNames();
+    this.#CityTableEvents.SetTableValues(htmlTableID, tableName
+      , tableColumnNames);
+    // *** Add ***
+    this.#CityTableEvents.Table = this.CityTable;
+
     let tableRequest = this.#CityTableEvents.TableRequest;
     tableRequest.Limit = 18;
-    tableRequest.PropertyNames = this.#CityPropertyNames();
+    tableRequest.PropertyNames = this.#CityQueryProperties();
 
     // City Detail events.
-    this.#CityDetailEvents = new LJCCityDetailEvents(this.CityPaging);
+    this.#CityDetailEvents = new LJCCityDetailEvents(this.CityTable);
   }
+  #endregion
 
-  // Setup Region Table and Detail.
+  // #region Setup Region Table and Detail.
+
   #SetupRegion()
   {
     // Region Table helper object.
@@ -202,6 +252,7 @@ class LJCCityListEvents
   // ---------------
 
   // The Document "contextmenu" event handler.
+  // Move this method to LJCCityTableEvents?
   #DocumentContextMenu(event)
   {
     // Handle table row right button click.
@@ -232,6 +283,7 @@ class LJCCityListEvents
   }
 
   // The Document "keydown" event handler.
+  // Move this method to LJCCityTableEvents?
   #DocumentKeyDown(event)
   {
     let ESCAPE_KEY = 27;
@@ -247,7 +299,7 @@ class LJCCityListEvents
       switch (event.keyCode)
       {
         case DOWN_ARROW:
-          // False if at end of page.
+          // True if at end of page.
           if (ljcTable.MoveNext())
           {
             tableEvents.NextPage();
@@ -259,7 +311,7 @@ class LJCCityListEvents
           break;
 
         case UP_ARROW:
-          // False if at beginning of page.
+          // True if at beginning of page.
           if (ljcTable.MovePrevious())
           {
             tableEvents.PrevPage();
@@ -288,6 +340,7 @@ class LJCCityListEvents
   // #endregion
 
   // #region City Menu Event Handlers
+  // Move to LJCCityTableEvents?
   // ---------------
 
   // Deletes the selected item.
@@ -296,7 +349,7 @@ class LJCCityListEvents
     this.#CityDetailEvents.Action = "Delete";
     let cityRequest = this.#CityRequest();
     cityRequest.Action = "Delete";
-    cityRequest.KeyColumns = this.#PrimaryKeyColumns();
+    cityRequest.KeyColumns = this.#CityPrimaryKeys();
     this.#CityDataRequest(cityRequest);
   }
 
@@ -306,7 +359,7 @@ class LJCCityListEvents
     this.#CityDetailEvents.Action = "Retrieve";
     let cityRequest = this.#CityRequest();
     cityRequest.Action = "Retrieve";
-    cityRequest.KeyColumns = this.#PrimaryKeyColumns();
+    cityRequest.KeyColumns = this.#CityPrimaryKeys();
     this.#CityDataRequest(cityRequest);
   }
 
@@ -327,8 +380,8 @@ class LJCCityListEvents
     {
       tableEvents.NextPage();
 
-      // Update the table with new values ETable and Keys.
-      this.#CityDetailEvents.UpdateTable(tableEvents.CityPaging);
+      // Update the table with new Keys.
+      this.#CityDetailEvents.UpdateTable(tableEvents.Table);
     }
   }
 
@@ -340,8 +393,8 @@ class LJCCityListEvents
     {
       tableEvents.PrevPage();
 
-      // Update the table with new values ETable and Keys.
-      this.#CityDetailEvents.UpdateTable(tableEvents.CityPaging);
+      // Update the table with new Keys.
+      this.#CityDetailEvents.UpdateTable(tableEvents.Table);
     }
   }
 
@@ -352,8 +405,8 @@ class LJCCityListEvents
     tableEvents.TableRequest.Action = "Refresh";
     tableEvents.Page();
 
-    // Update the table with new values ETable and Keys.
-    this.#CityDetailEvents.UpdateTable(tableEvents.CityPaging);
+    // Update the table with new Keys.
+    this.#CityDetailEvents.UpdateTable(tableEvents.Table);
   }
   // #endregion
 
@@ -368,19 +421,13 @@ class LJCCityListEvents
     selectDialog.style.height = tableHeight + 'px';
   }
 
-  // Refreshes the current page.
-  #RegionRefresh()
-  {
-    let tableEvents = this.#RegionTableEvents;
-    tableEvents.TableRequest.Action = "Refresh";
-    this.#TableDataRequest(tableEvents);
-  }
-
+  // Gets the float or int value of an html percentage or pixels.
+  /// <include path='items/GetValue/*' file='Doc/LJCCityListEvents.xml'/>
   GetValue(htmlValue)
   {
     let retValue = htmlValue.trim();
 
-    // Strip suffix.
+    // Strip prefix and suffix.
     let length = retValue.length;
     if (retValue.includes("%"))
     {
@@ -404,6 +451,8 @@ class LJCCityListEvents
     return retValue;
   }
 
+  // Sets the column widths and displays the dialog.
+  /// <include path='items/PageDone/*' file='Doc/LJCCityListEvents.xml'/>
   PageDone(regionTableEvents)
   {
     // Set attributes including column widths.
@@ -425,12 +474,19 @@ class LJCCityListEvents
     //  , this);
   }
 
+  // Refreshes the current page.
+  #RegionRefresh()
+  {
+    let tableEvents = this.#RegionTableEvents;
+    tableEvents.TableRequest.Action = "Refresh";
+    this.#TableDataRequest(tableEvents);
+  }
+
   // Sends page request to RegionTable web service.
   #TableDataRequest(tableEvents)
   {
     tableEvents.Page(this.PageDone);
   }
-
   // #endregion
 
   // #region Other Menu Methods
@@ -462,19 +518,6 @@ class LJCCityListEvents
       }
     }
     return retTableEvents;
-  }
-
-  /// <summary>Get the primary key DataColumns.</summary>
-  /// <returns>The primary key DataColumns.</returns>
-  #PrimaryKeyColumns()
-  {
-    let retKeyColumns = new LJCDataColumns();
-
-    // Get key value from hidden form.
-    let dataColumn = new LJCDataColumn("CityID");
-    dataColumn.Value = rowCityID.value;
-    retKeyColumns.AddObject(dataColumn);
-    return retKeyColumns;
   }
   // #endregion
 
@@ -584,7 +627,7 @@ class LJCCityListEvents
       switch (eTable.id)
       {
         case this.CityTableID:
-          retLJCTable = this.CityPaging;
+          retLJCTable = this.CityTable;
           break;
       }
     }

@@ -38,6 +38,7 @@
     public function Request(): void
     {
       $this->ClassName = "LJCCityTableService";
+      $this->DebugText = "";
       $methodName = "Request()";
 
       $this->InitResponseProperties();
@@ -183,6 +184,7 @@
         $textState->IndentCount = 2;
         $response->HTMLTable = $tableBuilder->ResultHTML($result, $textState
           , $tableColumnNames);
+        $this->DebugText .= $tableBuilder->DebugText;
 
         // Create Key array.
         $keyNames = $this->KeyPropertyNames();
@@ -227,12 +229,12 @@
       $retAttribs = $hb->Attribs($className, $id);
 
       // Centers to page.
-      $style = "margin: auto";
+      $style = "margin: auto;";
       $retAttribs->Add("style", $style);
 
-      // border = 1, cellSpacing = 0, cellPadding = 2, className = null
-      //   , id = null
-      $retAttribs->Append($hb->TableAttribs(className: "table"));
+      $attribs = $hb->TableAttribs(className: "table");
+      $retAttribs->Append($attribs);
+      $this->DebugText .= $retAttribs->DebugText;
       return $retAttribs;
     } // GetTableAttribs()
 
@@ -401,7 +403,7 @@
 
     /// <summary>The data retrieve action.</summary>
     /// <remarks>
-    ///   Values: "Next", "Previous", "Top", "Bottom", "First"?, "Last"?
+    ///   Values: "Next", "Previous", "Top"?, "Bottom"?, "First"?, "Last"?
     /// </remarks>
     public string $Action;
 

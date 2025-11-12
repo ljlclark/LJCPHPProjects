@@ -23,7 +23,7 @@ class LJCTableRequest
   /// <summary>The unique key of the first page item.</summary>
   BeginKeyData = null;
 
-  /// <summary>The HTML city table element ID.
+  /// <summary>The HTML city table element ID.</summary>
   HTMLTableID = "";
 
   /// <summary>The data access configuration file name.</summary>

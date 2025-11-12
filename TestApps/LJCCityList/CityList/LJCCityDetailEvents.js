@@ -157,7 +157,7 @@ class LJCCityDetailEvents
 
   // #region Web Service Methods
 
-  // Sends data request to CityData web service.
+  // Sends a data request to the CityData web service.
   // Called from CommitClick().
   #DataRequest(cityRequest)
   {
@@ -324,9 +324,10 @@ class LJCCityDataResponse
 {
   // #region Properties
 
-  // The action type name.
+  /// <summary>The action type name.</summary>
   Action = "";
 
+  /// <summary>The affected count value.</summary>
   AffectedCount = 0;
 
   /// <summary>The service debug text.</summary>
