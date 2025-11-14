@@ -218,7 +218,6 @@ class LJCCityListEvents
     let tableColumnNames = this.#CityTableColumnNames();
     this.#CityTableEvents.SetTableValues(htmlTableID, tableName
       , tableColumnNames);
-    // *** Add ***
     this.#CityTableEvents.Table = this.CityTable;
 
     let tableRequest = this.#CityTableEvents.TableRequest;

@@ -26,6 +26,11 @@
   <script src="CityList/LJCRegionDAL.js"></script>
   <script src="RegionList/LJCRegionTableEvents.js"></script>
   <script src="RegionList/LJCRegionDetailEvents.js"></script>
+  <style>
+    :focus-visible {
+      outline: 1px solid black;
+      /*outline-offset: 2px;*/
+  </style>
 </head>
 <body>
   <div class="page">
@@ -49,7 +54,7 @@
     </div>
 
     <!-- City Table -->
-    <table id="cityTableID" class="table"></table>
+    <table id="cityTableID" tabindex="4" class="table"></table>
 
     <!-- Select Table Dialog -->
     <dialog id="selectDialog" class="dialog">
@@ -277,6 +282,7 @@
 
   </div>  <!-- Closes page -->
   <script>
+    cityTableID.focus();
     let cityListEvents = new LJCCityListEvents("cityTableID");
     cityListEvents.SetDialogValues("textDialog", "textArea");
   </script>

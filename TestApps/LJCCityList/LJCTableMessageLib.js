@@ -23,9 +23,6 @@ class LJCTableRequest
   /// <summary>The unique key of the first page item.</summary>
   BeginKeyData = null;
 
-  /// <summary>The HTML city table element ID.</summary>
-  HTMLTableID = "";
-
   /// <summary>The data access configuration file name.</summary>
   ConfigFile = "";
 
@@ -38,11 +35,20 @@ class LJCTableRequest
   /// <summary>The page item count limit.<summary>
   Limit = 18;
 
+  /// <summary>The table heading attributes.</summary>
+  HeadingAttributes = [];
+
+  /// <summary>The HTML city table element ID.</summary>
+  HTMLTableID = "";
+
   /// <summary>The data column property names.</summary>
   PropertyNames = [];
 
   /// <summary>The service name.</summary>
   ServiceName = "";
+
+  /// <summary>The table attributes.</summary>
+  TableAttributes = [];
 
   /// <summary>The table column property names.</summary>
   TableColumnNames = [];
@@ -91,8 +97,10 @@ class LJCTableRequest
     retRequest.ConfigName = this.ConfigName;
     retRequest.EndKeyData = structuredClone(this.EndKeyData);
     retRequest.Limit = this.Limit;
+    retRequest.HeadingAttributes = structuredClone(this.HeadingAttributes);
     retRequest.PropertyNames = structuredClone(this.PropertyNames);
     retRequest.ServiceName = this.ServiceName;
+    retRequest.TableAttributes = structuredClone(this.TableAttributes);
     retRequest.TableColumnNames = structuredClone(this.TableColumnNames);
     retRequest.TableName = this.TableName;
     return retRequest;

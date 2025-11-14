@@ -129,7 +129,19 @@
       $this->ConfigName = $pageData->ConfigName;
       $this->EndKeyData = $pageData->EndKeyData;
       $this->Limit = $pageData->Limit;
+
+      $headingAttribs = $pageData->HeadingAttributes;
+      $attribs = new LJCAttributes();
+      $headingAttributes = $attribs->ToCollection($headingAttribs);
+      $this->HeadingAttributes = $headingAttributes;
+
       $this->PropertyNames = $pageData->PropertyNames;
+
+      $tableAttribs = $pageData->TableAttributes;
+      $attribs = new LJCAttributes();
+      $tableAttributes = $attribs->ToCollection($tableAttribs);
+      $this->TableAttributes = $tableAttributes;
+
       $this->TableName = $pageData->TableName;
       $this->TableColumnNames = $pageData->TableColumnNames;
       if (null == $pageData->TableColumnNames)
@@ -176,8 +188,8 @@
         $tableBuilder = $this->HTMLTableBuilder($tableColumnNames);
 
         // Setup attributes.
-        $tableBuilder->TableAttribs = $this->GetTableAttribs();
-        $tableBuilder->HeadingAttribs = $this->GetHeadingAttribs();
+        $tableBuilder->HeadingAttribs = $this->HeadingAttributes;
+        $tableBuilder->TableAttribs = $this->TableAttributes;
 
         // Create HTML table with data collection.
         $textState = new LJCTextState();
@@ -200,43 +212,6 @@
       $retResponse = LJC::CreateJSON($response);
       return $retResponse;
     } // GetResponse()
-
-    // Gets the heading attributes.
-    // Called from: GetResponse()
-    private function GetHeadingAttribs(): LJCAttributes
-    {
-      $methodName = "GetHeadingAttribs()";
-
-      $retAttribs = new LJCAttributes();
-      $style = "background-color: lightsteelblue";
-      $retAttribs->Add("style", $style);
-      return $retAttribs;
-    } // GetHeadingAttribs()
-
-    // Gets the table attributes.
-    // Called from: GetResponse()
-    private function GetTableAttribs()
-    {
-      $methodName = "GetTableAttribs()";
-
-      // Root TextState object.
-      $textState = new LJCTextState();
-
-      // Setup table attributes.
-      $hb = new LJCHTMLBuilder($textState);
-      $className = null;
-      $id = $this->CityTableID;
-      $retAttribs = $hb->Attribs($className, $id);
-
-      // Centers to page.
-      $style = "margin: auto;";
-      $retAttribs->Add("style", $style);
-
-      $attribs = $hb->TableAttribs(className: "table");
-      $retAttribs->Append($attribs);
-      $this->DebugText .= $retAttribs->DebugText;
-      return $retAttribs;
-    } // GetTableAttribs()
 
     // Create the LJCHTMLTable object.
     // Called from: GetResponse()
@@ -427,11 +402,17 @@
     /// <remarks> Properties: ProvinceID, Name</remarks>
     public object $EndKeyData;
 
+    /// <summary>The heading attributes.</summary>
+    public object $HeadingAttributes;
+
     /// <summary>The number of rows per page.</summary>
     public int $Limit;
 
     /// <summary>The data object property names.</summary>
     public ?array $PropertyNames;
+
+    /// <summary>The table attributes.</summary>
+    public object $TableAttributes;
 
     /// <summary>The HTML table column property names.</summary>
     public array $TableColumnNames;

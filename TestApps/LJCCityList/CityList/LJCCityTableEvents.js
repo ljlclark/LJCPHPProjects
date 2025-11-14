@@ -90,11 +90,13 @@ class LJCCityTableEvents
     this.Table = new LJCTable(this.#HTMLTableID, this.#HTMLMenuID);
 
     // Service request for LJCCityTableService.php
-    this.TableRequest = new LJCTableRequest("LJCCityTableService", configName
+    this.TableRequest = new LJCTableRequest("LJCTableService", configName
       , configFile);
     let tableRequest = this.TableRequest;
     tableRequest.HTMLTableID = this.#HTMLTableID;
     tableRequest.TableName = City.TableName;
+    tableRequest.HeadingAttributes = this.#HeadingAttributes();
+    tableRequest.TableAttributes = this.#TableAttributes();
 
     // Set retrieve property names.
     // null includes all columns.
@@ -128,8 +130,11 @@ class LJCCityTableEvents
     this.TableName = tableName;
 
     // Service request for LJCTableService.php
-    this.TableRequest = new LJCTableRequest("LJCTableService", this.#ConfigName
-      , this.#ConfigFile);
+    if (null == this.TableRequest)
+    {
+      this.TableRequest = new LJCTableRequest("LJCTableService", this.#ConfigName
+        , this.#ConfigFile);
+    }
     let tableRequest = this.TableRequest;
     tableRequest.HTMLTableID = this.#HTMLTableID;
     tableRequest.TableName = this.TableName;
@@ -270,6 +275,7 @@ class LJCCityTableEvents
           LJC.AddEvent(self.#HTMLTableID, "click", self.#TableClick
             , self);
 
+          // Update table.
           let table = self.Table;
           table.Keys = response.Keys;
           table.TableColumns = response.TableColumns;
@@ -438,6 +444,40 @@ class LJCCityTableEvents
       }
     }
     return retValue;
+  }
+
+  // Gets the heading attributes.
+  #HeadingAttributes()
+  {
+    let retAttribs = [];
+
+    let attrib = {};
+    attrib.Name = "style";
+    attrib.Value = "background-color: lightsteelblue;";
+    retAttribs.push(attrib);
+    return retAttribs;
+  }
+
+  // Gets the table attributes.
+  #TableAttributes()
+  {
+    let retAttribs = [];
+
+    let attrib = {};
+    attrib.Name = "id";
+    attrib.Value = this.#HTMLTableID;
+    retAttribs.push(attrib);
+
+    attrib = {};
+    attrib.Name = "class";
+    attrib.Value = "table";
+    retAttribs.push(attrib);
+
+    attrib = {};
+    attrib.Name = "style";
+    attrib.Value = "margin: auto;";
+    retAttribs.push(attrib);
+    return retAttribs;
   }
 
   // Creates the table column names.

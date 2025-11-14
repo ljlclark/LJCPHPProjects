@@ -34,6 +34,37 @@
   /// <summary>Represents a collection of node or element attributes.</summary>
   class LJCAttributes extends LJCCollectionBase
   {
+    /// <summary>Creates a typed collection from an array of objects.</summary>
+    /// <param name="$items">The object array.</param>
+    /// <returns>The LJCAttributes collection.</returns>
+    public function ToCollection(array $items)
+    {
+      $methodName = "ToCollection()";
+      $retAttributes = null;
+
+      if (is_array($items)
+        && count($items) > 0)
+      {
+        $retAttributes = new LJCAttributes();
+        $key = 1;
+        foreach ($items as $item)
+        {
+          $properties = get_object_vars($item);
+          $attrib = new LJCAttribute();
+          foreach ($properties as $name => $value)
+          {
+            if (property_exists($item, $name))
+            {
+              $attrib->$name = $value;
+            }
+          }
+          $retAttributes->AddObject($attrib, $key);
+          $key++;
+        }
+      }
+      return $retAttributes;
+    }
+
     // Initializes an object instance.
     public function __construct()
     {
