@@ -21,6 +21,26 @@
   /// <summary>Represents a node attribute.</summary>
   class LJCAttribute
   {
+    public static function Copy($item)
+    {
+      $retAttrib = null;
+
+      if ($item != null)
+      {
+        $properties = get_object_vars($item);
+        $retAttrib = new LJCAttribute();
+
+        foreach ($properties as $name => $value)
+        {
+          if (property_exists($item, $name))
+          {
+            $retAttrib->$name = $value;
+          }
+        }
+      }
+      return $retAttrib;
+    }
+
     /// <summary>Initializes a class instance.</summary>
     public function __construct(string $name = null, string $value = null)
     {
@@ -37,9 +57,8 @@
     /// <summary>Creates a typed collection from an array of objects.</summary>
     /// <param name="$items">The object array.</param>
     /// <returns>The LJCAttributes collection.</returns>
-    public function ToCollection(array $items)
+    public static function ToCollection(array $items)
     {
-      $methodName = "ToCollection()";
       $retAttributes = null;
 
       if (is_array($items)
@@ -49,15 +68,7 @@
         $key = 1;
         foreach ($items as $item)
         {
-          $properties = get_object_vars($item);
-          $attrib = new LJCAttribute();
-          foreach ($properties as $name => $value)
-          {
-            if (property_exists($item, $name))
-            {
-              $attrib->$name = $value;
-            }
-          }
+          $attrib = LJCAttribute::Copy($item);
           $retAttributes->AddObject($attrib, $key);
           $key++;
         }

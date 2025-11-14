@@ -132,14 +132,14 @@
 
       $headingAttribs = $pageData->HeadingAttributes;
       $attribs = new LJCAttributes();
-      $headingAttributes = $attribs->ToCollection($headingAttribs);
+      $headingAttributes = LJCAttributes::ToCollection($headingAttribs);
       $this->HeadingAttributes = $headingAttributes;
 
       $this->PropertyNames = $pageData->PropertyNames;
 
       $tableAttribs = $pageData->TableAttributes;
       $attribs = new LJCAttributes();
-      $tableAttributes = $attribs->ToCollection($tableAttribs);
+      $tableAttributes = LJCAttributes::ToCollection($tableAttribs);
       $this->TableAttributes = $tableAttributes;
 
       $this->TableName = $pageData->TableName;
