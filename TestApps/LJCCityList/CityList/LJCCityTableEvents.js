@@ -167,7 +167,14 @@ class LJCCityTableEvents
     document.addEventListener("click", this.#DocumentClick.bind(this));
 
     // Table Event Handlers.
-    LJC.AddEvent(this.#HTMLTableID, "click", this.#TableClick, this);
+    this.#AddTableEvents(this);
+  }
+
+  // Table Event Handlers.
+  #AddTableEvents(self)
+  {
+    LJC.AddEvent(self.#HTMLTableID, "click", self.#TableClick, self);
+    LJC.AddEvent(self.#HTMLTableID, "keydown", self.#TableKeyDown, self);
   }
   // #endregion
 
@@ -196,6 +203,11 @@ class LJCCityTableEvents
         this.#CityListEvents.FocusTable = this.Table;
       }
     }
+  }
+
+  #TableKeyDown(event)
+  {
+    //alert("Table keydown");
   }
   // #endregion
 
@@ -269,11 +281,11 @@ class LJCCityTableEvents
         {
           // ***** 
           //self.#Debug.ShowText(methodName, "response.HTMLTable", response.HTMLTable);
-          // Create new table element and add new "click" event.
+          // Create new table element.
           let eTable = LJC.Element(self.#HTMLTableID);
           eTable.outerHTML = response.HTMLTable;
-          LJC.AddEvent(self.#HTMLTableID, "click", self.#TableClick
-            , self);
+          LJC.AddEvent(self.#HTMLTableID, "click", self.#TableClick, self);
+          LJC.AddEvent(self.#HTMLTableID, "keydown", self.#TableKeyDown, self);
 
           // Update table.
           let table = self.Table;
@@ -466,6 +478,11 @@ class LJCCityTableEvents
     let attrib = {};
     attrib.Name = "id";
     attrib.Value = this.#HTMLTableID;
+    retAttribs.push(attrib);
+
+    attrib = {};
+    attrib.Name = "tabindex";
+    attrib.Value = "4";
     retAttribs.push(attrib);
 
     attrib = {};
