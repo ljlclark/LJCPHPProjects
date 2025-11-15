@@ -38,16 +38,21 @@ class LJCCityTableEvents
   TableName = "";
 
   /// <summary> The city table data request.</summary>
-  // Used in CityListEvents constructor(), #Refresh().
+  // Used in CityListEvents constructor(), Refresh().
   TableRequest = null; // LJCTableRequest;
   // #endregion
 
   // #region Private Properties
   // ---------------
 
-  #ConfigName = "";
+  // The detail dialog events.
+  #CityDetailEvents = null; // LJCCityDetailEvents
 
+  // The data configuration file.
   #ConfigFile = "";
+
+  // The data configuration name.
+  #ConfigName = "";
 
   // The show debug text object.
   #Debug = null;
@@ -93,10 +98,10 @@ class LJCCityTableEvents
     this.TableRequest = new LJCTableRequest("LJCTableService", configName
       , configFile);
     let tableRequest = this.TableRequest;
-    tableRequest.HTMLTableID = this.#HTMLTableID;
-    tableRequest.TableName = City.TableName;
     tableRequest.HeadingAttributes = this.#HeadingAttributes();
+    tableRequest.HTMLTableID = this.#HTMLTableID;
     tableRequest.TableAttributes = this.#TableAttributes();
+    tableRequest.TableName = City.TableName;
 
     // Set retrieve property names.
     // null includes all columns.
@@ -111,6 +116,9 @@ class LJCCityTableEvents
     //let addColumn = addColumns.Add(City.PropertyProvinceName);
     //addColumn.InsertIndex = 0; // Default
     //tableRequest.AddTableColumns = LJC.ToArray(addColumns);
+
+    // City Detail events.
+    this.#CityDetailEvents = new LJCCityDetailEvents(this.Table);
 
     this.#AddEvents();
   }
@@ -167,27 +175,60 @@ class LJCCityTableEvents
     document.addEventListener("click", this.#DocumentClick.bind(this));
 
     // Table Event Handlers.
-    this.#AddTableEvents(this);
+    this.#AddTableEvents();
+
+    // City Menu Event Handlers.
+    LJC.AddEvent("delete", "click", this.#Delete, this);
+    LJC.AddEvent("edit", "click", this.#Edit, this);
+    LJC.AddEvent("new", "click", this.#New, this);
+    LJC.AddEvent("next", "click", this.#Next, this);
+    LJC.AddEvent("previous", "click", this.#Previous, this);
+    LJC.AddEvent("refresh", "click", this.Refresh, this);
   }
 
   // Table Event Handlers.
-  #AddTableEvents(self)
+  #AddTableEvents()
   {
-    LJC.AddEvent(self.#HTMLTableID, "click", self.#TableClick, self);
-    LJC.AddEvent(self.#HTMLTableID, "keydown", self.#TableKeyDown, self);
+    LJC.AddEvent(this.#HTMLTableID, "click", this.#TableClick, this);
+    LJC.AddEvent(this.#HTMLTableID, "contextmenu", this.#TableContextMenu
+      , this);
+    LJC.AddEvent(this.#HTMLTableID, "dblclick", this.#TableDoubleClick
+      , this);
+    LJC.AddEvent(this.#HTMLTableID, "keydown", this.#TableKeyDown, this);
+  }
+  // #endregion
+
+  // #region Setup City Table and Detail.
+
+  // Creates the primary key DataColumns.
+  #CityPrimaryKeys()
+  {
+    let retKeyColumns = new LJCDataColumns();
+
+    // Get key value from hidden form.
+    let dataColumn = new LJCDataColumn("CityID");
+    dataColumn.Value = rowCityID.value;
+    retKeyColumns.AddObject(dataColumn);
+    return retKeyColumns;
   }
   // #endregion
 
   // #region Event Handlers
   // ---------------
 
-  // The Document "click" handler.
+  // The Document "click" event handler.
   #DocumentClick()
   {
     LJC.Visibility(this.#HTMLMenuID, "hidden");
   }
 
-  // The Table "click" handler.
+  // The Document "dblclick" event handler.
+  #TableDoubleClick()
+  {
+    this.#Edit();
+  }
+
+  // The Table "click" event handler.
   #TableClick(event)
   {
     LJC.Visibility(this.#HTMLMenuID, "hidden");
@@ -205,9 +246,129 @@ class LJCCityTableEvents
     }
   }
 
+  // The Table "contextmenu" event handler.
+  #TableContextMenu(event)
+  {
+    // Handle table row right button click.
+    if ("TD" == event.target.tagName)
+    {
+      let eCell = event.target;
+      let table = this.Table;
+      if (table != null)
+      {
+        event.preventDefault();
+
+        table.SelectColumnRow(eCell);
+        this.UpdateTableRequest();
+
+        let location = LJC.MouseLocation(event);
+        table.ShowMenu(location);
+      }
+    }
+  }
+
+  // The Table "keydown" event handler.
   #TableKeyDown(event)
   {
-    //alert("Table keydown");
+    let ESCAPE_KEY = 27;
+    let UP_ARROW = 38;
+    let DOWN_ARROW = 40;
+
+    switch (event.keyCode)
+    {
+      case DOWN_ARROW:
+        // True if at end of page.
+        if (this.Table.MoveNext())
+        {
+          this.NextPage();
+        }
+        break;
+
+      case ESCAPE_KEY:
+        LJC.Visibility("cityMenu", "hidden");
+        break;
+
+      case UP_ARROW:
+        // True if at beginning of page.
+        if (this.Table.MovePrevious())
+        {
+          this.PrevPage();
+        }
+        break;
+    }
+  }
+  // #endregion
+
+  // #region Menu event handlers.
+
+  // Deletes the selected item.
+  #Delete()
+  {
+    this.#CityDetailEvents.Action = "Delete";
+    let cityRequest = this.#CityRequest();
+    cityRequest.Action = "Delete";
+    cityRequest.KeyColumns = this.#CityPrimaryKeys();
+    this.#CityDataRequest(cityRequest);
+  }
+
+  // Displays the CityDetail form for editing the selected item.
+  #Edit()
+  {
+    this.#CityDetailEvents.Action = "Retrieve";
+    let cityRequest = this.#CityRequest();
+    cityRequest.Action = "Retrieve";
+    cityRequest.KeyColumns = this.#CityPrimaryKeys();
+    this.#CityDataRequest(cityRequest);
+  }
+
+  // Displays the CityDetail form for adding a new item.
+  #New()
+  {
+    this.#CityDetailEvents.Action = "Insert";
+    let cityRequest = this.#CityRequest();
+    cityRequest.Action = "Insert";
+    this.#CityDataRequest(cityRequest);
+  }
+
+  // Displays the next page.
+  #Next()
+  {
+    this.NextPage();
+
+    // Update the table with new Keys.
+    this.#CityDetailEvents.UpdateTable(this.Table);
+  }
+
+  // Displays the previous page.
+  #Previous()
+  {
+    this.PrevPage();
+
+    // Update the table with new Keys.
+    this.#CityDetailEvents.UpdateTable(this.Table);
+  }
+
+  // Refreshes the current page.
+  Refresh()
+  {
+    this.TableRequest.Action = "Refresh";
+    this.Page();
+
+    // Update the table with new Keys.
+    this.#CityDetailEvents.UpdateTable(this.Table);
+  }
+  // #endregion
+
+  // #region Other Menu Methods
+
+  // Creates the city request.
+  #CityRequest()
+  {
+    let configFile = "../DataConfigs.xml";
+    let configName = "TestData";
+    let retCityRequest = new LJCCityDataRequest(configName, configFile);
+    retCityRequest.TableName = City.TableName;
+    return retCityRequest;
   }
   // #endregion
 
@@ -284,88 +445,19 @@ class LJCCityTableEvents
           // Create new table element.
           let eTable = LJC.Element(self.#HTMLTableID);
           eTable.outerHTML = response.HTMLTable;
-          LJC.AddEvent(self.#HTMLTableID, "click", self.#TableClick, self);
-          LJC.AddEvent(self.#HTMLTableID, "keydown", self.#TableKeyDown, self);
 
-          // Update table.
+          // Get new table element and reset events.
+          eTable = LJC.Element(self.#HTMLTableID);
+          eTable.focus();
+          self.#AddTableEvents();
+
+          // Update table helper.
           let table = self.Table;
           table.Keys = response.Keys;
           table.TableColumns = response.TableColumns;
 
           // Updates the BeginningOfData and EndOfData flags.
           let rowIndex = table.CurrentRowIndex;
-          if (self.#UpdateLimitFlags())
-          {
-            // Get row index if "NextPage" or "PrevPage";
-            rowIndex = table.CurrentRowIndex;
-          }
-
-          table.SelectRow(rowIndex, rowIndex);
-
-          // Set hidden form primary keys and TableRequest.
-          self.UpdateTableRequest()
-
-          // Can only assign public data.
-          self.#CityListEvents.CityTable = table;
-          self.#CityListEvents.FocusTable = table;
-        }
-      }
-    };
-
-    let tableRequest = this.TableRequest.Clone();
-    tableRequest.ConfigFile = "../DataConfigs.xml";
-    let request = tableRequest.Request();
-    xhr.send(request);
-  }
-
-  TablePage()
-  {
-    let methodName = "TablePage()";
-
-    // Save a reference to this class for anonymous function.
-    const self = this;
-
-    let xhr = new XMLHttpRequest();
-    xhr.open("POST", "CityList/LJCTableService.php");
-    xhr.setRequestHeader("Content-Type", "application/json");
-
-    xhr.onload = function ()
-    {
-      // Get the AJAX response.
-      if (LJC.HasText(this.responseText))
-      {
-        if (!LJCTableResponse.IsValidResponse(this.responseText))
-        {
-          // ToDo: Remove response check?
-          self.#Debug.ShowText(methodName, "this.responseText"
-            , this.responseText, false);
-        }
-
-        let response = new LJCTableResponse(this.responseText);
-
-        self.#Debug.ShowText(methodName, "response.DebugText"
-          , response.DebugText, false);
-        self.#Debug.ShowText(methodName, "response.SQL"
-          , response.SQL, false);
-
-        // Handle new table HTML and associated values.
-        if (self.#HasData(response.HTMLTable))
-        {
-          // ***** 
-          //self.#Debug.ShowText(methodName, "response.HTMLTable", response.HTMLTable);
-          // Create new table element and add new "click" event.
-          let eTable = LJC.Element(self.#HTMLTableID);
-          eTable.outerHTML = response.HTMLTable;
-          LJC.AddEvent(self.#HTMLTableID, "click", self.#TableClick
-            , self);
-
-          // Update table.
-          let table = self.Table;
-          table.Keys = response.Keys;
-          table.TableColumns = response.TableColumns;
-
-          // Updates the BeginningOfData and EndOfData flags.
-          rowIndex = table.RowIndex;
           if (self.#UpdateLimitFlags())
           {
             // Get row index if "NextPage" or "PrevPage";
@@ -432,6 +524,57 @@ class LJCCityTableEvents
     }
   }
 
+  // Sends data request to CityData web service.
+  // Called from Delete(), Edit(), New()
+  #CityDataRequest(cityRequest)
+  {
+    let methodName = "#CityDataRequest()";
+
+    // Save a reference to this class for anonymous function.
+    const self = this;
+
+    let xhr = new XMLHttpRequest();
+    xhr.open("POST", "CityList/LJCCityDataService.php");
+    xhr.setRequestHeader("Content-Type", "application/json");
+
+    xhr.onload = function ()
+    {
+      // Get the AJAX response.
+      if (LJC.HasText(this.responseText))
+      {
+        self.#Debug.ShowText(methodName, "this.responseText"
+          , this.responseText, false);
+
+        let response = LJC.ParseJSON(this.responseText);
+
+        self.#Debug.ShowText(methodName, "response.DebugText"
+          , response.DebugText, false);
+        self.#Debug.ShowText(methodName, "response.SQL"
+          , response.SQL, false);
+
+        self.#ShowCityDetail(response);
+      }
+    }
+
+    let request = LJC.CreateJSON(cityRequest);
+    xhr.send(request);
+  }
+
+  // Clears the City form data.
+  #ClearCityFormData()
+  {
+    LJC.SetValue("cityID", "0");
+    LJC.SetValue("cityProvinceID", "");
+    LJC.SetValue("cityName", "");
+
+    LJC.SetValue("cityFlag", "0");
+    LJC.SetValue("cityDescription", "");
+    LJC.SetValue("district", "0");
+    LJC.SetValue("zipCode", "0");
+
+    LJC.SetValue("cityCommit", "Create");
+  }
+
   // Checks if the provided table text exists.
   // Called from Page().
   #HasData(tableText)
@@ -470,6 +613,44 @@ class LJCCityTableEvents
     return retAttribs;
   }
 
+  // Set the City Form values.
+  #SetCityForm(city)
+  {
+    LJC.SetValue("cityID", city.CityID);
+    LJC.SetValue("cityProvinceID", city.ProvinceID);
+    LJC.SetValue("cityName", city.Name);
+
+    LJC.SetValue("cityFlag", city.CityFlag);
+    LJC.SetValue("cityDescription", city.Description);
+    LJC.SetValue("cityProvinceName", city.ProvinceName);
+    LJC.SetValue("district", city.District);
+    LJC.SetValue("zipCode", city.ZipCode);
+  }
+
+  // Process the web service response.
+  // Called from CityDataRequest().
+  #ShowCityDetail(cityResponse)
+  {
+    switch (cityResponse.Action.toLowerCase())
+    {
+      case "insert":
+        // Sets commit button text to "Create".
+        this.#ClearCityFormData();
+        cityDialog.showModal();
+        break;
+
+      case "retrieve":
+        let cities = cityResponse.ResultItems;
+        if (cities != null)
+        {
+          let city = cities[0];
+          this.#SetCityForm(city);
+          cityDialog.showModal();
+        }
+        break;
+    }
+  }
+
   // Gets the table attributes.
   #TableAttributes()
   {
@@ -482,7 +663,7 @@ class LJCCityTableEvents
 
     attrib = {};
     attrib.Name = "tabindex";
-    attrib.Value = "4";
+    attrib.Value = "5";
     retAttribs.push(attrib);
 
     attrib = {};
