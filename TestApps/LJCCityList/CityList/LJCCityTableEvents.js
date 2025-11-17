@@ -198,7 +198,7 @@ class LJCCityTableEvents
   }
   // #endregion
 
-  // #region Setup City Table and Detail.
+  // #region Setup City Detail.
 
   // Creates the primary key DataColumns.
   #CityPrimaryKeys()
@@ -241,8 +241,9 @@ class LJCCityTableEvents
       {
         this.Table.SelectColumnRow(eCell);
         this.UpdateTableRequest();
-        this.#CityListEvents.FocusTable = this.Table;
       }
+      const eTable = LJC.Element(this.#HTMLTableID);
+      eTable.focus();
     }
   }
 
@@ -300,6 +301,7 @@ class LJCCityTableEvents
   // #endregion
 
   // #region Menu event handlers.
+  // ---------------
 
   // Deletes the selected item.
   #Delete()
@@ -360,6 +362,7 @@ class LJCCityTableEvents
   // #endregion
 
   // #region Other Menu Methods
+  // ---------------
 
   // Creates the city request.
   #CityRequest()
@@ -372,7 +375,7 @@ class LJCCityTableEvents
   }
   // #endregion
 
-  // #region Page Methods
+  // #region Paging Methods
   // ---------------
 
   /// <summary>Gets the next page for City table.</summary>
@@ -471,7 +474,6 @@ class LJCCityTableEvents
 
           // Can only assign public data.
           self.#CityListEvents.CityTable = table;
-          self.#CityListEvents.FocusTable = table;
         }
       }
     };

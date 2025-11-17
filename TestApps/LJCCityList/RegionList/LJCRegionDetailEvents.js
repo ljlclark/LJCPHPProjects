@@ -66,7 +66,7 @@ class LJCRegionDetailEvents
   {
     // Button Event Handlers.
     LJC.AddEvent("regionCancel", "click", this.#CancelClick, this);
-    LJC.AddEvent("regionCommit", "click", this.#CommitClick, this);
+    //LJC.AddEvent("regionCommit", "click", this.#CommitClick, this);
   }
   // #endregion
 

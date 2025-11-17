@@ -8,9 +8,6 @@
 //   LJC: AddEvent(), CreateJSON(), HasText(), MouseLocation(), ParseJSON()
 //   Visibility()
 //   Debug: ShowText(), ShowDialog()
-// <script src="CityList/LJCCityDetailEvents.js"></script>
-//   LJCCityDataRequest:
-//   LJCCityDetailEvents: UpdateTable()
 // <script src="LJCTable.js"></script>
 //   LJCTable: GetTable(), ShowMenu() MoveNext(), MovePrevious()
 //   SelectColumnRow()
@@ -34,10 +31,6 @@ class LJCCityListEvents
   // Used in LJCCityTableEvents constructor().
   CityTableID = "";
 
-  /// <summary>The active table.</summary>
-  // Used in LJCCityTableEvents Page() and #TableClick().
-  FocusTable = null; // LJCTable
-
   /// <summary>The region table helper object.</summary>
   // Used in LJCRegionTableEvents Page().
   RegionTable = null // LJCTable
@@ -48,9 +41,6 @@ class LJCCityListEvents
 
   // #region Private Properties
   // ---------------
-
-  // The detail dialog events.
-  #CityDetailEvents = null; // LJCCityDetailEvents
 
   // The city HTML menu ID.
   #CityMenuID = "";
@@ -95,11 +85,11 @@ class LJCCityListEvents
     this.#CityMenuID = "cityMenu";
     this.#RegionMenuID = "regionMenu";
 
+    // Creates CityTable and #CityTableEvents.
     this.#SetupCity();
     this.#SetupRegion();
 
     this.#AddEvents();
-    //this.#Refresh();
     this.#CityTableEvents.Refresh();
   }
 
@@ -109,7 +99,6 @@ class LJCCityListEvents
   {
     this.#Debug.SetDialogValues(textDialogID, textAreaID);
     this.#CityTableEvents.SetDialogValues(textDialogID, textAreaID);
-    this.#CityDetailEvents.SetDialogValues(textDialogID, textAreaID);
   }
 
   // Adds the HTML event listeners.
@@ -135,21 +124,10 @@ class LJCCityListEvents
   }
   // #endregion
 
-  // #region Setup City Table and Detail.
-
-  // Creates the primary key DataColumns.
-  #CityPrimaryKeys()
-  {
-    let retKeyColumns = new LJCDataColumns();
-
-    // Get key value from hidden form.
-    let dataColumn = new LJCDataColumn("CityID");
-    dataColumn.Value = rowCityID.value;
-    retKeyColumns.AddObject(dataColumn);
-    return retKeyColumns;
-  }
+  // #region Setup City Table.
 
   // Creates the table column property names.
+  // Can include join column property names.
   #CityTableColumnNames()
   {
     let retTableColumnNames = [
@@ -196,7 +174,6 @@ class LJCCityListEvents
     this.CityTable = new LJCTable(this.CityTableID, this.#CityMenuID);
     const uniqueProperties = this.#CityUniqueProperties();
     this.CityTable.UniqueProperties = uniqueProperties;
-    this.FocusTable = null;
 
     // City Table events.
     this.#CityTableEvents = new LJCCityTableEvents(this, this.#CityMenuID
@@ -211,11 +188,8 @@ class LJCCityListEvents
     let tableRequest = this.#CityTableEvents.TableRequest;
     tableRequest.Limit = 18;
     tableRequest.PropertyNames = this.#CityQueryProperties();
-
-    // City Detail events.
-    this.#CityDetailEvents = new LJCCityDetailEvents(this.CityTable);
   }
-  #endregion
+  // #endregion
 
   // #region Setup Region Table and Detail.
 
@@ -227,6 +201,7 @@ class LJCCityListEvents
     // Region Table Events
     this.#RegionTableEvents = new LJCRegionTableEvents(this, this.#RegionMenuID
       , this.#ConfigName, this.#ConfigFile);
+
     let tableRequest = this.#RegionTableEvents.TableRequest;
     tableRequest.Limit = 18;
     // No join columns so leave null to use all columns.
@@ -306,16 +281,8 @@ class LJCCityListEvents
     regionTable.SetColumnWidth(1, "200px");
     regionTable.SetColumnWidth(2, "200px");
 
-    // Column widths are set.
-    let width1 = regionTable.ColumnWidth(0);
-    let width2 = regionTable.ColumnWidth(1);
-    let width3 = regionTable.ColumnWidth(2);
-
     // Show the parent dialog.
     selectDialog.showModal();
-    //LJCCityListEvents.#DialogResize();
-    //LJC.AddEvent("selectTable", "resize", LJCCityListEvents.#DialogResize
-    //  , this);
   }
 
   // Refreshes the current page.
@@ -330,45 +297,6 @@ class LJCCityListEvents
   #TableDataRequest(tableEvents)
   {
     tableEvents.Page(this.PageDone);
-  }
-  // #endregion
-
-  // #region Table Column Methods
-
-  // Gets the LJCTable object based on the selected table cell.
-  #SelectedTable(eCell)
-  {
-    let retLJCTable = null;
-
-    let eTable = LJCTable.GetTable(eCell);
-    if (eTable != null)
-    {
-      switch (eTable.id)
-      {
-        case this.CityTableID:
-          retLJCTable = this.CityTable;
-          break;
-      }
-    }
-    return retLJCTable;
-  }
-
-  // Retrieves the table events object based on the selected table cell.
-  #SelectedTableEvents(eCell)
-  {
-    let retTable = null;
-
-    let eTable = LJCTable.GetTable(eCell);
-    if (eTable != null)
-    {
-      switch (eTable.id)
-      {
-        case this.CityTableID:
-          retTable = this.#CityTableEvents;
-          break;
-      }
-    }
-    return retTable;
   }
   // #endregion
 }

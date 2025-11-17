@@ -94,7 +94,11 @@ class LJCCityDetailEvents
       cities.AddObject(city);
       this.CityRequest.RequestItems = cities;
 
-      this.#DataRequest(this.CityRequest);
+      // ***** Testing
+      if (this.Action != "")
+      {
+        this.#DataRequest(this.CityRequest);
+      }
 
       // If successful.
       cityDialog.close();
