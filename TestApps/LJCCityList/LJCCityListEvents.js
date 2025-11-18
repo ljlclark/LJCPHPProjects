@@ -140,7 +140,7 @@ class LJCCityListEvents
     return retTableColumnNames;
   }
 
-  // Creates the city table property names.
+  // Creates the city table result property names.
   #CityQueryProperties()
   {
     let retQueryProperties = [

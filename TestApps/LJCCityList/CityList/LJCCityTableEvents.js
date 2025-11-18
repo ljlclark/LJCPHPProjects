@@ -195,6 +195,7 @@ class LJCCityTableEvents
     LJC.AddEvent(this.#HTMLTableID, "dblclick", this.#TableDoubleClick
       , this);
     LJC.AddEvent(this.#HTMLTableID, "keydown", this.#TableKeyDown, this);
+    LJC.AddEvent(this.#HTMLTableID, "wheel", this.#TableWheel, this);
   }
   // #endregion
 
@@ -233,17 +234,14 @@ class LJCCityTableEvents
   {
     LJC.Visibility(this.#HTMLMenuID, "hidden");
 
-    // Handle table row click.
+    // Handle table cell click.
     if ("TD" == event.target.tagName)
     {
-      let eCell = event.target;
       if (this.Table != null)
       {
-        this.Table.SelectColumnRow(eCell);
+        this.Table.SelectColumnRow(event.target);
         this.UpdateTableRequest();
       }
-      const eTable = LJC.Element(this.#HTMLTableID);
-      eTable.focus();
     }
   }
 
@@ -296,6 +294,29 @@ class LJCCityTableEvents
           this.PrevPage();
         }
         break;
+    }
+  }
+
+  // The Table "wheel" event handler.
+  #TableWheel(event)
+  {
+    event.preventDefault();
+
+    if (event.deltaY > 0)
+    {
+      // True if at end of page.
+      if (this.Table.MoveNext())
+      {
+        this.NextPage();
+      }
+    }
+    else
+    {
+      // True if at beginning of page.
+      if (this.Table.MovePrevious())
+      {
+        this.PrevPage();
+      }
     }
   }
   // #endregion
