@@ -35,6 +35,7 @@ class LJCCityTableEvents
   // Used in Page() and #TableClick.
   Table = null; // LJCTable;
 
+  // The database table name.
   TableName = "";
 
   /// <summary> The city table data request.</summary>
@@ -77,45 +78,45 @@ class LJCCityTableEvents
   // ---------------
 
   /// <summary>Initializes the object instance.</summary>
-  constructor(cityListEvents, htmlMenuID, configName = ""
-    , configFile = "DataConfigs.xml")
+  //constructor(cityListEvents, htmlMenuID, configName = ""
+  //  , configFile = "DataConfigs.xml")
+  constructor(cityListEvents, objectArgs)
   {
     this.#Debug = new Debug("LJCCityTableEvents");
 
     // Set properties from parameters.
     this.#CityListEvents = cityListEvents;
-    this.#HTMLMenuID = htmlMenuID;
-    this.#ConfigName = configName;
-    this.#ConfigFile = configFile;
+    this.#ConfigFile = objectArgs.ConfigFile;
+    this.#ConfigName = objectArgs.ConfigName;
+    this.#HTMLMenuID = objectArgs.HTMLMenuID;
+    this.#HTMLTableID = objectArgs.HTMLTableID;
 
     this.#IsNextPage = false;
     this.#IsPrevPage = false;
-    this.#HTMLTableID = this.#CityListEvents.CityTableID;
 
     this.Table = new LJCTable(this.#HTMLTableID, this.#HTMLMenuID);
+    this.Table.UniqueProperties = objectArgs.UniquePropertyNames;
 
     // Service request for LJCCityTableService.php
-    this.TableRequest = new LJCTableRequest("LJCTableService", configName
-      , configFile);
+    this.TableRequest = new LJCTableRequest("LJCTableService", this.#ConfigName
+      , this.#ConfigFile);
     let tableRequest = this.TableRequest;
     tableRequest.HeadingAttributes = this.#HeadingAttributes();
     tableRequest.HTMLTableID = this.#HTMLTableID;
     tableRequest.TableAttributes = this.#TableAttributes();
-    tableRequest.TableName = City.TableName;
+    tableRequest.TableName = objectArgs.DBTableName;
 
     // Set retrieve property names.
     // null includes all columns.
-    tableRequest.PropertyNames = null;
+    tableRequest.PropertyNames = objectArgs.QueryPropertyNames;
 
     // Get table columns.
     // Can include join column names.
-    tableRequest.TableColumnNames = this.#TableColumnNames();
+    tableRequest.TableColumnNames = objectArgs.HTMLTableColumnNames;
 
     // Insert join table columns.
-    //let addColumns = new LJCDataColumns()
-    //let addColumn = addColumns.Add(City.PropertyProvinceName);
-    //addColumn.InsertIndex = 0; // Default
-    //tableRequest.AddTableColumns = LJC.ToArray(addColumns);
+    let joinPropertyNames = objectArgs.QueryJoinPropertyNames;
+    tableRequest.AddTableColumns = this.#AddTableColumns(joinPropertyNames);
 
     // City Detail events.
     this.#CityDetailEvents = new LJCCityDetailEvents(this.Table);
@@ -127,45 +128,6 @@ class LJCCityTableEvents
   SetDialogValues(textDialogID, textAreaID)
   {
     this.#Debug.SetDialogValues(textDialogID, textAreaID);
-  }
-
-  // Call this after constructor to test generic.
-  /// <summary>Generic values.</summary>
-  SetTableValues(htmlTableID, tableName, tableColumnNames, propertyNames = null
-    , joinPropertyNames = null)
-  {
-    this.#HTMLTableID = htmlTableID;
-    this.TableName = tableName;
-
-    // Service request for LJCTableService.php
-    if (null == this.TableRequest)
-    {
-      this.TableRequest = new LJCTableRequest("LJCTableService", this.#ConfigName
-        , this.#ConfigFile);
-    }
-    let tableRequest = this.TableRequest;
-    tableRequest.HTMLTableID = this.#HTMLTableID;
-    tableRequest.TableName = this.TableName;
-
-    // Set retrieve property names.
-    // null includes all columns.
-    tableRequest.PropertyNames = propertyNames;
-
-    // Get table columns.
-    // Can include join column names.
-    tableRequest.TableColumnNames = tableColumnNames;
-
-    // Insert join table columns.
-    if (joinPropertyNames != null)
-    {
-      let addColumns = new LJCDataColumns()
-      for (const propertyName of joinPropertyNames)
-      {
-        let addColumn = addColumns.Add(propertyName);
-        //addColumn.InsertIndex = 0; // Default
-      }
-      tableRequest.AddTableColumns = LJC.ToArray(addColumns);
-    }
   }
 
   // Adds the HTML event listeners.
@@ -184,6 +146,24 @@ class LJCCityTableEvents
     LJC.AddEvent("next", "click", this.#Next, this);
     LJC.AddEvent("previous", "click", this.#Previous, this);
     LJC.AddEvent("refresh", "click", this.Refresh, this);
+  }
+
+  // Gets the Add table columns.
+  #AddTableColumns(queryJoinPropertyNames)
+  {
+    let retAddColumns = null;
+
+    if (queryJoinPropertyNames != null)
+    {
+      let addColumns = new LJCDataColumns()
+      for (const propertyName of queryJoinPropertyNames)
+      {
+        let addColumn = addColumns.Add(propertyName);
+        //addColumn.InsertIndex = 0; // Default
+      }
+      retAddColumns = LJC.ToArray(addColumns);
+    }
+    return retAddColumns;
   }
 
   // Table Event Handlers.
@@ -400,7 +380,7 @@ class LJCCityTableEvents
   // ---------------
 
   /// <summary>Gets the next page for City table.</summary>
-  // Called from LJCCityListEvents.DocumentKeyDown().
+  // Called from #TableKeyDown().
   NextPage()
   {
     if (!this.Table.EndOfData)
@@ -413,7 +393,7 @@ class LJCCityTableEvents
   }
 
   /// <summary>Gets the previous page for City table.</summary>
-  // Called from LJCCityListEvents.DocumentKeyDown().
+  // Called from #TableKeyDown().
   PrevPage()
   {
     if (!this.Table.BeginningOfData)
@@ -430,7 +410,7 @@ class LJCCityTableEvents
   // ---------------
 
   /// <summary>Sends page request to CityData web service.</summary>
-  // Called from NextPage(), PrevPage() and CityListEvents #Refesh().
+  // Called from NextPage(), PrevPage() and Refesh().
   Page()
   {
     let methodName = "Page()";
@@ -508,8 +488,8 @@ class LJCCityTableEvents
   // Sets the form values before a detail submit and the page values before
   // a page submit.
   /// <include path='items/UpdateTableRequest/*' file='Doc/LJCCityTableEvents.xml'/>
-  // Called from LJCCityListEvents #DocumentContextMenu()
-  // #TableClick(), NextPage(), PrevPage(), Page().
+  // Called from #TableContextMenu(), #TableClick(), NextPage(), PrevPage()
+  //   , Page().
   UpdateTableRequest()
   {
     let table = this.Table;
@@ -701,18 +681,18 @@ class LJCCityTableEvents
     return retAttribs;
   }
 
-  // Creates the table column names.
-  #TableColumnNames()
-  {
-    let retColumnNames = [
-      City.PropertyName,
-      City.PropertyDescription,
-      City.PropertyCityFlag,
-      City.PropertyZipCode,
-      City.PropertyDistrict,
-    ];
-    return retColumnNames;
-  }
+  //// Creates the table column names.
+  //#TableColumnNames()
+  //{
+  //  let retColumnNames = [
+  //    City.PropertyName,
+  //    City.PropertyDescription,
+  //    City.PropertyCityFlag,
+  //    City.PropertyZipCode,
+  //    City.PropertyDistrict,
+  //  ];
+  //  return retColumnNames;
+  //}
 
   // Updates the BeginningOfData and EndOfData flags.
   // Called from Page().

@@ -18,6 +18,7 @@ copy LJCCityDAL.js %servicePath%
 copy LJCCityDataService.php %servicePath%
 copy LJCCityDetailEvents.js %servicePath%
 copy LJCCityTableEvents.js %servicePath%
+copy LJCCityTableEventsArgs.js %servicePath%
 copy LJCCityTableService.php %servicePath%
 copy LJCRegionDAL.js %servicePath%
 

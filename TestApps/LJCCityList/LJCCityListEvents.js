@@ -140,6 +140,17 @@ class LJCCityListEvents
     return retTableColumnNames;
   }
 
+  // Creates the city table events constructor arguments.
+  #CityTableEventsArgs()
+  {
+    let tableColumnNames = this.#CityTableColumnNames();
+    let retArgs = new LJCCityTableEventsArgs(this.CityTableID, this.#CityMenuID
+      , City.TableName, tableColumnNames, this.#ConfigName, this.#ConfigFile);
+    retArgs.QueryPropertyNames = this.#CityQueryProperties();
+    retArgs.UniquePropertyNames = this.#CityUniqueProperties();
+    return retArgs;
+  }
+
   // Creates the city table result property names.
   #CityQueryProperties()
   {
@@ -158,7 +169,7 @@ class LJCCityListEvents
     return retQueryProperties;
   }
 
-  // Creates the city unique property nanes.
+  // Creates the city unique property names.
   #CityUniqueProperties()
   {
     let retUniqueProperties = [
@@ -176,14 +187,8 @@ class LJCCityListEvents
     this.CityTable.UniqueProperties = uniqueProperties;
 
     // City Table events.
-    this.#CityTableEvents = new LJCCityTableEvents(this, this.#CityMenuID
-      , this.#ConfigName, this.#ConfigFile);
-    let htmlTableID = this.CityTableID;
-    let tableName = City.TableName;
-    let tableColumnNames = this.#CityTableColumnNames();
-    this.#CityTableEvents.SetTableValues(htmlTableID, tableName
-      , tableColumnNames);
-    this.#CityTableEvents.Table = this.CityTable;
+    let eventArgs = this.#CityTableEventsArgs();
+    this.#CityTableEvents = new LJCCityTableEvents(this, eventArgs);
 
     let tableRequest = this.#CityTableEvents.TableRequest;
     tableRequest.Limit = 18;
