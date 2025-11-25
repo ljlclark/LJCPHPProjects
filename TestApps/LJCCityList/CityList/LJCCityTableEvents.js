@@ -137,7 +137,7 @@ class LJCCityTableEvents
     document.addEventListener("click", this.#DocumentClick.bind(this));
 
     // Table Event Handlers.
-    this.#AddTableEvents();
+    //this.#AddTableEvents();
 
     // City Menu Event Handlers.
     LJC.AddEvent("delete", "click", this.#Delete, this);

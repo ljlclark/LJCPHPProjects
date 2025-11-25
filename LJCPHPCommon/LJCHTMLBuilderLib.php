@@ -379,7 +379,8 @@
     {
       $childIndentCount = $textState->ChildIndentCount;
 
-      if (LJC::HasValue($createText)
+      //if (LJC::HasValue($createText)
+      if ($this->TextLength($createText) > 0
         && $childIndentCount > 0)
       {
         $this->AddIndent($childIndentCount);
@@ -406,32 +407,17 @@
     /// <ParentGroup>Main</ParentGroup>
     public function EndsWithNewLine(): bool
     {
-      $builderValue = $this->BuilderValue;
       $retValue = false;
 
-      if (strlen($builderValue) > 0)
+      $builderValue = $this->BuilderValue;
+      // *** Add ***
+      $length = strlen($builderValue);
+      if ($length > 0)
       {
-        $length = strlen($builderValue);
         if ("\n" == $builderValue[$length - 1])
         {
           $retValue = true;
         }
-      }
-      return $retValue;
-    }
-
-    // Checks if text can start with a newline.
-    /// <include path='items/StartWithNewLine/*' file='Doc/LJCHTMLBuilder.xml'/>
-    /// <ParentGroup>Main</ParentGroup>
-    public function StartWithNewLine(bool $allowNewLine): bool
-    {
-      $retValue = false;
-
-      if ($allowNewLine
-        && $this->HasText()
-        && !$this->EndsWithNewLine())
-      {
-        $retValue = true;
       }
       return $retValue;
     }
@@ -466,6 +452,22 @@
       return $this->IndentCount * $this->IndentCharCount;
     }
 
+    // Checks if text can start with a newline.
+    /// <include path='items/StartWithNewLine/*' file='Doc/LJCHTMLBuilder.xml'/>
+    /// <ParentGroup>Main</ParentGroup>
+    public function StartWithNewLine(bool $allowNewLine): bool
+    {
+      $retValue = false;
+
+      if ($allowNewLine
+        && $this->HasText()
+        && !$this->EndsWithNewLine())
+      {
+        $retValue = true;
+      }
+      return $retValue;
+    }
+
     // ----------
     // Append Text Methods
     
@@ -484,7 +486,8 @@
     /// <ParentGroup>AppendText</ParentGroup>
     public function AddText(string $text): void
     {
-      if (LJC::HasValue($text))
+      //if (LJC::HasValue($text))
+      if ($this->TextLength($text) > 0)
       {
         $this->BuilderValue .= $text;
       }
@@ -508,7 +511,8 @@
       , bool $allowNewLine = true): string
     {
       $retText = $this->GetText($text, $addIndent, $allowNewLine);
-      if (LJC::HasValue($retText))
+      //if (LJC::HasValue($retText))
+      if ($this->TextLength($retText) > 0)
       {
         $this->BuilderValue .= $retText;
       }
@@ -642,12 +646,12 @@
     /// <ParentGroup>GetText</ParentGroup>
     public function GetWrapped(string $text): string
     {
-      $lineLength = $this->LineLength;
-      $lineLimit = $this->LineLimit;
       $retText = $text;
 
       $buildText = "";
       $workText = $text;
+      $lineLength = $this->LineLength;
+      $lineLimit = $this->LineLimit;
       $totalLength = $lineLength + $this->TextLength($workText);
       if ($totalLength < $lineLimit)
       {
@@ -671,6 +675,7 @@
           // *** Different than TextBuilder ***
           $indentString = $this->GetIndentString();
           $lineText = "{$indentString}{$wrapText}";
+          // Does this also set $lineLength?
           $this->LineLength = strlen($lineText);
           $buildText .= $lineText;
 
@@ -715,7 +720,8 @@
     {
       $createText = $this->GetBegin($name, $textState, $attribs, $addIndent
         , $childIndent);
-      $this->Text($createText, false);
+      $indent = false;
+      $this->Text($createText, $indent);
 
       // Use AddChildIndent after beginning an element.
       $this->AddChildIndent($createText, $textState);
@@ -736,7 +742,8 @@
       // Adds the indent string.
       $createText = $this->GetCreate($name, $text, $textState, $attribs
         , $addIndent, $childIndent, $isEmpty, $close);
-      $this->Text($createText, false);
+      $indent = false;
+      $this->Text($createText, $indent);
       if (!$close)
       {
         // Use AddChildIndent after beginning an element.
@@ -755,7 +762,8 @@
       , bool $addIndent = true): string
     {
       $createText = $this->GetEnd($name, $textState, $addIndent);
-      $this->Text($createText, false);
+      $indent = false;
+      $this->Text($createText, $indent);
 
       // Append Method
       $this->UpdateState($textState);
@@ -776,10 +784,26 @@
 
       $createText = $this->GetCreate($name, "", $textState, $attribs
         , $addIndent, $childIndent, close: false);
-      $hb->Text($createText, false);
+      $indent = false;
+      $this->Text($createText, $indent);
 
       // Only use AddChildIndent() if additional text is added in this method.
       $retValue = $hb->ToString();
+      return $retValue;
+    }
+
+    // Gets beginning of style selector.
+    /// <include path='items/GetBeginSelector/*' file='Doc/LJCHTMLBuilder.xml'/>
+    /// <ParentGroup>GetElement</ParentGroup>
+    public function GetBeginSelector(string $selectorName
+      , LJCTextState $textState): string
+    {
+      $hb = new LJCHTMLBuilder($textState);
+
+      $hb.Text($selectorName);
+      $hb.AddText(" {");
+
+      $retValue = $hb.ToString();
       return $retValue;
     }
 
@@ -807,7 +831,8 @@
 
       // Content is added if not an empty element.
       $isWrapped = false;
-      if (!$isEmpty)
+      if (!$isEmpty
+        && LJC::HasValue($text))
       {
         $content = $this->Content($text, $textState, $isEmpty, $isWrapped);
         $hb->AddText($content);
@@ -884,6 +909,17 @@
       $retAttribs->Add("xmlns", "http://www.w3.org/1999/xhtml");
         // *** Add ***
       $this->DebugText .= $retAttribs->DebugText;
+      return $retAttribs;
+    }
+
+    // Creates the XML start attributes.
+    /// <include path='items/StartAttributes/*' file='Doc/LJCXMLBuilder.xml'/>
+    public function StartXMLAttribs(): LJCAttributes
+    {
+      $retAttribs = new LJCAttributes();
+      $retAttribs->Add("xmlns:xsd", "http://www.w3.org/2001/XMLSchema");
+      $retAttribs->Add("xmlns:xsi"
+        , "http://www.w3.org/2001/XMLSchema-instance");
       return $retAttribs;
     }
 
