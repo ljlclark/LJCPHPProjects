@@ -785,7 +785,7 @@
       $createText = $this->GetCreate($name, "", $textState, $attribs
         , $addIndent, $childIndent, close: false);
       $indent = false;
-      $this->Text($createText, $indent);
+      $hb->Text($createText, $indent);
 
       // Only use AddChildIndent() if additional text is added in this method.
       $retValue = $hb->ToString();
@@ -800,10 +800,10 @@
     {
       $hb = new LJCHTMLBuilder($textState);
 
-      $hb.Text($selectorName);
-      $hb.AddText(" {");
+      $hb->Text($selectorName);
+      $hb->AddText(" {");
 
-      $retValue = $hb.ToString();
+      $retValue = $hb->ToString();
       return $retValue;
     }
 
@@ -906,7 +906,7 @@
     {
       $retAttribs = new LJCAttributes();
       $retAttribs->Add("lang", "en");
-      $retAttribs->Add("xmlns", "http://www.w3.org/1999/xhtml");
+      //$retAttribs->Add("xmlns", "http://www.w3.org/1999/xhtml");
         // *** Add ***
       $this->DebugText .= $retAttribs->DebugText;
       return $retAttribs;
