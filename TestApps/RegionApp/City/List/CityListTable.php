@@ -28,7 +28,7 @@
     // Public Methods
 
     /// <summary>Creates the HTML table.</summary>
-    public function CreateHTMLTable()
+    public function CreateHTMLTable(): void
     {
       // CityDAL.php
       $cityManager = new CityManager($this->ConnectionValues, $this->TableName);
