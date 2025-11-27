@@ -514,7 +514,7 @@
       $retHeading = "";
 
       $textState = new LJCTextState();
-      $textState->IndentCount = 3;
+      $textState->setIndentCount(3);
       $hb = new LJCHTMLBuilder($textState);
       $hb->End("table", $textState);
       $attribs = $hb->Attribs("Title2");

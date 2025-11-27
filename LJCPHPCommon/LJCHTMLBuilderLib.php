@@ -18,9 +18,12 @@
   //  Classes: LJCAttribute, LJCAttributes, LJCHTMLBuilder, LJCTextState
 
   // ********************
-  /// <summary>Represents a node attribute.</summary>
+  /// <summary>Represents a node or element attribute.</summary>
   class LJCAttribute
   {
+    /// <summary>Creates a typed data object from a standard object.</summary>
+    /// <param name="$item">The standard object.</param>
+    /// <returns>The LJCAttribute object.</returns>
     public static function Copy($item)
     {
       $retAttrib = null;
@@ -39,9 +42,11 @@
         }
       }
       return $retAttrib;
-    }
+    } // Copy()
 
     /// <summary>Initializes a class instance.</summary>
+    /// <param name="$name">The optional item name.</param>
+    /// <param name="$value">The optional item value.</param>
     public function __construct(string $name = null, string $value = null)
     {
       $this->Name = $name;
@@ -76,7 +81,7 @@
       return $retAttributes;
     }
 
-    // Initializes an object instance.
+    /// <summary>Initializes an object instance.</summary>
     public function __construct()
     {
       $this->ClassName = "LJCAttributes";
@@ -94,7 +99,11 @@
     // ----------
     // Collection Methods
 
-    // Creates an object and adds it to the collection.
+    /// <summary>Creates an object and adds it to the collection.</summary>
+    /// <param name="$name">The item name.</param>
+    /// <param name="$value">The item value.</param>
+    /// <param name="$key">The optional item key.</param>
+    /// <returns>The LJCAttributes collection.</returns>
     public function Add(string $name, string $value = null, $key = null)
       : ?LJCAttribute
     {
@@ -110,7 +119,10 @@
       return $retValue;
     }
 
-    // Adds an object and key value.
+    /// <summary>Adds an object and key value.</summary>
+    /// <param name="$attrib">The item object.</param>
+    /// <param name="$key">The optional item key.</param>
+    /// <returns>The LJCAttribute object.</returns>
     public function AddObject(LJCAttribute $attrib, $key = null): ?LJCAttribute
     {
       $methodName = "AddObject()";
@@ -148,7 +160,8 @@
       return $retAttrib;
     }// AddObject()
 
-    // Append items.
+    /// <summary>Append items.</summary>
+    /// <param name="$attribs">The item objects.</param>
     public function Append(LJCAttributes $attribs): void
     {
       foreach ($attribs as $attrib)
@@ -158,7 +171,9 @@
     }
 
     // Removes the item by Key value.
-    /// <include path='items/Remove/*' file='Doc/_CollectionName_.xml'/>
+    // <include path='items/Remove/*' file='Doc/_CollectionName_.xml'/>
+    /// <param name="$key">The optional item key.</param>
+    /// <param name="$throwError">The optional throw error flag.</param>
     /// <ParentGroup>Data</ParentGroup>
     public function Remove($key, bool $throwError = true): void
     {
@@ -166,11 +181,14 @@
       $this->DeleteItem($key, $throwError);
     }
 
-    // Gets an item by key.
+    /// <summary>Gets an item by key.</summary>
+    /// <param name="$key">The optional item key.</param>
+    /// <returns>The retrieved item.</returns>
     public function Retrieve($key)
     {
       $retValue = null;
 
+      // RetrieveItem() is in LJCCollectionBase.
       $retValue = $this->RetrieveItem($key);
       return $retValue;
     }
@@ -178,7 +196,10 @@
     // ----------
     // Other Methods
 
-    // Merge "style" attrib rules.
+    /// <summary>Merges "style" attrib rules.</summary>
+    /// <param name="$existingAttrib">The existing style attribute.</param>
+    /// <param name="$newAttrib">The new style attribute.</param>
+    /// <returns>The merged style attributes.</returns>
     public function MergeStyle($existingAttrib, $newAttrib)
     {
       $methodName = "MergeStyle()";
@@ -339,6 +360,7 @@
     // Constructors
 
     /// <summary>Initializes a class instance.</summary>
+    /// <param name="$textState">The text state object.</param>
     /// <ParentGroup>Constructor</ParentGroup>
     public function __construct(?LJCTextState $textState = null)
     {
@@ -379,7 +401,6 @@
     {
       $childIndentCount = $textState->ChildIndentCount;
 
-      //if (LJC::HasValue($createText)
       if ($this->TextLength($createText) > 0
         && $childIndentCount > 0)
       {
@@ -420,7 +441,8 @@
       return $retValue;
     }
 
-    // Gets the current LJCTextState object.
+    // Gets a current LJCTextState object.
+    /// <include path='items/GetTextState/*' file='Doc/LJCHTMLBuilder.xml'/>
     /// <ParentGroup>Main</ParentGroup>
     public function GetTextState(): LJCTextState
     {
@@ -429,8 +451,8 @@
       return $retState;
     }
 
-    /// <summary>Indicates if the builder has text.</summary>
-    /// <returns>true if builder has text; otherwise false.</returns>
+    // Indicates if the builder has text.
+    /// <include path='items/HasText/*' file='Doc/LJCHTMLBuilder.xml'/>
     /// <ParentGroup>Main</ParentGroup>
     public function HasText(): bool
     {
@@ -444,6 +466,7 @@
     }
 
     // Gets the current indent length.
+    /// <include path='items/IndentLength/*' file='Doc/LJCHTMLBuilder.xml'/>
     /// <ParentGroup>Main</ParentGroup>
     public function IndentLength(): int
     {
@@ -484,7 +507,6 @@
     /// <ParentGroup>AppendText</ParentGroup>
     public function AddText(string $text): void
     {
-      //if (LJC::HasValue($text))
       if ($this->TextLength($text) > 0)
       {
         $this->BuilderValue .= $text;
@@ -509,7 +531,6 @@
       , bool $allowNewLine = true): string
     {
       $retText = $this->GetText($text, $addIndent, $allowNewLine);
-      //if (LJC::HasValue($retText))
       if ($this->TextLength($retText) > 0)
       {
         $this->BuilderValue .= $retText;
@@ -596,7 +617,7 @@
       return $retLine;
     }
 
-    // Gets the potentially indented text.
+    // Gets the potentially indented and wrapped text.
     /// <include path='items/GetText/*' file='Doc/LJCHTMLBuilder.xml'/>
     /// <ParentGroup>GetText</ParentGroup>
     public function GetText(?string $text, bool $addIndent = true
@@ -639,7 +660,7 @@
       return $retText;
     }
 
-    // Appends added text and new wrapped line if combined line > LineLimit.
+    // Appends added text and new wrapped line.
     /// <include path='items/GetWrapped/*' file='Doc/LJCHTMLBuilder.xml'/>
     /// <ParentGroup>GetText</ParentGroup>
     public function GetWrapped(string $text): string
@@ -911,7 +932,8 @@
     }
 
     // Creates the XML start attributes.
-    /// <include path='items/StartAttributes/*' file='Doc/LJCXMLBuilder.xml'/>
+    /// <include path='items/StartAttributes/*' file='Doc/LJCHTMLBuilder.xml'/>
+    /// <ParentGroup>GetAttribs</ParentGroup>
     public function StartXMLAttribs(): LJCAttributes
     {
       $retAttribs = new LJCAttributes();

@@ -89,11 +89,52 @@
   <!-- Data Class Methods -->
   <ToString>
     <summary>
-      Retrieves the HTML text.
+      Gets the built string.
     </summary>
     <returns>The HTML text.</returns>
   </ToString>
   <!-- Methods -->
+  <AddChildIndent>
+    <summary>
+      Adds the new (child) indents.
+    </summary>
+    <param name="$createText">The previously created text.</param>
+    <param name="$textState">The TextState object.</param>
+    <remarks>
+      Adds an indent for following child elements.&lt;br /&gt;
+      The indent will only be added if the createText length &gt; 0 and the
+      textState.ChildIndentCount &gt; 0.
+    </remarks>
+    <code>
+      // Root Method Begin
+      $textState = new LJCTextState();
+
+      $result = self::CustomBegin("body", $textState);
+
+      // result:
+      // &amp;lt;body&amp;gt;
+
+      private static string CustomBegin(string $name, LJCTextState $textState
+      , LJCAttributes $attribs = null, bool $addIndent = true
+      , bool $childIndent = true)
+      {
+      // Defaults: IndentCharCount = 2, LineLimit = 80, WrapEnabled = false.
+      $hb = new LJCHTMLBuilder($textState);
+
+      $createText = hb-&gt;GetBegin(name, $textState, $attribs, $addIndent
+      , $childIndent);
+      // Use NoIndent after a "GetText" method.
+      $hb-&gt;Text($createText, $NoIndent);
+      // Use AddChildIndent after beginning an element.
+      $hb-&gt;AddChildIndent($createText, $textState);
+      $result = $hb-&gt;ToString();
+
+      // Append Method
+      //hb-&gt;UpdateState($textState);
+      return result;
+      }
+    </code>
+  </AddChildIndent>
   <AddIndent>
     <summary>
       Changes the IndentCount by the provided value.
@@ -135,6 +176,57 @@
       // Not indented. No start with newline.
     </code>
   </AddIndent>
+  <EndsWithNewLine>
+    <summary>
+      Indicates if the builder text ends with a newline.
+    </summary>
+    <returns>
+      true if builder text ends with a newline; otherwise false.
+    </returns>
+    <code>
+      $hb = new LJCHTMLBuilder();
+
+      $retValue = $hb-&gt;EndsWithNewLine();
+      $result = $retValue-&gt;ToString();
+
+      // result:
+      // False
+    </code>
+  </EndsWithNewLine>
+  <GetTextState>
+    <summary>
+      Gets a current LJCTextState object.
+    </summary>
+    <returns>An LJCTextState object.</returns>
+  </GetTextState>
+  <HasText>
+    <summary>
+      Indicates if the builder has text.
+    </summary>
+    <returns>true if builder has text; otherwise false.</returns>
+  </HasText>
+  <IndentLength>
+    <summary>
+      Gets the current indent length.
+    </summary>
+    <returns>The current indent length.</returns>
+  </IndentLength>
+  <StartWithNewLine>
+    <summary>
+      Allow text to start with a newline.
+    </summary>
+    <param name="$allowNewLine">Indicates if a new line can be added.</param>
+    <returns>true if allowed to start with a newline; otherwise false.</returns>
+    <code>
+      $hb = new LJCHTMLBuilder();
+
+      $retValue = hb-&gt;StartWithNewLine(true);
+      $result = retValue-&gt;ToString();
+
+      // result:
+      // False
+    </code>
+  </StartWithNewLine>
   <!-- Append Text Methods (4) -->
   <AddLine>
     <summary>
@@ -164,7 +256,7 @@
   </AddLine>
   <AddText>
     <summary>
-      Adds text without modification.
+      Appends text without modification.
     </summary>
     <param name="$text">The add text.</param>
     <returns>The added text.</returns>
@@ -267,39 +359,6 @@
     </code>
   </Text>
   <!-- Get Text Methods (8) -->
-  <EndsWithNewLine>
-    <summary>
-      Indicates if the builder text ends with a newline.
-    </summary>
-    <returns>
-      true if builder text ends with a newline; otherwise false.
-    </returns>
-    <code>
-      $hb = new LJCHTMLBuilder();
-
-      $retValue = $hb-&gt;EndsWithNewLine();
-      $result = $retValue-&gt;ToString();
-
-      // result:
-      // False
-    </code>
-  </EndsWithNewLine>
-  <StartWithNewLine>
-    <summary>
-      Allow text to start with a newline.
-    </summary>
-    <param name="$allowNewLine">Indicates if a new line can be added.</param>
-    <returns>true if allowed to start with a newline; otherwise false.</returns>
-    <code>
-      $hb = new LJCHTMLBuilder();
-
-      $retValue = hb-&gt;StartWithNewLine(true);
-      $result = retValue-&gt;ToString();
-
-      // result:
-      // False
-    </code>
-  </StartWithNewLine>
   <GetAttribs>
     <summary>
       Gets the attributes text.
@@ -477,6 +536,15 @@
       //   This is an indented line.
     </code>
   </GetText>
+  <GetWrapped>
+    <summary>
+      Appends added text and new wrapped line.
+    </summary>
+    <param name="$text">The text value.</param>
+    <remarks>
+      Creates new wrapped line if combined line > LineLimit.
+    </remarks>
+  </GetWrapped>
   <!-- Append Element Methods (7) -->
   <Begin>
     <summary>
@@ -601,47 +669,6 @@
     </code>
   </End>
   <!-- Get Element Methods (9) -->
-  <AddChildIndent>
-    <summary>
-      Adds the new (child) indents.
-    </summary>
-    <param name="$createText">The previously created text.</param>
-    <param name="$textState">The TextState object.</param>
-    <remarks>
-      Adds an indent for following child elements.&lt;br /&gt;
-      The indent will only be added if the createText length &gt; 0 and the
-      textState.ChildIndentCount &gt; 0.
-    </remarks>
-    <code>
-      // Root Method Begin
-      $textState = new LJCTextState();
-
-      $result = self::CustomBegin("body", $textState);
-
-      // result:
-      // &amp;lt;body&amp;gt;
-
-      private static string CustomBegin(string $name, LJCTextState $textState
-      , LJCAttributes $attribs = null, bool $addIndent = true
-      , bool $childIndent = true)
-      {
-        // Defaults: IndentCharCount = 2, LineLimit = 80, WrapEnabled = false.
-        $hb = new LJCHTMLBuilder($textState);
-
-        $createText = hb-&gt;GetBegin(name, $textState, $attribs, $addIndent
-          , $childIndent);
-        // Use NoIndent after a "GetText" method.
-        $hb-&gt;Text($createText, $NoIndent);
-        // Use AddChildIndent after beginning an element.
-        $hb-&gt;AddChildIndent($createText, $textState);
-        $result = $hb-&gt;ToString();
-
-        // Append Method
-        //hb-&gt;UpdateState($textState);
-        return result;
-      }
-    </code>
-  </AddChildIndent>
   <GetBegin>
     <summary>
       Gets the element begin tag.
@@ -684,6 +711,13 @@
       // &amp;lt;body&amp;gt;
     </code>
   </GetBegin>
+  <GetBeginSelector>
+    <summary>
+      Gets beginning of style selector.
+    </summary>
+    <param name="$selectorName">The selector name.</param>
+    <param name="$textState">The current text state values.</param>
+  </GetBeginSelector>
   <GetCreate>
     <summary>
       Gets an element.
@@ -806,7 +840,7 @@
       Gets common table attributes.
     </summary>
     <param name="$border">The border attribute.</param>
-    <param name="$cellSpacing">The cellspacing attribute</param>
+    <param name="$borderSpacing">The borderspacing attribute</param>
     <param name="$cellPadding">The cellpadding attribute</param>
     <param name="$className">The class attribute.</param>
     <param name="$id">The id attribute.</param>
