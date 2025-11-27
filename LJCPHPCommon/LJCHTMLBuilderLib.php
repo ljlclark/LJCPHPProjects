@@ -347,10 +347,10 @@
 
       $this->BuilderValue = "";
       $this->IndentCharCount = 2;
-      $this->IndentCount = 0;
+      $this->setIndentCount(0);
       if ($textState != null)
       {
-        $this->AddIndent($textState->IndentCount);
+        $this->AddIndent($textState->getIndentCount());
       }
       $this->LineLength = 0;
       $this->LineLimit = 80;
@@ -384,7 +384,8 @@
         && $childIndentCount > 0)
       {
         $this->AddIndent($childIndentCount);
-        $textState->IndentCount += $childIndentCount;
+        $indentCount = $textState->getIndentCount() + $childIndentCount;
+        $textState->setIndentCount($indentCount);
         $textState->ChildIndentCount = 0;
       }
     }
@@ -394,12 +395,9 @@
     /// <ParentGroup>Main</ParentGroup>
     public function AddIndent($increment = 1): int
     {
-      $this->IndentCount += $increment;
-      if ($this->IndentCount < 0)
-      {
-        $this->IndentCount = 0;
-      }
-      return $this->IndentCount;
+      $indentCount = $this->getIndentCount() + $increment;
+      $this->setIndentCount($indentCount);
+      return $this->getIndentCount();
     } // AddIndent()
 
     // Indicates if the builder text ends with a newline.
@@ -426,7 +424,7 @@
     /// <ParentGroup>Main</ParentGroup>
     public function GetTextState(): LJCTextState
     {
-      $indentCount = $this->IndentCount;
+      $indentCount = $this->getIndentCount();
       $retState = new LJCTextState($indentCount);
       return $retState;
     }
@@ -449,7 +447,7 @@
     /// <ParentGroup>Main</ParentGroup>
     public function IndentLength(): int
     {
-      return $this->IndentCount * $this->IndentCharCount;
+      return $this->getIndentCount() * $this->IndentCharCount;
     }
 
     // Checks if text can start with a newline.
@@ -955,7 +953,9 @@
     {
       $this->AddIndent($value);
       $hb->AddIndent($value);
-      $state->IndentCount += $value;
+      //$state->IndentCount += $value;
+      $indentCount = $this->getIndentCount() + $value;
+      $state->setIndentCount($indentCount);
     }
 
     // Creates the content text.
@@ -1019,7 +1019,7 @@
     {
       if ($textState != null)
       {
-        $this->IndentCount = $textState->IndentCount;
+        $this->setIndentCount($textState->getIndentCount());
       }
     }
 
@@ -1091,6 +1091,22 @@
     }
 
     // ----------
+    // Getters and Setters
+
+    private function getIndentCount(): int
+    {
+      return $this->IndentCount;
+    }
+
+    private function setIndentCount(int $count): void
+    {
+      if ($count >= 0)
+      {
+        $this->IndentCount = $count;
+      }
+    }
+
+    // ----------
     // Properties
 
     /// <summary>The class name for debugging.</summary>
@@ -1102,6 +1118,12 @@
     // <summary>The indent character count.</summary>
     public int $IndentCharCount;
 
+    /// <summary>Gets the current length.</summary>
+    public int $LineLength;
+
+    /// <summary>Gets or sets the character limit.</summary>
+    public int $LineLimit;
+
     public bool $WrapEnabled;
 
     // The built string value.
@@ -1109,10 +1131,6 @@
 
     // The current indent count.
     private int $IndentCount;
-
-    private int $LineLength;
-
-    private int $LineLimit;
   }
 
   // ********************
@@ -1126,10 +1144,26 @@
     /// <param name="$indentCount"></param>
     public function __construct(int $indentCount = 0, bool $hasText = false)
     {
-      $this->IndentCount = $indentCount;
+      $this->setIndentCount($indentCount);
       $this->HasText = $hasText;
       $this->ChildIndentCount = 0;
     } // __construct()
+
+    // ----------
+    // Getters and Setters
+
+    public function getIndentCount(): int
+    {
+      return $this->IndentCount;
+    }
+
+    public function setIndentCount(int $count): void
+    {
+      if ($count >= 0)
+      {
+        $this->IndentCount = $count;
+      }
+    }
 
     // ----------
     // Properties
@@ -1141,6 +1175,6 @@
     public bool $HasText;
 
     // <summary>The current IndentCount value.</summary>
-    public int $IndentCount;
+    private int $IndentCount;
   }
 ?>

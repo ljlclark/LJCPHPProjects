@@ -264,7 +264,7 @@
       if (LJC::HasElements($dataItem))
       {
         $hb = new LJCHTMLBuilder($textState);
-        $indentCount = strval($textState->IndentCount);
+        $indentCount = strval($textState->getIndentCount());
         $indentLength = strval($hb->IndentLength());
         $hb->Begin("tr", $textState);
         foreach ($this->ColumnNames as $propertyName)

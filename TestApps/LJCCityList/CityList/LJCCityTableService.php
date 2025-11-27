@@ -193,7 +193,7 @@
 
         // Create HTML table with data collection.
         $textState = new LJCTextState();
-        $textState->IndentCount = 2;
+        $textState->setIndentCount(2);
         $response->HTMLTable = $tableBuilder->ResultHTML($result, $textState
           , $tableColumnNames);
         $this->DebugText .= $tableBuilder->DebugText;
