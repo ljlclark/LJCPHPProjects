@@ -247,7 +247,7 @@
     /// <summary>
     ///   Creates a new typed object with existing standard object values.
     /// </summary>
-    /// <param name="$objColumn"></param>
+    /// <param name="objColumn"></param>
     /// <returns>The new LJCDbColumn object.</returns>
     public static function Copy($objColumn)
     {
