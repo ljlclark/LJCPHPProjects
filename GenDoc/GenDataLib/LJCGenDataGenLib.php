@@ -94,7 +94,11 @@
 
       // GenData XML file name same as source file with .xml extension.
       $fileName = LJC::GetFileName($codeFileSpec) . ".xml";
-      $docDataFile = LJCDocDataFile::DeserializeString($docDataXML);
+      // *** Begin *** Change
+      //$docDataFile = LJCDocDataFile::DeserializeString($docDataXML);
+      $dataFile = new LJCDocDataFile("");
+      $docDataFile = $dataFile->DeserializeString($docDataXML);
+      // *** End ***
       $retLibGenXML = $this->SerializeLibXML($docDataFile, $fileName);
       $writeGenDataXML = $this->WriteLibGenXML($retLibGenXML, $codeFileSpec
         , $fileName);

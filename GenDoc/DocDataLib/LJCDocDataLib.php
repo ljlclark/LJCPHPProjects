@@ -189,18 +189,23 @@
     // ---------------
     // Public Static Functions
 
-    // Static Call Tree
+    // Deserialize Call Tree
+    // LJCDocDataLib.php
     // Deserialize() public
-    // DeserializeString() public
-    //   CreateDocDataFile()
-    //     GetClasses()
-    //       GetMethods()
-    //         GetParams()
-    //       GetProperties()
+    // LJCGenDataGenLib.php
+    // SerializeLib() public
+    //   LJCDocDataLib.php
+    //   DeserializeString() public
+    //     CreateDocDataFile()
+    //       GetClasses()
+    //         GetMethods()
+    //           GetParams()
+    //         GetProperties()
 
     // Serialize Call Tree
-    // LJCDocDataLib.php
-    // LJCDocData.ProcessCode()
+    // LJCDocDataGenLib.php
+    // LJCDocDataGen.ProcessCode()
+    //   LJCDocDataLib.php
     //   SerializeToString()
     //     SerializeGroups()
     //     SerializeMethods()
@@ -213,49 +218,54 @@
     {
       $retValue = null;
 
-      $docNode = simplexml_load_file($xmlFileSpec);
-      $retValue = self::CreateDocDataFile($docNode);
+      $this->DocNode = simplexml_load_file($xmlFileSpec);
+      $retValue = self::CreateDocDataFile($this->DocNode);
       return $retValue;
     } // Deserialize()
 
     // Deserializes the data from an LJCDocDataFile XML string.
     /// <include path='items/DeserializeString/*' file='Doc/LJCDocDataFile.xml'/>
-    public static function DeserializeString(string $xmlString): LJCDocDataFile
+    // *** Change ***
+    public function DeserializeString(string $xmlString): LJCDocDataFile
     {
       $retValue = null;
 
-      $docNode = simplexml_load_string($xmlString);
-      $retValue = self::CreateDocDataFile($docNode);
+      $this->DocNode = simplexml_load_string($xmlString);
+      $retValue = $this->CreateDocDataFile();
       return $retValue;
     } // DeserializeString()
 
     // Creates the LJCDocDataFile object.
-    private static function CreateDocDataFile(SimpleXMLElement $xmlNode)
+    // *** Change ***
+    private function CreateDocDataFile()
       : ?LJCDocDataFile
     {
       // Deserialize()
       // DeserializeString()
       $retValue = null;
 
-      if (null != $xmlNode)
+      if (null != $this->DocNode)
       {
-        $name = LJC::XMLToString($xmlNode->Name);
+        $docNode = $this->DocNode;
+        $name = LJC::XMLToString($docNode->Name);
         $retValue = new LJCDocDataFile($name);
-        $retValue->Classes = self::GetClasses($xmlNode);
-        $retValue->Remarks = LJC::XMLToString($xmlNode->Remarks);
-        $retValue->Summary = LJC::XMLToString($xmlNode->Summary);
+        $retValue->Classes = $this->GetClasses();
+        $retValue->Remarks = LJC::XMLToString($docNode->Remarks);
+        $retValue->Summary = LJC::XMLToString($docNode->Summary);
       }
       return $retValue;
     } // CreateDocDataFile()
 
     // Deserialize Classes from the Doc node.
-    private static function GetClasses(SimpleXMLElement $docNode)
+    // *** Change ***
+    private function GetClasses()
       : ?LJCDocDataClasses
     {
       // Deserialize()
       // DeserializeString()-CreateDocDataFile()
       $retValue = null;
 
+      $docNode = $this->DocNode;
       $classNodes = self::GetClassNodes($docNode);
       if (null != $classNodes)
       {
@@ -269,7 +279,7 @@
           // *** Add ***
           $class->Groups = self::GetGroups($classNode);
           $class->Remarks = LJC::XMLToString($classNode->Remarks);
-          $class->Methods = self::GetMethods($classNode);
+          $class->Methods = $this->GetMethods($classNode);
           $class->Properties = self::GetProperties($classNode);
           $class->Code = LJC::XMLToString($classNode->Code, false);
         }
@@ -278,13 +288,14 @@
     } // GetClasses()
 
     // Deserialize Methods from the Class node.
-    private static function GetMethods(SimpleXMLElement $classNode)
-      : ?LJCDocDataMethods
+    // *** Change ***
+    private function GetMethods(SimpleXMLElement $classNode): ?LJCDocDataMethods
     {
       // Deserialize()
       // DeserializeString()-CreateDocDataFile()-GetClasses()
       $retValue = null;
 
+      $docNode = $this->DocNode;
       $methodNodes = self::GetMethodNodes($classNode);
       if ($methodNodes != null)
       {
@@ -297,7 +308,7 @@
           $method->Summary = LJC::XMLToString($methodNode->Summary);
           // *** Add ***
           $method->ParentGroup = LJC::XMLToString($methodNode->ParentGroup);
-          $method->Params = self::GetParams($methodNode);
+          $method->Params = $this->GetParams($classNode, $methodNode);
           $method->Returns = LJC::XMLToString($methodNode->Returns);
           $method->Remarks = LJC::XMLToString($methodNode->Remarks);
           $method->Syntax = LJC::XMLToString($methodNode->Syntax);
@@ -335,12 +346,26 @@
     }
 
     // Deserialize Params from the Method node.
-    private static function GetParams(SimpleXMLElement $methodNode)
-      : ?LJCDocDataParams
+    // *** Change ***
+    private function GetParams(SimpleXMLElement $classNode
+      , SimpleXMLElement $methodNode): ?LJCDocDataParams
     {
       // Deserialize()
       // DeserializeString()-CreateDocDataFile()-GetClasses()
       //   -GetMethods()
+
+      // Setup static debug log.
+      $libName = "LJCDocDataGenLib";
+      $className = "LJCDocDataFile";
+      $enabled = true;  // true creates the log file.
+      $debug = new LJCDebug($libName, $className, "a", $enabled);
+
+      // Setup Method Debug Log
+      $enabled = false;
+      $methodName = "GetParams";
+      $debug->BeginMethod($methodName, $enabled);
+      //$Debug->Write(" Var = {$this->Var}");
+
       $retValue = null;
 
       $paramNodes = self::GetParamNodes($methodNode);
@@ -350,6 +375,8 @@
         foreach ($paramNodes as $paramNode)
         {
           $name = LJC::XMLToString($paramNode->Name);
+          $this->LogParamErrors($classNode, $methodNode, $paramNode);
+
           $summary = LJC::XMLToString($paramNode->Summary);
           $param = new LJCDocDataParam($name, $summary);
           $retValue->AddObject($param, $name);
@@ -458,6 +485,47 @@
       return $retValue;
     } // GetPropertyNodes()
 
+    // Logs param errors.
+    // *** Change ***
+    private function LogParamErrors(SimpleXMLElement $classNode
+      , SimpleXMLElement $methodNode, SimpleXMLElement $paramNode)
+    {
+      // Deserialize()
+      // DeserializeString()-CreateDocDataFile()-GetClasses()
+      //   -GetMethods()-GetParams()
+
+      // Setup static debug log.
+      $libName = "LJCDocDataLib";
+      $className = "LJCDocDataFile";
+      $enabled = true;  // true creates the log file.
+      $debug = new LJCDebug($libName, $className, "a", $enabled);
+
+      // Setup Method Debug Log
+      $enabled = false;
+      $methodName = "LogParamErrors";
+      $debug->BeginMethod($methodName, $enabled);
+      //$Debug->Write(" Var = {$this->Var}");
+
+      $docNode = $this->DocNode;
+      $name = LJC::XMLToString($paramNode->Name);
+      if (!LJC::HasValue($name)
+        || !str_starts_with($name, "\$"))
+      {
+        // Setup Method Debug Log
+        $enabled = true;
+        $debug->BeginMethod($methodName, $enabled);
+
+        $debug->Write(" \$docNode->Name = {$docNode->Name}");
+        $debug->Write(" \$classNode->Name = {$classNode->Name}");
+        $debug->Write(" \$methodNode->Name = {$methodNode->Name}");
+        if (!LJC::HasValue($name))
+        {
+          $debug->Write("*****");
+        }
+        $debug->Write(" \$paramName = {$name}");
+      }
+    }
+
     // ---------------
     // Constructors - LJCDocDataFile
 
@@ -465,12 +533,17 @@
     /// <include path='items/construct/*' file='Doc/LJCDocDataFile.xml'/>
     public function __construct(string $name, ?string $summary = null)
     {
-      // Instantiate properties with Pascal case.
-      $enabled = false;
-      $this->Debug = new LJCDebug("LJCDocDataLib", "LJCDocDataFile"
-        , "w",  $enabled);
+      // Setup static debug log.
+      $libName = "LJCDocDataLib";
+      $className = "LJCDocDataFile";
+      $enabled = false;  // true creates the log file.
+      $this->Debug = new LJCDebug($libName, $className, "w", $enabled);
       $this->Debug->IncludePrivate = true;
 
+      // Deserialize Properties
+      $this->DocNode = null;
+
+      // Serialize Properties
       $this->Classes = null;
       $this->Functions = null;
       $this->Name = $name;
@@ -932,20 +1005,34 @@
     // <ParentGroup>Constructor</ParentGroup>
     public function __construct()
     {
-      // Instantiate properties with Pascal case.
-      $this->Debug = new LJCDebug("LJCDocDataLib", "LJCDocDataParams"
-        , "w", false);
-      $this->Debug->IncludePrivate = true;
+      // Setup Debug Log
+      $libName = "LJCDocDataGenLib";
+      $className = "LJCDocDataParams";
+      $enabled = true; // true creates the log file.
+      $this->Debug = new LJCDebug($libName, $className, "a", $enabled);
+
+      // Setup Method Debug Log
+      $enabled = false;
+      $methodName = "construct";
+      $this->Debug->BeginMethod($methodName, $enabled);
+      //$this->Debug->Write(" Var = {$this->Var}");
+
+      $this->DebugText = "";
     } // __construct()
+
+    // Standard debug method for each class.
+    private function AddDebug($methodName, $valueName, $value = null)
+    {
+      $location = LJC::Location($this->ClassName, $methodName
+        , $valueName);
+      $this->DebugText .= LJC::DebugObject($location, $value);
+    } // AddDebug()
 
     /// <summary>Creates a clone of the current object.</summary>
     // <ParentGroup>Collection</ParentGroup>
     public function Clone(): self
     {
-      $enabled = false;
-      $this->Debug->BeginMethod("Clone", $enabled);
-      //$this->Debug->Write(__line__." Var = {$this->Var}");
-      //LJC::Debug(__line__, "Var", $this->Var);
+      $methodName = "AddObject()";
 
       $retValue = new self();
       foreach ($this->Items as $key => $item)
@@ -954,7 +1041,6 @@
       }
       unset($item);
 
-      $this->Debug->EndMethod($enabled);
       return $retValue;
     } // Clone()
 
@@ -967,15 +1053,43 @@
     public function AddObject(LJCDocDataParam $item, $key = null)
       : ?LJCDocDataParam
     {
+      // Setup Method Debug Log
       $enabled = false;
-      $this->Debug->BeginMethod("AddObject", $enabled);
-      //$this->Debug->Write(__line__." Var = {$this->Var}");
-      //LJC::Debug(__line__, "Var", $this->Var);
+      $methodName = "AddObject";
+      $this->Debug->BeginMethod($methodName, $enabled);
+      //$this->Debug->Write(" Var = {$this->Var}");
 
       if (null == $key)
       {
         $key = $item->Name;
       }
+
+      // ***** Begin
+      // HasKey() is in LJCCollectionBase.
+      if ($this->HasKey($key))
+      {
+      // Setup Method Debug Log
+        $enabled = true;
+        $this->Debug->BeginMethod($methodName, $enabled);
+
+        $this->Debug->Write(" new \$key = {$key}");
+
+        // Items is in LJCCollectionBase.
+        $items = $this->Items;
+        $text = print_r($items, true);
+        $this->Debug->Write(" \$items = {$text}");
+        $count = $this->count();
+        $this->Debug->Write(" \$this.count() = {$count}");
+        foreach ($items as $existingKey => $value)
+        {
+          $param = $value;
+          $this->Debug->Write(" \$key = {$existingKey}
+            , \$param->Name = {$param->Name}");
+        }
+      }
+      // *****
+
+      // AddItem() is in LJCCollectionBase.
       $retValue = $this->AddItem($item, $key);
 
       $this->Debug->EndMethod($enabled);
@@ -997,6 +1111,12 @@
       $this->Debug->EndMethod($enabled);
       return $retValue;
     } // Retrieve()
+
+    // ----------
+    // Properties
+
+    /// <summary>The class name for debugging.</summary>
+    public string $ClassName;
   } // LJCDocDataParams
 
   // ***************

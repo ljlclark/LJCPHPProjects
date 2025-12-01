@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright(c) Lester J. Clark and Contributors. -->
+<!-- Licensed under the MIT License. -->
+<!-- LJCAttribute.xml -->
+<items>
+  <LJCAttribute>
+    <summary>
+      Represents a node or element attribute.
+    </summary>    
+  </LJCAttribute>
+  <!-- Static Methods -->
+  <Copy>
+    <summary>
+      Creates a typed data object from a standard object.
+    </summary>
+    <param name="$item">The standard object.</param>
+    <returns>The LJCAttribute object.</returns>
+  </Copy>
+  <!-- Constructor Methods -->
+  <construct>
+    <summary>
+      Initializes a class instance.
+    </summary>
+    <param name="$name">The optional item name.</param>
+    <param name="$value">The optional item value.</param>
+  </construct>
+</items>

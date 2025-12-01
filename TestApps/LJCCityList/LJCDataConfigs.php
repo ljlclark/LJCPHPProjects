@@ -10,30 +10,19 @@
   // LJCCommon: LJC
   // LJCDBAccessLib: LJCConnectionValues
 
-  /// <summary>The DB config Library.</summary>
-  /// LibName: DataConfigs
-  //  Classes: DataConfigs
+  /// <summary>The DBHTMLTableConfig DB config Library.</summary>
+  /// LibName: DBHTMLTableConfig
+  //  Classes: DBHTMLTableConfig
 
   // ***************
-  /// <summary>Contains methods to retrieve the DB config values.</summary>
+  /// <summary>Contains method to retrieve the DB config values.</summary>
   class DataConfigs
   {
-    // Standard debug method for each class.
-    private function AddDebug($methodName, $valueName, $value = "null")
-    {
-      $this->ClassName = "DataConfigs";
-
-      $location = LJC::Location($this->ClassName, $methodName
-        , $valueName);
-      $this->DebugText .= LJC::DebugObject($location, $value);
-    } // AddDebug()
-
     /// <summary>Retrieves the DB connection values.</summary>
     /// <returns>The DB connection values object.</returns>
     public static function GetConnectionValues(string $configFileSpec
       , string $configName): LJCConnectionValues
     {
-      $methodName = "GetConnectionValues()";
       $retValue = null;
 
       // Get connection values.
@@ -59,13 +48,12 @@
           , $password);
       }
       return $retValue;
-    } // GetConnectionValues()
+    }
 
     // Gets the config by name.
     private static function GetDataConfig(string $configFileSpec, $configName)
       : SimpleXMLElement
     {
-      $methodName = "GetDataConfig()";
       $retConfig = null;
 
       $xmlDoc = simplexml_load_file($configFileSpec);
@@ -79,12 +67,6 @@
         }
       }
       return $retConfig;
-    } // GetDataConfig()
-
-    // ---------------
-    // Result Properties
-
-    /// <summary>The debug text.</summary>
-    public string $DebugText;
+    }
   }
 ?>

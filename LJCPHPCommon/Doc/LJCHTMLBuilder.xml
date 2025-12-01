@@ -93,7 +93,7 @@
     </summary>
     <returns>The HTML text.</returns>
   </ToString>
-  <!-- Methods -->
+  <!-- Class Methods -->
   <AddChildIndent>
     <summary>
       Adds the new (child) indents.
@@ -227,7 +227,7 @@
       // False
     </code>
   </StartWithNewLine>
-  <!-- Append Text Methods (4) -->
+  <!-- Append Text Methods -->
   <AddLine>
     <summary>
       Adds a text line without modification.
@@ -358,7 +358,7 @@
       //   This is an indented line.
     </code>
   </Text>
-  <!-- Get Text Methods (8) -->
+  <!-- Get Text Methods -->
   <GetAttribs>
     <summary>
       Gets the attributes text.
@@ -545,7 +545,7 @@
       Creates new wrapped line if combined line > LineLimit.
     </remarks>
   </GetWrapped>
-  <!-- Append Element Methods (7) -->
+  <!-- Append Element Methods -->
   <Begin>
     <summary>
       Appends the element begin tag.
@@ -556,7 +556,7 @@
     <param name="$addIndent">
       Indicates if the element can be indented.
     </param>
-    <param name="childIndent">
+    <param name="$childIndent">
       Indicates if the child elements should be indented.
     </param>
     <returns>The added element begin tag.</returns>
@@ -605,11 +605,11 @@
     <param name="$addIndent">
       Indicates if the element can be indented.
     </param>
-    <param name="childIndent">
+    <param name="$childIndent">
       Indicates if the child elements should be indented.
     </param>
-    <param name="isEmpty">Indicates if an empty element.</param>
-    <param name="close">Indicates if the element will be closed.</param>
+    <param name="$isEmpty">Indicates if an empty element.</param>
+    <param name="$close">Indicates if the element will be closed.</param>
     <returns>The added HTML element.</returns>
     <remarks>
       Create() is an "Append" method. It creates the element text with
@@ -668,7 +668,7 @@
       // &amp;lt;/html&amp;gt;
     </code>
   </End>
-  <!-- Get Element Methods (9) -->
+  <!-- Get Element Methods -->
   <GetBegin>
     <summary>
       Gets the element begin tag.
@@ -679,7 +679,7 @@
     <param name="$addIndent">
       Indicates if the element can be indented.
     </param>
-    <param name="childIndent">
+    <param name="$childIndent">
       Indicates if the child indent should be applied.
     </param>"
     <returns>The HTML element begin tag.</returns>
@@ -729,11 +729,11 @@
     <param name="$addIndent">
       Indicates if the element can be indented.
     </param>
-    <param name="childIndent">
+    <param name="$childIndent">
       Indicates if the child indent should be applied.
     </param>"
-    <param name="isEmpty">Indicates if an empty element.</param>
-    <param name="close">Indicates if the element will be closed.</param>
+    <param name="$isEmpty">Indicates if an empty element.</param>
+    <param name="$close">Indicates if the element will be closed.</param>
     <returns>The HTML element.</returns>
     <remarks>
       GetCreate() is a "GetText" method which creates the element or element
@@ -795,7 +795,7 @@
       // &amp;lt;/head&amp;gt;
     </code>
   </GetEnd>
-  <!-- Get Element Attribs Methods (3) -->
+  <!-- Get Attribs Methods -->
   <Attribs>
     <summary>
       Gets common element attributes.
@@ -835,6 +835,11 @@
       // lang=\"en\" xmlns=\"http://www.w3.org/1999/xhtml"
     </code>
   </StartAttribs>
+  <StartXMLAttribs>
+    <summary>
+      Creates the XML start attributes.
+    </summary>
+  </StartXMLAttribs>
   <TableAttribs>
     <summary>
       Gets common table attributes.

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright(c) Lester J. Clark and Contributors. -->
+<!-- Licensed under the MIT License. -->
+<!-- LJCAttributes.xml -->
+<items>
+  <LJCAttributes>
+    <summary>
+      Represents a collection of node or element attributes.
+    </summary>    
+  </LJCAttributes>
+  <!-- Static Methods -->
+  <ToCollection>
+    <summary>
+      Creates a typed collection from an array of objects.
+    </summary>
+    <param name="$items">The object array.</param>
+    <returns>The LJCAttributes collection.</returns>
+  </ToCollection>
+  <!-- Constructor Methods -->
+  <construct>
+    <summary>
+      Initializes an object instance.
+    </summary>
+  </construct>
+  <!-- Collection Methods -->
+  <Add>
+    <summary>
+      Creates an object and adds it to the collection.
+    </summary>
+    <param name="$name">The item name.</param>
+    <param name="$value">The item value.</param>
+    <param name="$key">The optional item key.</param>
+    <returns>The LJCAttributes collection.</returns>
+  </Add>
+  <AddObject>
+    <summary>
+      Adds an object and key value.
+    </summary>
+    <param name="$attrib">The item object.</param>
+    <param name="$key">The optional item key.</param>
+    <returns>The LJCAttribute object.</returns>
+  </AddObject>
+  <Append>
+    <summary>
+      Appends items.
+    </summary>
+    <param name="$attribs">The item objects.</param>
+  </Append>
+  <Remove>
+    <summary>
+      Removes the item by Key value.
+    </summary>
+    <param name="$key">The optional item key.</param>
+    <param name="$throwError">The optional throw error flag.</param>
+  </Remove>
+  <Retrieve>
+    <summary>
+      Gets an item by key.
+    </summary>
+    <param name="$key">The optional item key.</param>
+    <returns>The retrieved item.</returns>
+  </Retrieve>
+  <!-- Other Methods -->
+  <MergeStyle>
+    <summary>
+      Merges "style" attrib rules.
+    </summary>
+    <param name="$existingAttrib">The existing style attribute.</param>
+    <param name="$newAttrib">The new style attribute.</param>
+    <returns>The merged style attributes.</returns>
+  </MergeStyle>
+</items>

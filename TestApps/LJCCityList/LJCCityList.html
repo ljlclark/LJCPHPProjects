@@ -6,146 +6,31 @@
 <!-- Used to generate a City Items HTML Table page. -->
 <html lang='en' xmlns='http://www.w3.org/1999/xhtml'>
 <head>
-  <title>City Maintenance</title>
   <meta charset='utf-8' />
   <meta name='author' content='Lester J. Clark' />
-  <meta name="description" content="City Table Maintenance" />
   <meta name='viewport' content='width=device-width' initial-scale=1 />
-  <link href='CSS/Table.css' rel='stylesheet' />
-  <script src="../../LJCJSCommon/LJCCommonLib.js"></script>
-  <script src="../../LJCJSCommon/LJCDataLib.js"></script>
-  <script src="LJCTable.js"></script>
-
-  <script src="LJCTableMessageLib.js"></script>
-
-  <script src="CityList/LJCCityDAL.js"></script>
+  <link href='Table.css' rel='stylesheet' />
+  <script src="../../Common/Common.js"></script>
   <script src="LJCCityListEvents.js"></script>
-  <script src="CityList/LJCCityTableEvents.js"></script>
-  <script src="CityList/LJCCityTableEventsArgs.js"></script>
-  <script src="CityList/LJCCityDetailEvents.js"></script>
-
-  <script src="CityList/LJCRegionDAL.js"></script>
-  <script src="RegionList/LJCRegionTableEvents.js"></script>
-  <script src="RegionList/LJCRegionDetailEvents.js"></script>
-  <style>
-    :focus {
-      outline: 1px solid black;
-    }
-  </style>
+  <script src="LJCTable.js"></script>
 </head>
 <body>
   <div class="page">
-    <h3 id="pageTitle">City Maintenance</h3>
-
-    <!-- Region and Province controls. -->
-    <!-- Must have a width for "margin: auto" to work. -->
-    <div class="data" style="width: 350px">
-      <ul>
-        <li>
-          <label for="regionText">Region</label>
-          <input type="text" id="regionText" name="regionText"
-                 tabindex="1" />
-          <input type="button" id="regionButton"
-                 tabindex="2" value="..." />
-        </li>
-        <li>
-          <label for="provinceText">Province</label>
-          <input type="text" id="provinceText" name="provinceText"
-                 tabindex="3"/>
-          <input type="button" id="provinceButton"
-                 tabindex="4"value="..." />
-        </li>
-      </ul>
-    </div>
-
-    <!-- City Table -->
-    <table id="cityTableID" tabindex="5" class="table"></table>
-
-    <!-- Select Table Dialog -->
-    <dialog id="selectDialog" class="dialog">
-      <table id="selectTable" class="table"></table>
-    </dialog>
-
-    <!-- The dialog for debug and other display text. -->
-    <dialog id="textDialog"
-            style="border: none; padding: 0px">
-      <textarea id="textArea" rows="25" cols="80" autocorrect="off"
-                autocapitalize="off" spellcheck="false" readonly
-                style="border: none; padding: 10px">
-      </textarea>
-    </dialog>
-
-    <!-- City detail dialog. -->
-    <!-- Data values referenced in LJCCityListEvents: #ClearCityFormData()
-         #SetCityForm() and LJCCityDetailEvents: #CityFormData(). -->
-    <dialog id="cityDialog" class="dialog">
-      <!-- Must have a width for "margin: auto" to work. -->
-      <!--form id="cityForm" action="../CityData.php" method="post"-->
-      <form id="cityForm"
-            class="form" autocomplete="off"
-            style="width: 304px">
-        <input type="hidden" id="cityProvinceID" />
-        <input type="hidden" id="cityID" />
-        <div class="data">
-          <ul>
-            <li>
-              <label for="cityProvinceName">Province</label>
-              <input type="text" id="cityProvinceName" name="cityProvinceName" disabled />
-            </li>
-            <li>
-              <label for="cityName">Name</label>
-              <input type="text" id="cityName" name="cityName" />
-              <span id="nameError">*</span>
-            </li>
-            <li>
-              <label for="cityDescription">Description</label>
-              <input type="text" id="cityDescription" name="cityDescription" />
-            </li>
-            <li>
-              <label for="cityFlag">City Flag</label>
-              <input type="text" id="cityFlag" name="cityFlag" />
-            </li>
-            <li>
-              <label for="zipCode">ZipCode</label>
-              <input type="text" id="zipCode" name="zipCode" />
-            </li>
-            <li>
-              <label for="district">District</label>
-              <input type="text" id="district" name="district" />
-            </li>
-            <li>
-              <label for="cityCommit">.</label>
-              <input type="button" id="cityCommit" value="Update" />
-              <input type="button" id="cityCancel" value="Cancel" />
-            </li>
-          </ul>
-          <input type="hidden" id="listAction" name="listAction" tabindex="-1" />
-        </div>
-      </form>
-    </dialog>
-
-    <!-- Data for Detail dialogs. -->
-    <form id="hiddenForm">
-      <!-- Primary Keys -->
-      <input type="hidden" id="rowCityID" />
-      <input type="hidden" id="rowRegionID" />
-
-      <!-- Unique Keys -->
-      <input type="hidden" id="rowProvinceID" />
-      <input type="hidden" id="rowName" />
-      <input type="hidden" id="rowRegionName" />
+    <h3 id="pageTitle">Items</h3>
+    <div id="dataDiv"></div>
+    <!-- Data for Detail form. -->
+    <!-- id is for javascript and label "for", name is for post values. -->
+    <form id="hiddenForm" action="LJCDataTableLib.php" method="post">
+      <input type="hidden" id="primaryKeys" name="primaryKeys"
+             tabindex="-1" autocomplete="off" />
     </form>
-
-    <!-- City Table Menu -->
-    <div id="cityMenu" class="divMenu" style="width:100px">
-      <div class="titleHighlight">City Menu</div>
+    <div id="menu" class="divMenu" style="width:100px">
+      <div class="titleHighlight">Menu</div>
       <div><hr /></div>
       <div id="beginning">Beginning</div>
       <div id="previous">Previous Page</div>
       <div id="next">Next Page</div>
       <div id="end">End</div>
-      <div><hr /></div>
-      <div id="citySelect">Select</div>
       <div><hr /></div>
       <div id="refresh">Refresh</div>
       <div><hr /></div>
@@ -154,142 +39,11 @@
       <div><hr /></div>
       <div id="delete">Delete</div>
     </div>
-
-    <!-- Region detail dialog. -->
-    <dialog id="regionDialog" class="dialog">
-      <!-- Must have a width for "margin: auto" to work. -->
-      <form id="regionForm"
-            class="form" autocomplete="off"
-            style="width: 304px">
-        <input type="hidden" id="regionID" />
-        <div class="data">
-          <ul>
-            <li>
-              <label for="regionNumber">Number</label>
-              <input type="text" id="regionNumber" name="regionNumber" />
-              <span>*</span>
-            </li>
-            <li>
-              <label for="regionName">Name</label>
-              <input type="text" id="regionName" name="regionName" />
-              <span>*</span>
-            </li>
-            <li>
-              <label for="regionDescription">Description</label>
-              <input type="text" id="regionDescription" name="regionDescription" />
-            </li>
-            <li>
-              <label for="regionCommit">.</label>
-              <input type="button" id="regionCommit" value="Update" />
-              <input type="button" id="regionCancel" value="Cancel" />
-            </li>
-          </ul>
-          <input type="hidden" id="regionAction" name="regionAction" tabindex="-1" />
-        </div>
-      </form>
-    </dialog>
-
-    <!-- Data for the Region Detail dialog. -->
-    <form id="hiddenForm">
-      <!-- Primary Keys -->
-      <input type="hidden" id="rowRegionID" />
-
-      <!-- Unique Keys -->
-      <input type="hidden" id="rowRegionName" />
-    </form>
-
-    <!-- Region Table Menu -->
-    <div id="regionMenu" class="divMenu" style="width:100px">
-      <div class="titleHighlight">Region Menu</div>
-      <div><hr /></div>
-      <div id="regionBeginning">Beginning</div>
-      <div id="regionPrevious">Previous Page</div>
-      <div id="regionNext">Next Page</div>
-      <div id="regionEnd">End</div>
-      <div><hr /></div>
-      <div id="regionSelect">Select</div>
-      <div><hr /></div>
-      <div id="regionRefresh">Refresh</div>
-      <div><hr /></div>
-      <div id="regionNew">New</div>
-      <div id="regionEdit">Edit</div>
-      <div><hr /></div>
-      <div id="regionDelete">Delete</div>
-    </div>
-
-    <!-- Province detail dialog. -->
-    <dialog id="provinceDialog" class="dialog">
-      <!-- Must have a width for "margin: auto" to work. -->
-      <form id="provinceForm"
-            class="form" autocomplete="off"
-            style="width: 304px">
-        <input type="hidden" id="provinceRegionID" />
-        <input type="hidden" id="provinceID" />
-        <div class="data">
-          <ul>
-            <li>
-              <label for="provinceRegionName">Region Name</label>
-              <input type="text" id="provinceRegionName"
-                     name="provinceRegionName" />
-              <span>*</span>
-            </li>
-            <li>
-              <!-- id is for JavaScript and label "for", name is for post values. -->
-              <label for="provinceName">Name</label>
-              <input type="text" id="provinceName" name="provinceName" />
-              <span>*</span>
-            </li>
-            <li>
-              <label for="provinceDescription">Description</label>
-              <input type="text" id="provinceDescription"
-                     name="provinceDescription" />
-            </li>
-            <li>
-              <label for="provinceCommit">.</label>
-              <input type="button" id="provinceCommit" value="Update" />
-              <input type="button" id="provinceCancel" value="Cancel" />
-            </li>
-          </ul>
-          <input type="hidden" id="provinceAction" name="provinceAction"
-                 tabindex="-1" />
-        </div>
-      </form>
-    </dialog>
-
-    <!-- Data for the Province Detail dialog. -->
-    <form id="hiddenForm">
-      <!-- Primary Keys -->
-      <input type="hidden" id="rowProvinceID" />
-
-      <!-- Unique Keys -->
-      <input type="hidden" id="rowProvinceRegionID" />
-      <input type="hidden" id="rowProvinceName" />
-    </form>
-
-    <!-- Province Table Menu -->
-    <div id="provinceMenu" class="divMenu" style="width:100px">
-      <div class="titleHighlight">Province Menu</div>
-      <div><hr /></div>
-      <div id="provinceBeginning">Beginning</div>
-      <div id="provincePrevious">Previous Page</div>
-      <div id="provinceNext">Next Page</div>
-      <div id="provinceEnd">End</div>
-      <div><hr /></div>
-      <div id="provinceSelect">Select</div>
-      <div><hr /></div>
-      <div id="provinceRefresh">Refresh</div>
-      <div><hr /></div>
-      <div id="provinceNew">New</div>
-      <div id="provinceEdit">Edit</div>
-      <div><hr /></div>
-      <div id="provinceDelete">Delete</div>
-    </div>
-
   </div>  <!-- Closes page -->
   <script>
-    cityTableID.focus();
-    let cityListEvents = new LJCCityListEvents("cityTableID");
-    cityListEvents.SetDialogValues("textDialog", "textArea");
+    let tableEvents = new LJCCityListEvents();
+    tableEvents.AddEvents();
+    tableEvents.Refresh();
   </script>
 </body>
 </html>

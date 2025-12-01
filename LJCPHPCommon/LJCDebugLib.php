@@ -235,5 +235,8 @@
 
     // The current indent count.
     private int $IndentCount;
+
+    // The debug writer.
+    private LJCDebugWriter $Writer;
   } // LJCDebug
 ?>

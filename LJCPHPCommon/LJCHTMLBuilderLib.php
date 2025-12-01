@@ -18,12 +18,16 @@
   //  Classes: LJCAttribute, LJCAttributes, LJCHTMLBuilder, LJCTextState
 
   // ********************
-  /// <summary>Represents a node or element attribute.</summary>
+  // Represents a node or element attribute.
+  /// <include path='items/LJCAttribute/*' file='Doc/LJCAttribute.xml'/>
+  /// <group name="Static">Static Methods</group>
+  //    Copy()
+  /// <group name="Constructor">Constructor Methods</group>
   class LJCAttribute
   {
-    /// <summary>Creates a typed data object from a standard object.</summary>
-    /// <param name="$item">The standard object.</param>
-    /// <returns>The LJCAttribute object.</returns>
+    // Creates a typed data object from a standard object.
+    /// <include path='items/Copy/*' file='Doc/LJCAttribute.xml'/>
+    /// <ParentGroup>Static</ParentGroup>
     public static function Copy($item)
     {
       $retAttrib = null;
@@ -44,24 +48,40 @@
       return $retAttrib;
     } // Copy()
 
-    /// <summary>Initializes a class instance.</summary>
-    /// <param name="$name">The optional item name.</param>
-    /// <param name="$value">The optional item value.</param>
+    // Initializes an object instance.
+    /// <include path='items/construct/*' file='Doc/LJCAttribute.xml'/>
+    /// <ParentGroup>Constructor</ParentGroup>
     public function __construct(string $name = null, string $value = null)
     {
       $this->Name = $name;
       $this->Value = $value;
     } // __construct()
+
+    // ---------------
+    // Properties
+
+    /// <summary>The item name.</summary>
+    public string $Name;
+
+    /// <summary>The item value.</summary>
+    public string $Value;
   }
 
   // ********************
-  // Methods: Add(), AddObject(), Retrieve()
-  /// <summary>Represents a collection of node or element attributes.</summary>
+  // Represents a collection of node or element attributes.
+  /// <include path='items/LJCAttributes/*' file='Doc/LJCAttributes.xml'/>
+  /// <group name="Static">Static Methods</group>
+  //    ToCollection()
+  /// <group name="Constructor">Constructor Methods</group>
+  /// <group name="Collection">Collection Methods</group>
+  //    Add(), AddObject(), Append(), Remove(), Retrieve()
+  /// <group name="Other">Other Methods</group>
+  //    MergeStyle()
   class LJCAttributes extends LJCCollectionBase
   {
-    /// <summary>Creates a typed collection from an array of objects.</summary>
-    /// <param name="$items">The object array.</param>
-    /// <returns>The LJCAttributes collection.</returns>
+    // Creates a typed collection from an array of objects.
+    /// <include path='items/ToCollection/*' file='Doc/LJCAttributes.xml'/>
+    /// <ParentGroup>Static</ParentGroup>
     public static function ToCollection(array $items)
     {
       $retAttributes = null;
@@ -81,7 +101,9 @@
       return $retAttributes;
     }
 
-    /// <summary>Initializes an object instance.</summary>
+    // Initializes an object instance.
+    /// <include path='items/construct/*' file='Doc/LJCAttributes.xml'/>
+    /// <ParentGroup>Constructor</ParentGroup>
     public function __construct()
     {
       $this->ClassName = "LJCAttributes";
@@ -99,11 +121,9 @@
     // ----------
     // Collection Methods
 
-    /// <summary>Creates an object and adds it to the collection.</summary>
-    /// <param name="$name">The item name.</param>
-    /// <param name="$value">The item value.</param>
-    /// <param name="$key">The optional item key.</param>
-    /// <returns>The LJCAttributes collection.</returns>
+    // Creates an object and adds it to the collection.
+    /// <include path='items/Add/*' file='Doc/LJCAttributes.xml'/>
+    /// <ParentGroup>Collection</ParentGroup>
     public function Add(string $name, string $value = null, $key = null)
       : ?LJCAttribute
     {
@@ -119,10 +139,9 @@
       return $retValue;
     }
 
-    /// <summary>Adds an object and key value.</summary>
-    /// <param name="$attrib">The item object.</param>
-    /// <param name="$key">The optional item key.</param>
-    /// <returns>The LJCAttribute object.</returns>
+    // Adds an object and key value.
+    /// <include path='items/AddObject/*' file='Doc/LJCAttributes.xml'/>
+    /// <ParentGroup>Collection</ParentGroup>
     public function AddObject(LJCAttribute $attrib, $key = null): ?LJCAttribute
     {
       $methodName = "AddObject()";
@@ -160,8 +179,9 @@
       return $retAttrib;
     }// AddObject()
 
-    /// <summary>Append items.</summary>
-    /// <param name="$attribs">The item objects.</param>
+    // Appends items.
+    /// <include path='items/Append/*' file='Doc/LJCAttributes.xml'/>
+    /// <ParentGroup>Collection</ParentGroup>
     public function Append(LJCAttributes $attribs): void
     {
       foreach ($attribs as $attrib)
@@ -171,19 +191,17 @@
     }
 
     // Removes the item by Key value.
-    // <include path='items/Remove/*' file='Doc/_CollectionName_.xml'/>
-    /// <param name="$key">The optional item key.</param>
-    /// <param name="$throwError">The optional throw error flag.</param>
-    /// <ParentGroup>Data</ParentGroup>
+    /// <include path='items/Remove/*' file='Doc/LJCAttributes.xml'/>
+    /// <ParentGroup>Collection</ParentGroup>
     public function Remove($key, bool $throwError = true): void
     {
       // DeleteItem() is in LJCCollectionBase.
       $this->DeleteItem($key, $throwError);
     }
 
-    /// <summary>Gets an item by key.</summary>
-    /// <param name="$key">The optional item key.</param>
-    /// <returns>The retrieved item.</returns>
+    // Gets an item by key.
+    /// <include path='items/Retrieve/*' file='Doc/LJCAttributes.xml'/>
+    /// <ParentGroup>Collection</ParentGroup>
     public function Retrieve($key)
     {
       $retValue = null;
@@ -196,10 +214,9 @@
     // ----------
     // Other Methods
 
-    /// <summary>Merges "style" attrib rules.</summary>
-    /// <param name="$existingAttrib">The existing style attribute.</param>
-    /// <param name="$newAttrib">The new style attribute.</param>
-    /// <returns>The merged style attributes.</returns>
+    // Merges "style" attrib rules.
+    /// <include path='items/MergeStyle/*' file='Doc/LJCAttributes.xml'/>
+    /// <ParentGroup>Other</ParentGroup>
     public function MergeStyle($existingAttrib, $newAttrib)
     {
       $methodName = "MergeStyle()";
@@ -253,6 +270,9 @@
       }
       return $retMergedRules;
     }
+
+    // ----------
+    // Private Methods
 
     // Trims element value or if null, returns null.
     private static function TrimElement($values, $index)
@@ -324,7 +344,7 @@
       return $retRules;
     }
 
-    // ---------------
+    // ----------
     // Properties
 
     /// <summary>The class name for debugging.</summary>
@@ -335,14 +355,14 @@
   }
 
   // ********************
-  /// <summary>Represents a built string value.</summary>
+  // Represents a built string value.
   /// <include path='items/LJCHTMLBuilder/*' file='Doc/LJCHTMLBuilder.xml'/>
   /// <group name="Constructor">Constructor Methods</group>
   /// <group name="DataClass">Data Class Methods</group>
   //    ToString()
   /// <group name="Main">Class Methods</group>
-  //    AddChildIndent(), AddIndent(), EndsWithNewLine(), StartWithNewLine()
-  //    HasText(), IndentLength()
+  //    AddChildIndent(), AddIndent(), EndsWithNewLine(), GetTextState(),
+  //    HasText(), IndentLength(), StartWithNewLine()
   /// <group name="AppendText">Append Text</group>
   //    AddLine(), AddText(), Line(), Text()
   /// <group name="GetText">Get Text</group>
@@ -351,9 +371,9 @@
   /// <group name="AppendElement">Append Element</group>
   //    Begin(), Create(), End()
   /// <group name="GetElement">Get Element</group>
-  //    GetBegin(), GetCreate(), GetEnd()
+  //    GetBegin(), GetBeginSelector(), GetCreate(), GetEnd()
   /// <group name="GetAttribs">Get Attribs</group>
-  //    Attribs(), StartAttribs(), TableAttribs()
+  //    Attribs(), StartAttribs(), StartXMLAttribs(), TableAttribs()
   class LJCHTMLBuilder
   {
     // ----------
@@ -932,7 +952,7 @@
     }
 
     // Creates the XML start attributes.
-    /// <include path='items/StartAttributes/*' file='Doc/LJCHTMLBuilder.xml'/>
+    /// <include path='items/StartXMLAttributes/*' file='Doc/LJCHTMLBuilder.xml'/>
     /// <ParentGroup>GetAttribs</ParentGroup>
     public function StartXMLAttribs(): LJCAttributes
     {
@@ -1157,13 +1177,17 @@
 
   // ********************
   /// <summary>Represents the text state.</summary>
+  /// <group name="Constructor">Constructor Methods</group>
+  /// <group name="getset">Getters and Setters</group>
+  //    getIndentCount(), setIndentCount()
   class LJCTextState
   {
     // ----------
     // Constructors
 
-    /// <summary>Initializes an object instance.</summary>
-    /// <param name="$indentCount"></param>
+    // Initializes an object instance.
+    /// <include path='items/construct/*' file='Doc/LJCTextState.xml'/>
+    /// <ParentGroup>Constructor</ParentGroup>
     public function __construct(int $indentCount = 0, bool $hasText = false)
     {
       $this->setIndentCount($indentCount);
@@ -1174,11 +1198,17 @@
     // ----------
     // Getters and Setters
 
+    // Gets the indent count.
+    /// <include path='items/getIndentCount/*' file='Doc/LJCTextState.xml'/>
+    /// <ParentGroup>getset</ParentGroup>
     public function getIndentCount(): int
     {
       return $this->IndentCount;
     }
 
+    // Sets the indent count.
+    /// <include path='items/setIndentCount/*' file='Doc/LJCTextState.xml'/>
+    /// <ParentGroup>getset</ParentGroup>
     public function setIndentCount(int $count): void
     {
       if ($count >= 0)

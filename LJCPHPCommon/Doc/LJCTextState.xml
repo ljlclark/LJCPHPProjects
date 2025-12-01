@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright(c) Lester J. Clark and Contributors. -->
+<!-- Licensed under the MIT License. -->
+<!-- LJCHTMLBuilder.xml -->
+<items>
+  <!-- Constructor Methods -->
+  <construct>
+    <summary>
+      Initializes an object instance.
+    </summary>
+    <param name="$indentCount"></param>
+  </construct>
+  <!-- Getters and Setters -->
+  <getIndentCount>
+    <summary>
+      // Gets the indent count.
+    </summary>
+  </getIndentCount>
+  <setIndentCount>
+    <summary>
+      Sets the indent count.
+    </summary>
+    <remarks>
+      Will not set the indent count if a negative value.
+    </remarks>
+  </setIndentCount>
+</items>
