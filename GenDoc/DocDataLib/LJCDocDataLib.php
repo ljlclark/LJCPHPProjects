@@ -190,8 +190,6 @@
     // Public Static Functions
 
     // Deserialize Call Tree
-    // LJCDocDataLib.php
-    // Deserialize() public
     // LJCGenDataGenLib.php
     // SerializeLib() public
     //   LJCDocDataLib.php
@@ -323,12 +321,19 @@
     {
       // Deserialize()
       // DeserializeString()-CreateDocDataFile()-GetClasses()
+
+      // Setup static debug log.
+      $libName = "LJCDocDataLib";
+      $className = "LJCDocDataFile";
+      $enabled = false;  // true creates the log file.
+      $debug = new LJCDebug($libName, $className, "a", $enabled);
+
+      // Setup Method Debug Log
       $enabled = false;
-      $debug = new LJCDebug("LJCDocDataGenLib", "LJCDocDataFile"
-       , "a", $enabled);
-      $debug->BeginMethod("GetGroups", $enabled);
-      //$this->Debug->Write(__line__." Var = {$this->Var}");
-      //LJC::Debug(__line__, "Var", $this->Var);
+      $methodName = "GetGroups";
+      $debug->BeginPrivateMethod($methodName, $enabled);
+      //$debug->Write(" Var = {$this->Var}");
+
       $retValue = null;
 
       $groupNodes = self::GetGroupNodes($classNode);
@@ -354,16 +359,10 @@
       // DeserializeString()-CreateDocDataFile()-GetClasses()
       //   -GetMethods()
 
-      // Setup static debug log.
-      $libName = "LJCDocDataGenLib";
-      $className = "LJCDocDataFile";
-      $enabled = true;  // true creates the log file.
-      $debug = new LJCDebug($libName, $className, "a", $enabled);
-
       // Setup Method Debug Log
       $enabled = false;
       $methodName = "GetParams";
-      $debug->BeginMethod($methodName, $enabled);
+      $this->Debug->BeginMethod($methodName, $enabled);
       //$Debug->Write(" Var = {$this->Var}");
 
       $retValue = null;
@@ -494,16 +493,10 @@
       // DeserializeString()-CreateDocDataFile()-GetClasses()
       //   -GetMethods()-GetParams()
 
-      // Setup static debug log.
-      $libName = "LJCDocDataLib";
-      $className = "LJCDocDataFile";
-      $enabled = true;  // true creates the log file.
-      $debug = new LJCDebug($libName, $className, "a", $enabled);
-
       // Setup Method Debug Log
       $enabled = false;
       $methodName = "LogParamErrors";
-      $debug->BeginMethod($methodName, $enabled);
+      $this->Debug->BeginMethod($methodName, $enabled);
       //$Debug->Write(" Var = {$this->Var}");
 
       $docNode = $this->DocNode;
@@ -533,7 +526,7 @@
     /// <include path='items/construct/*' file='Doc/LJCDocDataFile.xml'/>
     public function __construct(string $name, ?string $summary = null)
     {
-      // Setup static debug log.
+      // Setup debug log.
       $libName = "LJCDocDataLib";
       $className = "LJCDocDataFile";
       $enabled = false;  // true creates the log file.
@@ -593,10 +586,13 @@
     {
       // LJCDocDataGenLib.ProcessCode()-SerializeToString()
       // Serialize()-SerializeToString()
+
+      // Setup Method Debug Log
       $enabled = false;
-      $this->Debug->BeginPrivateMethod("SerializeGroups", $enabled);
-      //$this->Debug->Write(__line__." Var = {$this->Var}");
-      //LJC::Debug(__line__, "Var", $this->Var);
+      $methodName = "SerializeGroups";
+      $this->Debug->BeginMethod($methodName, $enabled);
+      //$Debug->Write(" Var = {$this->Var}");
+
       $retValue = "";
 
 
@@ -625,10 +621,12 @@
     {
       // LJCDocDataGenLib.ProcessCode()
       // Serialize()
+
+      // Setup Method Debug Log
       $enabled = false;
-      $this->Debug->BeginMethod("SerializeToString", $enabled);
-      //$this->Debug->Write(__line__." Var = {$this->Var}");
-      //LJC::Debug(__line__, "Var", $this->Var);
+      $methodName = "SerializeToString";
+      $this->Debug->BeginMethod($methodName, $enabled);
+      //$Debug->Write(" Var = {$this->Var}");
 
       $builder = new LJCStringBuilder();
 
@@ -684,10 +682,12 @@
       : ?string
     {
       // SerializeToString()
+
+      // Setup Method Debug Log
       $enabled = false;
-      $this->Debug->BeginPrivateMethod("SerializeMethods", $enabled);
-      //$this->Debug->Write(__line__." Var = {$this->Var}");
-      //LJC::Debug(__line__, "Var", $this->Var);
+      $methodName = "SerializeMethods";
+      $this->Debug->BeginPrivateMethod($methodName, $enabled);
+      //$Debug->Write(" Var = {$this->Var}");
 
       $builder = new LJCStringBuilder();
       if ($class->Methods != null && count($class->Methods) > 0)
@@ -720,10 +720,12 @@
       : ?string
     {
       // SerializeToString()-SerializeMethods()
+
+      // Setup Method Debug Log
       $enabled = false;
-      $this->Debug->BeginPrivateMethod("SerializeParams", $enabled);
-      //$this->Debug->Write(__line__." Var = {$this->Var}");
-      //LJC::Debug(__line__, "Var", $this->Var);
+      $methodName = "SerializeParams";
+      $this->Debug->BeginPrivateMethod($methodName, $enabled);
+      //$Debug->Write(" Var = {$this->Var}");
 
       $builder = new LJCStringBuilder();
       if ($params != null && count($params) > 0)
@@ -748,10 +750,12 @@
       : ?string
     {
       // SerializeToString()
+
+      // Setup Method Debug Log
       $enabled = false;
-      $this->Debug->BeginPrivateMethod("SerializeProperties", $enabled);
-      //$this->Debug->Write(__line__." Var = {$this->Var}");
-      //LJC::Debug(__line__, "Var", $this->Var);
+      $methodName = "SerializeProperties";
+      $this->Debug->BeginPrivateMethod($methodName, $enabled);
+      //$Debug->Write(" Var = {$this->Var}");
 
       $builder = new LJCStringBuilder();
       if ($class->Properties != null && count($class->Properties) > 0)
