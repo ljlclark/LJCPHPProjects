@@ -5,9 +5,12 @@
   declare(strict_types=1);
   include_once "LJCRoot.php";
   $prefix = RelativePrefix();
+  include_once "$prefix/LJCPHPCommon/LJCCommonLib.php";
   include_once "$prefix/LJCPHPCommon/LJCCollectionLib.php";
   include_once "$prefix/LJCPHPCommon/LJCDBAccessLib.php";
   include_once "$prefix/LJCPHPCommon/LJCDataManagerLib.php";
+  // LJCCommon: LJC
+  // LJCCollectionLib: LJCCollectionBase
   // LJCDBAccessLib: LJCConnectionValues, LJCDbColumns
   // LJCDataManager: LJCDataManager
 
@@ -29,18 +32,40 @@
     /// <param name="objRegion"></param>
     /// <returns>The new Region object.</returns>
     public static function Copy($objRegion): ?Region
+
     {
       $retRegion = null;
 
+      // Check for required values.
       if (property_exists($objRegion, "Name"))
       {
         $retRegion = new Region($objRegion->Name);
 
+        // Look for properties of standard object in typed object.
         foreach ($objRegion as $propertyName => $value)
         {
+          // Check if object property exists in the typed item.
           if (property_exists($retRegion, $propertyName))
           {
-            $retRegion->$propertyName = $value;
+            // Update new typed object properties from the standard object.
+            $success = false;
+            $regionValue = $retRegion->$propertyName;
+            $objValue = $objRegion->$propertyName;
+            if (is_int($regionValue))
+            {
+              $retRegion->$propertyName = (int)$objValue;
+              $success = true;
+            }
+            if (!$success
+              && is_float($regionValue))
+            {
+              $retRegion->$propertyName = (float)$objValue;
+              $success = true;
+            }
+            if (!$success)
+            {
+              $retRegion->$propertyName = $objValue;
+            }
           }
         }
       }
@@ -51,13 +76,26 @@
     // Constructor Methods
 
     /// <summary>Initializes a class instance.</summary>
-    public function __construct()
+    public function __construct(string $number = "", string $name = "")
     {
+      $this->ClassName = "Region";
+
+      $this->Number = $number;
+      $this->Name = $name;
+
       $this->RegionID = 0;
-      $this->Number = "";
-      $this->Name = "";
       $this->Description = null;
+
+      $this->DebugText = "";
     }
+
+    // Standard debug method for each class.
+    private function AddDebug($methodName, $valueName, $value = null)
+    {
+      $location = LJC::Location($this->ClassName, $methodName
+        , $valueName);
+      $this->DebugText .= LJC::DebugObject($location, $value);
+    } // AddDebug()
 
     // ---------------
     // Data Object Methods
@@ -65,6 +103,8 @@
     /// <summary>Creates an object clone.</summary>
     public function Clone() : self
     {
+      $methodName = "Clone()";
+
       $retValue = new self();
       $retValue->RegionID = $this->RegionID;
       $retValue->Number = $this->Number;
@@ -82,7 +122,6 @@
     public int $RegionID;
 
     // Natural Keys
-
     // varchar(5)
     /// <summary>The Number value.</summary> 
     public string $Number;
@@ -90,7 +129,7 @@
     // Unique Keys
 
     // varchar(60)
-    /// <summary>The Name value.</summary> 
+    /// <summary>The unique key.</summary> 
     public string $Name;
 
     // varchar(100)
@@ -101,10 +140,10 @@
     // Constants
 
     public const TableName = "Region";
-    public const ColumnRegionID = "RegionID";
-    public const ColumnNumber = "Number";
-    public const ColumnName = "Name";
-    public const ColumnDescription = "Description";
+    public const PropertyRegionID = "RegionID";
+    public const PropertyNumber = "Number";
+    public const PropertyName = "Name";
+    public const PropertyDescription = "Description";
 
     /// <summary>The Description column length.</summary>
     public const DescriptionLength = 100;
@@ -118,6 +157,11 @@
   
   // ***************
   /// <summary>Represents a collection of Region objects.</summary> 
+  /// <group name="Static">Static Methods</group>
+  //    ToCollection()
+  /// <group name="Constructor">Constructor Methods</group>
+  /// <group name="Data">Content Methods</group>
+  //    AddObject()
   class Regions extends LJCCollectionBase
   {
     // ---------------
@@ -128,42 +172,75 @@
     /// </summary>
     /// <param name="items">The items object.</param>
     /// <returns>The collection></returns.
-    public static function Collection($items): ?Regions
+    /// <ParentGroup>Static</ParentGroup>
+    public static function ToCollection($items): ?Regions
     {
       $retRegions = null;
 
+      // ReadItems is in the JavaScript collection.
       if (isset($items)
-        && LJC::HasElements($items->Items))
+        && LJC::HasElements($items->ReadItems))
       {
         $retRegions = new Regions();
-        foreach ($items->Items as $objDataObject)
+        foreach ($items->ReadItems as $objItem)
         {
           // Create typed object from stdClass.
-          $region = Region::Copy($objDataObject);
+          $region = Region::Copy($objItem);
           $retRegions->AddObject($region);
         }
       }
       return $retRegions;
-    }
+    } // ToCollection()
 
     // ---------------
-    // Collection Methods
+    // Constructor Methods
+
+    /// <summary>Initializes a class instance.</summary>
+    /// <ParentGroup>Constructor</ParentGroup>
+    public function __construct()
+    {
+      $this->ClassName = "Regions";
+    }
+
+    // Standard debug method for each class.
+    private function AddDebug($methodName, $valueName, $value = null)
+    {
+      $location = LJC::Location($this->ClassName, $methodName
+        , $valueName);
+      $this->DebugText .= LJC::DebugObject($location, $value);
+    } // AddDebug()
+
+    // ---------------
+    // Data Methods
 
     // Adds an object and key value.
     /// <include path='items/AddObject/*' file='Doc/Regions.xml'/>
     public function AddObject(Region $item, $key = null)
     {
+      $methodName = "AddObject()";
+
       if (null == $key)
       {
-        $key = $item->Name;
+        //$key = $item->Name;
+        $key = $this->count();
       }
+
+      // HasKey() is in LJCCollectionBase.
 			if ($this->HasKey($key))
 			{
 				throw new Exception("Key: {$key} already in use.");
 			}
+
+      // AddItem() is in LJCCollectionBase.
       $retValue = $this->AddItem($item, $key);
       return $retValue;
-    }
+    } // AddObject()
+
+    // ---------------
+    // Properties
+
+    /// <summary>The debug text.</summary>
+    public string $DebugText;
   }  // Regions
 
   // ***************
@@ -177,12 +254,17 @@
     /// <include path='items/construct/*' file='Doc/RegionManger.xml'/>
     public function __construct($connectionValues, string $tableName = null)
     {
+      $this->ClassName = "RegionManager";
+      $this->DebugText = "";
+
       if (!LJC::HasValue($tableName))
       {
         $tableName = Region::TableName;
       }
-      $this->OrderByNames = null;
       $this->DataManager = new LJCDataManager($connectionValues, $tableName);
+      $this->DebugText .= $this->DataManager->DebugText;
+      $this->Limit = 0;
+      $this->OrderByNames = null;
     }
   
     // ---------------
@@ -193,22 +275,26 @@
     /// <returns>The added record data object.</returns>
     public function Add(LJCDbColumns $dataColumns): int
     {
-      $retValue = 0;
+      $methodName = "Add()";
+      $retCount = 0;
 
       $this->DataManager->SQL = "";
-      $retValue = $this->DataManager->Add($dataColumns);
-      return $retValue;
+      $retCount = $this->DataManager->Add($dataColumns);
+      $this->DebugText .= $this->DataManager->DebugText;
+      return $retCount;
     }
   
     // Deletes the records for the provided values.
     /// <include path='items/Delete/*' file='Doc/RegionManger.xml'/>
     public function Delete(LJCDbColumns $keyColumns): int
     {
-      $retValue = 0;
+      $methodName = "Delete()";
+      $retCount = 0;
 
       $this->DataManager->SQL = "";
-      $retValue = $this->DataManager->Delete($keyColumns);
-      return $retValue;
+      $retCount = $this->DataManager->Delete($keyColumns);
+      $this->DebugText .= $this->DataManager->DebugText;
+      return $retCount;
     }
 
     // Loads the records for the provided values.
@@ -216,22 +302,28 @@
     public function Load(?LJCDbColumns $keyColumns, array $propertyNames = null
       , ?string $filter = null): ?Regions
     {
-      $retValue = null;
+      $methodName = "Load()";
+      $retRegions = null;
       
+      $this->DataManager->OrderByNames = $this->OrderByNames;
       $rows = $this->LoadResult($keyColumns, $propertyNames, $filter);
 
       $regions = new Regions();
       $region = new Region();
-      $retValue = $this->DataManager->CreateDataCollection($regions, $region
+      $retRegions = $this->DataManager->CreateDataCollection($regions, $region
         , $rows);
-      return $retValue;
+      $this->DebugText .= $this->DataManager->DebugText;
+      $this->OrderByNames = null;
+      return $retRegions;
     }
 
     // Loads the result data.
     public function LoadResult(?LJCDbColumns $keyColumns
-      , array $propertyNames = null, ?string $filter = null): ?array
+      , array $propertyNames = null, LJCJoins $joins = null
+      , ?string $filter = null): ?array
     {
-      $retValue = null;
+      $methodName = "LoadResult()";
+      $retRows = null;
 
       $this->DataManager->SQL = "";
       $this->DataManager->OrderByNames = $this->OrderByNames;
@@ -240,9 +332,11 @@
         $this->DataManager->Limit = $this->Limit;
       }
 
-      $retValue = $this->DataManager->Load($keyColumns, $propertyNames
-        , filter: $filter);
-      return $retValue;
+      $retRows = $this->DataManager->Load($keyColumns, $propertyNames, $joins
+        , $filter);
+      $this->OrderByNames = null;
+      $this->DebugText .= $this->DataManager->DebugText;
+      return $retRows;
     }
 
     // Retrieves the record for the provided values.
@@ -250,14 +344,16 @@
     public function Retrieve(LJCDbColumns $keyColumns
       , array $propertyNames = null): ?Region
     {
-      $retValue = null;
+      $methodName = "Retrieve()";
+      $retRegion = null;
       
       $this->DataManager->SQL = "";
-      $this->DataManager->OrderByNames = $this->OrderByNames;
       $row = $this->DataManager->Retrieve($keyColumns, $propertyNames);
 
-      $retValue = $this->DataManager->CreateDataObject(new Region(), $row);
-      return $retValue;
+      $retRegion = $this->DataManager->CreateDataObject(new Region(), $row);
+      $this->OrderByNames = null;
+      $this->DebugText .= $this->DataManager->DebugText;
+      return $retRegion;
     }
 
     // Updates the records for the provided values.
@@ -265,11 +361,13 @@
     public function Update(LJCDbColumns $keyColumns, LJCDbColumns $dataColumns)
       : int
     {
-      $retValue = 0;
+      $methodName = "Update()";
+      $retCount = 0;
 
       $this->DataManager->SQL = "";
-      $retValue = $this->DataManager->Update($keyColumns, $dataColumns);
-      return $retValue;
+      $retCount = $this->DataManager->Update($keyColumns, $dataColumns);
+      $this->DebugText .= $this->DataManager->DebugText;
+      return $retCount;
     }
 
     // ---------------
@@ -278,14 +376,16 @@
     // Get the column definitions that match the property names.
     public function Columns(array $propertyNames = null): ?LJCDbColumns
     {
-      $retValue = $this->DataManager->Columns($propertyNames);
-      return $retValue;
+      $retDataColumns = $this->DataManager->Columns($propertyNames);
+      $this->DebugText .= $this->DataManager->DebugText;
+      return $retDataColumns;
     }
 
     // Creates a PropertyNames list from the data definition.
     public function PropertyNames(): array
     {
       $retNames = $this->DataManager->PropertyNames();
+      $this->DebugText .= $this->DataManager->DebugText;
       return $retNames;
     }
 
@@ -298,10 +398,19 @@
     // ---------------
     // Public Properties
 
+    /// <summary>The class name for debugging.</summary>
+    public string $ClassName;
+
     /// <summary>The Data Manager object.</summary>
     public LJCDataManager $DataManager;
 
-    // 
+    /// <summary>The debug text.</summary>
+    public string $DebugText;
+
+    /// <summary>The load limit.</summary>
+    public int $Limit;
+
+    /// <summary>The order names array.</summary> 
     public ?array $OrderByNames;
   }  // RegionManager
 ?>

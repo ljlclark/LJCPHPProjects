@@ -22,7 +22,7 @@
     // Public Methods
 
     /// <summary>Creates the CityList HTML.</summary>
-    public static function Run(): void
+    public static function Run()
     {
       $connectionValues = RegionConfig::GetConnectionValues();
       // Get session value.
