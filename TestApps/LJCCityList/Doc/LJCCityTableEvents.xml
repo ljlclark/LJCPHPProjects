@@ -3,7 +3,19 @@
 <!-- Licensed under the MIT License. -->
 <!-- LJCTable.xml -->
 <items>
+  <!-- Event Handlers -->
+  <TableClick>
+    <summary>The Table "click" handler.</summary>
+    <param name="event">The Target event.</param>
+  </TableClick>
   <!-- Page Methods -->
+  <UpdateTableRequest>
+    <summary>
+      Sets the form values before a detail submit and the page values before
+      a page submit.
+    </summary>
+    <param name="eTarget">The HTML element.</param>
+  </UpdateTableRequest>
   <HasData>
     <summary>Checks if the provided table text exists.</summary>
     <param name="tableText">The HTML table text.</param>
@@ -20,13 +32,6 @@
       IsNextPage or IsPrevPage flags.
     </remarks >
   </UpdateLimitFlags>
-  <UpdateTableRequest>
-    <summary>
-      Sets the form values before a detail submit and the page values before
-      a page submit.
-    </summary>
-    <param name="eTarget">The HTML element.</param>
-  </UpdateTableRequest>
   <UpdateCityTable>
     <summary>Updates the CityTable ETable and Keys values.</summary>
     <param name="saveThis">A reference to this class.</param>

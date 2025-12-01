@@ -1,0 +1,42 @@
+LJCCityList.html
+   cityListEvents(CityTableID, null, configFile)
+      CityTable
+      #CityTableEvents(this, "cityMenu", configFile);
+         tableRequest<->CityTableRequest
+         CityTable
+      #CityDetailEvents(CityTable)
+
+LJCCityList.html  
+----------------  
+cityListEvents    LJCCityListEvents                  -----------------
+                  CityTable --------> LJCTable
+                                      --------
+                                      BeginningOfData
+                                      CurrentRowIndex
+                                      EMenu
+                                      EndOfData
+                                      ETable
+                                      Keys
+                                      TableColumns
+                                      TableID
+                                      -- Static --
+                                      GetSelectedTable()
+                                      GetTable()
+                                      GetTableRow()
+                                      -- Methods --
+                                      ShowMenu()
+                                      -- Cell Methods --
+                                      CellText()
+                                      ColumnIndex()
+                                      ColumnWidth()
+                                      HeadingIndex()
+                                      SetColumnWidth()
+
+
+                  #CityTableEvents    LJCCityTableEvents
+                                      ------------------
+                                      CityTable
+                                      TableRequest
+
+                  #CityDetailEvents   LJCCityDetailEvents
+                                      -------------------

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright(c) Lester J. Clark and Contributors. -->
+<!-- Licensed under the MIT License. -->
+<!-- LJCCityDataService.xml -->
+<items>
+  <!-- Request Properties -->
+  <Action>
+    <summary>The data request action.</summary>
+    <remarks>Values: "Delete", "Insert", "Retrieve", "Update"</remarks>
+  </Action>
+</items>

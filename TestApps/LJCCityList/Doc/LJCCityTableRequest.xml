@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright(c) Lester J. Clark and Contributors. -->
+<!-- Licensed under the MIT License. -->
+<!-- LJCCityTableRequest.xml -->
+<items>
+  <!-- Properties -->
+  <Action>
+    <summary>The action type name.</summary>
+    <remarks>
+      "Next", "Previous", "Top"?, "Bottom"?, "First"?, "Last"?
+    </remarks>
+  </Action>
+  <!-- Constructor functions. -->
+  <constructor>
+    <summary>Initializes the object instance.</summary>
+    <param name="configName">The data access configuration name.</param>
+    <param name="configFile">The data access configuration file name.</param>
+  </constructor>
+</items>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright(c) Lester J. Clark and Contributors. -->
+<!-- Licensed under the MIT License. -->
+<!-- LJCTable.xml -->
+<items>
+  <!-- Event Handlers -->
+  <CancelClick>
+    <summary>Close the dialog without updating the data.</summary>
+    <param name="event">The Target event.</param>
+  </CancelClick>
+  <CommitClick>
+    <summary>Update data and close dialog.</summary>
+    <param name="event">The Target event.</param>
+  </CommitClick>
+  <!-- Other Methods -->
+  <ValidFormValues>
+    <summary>Checks the form values.</summary>
+    <param name="city">The City data object.</param>
+    <returns>true if successful; otherwise false.</returns>
+  </ValidFormValues>
+  <DataRequest>
+    <summary>Call the web service.</summary>
+    <param name="cityRequest">The city request object.</param>
+  </DataRequest>
+</items>

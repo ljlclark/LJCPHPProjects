@@ -2,56 +2,134 @@
 <!-- Copyright (c) Lester J. Clark 2022 - All Rights Reserved -->
 <!-- LJCTable.xml -->
 <items>
-  <!-- Table Methods -->
-  <GetRow>
-    <summary>Gets table row by index.</summary>
-    <param name="eTable">The table element.</param>
-    <param name="rowIndex">The row index.</param>
-    <returns>The table row.</returns>
-  </GetRow>
-  <GetRowCount>
-    <summary>Gets the table row count.</summary>
-    <param name="eTable">The table element.</param>
-    <returns>The table row count.</returns>
-  </GetRowCount>
-  <TableSelectRow>
+  <LJCTable>
     <summary>
-      Clears background for previous row and Highlights the current row.
+      Represents an HTML Table.
     </summary>
-    <param name="eTable">The table element.</param>
-    <param name="preRowIndex">The previous row index.</param>
-    <param name="rowIndex">The current row index.</param>
-  </TableSelectRow>
-  <!-- Column Methods -->
+    <remarks>
+      Contains methods for utilizing an HTML Table and associated context menu
+      including data paging.
+    </remarks>
+  </LJCTable>
+  <!-- Static  Methods -->
+  <GetSelectedTable>
+    <summary>
+      Gets the selected table if the supplied element is a table cell and the
+      table has the supplied ID.
+    </summary >
+    <param name="eCell">The HTML cell element.</param>
+    <param name="tableID">The table element ID.</param>
+    <returns>
+      true if a cell is in the specified table ID; otherwise false.
+    </returns>
+  </GetSelectedTable>
   <GetTable>
     <summary>
-      Get the HTML table element if the HTML element is a table data row or
-      column.
+      Gets the HTML table element if the supplied element is a table cell.
     </summary >
-    <param name="element">The HTML element.</param>
+    <param name="eCell">The HTML cell element.</param>
     <returns>The table element if applicable, otherwise null.</returns>
   </GetTable>
-  <GetTableByID>
-    <summary>
-      Get the HTML table element by ID if the HTML element is a table column.
-    </summary >
-    <param name="element">The HTML element.</param>
-    <param name="tableID">The table element ID.</param>
-    <returns>The table element if applicable, otherwise null.</returns>
-  </GetTableByID>
   <GetTableRow>
     <summary>
-      Get the table row element if the element is a table data row or column.
+      Gets the table row element if the supplied element is a table cell.
     </summary >
-    <param name="element">The HTML element.</param>
+    <param name="eCell">The HTML cell element.</param>
     <returns>The table row element if applicable, otherwise null.</returns>
   </GetTableRow>
+  <!-- Constructor Methods -->
+  <constructor>
+    <summary>Initializes the object.</summary>
+    <param name="tableID">The represented table ID.</param>
+    <param name="menuID">The table menu ID.</param>
+  </constructor>
+  <!-- Methods -->
+  <ShowMenu>
+    <summary>
+      Makes the menu visible.
+    </summary>
+    <param name="location">The menu location object.</param>
+  </ShowMenu>
+  <!-- Cell Methods -->
+  <CellText>
+    <summary>Gets cell text by property name or heading text.</summary>
+    <param name="propertyName">The column property name.</param>
+    <param name="rowIndex">
+      The optional rowIndex. Uses the current row index if not supplied.
+    </param>
+    <returns>The cell text.</returns>
+  </CellText>
+  <ColumnIndex>
+    <summary>Gets the column index by property name or heading text.</summary>
+    <param name="propertyName">The column property name.</param>
+    <returns>The column index.</returns>
+  </ColumnIndex>
+  <ColumnWidth>
+    <summary>Gets the column width.</summary>
+    <param name="columnIndex">The column index.</param>
+    <returns>The column width."</returns>
+  </ColumnWidth>
+  <HeadingIndex>
+    <summary>Gets the column index by the heading text.</summary>
+    <param name="headingText">The column heading text.</param>
+    <returns>The column index.</returns>
+  </HeadingIndex>
+  <SetColumnWidth>
+    <summary>Sets the row[0] cell width by the column index value.</summary>
+    <param name="columnIndex">The column index.</param>
+    <param name="width">The column width.</param>
+  </SetColumnWidth>
+  <SetColumnWidthByName>
+    <summary>Sets the row[0] cell width by property name.</summary>
+    <param name="propertyName">The column property name.</param>
+    <param name="width">The column width.</param>
+  </SetColumnWidthByName>
+  <HasColumnIndex>
+    <summary>Checks if the column index exists.</summary>
+    <param name="columnIndex">The column index.</param>
+    <returns>true if the column exists; otherwise false.</returns>
+  </HasColumnIndex>
+  <!-- Row Methods -->
+  <GetRow>
+    <summary>Gets table row element by index.</summary>
+    <param name="rowIndex">The row index.</param>
+    <returns>The table row element.</returns>
+  </GetRow>
+  <RowCount>
+    <summary>Gets the table row count.</summary>
+    <returns>The table row count.</returns>
+  </RowCount>
+  <RowMatch>
+    <summary>Gets the row where the mathing cell has the search text.</summary>
+    <param name="propertyName">The column property name.</param>
+    <param name="searchText">The search text.</param>
+    <returns>The matching row element.</returns>
+  </RowMatch>
+  <SelectColumnRow>
+    <summary>
+      Clears background for previous row and Highlights the current row.
+      if the supplied element is a table cell.
+    </summary>
+    <param name="eColumn">The selected row cell element.</param>
+  </SelectColumnRow>
   <SelectRow>
     <summary>
       Clears background for previous row and Highlights the current row.
     </summary>
-    <param name="eTable">The table element.</param>
-    <param name="tableID">The table element ID.</param>
-    <param name="preRowIndex">The previous row index.</param>
+    <param name="preRowIndex">The previous selected row index.</param>
+    <param name="rowIndex">The current selected row index.</param>
   </SelectRow>
+  <UniqueRowIndex>
+    <summary>
+      Gets the row index by unique key values.
+    </summary>
+    <param name="city">The city data object.</param>
+    <returns>The matching unique row index.</returns>
+  </UniqueRowIndex>
+  <UpdateUniqueRow>
+    <summary>
+      Updates the row for data object unique keys.
+    </summary>
+    <param name="city">The city data object.</param>
+  </UpdateUniqueRow>
 </items>

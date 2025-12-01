@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<!-- Copyright (c) Lester J. Clark and Contributors. -->
+<!-- Licensed under the MIT License. -->
+<!-- ReadMeLJCMaintApps.html -->
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>LJC Maint Web Apps</title>
+  <meta name="author" content="Lester J. Clark" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel='stylesheet' href='DivIndent.css' />
+</head>
+<body>
+  <h3>LJC Standard Maintenance Web Apps</h3>
+  <p>
+    The LJC web app file names and class names are prefixed with "LJC" to help
+    prevent duplicate names when used with other files and classes.
+  </p>
+  <div class="text1"><a href="#list">List Page</a></div>
+  <div class="text2"><a href="#listEvents">List Events</a></div>
+  <div class="text3"><a href="#tableObject">Table Object</a></div>
+  <div class="text3"><a href="#tableEvents">Table Events</a></div>
+  <div class="text4"><a href="#tableService">Table Service</a></div>
+  <div class="text4"><a href="#detailEvents">Detail Events</a></div>
+  <div class="text5"><a href="#dataService">Data Service</a></div>
+  <!--  -->
+  <h4 id="list">Initial "List" Page</h4>
+  <p>
+    An LJC Maintenance web app contains a dynamically created HTML Table "List"
+    for displaying and paging through the main source or table items. In this
+    document it is often referred to as a "Maint" app.
+  </p>
+  <p>
+    The page contains controls for selecting the parent record if the table has
+    a parent table or tables. The list displays the items that belong to the
+    selected parent record.
+  </p>
+  <p>
+    The maint app name uses the name of the main item source or table as in:
+    "LJCCity".
+  </p>
+  <p>
+    The initial list page of a maint app is named for the app as in:
+    "LJCCityList.html"
+  </p>
+  <p>
+    The parent tables usually have separate maint apps to reduce complexity.
+  </p>
+  <!--  -->
+  <h4 id="listEvents">List Events Script</h4>
+  <p>
+    The list page event initialization and handlers are defined in a separate
+    JavaScript file that is named for the list page as in:
+    "LJCCityListEvents.js".
+  </p>
+  <p>
+    This file handles common events for the list page. However, HTML Tables and
+    other significant items that have many events or large event handlers are
+    defined in separate files.
+  </p>
+  <p>
+    The list events class is named "LJCCityListEvents".
+  </p>
+  <p>
+    The list events class contains a reference to an LJCTable object named
+    CityTable.
+  </p>
+  <p>
+    The list events class creates the table events script and contains the
+    reference object named CityTableEvents.
+  </p>
+  <!--  -->
+  <h4 id="tableObject">The LJCTable object</h4>
+  <p>
+    The LJCTable object contains the state of the HTML table such as the current
+    row index and paging state such as the beginning and end of data flags and
+    the current row keys.
+  </p>
+  <p>
+    The LJCTable object also contains functions for accessing and manipulating
+    HTML table elements.
+  </p>
+  <!--  -->
+  <h4 id="tableEvents">Table Events Script</h4>
+  <p>
+    The event initialization and handlers for the list HTML table are defined in
+    a separate JavaScript file that is named for the list HTML table as in:
+    "LJCCityTableEvents.js".
+  </p>
+  <p>
+    The table events class constructor requires several parameters. It takes an
+    LJCCityTableEventsArgs object with the main parameter values, instead of
+    receiving each parameter separately
+  </p>
+  <p>
+    The table events file handles table paging, context menu display, context
+    menu item selection and other functions directly related to the list HTML
+    table.
+  </p>
+  <p>
+    The table events class is named "LJCCityTableEvents".
+  </p>
+  <p>
+    The private method "#AddEvents()" adds the events for displaying the
+    context menu and handling the menu items.
+  </p>
+  <p>
+    The list HTML table is created dynamically. Therefore, the HTML table
+    specific events must be recreated each time the HTML table is created.<br />
+    A separate private method "#AddTableEvents()" exists for this purpose.
+  </p>
+  <!--  -->
+  <h4 id="tableService">Table Web Service</h4>
+  <p>
+    The table web service is a PHP web service that creates HTML table text from
+    a database table.
+  </p>
+  <p>
+    For a maint app, it is called from the table events object.
+  </p>
+  <!--  -->
+  <h4 id="detailEvents">Detail Events Script</h4>
+  <p>
+    The event initialization and handlers for the detail dialog are defined in a
+    separate JavaScript file named LJCCityDetailEvents.js.
+  </p>
+  <p>
+    The detail events class is named "LJCCityDetailEvents".
+  </p>
+  <!--  -->
+  <h4 id="dataService">Data Web Service</h4>
+  <p>
+    The data web service is a PHP web service for accessing a database table. It
+    provides Add, Delete, Retrieve and Update functionality.
+  </p>
+  <p>
+    For a maint app, it is generally called from the detail events object.
+  </p>
+</body>
+</html>
