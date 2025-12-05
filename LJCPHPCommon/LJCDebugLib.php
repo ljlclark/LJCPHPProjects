@@ -21,6 +21,32 @@
   /// <summary>Provides methods for debugging.</summary>
   class LJCDebug
   {
+    public static function BeginMethodLog(LJCDebug $debugLog, string $methodName
+      , bool $enabled = false)
+    {
+      $debugLog->BeginMethod($methodName, $enabled);
+    }
+
+    public static function BeginPrivateMethodLog(LJCDebug $debugLog, string $methodName
+      , bool $enabled = false)
+    {
+      $debugLog->BeginPrivateMethod($methodName, $enabled);
+    }
+
+    public static function CreateStaticLog(string $libName, string $className
+      , bool $enabled = false)
+    {
+      $retDebugLog = new LJCDebug($libName, $className, "a", $enabled);
+      return $retDebugLog;
+    }
+
+    public static function CreateLog(string $libName, string $className
+      , bool $enabled = false)
+    {
+      $retDebugLog = new LJCDebug($libName, $className, "w", $enabled);
+      return $retDebug;
+    }
+
     // ---------------
     // Constructors
 

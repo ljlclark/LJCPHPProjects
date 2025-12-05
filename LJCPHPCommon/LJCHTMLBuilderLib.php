@@ -11,6 +11,7 @@
   //include_once "$prefix/LJCPHPCommon/LJCDbAccessLib.php";
   // LJCCollectionLib: LJCCollectionBase
   // LJCCommonLib: LJC
+  // LJCDebugLib: LJCDebug
   // LJCTextLib: LJCWriter
 
   /// <summary>The Common Text Output Class Library</summary>
@@ -61,10 +62,10 @@
     // Properties
 
     /// <summary>The item name.</summary>
-    public string $Name;
+    public ?string $Name;
 
     /// <summary>The item value.</summary>
-    public string $Value;
+    public ?string $Value;
   }
 
   // ********************
@@ -106,11 +107,12 @@
     /// <ParentGroup>Constructor</ParentGroup>
     public function __construct()
     {
+      // Setup return debug text.
       $this->ClassName = "LJCAttributes";
       $this->DebugText = "";
     }
 
-    // Standard debug method for each class.
+    // Standard debug text method for each class.
     private function AddDebug($methodName, $valueName, $value = null)
     {
       $location = LJC::Location($this->ClassName, $methodName
@@ -144,7 +146,6 @@
     /// <ParentGroup>Collection</ParentGroup>
     public function AddObject(LJCAttribute $attrib, $key = null): ?LJCAttribute
     {
-      $methodName = "AddObject()";
       $retAttrib = null;
 
       if (null == $key)
@@ -219,7 +220,6 @@
     /// <ParentGroup>Other</ParentGroup>
     public function MergeStyle($existingAttrib, $newAttrib)
     {
-      $methodName = "MergeStyle()";
       $retMergedRules = $this->SingleValue($existingAttrib, $newAttrib);
 
       if (!LJC::HasValue($retMergedRules))

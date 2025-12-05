@@ -29,7 +29,7 @@
     // String Functions
 
     /// <summary>Creates JSON from the provided value.</summary>
-    /// <param name="value">The object value.</param>
+    /// <param name="$value">The object value.</param>
     /// <returns>The JSON text.</returns>
     public static function CreateJSON($value)
     {
@@ -134,7 +134,7 @@
     }
 
     /// <summary>Parses JSON into an object.</summary>
-    /// <param name="json">The json text.</param>
+    /// <param name="$json">The json text.</param>
     /// <returns>The parsed object.</returns>
     public static function ParseJSON($json)
     {

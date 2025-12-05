@@ -264,10 +264,10 @@
     /// <summary>
     ///   Sets the PropertyName, RenameAs and Caption values for a column.
     /// </summary>
-    /// <param name="">The column name.</param>
-    /// <param name="">The property name.</param>
-    /// <param name="">The rename as value.</param>
-    /// <param name="">The caption value.</param>
+    /// <param name="$columnName">The column name.</param>
+    /// <param name="$propertyName">The property name.</param>
+    /// <param name="$renameAs">The rename as value.</param>
+    /// <param name="$caption">The caption value.</param>
     /// <ParentGroup>Schema</ParentGroup>
     public function MapNames(string $columnName, ?string $propertyName = null
       , ?string $renameAs = null, ?string $caption = null)

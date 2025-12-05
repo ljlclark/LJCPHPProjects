@@ -33,11 +33,13 @@
       }
       else
       {
+        //if ($this->HasKey($key))
         if (!$this->HasKey($key))
         {
           //throw new Exception("Key: {$key} already in use.");
           $this->Items[$key] = $item;
         }
+        //$this->Items[$key] = $item;
       }
       return $retValue;
     } // AddItem()

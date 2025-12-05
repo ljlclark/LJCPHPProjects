@@ -38,7 +38,6 @@
     public function Request(): void
     {
       $this->ClassName = "LJCCityTableService";
-      $this->DebugText = "";
       $methodName = "Request()";
 
       $this->InitResponseProperties();
@@ -196,6 +195,7 @@
         $textState->setIndentCount(2);
         $response->HTMLTable = $tableBuilder->ResultHTML($result, $textState
           , $tableColumnNames);
+        // Add DebugText from called object.
         $this->DebugText .= $tableBuilder->DebugText;
 
         // Create Key array.
@@ -272,6 +272,7 @@
 
     // ---------------
     // Retrieve Data Methods
+    // region Retrieve Data Methods
 
     // Create the "Next" filter.
     // Called from RetrieveData()
@@ -372,6 +373,7 @@
       }
       return $retResult;
     } // RetrieveData()
+    // endregion
 
     // ---------------
     // Request Properties
