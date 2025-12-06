@@ -11,20 +11,23 @@
       The LJCHTMLBuilder class is designed for creating HTML text. It is similar
       in principle to the StringBuilder class which is designed for creating
       strings.&lt;br /&gt;
-      &lt;br /&gt;
+      It can also be used to create text strings and XML text.
 
+      &lt;p&gt;
       The LJCHTMLBuilder class - like the StringBuilder class - stores the text
       internally. The text is retrieved with the ToString() method.&lt;br /&gt;
-      &lt;br /&gt;
+      &lt;/p&gt;
 
+      &lt;p&gt;
       &lt;b&gt;Add Text Methods&lt;/b&gt;&lt;br /&gt;
       The "Add" methods are similar to StringBuilder methods:&lt;br /&gt;
       AddLine() - StringBuilder.AppendLine()&lt;br /&gt;
       AddText() - StringBuilder.Append()&lt;br /&gt;
       "Add" methods add text to the builder unmodified except for AddLine()
-      which appends a newline.&lt;br /&gt;
-      &lt;br /&gt;
+      which appends a newline.
+      &lt;/p&gt;
 
+      &lt;p&gt;
       &lt;b&gt;Append Text Methods&lt;/b&gt;&lt;br /&gt;
       Line(), Text()&lt;br /&gt;
       "Append" methods add the potentially indented and wrapped text to the
@@ -37,21 +40,24 @@
       newline.&lt;br /&gt;
       The Line() and Text() methods should have the addIndent property set to
       false if it applies text retrieved with a "Get" method as the "Get" method
-      has already applied the indent.&lt;br /&gt;
-      &lt;br /&gt;
+      has already applied the indent.
+      &lt;/p&gt;
 
+      &lt;p&gt;
       The AddIndent() method manually controls the current indent count.
       The indent string length is calculated with the properties
       (IndentCount * IndentCharCount) and can be retrieved with the
-      IndentLength property.&lt;br /&gt;
-      &lt;br /&gt;
+      IndentLength property.
+      &lt;/p&gt;
 
+      &lt;p&gt;
       &lt;b&gt;Get Text Methods&lt;/b&gt;&lt;br /&gt;
       GetLine(), GetText()&lt;br /&gt;
       All "Get" methods create and return the potentialy indented and
-      wrapped text but do not add it to the builder.&lt;br /&gt;
-      &lt;br /&gt;
+      wrapped text but do not add it to the builder.
+      &lt;/p&gt;
 
+      &lt;p&gt;
       &lt;b&gt;Append Element Methods&lt;/b&gt;&lt;br /&gt;
       Begin(), Create(), End()&lt;br /&gt;
       These methods append element tags and content. Begin() automatically
@@ -64,9 +70,10 @@
       to append to the existing text.&lt;br /&gt;
       "Append" methods start the text with a newline if the builder already has
       text, param allowNewLine = true and builder text does not end with a
-      newline.&lt;br /&gt;
-      &lt;br /&gt;
+      newline.
+      &lt;/p&gt;
 
+      &lt;p&gt;
       &lt;b&gt;Other Append Element Methods&lt;/b&gt;&lt;br /&gt;
       Link(), Meta(), Metas(), Script()&lt;br /&gt;
       These methods also append elements but do not change the IndentCount
@@ -76,8 +83,8 @@
       to append to the existing text.&lt;br /&gt;
       "Append" methods start the text with a newline if the builder already has
       text, param allowNewLine = true and builder text does not end with a
-      newline.&lt;br /&gt;
-      &lt;br /&gt;
+      newline.
+      &lt;/p&gt;
 
       &lt;b&gt;Get Element Methods&lt;/b&gt;&lt;br /&gt;
       GetBegin(), GetCreate(), GetEnd(), GetLink(), GetMeta(), GetMetas()
@@ -86,6 +93,13 @@
       text but do not add it to the builder.
     </remarks>
   </LJCHTMLBuilder>
+  <!-- Constructor Methods  -->
+  <cstr>
+    <summary>
+      Initializes a class instance.
+    </summary>
+    <param name="$textState">The text state object.</param>
+  </cstr>
   <!-- Data Class Methods -->
   <ToString>
     <summary>
@@ -99,7 +113,7 @@
       Adds the new (child) indents.
     </summary>
     <param name="$createText">The previously created text.</param>
-    <param name="$textState">The TextState object.</param>
+    <param name="$textState">The text state object.</param>
     <remarks>
       Adds an indent for following child elements.&lt;br /&gt;
       The indent will only be added if the createText length &gt; 0 and the
@@ -115,23 +129,24 @@
       // &amp;lt;body&amp;gt;
 
       private static string CustomBegin(string $name, LJCTextState $textState
-      , LJCAttributes $attribs = null, bool $addIndent = true
-      , bool $childIndent = true)
+        , LJCAttributes $attribs = null, bool $addIndent = true
+        , bool $childIndent = true)
       {
-      // Defaults: IndentCharCount = 2, LineLimit = 80, WrapEnabled = false.
-      $hb = new LJCHTMLBuilder($textState);
+        $hb = new LJCHTMLBuilder($textState);
 
-      $createText = hb-&gt;GetBegin(name, $textState, $attribs, $addIndent
-      , $childIndent);
-      // Use NoIndent after a "GetText" method.
-      $hb-&gt;Text($createText, $NoIndent);
-      // Use AddChildIndent after beginning an element.
-      $hb-&gt;AddChildIndent($createText, $textState);
-      $result = $hb-&gt;ToString();
+        $createText = hb-&gt;GetBegin(name, $textState, $attribs, $addIndent
+          , $childIndent);
+        $addIndent = false;
+        $hb-&gt;Text($createText, $addIndent);
+      
+        // Use AddChildIndent after beginning an element.
+        $hb-&gt;AddChildIndent($createText, $textState);
+      
+        $result = $hb-&gt;ToString();
 
-      // Append Method
-      //hb-&gt;UpdateState($textState);
-      return result;
+        // Append Method
+        //hb-&gt;UpdateState($textState);
+        return result;
       }
     </code>
   </AddChildIndent>
@@ -144,7 +159,6 @@
     </param>
     <returns>The current indent count.</returns>
     <code>
-      // Defaults: IndentCharCount = 2, LineLimit = 80, WrapEnabled = false.
       $hb = new LJCHTMLBuilder();
 
       // Example Method:
@@ -164,10 +178,11 @@
       $hb-&gt;Text("This text is indented.");
 
       // No Indent
-      $hb-&gt;Text("Not indented.", false);
+      $addIndent = false;
+      $hb-&gt;Text("Not indented.", $addIndent);
 
       // Do not start a newline.
-      $hb-&gt;Text(" No start with newline.", false, false);
+      $hb-&gt;AddText(" No start with newline.");
       $result = hb-&gt;ToString();
 
       // result:
@@ -186,8 +201,14 @@
     <code>
       $hb = new LJCHTMLBuilder();
 
-      $retValue = $hb-&gt;EndsWithNewLine();
-      $result = $retValue-&gt;ToString();
+      // Example Method:
+      $allowNewLine = true;
+      $retValue = hb-&gt;StartWithNewLine($allowNewLine);
+      $result = strval($retValue);
+      if ("" == $result)
+      {
+      $result = "False";
+      }
 
       // result:
       // False
@@ -204,6 +225,22 @@
       Indicates if the builder has text.
     </summary>
     <returns>true if builder has text; otherwise false.</returns>
+    <code>
+      $textState = new LJCTextState();
+      $hb = new LJCHTMLBuilder();
+
+      // Example Method:
+      $allowNewLine = true;
+      $result = $hb->HasText();
+      $result = strval($retValue);
+      if ("" == $result)
+      {
+        $result = "False";
+      }
+
+      // result:
+      // False
+    </code>
   </HasText>
   <IndentLength>
     <summary>
@@ -213,15 +250,21 @@
   </IndentLength>
   <StartWithNewLine>
     <summary>
-      Allow text to start with a newline.
+      Checks if the text can start with a newline.
     </summary>
     <param name="$allowNewLine">Indicates if a new line can be added.</param>
     <returns>true if allowed to start with a newline; otherwise false.</returns>
     <code>
       $hb = new LJCHTMLBuilder();
 
-      $retValue = hb-&gt;StartWithNewLine(true);
-      $result = retValue-&gt;ToString();
+      // Example Method:
+      $allowNewLine = true;
+      $retValue = hb-&gt;StartWithNewLine($allowNewLine);
+      $result = strval($retValue);
+      if ("" == $result)
+      {
+        $result = "False";
+      }
 
       // result:
       // False
@@ -230,7 +273,7 @@
   <!-- Append Text Methods -->
   <AddLine>
     <summary>
-      Adds a text line without modification.
+      Appends a text line without modification.
     </summary>
     <param name="$text">The add text.</param>
     <returns>The added text line.</returns>
@@ -239,13 +282,10 @@
       builder.
     </remarks>
     <code>
-      // Defaults: IndentCharCount = 2, LineLimit = 80, WrapEnabled = false.
       $hb = new LJCHTMLBuilder();
 
       // Example Method:
-      // Adds text that ends with a newline.
       $hb-&gt;AddLine("This is an appended line.");
-
       $hb-&gt;AddText(":");
       $result = $hb-&gt;ToString();
 
@@ -264,11 +304,9 @@
       AddText() is an "Append" method. It adds the unmodified text to the builder.
     </remarks>
     <code>
-      // Defaults: IndentCharCount = 2, LineLimit = 80, WrapEnabled = false.
       $hb = new LJCHTMLBuilder();
 
       // Example Method:
-      // Adds text without modification.
       $hb-&gt;AddText("This is some appended text.");
       $result = $hb-&gt;ToString();
 
@@ -278,7 +316,7 @@
   </AddText>
   <Line>
     <summary>
-      Adds a modified text line to the builder.
+      Appends a potentially indented text line to the builder.
     </summary>
     <param name="$text">The add text.</param>
     <param name="$addIndent">Indicates if the element can be indented.</param>
@@ -291,12 +329,9 @@
       Line() works the same as Text() except it appends a new line.
     </remarks>
     <code>
-      // Defaults: IndentCharCount = 2, LineLimit = 80, WrapEnabled = false.
       $hb = new LJCHTMLBuilder();
 
       $hb-&gt;Text("This is an appended line.");
-
-      // The builder keeps track of the current number of indents.
       $hb-&gt;AddIndent();
 
       // Example Method:
@@ -320,7 +355,7 @@
   </Line>
   <Text>
     <summary>
-      Adds modified text to the builder.
+      Appends the potentially indented text.
     </summary>
     <param name="$text">The add text.</param>
     <param name="$addIndent">Indicates if the element can be indented.</param>
@@ -335,12 +370,9 @@
       method.
     </remarks>
     <code>
-      // Defaults: IndentCharCount = 2, LineLimit = 80, WrapEnabled = false.
       $hb = new LJCHTMLBuilder();
 
       $hb-&gt;Text("This is an appended line.");
-
-      // The builder keeps track of the current number of indents.
       $hb-&gt;AddIndent();
 
       // Example Method:
@@ -373,10 +405,7 @@
       already has a value.&lt;br /&gt;
     </remarks>
     <code>
-      // Root Method Begin
       $textState = new TextState();
-
-      // Defaults: IndentCharCount = 2, LineLimit = 80, WrapEnabled = false.
       $hb = new LJCHTMLBuilder(textState);
 
       $attribs = new LJCAttributes();
@@ -397,18 +426,17 @@
     <param name="$text">The add text.</param>
     <returns>The potentially indented new text value.</returns>
     <code>
-      // Defaults: IndentCharCount = 2, LineLimit = 80, WrapEnabled = false.
       $hb = new LJCHTMLBuilder();
 
       // Example Method:
       $result = hb-&gt;GetIndented("This text is NOT indented.");
       $hb-&gt;AddText($result);
 
-      // The builder keeps track of the current number of indents.
       $hb-&gt;AddIndent(2);
       $hb-&gt;AddLine();
       $result = $hb-&gt;GetIndented("This text is indented.");
-      $hb-&gt;AddText($result);
+      $addIndent = false;
+      $hb-&gt;Text($result, $addIndent);
       $result = $hb-&gt;ToString();
 
       // result:
@@ -422,14 +450,13 @@
     </summary>
     <returns>The current indent string.</returns>
     <code>
-      // Defaults: IndentCharCount = 2, LineLimit = 80, WrapEnabled = false.
       $hb = new LJCHTMLBuilder();
 
-      $hb-&gt;AddIndent(1);
+      $hb-&gt;AddIndent();
 
       // Example Method:
-      $result = hb-&gt;GetIndentString();
-      $hb-&gt;AddText($result);
+      $text = hb-&gt;GetIndentString();
+      $hb-&gt;AddText($text);
 
       $hb-&gt;AddText(":");
       $result = hb-&gt;ToString();
@@ -440,7 +467,7 @@
   </GetIndentString>
   <GetLine>
     <summary>
-      Gets a modified text line.
+      Gets the potentially indented and wrapped text line.
     </summary>
     <param name="$text">The text value.</param>
     <param name="$addIndent">Indicates if the element can be indented.</param>
@@ -492,7 +519,7 @@
   </GetLine>
   <GetText>
     <summary>
-      Gets potentially indented and wrapped text.
+      Gets the potentially indented and wrapped text.
     </summary>
     <param name="$text">The text value.</param>
     <param name="$addIndent">Indicates if the element can be indented.</param>
@@ -817,9 +844,9 @@
   </Attribs>
   <StartAttribs>
     <summary>
-      Creates the HTML start attributes.
+      Creates the HTML element attributes.
     </summary>
-    <returns>The HTML start attributes.</returns>
+    <returns>The HTML element attributes.</returns>
     <code>
       // Root Method Begin
       $textState = new LJCTextState();
@@ -837,7 +864,7 @@
   </StartAttribs>
   <StartXMLAttribs>
     <summary>
-      Creates the XML start attributes.
+      Creates the XML element attributes.
     </summary>
   </StartXMLAttribs>
   <TableAttribs>

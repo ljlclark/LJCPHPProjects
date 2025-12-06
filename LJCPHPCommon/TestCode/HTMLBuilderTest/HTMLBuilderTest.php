@@ -32,8 +32,8 @@
       self::AddChildIndent();
       self::AddIndent();
       self::EndsWithNewLine();
-      self::StartWithNewLine();
       self::HasText();
+      self::StartWithNewLine();
 
       // Text Methods
       self::AddLine();
@@ -67,7 +67,7 @@
       $result = self::CustomBegin("body", $textState);
 
       $compare = "<body>";
-      LJC::WriteCompare("AddChildIndent()", $result, $compare);
+      LJC::DebugCompare("AddChildIndent()", $result, $compare);
     }
 
     // The custom begin Element method.
@@ -79,7 +79,8 @@
 
       $createText = $hb->GetBegin($name, $textState, $attribs, $addIndent
         , $childIndent);
-      $hb->Text($createText, false);
+      $addIndent = false;
+      $hb->Text($createText, $addIndent);
 
       // Use AddChildIndent after beginning an element.
       $hb->AddChildIndent($createText, $textState);
@@ -98,9 +99,21 @@
       // Adds 1 indent by default.
       $hb->AddIndent();
 
+      // Adds text without modification.
       $hb->AddText("This text is not indented.");
+
+      // Starts the text with a newline if the builder already has text
+      // and param allowNewLine = true and builder text does not end with
+      // a newline.
+      // The text begins with the current indent string if param
+      // addIndent = true.
+      // Defaults: addIndent = true, allowNewLine = true.
       $hb->Text("This text is indented.");
+
+      // No Indent
       $hb->Text("Not indented.", false);
+
+      // Do not start a newline.
       $hb->AddText(" No start with newline.");
       $result = $hb->ToString();
 
@@ -109,7 +122,7 @@
       $b->AddLine("  This text is indented.");
       $b->AddText("Not indented. No start with newline.");
       $compare = $b->ToString();
-      LJC::WriteCompare("AddIndent()", $result, $compare);
+      LJC::DebugCompare("AddIndent()", $result, $compare);
     }
 
     // Indicates if the builder text ends with a newline.
@@ -128,27 +141,7 @@
       $b = new LJCHTMLBuilder();
       $b->AddText("False");
       $compare = $b->ToString();
-      LJC::WriteCompare("EndsWithNewLine()", $result, $compare);
-      return $retValue;
-    }
-
-    // Checks if text can start with a newline.
-    private static function StartWithNewLine()
-    {
-      $hb = new LJCHTMLBuilder();
-
-      // Example Method:
-      $retValue = $hb->StartWithNewLine(true);
-      $result = strval($retValue);
-      if ("" == $result)
-      {
-        $result = "False";
-      }
-
-      $b = new LJCHTMLBuilder();
-      $b->AddText("False");
-      $compare = $b->ToString();
-      LJC::WriteCompare("StartWithNewLine()", $result, $compare);
+      LJC::DebugCompare("EndsWithNewLine()", $result, $compare);
       return $retValue;
     }
 
@@ -167,7 +160,27 @@
       }
 
       $compare = "False";
-      LJC::WriteCompare("HasText()", $result, $compare);
+      LJC::DebugCompare("HasText()", $result, $compare);
+    }
+
+    // Checks if text can start with a newline.
+    private static function StartWithNewLine()
+    {
+      $hb = new LJCHTMLBuilder();
+
+      // Example Method:
+      $retValue = $hb->StartWithNewLine(true);
+      $result = strval($retValue);
+      if ("" == $result)
+      {
+        $result = "False";
+      }
+
+      $b = new LJCHTMLBuilder();
+      $b->AddText("False");
+      $compare = $b->ToString();
+      LJC::DebugCompare("StartWithNewLine()", $result, $compare);
+      return $retValue;
     }
 
     // --------------------
@@ -188,7 +201,7 @@
       $b->AddLine("This is an appended line.");
       $b->AddText(":");
       $compare = $b->ToString();
-      LJC::WriteCompare("AddLine()", $result, $compare);
+      LJC::DebugCompare("AddLine()", $result, $compare);
     }
 
     // Appends text without modification.
@@ -201,7 +214,7 @@
       $result = $hb->ToString();
 
       $compare = "This is some appended text.";
-      LJC::WriteCompare("AddText()", $result, $compare);
+      LJC::DebugCompare("AddText()", $result, $compare);
     }
 
     // Appends a potentially indented text line to the builder.
@@ -230,7 +243,7 @@
       $b->AddLine();
       $b->AddText("  This is an indented line.");
       $compare = $b->ToString();
-      LJC::WriteCompare("Line()", $result, $compare);
+      LJC::DebugCompare("Line()", $result, $compare);
     }
 
     // Appends the potentially indented text.
@@ -255,7 +268,7 @@
       $b->AddLine("This is an appended line.");
       $b->AddText("  This is an indented line.");
       $compare = $b->ToString();
-      LJC::WriteCompare("Text()", $result, $compare);
+      LJC::DebugCompare("Text()", $result, $compare);
     }
 
     // Gets the attributes text.
@@ -274,7 +287,7 @@
       $b->AddLine("<div class=\"Selector\">");
       $b->AddText("</div>");
       $compare = $b->ToString();
-      LJC::WriteCompare("GetAttribs()", $result, $compare);
+      LJC::DebugCompare("GetAttribs()", $result, $compare);
     }
 
     // Gets a new potentially indented line.
@@ -289,32 +302,37 @@
       $hb->AddIndent(2);
       $hb->AddLine();
       $result = $hb->GetIndented("This text is indented.");
-      $hb->Text($result, false);
+      $addIndent = false;
+      $hb->Text($result, $addIndent);
       $result = $hb->ToString();
 
       $b = new LJCHTMLBuilder();
       $b->AddLine("This text is NOT indented.");
       $b->AddText("    This text is indented.");
       $compare = $b->ToString();
-      LJC::WriteCompare("GetIndented()", $result, $compare);
+      LJC::DebugCompare("GetIndented()", $result, $compare);
     }
 
     // Gets the current indent string.
     private static function GetIndentString()
     {
+      // Setup static debug to output.
+      $className = "TestHTMLBuilder";
+      $methodName = "GetIndentString()";
+
       $hb = new LJCHTMLBuilder();
 
       $hb->AddIndent();
 
       // Example Method:
       $text = $hb->GetIndentString();
-      $hb->Text($text, false);
+      $hb->AddText($text);
 
-      $hb->AddText("  :");
+      $hb->AddText(":");
       $result = $hb->ToString();
 
       $compare = "  :";
-      LJC::WriteCompare("GetIndentString()", $result, $compare);
+      LJC::DebugCompare("GetIndentString()", $result, $compare);
     }
 
     // Gets a modified text line.
@@ -343,7 +361,7 @@
       $b->AddLine("This is an appended line.");
       $b->AddText("  :");
       $compare = $b->ToString();
-      LJC::WriteCompare("GetLine()", $result, $compare);
+      LJC::DebugCompare("GetLine()", $result, $compare);
     }
 
     // Gets the potentially indented text.
@@ -369,7 +387,7 @@
       $b->AddLine("This is an appended line.");
       $b->AddText("  This is an indented line.");
       $compare = $b->ToString();
-      LJC::WriteCompare("GetText()", $result, $compare);
+      LJC::DebugCompare("GetText()", $result, $compare);
     }
 
     // Appends added text and new wrapped line if combined line > LineLimit.
@@ -391,7 +409,7 @@
       $b->AddLine(" their country. Now is the");
       $b->AddText("time for all good men to come to the aid of their country.");
       $compare = $b->ToString();
-      LJC::WriteCompare("GetWrapped()", $result, $compare);
+      LJC::DebugCompare("GetWrapped()", $result, $compare);
     }
 
     // --------------------
@@ -410,7 +428,7 @@
       $b = new LJCHTMLBuilder();
       $b->AddText("<body>");
       $compare = $b->ToString();
-      LJC::WriteCompare("Begin()", $result, $compare);
+      LJC::DebugCompare("Begin()", $result, $compare);
     }
 
     // Appends an element.
@@ -426,7 +444,7 @@
       $b = new LJCHTMLBuilder();
       $b->AddText("<p></p>");
       $compare = $b->ToString();
-      LJC::WriteCompare("Create()", $result, $compare);
+      LJC::DebugCompare("Create()", $result, $compare);
     }
 
     // Appends the element end tag.
@@ -442,7 +460,7 @@
       $b = new LJCHTMLBuilder();
       $b->AddText("</p>");
       $compare = $b->ToString();
-      LJC::WriteCompare("End()", $result, $compare);
+      LJC::DebugCompare("End()", $result, $compare);
     }
 
     // Gets the element begin tag.
@@ -457,7 +475,7 @@
       $b = new LJCHTMLBuilder();
       $b->AddText("<body>");
       $compare = $b->ToString();
-      LJC::WriteCompare("GetBegin()", $result, $compare);
+      LJC::DebugCompare("GetBegin()", $result, $compare);
     }
 
     // Gets the element text.
@@ -472,7 +490,7 @@
       $b = new LJCHTMLBuilder();
       $b->AddText("<p></p>");
       $compare = $b->ToString();
-      LJC::WriteCompare("GetCreate()", $result, $compare);
+      LJC::DebugCompare("GetCreate()", $result, $compare);
     }
 
     // Gets the element end tag.
@@ -487,7 +505,7 @@
       $b = new LJCHTMLBuilder();
       $b->AddText("</p>");
       $compare = $b->ToString();
-      LJC::WriteCompare("GetEnd()", $result, $compare);
+      LJC::DebugCompare("GetEnd()", $result, $compare);
     }
   }
 ?>

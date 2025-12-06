@@ -2,8 +2,49 @@
 <!-- Copyright (c) Lester J. Clark 2022 - All Rights Reserved -->
 <!-- LJCCommon.xml -->
 <items>
-	<!-- Static Functions -->
-	<StrPos>
+	<!-- String Functions -->
+  <GetDelimitedString>
+    <summary>Gets the string between the delimiters.</summary>
+    <param name="$text">The text to be parsed.</param>
+    <param name="$beginDelimiter">The beginning delimiter.</param>
+    <param name="$endDelimiter">The ending delimiter.</param>
+    <param name="$lTrim">Indicates if the parsed value is to be left trimmed.</param>
+    <param name="$rTrim">Indicates if the parsed value is to be right trimmed.</param>
+    <returns>The parsed value.</returns>
+    <remarks>
+      Returns null if the begin delimiter is not found.
+      &lt;br /&gt;
+      &lt;br /&gt;
+      Includes to the end of the string if the end delimiter is null
+      or not found.
+    </remarks>
+    <code>
+      include_once "LJCRoot.php";
+      $prefix = RelativePrefix();
+      include_once "$prefix/LJCPHPCommon/LJCCollectionLib.php";
+
+      // $text = "here"
+      $text = LJCCommon::GetDelimitedString("This | here |.", "|", "|");
+    </code>
+  </GetDelimitedString>
+  <Scrub>
+    <summary>Returns a scrubbed external value.</summary>
+    <param name="$text">The text to be scrubbed.</param>
+    <returns>The scrubbed value.</returns>
+    <remarks>
+      Trims the text, strips slashes and converts HTML characters to HTML
+      entities.
+    </remarks>
+    <code>
+      include_once "LJCRoot.php";
+      $prefix = RelativePrefix();
+      include_once "$prefix/LJCPHPCommon/LJCCollectionLib.php";
+
+      // $text = "&amp;amp;lt;tag&amp;amp;gt;"
+      $text = LJCCommon::Scrub(" &amp;lt;/tag&amp;gt; ");
+    </code>
+  </Scrub>
+  <StrPos>
 		<summary>Gets the first index for the search value.</summary>
 		<param name="$text">The text to be searched.</param>
 		<param name="$find">The search value.</param>
@@ -55,68 +96,26 @@
 		  $index = LJCCommon::StrRPos("This here is here.", "Here", exact: true);
 		</code>
 	</StrRPos>
-	<GetDebugFileName>
-		<summary>Gets the Debug file name.</summary>
-		<param name="$folder">The folder name.</param>
-		<param name="$fileName">The file name.</param>
-		<returns>The Debug file spec.</returns>
-		<remarks>
-			This function takes a folder name and a file name. It makes sure the
-			folder exists and returns the text "folder/fileName" with the extension
-			"txt".
-		</remarks>
-		<code>
-      // Must refer to exact same file everywhere in codeline.
-      // Path: LJCPHPProjectsDev/GenDoc/LJCDocDataLib
-      require_once "../../LJCPHPCommon/LJCCollectionLib.php";
-
-      // $debugFileSpec = "Debug\SourceFile.txt"
-			$debugFileSpec = LJCCommon::GetDebugFileName("Debug", "SourceFile.php");
-		</code>
-	</GetDebugFileName>
-	<GetDelimitedString>
-		<summary>Gets the string between the delimiters.</summary>
-		<param name="$text">The text to be parsed.</param>
-		<param name="$beginDelimiter">The beginning delimiter.</param>
-		<param name="$endDelimiter">The ending delimiter.</param>
-		<param name="$lTrim">Indicates if the parsed value is to be left trimmed.</param>
-		<param name="$rTrim">Indicates if the parsed value is to be right trimmed.</param>
-		<returns>The parsed value.</returns>
-		<remarks>
-			Returns null if the begin delimiter is not found.
-			&lt;br /&gt;
-			&lt;br /&gt;
-			Includes to the end of the string if the end delimiter is null
-			or not found.
-		</remarks>
-		<code>
+  <!-- File Name Functions -->
+  <GetFileName>
+    <summary>Gets the FileName from the file spec.</summary>
+    <param name="$fileSpec">The file specification.</param>
+    <returns>The file name.</returns>
+    <remarks>
+      Parses from the last "/" to the following ".".
+      &lt;br /&gt;
+      &lt;br /&gt;
+      Includes to the end of the string if the "." is not found.
+    </remarks>
+    <code>
       include_once "LJCRoot.php";
       $prefix = RelativePrefix();
       include_once "$prefix/LJCPHPCommon/LJCCollectionLib.php";
 
-		  // $text = "here"
-		  $text = LJCCommon::GetDelimitedString("This | here |.", "|", "|");
-		</code>
-	</GetDelimitedString>
-	<GetFileName>
-		<summary>Gets the FileName from the file spec.</summary>
-		<param name="$fileSpec">The file specification.</param>
-		<returns>The file name.</returns>
-		<remarks>
-			Parses from the last "/" to the following ".".
-			&lt;br /&gt;
-			&lt;br /&gt;
-			Includes to the end of the string if the "." is not found.
-		</remarks>
-		<code>
-      include_once "LJCRoot.php";
-      $prefix = RelativePrefix();
-      include_once "$prefix/LJCPHPCommon/LJCCollectionLib.php";
-
-		  // $text = "File"
-		  $text = LJCCommon::GetFileName("../Folder/File.txt");
-		</code>
-	</GetFileName>
+      // $text = "File"
+      $text = LJCCommon::GetFileName("../Folder/File.txt");
+    </code>
+  </GetFileName>
 	<GetFileSpecPath>
 		<summary>Gets the Path from the file spec.</summary>
 		<param name="$fileSpec">The file specification.</param>
@@ -133,6 +132,54 @@
 		  $text = LJCCommon::GetFileSpecPath("../Folder/File.txt");
 		</code>
 	</GetFileSpecPath>
+  <!-- Check Value Functions -->
+  <!-- Array Functions -->
+  <!-- Convert Functions -->
+  <!-- Output Functions -->
+  <Debug>
+    <summary>
+      Outputs the debug text.
+    </summary>
+    <param name="$lineNumber">The debug line number.</param>
+    <param name="$valueName">The value name.</param>
+    <param name="$value">The value.</param>
+  </Debug>
+  <DebugCompare>
+    <summary>
+      Outputs the test compare text.
+    </summary>
+    <param name="$methodName">The debug method name.</param>
+    <param name="$result">The result value.</param>
+    <param name="$compare">The compare to value.</param>
+    <param name="$bracket">The optional bracket flag.</param>
+  </DebugCompare>
+  <DebugOutput>
+    <summary>
+      Outputs the object debug text.
+    </summary>
+    <param name="$lineNumber">The debug line number.</param>
+    <param name="$className">The debug class name.</param>
+    <param name="$methodName">The debug method name.</param>
+    <param name="$valueName">The value name.</param>
+    <param name="$value">The value.</param>
+    <param name="$bracket">The optional bracket flag.</param>
+  </DebugOutput>
+  <Location>
+    <summary>
+      Gets the location string.
+    </summary>
+    <param name="$className">The debug class name.</param>
+    <param name="$methodName">The debug method name.</param>
+    <param name="$valueName">The value name.</param>
+  </Location>
+  <ObjectOutput>
+    <summary>
+      Gets the object debug text.
+    </summary>
+    <param name="$location">The debug location.</param>
+    <param name="$value">The value.</param>
+    <param name="$bracket">The optional bracket flag.</param>
+  </ObjectOutput>
 	<GetIndexedDebugFileName>
 		<summary>Gets the indexed Debug file name.</summary>
 		<param name="$folder">The folder name.</param>
@@ -158,23 +205,6 @@
 		 	  , "SourceFile.php");
 		</code>
 	</GetIndexedDebugFileName>
-	<Scrub>
-		<summary>Returns a scrubbed external value.</summary>
-		<param name="$text">The text to be scrubbed.</param>
-		<returns>The scrubbed value.</returns>
-		<remarks>
-			Trims the text, strips slashes and converts HTML characters to HTML
-			entities.
-		</remarks>
-		<code>
-      include_once "LJCRoot.php";
-      $prefix = RelativePrefix();
-      include_once "$prefix/LJCPHPCommon/LJCCollectionLib.php";
-
-		  // $text = "&amp;amp;lt;tag&amp;amp;gt;"
-		  $text = LJCCommon::Scrub(" &amp;lt;/tag&amp;gt; ");
-		</code>
-	</Scrub>
 	<SetSessionValue>
 		<summary>Assigns a session value and returns the value.</summary>
 		<param name="$name">The session value name.</param>
@@ -189,4 +219,23 @@
 		  $dbServer = LJCCommon::SetSessionValue("dbServer", "localhost");
 		</code>
 	</SetSessionValue>
+  <GetDebugFileName>
+    <summary>Gets the Debug file name.</summary>
+    <param name="$folder">The folder name.</param>
+    <param name="$fileName">The file name.</param>
+    <returns>The Debug file spec.</returns>
+    <remarks>
+      This function takes a folder name and a file name. It makes sure the
+      folder exists and returns the text "folder/fileName" with the extension
+      "txt".
+    </remarks>
+    <code>
+      // Must refer to exact same file everywhere in codeline.
+      // Path: LJCPHPProjectsDev/GenDoc/LJCDocDataLib
+      require_once "../../LJCPHPCommon/LJCCollectionLib.php";
+
+      // $debugFileSpec = "Debug\SourceFile.txt"
+      $debugFileSpec = LJCCommon::GetDebugFileName("Debug", "SourceFile.php");
+    </code>
+  </GetDebugFileName>
 </items>

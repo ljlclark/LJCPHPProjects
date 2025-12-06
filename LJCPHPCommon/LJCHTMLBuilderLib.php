@@ -377,10 +377,10 @@
   class LJCHTMLBuilder
   {
     // ----------
-    // Constructors
+    // Constructor Methods
 
-    /// <summary>Initializes a class instance.</summary>
-    /// <param name="$textState">The text state object.</param>
+    // Initializes a class instance.
+    /// <include path='items/cstr/*' file='Doc/LJCHTMLBuilder.xml'/>
     /// <ParentGroup>Constructor</ParentGroup>
     public function __construct(?LJCTextState $textState = null)
     {
@@ -493,7 +493,7 @@
       return $this->getIndentCount() * $this->IndentCharCount;
     }
 
-    // Checks if text can start with a newline.
+    // Checks if the text can start with a newline.
     /// <include path='items/StartWithNewLine/*' file='Doc/LJCHTMLBuilder.xml'/>
     /// <ParentGroup>Main</ParentGroup>
     public function StartWithNewLine(bool $allowNewLine): bool
@@ -846,7 +846,7 @@
       return $retValue;
     }
 
-    // Gets the element text.
+    // Gets an element.
     /// <include path='items/GetCreate/*' file='Doc/LJCHTMLBuilder.xml'/>
     /// <ParentGroup>GetElement</ParentGroup>
     public function GetCreate(string $name, string $text
@@ -951,7 +951,7 @@
       return $retAttribs;
     }
 
-    // Creates the XML start attributes.
+    // Creates the XML element attributes.
     /// <include path='items/StartXMLAttributes/*' file='Doc/LJCHTMLBuilder.xml'/>
     /// <ParentGroup>GetAttribs</ParentGroup>
     public function StartXMLAttribs(): LJCAttributes
