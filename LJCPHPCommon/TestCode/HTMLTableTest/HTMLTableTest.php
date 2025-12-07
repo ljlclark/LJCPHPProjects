@@ -7,11 +7,11 @@
   $prefix = RelativePrefix();
   include_once "$prefix/LJCPHPCommon/LJCCommonLib.php";
   include_once "$prefix/LJCPHPCommon/LJCDataManagerLib.php";
-  include_once "$prefix/LJCPHPCommon/LJCHTMLBuilderLib.php";
+  include_once "$prefix/LJCPHPCommon/LJCTextBuilderLib.php";
   include_once "$prefix/LJCPHPCommon/LJCHTMLTableLib.php";
   // LJCCommonLib: LJCCommon
   // LJCDataManagerLib: LJCConnectionValues, LJCDataManager
-  // LJCHTMLBuilderLib: LJCHTMLBuilder, LJCAttribute, LJCAttributes
+  // LJCTextBuilderLib: LJCAttribute, LJCAttributes, LJCTextBuilder 
   //   , LJCTextState
   // LJCHTMLTableLib: LJCHTMLTable
 
@@ -27,7 +27,7 @@
   //   , GetResultsTable()
   //
   /// <summary>Represents a built string value.</summary>
-  /// <include path='items/LJCHTMLBuilder/*' file='Doc/LJCHTMLBuilder.xml'/>
+  /// <include path='items/LJCTextBuilder/*' file='Doc/LJCTextBuilder.xml'/>
   class TestHTMLTable
   {
     public static function Run()
@@ -56,12 +56,12 @@
 
       $ht = new LJCHTMLTable();
       $ht->ColumnNames = $propertyNames;
-      $hb = new LJCHtmlBuilder();
-      $ht->TableAttribs = $hb->TableAttribs();
+      $tb = new LJCTextBuilder();
+      $ht->TableAttribs = $tb->TableAttribs();
       //$result = $ht->ArrayArrayHtml($dataItems, $textState);
       $result = $ht->ResultHtml($dataItems, $textState);
       $compare = self::GetTableCompare();
-      LJC::WriteCompare("GetArraysTable()", $result, $compare);
+      LJC::DebugCompare("GetArraysTable()", $result, $compare);
     }
 
     // Get Collection data table.
@@ -74,12 +74,12 @@
 
       $ht = new LJCHTMLTable();
       $ht->ColumnNames = $propertyNames;
-      $hb = new LJCHTMLBuilder();
-      $ht->TableAttribs = $hb->TableAttribs();
+      $tb = new LJCTextBuilder();
+      $ht->TableAttribs = $tb->TableAttribs();
       $result = $ht->CollectionHTML($dataItems, $textState
         , $propertyNames);
       $compare = self::GetTableCompare();
-      LJC::WriteCompare("GetCollectionTable()", $result, $compare);
+      LJC::DebugCompare("GetCollectionTable()", $result, $compare);
     }
 
     // Get Object Array data table.
@@ -92,12 +92,12 @@
 
       $ht = new LJCHTMLTable();
       $ht->ColumnNames = $propertyNames;
-      $hb = new LJCHTMLBuilder();
-      $ht->TableAttribs = $hb->TableAttribs();
+      $tb = new LJCTextBuilder();
+      $ht->TableAttribs = $tb->TableAttribs();
       $result = $ht->ObjectArrayHTML($dataItems, $textState
         , $propertyNames);
       $compare = self::GetTableCompare();
-      LJC::WriteCompare("GetObjectsTable()", $result, $compare);
+      LJC::DebugCompare("GetObjectsTable()", $result, $compare);
     }
 
     // Get Result table.
@@ -120,11 +120,11 @@
       $propertyNames = $manager->PropertyNames();
       $ht = new LJCHTMLTable();
       $ht->ColumnNames = $propertyNames;
-      $hb = new LJCHTMLBuilder();
-      $ht->TableAttribs = $hb->TableAttribs();
+      $tb = new LJCTextBuilder();
+      $ht->TableAttribs = $tb->TableAttribs();
       $result = $ht->ResultHTML($rows, $textState);
       //$compare = self::GetTableCompare();
-      //LJC::WriteCompare("GetResultTable()", $result, $compare);
+      //LJC::DebugCompare("GetResultTable()", $result, $compare);
     }
 
     // --------------------
@@ -143,23 +143,23 @@
     // Gets the table compare value.
     private static function GetTableCompare()
     {
-      $hb = new LJCHTMLBuilder();
+      $tb = new LJCTextBuilder();
 
-      $hb->AddLine("<table border=\"1\" cellspacing=\"0\" cellpadding=\"2\">");
-      $hb->AddLine("  <tr>");
-      $hb->AddLine("    <th>Name</th>");
-      $hb->AddLine("    <th>Value</th>");
-      $hb->AddLine("  </tr>");
-      $hb->AddLine("  <tr>");
-      $hb->AddLine("    <td>border</td>");
-      $hb->AddLine("    <td>1</td>");
-      $hb->AddLine("  </tr>");
-      $hb->AddLine("  <tr>");
-      $hb->AddLine("    <td>cellspacing</td>");
-      $hb->AddLine("    <td>2</td>");
-      $hb->AddLine("  </tr>");
-      $hb->AddText("</table>");
-      $retText = $hb->ToString();
+      $tb->AddLine("<table border=\"1\" cellspacing=\"0\" cellpadding=\"2\">");
+      $tb->AddLine("  <tr>");
+      $tb->AddLine("    <th>Name</th>");
+      $tb->AddLine("    <th>Value</th>");
+      $tb->AddLine("  </tr>");
+      $tb->AddLine("  <tr>");
+      $tb->AddLine("    <td>border</td>");
+      $tb->AddLine("    <td>1</td>");
+      $tb->AddLine("  </tr>");
+      $tb->AddLine("  <tr>");
+      $tb->AddLine("    <td>cellspacing</td>");
+      $tb->AddLine("    <td>2</td>");
+      $tb->AddLine("  </tr>");
+      $tb->AddText("</table>");
+      $retText = $tb->ToString();
       return $retText;
     }
   }

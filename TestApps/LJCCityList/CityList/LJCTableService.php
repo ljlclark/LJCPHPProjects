@@ -9,11 +9,11 @@
   $prefix = RelativePrefix();
   include_once "$prefix/ATestForm/CityList/LJCDataConfigs.php";
   include_once "$prefix/LJCPHPCommon/LJCDBAccessLib.php";
-  include_once "$prefix/LJCPHPCommon/LJCHTMLBuilderLib.php";
+  include_once "$prefix/LJCPHPCommon/LJCTextBuilderLib.php";
   include_once "$prefix/LJCPHPCommon/LJCHTMLTableLib.php";
   // LJCDataConfigs: DataConfigs 
   // LJCDBAccessLib: LJCConnectionValues
-  // LJCHTMLBuilderLib: LJCAttributes, LJCHTMLBuilder, LJCTextState
+  // LJCTextBuilderLib: LJCAttributes, LJCTextBuilder, LJCTextState
   // LJCHTMLTableLib: LJCHTMLTable
 
   $tableService = new LJCTableService();
@@ -222,16 +222,16 @@
       $textState = new LJCTextState();
 
       // Setup table attributes.
-      $hb = new LJCHTMLBuilder($textState);
+      $tb = new LJCTextBuilder($textState);
       $className = null;
       $id = $this->CityTableID;
-      $retAttribs = $hb->Attribs($className, $id);
+      $retAttribs = $tb->Attribs($className, $id);
 
       // Centers to page.
       $style = "margin: auto;";
       $retAttribs->Add("style", $style);
 
-      $attribs = $hb->TableAttribs(className: "table");
+      $attribs = $tb->TableAttribs(className: "table");
       $retAttribs->Append($attribs);
       $this->DebugText .= $retAttribs->DebugText;
       return $retAttribs;

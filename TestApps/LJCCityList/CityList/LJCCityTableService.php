@@ -9,12 +9,12 @@
   $prefix = RelativePrefix();
   include_once "$prefix/ATestForm/CityList/LJCDataConfigs.php";
   include_once "$prefix/LJCPHPCommon/LJCDBAccessLib.php";
-  include_once "$prefix/LJCPHPCommon/LJCHTMLBuilderLib.php";
+  include_once "$prefix/LJCPHPCommon/LJCTextBuilderLib.php";
   include_once "$prefix/LJCPHPCommon/LJCHTMLTableLib.php";
   include_once "$prefix/RegionApp/City/RegionTablesDAL.php";
   // LJCDataConfigs: DataConfigs 
   // LJCDBAccessLib: LJCConnectionValues
-  // LJCHTMLBuilderLib: LJCAttributes, LJCHTMLBuilder, LJCTextState
+  // LJCTextBuilderLib: LJCAttributes, LJCTextBuilder, LJCTextState
   // LJCHTMLTableLib: LJCHTMLTable
   // CityDAL: City, CityManager
 

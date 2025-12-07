@@ -6,10 +6,10 @@
   include_once "LJCRoot.php";
   $prefix = RelativePrefix();
   include_once "$prefix/LJCPHPCommon/LJCCommonLib.php";
-  include_once "$prefix/LJCPHPCommon/LJCHTMLBuilderLib.php";
+  include_once "$prefix/LJCPHPCommon/LJCTextBuilderLib.php";
   include_once "$prefix/LJCPHPCommon/LJCHTMLLib.php";
   // LJCCommonLib: LJCCommon
-  // LJCHTMLBuilderLib: LJCHTMLBuilder, LJCTextState
+  // LJCTextBuilderLib: LJCTextBuilder, LJCTextState
   // LJCHTMLLib: LJCHTML
 
   /// <summary>The HTML Section Test Class Library</summary>
@@ -21,7 +21,7 @@
 
   // ********************
   /// <summary>Represents a built string value.</summary>
-  /// <include path='items/LJCHTMLBuilder/*' file='Doc/LJCHTMLBuilder.xml'/>
+  /// <include path='items/LJCTextBuilder/*' file='Doc/LJCTextBuilder.xml'/>
   class TestHTML
   {
     public static function Run()
@@ -47,27 +47,27 @@
     private static function Build()
     {
       $textState = new LJCTextState();
-      $hb = new LJCHTMLBuilder($textState);
+      $tb = new LJCTextBuilder($textState);
 
       $copyright = [];
       $copyright[] = "Copyright (c) Lester J. Clark and Contributors";
       $copyright[] = "Licensed under the MIT License.";
       $fileName = "TestHTMLBuilderOutput.html";
       $createText = LJCHTML::GetHTMLBegin($textState, $copyright, $fileName);
-      $hb->Text($createText, false);
+      $tb->Text($createText, false);
 
       // Add head items.
-      $hb->End("head", $textState);
+      $tb->End("head", $textState);
 
-      $hb->Begin("body", $textState, addIndent: false);
+      $tb->Begin("body", $textState, addIndent: false);
       // Use AddChildIndent after beginning an element.
-      $hb->AddChildIndent(" ", $textState);
+      $tb->AddChildIndent(" ", $textState);
 
       $text = LJCHTML::GetHTMLEnd($textState);
-      $hb->Text($text, false);
-      $result = $hb->ToString();
+      $tb->Text($text, false);
+      $result = $tb->ToString();
 
-      $b = new LJCHTMLBuilder($textState);
+      $b = new LJCTextBuilder($textState);
       $b->AddLine("<!DOCTYPE html>");
       $b->AddLine("<!-- Copyright (c) Lester J. Clark and Contributors -->");
       $b->AddLine("<!-- Licensed under the MIT License. -->");
@@ -79,7 +79,7 @@
       $b->AddLine("</body>");
       $b->AddText("</html>");
       $compare = $b->ToString();
-      LJC::WriteCompare("Build()", $result, $compare);
+      LJC::DebugCompare("Build()", $result, $compare);
     }
 
     // --------------------
@@ -94,7 +94,7 @@
       $result = LJCHTML::GetLink("CSS/File.css", $textState);
 
       $compare = "<link href=\"CSS/File.css\" rel=\"stylesheet\" />";
-      LJC::WriteCompare("GetLink()", $result, $compare);
+      LJC::DebugCompare("GetLink()", $result, $compare);
     }
 
     // Gets a <meta> element.
@@ -106,7 +106,7 @@
       $result = LJCHTML::GetMeta("author", "John Q. Smith", $textState);
 
       $compare = "<meta name=\"author\" content=\"John Q. Smith\" />";
-      LJC::WriteCompare("GetMeta()", $result, $compare);
+      LJC::DebugCompare("GetMeta()", $result, $compare);
     }
 
     // Gets common <meta> elements.
@@ -117,14 +117,14 @@
       // Example Method:
       $result = LJCHTML::GetMetas("John Q. Smith", $textState, "A description.");
 
-      $b = new LJCHTMLBuilder();
+      $b = new LJCTextBuilder();
       $b->AddLine("<meta charset=\"utf-8\" />");
       $b->AddLine("<meta name=\"description\" content=\"A description.\" />");
       $b->AddLine("<meta name=\"author\" content=\"John Q. Smith\" />");
       $b->AddText("<meta name=\"viewport\" content=\"width=device-width");
       $b->AddText(" initial-scale=1\" />");
       $compare = $b->ToString();
-      LJC::WriteCompare("GetMetas()", $result, $compare);
+      LJC::DebugCompare("GetMetas()", $result, $compare);
     }
 
     private static function GetBeginSelector()
@@ -135,7 +135,7 @@
       $result = LJCHTML::GetBeginSelector(".name", $textState);
 
       $compare = ".name {";
-      LJC::WriteCompare("GetBeginSelector()", $result, $compare);
+      LJC::DebugCompare("GetBeginSelector()", $result, $compare);
     }
 
     // Appends a <script> element for a style sheet.
@@ -147,7 +147,7 @@
       $result = LJCHTML::GetScript("Script/File.js", $textState);
 
       $compare = "<script src=\"Script/File.js\"></script>";
-      LJC::WriteCompare("GetScript()", $result, $compare);
+      LJC::DebugCompare("GetScript()", $result, $compare);
     }
 
     // Gets the HTML beginning up to and including <head>.
@@ -163,7 +163,7 @@
       // Example Method:
       $result = LJCHTML::GetHTMLBegin($textState, $copyright, "File.html");
 
-      $b = new LJCHTMLBuilder();
+      $b = new LJCTextBuilder();
       $b->AddLine("<!DOCTYPE html>");
       $b->AddLine("<!-- Copyright (c) John Q. Smith and Contributors. -->");
       $b->AddLine("<!-- Licensed under the MIT License. -->");
@@ -171,7 +171,7 @@
       $b->AddLine("<html lang=\"en\" xmlns=\"http://www.w3.org/1999/xhtml\">");
       $b->AddText("<head>");
       $compare = $b->ToString();
-      LJC::WriteCompare("GetHTMLBegin()", $result, $compare);
+      LJC::DebugCompare("GetHTMLBegin()", $result, $compare);
     }
 
     // Gets the HTML end <body> and <html>.
@@ -182,11 +182,11 @@
       // Example Method:
       $result = LJCHTML::GetHTMLEnd($textState);
 
-      $b = new LJCHTMLBuilder();
+      $b = new LJCTextBuilder();
       $b->AddLine("</body>");
       $b->AddText("</html>");
       $compare = $b->ToString();
-      LJC::WriteCompare("GetHTMLEnd()", $result, $compare);
+      LJC::DebugCompare("GetHTMLEnd()", $result, $compare);
     }
 
     // Gets the main HTML Head elements.
@@ -197,14 +197,14 @@
       // Example Method:
       $result = LJCHTML::GetHTMLHead($textState, "Title", "Author");
 
-      $b = new LJCHTMLBuilder();
+      $b = new LJCTextBuilder();
       $b->AddLine("<title>Title</title>");
       $b->AddLine("<meta charset=\"utf-8\" />");
       $b->AddLine("<meta name=\"author\" content=\"Author\" />");
       $b->AddText("<meta name=\"viewport\" content=\"width=device-width");
       $b->AddText(" initial-scale=1\" />");
       $compare = $b->ToString();
-      LJC::WriteCompare("GetHTMLHead()", $result, $compare);
+      LJC::DebugCompare("GetHTMLHead()", $result, $compare);
     }
   }
 ?>

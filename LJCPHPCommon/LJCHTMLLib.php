@@ -5,8 +5,8 @@
   declare(strict_types=1);
   include_once "LJCRoot.php";
   $prefix = RelativePrefix();
-  include_once "$prefix/LJCPHPCommon/LJCHTMLBuilderLib.php";
-  // LJCHTMLBuilderLib: LJCHTMLBuilder, LJCAttributes, LJCTextState
+  include_once "$prefix/LJCPHPCommon/LJCTextBuilderLib.php";
+  // LJCTextBuilderLib: LJCAttributes, LJCTextBuilder, LJCTextState
 
   /// <summary>The HTML Section Class Library</summary>
   /// LibName: LJCHTMLLib
@@ -29,12 +29,12 @@
     public static function GetBeginSelector(string $selectorName, LJCTextState $textState)
       : string
     {
-      $hb = new LJCHTMLBuilder($textState);
+      $tb = new LJCTextBuilder($textState);
 
-      $hb->Text($selectorName);
-      $hb->AddText(" {");
+      $tb->Text($selectorName);
+      $tb->AddText(" {");
 
-      $retValue = $hb->ToString();
+      $retValue = $tb->ToString();
       return $retValue;
     }
 
@@ -43,17 +43,17 @@
     /// <ParentGroup>Element</ParentGroup>
     public static function GetLink(string $fileName, LJCTextState $textState) : string
     {
-      $hb = new LJCHTMLBuilder($textState);
+      $tb = new LJCTextBuilder($textState);
 
       $attribs = new LJCAttributes();
       $attribs->Add("href", $fileName);
       $attribs->Add("rel", "stylesheet");
       // Arg 2 different than HTMLBuilder.cs.
-      $createText = $hb->GetCreate("link", "", $textState, $attribs
+      $createText = $tb->GetCreate("link", "", $textState, $attribs
         , isEmpty: true);
-      $hb->Text($createText, false);
+      $tb->Text($createText, false);
 
-      $retValue = $hb->ToString();
+      $retValue = $tb->ToString();
       return $retValue;
     }
 
@@ -63,17 +63,17 @@
     public static function GetMeta(string $name, string $content
       , LJCTextState $textState) : string
     {
-      $hb = new LJCHTMLBuilder($textState);
+      $tb = new LJCTextBuilder($textState);
 
       $attribs = new LJCAttributes();
       $attribs->Add("name", $name);
       $attribs->Add("content", $content);
       // Arg 2 different than HTMLBuilder.cs.
-      $createText = $hb->GetCreate("meta", "", $textState, $attribs
+      $createText = $tb->GetCreate("meta", "", $textState, $attribs
         , isEmpty: true);
-      $hb->Text($createText, false);
+      $tb->Text($createText, false);
 
-      $retValue = $hb->ToString();
+      $retValue = $tb->ToString();
       return $retValue;
     }
 
@@ -84,32 +84,32 @@
       , string $description = null, string $keywords = null
       , string $charSet = "utf-8") : string
     {
-      $hb = new LJCHTMLBuilder($textState);
+      $tb = new LJCTextBuilder($textState);
 
       $attribs = new LJCAttributes();
       $attribs->Add("charset", $charSet);
       // Arg 2 different than HTMLBuilder.cs.
-      $createText = $hb->GetCreate("meta", "", $textState, $attribs
+      $createText = $tb->GetCreate("meta", "", $textState, $attribs
         , isEmpty: true);
-      $hb->Text($createText, false);
+      $tb->Text($createText, false);
 
       if (LJC::HasValue($description))
       {
         $createText = self::GetMeta("description", $description, $textState);
-        $hb->Text($createText, false);
+        $tb->Text($createText, false);
       }
       if (LJC::HasValue($keywords))
       {
         $createText = self::GetMeta("keywords", $keywords, $textState);
-        $hb->Text($createText, false);
+        $tb->Text($createText, false);
       }
       $createText = self::GetMeta("author", $author, $textState);
-      $hb->Text($createText, false);
+      $tb->Text($createText, false);
       $content = "width=device-width initial-scale=1";
       $createText = self::GetMeta("viewport", $content, $textState);
-      $hb->Text($createText, false);
+      $tb->Text($createText, false);
 
-      $retValue = $hb->ToString();
+      $retValue = $tb->ToString();
       return $retValue;
     }
 
@@ -119,15 +119,15 @@
     public static function GetScript(string $fileName, LJCTextState $textState)
       : string
     {
-      $hb = new LJCHTMLBuilder($textState);
+      $tb = new LJCTextBuilder($textState);
 
       $attribs = new LJCAttributes();
       $attribs->Add("src", $fileName);
       // Arg 2 different than HTMLBuilder.cs.
-      $createText = $hb->GetCreate("script", "", $textState, $attribs);
-      $hb->Text($createText, false);
+      $createText = $tb->GetCreate("script", "", $textState, $attribs);
+      $tb->Text($createText, false);
 
-      $retValue = $hb->ToString();
+      $retValue = $tb->ToString();
       return $retValue;
     }
 
@@ -140,31 +140,31 @@
     public static function GetHTMLBegin(LJCTextState $textState
       , array $copyright = null, string $fileName = null) : string
     {
-      $hb = new LJCHTMLBuilder($textState);
+      $tb = new LJCTextBuilder($textState);
 
-      $hb->Text("<!DOCTYPE html>");
+      $tb->Text("<!DOCTYPE html>");
       if (LJC::HasElements($copyright))
       {
         foreach ($copyright as $line)
         {
-          $hb->Text("<!-- {$line} -->");
+          $tb->Text("<!-- {$line} -->");
         }
       }
       if (LJC::HasValue($fileName))
       {
-        $hb->Text("<!-- {$fileName} -->");
+        $tb->Text("<!-- {$fileName} -->");
       }
 
-      $startAttribs = $hb->StartAttribs();
-      $createText = $hb->GetBegin("html", $textState, $startAttribs
+      $startAttribs = $tb->StartAttribs();
+      $createText = $tb->GetBegin("html", $textState, $startAttribs
         , false);
-      $hb->Text($createText, false);
+      $tb->Text($createText, false);
 
-      $createText = $hb->GetBegin("head", $textState, null, false);
-      $hb->Text($createText, false);
+      $createText = $tb->GetBegin("head", $textState, null, false);
+      $tb->Text($createText, false);
 
       // Only use AddChildIndent() if additional text is added in this method.
-      $retValue = $hb->ToString();
+      $retValue = $tb->ToString();
       return $retValue;
     }
 
@@ -173,16 +173,16 @@
     /// <ParentGroup>HTML</ParentGroup>
     public static function GetHTMLEnd(LJCTextState $textState) : string
     {
-      $hb = new LJCHTMLBuilder($textState);
+      $tb = new LJCTextBuilder($textState);
 
-      $text = $hb->GetEnd("body", $textState, false);
-      $hb->Text($text, false);
+      $text = $tb->GetEnd("body", $textState, false);
+      $tb->Text($text, false);
 
-      $createText = $hb->GetEnd("html", $textState, false);
-      $hb->Text($createText, false);
-      //$hb->AddSyncIndent($hb, $textState); //?
+      $createText = $tb->GetEnd("html", $textState, false);
+      $tb->Text($createText, false);
+      //$tb->AddSyncIndent($tb, $textState); //?
 
-      $retValue = $hb->ToString();
+      $retValue = $tb->ToString();
       return $retValue;
     }
 
@@ -192,13 +192,13 @@
     public static function GetHTMLHead(LJCTextState $textState, string $title = null
       , string $author = null, string $description = null) : string
     {
-      $hb = new LJCHTMLBuilder($textState);
+      $tb = new LJCTextBuilder($textState);
 
-      $hb->Create("title", $textState, $title, childIndent: false);
+      $tb->Create("title", $textState, $title, childIndent: false);
       $createText = self::GetMetas($author, $textState, $description);
-      $hb->Text($createText, false);
+      $tb->Text($createText, false);
 
-      $retValue = $hb->ToString();
+      $retValue = $tb->ToString();
       return $retValue;
     }
   }

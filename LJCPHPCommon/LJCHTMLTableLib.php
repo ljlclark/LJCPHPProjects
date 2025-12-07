@@ -6,9 +6,9 @@
   include_once "LJCRoot.php";
   $prefix = RelativePrefix();
   include_once "$prefix/LJCPHPCommon/LJCCommonLib.php";
-  include_once "$prefix/LJCPHPCommon/LJCHTMLBuilderLib.php";
+  include_once "$prefix/LJCPHPCommon/LJCTextBuilderLib.php";
   // LJCCommonLib: LJCCommon
-  // LJCHTMLBuilderLib: LJCAttribute, LJCAttributes, LJCHTMLBuilder
+  // LJCTextBuilderLib: LJCAttribute, LJCAttributes, LJCTextBuilder
 
   /// <summary>The HTML Object Table Class Library</summary>
   /// LibName: LJCHTMLTableLib
@@ -59,7 +59,7 @@
 
       if (LJC::HasItems($dataItems))
       {
-        $dataItem = $dataItems->RetrieveIndex(0);
+        $dataItem = $dataItems->RetrieveWithIndex(0);
         $retValue = $this->ObjectHeadings($dataItem, $textState);
       }
       return $retValue;
@@ -75,14 +75,14 @@
 
       if (LJC::HasItems($dataItems))
       {
-        $hb = new LJCHTMLBuilder($textState);
-        $hb->Begin("table", $textState, $this->TableAttribs);
+        $tb = new LJCTextBuilder($textState);
+        $tb->Begin("table", $textState, $this->TableAttribs);
         $text = $this->CollectionHeadings($dataItems, $textState);
-        $hb->Text($text, false);
+        $tb->Text($text, false);
         $text = $this->CollectionRows($dataItems, $textState);
-        $hb->Text($text, false);
-        $hb->End("table", $textState);
-        $retValue = $hb->ToString();
+        $tb->Text($text, false);
+        $tb->End("table", $textState);
+        $retValue = $tb->ToString();
       }
       return $retValue;
     }
@@ -97,7 +97,7 @@
 
       if (LJC::HasItems($dataItems))
       {
-        $hb = new LJCHTMLBuilder($textState);
+        $tb = new LJCTextBuilder($textState);
 
         $count = 0;
         foreach ($dataItems as $dataItem)
@@ -107,9 +107,9 @@
             break;
           }
           $text = $this->ObjectRow($dataItem, $textState);
-          $hb->Text($text, false);
+          $tb->Text($text, false);
         }
-        $retValue = $hb->ToString();
+        $retValue = $tb->ToString();
       }
       return $retValue;
     }
@@ -146,14 +146,14 @@
 
       if (LJC::HasItems($dataItems))
       {
-        $hb = new LJCHTMLBuilder($textState);
-        $hb->Begin("table", $textState, $this->TableAttribs);
+        $tb = new LJCTextBuilder($textState);
+        $tb->Begin("table", $textState, $this->TableAttribs);
         $text = $this->ObjectArrayHeadings($dataItems, $textState);
-        $hb->Text($text, false);
+        $tb->Text($text, false);
         $text = $this->ObjectArrayRows($dataItems, $textState);
-        $hb->Text($text, false);
-        $hb->End("table", $textState);
-        $retValue = $hb->ToString();
+        $tb->Text($text, false);
+        $tb->End("table", $textState);
+        $retValue = $tb->ToString();
       }
       return $retValue;
     }
@@ -168,7 +168,7 @@
 
       if (LJC::HasElements($dataItems))
       {
-        $hb = new LJCHTMLBuilder($textState);
+        $tb = new LJCTextBuilder($textState);
 
         $count = 0;
         foreach ($dataItems as $dataItem)
@@ -178,9 +178,9 @@
             break;
           }
           $text = $this->ObjectRow($dataItem, $textState);
-          $hb->Text($text, false);
+          $tb->Text($text, false);
         }
-        $retValue = $hb->ToString();
+        $retValue = $tb->ToString();
       }
       return $retValue;
     }
@@ -213,15 +213,15 @@
 
       if (LJC::HasElements($rows))
       {
-        $hb = new LJCHTMLBuilder($textState);
-        $hb->Begin("table", $textState, $this->TableAttribs);
+        $tb = new LJCTextBuilder($textState);
+        $tb->Begin("table", $textState, $this->TableAttribs);
         $text = $this->ResultHeadings($rows, $textState);
-        $hb->Text($text, false);
+        $tb->Text($text, false);
         $text = $this->ResultRows($rows, $textState);
-        $hb->Text($text, false);
-        $hb->End("table", $textState);
-        $this->DebugText .= $hb->DebugText;
-        $retValue = $hb->ToString();
+        $tb->Text($text, false);
+        $tb->End("table", $textState);
+        $this->DebugText .= $tb->DebugText;
+        $retValue = $tb->ToString();
       }
       return $retValue;
     }
@@ -235,7 +235,7 @@
 
       if (LJC::HasElements($rows))
       {
-        $hb = new LJCHTMLBuilder($textState);
+        $tb = new LJCTextBuilder($textState);
 
         $count = 0;
         foreach ($rows as $row)
@@ -245,9 +245,9 @@
             break;
           }
           $text = $this->ArrayRow($row, $textState);
-          $hb->Text($text, false);
+          $tb->Text($text, false);
         }
-        $retValue = $hb->ToString();
+        $retValue = $tb->ToString();
       }
       return $retValue;
     }
@@ -263,19 +263,19 @@
 
       if (LJC::HasElements($dataItem))
       {
-        $hb = new LJCHTMLBuilder($textState);
+        $tb = new LJCTextBuilder($textState);
         $indentCount = strval($textState->getIndentCount());
-        $indentLength = strval($hb->IndentLength());
-        $hb->Begin("tr", $textState);
+        $indentLength = strval($tb->IndentLength());
+        $tb->Begin("tr", $textState);
         foreach ($this->ColumnNames as $propertyName)
         {
           if (array_key_exists($propertyName, $dataItem))
           {
-            $hb->Create("th", $textState, $propertyName, $this->HeadingAttribs);
+            $tb->Create("th", $textState, $propertyName, $this->HeadingAttribs);
           }
         }
-        $hb->End("tr", $textState);
-        $retValue = $hb->ToString();
+        $tb->End("tr", $textState);
+        $retValue = $tb->ToString();
       }
       return $retValue;
     }
@@ -287,18 +287,18 @@
 
       if (LJC::HasElements($dataItem))
       {
-        $hb = new LJCHTMLBuilder($textState);
-        $hb->Begin("tr", $textState);
+        $tb = new LJCTextBuilder($textState);
+        $tb->Begin("tr", $textState);
         foreach ($this->ColumnNames as $propertyName)
         {
           if (array_key_exists($propertyName, $dataItem))
           {
             $value = $dataItem[$propertyName];
-            $hb->Create("td", $textState, strval($value), $this->DataAttribs);
+            $tb->Create("td", $textState, strval($value), $this->DataAttribs);
           }
         }
-        $hb->End("tr", $textState);
-        $retValue = $hb->ToString();
+        $tb->End("tr", $textState);
+        $retValue = $tb->ToString();
       }
       return $retValue;
     }
@@ -324,17 +324,17 @@
 
       if ($dataItem != null)
       {
-        $hb = new LJCHTMLBuilder($textState);
-        $hb->Begin("tr", $textState);
+        $tb = new LJCTextBuilder($textState);
+        $tb->Begin("tr", $textState);
         foreach ($this->ColumnNames as $propertyName)
         {
           if (property_exists($dataItem, $propertyName))
           {
-            $hb->Create("th", $textState, $propertyName, $this->HeadingAttribs);
+            $tb->Create("th", $textState, $propertyName, $this->HeadingAttribs);
           }
         }
-        $hb->End("tr", $textState);
-        $retValue = $hb->ToString();
+        $tb->End("tr", $textState);
+        $retValue = $tb->ToString();
       }
       return $retValue;
     }
@@ -344,19 +344,19 @@
     {
       if ($dataItem != null)
       {
-        $hb = new LJCHTMLBuilder($textState);
-        $hb->Begin("tr", $textState);
+        $tb = new LJCTextBuilder($textState);
+        $tb->Begin("tr", $textState);
         foreach ($this->ColumnNames as $propertyName)
         {
           if (property_exists($dataItem, $propertyName))
           {
             // Using variable name for object property.
             $value = strval($dataItem->$propertyName);
-            $hb->Create("td", $textState, $value, $this->DataAttribs);
+            $tb->Create("td", $textState, $value, $this->DataAttribs);
           }
         }
-        $hb->End("tr", $textState);
-        $retValue = $hb->ToString();
+        $tb->End("tr", $textState);
+        $retValue = $tb->ToString();
       }
       return $retValue;
     }

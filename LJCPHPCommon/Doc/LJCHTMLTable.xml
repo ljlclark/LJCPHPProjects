@@ -22,9 +22,9 @@
       declare(strict_types=1);
       include_once "LJCRoot.php";
       $prefix = RelativePrefix();
-      include_once "$prefix/LJCPHPCommon/LJCHTMLBuilderLib.php";
+      include_once "$prefix/LJCPHPCommon/LJCTextBuilderLib.php";
       include_once "$prefix/LJCPHPCommon/LJCHTMLTableLib.php";
-      // LJCHTMLBuilderLib: LJCHTMLBuilder, LJCAttribute, LJCAttributes
+      // LJCTextBuilderLib: LJCAttribute, LJCAttributes, LJCTextBuilder
       //   , LJCTextState
       // LJCHTMLTableLib: LJCHTMLTable
 
@@ -41,8 +41,8 @@
 
         $ht = new LJCHTMLTable();
         $ht->ColumnNames = $propertyNames;
-        $hb = new LJCHTMLBuilder();
-        $ht->TableAttribs = $hb->TableAttribs();
+        $tb = new LJCTextBuilder();
+        $ht->TableAttribs = $tb->TableAttribs();
         $result = $ht->CollectionHTML($dataItems, $textState
           , $propertyNames);
       }
@@ -75,9 +75,9 @@
       declare(strict_types=1);
       include_once "LJCRoot.php";
       $prefix = RelativePrefix();
-      include_once "$prefix/LJCPHPCommon/LJCHTMLBuilderLib.php";
+      include_once "$prefix/LJCPHPCommon/LJCTextBuilderLib.php";
       include_once "$prefix/LJCPHPCommon/LJCHTMLTableLib.php";
-      // LJCHTMLBuilderLib: LJCHTMLBuilder, LJCAttribute, LJCAttributes
+      // LJCTextBuilderLib: LJCAttribute, LJCAttributes, LJCTextBuilder
       //   , LJCTextState
       // LJCHTMLTableLib: LJCHTMLTable
 
@@ -94,8 +94,8 @@
 
         $ht = new LJCHTMLTable();
         $ht->ColumnNames = $propertyNames;
-        $hb = new LJCHTMLBuilder();
-        $ht->TableAttribs = $hb->TableAttribs();
+        $tb = new LJCTextBuilder();
+        $ht->TableAttribs = $tb->TableAttribs();
         $result = $ht->ObjectArrayHTML($dataItems, $textState
           , $propertyNames);
       }
@@ -130,10 +130,10 @@
       include_once "LJCRoot.php";
       $prefix = RelativePrefix();
       include_once "$prefix/LJCPHPCommon/LJCDataManagerLib.php";
-      include_once "$prefix/LJCPHPCommon/LJCHTMLBuilderLib.php";
+      include_once "$prefix/LJCPHPCommon/LJCTextBuilderLib.php";
       include_once "$prefix/LJCPHPCommon/LJCHTMLTableLib.php";
       // LJCDataManagerLib: LJCConnectionValues, LJCDataManager
-      // LJCHTMLBuilderLib: LJCHTMLBuilder, LJCAttribute, LJCAttributes
+      // LJCTextBuilderLib: LJCAttribute, LJCAttributes, LJCTextBuilder
       //   , LJCTextState
       // LJCHTMLTableLib: LJCHTMLTable
 
@@ -154,8 +154,8 @@
         $propertyNames = $manager->PropertyNames();
         $ht = new LJCHTMLTable();
         $ht->ColumnNames = $propertyNames;
-        $hb = new LJCHTMLBuilder();
-        $ht->TableAttribs = $hb->TableAttribs();
+        $tb = new LJCTextBuilder();
+        $ht->TableAttribs = $tb->TableAttribs();
         $result = $ht->ResultHTML($rows, $textState);
       }
     </code>

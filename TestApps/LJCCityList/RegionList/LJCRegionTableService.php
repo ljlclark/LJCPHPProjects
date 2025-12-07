@@ -9,12 +9,12 @@
   $prefix = RelativePrefix();
   include_once "$prefix/ATestForm/CityList/LJCDataConfigs.php";
   include_once "$prefix/LJCPHPCommon/LJCDBAccessLib.php";
-  include_once "$prefix/LJCPHPCommon/LJCHTMLBuilderLib.php";
+  include_once "$prefix/LJCPHPCommon/LJCTextBuilderLib.php";
   include_once "$prefix/LJCPHPCommon/LJCHTMLTableLib.php";
   include_once "$prefix/RegionApp/City/RegionTablesDAL.php";
   // LJCDataConfigs: DataConfigs 
   // LJCDBAccessLib: LJCConnectionValues
-  // LJCHTMLBuilderLib: LJCAttributes, LJCHTMLBuilder, LJCTextState
+  // LJCTextBuilderLib: LJCAttributes, LJCTextBuilder, LJCTextState
   // LJCHTMLTableLib: LJCHTMLTable
   // RegionDAL: Region, RegionManager
 
@@ -207,10 +207,10 @@
       $textState = new LJCTextState();
 
       // Setup table attributes.
-      $hb = new LJCHTMLBuilder($textState);
+      $tb = new LJCTextBuilder($textState);
       $className = null;
       $id = $this->RegionTableID;
-      $retAttribs = $hb->Attribs($className, $id);
+      $retAttribs = $tb->Attribs($className, $id);
 
       // Centers to page.
       // *** Next Statement *** Change
@@ -220,7 +220,7 @@
       // border = 1, cellSpacing = 0, cellPadding = 2, className = null
       //   , id = null
       // *** Next Statement *** Delete
-      //$retAttribs->Append($hb->TableAttribs());
+      //$retAttribs->Append($tb->TableAttribs());
       return $retAttribs;
     } // GetTableAttribs()
 

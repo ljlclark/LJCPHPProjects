@@ -19,7 +19,7 @@
       $textState = new LJCTextState();
       
       // Defaults: IndentCharCount = 2, LineLimit = 80, WrapEnabled = false.
-      $hb = new LJCHTMLBuilder();
+      $tb = new LJCTextBuilder();
       
       // Example Method:
       // Starts the text with a newline if the builder already has text
@@ -28,7 +28,7 @@
       // The text begins with the current indent string if param
       // addIndent = true.
       // Defaults: addIndent = true, allowNewLine = true.
-      $result = $hb-&gt;GetBeginSelector("tr", $textState);
+      $result = $tb-&gt;GetBeginSelector("tr", $textState);
       
       // result:
       // tr {
@@ -46,10 +46,10 @@
       $textState = new LJCTextState();
       
       // Defaults: IndentCharCount = 2, LineLimit = 80, WrapEnabled = false.
-      $hb = new LJCHTMLBuilder($textState);
+      $tb = new LJCTextBuilder($textState);
       
       // Example Method:
-      $result = $hb-&amp;gt;GetLink("File.css", $textState);
+      $result = $tb-&amp;gt;GetLink("File.css", $textState);
       
       // result:
       // &amp;lt;link rel="stylesheet" type="text/css" href="File.css" /&amp;gt;
@@ -68,7 +68,7 @@
       $textState = new LJCTextState();
 
       // Defaults: IndentCharCount = 2, LineLimit = 80, WrapEnabled = false.
-      $hb = new LJCHTMLBuilder($textState);
+      $tb = new LJCTextBuilder($textState);
 
       // Example Method:
       $content = "width=device-width initial-scale=1";
@@ -93,10 +93,10 @@
       $textState = new LJCTextState();
 
       // Defaults: IndentCharCount = 2, LineLimit = 80, WrapEnabled = false.
-      $hb = new LJCHTMLBuilder($textState);
+      $tb = new LJCTextBuilder($textState);
 
       // Example Method:
-      $result = $hb-&gt;GetMetas("Mr. Smith", $textState, "The Description");
+      $result = $tb-&gt;GetMetas("Mr. Smith", $textState, "The Description");
 
       // result:
       // &amp;lt;meta charset="utf-8" /&amp;gt;
@@ -117,10 +117,10 @@
       $textState = new LJCTextState();
 
       // Defaults: IndentCharCount = 2, LineLimit = 80, WrapEnabled = false.
-      $hb = new LJCHTMLBuilder($textState);
+      $tb = new LJCTextBuilder($textState);
 
       // Example Method:
-      $result = $hb-&gt;Script("File.js", $textState);
+      $result = $tb-&gt;Script("File.js", $textState);
 
       // result:
       // &amp;lt;script src="File.js"&amp;gt;&amp;lt;&amp;gt;
@@ -140,7 +140,7 @@
       $textState = new LJCTextState();
 
       // Defaults: IndentCharCount = 2, LineLimit = 80, WrapEnabled = false.
-      $hb = new LJCHTMLBuilder($textState);
+      $tb = new LJCTextBuilder($textState);
 
       // Example Method:
       $copyright = [
@@ -148,7 +148,7 @@
         "Second Line",
       ];
       $fileName = "File.html";
-      $result = $hb-&gt;GetHTMLBegin($textState, $copyright, $fileName);
+      $result = $tb-&gt;GetHTMLBegin($textState, $copyright, $fileName);
 
       // result:
       // &amp;lt;!DOCTYPE html&amp;gt;
@@ -170,10 +170,10 @@
       $textState = new LJCTextState();
 
       // Defaults: IndentCharCount = 2, LineLimit = 80, WrapEnabled = false.
-      $hb = new LJCHTMLBuilder($textState);
+      $tb = new LJCTextBuilder($textState);
 
       // Example Method:
-      $result = $hb-&gt;GetHTMLEnd($textState);
+      $result = $tb-&gt;GetHTMLEnd($textState);
 
       // result:
       // &amp;lt;/body&amp;gt;
@@ -194,14 +194,14 @@
       $textState = new LJCTextState();
 
       // Defaults: IndentCharCount = 2, LineLimit = 80, WrapEnabled = false.
-      $hb = new LJCHTMLBuilder($textState);
+      $tb = new LJCTextBuilder($textState);
 
       // Example Method:
       $title = "The Title";
       $author = "Mr. Smith";
       $description = "The Description";
       // Defaults: title = null, author = null, description = null.
-      $result = $hb-&gt;GetHTMLHead($textState, $title, $author, $description);
+      $result = $tb-&gt;GetHTMLHead($textState, $title, $author, $description);
 
       // result:
       // &amp;lt;title&amp;gt;The Title&amp;lt;/title&amp;gt;r
