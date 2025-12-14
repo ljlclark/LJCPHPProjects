@@ -61,7 +61,7 @@
       //$result = $ht->ArrayArrayHtml($dataItems, $textState);
       $result = $ht->ResultHtml($dataItems, $textState);
       $compare = self::GetTableCompare();
-      LJC::DebugCompare("GetArraysTable()", $result, $compare);
+      LJC::OutputDebugCompare("GetArraysTable()", $result, $compare);
     }
 
     // Get Collection data table.
@@ -79,7 +79,7 @@
       $result = $ht->CollectionHTML($dataItems, $textState
         , $propertyNames);
       $compare = self::GetTableCompare();
-      LJC::DebugCompare("GetCollectionTable()", $result, $compare);
+      LJC::OutputDebugCompare("GetCollectionTable()", $result, $compare);
     }
 
     // Get Object Array data table.
@@ -97,7 +97,7 @@
       $result = $ht->ObjectArrayHTML($dataItems, $textState
         , $propertyNames);
       $compare = self::GetTableCompare();
-      LJC::DebugCompare("GetObjectsTable()", $result, $compare);
+      LJC::OutputDebugCompare("GetObjectsTable()", $result, $compare);
     }
 
     // Get Result table.
@@ -124,7 +124,7 @@
       $ht->TableAttribs = $tb->TableAttribs();
       $result = $ht->ResultHTML($rows, $textState);
       //$compare = self::GetTableCompare();
-      //LJC::DebugCompare("GetResultTable()", $result, $compare);
+      //LJC::OutputDebugCompare("GetResultTable()", $result, $compare);
     }
 
     // --------------------

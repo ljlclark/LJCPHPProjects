@@ -14,8 +14,9 @@
       It can also be used to create text strings and XML text.
 
       &lt;p&gt;
-      The LJCTextBuilder class - like the StringBuilder class - stores the text
-      internally. The text is retrieved with the ToString() method.&lt;br /&gt;
+      The LJCTextBuilder class - like the StringBuilder class - stores the built
+      text internally. The text is retrieved with the ToString() method.
+      &lt;br /&gt;
       &lt;/p&gt;
 
       &lt;p&gt;

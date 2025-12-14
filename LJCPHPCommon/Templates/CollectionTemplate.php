@@ -305,13 +305,13 @@
       {
         $text .= " {$location}";
       }
-      LJC::Debug(0, $text);
+      LJC::OutputDebugValue(0, $text);
       foreach ($items as $item)
       {
-        LJC::Debug(0, "\$item-Name", $item->Name);
-        LJC::Debug(0, "\$item-Description", $item->Description);
+        LJC::OutputDebugValue(0, "\$item-Name", $item->Name);
+        LJC::OutputDebugValue(0, "\$item-Description", $item->Description);
       }
-      LJC::Debug();
+      LJC::OutputDebugValue();
     }
   }  // DebugItems()
 

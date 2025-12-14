@@ -79,7 +79,7 @@
       $b->AddLine("</body>");
       $b->AddText("</html>");
       $compare = $b->ToString();
-      LJC::DebugCompare("Build()", $result, $compare);
+      LJC::OutputDebugCompare("Build()", $result, $compare);
     }
 
     // --------------------
@@ -94,7 +94,7 @@
       $result = LJCHTML::GetLink("CSS/File.css", $textState);
 
       $compare = "<link href=\"CSS/File.css\" rel=\"stylesheet\" />";
-      LJC::DebugCompare("GetLink()", $result, $compare);
+      LJC::OutputDebugCompare("GetLink()", $result, $compare);
     }
 
     // Gets a <meta> element.
@@ -106,7 +106,7 @@
       $result = LJCHTML::GetMeta("author", "John Q. Smith", $textState);
 
       $compare = "<meta name=\"author\" content=\"John Q. Smith\" />";
-      LJC::DebugCompare("GetMeta()", $result, $compare);
+      LJC::OutputDebugCompare("GetMeta()", $result, $compare);
     }
 
     // Gets common <meta> elements.
@@ -124,7 +124,7 @@
       $b->AddText("<meta name=\"viewport\" content=\"width=device-width");
       $b->AddText(" initial-scale=1\" />");
       $compare = $b->ToString();
-      LJC::DebugCompare("GetMetas()", $result, $compare);
+      LJC::OutputDebugCompare("GetMetas()", $result, $compare);
     }
 
     private static function GetBeginSelector()
@@ -135,7 +135,7 @@
       $result = LJCHTML::GetBeginSelector(".name", $textState);
 
       $compare = ".name {";
-      LJC::DebugCompare("GetBeginSelector()", $result, $compare);
+      LJC::OutputDebugCompare("GetBeginSelector()", $result, $compare);
     }
 
     // Appends a <script> element for a style sheet.
@@ -147,7 +147,7 @@
       $result = LJCHTML::GetScript("Script/File.js", $textState);
 
       $compare = "<script src=\"Script/File.js\"></script>";
-      LJC::DebugCompare("GetScript()", $result, $compare);
+      LJC::OutputDebugCompare("GetScript()", $result, $compare);
     }
 
     // Gets the HTML beginning up to and including <head>.
@@ -171,7 +171,7 @@
       $b->AddLine("<html lang=\"en\" xmlns=\"http://www.w3.org/1999/xhtml\">");
       $b->AddText("<head>");
       $compare = $b->ToString();
-      LJC::DebugCompare("GetHTMLBegin()", $result, $compare);
+      LJC::OutputDebugCompare("GetHTMLBegin()", $result, $compare);
     }
 
     // Gets the HTML end <body> and <html>.
@@ -186,7 +186,7 @@
       $b->AddLine("</body>");
       $b->AddText("</html>");
       $compare = $b->ToString();
-      LJC::DebugCompare("GetHTMLEnd()", $result, $compare);
+      LJC::OutputDebugCompare("GetHTMLEnd()", $result, $compare);
     }
 
     // Gets the main HTML Head elements.
@@ -204,7 +204,7 @@
       $b->AddText("<meta name=\"viewport\" content=\"width=device-width");
       $b->AddText(" initial-scale=1\" />");
       $compare = $b->ToString();
-      LJC::DebugCompare("GetHTMLHead()", $result, $compare);
+      LJC::OutputDebugCompare("GetHTMLHead()", $result, $compare);
     }
   }
 ?>

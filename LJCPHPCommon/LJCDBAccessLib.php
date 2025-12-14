@@ -733,17 +733,17 @@
       {
         $text .= " {$location}";
       }
-      LJC::Debug(0, $text);
+      LJC::OutputDebugValue(0, $text);
       foreach ($dbColumns as $item)
       {
-        LJC::Debug(0, "\$item-ColumnName", $item->ColumnName);
-        LJC::Debug(0, "\$item-PropertyName", $item->PropertyName);
+        LJC::OutputDebugValue(0, "\$item-ColumnName", $item->ColumnName);
+        LJC::OutputDebugValue(0, "\$item-PropertyName", $item->PropertyName);
         if ($item->Value != null)
         {
-          LJC::Debug(0, "\$item-Value", $item->Value);
+          LJC::OutputDebugValue(0, "\$item-Value", $item->Value);
         }
       }
-      LJC::Debug();
+      LJC::OutputDebugValue();
     } // DebugItems()
 
     // Output Collection Keys information.
@@ -756,13 +756,13 @@
       {
         $text .= " {$location}";
       }
-      LJC::Debug(0, $text);
+      LJC::OutputDebugValue(0, $text);
       $keys = $collection->GetKeys();
       foreach ($keys as $key)
       {
-        LJC::Debug(0, "key", $key);
+        LJC::OutputDebugValue(0, "key", $key);
       }
-      LJC::Debug();
+      LJC::OutputDebugValue();
     }
 
     // Output property names.
@@ -775,12 +775,12 @@
       {
         $text .= " {$location}";
       }
-      LJC::Debug(0, $text);
+      LJC::OutputDebugValue(0, $text);
       foreach ($propertyNames as $propertyName)
       {
-        LJC::Debug(0, "propertyName", $propertyName);
+        LJC::OutputDebugValue(0, "propertyName", $propertyName);
       }
-      LJC::Debug();
+      LJC::OutputDebugValue();
     }
 
     // ---------------

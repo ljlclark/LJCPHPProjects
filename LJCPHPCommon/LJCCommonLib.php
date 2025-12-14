@@ -21,7 +21,7 @@
   /// <group name="Convert">Conversion Functions</group>
   //    ItemsToArray(), ToBool(), ToBoolInt(), XMLToString()
   /// <group name="Output">Output Functions</group>
-  //    Debug(), DebugCompare(), DebugOutput(), Location(), ObjectOutput()
+  //    DebugObjectText(), OutputDebugValue(), OutputDebugCompare(), OutputDebugObject(), Location()
   /// <summary>Contains common functions.</summary>
   class LJC
   {
@@ -456,70 +456,30 @@
     // ---------------
     // Output Functions
 
-    // Outputs the debug text.
-    /// <include path='items/Debug/*' file='Doc/LJCCommon.xml'/>
+    // Gets the object debug text.
+    /// <include path='items/DebugObjectText/*' file='Doc/LJCCommon.xml'/>
     /// <ParentGroup>Output</ParentGroup>
-    public static function Debug(int $lineNumber = 0, string $valueName = ""
-      , $value = null): void
+    public static function DebugObjectText(string $location, $object
+      , $bracket = false): string
     {
-      echo("\r\n");
-      if ($lineNumber > 0)
-      {
-        echo("$lineNumber");
-      }
-      if (self::HasValue($valueName))
-      {
-        echo(" {$valueName}");
-        if ($value != null)
-        {
-          echo(" = ");
-        }
-      }
-      if ($value != null)
-      {
-        echo("{$value}");
-      }
-    }
+      $retDebugText = "";
 
-    // Outputs the test compare text.
-    /// <include path='items/DebugCompare/*' file='Doc/LJCCommon.xml'/>
-    /// <ParentGroup>Output</ParentGroup>
-    public static function DebugCompare(string $methodName, string $result
-      , string $compare, bool $bracket = false): void
-    {
-      if (!self::HasValue($result))
+      if ($location != null)
       {
-        $result = "No Result";
+        $retDebugText = "\r\n{$location}";
       }
-      if (!self::HasValue($compare))
+      if ($object != null)
       {
-        $compare = "No Compare";
-      }
-
-      if ($result != $compare)
-      {
+        $retDebugText .= "\r\n";
+        $debugObject = print_r($object, true);
         $bracketChar = null;
         if ($bracket)
         {
           $bracketChar = "|";
         }
-        echo("\r\n{$methodName}\r\n");
-        echo("{$bracketChar}{$result}{$bracketChar}\r\n");
-        echo(" !=\r\n");
-        echo("{$bracketChar}{$compare}{$bracketChar}\r\n");
+        $retDebugText .= "{$bracketChar}{$debugObject}{$bracketChar}";
       }
-    }
-
-    // Outputs the object debug text.
-    /// <include path='items/DebugOutput/*' file='Doc/LJCCommon.xml'/>
-    /// <ParentGroup>Output</ParentGroup>
-    public static function DebugOutput(int $lineNumber, string $className
-      , string $methodName, string $valueName, $value = null
-      , bool $bracket = false): void
-    {
-      $location = LJC::Location($className, $methodName, $valueName);
-      $output = LJC::ObjectOutput($location, $value, $bracket);
-      LJC::Debug($lineNumber, $valueName, $output);
+      return $retDebugText;
     }
 
     // Gets the location string.
@@ -551,30 +511,70 @@
       return $retLocation;
     }
 
-    // Gets the object debug text.
-    /// <include path='items/ObjectOutput/*' file='Doc/LJCCommon.xml'/>
+    // Outputs the test compare text.
+    /// <include path='items/OutputDebugCompare/*' file='Doc/LJCCommon.xml'/>
     /// <ParentGroup>Output</ParentGroup>
-    public static function ObjectOutput(string $location, $value
-      , $bracket = false): string
+    public static function OutputDebugCompare(string $methodName, string $result
+      , string $compare, bool $bracket = false): void
     {
-      $retDebugText = "";
-
-      if ($location != null)
+      if (!self::HasValue($result))
       {
-        $retDebugText = "\r\n{$location}";
+        $result = "No Result";
       }
-      if ($value != null)
+      if (!self::HasValue($compare))
       {
-        $retDebugText .= "\r\n";
-        $debugObject = print_r($value, true);
+        $compare = "No Compare";
+      }
+
+      if ($result != $compare)
+      {
         $bracketChar = null;
         if ($bracket)
         {
           $bracketChar = "|";
         }
-        $retDebugText .= "{$bracketChar}{$debugObject}{$bracketChar}";
+        echo("\r\n{$methodName}\r\n");
+        echo("{$bracketChar}{$result}{$bracketChar}\r\n");
+        echo(" !=\r\n");
+        echo("{$bracketChar}{$compare}{$bracketChar}\r\n");
       }
-      return $retDebugText;
+    }
+
+    // Outputs the object debug text.
+    /// <include path='items/OutputDebugObject/*' file='Doc/LJCCommon.xml'/>
+    /// <ParentGroup>Output</ParentGroup>
+    public static function OutputDebugObject(int $lineNumber, string $className
+      , string $methodName, string $valueName, $value = null
+      , bool $bracket = false): void
+    {
+      $location = LJC::Location($className, $methodName, $valueName);
+      $output = LJC::DebugObjectText($location, $value, $bracket);
+      LJC::OutputDebugValue($lineNumber, $valueName, $output);
+    }
+
+    // Outputs the value debug text.
+    /// <include path='items/OutputDebugValue/*' file='Doc/LJCCommon.xml'/>
+    /// <ParentGroup>Output</ParentGroup>
+    public static function OutputDebugValue(int $lineNumber = 0, string $valueName = ""
+      , $value = null): void
+    {
+      echo("\r\n");
+      if ($lineNumber > 0)
+      {
+        echo("$lineNumber");
+      }
+      if (self::HasValue($valueName))
+      {
+        echo(" {$valueName}");
+        if ($value != null)
+        {
+          echo(" = ");
+        }
+      }
+      if ($value != null)
+      {
+        echo("{$value}");
+      }
     }
   } // LJCCommon
 ?>

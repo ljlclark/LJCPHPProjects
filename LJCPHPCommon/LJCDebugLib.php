@@ -21,30 +21,29 @@
   /// <summary>Provides methods for debugging.</summary>
   class LJCDebug
   {
-    public static function BeginMethodLog(LJCDebug $debugLog, string $methodName
-      , bool $enabled = false)
-    {
-      $debugLog->BeginMethod($methodName, $enabled);
-    }
-
-    public static function BeginPrivateMethodLog(LJCDebug $debugLog, string $methodName
-      , bool $enabled = false)
-    {
-      $debugLog->BeginPrivateMethod($methodName, $enabled);
-    }
-
-    public static function CreateStaticLog(string $libName, string $className
-      , bool $enabled = false)
-    {
-      $retDebugLog = new LJCDebug($libName, $className, "a", $enabled);
-      return $retDebugLog;
-    }
 
     public static function CreateLog(string $libName, string $className
-      , bool $enabled = false)
+      , bool $enabled = false): LJCDebug
     {
-      $retDebugLog = new LJCDebug($libName, $className, "w", $enabled);
-      return $retDebug;
+      $retLog = new LJCDebug($libName, $className, "w", $enabled);
+      return $retLog;
+    }
+
+    public static function StaticMethodLog(string $debugLibName
+      , string $className, string $methodName, bool $isPrivate = false
+      , bool $isEnabled = false): LJCDebug
+    {
+      $retLog = LJCDebug::CreateLog($debugLibName, $className
+        , isEnabled: false);
+      if ($isPrivate)
+      {
+        $retLog->BeginPrivateMethod($methodName, enabled: $isEnabled);
+      }
+      else
+      {
+        $retLog->BeginMethod($methodName, enabled: $isEnabled);
+      }
+      return $retLog;
     }
 
     // ---------------
@@ -249,6 +248,82 @@
       $retText = "$this->DebugFullName.$startName():";
       return $retText;
     }
+
+    // ---------------
+    // Example Logging Methods - LJCDebug
+
+    // Example static method file logging code.
+    private static function StaticMethodFileLogging()
+    {
+      $debugLibName = "LJCTextBuilderLib";
+      $className = "LJCTextBuilder";
+      $methodName = "MethodName";
+      $log = LJCDebug::StaticMethodLog($debugLibName, $className, $methodName
+        , isPrivate: false, isEnabled: false);
+
+      $debug->EndMethod();
+    } // StaticMethodFileLogging()
+
+    // Example static method output logging code.
+    private static function StaticMethodLogging()
+    {
+      // Static method output logging.
+      $className = "LJCAttribute";
+      $methodName = "MethodName";
+    }
+
+    // Example constructor logging code.
+    private static function cstr()
+    {
+      //include_once "$prefix/LJCPHPCommon/LJCCommonLib.php";
+      //include_once "$prefix/LJCPHPCommon/LJCDebugLib.php";
+      // LJCCommonLib: LJC
+      // LJCDebugLib: LJCDebug
+
+      // Set logging values.
+      $this->ClassName = "LJCClass";
+      $methodName = "constructor";
+      // Output logging.
+      //LJC::OutputDebugObject(__line__, $this->ClassName, $methodName
+      //  , "\$object", $object);
+
+      // File logging.
+      $sourceLibName = "LJCLib";
+      $this->Log = LJCDebug::CreateLog($sourceLibName, $this->ClassName
+        , isEnabled: false);
+      $this->Log->IncludePrivate = false;
+      //$this->Log->Write(__line__." \$value = {$this->value}");
+
+      // Property logging.
+      $this->LogText = "";
+      //$this->AddLogText(__line__, $this->ClassName, $methodName, "\$value"
+      //  , $value);
+    } // cstr()
+
+    // Add to logging property.
+    private function AddLogText(int $lineNumber, $methodName, $valueName
+      , $value = null)
+    {
+      // Method property logging.
+      $methodName = "{$methodName}()";
+      $this->LogText .= LJC::OutputDebugObject($lineNumber, $this->ClassName
+        , $methodName, $valueName, $value);
+    } // AddLogText()
+
+    // Example method file logging code.
+    private function MethodFileLogging()
+    {
+      $methodName = "MethodName";
+
+      // Method file logging.
+      $this->Log->EndMethod();
+    } // MethodFileLogging()
+
+    // Example method property logging code.
+    private function MethodLogging()
+    {
+      $methodName = "MethodName";
+    } // MethodLogging()
 
     // ---------------
     // Properties - LJCDebug

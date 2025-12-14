@@ -136,15 +136,23 @@
   <!-- Array Functions -->
   <!-- Convert Functions -->
   <!-- Output Functions -->
-  <Debug>
+  <DebugObjectText>
     <summary>
-      Outputs the debug text.
+      Gets the object debug text.
     </summary>
-    <param name="$lineNumber">The debug line number.</param>
-    <param name="$valueName">The value name.</param>
+    <param name="$location">The debug location.</param>
     <param name="$value">The value.</param>
-  </Debug>
-  <DebugCompare>
+    <param name="$bracket">The optional bracket flag.</param>
+  </DebugObjectText>
+  <Location>
+    <summary>
+      Gets the location string.
+    </summary>
+    <param name="$className">The debug class name.</param>
+    <param name="$methodName">The debug method name.</param>
+    <param name="$valueName">The value name.</param>
+  </Location>
+  <OutputDebugCompare>
     <summary>
       Outputs the test compare text.
     </summary>
@@ -152,8 +160,8 @@
     <param name="$result">The result value.</param>
     <param name="$compare">The compare to value.</param>
     <param name="$bracket">The optional bracket flag.</param>
-  </DebugCompare>
-  <DebugOutput>
+  </OutputDebugCompare>
+  <OutputDebugObject>
     <summary>
       Outputs the object debug text.
     </summary>
@@ -163,24 +171,16 @@
     <param name="$valueName">The value name.</param>
     <param name="$value">The value.</param>
     <param name="$bracket">The optional bracket flag.</param>
-  </DebugOutput>
-  <Location>
+  </OutputDebugObject>
+  <OutputDebugValue>
     <summary>
-      Gets the location string.
+      Outputs the debug text.
     </summary>
-    <param name="$className">The debug class name.</param>
-    <param name="$methodName">The debug method name.</param>
+    <param name="$lineNumber">The debug line number.</param>
     <param name="$valueName">The value name.</param>
-  </Location>
-  <ObjectOutput>
-    <summary>
-      Gets the object debug text.
-    </summary>
-    <param name="$location">The debug location.</param>
     <param name="$value">The value.</param>
-    <param name="$bracket">The optional bracket flag.</param>
-  </ObjectOutput>
-	<GetIndexedDebugFileName>
+  </OutputDebugValue>
+  <GetIndexedDebugFileName>
 		<summary>Gets the indexed Debug file name.</summary>
 		<param name="$folder">The folder name.</param>
 		<param name="$fileName">The file name.</param>
