@@ -5,6 +5,20 @@
 <items>
   <LJCHTML>
     <summary>Provides methods for creating HTML sections.</summary>
+    <remarks>
+      &lt;p&gt;
+      &lt;b&gt;Other Append Element Methods&lt;/b&gt;&lt;br /&gt;
+      Link(), Meta(), Metas(), Script()&lt;br /&gt;
+      These methods append elements but do not change the IndentCount
+      value.&lt;br /&gt;
+      The "Append" element methods create the added text without an ending
+      newline. This behavior is done for consistency and it allows the developer
+      to append to the existing text.&lt;br /&gt;
+      "Append" methods start the text with a newline if the builder already has
+      text, param allowNewLine = true and builder text does not end with a
+      newline.
+      &lt;/p&gt;
+    </remarks>
   </LJCHTML>
   <!-- Get Create Methods -->
   <GetBeginSelector>
@@ -17,10 +31,10 @@
     <code>
       // Root Method Begin
       $textState = new LJCTextState();
-      
+
       // Defaults: IndentCharCount = 2, LineLimit = 80, WrapEnabled = false.
       $tb = new LJCTextBuilder();
-      
+
       // Example Method:
       // Starts the text with a newline if the builder already has text
       // and param allowNewLine = true and builder text does not end with
@@ -29,7 +43,7 @@
       // addIndent = true.
       // Defaults: addIndent = true, allowNewLine = true.
       $result = $tb-&gt;GetBeginSelector("tr", $textState);
-      
+
       // result:
       // tr {
     </code>
@@ -44,13 +58,13 @@
     <code>
       // Root Method Begin
       $textState = new LJCTextState();
-      
+
       // Defaults: IndentCharCount = 2, LineLimit = 80, WrapEnabled = false.
       $tb = new LJCTextBuilder($textState);
-      
+
       // Example Method:
       $result = $tb-&amp;gt;GetLink("File.css", $textState);
-      
+
       // result:
       // &amp;lt;link rel="stylesheet" type="text/css" href="File.css" /&amp;gt;
     </code>
@@ -144,8 +158,8 @@
 
       // Example Method:
       $copyright = [
-        "Copyright (c) First Line",
-        "Second Line",
+      "Copyright (c) First Line",
+      "Second Line",
       ];
       $fileName = "File.html";
       $result = $tb-&gt;GetHTMLBegin($textState, $copyright, $fileName);

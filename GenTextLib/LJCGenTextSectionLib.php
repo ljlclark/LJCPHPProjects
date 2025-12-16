@@ -7,7 +7,7 @@
   include_once "$prefix/LJCPHPCommon/LJCDebugLib.php";
   require_once "$prefix/LJCPHPCommon/LJCTextLib.php";
   require_once "$prefix/LJCPHPCommon/LJCTextFileLib.php";
-  require_once "$prefix/LJCPHPCommon/LJCHTMLBuilderLib.php";
+  require_once "$prefix/LJCPHPCommon/LJCTextBuilderLib.php";
   require_once "$prefix/LJCPHPCommon/LJCDBAccessLib.php";
   // LJCTextLib: LJCWriter
   // LJCDbAccessLib: LJCDbColumn, LJCDbColumns

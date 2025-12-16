@@ -408,13 +408,16 @@
   /// <group name="Constructor">Constructor Methods</group>
   /// <group name="DataClass">Data Class Methods</group>
   //    ToString()
-  /// <group name="AppendText">Append Text</group>
+  /// <group name="AddText">Add Text</group>
   //    AddLine(), AddText(), Line(), Text()
+  /// <group name="AppendText">Append Text</group>
+  //    Line(), Text()
   /// <group name="GetText">Get Text</group>
-  //    GetAttribs(), GetIndented(), GetIndentString(), GetLine(), GetText()
-  //    GetWrapped()
+  //    GetLine(), GetText()
+  /// <group name="OtherGetText">Other Get Text</group>
+  //    GetIndented(), GetIndentString(), GetWrapped()
   /// <group name="GetAttribs">Get Attribs</group>
-  //    Attribs(), StartAttribs(), StartXMLAttribs(), TableAttribs()
+  //    Attribs(), GetAttribs(), StartAttribs(), StartXMLAttribs(), TableAttribs()
   /// <group name="AppendElement">Append Element</group>
   //    Begin(), Create(), End()
   /// <group name="GetElement">Get Element</group>
@@ -489,7 +492,7 @@
     
     // Appends a text line without modification.
     /// <include path='items/AddLine/*' file='Doc/LJCTextBuilder.xml'/>
-    /// <ParentGroup>AppendText</ParentGroup>
+    /// <ParentGroup>AddText</ParentGroup>
     public function AddLine(string $text = null): string
     {
       $methodName = "Add";
@@ -501,7 +504,7 @@
 
     // Appends text without modification.
     /// <include path='items/AddText/*' file='Doc/LJCTextBuilder.xml'/>
-    /// <ParentGroup>AppendText</ParentGroup>
+    /// <ParentGroup>AddText</ParentGroup>
     public function AddText(string $text): void
     {
       $methodName = "AddText";
@@ -609,7 +612,7 @@
 
     // Gets a new potentially indented line.
     /// <include path='items/GetIndented/*' file='Doc/LJCTextBuilder.xml'/>
-    /// <ParentGroup>GetText</ParentGroup>
+    /// <ParentGroup>OtherGetText</ParentGroup>
     public function GetIndented(string $text): string
     {
       $methodName = "GetIndented";
@@ -626,7 +629,7 @@
 
     // Gets the current indent string.
     /// <include path='items/GetIndentString/*' file='Doc/LJCTextBuilder.xml'/>
-    /// <ParentGroup>GetText</ParentGroup>
+    /// <ParentGroup>OtherGetText</ParentGroup>
     public function GetIndentString(): string
     {
       $methodName = "GetIndentString";
@@ -636,7 +639,7 @@
 
     // Appends added text and new wrapped line.
     /// <include path='items/GetWrapped/*' file='Doc/LJCTextBuilder.xml'/>
-    /// <ParentGroup>GetText</ParentGroup>
+    /// <ParentGroup>OtherGetText</ParentGroup>
     public function GetWrapped(string $text): string
     {
       $methodName = "GetWrapped";
@@ -723,13 +726,13 @@
         $retAttribs->Add("class", $className);
       }
 
-      $this->AddLogText($retAttribs->LogText);
+      $this->LogText .= $retAttribs->LogText;
       return $retAttribs;
     }
 
     // Gets the attributes text.
     /// <include path='items/GetAttribs/*' file='Doc/LJCTextBuilder.xml'/>
-    /// <ParentGroup>GetText</ParentGroup>
+    /// <ParentGroup>GetAttribs</ParentGroup>
     public function GetAttribs(?LJCAttributes $attribs, LJCTextState $textState)
       : string
     {
@@ -763,6 +766,7 @@
             $tb->AddText("=\"{$value}\"");
           }
         }
+
         $this->LogText .= $attribs->LogText;
         $retText = $tb->ToString();
       }
@@ -785,7 +789,7 @@
     }
 
     // Creates the XML element attributes.
-    /// <include path='items/StartXMLAttributes/*' file='Doc/LJCTextBuilder.xml'/>
+    /// <include path='items/StartXMLAttribs/*' file='Doc/LJCTextBuilder.xml'/>
     /// <ParentGroup>GetAttribs</ParentGroup>
     public function StartXMLAttribs(): LJCAttributes
     {
@@ -1123,8 +1127,7 @@
 
       $this->AddIndent($value);
       $tb->AddIndent($value);
-      //$state->IndentCount += $value;
-      $indentCount = $this->getIndentCount() + $value;
+      $indentCount = $state->getIndentCount() + $value;
       $state->setIndentCount($indentCount);
     }
 
@@ -1270,7 +1273,7 @@
     // Getters and Setters
 
     // Gets the indent count.
-    private function getIndentCount(): int
+    public function getIndentCount(): int
     {
       return $this->IndentCount;
     }
@@ -1291,7 +1294,7 @@
     public string $ClassName;
 
     /// <summary>The debug text.</summary>
-    public string $DebugText;
+    public string $LogText;
 
     // <summary>The indent character count.</summary>
     public int $IndentCharCount;

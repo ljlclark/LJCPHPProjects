@@ -515,7 +515,7 @@
 
       $textState = new LJCTextState();
       $textState->setIndentCount(3);
-      $hb = new LJCHTMLBuilder($textState);
+      $hb = new LJCTextBuilder($textState);
       $hb->End("table", $textState);
       $attribs = $hb->Attribs("Title2");
       $hb->Create("div", $textState, $heading, $attribs);

@@ -11,7 +11,7 @@ WriteGenDataXML: false
 ../../LJCPHPCommon/LJCDBAccessLib.php
 ../../LJCPHPCommon/LJCTextFileLib.php
 ../../LJCPHPCommon/LJCTextLib.php
-../../LJCPHPCommon/LJCHTMLBuilderLib.php
+../../LJCPHPCommon/LJCTextBuilderLib.php
 ../../LJCPHPCommon/LJCHTMLLib.php
 ../../LJCPHPCommon/LJCHTMLTableLib.php
 
