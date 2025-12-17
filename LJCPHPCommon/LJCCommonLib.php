@@ -110,7 +110,7 @@
       return $retValue;
     } // GetTokens()
 
-    // Remove newline from text.
+    // Removes newline from text.
     /// <ParentGroup>String</ParentGroup>
     public static function NewLineTrim(string $text): string
     {
@@ -322,7 +322,7 @@
       return $retValue;
     }
 
-    /// <summary>Check for text.</summary>
+    /// <summary>Checks for text.</summary>
     /// <param name="$text"></param>
     /// <returns>
     ///   true if the text has other than white space; otherwise false;
@@ -340,7 +340,7 @@
       return $retValue;
     }
 
-    /// <summary>Checks an XML element for a value.
+    /// <summary>Checks an XML element for a value.</summary>
     /// <param name="$xmlElement">The simple xml element.</param>
     /// <returns>
     ///   true if element text has other than white space; otherwise false;
@@ -435,7 +435,7 @@
       return $retValue;
     } // ToBoolInt()
 
-    // Get a string value from the XML value.
+    // Gets a string value from the XML value.
     /// <ParentGroup>Convert</ParentGroup>
     public static function XMLToString(SimpleXMLElement $xmlValue
       , bool $trim = true): ?string
@@ -585,4 +585,4 @@
       LJC::OutputLog($lineNumber, $valueName, $output);
     }
   } // LJCCommon
-?>
+

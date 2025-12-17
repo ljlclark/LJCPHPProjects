@@ -237,4 +237,3 @@
       LJC::OutputLogCompare("GetHTMLHead()", $result, $compare);
     }
   }
-?>

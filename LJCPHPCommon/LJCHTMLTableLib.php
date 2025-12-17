@@ -39,12 +39,12 @@
     } // __construct()
 
     // Standard debug method for each class.
-    private function AddDebug($methodName, $valueName, $value = null)
+    private function AddLogText($methodName, $valueName, $value = null)
     {
       $location = LJC::Location($this->ClassName, $methodName
         , $valueName);
       $this->DebugText .= LJC::DebugObject($location, $value);
-    } // AddDebug()
+    } // AddLogText()
 
     // ----------
     // Collection Functions
@@ -385,4 +385,3 @@
     // The table attributes.
     public LJCAttributes $TableAttribs;
   }
-?>

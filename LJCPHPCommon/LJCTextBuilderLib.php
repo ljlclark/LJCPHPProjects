@@ -1373,4 +1373,4 @@
     // <summary>The current IndentCount value.</summary>
     private int $IndentCount;
   }
-?>
+
