@@ -1,6 +1,6 @@
 echo off
-cd HTMLBuilderTest
-call HTMLBuilderTestClear.cmd
+cd TextBuilderTest
+call TextBuilderTestClear.cmd
 
 cd ..\HTMLTableTest
 call HTMLTableTestClear.cmd

@@ -15,23 +15,26 @@
   //   , LJCTextState
   // LJCHTMLTableLib: LJCHTMLTable
 
-  /// <summary>The HTML Table test class library</summary>
+  /// <summary>The HTML Table Test Class Library</summary>
   /// LibName: HTMLTableTest
-  //  Classes: TestHTMLTable
 
-  $testBuilder = new TestHTMLTable();
+  $testBuilder = new HTMLTableTest();
   $testBuilder->Run();
 
   // ********************
   // Methods: Run(), GetArraysTable(), GetCollectionTable(), GetObjectsTable()
   //   , GetResultsTable()
-  //
-  /// <summary>Represents a built string value.</summary>
+  
+  /// <summary>The HTML Table Test Class</summary>
   /// <include path='items/LJCTextBuilder/*' file='Doc/LJCTextBuilder.xml'/>
-  class TestHTMLTable
+  class HTMLTableTest
   {
     public static function Run()
     {
+      // Setup static debug to output.
+      $className = "TextBuilderTest";
+      $methodName = "Run()";
+
       echo("\r\n");
       echo("*** LJCHTMLTable ***");
 
@@ -45,7 +48,7 @@
     // --------------------
     // Static Methods
 
-    // Get Array data table.
+    // Get Array Array data table.
     private static function GetArraysTable(LJCTextState $textState)
     {
       $dataItems = [
@@ -58,10 +61,10 @@
       $ht->ColumnNames = $propertyNames;
       $tb = new LJCTextBuilder();
       $ht->TableAttribs = $tb->TableAttribs();
-      //$result = $ht->ArrayArrayHtml($dataItems, $textState);
       $result = $ht->ResultHtml($dataItems, $textState);
+
       $compare = self::GetTableCompare();
-      LJC::OutputDebugCompare("GetArraysTable()", $result, $compare);
+      LJC::OutputLogCompare("GetArraysTable()", $result, $compare);
     }
 
     // Get Collection data table.
@@ -78,11 +81,12 @@
       $ht->TableAttribs = $tb->TableAttribs();
       $result = $ht->CollectionHTML($dataItems, $textState
         , $propertyNames);
+
       $compare = self::GetTableCompare();
-      LJC::OutputDebugCompare("GetCollectionTable()", $result, $compare);
+      LJC::OutputLogCompare("GetCollectionTable()", $result, $compare);
     }
 
-    // Get Object Array data table.
+    // Get Typed Object Array data table.
     private static function GetObjectsTable(LJCTextState $textState)
     {
       $dataItems = [];
@@ -96,11 +100,12 @@
       $ht->TableAttribs = $tb->TableAttribs();
       $result = $ht->ObjectArrayHTML($dataItems, $textState
         , $propertyNames);
+
       $compare = self::GetTableCompare();
-      LJC::OutputDebugCompare("GetObjectsTable()", $result, $compare);
+      LJC::OutputLogCompare("GetObjectsTable()", $result, $compare);
     }
 
-    // Get Result table.
+    // Get Results data table.
     private static function GetResultsTable(LJCTextState $textState)
     {
 	    $database = "TestData";
@@ -123,8 +128,10 @@
       $tb = new LJCTextBuilder();
       $ht->TableAttribs = $tb->TableAttribs();
       $result = $ht->ResultHTML($rows, $textState);
+
+      echo("\r\n{$result}");
       //$compare = self::GetTableCompare();
-      //LJC::OutputDebugCompare("GetResultTable()", $result, $compare);
+      //LJC::OutputLogCompare("GetResultTable()", $result, $compare);
     }
 
     // --------------------
@@ -145,7 +152,8 @@
     {
       $tb = new LJCTextBuilder();
 
-      $tb->AddLine("<table border=\"1\" cellspacing=\"0\" cellpadding=\"2\">");
+      //$tb->AddLine("<table border=\"1\" cellspacing=\"0\" cellpadding=\"2\">");
+      $tb->AddLine("<table style=\"border: 1px solid; borderspacing: 0px; cellpadding: 2px;\">");
       $tb->AddLine("  <tr>");
       $tb->AddLine("    <th>Name</th>");
       $tb->AddLine("    <th>Value</th>");

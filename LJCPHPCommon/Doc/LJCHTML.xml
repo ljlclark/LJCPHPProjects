@@ -20,7 +20,7 @@
       &lt;/p&gt;
     </remarks>
   </LJCHTML>
-  <!-- Get Create Methods -->
+  <!-- Create Element Methods -->
   <GetBeginSelector>
     <summary>
       Gets beginning of style selector.
@@ -32,20 +32,16 @@
       // Root Method Begin
       $textState = new LJCTextState();
 
-      // Defaults: IndentCharCount = 2, LineLimit = 80, WrapEnabled = false.
-      $tb = new LJCTextBuilder();
-
       // Example Method:
-      // Starts the text with a newline if the builder already has text
-      // and param allowNewLine = true and builder text does not end with
-      // a newline.
+      // Starts the text with a newline if the builder already has text, param
+      // allowNewLine = true and builder text does not end with a newline.
       // The text begins with the current indent string if param
       // addIndent = true.
       // Defaults: addIndent = true, allowNewLine = true.
-      $result = $tb-&gt;GetBeginSelector("tr", $textState);
+      $result = LJCHTML::GetBeginSelector(".name", $textState);
 
       // result:
-      // tr {
+      // .name {
     </code>
   </GetBeginSelector>
   <GetLink>
@@ -59,14 +55,11 @@
       // Root Method Begin
       $textState = new LJCTextState();
 
-      // Defaults: IndentCharCount = 2, LineLimit = 80, WrapEnabled = false.
-      $tb = new LJCTextBuilder($textState);
-
       // Example Method:
-      $result = $tb-&amp;gt;GetLink("File.css", $textState);
+      $result = LJCHTML::GetLink("CSS/File.css", $textState);
 
       // result:
-      // &amp;lt;link rel="stylesheet" type="text/css" href="File.css" /&amp;gt;
+      // &amp;lt;link href="CSS/File.css" rel="stylesheet" /&amp;gt;
     </code>
   </GetLink>
   <GetMeta>
@@ -81,12 +74,9 @@
       // Root Method Begin
       $textState = new LJCTextState();
 
-      // Defaults: IndentCharCount = 2, LineLimit = 80, WrapEnabled = false.
-      $tb = new LJCTextBuilder($textState);
-
       // Example Method:
       $content = "width=device-width initial-scale=1";
-      $result = hb-&amp;gt;GetMeta("viewport", $content, $textState);
+      $result = LJCHTML::GetMeta("viewport", $content, $textState);
 
       // result:
       // &amp;lt;meta name="viewport" content="width=device-width initial-scale=1" /&amp;gt;
@@ -106,16 +96,13 @@
       // Root Method Begin
       $textState = new LJCTextState();
 
-      // Defaults: IndentCharCount = 2, LineLimit = 80, WrapEnabled = false.
-      $tb = new LJCTextBuilder($textState);
-
       // Example Method:
-      $result = $tb-&gt;GetMetas("Mr. Smith", $textState, "The Description");
+      $result = LJCHTML::GetMetas("John Q. Smith", $textState, "The Description");
 
       // result:
       // &amp;lt;meta charset="utf-8" /&amp;gt;
       // &amp;lt;meta name="description" content="The Description" /&amp;gt;
-      // &amp;lt;meta name="author" content="Mr. Smith" /&amp;gt;
+      // &amp;lt;meta name="author" content="Johm Q. Smith" /&amp;gt;
       // &amp;lt;meta name="viewport" content="width=device-width initial-scale=1" /&amp;gt;
     </code>
   </GetMetas>
@@ -130,17 +117,14 @@
       // Root Method Begin
       $textState = new LJCTextState();
 
-      // Defaults: IndentCharCount = 2, LineLimit = 80, WrapEnabled = false.
-      $tb = new LJCTextBuilder($textState);
-
       // Example Method:
-      $result = $tb-&gt;Script("File.js", $textState);
+      $result = LJCHTML::GetScript("Script/File.js", $textState);
 
       // result:
-      // &amp;lt;script src="File.js"&amp;gt;&amp;lt;&amp;gt;
+      // &amp;lt;script src="Script/File.js"&amp;gt;&amp;lt;&amp;gt;
     </code>
   </GetScript>
-  <!-- Get HTML Methods (3) -->
+  <!-- Create HTML Methods -->
   <GetHTMLBegin>
     <summary>
       Gets the HTML beginning up to and including &amp;lt;head&amp;gt;.
@@ -153,21 +137,18 @@
       // Root Method Begin
       $textState = new LJCTextState();
 
-      // Defaults: IndentCharCount = 2, LineLimit = 80, WrapEnabled = false.
-      $tb = new LJCTextBuilder($textState);
-
       // Example Method:
       $copyright = [
-      "Copyright (c) First Line",
-      "Second Line",
+        "Copyright (c) John Q. Smith and Contributors.",
+        "Licensed under the MIT License.",
       ];
       $fileName = "File.html";
-      $result = $tb-&gt;GetHTMLBegin($textState, $copyright, $fileName);
+      $result = LJCHTML::GetHTMLBegin($textState, $copyright, $fileName);
 
       // result:
       // &amp;lt;!DOCTYPE html&amp;gt;
-      // &amp;lt;!-- Copyright (c) First Line --&amp;gt;
-      // &amp;lt;!-- Second Line --&amp;gt;
+      // &amp;lt;!-- Copyright (c) John Q. Smith and Conributors. --&amp;gt;
+      // &amp;lt;!-- Licensed under the MIT License. --&amp;gt;
       // &amp;lt;!-- File.html --&amp;gt;
       // &amp;lt;html lang="en" xmlns="http://www.w3.org/1999/xhtml"&amp;gt;
       // &amp;lt;head&amp;gt;
@@ -183,11 +164,8 @@
       // Root Method Begin
       $textState = new LJCTextState();
 
-      // Defaults: IndentCharCount = 2, LineLimit = 80, WrapEnabled = false.
-      $tb = new LJCTextBuilder($textState);
-
       // Example Method:
-      $result = $tb-&gt;GetHTMLEnd($textState);
+      $result = LJCHTML::GetHTMLEnd($textState);
 
       // result:
       // &amp;lt;/body&amp;gt;
@@ -207,20 +185,16 @@
       // Root Method Begin
       $textState = new LJCTextState();
 
-      // Defaults: IndentCharCount = 2, LineLimit = 80, WrapEnabled = false.
-      $tb = new LJCTextBuilder($textState);
-
       // Example Method:
       $title = "The Title";
-      $author = "Mr. Smith";
+      $author = "John Q. Smith";
       $description = "The Description";
-      // Defaults: title = null, author = null, description = null.
-      $result = $tb-&gt;GetHTMLHead($textState, $title, $author, $description);
+      $result = LJCHTML::GetHTMLHead($textState, $title, $author, $description);
 
       // result:
       // &amp;lt;title&amp;gt;The Title&amp;lt;/title&amp;gt;r
       // &amp;lt;meta name="description" content="The Description" /&amp;gt;
-      // &amp;lt;meta name="author" content="Mr. Smith" /&amp;gt;
+      // &amp;lt;meta name="author" content="John Q. Smith" /&amp;gt;
       // &amp;lt;meta name="viewport" content="width=device-width initial-scale=1" /&amp;gt;
     </code>
   </GetHTMLHead>

@@ -21,7 +21,7 @@
   class LJCHTML
   {
     // ----------
-    // Get Create Element
+    // Create Element Methods
 
     // Gets beginning of style selector.
     /// <include path='items/GetBeginSelector/*' file='Doc/LJCHTML.xml'/>
@@ -29,6 +29,8 @@
     public static function GetBeginSelector(string $selectorName, LJCTextState $textState)
       : string
     {
+      $methodName = "GetBeginSelector";
+
       $tb = new LJCTextBuilder($textState);
 
       $tb->Text($selectorName);
@@ -132,7 +134,7 @@
     }
 
     // ----------
-    // Get HTML Methods
+    // Create HTML Methods
 
     // Gets the HTML beginning up to <head>.
     /// <include path='items/GetHTMLBegin/*' file='Doc/LJCHTML.xml'/>

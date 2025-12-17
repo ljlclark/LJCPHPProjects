@@ -421,7 +421,7 @@
   /// <group name="AppendElement">Append Element</group>
   //    Begin(), Create(), End()
   /// <group name="GetElement">Get Element</group>
-  //    GetBegin(), GetBeginSelector(), GetCreate(), GetEnd()
+  //    GetBegin(), GetCreate(), GetEnd()
   /// <group name="Other">Other Methods</group>
   //    AddChildIndent(), AddIndent(), EndsWithNewLine(), GetTextState(),
   //    HasText(), IndentLength(), StartWithNewLine()
@@ -914,23 +914,6 @@
       $tb->Text($createText, addIndent: false);
 
       // Only use AddChildIndent() if additional text is added in this method.
-      $retValue = $tb->ToString();
-      return $retValue;
-    }
-
-    // Gets beginning of style selector.
-    /// <include path='items/GetBeginSelector/*' file='Doc/LJCTextBuilder.xml'/>
-    /// <ParentGroup>GetElement</ParentGroup>
-    public function GetBeginSelector(string $selectorName
-      , LJCTextState $textState): string
-    {
-      $methodName = "GetBeginSelector";
-
-      $tb = new LJCTextBuilder($textState);
-
-      $tb->Text($selectorName);
-      $tb->AddText(" {");
-
       $retValue = $tb->ToString();
       return $retValue;
     }

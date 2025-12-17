@@ -220,7 +220,7 @@
         $text = $this->ResultRows($rows, $textState);
         $tb->Text($text, false);
         $tb->End("table", $textState);
-        $this->DebugText .= $tb->DebugText;
+        $this->DebugText .= $tb->LogText;
         $retValue = $tb->ToString();
       }
       return $retValue;

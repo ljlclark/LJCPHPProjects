@@ -166,9 +166,8 @@
       $tb-&gt;AddIndent();
 
       // Example Method:
-      // Starts the text with a newline if the builder already has text
-      // and param allowNewLine = true and builder text does not end with
-      // a newline.
+      // Starts the text with a newline if the builder already has text, param
+      // allowNewLine = true and builder text does not end with a newline.
       // The text begins with the current indent string if param
       // addIndent = true.
       // Ends the text with a newline.
@@ -207,9 +206,8 @@
       $tb-&gt;AddIndent();
 
       // Example Method:
-      // Starts the text with a newline if the builder already has text
-      // and param allowNewLine = true and builder text does not end with
-      // a newline.
+      // Starts the text with a newline if the builder already has text, param
+      // allowNewLine = true and builder text does not end with a newline.
       // The text begins with the current indent string if param
       // addIndent = true.
       // Defaults: addIndent = true, allowNewLine = true.
@@ -231,7 +229,7 @@
     <param name="$allowNewLine">Indicates if a new line can be added.</param>
     <returns>The potentially indented and wrapped new text value.</returns>
     <remarks>
-      GetLine() is a "GetString" method. It creates and returns the potentially
+      GetLine() is a "Get Text" method. It creates and returns the potentially
       indented and wrapped text. It will start the returned text with a new line
       if the builder already has text.&lt;br /&gt;
       It appends a new line to the returned text.
@@ -252,9 +250,8 @@
       $tb-&gt;AddIndent();
 
       // Example Method:
-      // Starts the text with a newline if the builder already has text
-      // and param allowNewLine = true and builder text does not end with
-      // a newline.
+      // Starts the text with a newline if the builder already has text, param
+      // allowNewLine = true and builder text does not end with a newline.
       // The text begins with the current indent string if param
       // addIndent = true.
       // Ends the text with a newline.
@@ -279,7 +276,7 @@
     <param name="$allowNewLine">Indicates if a new line can be added.</param>
     <returns>The potentially indented and wrapped new text value.</returns>
     <remarks>
-      GetText() is a "GetString" method. It creates and returns the potentially
+      GetText() is a "Get Text" method. It creates and returns the potentially
       indented and wrapped text. It will start the returned text with a new line
       if the builder already has text.&lt;br /&gt;
       The applied indent is the product of the class properties IndentCount
@@ -298,9 +295,8 @@
       $tb-&gt;AddIndent();
 
       // Example Method:
-      // Starts the text with a newline if the builder already has text
-      // and param allowNewLine = true and builder text does not end with
-      // a newline.
+      // Starts the text with a newline if the builder already has text, param
+      // allowNewLine = true and builder text does not end with a newline.
       // The text begins with the current indent string if param
       // addIndent = true.
       // Defaults: addIndent = true, allowNewLine = true.
@@ -527,8 +523,8 @@
     </param>
     <returns>The added element begin tag.</returns>
     <remarks>
-      Begin() is an "Append" method. It creates the element opening tag with
-      GetCreate() and adds it to the builder.
+      Begin() is an "Append Element" method. It creates the element opening tag
+      with GetCreate() and adds it to the builder.
       The appended text does not end with a new line. This allows for additions
       after the text.&lt;br /&gt;
       The added text will start with a new line if the builder text already has
@@ -565,7 +561,7 @@
     <param name="$close">Indicates if the element will be closed.</param>
     <returns>The added HTML element.</returns>
     <remarks>
-      Create() is an "Append" method. It creates the element text with
+      Create() is an "Append Element" method. It creates the element text with
       GetCreate() and adds it to the builder.
       The appended text does not end with a new line. This allows for additions
       after the text.&lt;br /&gt;
@@ -595,8 +591,8 @@
     </param>
     <returns>The added element end tag.</returns>
     <remarks>
-      End() is an "Append" method. It creates the element text with GetEnd()
-      and adds it to the builder.<br />
+      End() is an "Append Element" method. It creates the element text with
+      GetEnd() and adds it to the builder.<br />
       The appended text does not end with a new line. This allows for additions
       after the text.<br />
       The added text will start with a new line if the builder text already has
@@ -630,7 +626,7 @@
     </param>"
     <returns>The HTML element begin tag.</returns>
     <remarks>
-      GetBegin() is an "GetText" method which creates the element opening tag
+      GetBegin() is an "Get Text" method which creates the element opening tag
       with GetCreate() and returns the text value.&lt;br /&gt;
       Note: One should set the "addIndent" parameter to false when adding text
       to the builder after getting the text with a "GetText" method. This is
@@ -642,9 +638,8 @@
       $tb = new LJCTextBuilder();
 
       // Example Method:
-      // Starts the text with a newline if the builder already has text
-      // and param allowNewLine = true and builder text does not end with
-      // a newline.
+      // Starts the text with a newline if the builder already has text, param
+      // allowNewLine = true and builder text does not end with a newline.
       // The text begins with the current indent string if param
       // addIndent = true.
       // Defaults: addIndent = true, allowNewLine = true.
@@ -689,7 +684,7 @@
     <param name="$close">Indicates if the element will be closed.</param>
     <returns>The HTML element.</returns>
     <remarks>
-      GetCreate() is a "GetText" method which creates the element or element
+      GetCreate() is a "Get Text" method which creates the element or element
       opening tag and returns the text value. It is called from other element
       create methods.&lt;br /&gt;
       The addIndent parameter defaults to true, which starts the text with the
@@ -804,9 +799,8 @@
       // Adds text without modification.
       $tb-&gt;AddText("This text is not indented.");
 
-      // Starts the text with a newline if the builder already has text
-      // and param allowNewLine = true and builder text does not end with
-      // a newline.
+      // Starts the text with a newline if the builder already has text, param
+      // allowNewLine = true and builder text does not end with a newline.
       // The text begins with the current indent string if param
       // addIndent = true.
       // Defaults: addIndent = true, allowNewLine = true.

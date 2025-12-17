@@ -21,7 +21,7 @@
   /// <group name="Convert">Conversion Functions</group>
   //    ItemsToArray(), ToBool(), ToBoolInt(), XMLToString()
   /// <group name="Output">Output Functions</group>
-  //    Location(), OutputDebug(), OutputDebugCompare(), OutputDebugObject(), OutputDebugText()
+  //    GetLogObjectText(), Location(), OutputLog(), OutputLogCompare(), OutputLogObject()
   /// <summary>Contains common functions.</summary>
   class LJC
   {
@@ -457,7 +457,7 @@
     // Output Functions
 
     // Gets the object debug text.
-    /// <include path='items/DebugObjectText/*' file='Doc/LJCCommon.xml'/>
+    /// <include path='items/GetLogObjectText/*' file='Doc/LJCCommon.xml'/>
     /// <ParentGroup>Output</ParentGroup>
     public static function GetLogObjectText(string $location, $object
       , bool $isObject = true, bool $bracket = false): string
@@ -519,7 +519,7 @@
     }
 
     // Outputs the value debug text.
-    /// <include path='items/OutputDebugValue/*' file='Doc/LJCCommon.xml'/>
+    /// <include path='items/OutputLog/*' file='Doc/LJCCommon.xml'/>
     /// <ParentGroup>Output</ParentGroup>
     public static function OutputLog(int $lineNumber, string $valueName = ""
       , $value = null): void
@@ -544,7 +544,7 @@
     }
 
     // Outputs the test compare text.
-    /// <include path='items/OutputDebugCompare/*' file='Doc/LJCCommon.xml'/>
+    /// <include path='items/OutputLogCompare/*' file='Doc/LJCCommon.xml'/>
     /// <ParentGroup>Output</ParentGroup>
     public static function OutputLogCompare(string $methodName, string $result
       , string $compare, bool $bracket = false): void
@@ -573,7 +573,7 @@
     }
 
     // Outputs the object debug text.
-    /// <include path='items/OutputDebugObject/*' file='Doc/LJCCommon.xml'/>
+    /// <include path='items/OutputLogObject/*' file='Doc/LJCCommon.xml'/>
     /// <ParentGroup>Output</ParentGroup>
     public static function OutputLogObject(int $lineNumber, string $className
       , string $methodName, string $valueName, $value = null, $isObject = true
