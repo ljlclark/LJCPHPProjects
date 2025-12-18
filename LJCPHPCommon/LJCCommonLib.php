@@ -10,7 +10,7 @@
 
   // ***************
   /// <group name="String">String Functions</group>
-  //    EndsWithNewLine(), GetDelimitedString(), GetTokens(), NewLineTrim()
+  //    EndsWithNewLine(), GetDelimitedString(), GetTokens(), NewLineTrim(),
   //    Scrub(), Split(), StrPos(), StrRPos() 
   /// <group name="File">File Name Functions</group>
   //    GetFileName(), GetFileSpecPath()
@@ -21,17 +21,18 @@
   /// <group name="Convert">Conversion Functions</group>
   //    ItemsToArray(), ToBool(), ToBoolInt(), XMLToString()
   /// <group name="Output">Output Functions</group>
-  //    GetLogObjectText(), Location(), OutputLog(), OutputLogCompare(), OutputLogObject()
+  //    GetLogObjectText(), Location(), OutputLog(), OutputLogCompare(),
+  //    OutputLogObject()
   /// <summary>Contains common functions.</summary>
   class LJC
   {
     // ---------------
     // String Functions
 
-    /// <summary>Creates JSON from the provided value.</summary>
-    /// <param name="$value">The object value.</param>
-    /// <returns>The JSON text.</returns>
-    public static function CreateJSON($value)
+    // Creates JSON from the provided value.
+    /// <include path='items/CreateJSON/*' file='Doc/LJCCommon.xml'/>
+    /// <ParentGroup>String</ParentGroup>
+    public static function CreateJSON($value): string
     {
       $retJSON = "";
 
@@ -40,6 +41,7 @@
     }
 
     // Indicates if the builder text ends with a newline.
+    /// <include path='items/EndsWithNewLine/*' file='Doc/LJCCommon.xml'/>
     /// <ParentGroup>String</ParentGroup>
     public static function EndsWithNewLine(string $text): bool
     {
@@ -93,10 +95,8 @@
       return $retValue;
     } // GetDelimitedString()
 
-    /// <summary>Get string tokens.</summary>
-    /// <param name="$text">The string value.</param>
-    /// <param name="$splitString">The split string value.</param>
-    /// <returns>The split string array.</returns>
+    // Get string tokens.
+    /// <include path='items/GetTokens/*' file='Doc/LJCCommon.xml'/>
     /// <ParentGroup>String</ParentGroup>
     public static function GetTokens(string $text, ?string $splitString = null)
       : array
@@ -110,7 +110,8 @@
       return $retValue;
     } // GetTokens()
 
-    // Removes newline from text.
+    // Removes the trailing newline from the text.
+    /// <include path='items/NewLineTrim/*' file='Doc/LJCCommon.xml'/>
     /// <ParentGroup>String</ParentGroup>
     public static function NewLineTrim(string $text): string
     {
@@ -133,9 +134,9 @@
       return $retValue;
     }
 
-    /// <summary>Parses JSON into an object.</summary>
-    /// <param name="$json">The json text.</param>
-    /// <returns>The parsed object.</returns>
+    // Parses JSON into an object.
+    /// <include path='items/ParseJSON/*' file='Doc/LJCCommon.xml'/>
+    /// <ParentGroup>String</ParentGroup>
     public static function ParseJSON($json)
     {
       $retObject = null;
@@ -155,7 +156,8 @@
       return $retValue;
     } // Scrub()
 
-    /// <summary>Splits a string on whitespace.</summary>
+    // Splits a string on whitespace.
+    /// <include path='items/Split/*' file='Doc/LJCCommon.xml'/>
     /// <ParentGroup>String</ParentGroup>
     public static function Split(string $text): array
     {
@@ -294,6 +296,7 @@
     // Check Value Functions
 
     // Checks for array elements.
+    /// <include path='items/HasElements/*' file='Doc/LJCCommon.xml'/>
     /// <ParentGroup>Check</ParentGroup>
     public static function HasElements(?array $array): bool
     {
@@ -309,6 +312,7 @@
     }
 
     // Checks for collection items.
+    /// <include path='items/HasItems/*' file='Doc/LJCCommon.xml'/>
     /// <ParentGroup>Check</ParentGroup>
     public static function HasItems($collection): bool
     {
@@ -322,11 +326,8 @@
       return $retValue;
     }
 
-    /// <summary>Checks for text.</summary>
-    /// <param name="$text"></param>
-    /// <returns>
-    ///   true if the text has other than white space; otherwise false;
-    /// </returns>
+    // Checks for text.
+    /// <include path='items/HasValue/*' file='Doc/LJCCommon.xml'/>
     /// <ParentGroup>Check</ParentGroup>
     public static function HasValue($text): bool
     {
@@ -340,11 +341,8 @@
       return $retValue;
     }
 
-    /// <summary>Checks an XML element for a value.</summary>
-    /// <param name="$xmlElement">The simple xml element.</param>
-    /// <returns>
-    ///   true if element text has other than white space; otherwise false;
-    /// </returns>
+    // Checks an XML element for a value.
+    /// <include path='items/HasXML/*' file='Doc/LJCCommon.xml'/>
     /// <ParentGroup>Check</ParentGroup>
     public static function HasXML(SimpleXMLElement $xmlElement): bool
     {
@@ -364,7 +362,8 @@
     // ---------------
     // Array Functions
 
-    // Remove element from string array by value.
+    // Remove an element from a string array by value.
+    /// <include path='items/RemoveString/*' file='Doc/LJCCommon.xml'/>
     /// <ParentGroup>Arr</ParentGroup>
     public static function RemoveString(array &$array, string $value): void
     {
@@ -384,8 +383,10 @@
     // ---------------
     // Convert Functions
 
-    /// <summary>Copy collection items to an indexed array.</summary>
-    public static function ToArray($items)
+    // Copy collection items to an indexed array.
+    /// <include path='items/ToArray/*' file='Doc/LJCCommon.xml'/>
+    /// <ParentGroup>Convert</ParentGroup>
+    public static function ToArray($items): array
     {
       $retArray = [];
 
@@ -396,7 +397,8 @@
       return $retArray;
     }
 
-    /// <summary>Returns a value as bool.</summary>
+    // Returns a value as bool.
+    /// <include path='items/ToBool/*' file='Doc/LJCCommon.xml'/>
     /// <ParentGroup>Convert</ParentGroup>
     public static function ToBool($value): bool
     {
@@ -411,7 +413,8 @@
       return $retValue;
     } // ToBool()
 
-    /// <summary>Returns a text value as int boolean.</summary>
+    // Returns a text value as an int boolean.
+    /// <include path='items/ToBoolInt/*' file='Doc/LJCCommon.xml'/>
     /// <ParentGroup>Convert</ParentGroup>
     public static function ToBoolInt(?string $text): int
     {
@@ -435,7 +438,8 @@
       return $retValue;
     } // ToBoolInt()
 
-    // Gets a string value from the XML value.
+    // Gets a string value from the XML element.
+    /// <include path='items/XMLToString/*' file='Doc/LJCCommon.xml'/>
     /// <ParentGroup>Convert</ParentGroup>
     public static function XMLToString(SimpleXMLElement $xmlValue
       , bool $trim = true): ?string

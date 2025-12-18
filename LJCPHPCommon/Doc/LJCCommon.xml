@@ -2,7 +2,59 @@
 <!-- Copyright (c) Lester J. Clark 2022 - All Rights Reserved -->
 <!-- LJCCommon.xml -->
 <items>
+  <CommonTest>
+    <summary>
+      The Common Test Class
+    </summary>
+    <code>
+      // Use this code to include the common lib classes.
+      declare(strict_types=1);
+      include_once "LJCRoot.php";
+      $prefix = RelativePrefix();
+      include_once "$prefix/LJCPHPCommon/LJCCommonLib.php";
+    </code>
+  </CommonTest>
 	<!-- String Functions -->
+  <CreateJSON>
+    <summary>
+      Creates JSON from the provided value.
+    </summary>
+    <param name="$value">The object value.</param>
+    <returns>The JSON text.</returns>
+    <code>
+      // Creates JSON from the provided value.
+      private static function CreateJSON()
+      {
+        $value = (object) [
+          "Name" => "John",
+          "Number" => 5,
+        ];
+        $result = LJC::CreateJSON($value);
+
+        // result:
+        // {"Name":"John","Number":5}";
+      }
+    </code>
+  </CreateJSON>
+  <EndsWithNewLine>
+    <summary>
+      Indicates if the builder text ends with a newline.
+    </summary>
+    <param name="$text">The text value.</param>
+    <returns>true if the text ends with a newline; otherwise false.</returns>
+    <code>
+      // Indicates if the builder text ends with a newline.
+      private static function EndsWithNewLine()
+      {
+        $text = "What?\r\n";
+        $value = LJC::EndsWithNewLine($text);
+        $result = $value ? "true" : "false";
+
+        // result:
+        // true
+      }
+    </code>
+  </EndsWithNewLine>
   <GetDelimitedString>
     <summary>Gets the string between the delimiters.</summary>
     <param name="$text">The text to be parsed.</param>
@@ -19,19 +71,84 @@
       or not found.
     </remarks>
     <code>
-      include_once "LJCRoot.php";
-      $prefix = RelativePrefix();
-      include_once "$prefix/LJCPHPCommon/LJCCollectionLib.php";
+      // Gets the string between the delimiters.
+      private static function GetDelimitedString()
+      {
+        $text = "This | here |.";
+        $beginDelimiter = "|";
+        $endDelimiter = "|";
+        $result = LJC::GetDelimitedString($text, $beginDelimiter, $endDelimiter);
 
-      $text = "This | here |.";
-      $beginDelimiter = "|";
-      $endDelimiter = "|";
-      $result = LJC::GetDelimitedString($text, $beginDelimiter, $endDelimiter);
-
-      // result:
-      // here
+        // result:
+        // here
+      }
      </code>
   </GetDelimitedString>
+  <GetTokens>
+    <summary>
+      Get string tokens.
+    </summary>
+    <param name="$text">The text value.</param>
+    <param name="$splitString">The split string value.</param>
+    <returns>The split string array.</returns>
+    <code>
+      // Get string tokens.
+      private static function GetTokens()
+      {
+        $text = "Now|is|the|time.";
+        $values = LJC::GetTokens($text, "/\|/");
+        $result = join(", ", $values);
+
+        // result:
+        Now, is, the, time.
+      }
+    </code>
+  </GetTokens>
+  <NewLineTrim>
+    <summary>
+      Removes the trailing newline from the text.
+    </summary>
+    <param name="$text">The text value.</param>
+    <returns>The text without the trailing newline.</returns>
+    <code>
+      // Removes newline from text.
+      private static function NewLineTrim()
+      {
+        $text = "Now\r\n";
+        $result = LJC::NewLineTrim($text);
+
+        // result:
+        // Now
+
+        $text = "Now\n";
+        $result = LJC::NewLineTrim($text);
+
+        // result:
+        // Now
+      }
+    </code>
+  </NewLineTrim>
+  <ParseJSON>
+    <summary>
+      Parses JSON into an object.
+    </summary>
+    <param name="$json">The json text.</param>
+    <returns>The created object.</returns>
+    <code>
+      // Parses JSON into an object.
+      private static function ParseJSON()
+      {
+        $text = "{\"Name\":\"John\",\"Number\":5}";
+        $result = LJC::ParseJSON($text);
+        
+        // result:
+        $result = (object) [
+          "Name" => "John",
+          "Number" => 5,
+        ];
+      }
+    </code>
+  </ParseJSON>
   <Scrub>
     <summary>Returns a scrubbed external value.</summary>
     <param name="$text">The text to be scrubbed.</param>
@@ -41,16 +158,34 @@
       entities.
     </remarks>
     <code>
-      include_once "LJCRoot.php";
-      $prefix = RelativePrefix();
-      include_once "$prefix/LJCPHPCommon/LJCCollectionLib.php";
+      // Returns a scrubbed external value.
+      private static function Scrub()
+      {
+        $result = LJC::Scrub(" &lt;/tag&gt; ");
 
-      $result = LJC::Scrub(" &amp;lt;/tag&amp;gt; ");
-
-      // result:
-      // "&amp;amp;lt;/tag&amp;amp;gt;"
+        // result:
+        // &amp;lt;/tag&amp;gt;
+      }
     </code>
   </Scrub>
+  <Split>
+    <summary>
+      Splits a string on whitespace.
+    </summary>
+    <param name="$text">The text value.</param>
+    <code>
+      // Splits a string on whitespace.
+      private static function Split()
+      {
+        $text = "Now is the time.";
+        $values = LJC::Split($text);
+        $result = join(", ", $values);
+
+        // result:
+        // Now, is, the, time.
+      }
+    </code>
+  </Split>
   <StrPos>
 		<summary>Gets the first index for the search value.</summary>
 		<param name="$text">The text to be searched.</param>
@@ -66,19 +201,23 @@
 			simply tested for success $index &gt;= 0 or failure $index &lt; 0.
 		</remarks>
 		<code>
-      include_once "LJCRoot.php";
-      $prefix = RelativePrefix();
-      include_once "$prefix/LJCPHPCommon/LJCCollectionLib.php";
+      // Gets the first index for the search value.
+      private static function StrPos()
+      {
+        $text = "This here.";
+        $find = "Here";
+		    $index = LJC::StrPos($text, $find);
+        $result = strval($index);
 
-		  $result = LJCCommon::StrPos("This here.", "Here");
+        // result:
+        // 5
 
-      // result:
-      // 5
+		    $index = LJC::StrPos("This here.", "Here", exact: true);
+        $result = strval($index);
 
-		  $result = LJCCommon::StrPos("This here.", "Here", exact: true);
-      
-      // result:
-      // -1
+        // result:
+        -1
+      }
 		</code>
 	</StrPos>
 	<StrRPos>
@@ -96,19 +235,23 @@
 			This alternative for PHP strpos() always returns an integer.
 		</remarks>
 		<code>
-      include_once "LJCRoot.php";
-      $prefix = RelativePrefix();
-      include_once "$prefix/LJCPHPCommon/LJCCollectionLib.php";
+      // Gets the last index for the search value.
+      private static function StrRPos()
+      {
+        $text = "This here is here.";
+        $find = "Here";
+		    $index = LJC::StrRPos($text, $find);
+        $result = strval($index);
 
-		  $result = LJCCommon::StrRPos("This here is here.", "Here");
+        // result:
+        13
 
-      // result:
-      // 13
+		    $index = LJC::StrPos("This here.", "Here", exact: true);
+        $result = strval($index);
 
-		  $result = LJCCommon::StrRPos("This here is here.", "Here", exact: true);
-      
-      // result:
-      // -1
+        // result:
+        // -1
+      }
 		</code>
 	</StrRPos>
   <!-- File Name Functions -->
@@ -123,14 +266,15 @@
       Includes to the end of the string if the "." is not found.
     </remarks>
     <code>
-      include_once "LJCRoot.php";
-      $prefix = RelativePrefix();
-      include_once "$prefix/LJCPHPCommon/LJCCollectionLib.php";
+      // Gets the FileName from the file spec.
+      private static function GetFileName()
+      {
+        $fileSpec = "../Folder/File.txt";
+        $result = LJC::GetFileName($fileSpec);
 
-      $result = LJCCommon::GetFileName("../Folder/File.txt");
-      
-      // result:
-      // File
+        // result:
+        // File;
+      }
     </code>
   </GetFileName>
 	<GetFileSpecPath>
@@ -141,19 +285,222 @@
 			Parses to the last "/".
 		</remarks>
 		<code>
-      include_once "LJCRoot.php";
-      $prefix = RelativePrefix();
-      include_once "$prefix/LJCPHPCommon/LJCCollectionLib.php";
+      // Gets the Path from the file spec.
+      private static function GetFileSpecPath()
+      {
+        $fileSpec = "../Folder/File.txt";
+        $result = LJC::GetFileSpecPath($fileSpec);
 
-      $result = LJCCommon::GetFileSpecPath("../Folder/File.txt");
-
-      // result:
-      // ../Folder
+        // result:
+        // ../Folder
+      }
     </code>
 	</GetFileSpecPath>
   <!-- Check Value Functions -->
+  <HasElements>
+    <summary>
+      Checks for array elements.
+    </summary>
+    <param name="$array">The array object.</param>
+    <code>
+      // Checks for array elements.
+      private static function HasElements()
+      {
+        $array = [];
+        $value = LJC::HasElements($array);
+        $result = $value ? "true" : "false";
+
+        // result:
+        // false
+      }
+    </code>
+    <returns>
+      true if the object is an array and has elements; otherwise false.
+    </returns>
+  </HasElements>
+  <HasItems>
+    <summary>
+      Checks for collection items.
+    </summary>
+    <param name="$collection">The collection object.</param>
+    <returns>
+      true if the object is a collection and has items; otherwise false.
+    </returns>
+    <code>
+    class Names extends LJCCollectionBase
+    {
+      public function Add(string $text)
+      {
+        $this->AddItem($text);
+      }
+
+      public string $Name;
+    }
+
+      // Checks for collection items.
+      private static function HasItems()
+      {
+        $names = new Names();
+        $names->Add("First");
+
+        $value = LJC::HasItems($names);
+        $result = $value ? "true" : "false";
+
+        // result:
+        // true
+      }
+    </code>
+  </HasItems>
+  <HasValue>
+    <summary>
+      Checks for text.
+    </summary>
+    <param name="$text">The text value.</param>
+    <returns>
+      true if the text has other than white space; otherwise false;
+    </returns>
+    <code>
+      // Checks for text.
+      private static function HasValue()
+      {
+        $text = "Text";
+        $value = LJC::HasValue($text);
+        $result = $value ? "true" : "false";
+
+        // result:
+        // true
+      }
+    </code>
+  </HasValue>
+  <HasXML>
+    <summary>
+      Checks an XML element for a value.
+    </summary>
+    <param name="$xmlElement">The simple xml element.</param>
+    <returns>
+      true if the element text has other than white space; otherwise false;
+    </returns>
+    <code>
+      // Checks an XML element for a value.
+      private static function HasXML()
+      {
+        $xml = new SimpleXMLElement("<name>Name</name>");
+        $string = LJC::XMLToString($xml);
+        $value = LJC::HasXML($xml);
+        $result = $value ? "true" : "false";
+
+        // result:
+        // true
+      }
+    </code>
+  </HasXML>
   <!-- Array Functions -->
+  <RemoveString>
+    <summary>
+      Remove an element from a string array by value.
+    </summary>
+    <param name="$array">The array object.</param>
+    <param name="$value">The string value.</param>
+    <code>
+      // Remove element from string array by value.
+      private static function RemoveString()
+      {
+        $array = ["First", "Second", "Third"];
+        LJC::RemoveString($array, "Second");
+        $result = join(" ", $array);
+
+        // result:
+        // First Third
+      }
+    </code>
+  </RemoveString>
   <!-- Convert Functions -->
+  <ToArray>
+    <summary>
+      Copy collection items to an indexed array.
+    </summary>
+    <param name="$items">The collection object.</param>
+    <code>
+    class Names extends LJCCollectionBase
+    {
+      public function Add(string $text)
+      {
+        $this->AddItem($text);
+      }
+
+      public string $Name;
+    }
+      
+      // Copy collection items to an indexed array.
+      private static function ToArray()
+      {
+        $names = new Names();
+        $names->Add("First");
+        $array = LJC::ToArray($names);
+        $result = $array[0];
+
+        // result:
+        // First
+      }
+    </code>
+  </ToArray>
+  <ToBool>
+    <summary>
+      Returns a value as bool.
+    </summary>
+    <param name="$value">The object value.</param>
+    <returns>The bool value.</returns>
+    <code>
+      // Returns a value as bool.
+      private static function ToBool()
+      {
+        $text = "false";
+        $value = LJC::ToBool($text);
+        $result = $value ? "true" : "false";
+
+        // result:
+        // false
+      }
+    </code>
+  </ToBool>
+  <ToBoolInt>
+    <summary>
+      Returns a text value as an int boolean.
+    </summary>
+    <param name="$text">The text value.</param>
+    <returns>The int bool value.</returns>
+    <code>
+      // Returns a text value as int boolean.
+      private static function ToBoolInt()
+      {
+        $text = "false";
+        $value = LJC::ToBoolInt($text);
+        $result = strval($value);
+
+        // result:
+        // 0
+      }
+    </code>
+  </ToBoolInt>
+  <XMLToString>
+    <summary>
+      Gets a string value from the XML element.
+    </summary>
+    <param name="$xmlValue">The XML element.</param>
+    <param name="$trim">Indicates if the values should be trimmed.</param>
+    <returns>The XML string content value.</returns>
+    <code>
+      // Gets a string value from the XML value.
+      private static function XMLToString()
+      {
+        $xml = new SimpleXMLElement("<name>Name</name>");
+        $result = LJC::XMLToString($xml);
+
+        // result:
+        // Name
+      }
+    </code>
+  </XMLToString>
   <!-- Output Functions -->
   <GetLogObjectText>
     <summary>
@@ -162,6 +509,25 @@
     <param name="$location">The debug location.</param>
     <param name="$value">The value.</param>
     <param name="$bracket">The optional bracket flag.</param>
+    <code>
+      // Gets the object debug text.
+      private static function GetLogObjectText()
+      {
+        $className = "CommonTest";
+        $methodName = "GetLogObjectText";
+        $valueName = "\$value";
+        $location = LJC::Location($className, $methodName, $valueName);
+
+        // Example Method
+        $object = "Test";
+        $result = LJC::GetLogObjectText($location, $object);
+
+        // result;
+        // 
+        // CommonTest.GetLogObjectText $value:
+        // Test
+      }
+    </code>
   </GetLogObjectText>
   <Location>
     <summary>
@@ -170,6 +536,19 @@
     <param name="$className">The debug class name.</param>
     <param name="$methodName">The debug method name.</param>
     <param name="$valueName">The value name.</param>
+    <code>
+      // Gets the location string.
+      private static function Location()
+      {
+        $className = "CommonTest";
+        $methodName = "GetLogObjectText";
+        $valueName = "\$value";
+        $result = LJC::Location($className, $methodName, $valueName);
+
+        // result:
+        // CommonTest.GetLogObjectText $value:
+      }
+    </code>
   </Location>
   <OutputLog>
     <summary>
@@ -178,6 +557,22 @@
     <param name="$lineNumber">The debug line number.</param>
     <param name="$valueName">The value name.</param>
     <param name="$value">The value.</param>
+    <code>
+      // Outputs the value debug text.
+      private static function OutputLog()
+      {
+        $methodName = "OutputLog";
+
+        $valueName = "\$value";
+        $value = "Test";
+        $lineNumber = __line__;
+        $output = LJC::OutputLog($lineNumber, $valueName, $value, output: false);
+
+        // output:
+        // 
+        // 123 $value = Test
+      }
+    </code>
   </OutputLog>
   <OutputLogCompare>
     <summary>
@@ -187,6 +582,32 @@
     <param name="$result">The result value.</param>
     <param name="$compare">The compare to value.</param>
     <param name="$bracket">The optional bracket flag.</param>
+    <code>
+    // Outputs the test compare text.
+      private static function OutputLogCompare()
+      {
+        $methodName = "OutputLogCompare()";
+
+        $result = "Test";
+
+        $compare = "Test";
+        $output = LJC::OutputLogCompare($methodName, $result, $compare
+          , output: false);
+
+        // output:
+
+        $compare = "Te st";
+        $output = LJC::OutputLogCompare($methodName, $result, $compare
+          , output: false);
+          
+        // output:  
+        // 
+        // OutputLogCompare()
+        // Test
+        //  !=
+        // Te st
+      }
+    </code>
   </OutputLogCompare>
   <OutputLogObject>
     <summary>
@@ -198,6 +619,38 @@
     <param name="$valueName">The value name.</param>
     <param name="$value">The value.</param>
     <param name="$bracket">The optional bracket flag.</param>
+    <code>
+    // Outputs the object debug text.
+      private static function OutputLogObject()
+      {
+        $className = "CommonTest";
+        $methodName = "OutputLogObject";
+        $valueName = "\$value";
+        $value = "Test";
+        $output = LJC::OutputLogObject(__line__, $className, $methodName, $valueName
+          , $value, isObject: false, output: false);
+
+        // output:
+        //
+        // CommonTest.OutputLogObject $value: Test
+
+        $value = (object) [
+          "Name" => "John",
+          "Number" => 5,
+        ];
+        $output = LJC::OutputLogObject(__line__, $className, $methodName, $valueName
+          , $value, output: false);
+
+        // output:
+        //
+        // CommonTest.OutputLogObject $value:
+        // stdClass Object
+        // (
+        //     [Name] => John
+        //     [Number] => 5
+        // )
+      }
+    </code>
   </OutputLogObject>
   <GetIndexedDebugFileName>
 		<summary>Gets the indexed Debug file name.</summary>
@@ -215,14 +668,11 @@
 			index value of 1.
 		</remarks>
 		<code>
-      include_once "LJCRoot.php";
-      $prefix = RelativePrefix();
-      include_once "$prefix/LJCPHPCommon/LJCCollectionLib.php";
+      $result = LJCCommon::GetIndexedDebugFileName("Debug", "SourceFile.php");
 
-		  // $debugFileSpec = "Debug\SourceFile1.txt"
-		  $debugFileSpec = LJCCommon::GetIndexedDebugFileName("Debug"
-		 	  , "SourceFile.php");
-		</code>
+      // result:
+      // Debug\SourceFile1.txt
+    </code>
 	</GetIndexedDebugFileName>
 	<SetSessionValue>
 		<summary>Assigns a session value and returns the value.</summary>
@@ -230,12 +680,10 @@
 		<param name="$value">The session value.</param>
 		<returns>The session value.</returns>
 		<code>
-      include_once "LJCRoot.php";
-      $prefix = RelativePrefix();
-      include_once "$prefix/LJCPHPCommon/LJCCollectionLib.php";
-
-		  // $dbServer = "localhost"
-		  $dbServer = LJCCommon::SetSessionValue("dbServer", "localhost");
+		  $result = LJCCommon::SetSessionValue("dbServer", "localhost");
+      
+      // result:
+      // localhost
 		</code>
 	</SetSessionValue>
   <GetDebugFileName>
@@ -249,12 +697,10 @@
       "txt".
     </remarks>
     <code>
-      // Must refer to exact same file everywhere in codeline.
-      // Path: LJCPHPProjectsDev/GenDoc/LJCDocDataLib
-      require_once "../../LJCPHPCommon/LJCCollectionLib.php";
+      $result = LJC::GetDebugFileName("Debug", "SourceFile.php");
 
-      // $debugFileSpec = "Debug\SourceFile.txt"
-      $debugFileSpec = LJCCommon::GetDebugFileName("Debug", "SourceFile.php");
+      // result:
+      // Debug\SourceFile.txt
     </code>
   </GetDebugFileName>
 </items>
