@@ -522,33 +522,46 @@
     /// <include path='items/OutputLog/*' file='Doc/LJCCommon.xml'/>
     /// <ParentGroup>Output</ParentGroup>
     public static function OutputLog(int $lineNumber, string $valueName = ""
-      , $value = null): void
+      , $value = null, bool $output = true): string
     {
-      echo("\r\n");
+      $retText = "";
+
       if ($lineNumber > 0)
       {
-        echo("$lineNumber");
+        $retText .= "{$lineNumber}";
       }
       if (self::HasValue($valueName))
       {
-        echo(" {$valueName}");
+        $retText .= " {$valueName}";
         if ($value != null)
         {
-          echo(" = ");
+          $retText .= " = ";
         }
       }
       if ($value != null)
       {
-        echo("{$value}");
+        $retText .= "{$value}";
       }
+
+      if (LJC::HasValue($retText))
+      {
+        $retText = "\r\n{$retText}";
+      }
+      if ($output)
+      {
+        echo($retText);
+      }
+      return $retText;
     }
 
     // Outputs the test compare text.
     /// <include path='items/OutputLogCompare/*' file='Doc/LJCCommon.xml'/>
     /// <ParentGroup>Output</ParentGroup>
     public static function OutputLogCompare(string $methodName, string $result
-      , string $compare, bool $bracket = false): void
+      , string $compare, bool $bracket = false, bool $output = true): string
     {
+      $retText = "";
+
       if (!self::HasValue($result))
       {
         $result = "No Result";
@@ -565,11 +578,21 @@
         {
           $bracketChar = "|";
         }
-        echo("\r\n{$methodName}\r\n");
-        echo("{$bracketChar}{$result}{$bracketChar}\r\n");
-        echo(" !=\r\n");
-        echo("{$bracketChar}{$compare}{$bracketChar}\r\n");
+        // *** Begin ***
+        //echo("\r\n{$methodName}\r\n");
+        //echo("{$bracketChar}{$result}{$bracketChar}\r\n");
+        //echo(" !=\r\n");
+        //echo("{$bracketChar}{$compare}{$bracketChar}\r\n");
+        $retText = "\r\n{$methodName}\r\n";
+        $retText .= "{$bracketChar}{$result}{$bracketChar}\r\n";
+        $retText .= " !=\r\n";
+        $retText .= "{$bracketChar}{$compare}{$bracketChar}\r\n";
+        if ($output)
+        {
+          echo($retText);
+        }
       }
+      return $retText;
     }
 
     // Outputs the object debug text.
@@ -577,12 +600,18 @@
     /// <ParentGroup>Output</ParentGroup>
     public static function OutputLogObject(int $lineNumber, string $className
       , string $methodName, string $valueName, $value = null, $isObject = true
-      , bool $bracket = false): void
+      , bool $bracket = false, bool $output = true): string
     {
+      $retText = "";
+
       $location = LJC::Location($className, $methodName, $valueName);
-      $output = LJC::GetLogObjectText($location, $value, isObject: $isObject
+      $retText = LJC::GetLogObjectText($location, $value, isObject: $isObject
         , bracket: $bracket);
-      LJC::OutputLog($lineNumber, $valueName, $output);
+      if ($output)
+      {
+        $retText = LJC::OutputLog($lineNumber, $valueName, $retText);
+      }
+      return $retText;
     }
   } // LJCCommon
 

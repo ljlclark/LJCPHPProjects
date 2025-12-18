@@ -23,9 +23,14 @@
       $prefix = RelativePrefix();
       include_once "$prefix/LJCPHPCommon/LJCCollectionLib.php";
 
-      // $text = "here"
-      $text = LJCCommon::GetDelimitedString("This | here |.", "|", "|");
-    </code>
+      $text = "This | here |.";
+      $beginDelimiter = "|";
+      $endDelimiter = "|";
+      $result = LJC::GetDelimitedString($text, $beginDelimiter, $endDelimiter);
+
+      // result:
+      // here
+     </code>
   </GetDelimitedString>
   <Scrub>
     <summary>Returns a scrubbed external value.</summary>
@@ -40,8 +45,10 @@
       $prefix = RelativePrefix();
       include_once "$prefix/LJCPHPCommon/LJCCollectionLib.php";
 
-      // $text = "&amp;amp;lt;tag&amp;amp;gt;"
-      $text = LJCCommon::Scrub(" &amp;lt;/tag&amp;gt; ");
+      $result = LJC::Scrub(" &amp;lt;/tag&amp;gt; ");
+
+      // result:
+      // "&amp;amp;lt;/tag&amp;amp;gt;"
     </code>
   </Scrub>
   <StrPos>
@@ -63,11 +70,15 @@
       $prefix = RelativePrefix();
       include_once "$prefix/LJCPHPCommon/LJCCollectionLib.php";
 
-		  // $index = 5
-		  $index = LJCCommon::StrPos("This here.", "Here");
+		  $result = LJCCommon::StrPos("This here.", "Here");
 
-		  // $index = -1
-		  $index = LJCCommon::StrPos("This here.", "Here", exact: true);
+      // result:
+      // 5
+
+		  $result = LJCCommon::StrPos("This here.", "Here", exact: true);
+      
+      // result:
+      // -1
 		</code>
 	</StrPos>
 	<StrRPos>
@@ -89,11 +100,15 @@
       $prefix = RelativePrefix();
       include_once "$prefix/LJCPHPCommon/LJCCollectionLib.php";
 
-		  // $index = 13
-		  $index = LJCCommon::StrRPos("This here is here.", "Here");
+		  $result = LJCCommon::StrRPos("This here is here.", "Here");
 
-		  // $index = -1
-		  $index = LJCCommon::StrRPos("This here is here.", "Here", exact: true);
+      // result:
+      // 13
+
+		  $result = LJCCommon::StrRPos("This here is here.", "Here", exact: true);
+      
+      // result:
+      // -1
 		</code>
 	</StrRPos>
   <!-- File Name Functions -->
@@ -112,8 +127,10 @@
       $prefix = RelativePrefix();
       include_once "$prefix/LJCPHPCommon/LJCCollectionLib.php";
 
-      // $text = "File"
-      $text = LJCCommon::GetFileName("../Folder/File.txt");
+      $result = LJCCommon::GetFileName("../Folder/File.txt");
+      
+      // result:
+      // File
     </code>
   </GetFileName>
 	<GetFileSpecPath>
@@ -128,9 +145,11 @@
       $prefix = RelativePrefix();
       include_once "$prefix/LJCPHPCommon/LJCCollectionLib.php";
 
-		  // $text = "../Folder"
-		  $text = LJCCommon::GetFileSpecPath("../Folder/File.txt");
-		</code>
+      $result = LJCCommon::GetFileSpecPath("../Folder/File.txt");
+
+      // result:
+      // ../Folder
+    </code>
 	</GetFileSpecPath>
   <!-- Check Value Functions -->
   <!-- Array Functions -->
