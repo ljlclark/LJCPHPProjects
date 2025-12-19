@@ -4,7 +4,11 @@
   // LJCCollectionLib.php
   declare(strict_types=1);
 
-  /// <summary>Contains Classes to represent a Collection.</summary>
+  // Contains Classes to represent a Collection.
+  /// <include path='items/LJCCollectionLib/*' file='Doc/LJCCollectionBase.xml'/>
+  // The LibName: XML comment triggers the file (library) HTML page generation.
+  // It generates a page with the same name as the library.
+  // LJCCollectionLib.html
   /// LibName: LJCCollectionLib
   // Classes: LJCCollectionBase
 
@@ -15,6 +19,9 @@
   /// <group name="Other">Other Methods</group>
   //    GetKeys(), GetValues(), HasKey(), count()
   /// <include path='items/LJCCollectionBase/*' file='Doc/LJCCollectionBase.xml'/>
+  // The class triggers the class HTML page generation.
+  // It generates a page with the same name as the class.
+  // LJCCollectionBase/LJCCollectionBase.html
   class LJCCollectionBase implements IteratorAggregate, Countable
   {
     // ---------------
@@ -23,6 +30,9 @@
     // Adds an object and key value.
     /// <include path='items/AddItem/*' file='Doc/LJCCollectionBase.xml'/>
     /// <ParentGroup>Data</ParentGroup>
+    // The method triggers the method HTML page generation.
+    // It generates a page with the name class plus method.
+    // LJCCollectionBase/LJCCollectionBaseAddItem.html
     protected function AddItem($item, $key = null)
     {
       $retValue = $item;

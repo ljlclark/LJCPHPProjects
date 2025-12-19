@@ -3,9 +3,23 @@
 <!-- Licensed under the MIT License. -->
 <!-- LJCTextBuilder.xml -->
 <items>
+  <!-- The XML file for the first file class contains the library comments. -->
+  <LJCTextBuilderLib>
+    <summary>
+      The Text Builder PHP Class Library
+    </summary>
+    <remarks>
+      Use this code to include the Text Builder lib classes.
+      &lt;pre&gt;
+      declare(strict_types=1);
+      include_once "LJCRoot.php";
+      $prefix = RelativePrefix();
+      include_once "$prefix/LJCPHPCommon/LJCTextBuilderLib.php";&lt;/pre&gt;
+    </remarks>
+  </LJCTextBuilderLib>
   <LJCTextBuilder>
     <summary>
-      Represents a built string value.
+      Represents a built string value?
     </summary>
     <remarks>
       The LJCTextBuilder class is designed for creating text. It can also be

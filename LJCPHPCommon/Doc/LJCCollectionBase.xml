@@ -2,6 +2,20 @@
 <!-- Copyright (c) Lester J. Clark 2022 - All Rights Reserved -->
 <!-- LJCCollectionBase.xml -->
 <items>
+  <!-- The XML file for the first file class contains the library comments. -->
+  <LJCCollectionLib>
+    <summary>
+      Contains Classes to represent a Collection.
+    </summary>
+    <remarks>
+      Use this code to include the Collection lib classes.
+      &lt;pre&gt;
+      declare(strict_types=1);
+      include_once "LJCRoot.php";
+      $prefix = RelativePrefix();
+      include_once "$prefix/LJCPHPCommon/LJCCollectionLib.php";&lt;/pre&gt;
+    </remarks>
+  </LJCCollectionLib>
 	<LJCCollectionBase>
 		<summary>Represents a Collection of objects.</summary>
 		<remarks>
@@ -21,8 +35,9 @@
 			The strongly typed collection class would also provide a Retrieve() method
 			that could retrieve the internal array element by key.
 			&lt;/p&gt;
-			For an example of how this works, see class: LJCDBAccessLib-LJCDbColumns.
-		</remarks>
+      For an example of how this works, see class: LJCDBAccessLib-LJCDbColumns.
+      Use this code to include the Collection lib classes.
+    </remarks>
 	</LJCCollectionBase>
 	
 	<!-- Public Methods -->

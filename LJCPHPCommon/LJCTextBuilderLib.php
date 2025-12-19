@@ -15,7 +15,11 @@
   // LJCDebugLib: LJCDebug
   // LJCTextLib: LJCWriter
 
-  /// <summary>The Common Text Output Class Library</summary>
+  // The Common PHP Text Builder Class Library
+  /// <include path='items/LJCTextBuilderLib/*' file='Doc/LJCTextBuilder.xml'/>
+  // The LibName: XML comment triggers the file (library) HTML page generation.
+  // It generates a page with the same name as the library.
+  // LJCTextBuilderLib.html
   /// LibName: LJCTextBuilderLib
   //  Classes: LJCAttribute, LJCAttributes, LJCTextBuilder, LJCTextState
 
@@ -30,6 +34,9 @@
     // Creates a typed data object from a standard object.
     /// <include path='items/Copy/*' file='Doc/LJCAttribute.xml'/>
     /// <ParentGroup>Static</ParentGroup>
+    // The method triggers the method HTML page generation.
+    // It generates a page with the name class plus method.
+    // LJCAttribute/LJCAttributeCopy.html
     public static function Copy($item)
     {
       // Static method output logging.
@@ -88,6 +95,9 @@
     // Properties
 
     /// <summary>The item name.</summary>
+    // The property triggers the property HTML page generation.
+    // It generates a page with the same name as the class plus property.
+    // LJCAttribute/LJCAttribute$Name.html
     public ?string $Name;
 
     /// <summary>The item value.</summary>

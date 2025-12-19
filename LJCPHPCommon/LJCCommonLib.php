@@ -4,7 +4,11 @@
   // LJCCommonLib.php
   declare(strict_types=1);
 
-  /// <summary>The Common PHP Class Library</summary>
+  // The Common PHP Class Library
+  /// <include path='items/LJCCommonLib/*' file='Doc/LJCCommon.xml'/>
+  // The LibName: XML comment triggers the file (library) HTML page generation.
+  // It generates a page with the same name as the library.
+  // LJCCommonLib.html
   /// LibName: LJCCommonLib
   // Classes: LJC
 
@@ -23,7 +27,11 @@
   /// <group name="Output">Output Functions</group>
   //    GetLogObjectText(), Location(), OutputLog(), OutputLogCompare(),
   //    OutputLogObject()
-  /// <summary>Contains common functions.</summary>
+  // Contains common PHP functions.
+  /// <include path='items/LJC/*' file='Doc/LJCCommon.xml'/>
+  // The class triggers the class HTML page generation.
+  // It generates a page with the same name as the class.
+  // LJC/LJC.html
   class LJC
   {
     // ---------------
@@ -32,6 +40,9 @@
     // Creates JSON from the provided value.
     /// <include path='items/CreateJSON/*' file='Doc/LJCCommon.xml'/>
     /// <ParentGroup>String</ParentGroup>
+    // The method triggers the method HTML page generation.
+    // It generates a page with the name class plus method.
+    // LJC/LJCCreateJSON.html
     public static function CreateJSON($value): string
     {
       $retJSON = "";
