@@ -19,7 +19,7 @@
   </LJCTextBuilderLib>
   <LJCTextBuilder>
     <summary>
-      Represents a built string value?
+      Represents a built string value
     </summary>
     <remarks>
       The LJCTextBuilder class is designed for creating text. It can also be

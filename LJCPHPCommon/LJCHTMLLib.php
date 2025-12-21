@@ -8,12 +8,14 @@
   include_once "$prefix/LJCPHPCommon/LJCTextBuilderLib.php";
   // LJCTextBuilderLib: LJCAttributes, LJCTextBuilder, LJCTextState
 
-  /// <summary>The HTML Section Class Library</summary>
+  // The HTML Section Class Library
+  /// <include path='items/LJCHTMLLib/*' file='Doc/LJCHTML.xml'/>
   /// LibName: LJCHTMLLib
   //  Classes: LJCHTML
 
   // ********************
   /// <summary>Provides methods for creating HTML sections.</summary>
+  /// <include path='items/LJCHTML/*' file='Doc/LJCHTML.xml'/>
   /// <group name="Element">Create Elements</group>
   //    GetBeginSelector(), GetLink(), GetMeta(), GetMetas(), GetScript()
   /// <group name="HTML">Create HTML</group>

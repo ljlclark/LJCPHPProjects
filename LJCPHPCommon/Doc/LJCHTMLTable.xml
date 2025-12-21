@@ -3,6 +3,25 @@
 <!-- Licensed under the MIT License. -->
 <!-- LJCHTMLTable.xml -->
 <items>
+  <!-- The XML file for the first file class contains the library comments. -->
+  <LJCHTMLTableLib>
+    <summary>
+      The HTML Object Table Class Library
+    </summary>
+    <remarks>
+      Use this code to include the Collection lib classes.
+      &lt;pre&gt;
+      declare(strict_types=1);
+      include_once "LJCRoot.php";
+      $prefix = RelativePrefix();
+      include_once "$prefix/LJCPHPCommon/LJCHTMLTableLib.php";&lt;/pre&gt;
+    </remarks>
+  </LJCHTMLTableLib>
+  <LJCHTMLTable>
+    <summary>
+      Provides methods to create an object HTML Table.
+    </summary>
+  </LJCHTMLTable>
   <CollectionHeadings>
     <summary>
       Create table headings from a Collection Object.
@@ -19,15 +38,6 @@
     <param name="$textState">The text state object.</param>
     <returns>The HTML table.</returns>
     <code>
-      declare(strict_types=1);
-      include_once "LJCRoot.php";
-      $prefix = RelativePrefix();
-      include_once "$prefix/LJCPHPCommon/LJCTextBuilderLib.php";
-      include_once "$prefix/LJCPHPCommon/LJCHTMLTableLib.php";
-      // LJCTextBuilderLib: LJCAttribute, LJCAttributes, LJCTextBuilder
-      //   , LJCTextState
-      // LJCHTMLTableLib: LJCHTMLTable
-
       // Get Collection data table.
       private static function GetCollectionTable(LJCTextState $textState)
       {
@@ -72,15 +82,6 @@
     <param name="$textState">The text state object.</param>
     <returns>The HTML table.</returns>
     <code>
-      declare(strict_types=1);
-      include_once "LJCRoot.php";
-      $prefix = RelativePrefix();
-      include_once "$prefix/LJCPHPCommon/LJCTextBuilderLib.php";
-      include_once "$prefix/LJCPHPCommon/LJCHTMLTableLib.php";
-      // LJCTextBuilderLib: LJCAttribute, LJCAttributes, LJCTextBuilder
-      //   , LJCTextState
-      // LJCHTMLTableLib: LJCHTMLTable
-
       // Get Collection data table.
       private static function GetCollectionTable(LJCTextState $textState)
       {

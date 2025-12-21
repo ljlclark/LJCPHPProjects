@@ -10,12 +10,14 @@
   // LJCCommonLib: LJCCommon
   // LJCTextBuilderLib: LJCAttribute, LJCAttributes, LJCTextBuilder
 
-  /// <summary>The HTML Object Table Class Library</summary>
+  // The HTML Object Table Class Library
+  /// <include path='items/LJCHTMLTableLib/*' file='Doc/LJCHTMLTable.xml'/>
   /// LibName: LJCHTMLTableLib
   //  Classes: LJCHTMLTable
 
   // ********************
-  /// <summary>Provides methods to create an object HTML Table.</summary>
+  // Provides methods to create an object HTML Table.
+  /// <include path='items/LJCHTMLTable/*' file='Doc/LJCHTMLTable.xml'/>
   /// <group name="Collection">Collection</group>
   //    CollectionHeadings(), CollectionHTML(), CollectionRows()
   /// <group name="Objects">Array of Objects</group>

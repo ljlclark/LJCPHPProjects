@@ -95,6 +95,7 @@
     // Gets beginning of style selector.
     private static function GetBeginSelector()
     {
+      // Root Method Begin
       $textState = new LJCTextState();
 
       // Example Method:

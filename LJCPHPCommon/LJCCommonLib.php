@@ -471,47 +471,18 @@
     // ---------------
     // Output Functions
 
-    // Gets the object debug text.
-    /// <include path='items/GetLogObjectText/*' file='Doc/LJCCommon.xml'/>
-    /// <ParentGroup>Output</ParentGroup>
-    public static function GetLogObjectText(string $location, $object
-      , bool $isObject = true, bool $bracket = false): string
-    {
-      $retDebugText = "";
-
-      if ($location != null)
-      {
-        $retDebugText = "\r\n{$location}";
-      }
-      if ($object != null)
-      {
-        if ($isObject)
-        {
-          $retDebugText .= "\r\n";
-        }
-        else
-        {
-          $retDebugText .= " ";
-        }
-        $debugObject = print_r($object, true);
-        $bracketChar = null;
-        if ($bracket)
-        {
-          $bracketChar = "|";
-        }
-        $retDebugText .= "{$bracketChar}{$debugObject}{$bracketChar}";
-      }
-      return $retDebugText;
-    }
-
     // Gets the location string.
     /// <include path='items/Location/*' file='Doc/LJCCommon.xml'/>
     /// <ParentGroup>Output</ParentGroup>
-    public static function Location(string $className, string $methodName
-      , $valueName = null): string
+    public static function Location(int $lineNumber, string $className
+      , string $methodName, $valueName = null): string
     {
       $retLocation = "";
 
+      if ($lineNumber > 0)
+      {
+        $retLocation .= "{$lineNumber} ";
+      }
       if (LJC::HasValue($className))
       {
         $retLocation .= $className;
@@ -531,42 +502,6 @@
         $retLocation .= ":";
       }
       return $retLocation;
-    }
-
-    // Outputs the value debug text.
-    /// <include path='items/OutputLog/*' file='Doc/LJCCommon.xml'/>
-    /// <ParentGroup>Output</ParentGroup>
-    public static function OutputLog(int $lineNumber, string $valueName = ""
-      , $value = null, bool $output = true): string
-    {
-      $retText = "";
-
-      if ($lineNumber > 0)
-      {
-        $retText .= "{$lineNumber}";
-      }
-      if (self::HasValue($valueName))
-      {
-        $retText .= " {$valueName}";
-        if ($value != null)
-        {
-          $retText .= " = ";
-        }
-      }
-      if ($value != null)
-      {
-        $retText .= "{$value}";
-      }
-
-      if (LJC::HasValue($retText))
-      {
-        $retText = "\r\n{$retText}";
-      }
-      if ($output)
-      {
-        echo($retText);
-      }
-      return $retText;
     }
 
     // Outputs the test compare text.
@@ -610,23 +545,174 @@
       return $retText;
     }
 
-    // Outputs the object debug text.
-    /// <include path='items/OutputLogObject/*' file='Doc/LJCCommon.xml'/>
-    /// <ParentGroup>Output</ParentGroup>
-    public static function OutputLogObject(int $lineNumber, string $className
-      , string $methodName, string $valueName, $value = null, $isObject = true
-      , bool $bracket = false, bool $output = true): string
+    // Shows the first difference between two strings.
+    public static function ShowFirstDiff(string $result, string $compare)
+    {
+      $newResult = self::ShowWhiteSpace($result);
+      $newCompare = self::ShowWhiteSpace($compare);
+      $currentIndex = -1;
+      $currentResult = "";
+      $currentCompare = "";
+      for ($index = 0; $index < strlen($newResult); $index++)
+      {
+        $from = $newResult[$index];
+        $to = $newCompare[$index];
+        $currentIndex++;
+        $currentResult .= $from;
+        $currentCompare .= $to;
+
+        if ($from != $to)
+        {
+          echo("\r\n");
+
+          echo(str_repeat(" ", $currentIndex - 1));
+          echo("|");
+          echo("\r\n{$currentResult}");
+          echo("\r\n{$currentCompare}");
+          echo("\r\n{$index} {$from} != {$to}");
+          break;
+        }
+
+        if ("n" == $from
+          && "\\" == $newResult[$index -1])
+        {
+          echo($currentResult);
+          echo($currentCompare);
+          $currentIndex = -1;
+          $currentResult = "";
+          $currentCompare = "";
+        }
+      }
+    }
+
+    // Return a string that shows the whitespace.
+    public static function ShowWhiteSpace(string $text)
+    {
+      $retText = str_replace("\r", "\\r", $text);
+      $retText = str_replace("\n", "\\n\n", $retText);
+      $retText = str_replace("\t", "\\t", $retText);
+      return $retText;
+    }
+  } // LJC
+
+  class Output
+  {
+    public function __construct(string $className, string $methodName)
+    {
+      $this->ClassName = $className;
+      $this->MethodName = $methodName;
+      $this->Bracket = false;
+    }
+
+    // Gets the object text.
+    public function GetLogText(string $location, $value
+      , bool $isObject = true): string
+    {
+      $retDebugText = "";
+
+      if ($location != null)
+      {
+        $retDebugText = "\r\n{$location}";
+      }
+      if ($value != null)
+      {
+        if ($isObject)
+        {
+          $retDebugText .= "\r\n";
+        }
+        else
+        {
+          $retDebugText .= " ";
+        }
+        $debugObject = print_r($value, true);
+        $bracketChar = null;
+        if ($this->Bracket)
+        {
+          $bracketChar = "|";
+        }
+        $retDebugText .= "{$bracketChar}{$debugObject}{$bracketChar}";
+      }
+      return $retDebugText;
+    }
+
+    // Outputs the value or object text.
+    public function Log(int $lineNumber, string $valueName, $value
+      , bool $asObject = false, bool $output = true): string
     {
       $retText = "";
 
-      $location = LJC::Location($className, $methodName, $valueName);
-      $retText = LJC::GetLogObjectText($location, $value, isObject: $isObject
-        , bracket: $bracket);
-      if ($output)
+      $logObject = false;
+      if ($asObject)
       {
-        $retText = LJC::OutputLog($lineNumber, $valueName, $retText);
+        $logObject = true;
+      }
+      else
+      {
+        if (is_scalar($value))
+        {
+          $retText = $this->LogValue($lineNumber, $valueName, $value, $output);
+        }
+        else
+        {
+          $logObject = true;
+        }
+
+        if ($logObject)
+        {
+          $retText = $this->LogObject($lineNumber, $valueName, $value
+            , isObject: true, output: $output);
+        }
       }
       return $retText;
     }
-  } // LJCCommon
 
+    // Outputs the object text.
+    public function LogObject(int $lineNumber, string $valueName, $value
+      , bool $isObject = true, bool $output = true): string
+    {
+      $retText = "";
+
+      $location = LJC::Location($lineNumber, $this->ClassName, $this->MethodName
+        , $valueName);
+      $retText = $this->GetLogText($location, $value, $isObject);
+      if ($output)
+      {
+        echo($retText);
+      }
+      return $retText;
+    }
+
+    // Outputs the value text.
+    public function LogValue(int $lineNumber, ?string $valueName, $value
+      , bool $output = true): string
+    {
+      $retText = "";
+
+      if ($lineNumber > 0)
+      {
+        $retText .= "{$lineNumber}";
+      }
+      $retText .= " {$valueName}";
+      if ($value != null)
+      {
+        $retText .= " = ";
+      }
+      if ($value != null)
+      {
+        $retText .= "{$value}";
+      }
+      if (LJC::HasValue($retText))
+      {
+        $retText = "\r\n{$retText}";
+      }
+      if ($output)
+      {
+        echo($retText);
+      }
+      return $retText;
+    }
+
+    public string $ClassName = "";
+    public string $MethodName = "";
+    public bool $Bracket = false;
+  }

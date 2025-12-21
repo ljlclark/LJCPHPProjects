@@ -3,6 +3,20 @@
 <!-- Licensed under the MIT License. -->
 <!-- LJCHTML.xml -->
 <items>
+  <!-- The XML file for the first file class contains the library comments. -->
+  <LJCHTMLLib>
+    <summary>
+      The HTML Section Class Library
+    </summary>
+    <remarks>
+      Use this code to include the Collection lib classes.
+      &lt;pre&gt;
+      declare(strict_types=1);
+      include_once "LJCRoot.php";
+      $prefix = RelativePrefix();
+      include_once "$prefix/LJCPHPCommon/LJCHTMLLib.php";&lt;/pre&gt;
+    </remarks>
+  </LJCHTMLLib>
   <LJCHTML>
     <summary>Provides methods for creating HTML sections.</summary>
     <remarks>
@@ -29,19 +43,23 @@
     <param name="$textState">The current text state values.</param>
     <returns>The style selector beginning.</returns>
     <code>
-      // Root Method Begin
-      $textState = new LJCTextState();
+      // Gets beginning of style selector.
+      private static function GetBeginSelector()
+      {
+        // Root Method Begin
+        $textState = new LJCTextState();
 
-      // Example Method:
-      // Starts the text with a newline if the builder already has text, param
-      // allowNewLine = true and builder text does not end with a newline.
-      // The text begins with the current indent string if param
-      // addIndent = true.
-      // Defaults: addIndent = true, allowNewLine = true.
-      $result = LJCHTML::GetBeginSelector(".name", $textState);
+        // Example Method:
+        // Starts the text with a newline if the builder already has text, param
+        // allowNewLine = true and builder text does not end with a newline.
+        // The text begins with the current indent string if param
+        // addIndent = true.
+        // Defaults: addIndent = true, allowNewLine = true.
+        $result = LJCHTML::GetBeginSelector(".name", $textState);
 
-      // result:
-      // .name {
+        // result:
+        // .name {
+      }
     </code>
   </GetBeginSelector>
   <GetLink>
@@ -52,14 +70,18 @@
     <param name="$textState">The current text state values.</param>
     <returns>The &amp;lt;Link&amp;gt; element.</returns>
     <code>
-      // Root Method Begin
-      $textState = new LJCTextState();
+      // Gets the &lt;link&gt; element for a style sheet.
+      private static function GetLink()
+      {
+        // Root Method Begin
+        $textState = new LJCTextState();
 
-      // Example Method:
-      $result = LJCHTML::GetLink("CSS/File.css", $textState);
+        // Example Method:
+        $result = LJCHTML::GetLink("CSS/File.css", $textState);
 
-      // result:
-      // &amp;lt;link href="CSS/File.css" rel="stylesheet" /&amp;gt;
+        // result:
+        // &amp;lt;link href="CSS/File.css" rel="stylesheet" /&amp;gt;
+      }
     </code>
   </GetLink>
   <GetMeta>
@@ -71,15 +93,20 @@
     <param name="$textState">The current text state values.</param>
     <returns>The &amp;lt;meta&amp;gt; element.</returns>
     <code>
-      // Root Method Begin
-      $textState = new LJCTextState();
+      // Gets a &lt;meta&gt; element.
+      private static function GetMeta()
+      {
+        // Root Method Begin
+        $textState = new LJCTextState();
 
-      // Example Method:
-      $content = "width=device-width initial-scale=1";
-      $result = LJCHTML::GetMeta("viewport", $content, $textState);
+        // Example Method:
+        $content = "width=device-width initial-scale=1";
+        $result = LJCHTML::GetMeta("viewport", $content, $textState);
 
-      // result:
-      // &amp;lt;meta name="viewport" content="width=device-width initial-scale=1" /&amp;gt;
+        // result:
+        // &amp;lt;meta name="viewport"
+        //   content="width=device-width initial-scale=1" /&amp;gt;
+      }
     </code>
   </GetMeta>
   <GetMetas>
@@ -93,17 +120,21 @@
     <param name="$charSet">The charset value.</param>
     <returns>The &amp;lt;meta&amp;gt; elements.</returns>
     <code>
-      // Root Method Begin
-      $textState = new LJCTextState();
+      // Gets common &lt;meta&gt; elements.
+      private static function GetMetas()
+      {
+        // Root Method Begin
+        $textState = new LJCTextState();
 
-      // Example Method:
-      $result = LJCHTML::GetMetas("John Q. Smith", $textState, "The Description");
+        // Example Method:
+        $result = LJCHTML::GetMetas("John Q. Smith", $textState, "A description.");
 
-      // result:
-      // &amp;lt;meta charset="utf-8" /&amp;gt;
-      // &amp;lt;meta name="description" content="The Description" /&amp;gt;
-      // &amp;lt;meta name="author" content="Johm Q. Smith" /&amp;gt;
-      // &amp;lt;meta name="viewport" content="width=device-width initial-scale=1" /&amp;gt;
+        // result:
+        // &amp;lt;meta charset="utf-8" /&amp;gt;
+        // &amp;lt;meta name="description" content="The Description" /&amp;gt;
+        // &amp;lt;meta name="author" content="Johm Q. Smith" /&amp;gt;
+        // &amp;lt;meta name="viewport" content="width=device-width initial-scale=1" /&amp;gt;
+      }
     </code>
   </GetMetas>
   <GetScript>
@@ -114,14 +145,18 @@
     <param name="$textState">The current text state values.</param>
     <returns>The &amp;lt;script&amp;gt; element.</returns>
     <code>
-      // Root Method Begin
-      $textState = new LJCTextState();
+      // Appends a &amp;lt;script&amp;gt; element for a style sheet.
+      private static function GetScript()
+      {
+        // Root Method Begin
+        $textState = new LJCTextState();
 
-      // Example Method:
-      $result = LJCHTML::GetScript("Script/File.js", $textState);
+        // Example Method:
+        $result = LJCHTML::GetScript("Script/File.js", $textState);
 
-      // result:
-      // &amp;lt;script src="Script/File.js"&amp;gt;&amp;lt;&amp;gt;
+        // result:
+        // &amp;lt;script src="Script/File.js"&amp;gt;&amp;lt;&amp;gt;
+      }
     </code>
   </GetScript>
   <!-- Create HTML Methods -->
@@ -134,24 +169,28 @@
     <param name="$fileName">The HTML file name.</param>
     <returns>The HTML beginning text.</returns>
     <code>
-      // Root Method Begin
-      $textState = new LJCTextState();
+      // Gets the HTML beginning up to and including &lt;head&gt;.
+      public static function GetHTMLBegin()
+      {
+        // Root Method Begin
+        $textState = new LJCTextState();
 
-      // Example Method:
-      $copyright = [
-        "Copyright (c) John Q. Smith and Contributors.",
-        "Licensed under the MIT License.",
-      ];
-      $fileName = "File.html";
-      $result = LJCHTML::GetHTMLBegin($textState, $copyright, $fileName);
+        $copyright = [
+          "Copyright (c) John Q. Smith and Contributors",
+          "Licensed under the MIT License.",
+        ];
 
-      // result:
-      // &amp;lt;!DOCTYPE html&amp;gt;
-      // &amp;lt;!-- Copyright (c) John Q. Smith and Conributors. --&amp;gt;
-      // &amp;lt;!-- Licensed under the MIT License. --&amp;gt;
-      // &amp;lt;!-- File.html --&amp;gt;
-      // &amp;lt;html lang="en" xmlns="http://www.w3.org/1999/xhtml"&amp;gt;
-      // &amp;lt;head&amp;gt;
+        // Example Method:
+        $result = LJCHTML::GetHTMLBegin($textState, $copyright, "File.html");
+
+        // result:
+        // &amp;lt;!DOCTYPE html&amp;gt;
+        // &amp;lt;!-- Copyright (c) John Q. Smith and Conributors. --&amp;gt;
+        // &amp;lt;!-- Licensed under the MIT License. --&amp;gt;
+        // &amp;lt;!-- File.html --&amp;gt;
+        // &amp;lt;html lang="en" xmlns="http://www.w3.org/1999/xhtml"&amp;gt;
+        // &amp;lt;head&amp;gt;
+      }
     </code>
   </GetHTMLBegin>
   <GetHTMLEnd>
@@ -161,15 +200,19 @@
     <param name="$textState">The current text state values.</param>
     <returns>The HTML end tags.</returns>
     <code>
-      // Root Method Begin
-      $textState = new LJCTextState();
+      // Gets the HTML end &lt;body&gt; and &lt;html&gt;.
+      public static function GetHTMLEnd()
+      {
+        // Root Method Begin
+        $textState = new LJCTextState();
 
-      // Example Method:
-      $result = LJCHTML::GetHTMLEnd($textState);
+        // Example Method:
+        $result = LJCHTML::GetHTMLEnd($textState);
 
-      // result:
-      // &amp;lt;/body&amp;gt;
-      // &amp;lt;/html&amp;gt;
+        // result:
+        // &amp;lt;/body&amp;gt;
+        // &amp;lt;/html&amp;gt;
+      }
     </code>
   </GetHTMLEnd>
   <GetHTMLHead>
@@ -182,20 +225,25 @@
     <param name="$description">The description.</param>
     <returns>The common HTML head elements.</returns>
     <code>
-      // Root Method Begin
-      $textState = new LJCTextState();
+      // Gets the main HTML Head elements.
+      public static function GetHTMLHead()
+      {
+        // Root Method Begin
+        $textState = new LJCTextState();
 
-      // Example Method:
-      $title = "The Title";
-      $author = "John Q. Smith";
-      $description = "The Description";
-      $result = LJCHTML::GetHTMLHead($textState, $title, $author, $description);
+        // Example Method:
+        $title = "The Title";
+        $author = "John Q. Smith";
+        $description = "The Description";
+        $result = LJCHTML::GetHTMLHead($textState, $title, $author, $description);
 
-      // result:
-      // &amp;lt;title&amp;gt;The Title&amp;lt;/title&amp;gt;r
-      // &amp;lt;meta name="description" content="The Description" /&amp;gt;
-      // &amp;lt;meta name="author" content="John Q. Smith" /&amp;gt;
-      // &amp;lt;meta name="viewport" content="width=device-width initial-scale=1" /&amp;gt;
+        // result:
+        // &amp;lt;title&amp;gt;The Title&amp;lt;/title&amp;gt;r
+        // &amp;lt;meta charset=\"utf-8\" /&amp;gt;>
+        // &amp;lt;meta name="description" content="The Description" /&amp;gt;
+        // &amp;lt;meta name="author" content="John Q. Smith" /&amp;gt;
+        // &amp;lt;meta name="viewport" content="width=device-width initial-scale=1" /&amp;gt;
+      }
     </code>
   </GetHTMLHead>
 </items>

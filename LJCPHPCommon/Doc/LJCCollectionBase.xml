@@ -47,10 +47,6 @@
 		<param name="$key">The element key.</param>
 		<returns>The added item.</returns>
 		<code>
-      include_once "LJCRoot.php";
-      $prefix = RelativePrefix();
-      include_once "$prefix/LJCPHPCommon/LJCCollectionLib.php";
-
       // Add to class that extends LJCCollectionBase
       // Adds an object and key value.
       public function AddObject(ObjectItem $item, $key = null)
@@ -60,8 +56,8 @@
           $key = $item->Name;
         }
         $retValue = $this->&lt;b&gt;AddItem&lt;/b&gt;($item, $key);
-			 return $retValue;
-		 }
+			  return $retValue;
+		  }
 		</code>
 	</AddItem>
   <DeleteItem>
@@ -69,10 +65,6 @@
     <param name="$key">The element key.</param>
     <param name="$throwError">Indicates if an error should be thrown if the key is not found.</param>
     <code>
-      include_once "LJCRoot.php";
-      $prefix = RelativePrefix();
-      include_once "$prefix/LJCPHPCommon/LJCCollectionLib.php";
-
       // Add to class that extends LJCCollectionBase
       // Deletes an item.
       public function DeleteItem($key)
@@ -86,10 +78,6 @@
     <param name="$index">The element index.</param>
     <returns>The object at the index parameter.</returns>
 		<code>
-      include_once "LJCRoot.php";
-      $prefix = RelativePrefix();
-      include_once "$prefix/LJCPHPCommon/LJCCollectionLib.php";
-
       // Add to class that extends LJCCollectionBase
       // Retrieves the item by index.
       public function RetrieveWithIndex($index)
@@ -105,10 +93,6 @@
 		<param name="$throwError">Indicates if an error should be thrown if the key is not found.</param>
 		<returns>The object with the matching key value.</returns>
 		<code>
-      include_once "LJCRoot.php";
-      $prefix = RelativePrefix();
-      include_once "$prefix/LJCPHPCommon/LJCCollectionLib.php";
-
       // Add to class that extends LJCCollectionBase
       // Retrieves the item by Key value.
       public function Retrieve($key)
@@ -123,10 +107,6 @@
 		<param name="$key">The element key.</param>
 		<returns>True if the key already exists, otherwise false.</returns>
 		<code>
-      include_once "LJCRoot.php";
-      $prefix = RelativePrefix();
-      include_once "$prefix/LJCPHPCommon/LJCCollectionLib.php";
-
 		  // $collection extends LJCCollectionBase
 		  $key = "KeyName";
 		  if ($collection->HasKey($key))
