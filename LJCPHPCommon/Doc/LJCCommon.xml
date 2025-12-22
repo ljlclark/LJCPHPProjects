@@ -608,6 +608,11 @@
     </code>
   </ShowWhiteSpace>
   <!-- Output Class Functions -->
+  <Output>
+    <summary>
+      Contains common PHP output functions.
+    </summary>
+  </Output>
   <OutputConstruct>
     <summary>
       Initializes a class instance with the provided values.
@@ -664,11 +669,13 @@
   </Location>
   <OutputLog>
     <summary>
-      Outputs the debug text.
+      Outputs the value or object text.
     </summary>
     <param name="$lineNumber">The debug line number.</param>
     <param name="$valueName">The value name.</param>
     <param name="$value">The value.</param>
+    <param name="$asObject">Indicates if outputting as an object.</param>
+    <param name="$output">Indicates if value is output.</param>
     <code>
       // Outputs the value debug text.
       private static function OutputLog()
@@ -688,14 +695,12 @@
   </OutputLog>
   <OutputLogObject>
     <summary>
-      Outputs the object debug text.
+      Outputs the object text.
     </summary>
     <param name="$lineNumber">The debug line number.</param>
-    <param name="$className">The debug class name.</param>
-    <param name="$methodName">The debug method name.</param>
     <param name="$valueName">The value name.</param>
     <param name="$value">The value.</param>
-    <param name="$bracket">The optional bracket flag.</param>
+    <param name="$output">Indicates if value is output.</param>
     <code>
       // Outputs the object debug text.
       private static function OutputLogObject()
@@ -729,6 +734,36 @@
       }
     </code>
   </OutputLogObject>
+  <OutputLogValue>
+    <summary>
+      Outputs the value text.
+    </summary>
+    <param name="$lineNumber">The debug line number.</param>
+    <param name="$valueName">The value name.</param>
+    <param name="$value">The value.</param>
+    <param name="$output">Indicates if value is output.</param>
+    <code>
+      // Outputs the value text.
+      private static function LogValue()
+      {
+        $output = new Output("CommonTest", "Output.LogValue");
+        $output->Method = "Output.LogValue";
+
+        // Cast array to stdClass object.
+        $object = (object) [
+          "Name" => "John",
+          "Number" => 5,
+        ];
+        $value = LJC::CreateJSON($object);
+        $lineNumber = __line__;
+        // Log value.
+        $result = $output->LogValue($lineNumber, "\$value", $value, output: false);
+
+        $compare = "\r\n{$lineNumber} \$value = {\"Name\":\"John\",\"Number\":5}";
+        LJC::OutputLogCompare("Output.Log()", $result, $compare);
+      }
+    </code>
+  </OutputLogValue>
   <GetIndexedDebugFileName>
     <summary>Gets the indexed Debug file name.</summary>
     <param name="$folder">The folder name.</param>

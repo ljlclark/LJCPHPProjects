@@ -633,6 +633,8 @@
     }
   } // LJC
 
+    // Contains common PHP output functions.
+    /// <include path='items/Output/*' file='Doc/LJCCommon.xml'/>
   class Output
   {
     // Initializes a class instance with the provided values.
@@ -640,6 +642,7 @@
     public function __construct(string $className)
     {
       $this->ClassName = $className;
+      $this->MethodName = "";
       $this->Bracket = false;
     }
 
@@ -707,7 +710,7 @@
     }
 
     // Outputs the value or object text.
-    /// <include path='items/Log/*' file='Doc/LJCCommon.xml'/>
+    /// <include path='items/OutputLog/*' file='Doc/LJCCommon.xml'/>
     public function Log(int $lineNumber, string $valueName, $value
       , bool $asObject = false, bool $output = true): string
     {
@@ -740,7 +743,7 @@
     }
 
     // Outputs the object text.
-    /// <include path='items/LogObject/*' file='Doc/LJCCommon.xml'/>
+    /// <include path='items/OutputLogObject/*' file='Doc/LJCCommon.xml'/>
     public function LogObject(int $lineNumber, string $valueName, $value
       , bool $isObject = true, bool $output = true): string
     {
@@ -756,7 +759,7 @@
     }
 
     // Outputs the value text.
-    /// <include path='items/LogValue/*' file='Doc/LJCCommon.xml'/>
+    /// <include path='items/OutputLogValue/*' file='Doc/LJCCommon.xml'/>
     public function LogValue(int $lineNumber, ?string $valueName, $value
       , bool $output = true): string
     {
@@ -787,11 +790,11 @@
     }
 
     /// <summary>The source class name.</summary>
-    public string $ClassName = "";
+    public string $ClassName;
 
     /// <summary>The source method name.</summary>
-    public string $MethodName = "";
+    public string $MethodName;
 
     /// <summary>Indicates if the value should be bracketed.</summary>
-    public bool $Bracket = false;
+    public bool $Bracket;
   }
