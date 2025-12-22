@@ -509,7 +509,112 @@
     </code>
   </XMLToString>
   <!-- Output Functions -->
-  <GetLogObjectText>
+  <OutputLogCompare>
+    <summary>
+      Outputs the test compare text.
+    </summary>
+    <param name="$methodName">The debug method name.</param>
+    <param name="$result">The result value.</param>
+    <param name="$compare">The compare to value.</param>
+    <param name="$bracket">The optional bracket flag.</param>
+    <code>
+      // Outputs the test compare text.
+      private static function OutputLogCompare()
+      {
+        $methodName = "OutputLogCompare()";
+
+        $result = "Test";
+
+        $compare = "Test";
+        $output = LJC::OutputLogCompare($methodName, $result, $compare
+          , output: false);
+
+        // output:
+
+        $compare = "Te st";
+        $output = LJC::OutputLogCompare($methodName, $result, $compare
+          , output: false);
+  
+        // output:
+        //
+        // OutputLogCompare()
+        // Test
+        //  !=
+        // Te st
+      }
+    </code>
+  </OutputLogCompare>
+  <HasDiff>
+    <summary>
+      Checks if two strings are different.
+    </summary>
+    <param name="$result">The result value.</param>
+    <param name="$compare">The compare to value.</param>
+    <returns>true if the strings are different; otherwise false.</returns>
+    <code>
+      // Checks if two strings are different.
+      private static function HasDiff()
+      {
+        $result = "This is the first line.\n";
+        $result .= "This is the second line.\n";
+
+        $compare = "This is the first line.\n";
+        $compare .= "This is the second line.\n";
+        if (LJC::HasDiff($result, $compare))
+        {
+          echo("\r\n\r\nHasDiff()");
+          LJC::ShowFirstDiff($result, $compare);
+        }
+      }
+    </code>
+  </HasDiff>
+  <ShowFirstDiff>
+    <summary>
+      Shows the first difference between two strings.
+    </summary>
+    <param name="$result">The result value.</param>
+    <param name="$compare">The compare to value.</param>
+    <code>
+      // Shows the first difference between two strings.
+      private static function ShowFirstDiff()
+      {
+        $result = "This is the first line.\n";
+        $result .= "This is the second line.\n";
+
+        $compare = "This is the first line.\n";
+        $compare .= "This is the second line.\n";
+        if (LJC::HasDiff($result, $compare))
+        {
+          echo("\r\n\r\nShowFirstDiff()");
+          LJC::ShowFirstDiff($result, $compare);
+        }
+      }
+    </code>
+  </ShowFirstDiff>
+  <ShowWhiteSpace>
+    <summary>
+      Returns a string that shows the whitespace.
+    </summary>
+    <param name="$text">The text value.</param>
+    <code>
+      // Returns a string that shows the whitespace.
+      private static function ShowWhiteSpace()
+      {
+        $result = LJC::ShowWhiteSpace("This is a line.\n");
+
+        $compare = "This is a line.\\n";
+        LJC::OutputLogCompare("ShowWhiteSpace()", $result, $compare);
+      }
+    </code>
+  </ShowWhiteSpace>
+  <!-- Output Class Functions -->
+  <OutputConstruct>
+    <summary>
+      Initializes a class instance with the provided values.
+    </summary>
+    <param name="$className">The source class name.</param>
+  </OutputConstruct>
+  <GetLogText>
     <summary>
       Gets the object debug text.
     </summary>
@@ -535,7 +640,7 @@
         // Test
       }
     </code>
-  </GetLogObjectText>
+  </GetLogText>
   <Location>
     <summary>
       Gets the location string.
@@ -581,41 +686,6 @@
       }
     </code>
   </OutputLog>
-  <OutputLogCompare>
-    <summary>
-      Outputs the test compare text.
-    </summary>
-    <param name="$methodName">The debug method name.</param>
-    <param name="$result">The result value.</param>
-    <param name="$compare">The compare to value.</param>
-    <param name="$bracket">The optional bracket flag.</param>
-    <code>
-      // Outputs the test compare text.
-      private static function OutputLogCompare()
-      {
-        $methodName = "OutputLogCompare()";
-
-        $result = "Test";
-
-        $compare = "Test";
-        $output = LJC::OutputLogCompare($methodName, $result, $compare
-          , output: false);
-
-        // output:
-
-        $compare = "Te st";
-        $output = LJC::OutputLogCompare($methodName, $result, $compare
-          , output: false);
-  
-        // output:
-        //
-        // OutputLogCompare()
-        // Test
-        //  !=
-        // Te st
-      }
-    </code>
-  </OutputLogCompare>
   <OutputLogObject>
     <summary>
       Outputs the object debug text.

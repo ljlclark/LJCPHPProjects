@@ -471,39 +471,6 @@
     // ---------------
     // Output Functions
 
-    // Gets the location string.
-    /// <include path='items/Location/*' file='Doc/LJCCommon.xml'/>
-    /// <ParentGroup>Output</ParentGroup>
-    public static function Location(int $lineNumber, string $className
-      , string $methodName, $valueName = null): string
-    {
-      $retLocation = "";
-
-      if ($lineNumber > 0)
-      {
-        $retLocation .= "{$lineNumber} ";
-      }
-      if (LJC::HasValue($className))
-      {
-        $retLocation .= $className;
-      }
-      if (LJC::HasValue($retLocation)
-        && LJC::HasValue($methodName))
-      {
-        $retLocation .= ".{$methodName}";
-      }
-      if (LJC::HasValue($retLocation)
-        && LJC::HasValue($valueName))
-      {
-        $retLocation .= " {$valueName}";
-      }
-      if (LJC::HasValue($retLocation))
-      {
-        $retLocation .= ":";
-      }
-      return $retLocation;
-    }
-
     // Outputs the test compare text.
     /// <include path='items/OutputLogCompare/*' file='Doc/LJCCommon.xml'/>
     /// <ParentGroup>Output</ParentGroup>
@@ -545,51 +512,122 @@
       return $retText;
     }
 
+    // Checks if two strings are different.
+    /// <include path='items/HasDiff/*' file='Doc/LJCCommon.xml'/>
+    /// <ParentGroup>Output</ParentGroup>
+    public static function HasDiff(string $result, string $compare): bool
+    {
+      $retHasDiff = false;
+
+      $showResult = self::ShowWhiteSpace($result);
+      $showCompare = self::ShowWhiteSpace($compare);
+
+      if (strlen($showResult) != strlen($showCompare))
+      {
+        $retHasDiff = true;
+      }
+      else
+      {
+        for ($index = 0; $index < strlen($showResult); $index++)
+        {
+          $from = $showResult[$index];
+          $to = $showCompare[$index];
+          if ($from != $to)
+          {
+            $retHasDiff = true;
+            break;
+          }
+        }
+      }
+      return $retHasDiff;
+    }
+
     // Shows the first difference between two strings.
+    /// <include path='items/ShowFirstDiff/*' file='Doc/LJCCommon.xml'/>
+    /// <ParentGroup>Output</ParentGroup>
     public static function ShowFirstDiff(string $result, string $compare)
     {
-      $newResult = self::ShowWhiteSpace($result);
-      $newCompare = self::ShowWhiteSpace($compare);
-      $currentIndex = -1;
-      $currentResult = "";
-      $currentCompare = "";
-      for ($index = 0; $index < strlen($newResult); $index++)
+      if (self::HasDiff($result, $compare))
       {
-        $from = $newResult[$index];
-        $to = $newCompare[$index];
-        $currentIndex++;
-        $currentResult .= $from;
-        $currentCompare .= $to;
-
-        if ($from != $to)
+        $showResult = self::ShowWhiteSpace($result);
+        $showCompare = self::ShowWhiteSpace($compare);
+        $currentIndex = -1;
+        $currentResult = "";
+        $currentCompare = "";
+        $found = false;
+        for ($index = 0; $index < strlen($showResult); $index++)
         {
-          echo("\r\n");
+          $from = $showResult[$index];
+          if ($index > strlen($showCompare) - 1)
+          {
+            // compare is shorter.
+            $to = "-";
+          }
+          else
+          {
+            $to = $showCompare[$index];
+          }
+          $currentIndex++;
+          $currentResult .= $from;
+          $currentCompare .= $to;
 
-          echo(str_repeat(" ", $currentIndex - 1));
-          echo("|");
-          echo("\r\n{$currentResult}");
-          echo("\r\n{$currentCompare}");
-          echo("\r\n{$index} {$from} != {$to}");
-          break;
+          if ($from != $to)
+          {
+            $found = true;
+            echo("\r\n\$index: {$index}");
+            echo("\r\n{$currentResult}");
+            echo("\r\n{$currentCompare}\r\n");
+            $length = $currentIndex - 1;
+            if ($length > 0)
+            {
+              //echo(str_repeat(" ", $currentIndex - 1));
+              echo(str_repeat(" ", $currentIndex));
+            }
+            echo("^\r\n");
+            echo("{$from} != {$to}");
+            break;
+          }
+
+          // Start a new line.
+          if ("n" == $from
+            && "\\" == $showResult[$index -1])
+          {
+            echo("\r\n$currentResult");
+            echo("\r\n$currentCompare");
+            $currentIndex = -1;
+            $currentResult = "";
+            $currentCompare = "";
+          }
         }
 
-        if ("n" == $from
-          && "\\" == $newResult[$index -1])
+        if (!$found
+          && $index < strlen($showCompare))
         {
-          echo($currentResult);
-          echo($currentCompare);
-          $currentIndex = -1;
-          $currentResult = "";
-          $currentCompare = "";
+            // compare is longer.
+            $from = "-";
+            $to = $showCompare[$index];
+            echo("\r\n\$index: {$index}\r\n");
+            echo("\r\n{$from}");
+            echo("\r\n{$to}\r\n");
+            $length = $currentIndex - 1;
+            if ($length > 0)
+            {
+              echo(str_repeat(" ", $currentIndex - 1));
+            }
+            echo("^\r\n");
+            echo("{$from} != {$to}");
         }
       }
     }
 
-    // Return a string that shows the whitespace.
+    // Returns a string that shows the whitespace.
+    /// <include path='items/ShowWhiteSpace/*' file='Doc/LJCCommon.xml'/>
+    /// <ParentGroup>Output</ParentGroup>
     public static function ShowWhiteSpace(string $text)
     {
       $retText = str_replace("\r", "\\r", $text);
-      $retText = str_replace("\n", "\\n\n", $retText);
+      //$retText = str_replace("\n", "\\n\n", $retText);
+      $retText = str_replace("\n", "\\n", $retText);
       $retText = str_replace("\t", "\\t", $retText);
       return $retText;
     }
@@ -597,14 +635,16 @@
 
   class Output
   {
-    public function __construct(string $className, string $methodName)
+    // Initializes a class instance with the provided values.
+    /// <include path='items/OutputConstruct/*' file='Doc/LJCCommon.xml'/>
+    public function __construct(string $className)
     {
       $this->ClassName = $className;
-      $this->MethodName = $methodName;
       $this->Bracket = false;
     }
 
     // Gets the object text.
+    /// <include path='items/GetLogText/*' file='Doc/LJCCommon.xml'/>
     public function GetLogText(string $location, $value
       , bool $isObject = true): string
     {
@@ -635,10 +675,43 @@
       return $retDebugText;
     }
 
+    // Gets the location string.
+    /// <include path='items/Location/*' file='Doc/LJCCommon.xml'/>
+    public function Location(int $lineNumber, $valueName = null): string
+    {
+      $retLocation = "";
+
+      if ($lineNumber > 0)
+      {
+        $retLocation .= "{$lineNumber} ";
+      }
+      if (LJC::HasValue($this->ClassName))
+      {
+        $retLocation .= $this->ClassName;
+      }
+      if (LJC::HasValue($retLocation)
+        && LJC::HasValue($this->MethodName))
+      {
+        $retLocation .= ".{$this->MethodName}";
+      }
+      if (LJC::HasValue($retLocation)
+        && LJC::HasValue($valueName))
+      {
+        $retLocation .= " {$valueName}";
+      }
+      if (LJC::HasValue($retLocation))
+      {
+        $retLocation .= ":";
+      }
+      return $retLocation;
+    }
+
     // Outputs the value or object text.
+    /// <include path='items/Log/*' file='Doc/LJCCommon.xml'/>
     public function Log(int $lineNumber, string $valueName, $value
       , bool $asObject = false, bool $output = true): string
     {
+      $this->MethodName = "Log";
       $retText = "";
 
       $logObject = false;
@@ -667,13 +740,13 @@
     }
 
     // Outputs the object text.
+    /// <include path='items/LogObject/*' file='Doc/LJCCommon.xml'/>
     public function LogObject(int $lineNumber, string $valueName, $value
       , bool $isObject = true, bool $output = true): string
     {
       $retText = "";
 
-      $location = LJC::Location($lineNumber, $this->ClassName, $this->MethodName
-        , $valueName);
+      $location = self::Location($lineNumber, $valueName);
       $retText = $this->GetLogText($location, $value, $isObject);
       if ($output)
       {
@@ -683,6 +756,7 @@
     }
 
     // Outputs the value text.
+    /// <include path='items/LogValue/*' file='Doc/LJCCommon.xml'/>
     public function LogValue(int $lineNumber, ?string $valueName, $value
       , bool $output = true): string
     {
@@ -712,7 +786,12 @@
       return $retText;
     }
 
+    /// <summary>The source class name.</summary>
     public string $ClassName = "";
+
+    /// <summary>The source method name.</summary>
     public string $MethodName = "";
+
+    /// <summary>Indicates if the value should be bracketed.</summary>
     public bool $Bracket = false;
   }
