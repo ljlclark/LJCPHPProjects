@@ -12,7 +12,7 @@
   // LJCCollectionLib: LJCCollectionBase
   // LJCTextLib: LJCWriter
 
-  /// <summary>The PDO Data Access Library</summary>
+  /// <summary>The SQL data access library.</summary>
   /// LibName: LJCDBAccessLib
   //  Classes: LJCConnectionValues, LJCDbAccess
   //    , LJCDbColumn, LJCDbColumns
@@ -68,11 +68,12 @@
     // Returns a data value if the element exists,	otherwise it returns null.
     /// <include path='items/GetValue/*' file='Doc/LJCDbAccess.xml'/>
     /// <ParentGroup>Static</ParentGroup>
-    public static function GetValue(array $row, string $columnName)
+    public static function GetValue(?array $row, string $columnName)
     {
       $retValue = null;
 
-      if (array_key_exists($columnName, $row)) 
+      if ($row != null
+        && array_key_exists($columnName, $row)) 
       {
         $retValue = $row[$columnName];
       }
@@ -197,7 +198,7 @@
       return $retValue;
     } // LoadTableSchema()
 
-    // Sets the $ConnectionValues property.
+    // Resets the $ConnectionValues property.
     /// <include path='items/SetConnectionValues/*' file='Doc/LJCDbAccess.xml'/>
     /// <ParentGroup>Other</ParentGroup>
     public function SetConnectionValues(string $dbServer, string $dbName

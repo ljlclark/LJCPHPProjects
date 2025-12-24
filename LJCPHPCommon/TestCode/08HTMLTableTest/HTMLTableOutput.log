@@ -1,0 +1,200 @@
+
+*** LJCHTMLTable ***
+<table style="border: 1px solid; borderspacing: 0px; cellpadding: 2px;">
+  <tr>
+    <th>Abbreviation</th>
+    <th>Description</th>
+    <th>Name</th>
+    <th>ProvinceID</th>
+    <th>RegionID</th>
+  </tr>
+  <tr>
+    <td>ZDN</td>
+    <td></td>
+    <td>Zamboanga del Norte</td>
+    <td>1</td>
+    <td>1</td>
+  </tr>
+  <tr>
+    <td></td>
+    <td></td>
+    <td>Zamboanga del Sur</td>
+    <td>2</td>
+    <td>1</td>
+  </tr>
+  <tr>
+    <td></td>
+    <td></td>
+    <td>Zamboanga Sibugay</td>
+    <td>3</td>
+    <td>1</td>
+  </tr>
+  <tr>
+    <td></td>
+    <td></td>
+    <td>Bukidnon</td>
+    <td>5</td>
+    <td>2</td>
+  </tr>
+  <tr>
+    <td></td>
+    <td></td>
+    <td>Camiguin</td>
+    <td>6</td>
+    <td>2</td>
+  </tr>
+  <tr>
+    <td></td>
+    <td></td>
+    <td>Lanao Del Norte</td>
+    <td>7</td>
+    <td>2</td>
+  </tr>
+  <tr>
+    <td></td>
+    <td></td>
+    <td>Misamis Occidental</td>
+    <td>8</td>
+    <td>2</td>
+  </tr>
+  <tr>
+    <td></td>
+    <td></td>
+    <td>Misamis Oriental</td>
+    <td>9</td>
+    <td>2</td>
+  </tr>
+  <tr>
+    <td></td>
+    <td></td>
+    <td>Compostela Valley</td>
+    <td>10</td>
+    <td>3</td>
+  </tr>
+  <tr>
+    <td></td>
+    <td></td>
+    <td>Davao del Norte</td>
+    <td>11</td>
+    <td>3</td>
+  </tr>
+  <tr>
+    <td></td>
+    <td></td>
+    <td>Davao del Sur</td>
+    <td>12</td>
+    <td>3</td>
+  </tr>
+  <tr>
+    <td></td>
+    <td></td>
+    <td>Davao Occidental</td>
+    <td>13</td>
+    <td>3</td>
+  </tr>
+  <tr>
+    <td></td>
+    <td></td>
+    <td>Davao Oriental</td>
+    <td>14</td>
+    <td>3</td>
+  </tr>
+  <tr>
+    <td></td>
+    <td></td>
+    <td>Cotabato</td>
+    <td>15</td>
+    <td>4</td>
+  </tr>
+  <tr>
+    <td></td>
+    <td></td>
+    <td>Sarangani</td>
+    <td>16</td>
+    <td>4</td>
+  </tr>
+  <tr>
+    <td></td>
+    <td></td>
+    <td>South Cotabato</td>
+    <td>17</td>
+    <td>4</td>
+  </tr>
+  <tr>
+    <td></td>
+    <td></td>
+    <td>Sultan Kudarat</td>
+    <td>18</td>
+    <td>4</td>
+  </tr>
+  <tr>
+    <td></td>
+    <td></td>
+    <td>Agusan del Norte</td>
+    <td>19</td>
+    <td>5</td>
+  </tr>
+  <tr>
+    <td></td>
+    <td></td>
+    <td>Agusan del Sur</td>
+    <td>20</td>
+    <td>5</td>
+  </tr>
+  <tr>
+    <td></td>
+    <td></td>
+    <td>Suriago del Norte</td>
+    <td>21</td>
+    <td>5</td>
+  </tr>
+  <tr>
+    <td></td>
+    <td></td>
+    <td>Suriago del Sur</td>
+    <td>22</td>
+    <td>5</td>
+  </tr>
+  <tr>
+    <td></td>
+    <td></td>
+    <td>Dinagat Islands</td>
+    <td>23</td>
+    <td>5</td>
+  </tr>
+  <tr>
+    <td></td>
+    <td></td>
+    <td>Basilan</td>
+    <td>24</td>
+    <td>6</td>
+  </tr>
+  <tr>
+    <td></td>
+    <td></td>
+    <td>Lanao del Sur</td>
+    <td>25</td>
+    <td>6</td>
+  </tr>
+  <tr>
+    <td></td>
+    <td></td>
+    <td>Maquindanao</td>
+    <td>26</td>
+    <td>6</td>
+  </tr>
+  <tr>
+    <td></td>
+    <td></td>
+    <td>Sulu</td>
+    <td>27</td>
+    <td>6</td>
+  </tr>
+  <tr>
+    <td></td>
+    <td></td>
+    <td>Tawi-Tawi</td>
+    <td>28</td>
+    <td>6</td>
+  </tr>
+</table>

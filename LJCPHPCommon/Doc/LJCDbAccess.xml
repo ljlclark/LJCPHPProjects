@@ -2,7 +2,21 @@
 <!-- Copyright (c) Lester J. Clark 2022 - All Rights Reserved -->
 <!-- LJCDbAccess.xml -->  
 <items>
-	<LJCDbAccess>
+  <!-- The XML file for the first file class contains the library comments. -->
+  <LJCHTMLLib>
+    <summary>
+      The SQL Data Access Library
+    </summary>
+    <remarks>
+      Use this code to include the Collection lib classes.
+      &lt;pre&gt;
+      declare(strict_types=1);
+      include_once "LJCRoot.php";
+      $prefix = RelativePrefix();
+      include_once "$prefix/LJCPHPCommon/LJCDBAccessLib.php";&lt;/pre&gt;
+    </remarks>
+  </LJCHTMLLib>
+  <LJCDbAccess>
 		<summary>Provides standard PDO Data Access.</summary>
 		<remarks>
 			The Data Access class encapsulates the repetitive code required to
@@ -15,27 +29,24 @@
 	<!-- Static Functions -->
 	<GetValue>
 		<summary>
-			Returns a data value if the element exists, otherwise returns null.</summary>
+			Returns a data value if the element exists.</summary>
 		<param name="$row">The data row columns.</param>
 		<param name="$columnName">The column name.</param>
-		<returns>The data value.</returns>
-		<remarks>
-			Returns null if the element does not exist.
-		</remarks>
+		<returns>The data value if the element exists; otherwise null.</returns>
 		<code>
-      include_once "LJCRoot.php";
-      $prefix = RelativePrefix();
-      include_once "$prefix/LJCPHPCommon/LJCDBAccessLib.php";
+      // See constructor for how to create $connectionValues.
+      $dbAccess = new LJCDbAccess($connectionValues);
 
-		  // See constructor for how to create $connectionValues.
-		  $dbAccess = new LJCDbAccess($connectionValues);
+      $tableName = "TableName";
+      $sql = "select ID, Name from {$tableName} where ID = 1";
+      $row = $dbAccess->Retrieve($sql);
+      $id = LJCDbAccess::GetValue($row, "ID");
+      $name = LJCDbAccess::GetValue($row, "Name");
+      $result = "{$id}, {$name}";
 
-		  $tableName = "TableName";
-		  $sql = "select ID, Name from $tableName where ID = 1";
-		  $row = $dbAccess->Retrieve($sql);
-		  $id = LJCDbAccess::GetValue($row, "ID");
-		  $name = LJCDbAccess::GetValue($row, "Name");
-		</code>
+      // result:
+      // 1, Name
+    </code>
 	</GetValue>
 
 	<!-- Constructors -->
@@ -43,17 +54,26 @@
 		<summary>Initializes a class instance.</summary>
 		<param name="$connectionValues">The Connection values.</param>
 		<code>
-      include_once "LJCRoot.php";
-      $prefix = RelativePrefix();
-      include_once "$prefix/LJCPHPCommon/LJCDBAccessLib.php";
-
-		  $database = "DatabaseName";
-		  $userID = "UserID";
-		  $password = "Password":
-		  $connectionValues = new LJCConnectionValues("localhost", $database, $userID
-			  , $password);
-		  $dbAccess = new LJCDbAccess($connectionValues);
-		</code>
+      // Initializes a class instance.
+      private static function construct(): LJCConnectionValues
+      {
+        $dbServer = "localhost";
+		    $dbName = "TestData";
+		    $userID = "root";
+		    $password = "Unifies1";
+		    $retValues = new LJCConnectionValues($dbServer, $dbName, $userID
+			    , $password);
+        if (null == $retValues
+          || $retValues->DbServer != "localhost"
+          || $retValues->DbName != "TestData"
+          || $retValues->UserID != "root"
+          || $retValues->Password != "Unifies1")
+        {
+          echo("\r\nSetConnectionValues() Connection values not set correctly.");
+        }
+        return $retValues;
+      }
+    </code>
 	</construct>
 
 	<!-- Public Data Methods -->
