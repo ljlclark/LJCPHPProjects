@@ -27,9 +27,8 @@
 			&lt;/p&gt;
 			&lt;p&gt;
 			A strongly typed collection class would extend (inherit) from this base
-			class	and add an AddObject() method that would require the strongly typed
-			object collection element. This is what makes the collection strongly
-			typed.
+			class	and include an AddObject() method that would require the strongly typed
+			object collection item. This is what makes the collection strongly typed.
 			&lt;/p&gt;
 			&lt;p&gt;
 			The strongly typed collection class would also provide a Retrieve() method
@@ -47,72 +46,382 @@
 		<param name="$key">The element key.</param>
 		<returns>The added item.</returns>
 		<code>
+      // The data object class.
+      class Name
+      {
+        public string $Name;
+      }
+
+      // The strongly typed collection class.
+      class Names Extends LJCCollectionBase
+      {
+        // Adds an object and key value.
+        // This method makes a collection strongly typed.
+        // The key defaults to a unique object property.
+        public function AddObject(Name $item, $key = null): Name
+        {
+          $retItem = $item;
+
+          if ($item != null)
+          {
+            if (null == $key
+              &amp;&amp; property_exists($item, "Name")
+              &amp;&amp; $item->Name != null
+              &amp;&amp; strlen(trim($item->Name)) > 0)
+            {
+              $key = $item->Name;
+            }
+            $retItem = $this->&lt;b&gt;AddItem&lt;/b&gt;($item, $key);
+          }
+          return $retItem;
+        }
+      }
+
       // Add to class that extends LJCCollectionBase
       // Adds an object and key value.
-      public function AddObject(ObjectItem $item, $key = null)
+      public function AddObject(Name $item, $key = null)
       {
-        if (null == $key)
-        {
-          $key = $item->Name;
-        }
-        $retValue = $this->&lt;b&gt;AddItem&lt;/b&gt;($item, $key);
-			  return $retValue;
+        $names = new Names();
+        $name = new Name();
+        $name->Name = "One";
+        $names->AddObject($name);
+        $item = $names->Retrieve("One");
+        $result = $item->Name;
+
+        // result:
+        // One
 		  }
 		</code>
 	</AddItem>
+  <ClearItems>
+    <summary>
+      Clears the collection items.
+    </summary>
+    <code>
+      // The strongly typed collection class.
+      class Names extends LJCCollectionBase
+      {
+        // Adds a string.
+        // This method makes a string collection strongly typed.
+        public function Add(string $text)
+        {
+          $retItem = $this->AddItem($text);
+          return $retItem;
+        }
+
+        // Clears the collection items.
+        public function Clear()
+        {
+          $this->ClearItems();
+        }
+      }
+      
+      // Clears the collection items.
+      private static function ClearItems()
+      {
+        $names = new Names();
+        $names->Add("First");
+        $names->Add("Second");
+        $names->Add("Third");
+
+        $names->Clear();
+        $result = $names->count();
+        
+        // result:
+        // 0
+      }
+    </code>
+  </ClearItems>
   <DeleteItem>
     <summary>Remove the item by Key value.</summary>
     <param name="$key">The element key.</param>
     <param name="$throwError">Indicates if an error should be thrown if the key is not found.</param>
     <code>
-      // Add to class that extends LJCCollectionBase
-      // Deletes an item.
-      public function DeleteItem($key)
+      // The strongly typed collection class.
+      class Names extends LJCCollectionBase
       {
-        $this->Delete("KeyName");
+        // Adds a string.
+        // This method makes a string collection strongly typed.
+        public function Add(string $text)
+        {
+          $retItem = $this->AddItem($text);
+          return $retItem;
+        }
+
+        // Remove the item by Key value.
+        public function Remove($key, bool $throwError = true)
+        {
+          $this->DeleteItem($key, $throwError);
+        }
+
+        // Retrieves the item by index.
+        public function RetrieveAtIndex($index)
+        {
+          $retItem = $this->RetrieveItemAtIndex($index);
+          return $retItem;
+        }
+      }
+      
+      // Deletes an item.
+      public function DeleteItem()
+      {
+        $names = new Names();
+        $names->Add("First");
+        $names->Add("Second");
+        $names->Add("Third");
+
+        $this->Remove(0);
+        $result = $names->RetrieveItemAtIndex(0);
+        
+        // result:
+        // Second
       }
     </code>
   </DeleteItem>
-  <RetrieveIndex>
-    <summary>Retrieves the item by index.</summary>
-    <param name="$index">The element index.</param>
-    <returns>The object at the index parameter.</returns>
-		<code>
-      // Add to class that extends LJCCollectionBase
-      // Retrieves the item by index.
-      public function RetrieveWithIndex($index)
-      {
-        $retValue = $this->&lt;b&gt;RetrieveIndex&lt;/b&gt;($key, $throwError);
-			  return $retValue;
-  	  }
-		</code>
-  </RetrieveIndex>
   <RetrieveItem>
 		<summary>Retrieves the item by Key value.</summary>
 		<param name="$key">The element key.</param>
 		<param name="$throwError">Indicates if an error should be thrown if the key is not found.</param>
 		<returns>The object with the matching key value.</returns>
 		<code>
-      // Add to class that extends LJCCollectionBase
-      // Retrieves the item by Key value.
-      public function Retrieve($key)
+      // The strongly typed collection class.
+      class Names extends LJCCollectionBase
       {
-        $retValue = $this->&lt;b&gt;RetrieveItem&lt;/b&gt;($key, $throwError);
-			  return $retValue;
-  	  }
+        // Adds a string.
+        // This method makes a string collection strongly typed.
+        public function Add(string $text)
+        {
+          $retItem = $this->AddItem($text);
+          return $retItem;
+        }
+
+        // Retrieves the item by Key value.
+        public function Retrieve($key, bool $throwError = true)
+        {
+          $retItem = $this->RetrieveItem($key, $throwError);
+          return $retItem;
+        }
+      }
+
+      // Retrieves the item by Key value.
+      private static function RetrieveItem()
+      {
+        $names = new Names();
+        $names->Add("First");
+        $names->Add("Second");
+        $names->Add("Third");
+        $result = $names->Retrieve(0);
+        
+        // result:
+        // First
+      }
 		</code>
 	</RetrieveItem>
-	<HasKey>
+  <RetrieveItemAtIndex>
+    <summary>Retrieves the item by index.</summary>
+    <param name="$index">The element index.</param>
+    <returns>The object at the index parameter.</returns>
+    <code>
+      // The strongly typed collection class.
+      class Names extends LJCCollectionBase
+      {
+        // Adds a string.
+        // This method makes a string collection strongly typed.
+        public function Add(string $text)
+        {
+          $retItem = $this->AddItem($text);
+          return $retItem;
+        }
+
+        // Retrieves the item by index.
+        public function RetrieveAtIndex($index)
+        {
+          $retItem = $this->RetrieveItemAtIndex($index);
+          return $retItem;
+        }
+      }
+
+      // Retrieves the item by index.
+      private static function RetrieveItemAtIndex()
+      {
+        $names = new Names();
+        $names->Add("First");
+        $names->Add("Second");
+        $names->Add("Third");
+        $result = $names->RetrieveAtIndex(0);
+        
+        // result:
+        // First
+      }
+    </code>
+  </RetrieveItemAtIndex>
+  <GetKeys>
+    <summary>
+      Gets an indexed array of keys.
+    </summary>
+    <returns>The indexed keys array.</returns>
+    <code>
+      // The strongly typed collection class.
+      class Names extends LJCCollectionBase
+      {
+        // Adds a string.
+        // This method makes a string collection strongly typed.
+        public function Add(string $text)
+        {
+          $retItem = $this->AddItem($text);
+          return $retItem;
+        }
+      }
+      
+      // Gets an indexed array of keys.
+      private static function GetKeys()
+      {
+        $names = new Names();
+        $names->Add("First");
+        $names->Add("Second");
+        $names->Add("Third");
+        $values = $names->GetKeys();
+        $result = join(",", $values);
+
+        // result:
+        // 0,1,2      
+      }
+    </code>
+  </GetKeys>
+  <GetValues>
+    <summary>
+      Gets an indexed array of objects.
+    </summary>
+    <returns>The indexed values array.</returns>
+    <code>
+      // The strongly typed collection class.
+      class Names extends LJCCollectionBase
+      {
+        // Adds a string.
+        // This method makes a string collection strongly typed.
+        public function Add(string $text)
+        {
+          $retItem = $this->AddItem($text);
+          return $retItem;
+        }
+      }
+
+      // Gets an indexed array of objects.
+      private static function GetValues()
+      {
+        $names = new Names();
+        $names->Add("First");
+        $names->Add("Second");
+        $names->Add("Third");
+        $values = $names->GetValues();
+        $result = join(",", $values);
+
+        // result:
+        // First,Second,Third
+      }
+    </code>
+  </GetValues> 
+  <HasKey>
 		<summary>Indicates if a key already exists.</summary>
 		<param name="$key">The element key.</param>
 		<returns>True if the key already exists, otherwise false.</returns>
 		<code>
-		  // $collection extends LJCCollectionBase
-		  $key = "KeyName";
-		  if ($collection->HasKey($key))
-		  {
-		 	  throw new Exception("Key: {$key} already in use.");
-		  }
+      // The strongly typed collection class.
+      class Names extends LJCCollectionBase
+      {
+        // Adds a string.
+        // This method makes a string collection strongly typed.
+        public function Add(string $text)
+        {
+          $retItem = $this->AddItem($text);
+          return $retItem;
+        }
+      }
+      
+      // Indicates if a key already exists.
+      private static function HasKey()
+      {
+        $names = new Names();
+        $names->Add("First");
+        $names->Add("Second");
+        $names->Add("Third");
+        $value = $names->HasKey(0);
+        $result = $value ? "true" : "false";
+
+        // result:
+        // true;
+      }
 		</code>
 	</HasKey>
+  <count>
+    <summary>
+      Enables count(object).
+    </summary>
+    <returns>The element count.</returns>
+    <code>
+      // The strongly typed collection class.
+      class Names extends LJCCollectionBase
+      {
+        // Adds a string.
+        // This method makes a string collection strongly typed.
+        public function Add(string $text)
+        {
+          $retItem = $this->AddItem($text);
+          return $retItem;
+        }
+      }
+      
+      // Indicates if a key already exists.
+      private static function HasKey()
+      {
+        $names = new Names();
+        $names->Add("First");
+        $names->Add("Second");
+        $names->Add("Third");
+        $result = count($names);
+
+        // result:
+        // 3;
+      }
+		</code>
+  </count>
+  <getIterator>
+    <summary>
+      Enables foreach().
+    </summary>
+		<code>
+      // The strongly typed collection class.
+      class Names extends LJCCollectionBase
+      {
+        // Adds a string.
+        // This method makes a string collection strongly typed.
+        public function Add(string $text)
+        {
+          $retItem = $this->AddItem($text);
+          return $retItem;
+        }
+      }
+      
+      // Indicates if a key already exists.
+      private static function HasKey()
+      {
+        $names = new Names();
+        $names->Add("First");
+        $names->Add("Second");
+        $names->Add("Third");
+        $result = "";
+        foreach ($names as $name)
+        {
+          if (strlen($result) > 0)
+          {
+            $result .= ",";
+          }
+          $result .= $name;
+        }
+
+        // result:
+        // First,Second,Third;
+      }
+		</code>
+  </getIterator>
 </items>

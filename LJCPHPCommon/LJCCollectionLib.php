@@ -105,10 +105,11 @@
     } // RetrieveItem()
 
     // Retrieves the item by index.
-    /// <include path='items/RetrieveIndex/*' file='Doc/LJCCollectionBase.xml'/>
+    /// <include path='items/RetrieveItemAtIndex/*' file='Doc/LJCCollectionBase.xml'/>
     /// <ParentGroup>Data</ParentGroup>
-    public function RetrieveWithIndex($index)
+    public function RetrieveItemAtIndex($index)
     {
+      //$output = new Output("LJCCollectionBase", "RetrieveItemAtIndex");
       $retItem = null;
 
       $keys = self::GetKeys();
@@ -123,16 +124,16 @@
     // ---------------
     // Other Methods
 
-    /// <summary>Gets an indexed array of keys.</summary>
-    /// <returns>The indexed keys array.</returns>
+    // Gets an indexed array of keys.
+    /// <include path='items/GetKeys/*' file='Doc/LJCCollectionBase.xml'/>
     /// <ParentGroup>Other</ParentGroup>
     public function GetKeys(): array
     {
       return array_keys($this->Items);
     } // GetKeys()
 
-    /// <summary>Gets an indexed array of objects.</summary>
-    /// <returns>The indexed values array.</returns>
+    // Gets an indexed array of objects.
+    /// <include path='items/GetValues/*' file='Doc/LJCCollectionBase.xml'/>
     /// <ParentGroup>Other</ParentGroup>
     public function GetValues(): array
     {
@@ -151,8 +152,8 @@
     // ----------------------
     // Countable Implementation Methods - LJCCollectionBase
 
-    /// <summary>Allows Count(object).</summary>
-    /// <returns>The element count.</returns>
+    // Enables count(object).
+    /// <include path='items/count/*' file='Doc/LJCCollectionBase.xml'/>
     /// <ParentGroup>Other</ParentGroup>
     public function count(): int
     {
@@ -162,7 +163,9 @@
     // ----------------------
     // IteratorAggregate Implementation Methods - LJCCollectionBase
 
-    /// <summary>Allows foreach()</summary>
+    // Enables foreach().
+    /// <include path='items/getIterator/*' file='Doc/LJCCollectionBase.xml'/>
+    /// <ParentGroup>Other</ParentGroup>
     public function getIterator(): Traversable
     {
       return new ArrayIterator($this->Items);
