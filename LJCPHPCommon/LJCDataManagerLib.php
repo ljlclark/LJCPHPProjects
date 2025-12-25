@@ -172,7 +172,7 @@
       return $retValue;
     } // Retrieve()
 
-    /// <summary>Creates the Load SQL.</summary>
+    /// <summary>Creates the Retrieve SQL.</summary>
     /// <ParentGroup>Data</ParentGroup>
     public function RetrieveSQL(LJCDbColumns $keyColumns
       , array $propertyNames = null, LJCJoins $joins = null)
@@ -233,7 +233,7 @@
     // Executes a Select SQL statement.
     /// <include path='items/SQLLoad/*' file='Doc/LJCDataManager.xml'/>
     /// <ParentGroup>Data</ParentGroup>
-    public function SQLLoad(sting $sql): ?array
+    public function SQLLoad(string $sql): ?array
     {
       $this->SQL = $sql;
       $retValue = $this->DbAccess->Load($this->SQL);
@@ -272,7 +272,7 @@
     public function MapNames(string $columnName, ?string $propertyName = null
       , ?string $renameAs = null, ?string $caption = null)
     {
-      $this->SchemaColumns.MapNames($columnName, $propertyName, $renameAs
+      $this->SchemaColumns->MapNames($columnName, $propertyName, $renameAs
         , $caption);
     }
 

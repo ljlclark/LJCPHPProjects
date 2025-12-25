@@ -17,7 +17,9 @@
     </remarks>
   </LJCHTMLLib>
   <LJCDbAccess>
-		<summary>Provides standard PDO Data Access.</summary>
+		<summary>
+      Provides standard PDO Data Access.
+    </summary>
 		<remarks>
 			The Data Access class encapsulates the repetitive code required to
 			perform common database functions using PDO. This reduces the amount of
@@ -34,40 +36,46 @@
 		<param name="$columnName">The column name.</param>
 		<returns>The data value if the element exists; otherwise null.</returns>
 		<code>
-      // See constructor for how to create $connectionValues.
-      $dbAccess = new LJCDbAccess($connectionValues);
+      // Returns a data value if the element exists.
+      private static function GetValue(LJCConnectionValues $connectionValues)
+      {
+        // See constructor for how to create $connectionValues.
+        $dbAccess = new LJCDbAccess($connectionValues);
 
-      $tableName = "TableName";
-      $sql = "select ID, Name from {$tableName} where ID = 1";
-      $row = $dbAccess->Retrieve($sql);
-      $id = LJCDbAccess::GetValue($row, "ID");
-      $name = LJCDbAccess::GetValue($row, "Name");
-      $result = "{$id}, {$name}";
+        $tableName = "TableName";
+        $sql = "select ID, Name from {$tableName} where ID = 1";
+        $row = $dbAccess->Retrieve($sql);
+        $id = LJCDbAccess::GetValue($row, "ID");
+        $name = LJCDbAccess::GetValue($row, "Name");
+        $result = "{$id}, {$name}";
 
-      // result:
-      // 1, Name
+        // result:
+        // 1, Name
+      }
     </code>
 	</GetValue>
 
 	<!-- Constructors -->
 	<construct>
-		<summary>Initializes a class instance.</summary>
+		<summary>
+      Initializes a class instance.
+    </summary>
 		<param name="$connectionValues">The Connection values.</param>
 		<code>
       // Initializes a class instance.
       private static function construct(): LJCConnectionValues
       {
         $dbServer = "localhost";
-		    $dbName = "TestData";
-		    $userID = "root";
-		    $password = "Unifies1";
+		    $dbName = "DatabaseName";
+		    $userID = "UserID";
+		    $password = "Password";
 		    $retValues = new LJCConnectionValues($dbServer, $dbName, $userID
 			    , $password);
         if (null == $retValues
           || $retValues->DbServer != "localhost"
-          || $retValues->DbName != "TestData"
-          || $retValues->UserID != "root"
-          || $retValues->Password != "Unifies1")
+          || $retValues->DbName != "DatabaseName"
+          || $retValues->UserID != "UserID"
+          || $retValues->Password != "Password")
         {
           echo("\r\nSetConnectionValues() Connection values not set correctly.");
         }
@@ -82,33 +90,76 @@
 		<param name="$sql">The SQL statement.</param>
 		<returns>The count of affected records.</returns>
 		<code>
-      include_once "LJCRoot.php";
-      $prefix = RelativePrefix();
-      include_once "$prefix/LJCPHPCommon/LJCDBAccessLib.php";
+      // Executes a non-query sql statement.
+      public function Execute(LJCConnectionValues $connectionValues): int
+      {
+		    // See constructor for how to create $connectionValues.
+		    $dbAccess = new LJCDbAccess($connectionValues);
 
-		  // See constructor for how to create $connectionValues.
-		  $dbAccess = new LJCDbAccess($connectionValues);
+		    $tableName = "TableName";
 
-		  $tableName = "TableName";
-		  $sql = "delete from $tableName where ID = 1";
-		  $affectedCount = $dbAccess->Execute($sql);
-		</code>
+        // Insert test record.
+        $name = "Test";
+        $sql = "insert into {$tableName}\r\n ";
+        $sql .= "(Name)\r\n ";
+        $sql .= "values('{$name}');";
+		    $affectedCount = $dbAccess->Execute($sql);
+        if (0 == $affectedCount)
+        {
+          echo("\r\nExecute() No record inserted.");
+        }
+
+        // Retrieve assigned ID.
+        $sql = "select\r\n ";
+        $sql .= "ID, Name\r\n ";
+        $sql .= "from {$tableName}\r\n ";
+        $sql .= "where Name = '{$name}';";
+        $row = $dbAccess->Retrieve($sql);
+        if ($row == null)
+        {
+          echo("\r\nExecute() select row not found");
+        }
+        $id = LJCDbAccess::GetValue($row, "ID");
+        if ($id == null)
+        {
+          echo("\r\nExecute() ID not found");
+        }
+
+        // Delete test record.
+        if ($id != null)
+        {
+		      $sql = "delete from {$tableName}\r\n ";
+          $sql .= "where ID = {$id};";
+		      $affectedCount = $dbAccess->Execute($sql);
+          if (0 == $affectedCount)
+          {
+            echo("\r\nExecute() No record found to delete.");
+          }
+        }
+      }
+    </code>
 	</Execute>
 	<Load>
 		<summary>Loads the records for the provided SQL statement.</summary>
 		<param name="$sql">The SQL statement.</param>
 		<returns>An array of data records.</returns>
 		<code>
-      include_once "LJCRoot.php";
-      $prefix = RelativePrefix();
-      include_once "$prefix/LJCPHPCommon/LJCDBAccessLib.php";
+      // Loads the records for the provided SQL statement.
+      private static function Load(LJCConnectionValues $connectionValues)
+      {
+		    // See constructor for how to create $connectionValues.
+		    $dbAccess = new LJCDbAccess($connectionValues);
 
-		  // See constructor for how to create $connectionValues.
-		  $dbAccess = new LJCDbAccess($connectionValues);
-
-		  $tableName = "TableName";
-		  $sql = "select * from $tableName";
-		  $rows = $dbAccess->Load($sql);
+		    $tableName = "TableName";
+        $sql = "select * from {$tableName};";
+        $rows = $dbAccess->Load($sql);
+        if (null == $rows
+          || (is_array($rows)
+          &amp;&amp; count($rows) == 0))
+        {
+          echo("\r\nLoad() rows not found");
+        }
+      }
 		</code>
 	</Load>
 	<Retrieve>
@@ -116,16 +167,52 @@
 		<param name="$sql">The SQL statement.</param>
 		<returns>An array of record columns.</returns>
 		<code>
-      include_once "LJCRoot.php";
-      $prefix = RelativePrefix();
-      include_once "$prefix/LJCPHPCommon/LJCDBAccessLib.php";
+      // Retrieves a record for the provided SQL statement.
+      private static function Retrieve(LJCConnectionValues $connectionValues)
+      {
+		    // See constructor for how to create $connectionValues.
+		    $dbAccess = new LJCDbAccess($connectionValues);
+		    $tableName = "TableName";
 
-		  // See constructor for how to create $connectionValues.
-		  $dbAccess = new LJCDbAccess($connectionValues);
+        // Insert test record.
+        $name = "Test";
+        $sql = "insert into {$tableName}\r\n ";
+        $sql .= "(Name)\r\n ";
+        $sql .= "values('{$name}');";
+		    $affectedCount = $dbAccess->Execute($sql);
+        if (0 == $affectedCount)
+        {
+          echo("\r\nRetrieve() No record inserted.");
+        }
 
-		  $tableName = "TableName";
-		  $sql = "select * from $tableName where ID = 1";
-		  $row = $dbAccess->Retrieve($sql);
+        // Retrieve assigned ID.
+        $sql = "select\r\n ";
+        $sql .= "ID, Name\r\n ";
+        $sql .= "from {$tableName}\r\n ";
+        $sql .= "where Name = '{$name}';";
+        $row = $dbAccess->Retrieve($sql);
+        if ($row == null)
+        {
+          echo("\r\nRetrieve() select row not found");
+        }
+        $id = LJCDbAccess::GetValue($row, "ID");
+        if ($id == null)
+        {
+          echo("\r\nRetrieve() ID not found");
+        }
+
+        // Delete test record.
+        if ($id != null)
+        {
+		      $sql = "delete from {$tableName}\r\n ";
+          $sql .= "where ID = {$id};";
+		      $affectedCount = $dbAccess->Execute($sql);
+          if (0 == $affectedCount)
+          {
+            echo("\r\nRetrieve() No record found to delete.");
+          }
+        }
+      }
 		</code>
 	</Retrieve>
 
@@ -134,18 +221,18 @@
 		<summary>Creates the PDO connection.</summary>
 		<returns>The PDO connection object.</returns>
 		<code>
-      include_once "LJCRoot.php";
-      $prefix = RelativePrefix();
-      include_once "$prefix/LJCPHPCommon/LJCDBAccessLib.php";
+      // Retrieves a record for the provided SQL statement.
+      private static function GetConnection(LJCConnectionValues $connectionValues)
+      {
+		    // See constructor for how to create $connectionValues.
+		    $dbAccess = new LJCDbAccess($connectionValues);
 
-		  // See constructor for how to create $connectionValues.
-		  $dbAccess = new LJCDbAccess($connectionValues);
-
-		  $connection = $dbAccess->GetConnection();
-		  if ($connection != null)
-		  {
-			  // Use connection to perform low level data access.
-		  }
+        $connection = $dbAccess->GetConnection();
+        if (null == $connection)
+        {
+          echo("\r\nGetConnection() The Connection was not created.");
+        }
+      }
 		</code>
 	</GetConnection>
 	<LoadTableSchema>
@@ -154,19 +241,23 @@
 		<param name="$tableName">The Table name.</param>
 		<returns>A DbColumns collection of column definitions.</returns>
 		<code>
-      include_once "LJCRoot.php";
-      $prefix = RelativePrefix();
-      include_once "$prefix/LJCPHPCommon/LJCDBAccessLib.php";
+      // Returns the Table Schema DbColumns collection.
+      private static function LoadTableSchema(
+          LJCConnectionValues $connectionValues)
+      {
+		    // See constructor for how to create $connectionValues.
+		    $dbAccess = new LJCDbAccess($connectionValues);
 
-		  // See constructor for how to create $connectionValues.
-		  $dbAccess = new LJCDbAccess($connectionValues);
-
-		  $tableName = "TableName";
-		  $dbColumns = $dbAccess->LoadTableSchema($database, $tableName);
-		  if (count($dbColumns) > 0)
-		  {
-			  // Use DbColumns data definitions.
-		  }
+		    $dbName = "DatabaseName";
+		    $tableName = "TableName";
+        $schema = $dbAccess->LoadTableSchema($dbName, $tableName);
+        if (null == $schema
+          || !$schema instanceof LJCDbColumns
+          || count($schema) == 0)
+        {
+          echo("\r\nLoadTableSchema() The Schema was not retrieved.");
+        }
+      }
 		</code>
 	</LoadTableSchema>
 	<SetConnectionValues>
@@ -176,16 +267,28 @@
 		<param name="$userID">The user name.</param>
 		<param name="$password">The user Password.</param>
 		<code>
-      include_once "LJCRoot.php";
-      $prefix = RelativePrefix();
-      include_once "$prefix/LJCPHPCommon/LJCDBAccessLib.php";
+      // Resets the $ConnectionValues property.
+      private static function SetConnectionValues(
+        LJCConnectionValues $connectionValues)
+      {
+		    // See constructor for how to create $connectionValues.
+		    $dbAccess = new LJCDbAccess($connectionValues);
 
-		  // See constructor for how to create $connectionValues.
-		  $dbAccess = new LJCDbAccess($connectionValues);
-
-		  // Change some of the object properties.
-		  $tableName = "NewTableName";
-		  $dbAccess->SetConnectionValues($database, $tableName);
+        $dbServer = "localhost";
+		    $dbName = "DatabaseName";
+		    $userID = "UserID";
+		    $password = "Password";
+        $dbAccess->SetConnectionValues($dbServer, $dbName, $userID, $password);
+        $values = $dbAccess->ConnectionValues;
+        if (null == $values
+          || $values->DbServer != "localhost"
+          || $values->DbName != "DatabaseName"
+          || $values->UserID != "UserID"
+          || $values->Password != "Password")
+        {
+          echo("\r\nSetConnectionValues() Connection values not set correctly.");
+        }
+      }
 		</code>
 	</SetConnectionValues>
 
