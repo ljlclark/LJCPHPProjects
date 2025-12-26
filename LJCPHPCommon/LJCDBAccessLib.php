@@ -647,6 +647,8 @@
     public function MapNames(string $columnName, ?string $propertyName = null
       , ?string $renameAs = null, ?string $caption = null): void
     {
+      $methodName = "MapNames()";
+
       $dbColumn = $this->Retrieve($columnName);
       if ($dbColumn != null)
       {
@@ -657,6 +659,8 @@
           $dbColumn->PropertyName = $propertyName;
           $this->DeleteItem($columnName);
           $this->AddObject($dbColumn);
+          // ***** 
+          //self::DebugItems($this, $methodName);
         }
         if ($renameAs != null)
         {
@@ -729,22 +733,24 @@
     public static function DebugItems(LJCDbColumns $dbColumns
       , string $location = null): void
     {
-      $text = "DebugLJCDbColumns:";
+      $output = new Output("LJCDbColumns");
+
+      $text = "LJCDbColumns.DebugItems:";
       if ($location != null)
       {
         $text .= " {$location}";
       }
-      LJC::OutputDebugValue(0, $text);
+      echo("\r\n");
+      $output->Log(__line__, $text, "-");
       foreach ($dbColumns as $item)
       {
-        LJC::OutputDebugValue(0, "\$item-ColumnName", $item->ColumnName);
-        LJC::OutputDebugValue(0, "\$item-PropertyName", $item->PropertyName);
+        $output->Log(__line__, "\$item-ColumnName", $item->ColumnName);
+        $output->Log(__line__, "\$item-PropertyName", $item->PropertyName);
         if ($item->Value != null)
         {
-          LJC::OutputDebugValue(0, "\$item-Value", $item->Value);
+          $output->Log(__line__, "\$item-Value", $item->Value);
         }
       }
-      LJC::OutputDebugValue();
     } // DebugItems()
 
     // Output Collection Keys information.

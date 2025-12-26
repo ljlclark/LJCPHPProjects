@@ -152,33 +152,13 @@
     // Adds the record for the provided values.
     private static function Add(LJCDataManager $manager)
     {
+      $nameValue = "NameValue";
+      $methodName = "Add()";
+
       // Add the test data.
-		  $dataColumns = new LJCDbColumns();
-		  $dataColumns->Add("Name", value:"NameValue");
-		  $value = $manager->Add($dataColumns);
-      if ($value < 1)
-      {
-        echo($manager->SQL);
-      }
-      $result = strval($value);
-
-      $compare = "1";
-      LJC::OutputLogCompare("Add()", $result, $compare);
-
-      // Retrieve the test data.
-		  $keyColumns = new LJCDbColumns();
-		  $keyColumns->Add("Name", value:"NameValue");
-      $rows = $manager->Retrieve($keyColumns);
-      if (null == $rows
-        || !is_array($rows)
-        || 0 == count($rows))
-      {
-        echo($manager->SQL);
-        echo("\r\nAdd() No data retrieved.");
-      }
-
-      // Delete the test data.
-      $value = $manager->Delete($keyColumns);
+		  $data = new LJCDbColumns();
+		  $data->Add("Name", value: $nameValue);
+		  $value = $manager->Add($data);
       if ($value > 1)
       {
         echo($manager->SQL);
@@ -186,29 +166,23 @@
       $result = strval($value);
 
       $compare = "1";
-      LJC::OutputLogCompare("Add() - Delete()", $result, $compare);
+      LJC::OutputLogCompare($methodName, $result, $compare);
+
+      self::TestRetrieve($manager, $methodName, $nameValue);
+      self::TestDelete($manager, $methodName, $nameValue);
     } // Add()
 
     // Deletes the records for the provided values.
     private static function Delete(LJCDataManager $manager)
     {
-      // Add the test data.
-		  $dataColumns = new LJCDbColumns();
-		  $dataColumns->Add("Name", value:"NameValue");
-		  $value = $manager->Add($dataColumns);
-      if ($value < 1)
-      {
-        echo($manager->SQL);
-      }
-      $result = strval($value);
-
-      $compare = "1";
-      LJC::OutputLogCompare("Delete() - Add()", $result, $compare);
+      $nameValue = "NameValue";
+      $methodName = "Delete()";
+      self::TestAdd($manager, $methodName, $nameValue);
 
       // Delete the test data.
-		  $keyColumns = new LJCDbColumns();
-		  $keyColumns->Add("Name", value:"NameValue");
-      $value = $manager->Delete($keyColumns);
+		  $keys = new LJCDbColumns();
+		  $keys->Add("Name", value: $nameValue);
+      $value = $manager->Delete($keys);
       if ($value > 1)
       {
         echo($manager->SQL);
@@ -216,29 +190,20 @@
       $result = strval($value);
 
       $compare = "1";
-      LJC::OutputLogCompare("Delete()", $result, $compare);
+      LJC::OutputLogCompare("$methodName", $result, $compare);
     } // Delete
 
     // Creates the Delete SQL.
     private static function DeleteSQL(LJCDataManager $manager)
     {
-      // Add the test data.
-		  $dataColumns = new LJCDbColumns();
-		  $dataColumns->Add("Name", value:"NameValue");
-		  $value = $manager->Add($dataColumns);
-      if ($value < 1)
-      {
-        echo($manager->SQL);
-      }
-      $result = strval($value);
+      $nameValue = "NameValue";
+      $methodName = "DeleteSQL()";
+      self::TestAdd($manager, $methodName, $nameValue);
 
-      $compare = "1";
-      LJC::OutputLogCompare("DeleteSQL() - Add()", $result, $compare);
-
-      // Delete the test data.
-		  $keyColumns = new LJCDbColumns();
-		  $keyColumns->Add("Name", value:"NameValue");
-      $sql = $manager->DeleteSQL($keyColumns);
+      // Delete with SQLExecute().
+		  $keys = new LJCDbColumns();
+		  $keys->Add("Name", value: $nameValue);
+      $sql = $manager->DeleteSQL($keys);
       $value = $manager->SQLExecute($sql);
       if ($value > 1)
       {
@@ -247,149 +212,86 @@
       $result = strval($value);
 
       $compare = "1";
-      LJC::OutputLogCompare("DeleteSQL()", $result, $compare);
+      LJC::OutputLogCompare("$methodName", $result, $compare);
     } // DeleteSQL()
 
     // Loads the records for the provided values.
     private static function Load(LJCDataManager $manager)
     {
-      // Add the test data.
-		  $dataColumns = new LJCDbColumns();
-		  $dataColumns->Add("Name", value:"NameValue");
-		  $value = $manager->Add($dataColumns);
-      if ($value < 1)
-      {
-        echo($manager->SQL);
-      }
-      $result = strval($value);
-
-      $compare = "1";
-      LJC::OutputLogCompare("Load() - Add()", $result, $compare);
+      $nameValue = "NameValue";
+      $methodName = "Load()";
+      self::TestAdd($manager, $methodName, $nameValue);
 
       // Load the test data.
-		  $keyColumns = new LJCDbColumns();
-		  $keyColumns->Add("Name", value:"NameValue");
-      $rows = $manager->Load($keyColumns);
+		  $keys = new LJCDbColumns();
+		  $keys->Add("Name", value: $nameValue);
+      $rows = $manager->Load($keys);
       if (null == $rows
         || !is_array($rows)
         || 0 == count($rows))
       {
         echo($manager->SQL);
-        echo("\r\nLoad() No data retrieved.");
+        echo("\r\n{$methodName} No data retrieved.");
       }
 
-      // Delete the test data.
-      $value = $manager->Delete($keyColumns);
-      if ($value > 1)
-      {
-        echo($manager->SQL);
-      }
-      $result = strval($value);
-
-      $compare = "1";
-      LJC::OutputLogCompare("Load() - Delete()", $result, $compare);
+      self::TestDelete($manager, $methodName, $nameValue);
     } // Load()
 
     // Creates the Load SQL.
     private static function LoadSQL(LJCDataManager $manager)
     {
-      // Add the test data.
-		  $dataColumns = new LJCDbColumns();
-		  $dataColumns->Add("Name", value:"NameValue");
-		  $value = $manager->Add($dataColumns);
-      if ($value < 1)
-      {
-        echo($manager->SQL);
-      }
-      $result = strval($value);
+      $nameValue = "NameValue";
+      $methodName = "LoadSQL()";
+      self::TestAdd($manager, $methodName, $nameValue);
 
-      $compare = "1";
-      LJC::OutputLogCompare("Load() - Add()", $result, $compare);
-
-      // Load the test data.
-		  $keyColumns = new LJCDbColumns();
-		  $keyColumns->Add("Name", value:"NameValue");
-      $sql = $manager->LoadSQL($keyColumns);
+      // Load with SQLLoad().
+		  $keys = new LJCDbColumns();
+		  $keys->Add("Name", value: $nameValue);
+      $sql = $manager->LoadSQL($keys);
       $rows = $manager->SQLLoad($sql);
       if (null == $rows
         || !is_array($rows)
         || 0 == count($rows))
       {
         echo($manager->SQL);
-        echo("\r\nLoadSQL() No data retrieved.");
+        echo("\r\n{$methodName} No data retrieved.");
       }
 
-      // Delete the test data.
-      $value = $manager->Delete($keyColumns);
-      if ($value > 1)
-      {
-        echo($manager->SQL);
-      }
-      $result = strval($value);
-
-      $compare = "1";
-      LJC::OutputLogCompare("LoadSQL() - Delete()", $result, $compare);
+      self::TestDelete($manager, $methodName, $nameValue);
     } // LoadSQL()
 
     // Retrieves the record for the provided values.
     private static function Retrieve(LJCDataManager $manager)
     {
-      // Add the test data.
-		  $dataColumns = new LJCDbColumns();
-		  $dataColumns->Add("Name", value:"NameValue");
-		  $value = $manager->Add($dataColumns);
-      if ($value < 1)
-      {
-        echo($manager->SQL);
-      }
-      $result = strval($value);
-
-      $compare = "1";
-      LJC::OutputLogCompare("Retrieve() - Add()", $result, $compare);
+      $nameValue = "NameValue";
+      $methodName = "Retrieve()";
+      self::TestAdd($manager, $methodName, $nameValue);
 
       // Retrieve the test data.
-		  $keyColumns = new LJCDbColumns();
-		  $keyColumns->Add("Name", value:"NameValue");
-      $rows = $manager->Retrieve($keyColumns);
+		  $keys = new LJCDbColumns();
+		  $keys->Add("Name", value: $nameValue);
+      $rows = $manager->Retrieve($keys);
       if (null == $rows
         || !is_array($rows)
         || 0 == count($rows))
       {
         echo($manager->SQL);
-        echo("\r\nRetrieve() No data retrieved.");
+        echo("\r\n{$methodName} No data retrieved.");
       }
 
-      // Delete the test data.
-      $value = $manager->Delete($keyColumns);
-      if ($value > 1)
-      {
-        echo($manager->SQL);
-      }
-      $result = strval($value);
-
-      $compare = "1";
-      LJC::OutputLogCompare("Retrieve() - Delete()", $result, $compare);
+      self::TestDelete($manager, $methodName, $nameValue);
     } // Retrieve()
 
     // Creates the Retrieve SQL.
     private static function RetrieveSQL(LJCDataManager $manager)
     {
-      // Add the test data.
-		  $dataColumns = new LJCDbColumns();
-		  $dataColumns->Add("Name", value:"NameValue");
-		  $value = $manager->Add($dataColumns);
-      if ($value < 1)
-      {
-        echo($manager->SQL);
-      }
-      $result = strval($value);
+      $nameValue = "NameValue";
+      $methodName = "RetrieveSQL()";
+      self::TestAdd($manager, $methodName, $nameValue);
 
-      $compare = "1";
-      LJC::OutputLogCompare("RetrieveSQL() - Add()", $result, $compare);
-
-      // Retrieve the test data.
+      // Retrieve with SQLLoad().
 		  $keyColumns = new LJCDbColumns();
-		  $keyColumns->Add("Name", value:"NameValue");
+		  $keyColumns->Add("Name", value: $nameValue);
       $sql = $manager->RetrieveSQL($keyColumns);
       $rows = $manager->SQLLoad($sql);
       if (null == $rows
@@ -397,259 +299,125 @@
         || 0 == count($rows))
       {
         echo($manager->SQL);
-        echo("\r\nRetrieveSQL() No data retrieved.");
+        echo("\r\n{$methodName} No data retrieved.");
       }
 
-      // Delete the test data.
-      $value = $manager->Delete($keyColumns);
-      if ($value > 1)
-      {
-        echo($manager->SQL);
-      }
-      $result = strval($value);
-
-      $compare = "1";
-      LJC::OutputLogCompare("RetrieveSQL() - Delete()", $result, $compare);
+      self::TestDelete($manager, $methodName, $nameValue);
     } // RetrieveSQL()
 
     // Updates the records for the provided values.
     private static function Update(LJCDataManager $manager)
     {
-      // Add the test data.
-		  $dataColumns = new LJCDbColumns();
-		  $dataColumns->Add("Name", value:"NameValue");
-		  $value = $manager->Add($dataColumns);
-      if ($value < 1)
-      {
-        echo($manager->SQL);
-      }
-      $result = strval($value);
-
-      $compare = "1";
-      LJC::OutputLogCompare("Update() - Add()", $result, $compare);
+      $nameValue = "NameValue";
+      $updateValue = "Updated";
+      $methodName = "Update()";
+      self::TestAdd($manager, $methodName, $nameValue);
 
       // Update the test data.
-		  $keyColumns = new LJCDbColumns();
-		  $keyColumns->Add("Name", value:"NameValue");
-
-      $dataColumns = new LJCDbColumns();
-		  $dataColumns->Add("Name", value:"UpdatedNameValue");
-      $value = $manager->Update($keyColumns, $dataColumns);
+		  $keys = new LJCDbColumns();
+		  $keys->Add("Name", value: $nameValue);
+      $data = new LJCDbColumns();
+		  $data->Add("Name", value: $updateValue);
+      $value = $manager->Update($keys, $data);
       $result = strval($value);
 
       $compare = "1";
-      LJC::OutputLogCompare("Update()", $result, $compare);
+      LJC::OutputLogCompare($methodName, $result
+        , $compare);
 
-      // Retrieve the test data.
-		  $keyColumns = new LJCDbColumns();
-		  $keyColumns->Add("Name", value:"UpdatedNameValue");
-      $rows = $manager->Retrieve($keyColumns);
-      if (null == $rows
-        || !is_array($rows)
-        || 0 == count($rows))
-      {
-        echo($manager->SQL);
-        echo("\r\nUpdate() No data retrieved.");
-      }
-
-      // Delete the test data.
-      $value = $manager->Delete($keyColumns);
-      if ($value > 1)
-      {
-        echo($manager->SQL);
-      }
-      $result = strval($value);
-
-      $compare = "1";
-      LJC::OutputLogCompare("Update() - Delete()", $result, $compare);
+      self::TestRetrieve($manager, $methodName, $updateValue);
+      self::TestDelete($manager, $methodName, $updateValue);
     } // Update()
 
     // Creates the Update SQL.
     private static function UpdateSQL(LJCDataManager $manager)
     {
-      // Add the test data.
-		  $dataColumns = new LJCDbColumns();
-		  $dataColumns->Add("Name", value:"NameValue");
-		  $value = $manager->Add($dataColumns);
-      if ($value < 1)
-      {
-        echo($manager->SQL);
-      }
-      $result = strval($value);
+      $nameValue = "NameValue";
+      $updateValue = "Updated";
+      $methodName = "UpdateSQL()";
+      self::TestAdd($manager, $methodName, $nameValue);
 
-      $compare = "1";
-      LJC::OutputLogCompare("UpdateSQL() - Add()", $result, $compare);
-
-      // Update the test data.
-		  $keyColumns = new LJCDbColumns();
-		  $keyColumns->Add("Name", value:"NameValue");
-
-      $dataColumns = new LJCDbColumns();
-		  $dataColumns->Add("Name", value:"UpdatedNameValue");
-      $sql = $manager->UpdateSQL($keyColumns, $dataColumns);
+      // Update with SQLExecute().
+		  $keys = new LJCDbColumns();
+		  $keys->Add("Name", value: $nameValue);
+      $data = new LJCDbColumns();
+		  $data->Add("Name", value: $updateValue);
+      $sql = $manager->UpdateSQL($keys, $data);
       $value = $manager->SQLExecute($sql);
       $result = strval($value);
 
       $compare = "1";
-      LJC::OutputLogCompare("UpdateSQL() - SQLExecute()", $result, $compare);
+      LJC::OutputLogCompare("{$methodName} - SQLExecute()", $result, $compare);
 
-      // Retrieve the test data.
-		  $keyColumns = new LJCDbColumns();
-		  $keyColumns->Add("Name", value:"UpdatedNameValue");
-      $rows = $manager->Retrieve($keyColumns);
-      if (null == $rows
-        || !is_array($rows)
-        || 0 == count($rows))
-      {
-        echo($manager->SQL);
-        echo("\r\nUpdate() No data retrieved.");
-      }
-
-      // Delete the test data.
-      $value = $manager->Delete($keyColumns);
-      if ($value > 1)
-      {
-        echo($manager->SQL);
-      }
-      $result = strval($value);
-
-      $compare = "1";
-      LJC::OutputLogCompare("UpdateSQL() - Delete()", $result, $compare);
+      self::TestRetrieve($manager, $methodName, $updateValue);
+      self::TestDelete($manager, $methodName, $updateValue);
     } // UpdateSQL()
 
     // Executes an Add, Delete or Update SQL statement.
     private static function SQLExecute(LJCDataManager $manager)
     {
-      // Add the test data.
-		  $dataColumns = new LJCDbColumns();
-		  $dataColumns->Add("Name", value:"NameValue");
-		  $value = $manager->Add($dataColumns);
-      if ($value < 1)
-      {
-        echo($manager->SQL);
-      }
-      $result = strval($value);
+      $nameValue = "NameValue";
+      $updateValue = "Updated";
+      $methodName = "SQLExecute()";
+      self::TestAdd($manager, $methodName, $nameValue);
 
-      $compare = "1";
-      LJC::OutputLogCompare("SQLExecute() - Add()", $result, $compare);
-
-      // Update the test data.
-		  $keyColumns = new LJCDbColumns();
-		  $keyColumns->Add("Name", value:"NameValue");
-
-      $dataColumns = new LJCDbColumns();
-		  $dataColumns->Add("Name", value:"UpdatedNameValue");
-      $sql = $manager->UpdateSQL($keyColumns, $dataColumns);
+      // Update with SQLExecute().
+		  $keys = new LJCDbColumns();
+		  $keys->Add("Name", value: $nameValue);
+      $data = new LJCDbColumns();
+		  $data->Add("Name", value: $updateValue);
+      $sql = $manager->UpdateSQL($keys, $data);
       $value = $manager->SQLExecute($sql);
       $result = strval($value);
 
-      $compare = "1";
-      LJC::OutputLogCompare("SQLExecute()", $result, $compare);
-
-      // Retrieve the test data.
-		  $keyColumns = new LJCDbColumns();
-		  $keyColumns->Add("Name", value:"UpdatedNameValue");
-      $rows = $manager->Retrieve($keyColumns);
-      if (null == $rows
-        || !is_array($rows)
-        || 0 == count($rows))
-      {
-        echo($manager->SQL);
-        echo("\r\nSQLExecute() No data retrieved.");
-      }
-
-      // Delete the test data.
-      $value = $manager->Delete($keyColumns);
-      if ($value > 1)
-      {
-        echo($manager->SQL);
-      }
-      $result = strval($value);
-
-      $compare = "1";
-      LJC::OutputLogCompare("SQLExecute() - Delete()", $result, $compare);
+      self::TestRetrieve($manager, $methodName, $updateValue);
+      self::TestDelete($manager, $methodName, $updateValue);
     } // SQLExecute()
 
     // Executes a Select SQL statement.
     private static function SQLLoad(LJCDataManager $manager)
     {
-      // Add the test data.
-		  $dataColumns = new LJCDbColumns();
-		  $dataColumns->Add("Name", value:"NameValue");
-		  $value = $manager->Add($dataColumns);
-      if ($value < 1)
-      {
-        echo($manager->SQL);
-      }
-      $result = strval($value);
+      $nameValue = "NameValue";
+      $methodName = "SQLLoad()";
+      self::TestAdd($manager, $methodName, $nameValue);
 
-      $compare = "1";
-      LJC::OutputLogCompare("SQLLoad() - Add()", $result, $compare);
-
-      // Retrieve the test data.
-		  $keyColumns = new LJCDbColumns();
-		  $keyColumns->Add("Name", value:"NameValue");
-      $sql = $manager->LoadSQL($keyColumns);
+      // Retrieve with SQLLoad().
+		  $keys = new LJCDbColumns();
+		  $keys->Add("Name", value: $nameValue);
+      $sql = $manager->LoadSQL($keys);
       $rows = $manager->SQLLoad($sql);
       if (null == $rows
         || !is_array($rows)
         || 0 == count($rows))
       {
         echo($manager->SQL);
-        echo("\r\nSQLLoad() No data retrieved.");
+        echo("\r\n{$methodName} No data retrieved.");
       }
 
-      // Delete the test data.
-      $value = $manager->Delete($keyColumns);
-      if ($value > 1)
-      {
-        echo($manager->SQL);
-      }
-      $result = strval($value);
-
-      $compare = "1";
-      LJC::OutputLogCompare("SQLLoad() - Delete()", $result, $compare);
+      self::TestDelete($manager, $methodName, $nameValue);
     } // SQLLoad()
 
     // Executes a Select SQL statement.
     private static function SQLRetrieve(LJCDataManager $manager)
     {
-      // Add the test data.
-		  $dataColumns = new LJCDbColumns();
-		  $dataColumns->Add("Name", value:"NameValue");
-		  $value = $manager->Add($dataColumns);
-      if ($value < 1)
-      {
-        echo($manager->SQL);
-      }
-      $result = strval($value);
+      $nameValue = "NameValue";
+      $methodName = "SQLRetrieve()";
+      self::TestAdd($manager, $methodName, $nameValue);
 
-      $compare = "1";
-      LJC::OutputLogCompare("SQLRetrieve() - Add()", $result, $compare);
-
-      // Retrieve the test data.
-		  $keyColumns = new LJCDbColumns();
-		  $keyColumns->Add("Name", value:"NameValue");
-      $sql = $manager->RetrieveSQL($keyColumns);
+      // Retrieve with SQLRetrieve().
+		  $keys = new LJCDbColumns();
+		  $keys->Add("Name", value: $nameValue);
+      $sql = $manager->RetrieveSQL($keys);
       $rows = $manager->SQLRetrieve($sql);
       if (null == $rows
         || !is_array($rows)
         || 0 == count($rows))
       {
         echo($manager->SQL);
-        echo("\r\nSQLRetrieve() No data retrieved.");
+        echo("\r\n{$methodName} No data retrieved.");
       }
 
-      // Delete the test data.
-      $value = $manager->Delete($keyColumns);
-      if ($value > 1)
-      {
-        echo($manager->SQL);
-      }
-      $result = strval($value);
-
-      $compare = "1";
-      LJC::OutputLogCompare("SQLRetrieve() - Delete()", $result, $compare);
+      self::TestDelete($manager, $methodName, $nameValue);
     } // SQLRetrieve()
 
     // --------------------
@@ -687,27 +455,24 @@
     // Sets the PropertyName, RenameAs and Caption values for a column.
     private static function MapNames(LJCDataManager $manager)
     {
+      $methodName = "MapNames";
+
       $propertyNames = [
         "Name",
       ];
-      // ***** 
-      echo("\r\n\r\nMapNames()");
-      self::ShowRow($manager);
-
       $columns = $manager->Columns($propertyNames);
       if ($columns != null
         && count($columns) > 0)
       {
-        $manager->MapNames("Name", "PropertyName", "RenameAs", "Caption");
+        $manager->MapNames("Name", "PropertyName", "", "Caption");
         $propertyNames = [
           "PropertyName",
         ];
-
         $columns = $manager->Columns($propertyNames);
         if (null == $columns
           || 0 == count($columns))
         {
-          echo("MapNames: PropertyName change failed.");
+          echo("{$methodName}: PropertyName change failed.");
         }
 
         if ($columns != null
@@ -717,8 +482,8 @@
           $result = "{$column->PropertyName},{$column->RenameAs}";
           $result .= ",{$column->Caption}";
 
-          $compare = "PropertyName,RenameAs,Caption";
-          LJC::OutputLogCompare("MapNames()", $result, $compare);
+          $compare = "PropertyName,,Caption";
+          LJC::OutputLogCompare($methodName, $result, $compare);
         }
       }
     }
@@ -726,9 +491,10 @@
     // Creates a PropertyNames list from the data definition.
     private static function PropertyNames(LJCDataManager $manager)
     {
+      $methodName = "PropertyNames()";
       $propertyNames = $manager->PropertyNames();
-      //LJC::RemoveString($propertyNames, "PrincipleFlag");
-      //LJC::RemoveString($propertyNames, "TitleID");
+      LJC::RemoveString($propertyNames, "PrincipleFlag");
+      LJC::RemoveString($propertyNames, "TitleID");
 
       $result = "";
       foreach ($propertyNames as $propertyName)
@@ -742,7 +508,7 @@
 
       // Name changed to PropertyName in MapNames().
       $compare = "ID,PropertyName";
-      LJC::OutputLogCompare("PropertyNames()", $result, $compare);
+      LJC::OutputLogCompare("\r\n{$methodName}", $result, $compare);
     }
 
     // --------------------
@@ -751,16 +517,13 @@
     // Creates an array of Data Objects from a Data Result rows array.
     private static function CreateDataCollection(LJCDataManager $manager)
     {
+      $methodName = "CreateDataCollection";
+
       $rows = $manager->Load();
       $row = $rows[0];
-      // ***** 
-      echo("\r\n\r\nCreateDataCollection()");
-      self::ShowRow($manager);
-
       $id = LJCDbAccess::GetValue($row, "ID");
-      // Name changed to PropertyName in MapNames().
-      $propertyName = LJCDbAccess::GetValue($row, "PropertyName");
-      $result = "{$id},{$propertyName}";
+      $name = LJCDbAccess::GetValue($row, "Name");
+      $result = "{$id},{$name}";
 
       $items = new Items();
       $item = new Item();
@@ -775,7 +538,7 @@
         $item = $items->RetrieveAtIndex(0);
         // Name changed to PropertyName in MapNames().
         $compare = "{$item->ID},{$item->PropertyName}";
-        LJC::OutputLogCompare("PropertyNames()", $result, $compare);
+        LJC::OutputLogCompare("\r\n{$methodName}", $result, $compare);
       }
     }
 
@@ -794,6 +557,10 @@
 
     }
 
+    // --------------------
+    // Helper Methods
+
+    // Show the first row from a Load().
     private static function ShowRow(LJCDataManager $manager)
     {
       $rows = $manager->Load();
@@ -802,5 +569,72 @@
       {
         echo("\r\n\$key = {$key} \$value = {$value}");
       }
+    }
+
+    // Add record for testing.
+    private static function TestAdd(LJCDataManager $manager
+      , string $parentMethod, string $nameValue)
+    {
+      // Add the test data.
+		  $data = new LJCDbColumns();
+		  $data->Add("Name", value: $nameValue);
+		  $value = $manager->Add($data);
+      $result = strval($value);
+
+      $compare = "1";
+      LJC::OutputLogCompare("{$parentMethod} - TestAdd()", $result, $compare);
+    }
+
+    // Delete record for testing.
+    private static function TestDelete(LJCDataManager $manager
+      , string $parentMethod, string $nameValue)
+    {
+		  $keys = new LJCDbColumns();
+		  $keys->Add("Name", value: $nameValue);
+      $value = $manager->Delete($keys);
+      if ($value > 1)
+      {
+        echo($manager->SQL);
+      }
+      $result = strval($value);
+
+      $compare = "1";
+      LJC::OutputLogCompare("{$parentMethod} - TestDelete()", $result
+        , $compare);
+    }
+
+    // Retrieve record for testing.
+    private static function TestRetrieve(LJCDataManager $manager
+      , string $parentMethod, string $nameValue)
+    {
+		  $keys = new LJCDbColumns();
+		  $keys->Add("Name", value: $nameValue);
+      $rows = $manager->Retrieve($keys);
+      if (null == $rows
+        || !is_array($rows)
+        || 0 == count($rows))
+      {
+        echo($manager->SQL);
+        echo("\r\nSQLExecute() No data retrieved.");
+      }
+    }
+
+    // Update record for testing.
+    private static function TestUpdate(LJCDataManager $manager
+      , string $parentMethod, string $nameValue, string $updateProperty 
+      , string $updateValue)
+    {
+      $methodName = "TestUpdate()";
+		  $keys = new LJCDbColumns();
+		  $keys->Add("Name", value: $nameValue);
+      
+      $data = new LJCDbColumns();
+		  $data->Add($updateProperty, value: $updateValue);
+      $value = $manager->Update($keys, $data);
+      $result = strval($value);
+
+      $compare = "1";
+      LJC::OutputLogCompare("{$parentMethod} - {$methodName}", $result
+        , $compare);
     }
   }
