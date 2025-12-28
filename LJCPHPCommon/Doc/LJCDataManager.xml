@@ -24,7 +24,7 @@
 		</remarks>
 	</LJCDataManager>
 	
-	<!-- Constructors -->
+	<!-- Constructor Methods -->
 	<construct>
 		<summary>Initializes a class instance with the provided values.</summary>
 		<param name="$connectionValues">The DB Connection values.</param>
@@ -35,10 +35,11 @@
       include_once "$prefix/LJCPHPCommon/LJCDataManagerLib.php";
       include_once "$prefix/LJCPHPCommon/LJCDBAccessLib.php";
 
-      $database = "DatabaseName";
+      $dbServer = "localhost";
+      $dbName = "DatabaseName";
       $userID = "UserID";
       $password = "Password":
-      $connectionValues = new LJCConnectionValues("localhost", $database, $userID
+      $connectionValues = new LJCConnectionValues($dbServer, $dbName, $userID
         , $password);
 
       $tableName = "TableName";
@@ -46,7 +47,7 @@
     </code>
 	</construct>
 	
-	<!-- Public Data Methods -->
+	<!-- Data Methods -->
 	<Add>
 		<summary>Adds the record for the provided values.</summary>
 		<param name="$dataColumns">The data columns.</param>
@@ -56,28 +57,36 @@
 			parameter to insert a record into the database.
 		</remarks>
 		<code>
-      include_once "LJCRoot.php";
-      $prefix = RelativePrefix();
-      include_once "$prefix/LJCPHPCommon/LJCDataManagerLib.php";
-      include_once "$prefix/LJCPHPCommon/LJCDBAccessLib.php";
+      // Adds the record for the provided values.
+      private static function Add(LJCDataManager $manager)
+      {
+        $nameValue = "NameValue";
+        $methodName = "Add()";
 
-		  // See constructor for how to create $connectionValues.
-		  $tableName = "TableName";
-		  $manager = new LJCDataManager($connectionValues, $tableName);
+        // Add the test data.
+        // See constructor for how to create $manager.
+		    $data = new LJCDbColumns();
+		    $data->Add("Name", value: $nameValue);
+		    $affectedCount = $manager->Add($data);
+        if ($affectedCount $lt; 1)
+        {
+          echo($manager->SQL);
+        }
+        $result = strval($affectedCount);
 
-		  $dataColumns = new LJCDbColumns();
-		  $dataColumns->Add("Name", value:"NameValue");
-		  $affectedCount = $manager->Add($dataColumns);
+        // result:
+        // 1;
 
-		  // $manager->SQL =
-		  // insert into TableName
-		  // (
-		  //   Name
-		  // )
-		  // values
-		  // (
-		  //   Name = 'NameValue'
-		  // )
+        // $manager->SQL =
+        // insert into Person
+        //  (
+        //   Person.Name 
+        //  )
+        //  values 
+        //  (
+        //   'NameValue' 
+        //  )
+      }
 		</code>
 	</Add>
 	<Delete>
@@ -94,29 +103,74 @@
 			or the Delete will not be executed.
 		</remarks>
 		<code>
-      include_once "LJCRoot.php";
-      $prefix = RelativePrefix();
-      include_once "$prefix/LJCPHPCommon/LJCDataManagerLib.php";
-      include_once "$prefix/LJCPHPCommon/LJCDBAccessLib.php";
+      // Creates the Delete SQL.
+      private static function Delete(LJCDataManager $manager)
+      {
+        $nameValue = "NameValue";
+        $methodName = "Delete()";
 
-		  // See constructor for how to create $connectionValues.
-		  $tableName = "TableName";
-		  $manager = new LJCDataManager($connectionValues, $tableName);
+		    $data = new LJCDbColumns();
+		    $data->Add("Name", value: $nameValue);
+		    $affectedCount = $manager->Add($data);
 
-		  $keyColumns = new DbColumns();
-		  $keyColumns->Add("ID", value:1);
-		  $affectedCount = $manager->Delete($keyColumns);
+        // Delete the test data.
+        // See constructor for how to create $manager.
+		    $keys = new LJCDbColumns();
+		    $keys->Add("Name", value: $nameValue);
+        $affectedCount = $manager->Delete($keys);
+        if ($affectedCount &lt; 1)
+        {
+          echo($manager->SQL);
+        }
+        $result = strval($affectedCount);
 
-		  // $manager->SQL =
-		  // delete from TableName
-		  // where TableName.ID = 1;
+        // result:
+        // 1;
+
+        // $manager->SQL =
+		    // delete from TableName 
+        //
+		    // where TableName.Name = 'NameValue'
+      }
 		</code>
 	</Delete>
-	<Load>
+  <DeleteSQL>
+    <summary>
+      Creates the Delete SQL.
+    </summary>
+    <param name="$keyColumns">The where clause key columns.</param>
+    <returns>The Delete SQL statement.</returns>
+    <code>
+      // Creates the Delete SQL.
+      private static function DeleteSQL(LJCDataManager $manager)
+      {
+        $nameValue = "NameValue";
+        $methodName = "DeleteSQL()";
+
+		    $data = new LJCDbColumns();
+		    $data->Add("Name", value: $nameValue);
+		    $affectedCount = $manager->Add($data);
+
+        // Create the Delete SQL statement.
+        // See constructor for how to create $manager.
+		    $keys = new LJCDbColumns();
+		    $keys->Add("Name", value: $nameValue);
+        $result = $manager->DeleteSQL($keys);
+
+        // result:
+		    // delete from TableName 
+        //
+		    // where TableName.Name = 'NameValue'
+      }
+    </code>
+  </DeleteSQL>
+  <Load>
 		<summary>Loads the records for the provided values.</summary>
 		<param name="$keyColumns">The where clause key columns.</param>
 		<param name="$propertyNames">The included column property names.</param>
-		<returns>An array of data records.</returns>
+    <param name="$joins"></param>
+    <param name="$filter"></param>
+    <returns>An array of data records.</returns>
 		<remarks>
 			Loads records from the database.
 			&lt;p&gt;
@@ -128,28 +182,83 @@
 			null.
 		</remarks>
 		<code>
-      include_once "LJCRoot.php";
-      $prefix = RelativePrefix();
-      include_once "$prefix/LJCPHPCommon/LJCDataManagerLib.php";
-      include_once "$prefix/LJCPHPCommon/LJCDBAccessLib.php";
+      // Loads the records for the provided values.
+      private static function Load(LJCDataManager $manager)
+      {
+        $nameValue = "NameValue";
+        $methodName = "Load()";
 
-		  // See constructor for how to create $connectionValues.
-		  $tableName = "TableName";
-		  $manager = new LJCDataManager($connectionValues, $tableName);
+		    $data = new LJCDbColumns();
+		    $data->Add("Name", value: $nameValue);
+		    $affectedCount = $manager->Add($data);
 
-		  $propertyNames = [];
-		  $propertyNames[] = "ID";
-		  $propertyNames[] = "Name";
-		  $affectedCount = $manager->Load(null, $propertyNames);
+        // Load the test data.
+        // See constructor for how to create $manager.
+		    $keys = new LJCDbColumns();
+		    $keys->Add("Name", value: $nameValue);
+        $rows = $manager->Load($keys);
+        if (null == $rows
+          || !is_array($rows)
+          || 0 == count($rows))
+        {
+          echo($manager->SQL);
+          echo("\r\n{$methodName} No data retrieved.");
+        }
 
-		  // $manager->SQL =
-		  // select
-		  //   TableName.ID,
-		  //   TableName.Name
-		  // from TableName;
+        // $manager->SQL =
+		    // select
+		    //   TableName.ID, 
+		    //   TableName.Name 
+		    // from TableName 
+        // where TableName.Name = 'NameValue'
+
+		    $keys = new LJCDbColumns();
+		    $keys->Add("Name", value: $nameValue);
+        $affectedCount = $manager->Delete($keys);
+      }
 		</code>
 	</Load>
-	<Retrieve>
+  <LoadSQL>
+    <summary>
+      Creates the Load SQL.
+    </summary>
+    <param name="$keyColumns">The where clause key columns.</param>
+    <param name="$propertyNames">The included column property names.</param>
+    <param name="$joins"></param>
+    <param name="$filter"></param>
+    <returns>The Load SQL statement.</returns>
+    <code>
+      // Creates the Load SQL.
+      private static function LoadSQL(LJCDataManager $manager)
+      {
+        $nameValue = "NameValue";
+        $methodName = "LoadSQL()";
+
+		    $data = new LJCDbColumns();
+		    $data->Add("Name", value: $nameValue);
+		    $affectedCount = $manager->Add($data);
+
+        // Load with SQLLoad().
+        // See constructor for how to create $manager.
+		    $keys = new LJCDbColumns();
+		    $keys->Add("Name", value: $nameValue);
+        $result = $manager->LoadSQL($keys);
+
+        // result:
+        // $manager->SQL =
+		    // select
+		    //   TableName.ID, 
+		    //   TableName.Name 
+		    // from TableName 
+        // where TableName.Name = 'NameValue'
+
+        $keys = new LJCDbColumns();
+		    $keys->Add("Name", value: $updateValue);
+        $affectedCount = $manager->Delete($keys);
+      }
+    </code>
+  </LoadSQL>
+  <Retrieve>
 		<summary>Retrieves the record for the provided values.</summary>
 		<param name="$keyColumns">The where clause key columns.</param>
 		<param name="$propertyNames">The included column property names.</param>
@@ -165,32 +274,82 @@
 			null.
 		</remarks>
 		<code>
-      include_once "LJCRoot.php";
-      $prefix = RelativePrefix();
-      include_once "$prefix/LJCPHPCommon/LJCDataManagerLib.php";
-      include_once "$prefix/LJCPHPCommon/LJCDBAccessLib.php";
+      // Retrieves the record for the provided values.
+      private static function Retrieve(LJCDataManager $manager)
+      {
+        $nameValue = "NameValue";
+        $methodName = "Retrieve()";
 
-		  // See constructor for how to create $connectionValues.
-		  $tableName = "TableName";
-		  $manager = new LJCDataManager($connectionValues, $tableName);
+		    $data = new LJCDbColumns();
+		    $data->Add("Name", value: $nameValue);
+		    $affectedCount = $manager->Add($data);
 
-		  $keyColumns = new DbColumns();
-		  $keyColumns->Add("ID", value:1);
-			
-		  $propertyNames = [];
-		  $propertyNames[] = "ID";
-		  $propertyNames[] = "Name";
-		  $row = $manager->Retrieve($keyColumns, $propertyNames);
+        // Retrieve the test data.
+        // See constructor for how to create $manager.
+		    $keys = new LJCDbColumns();
+		    $keys->Add("Name", value: $nameValue);
+        $row = $manager->Retrieve($keys);
+        if (null == $row
+          || !is_array($row)
+          || 0 == count($row))
+        {
+          echo($manager->SQL);
+          echo("\r\n{$methodName} No data retrieved.");
+        }
 
-		  // $manager->SQL =
-		  // select
-		  //   TableName.ID,
-		  //   TableName.Name
-		  // from TableName
-		  // where TableName.ID = 1;
+        // $manager->SQL =
+		    // select
+		    //   TableName.ID, 
+		    //   TableName.Name 
+		    // from TableName 
+		    // where TableName.Name = 'NameValue'
+
+		    $keys = new LJCDbColumns();
+		    $keys->Add("Name", value: $nameValue);
+        $affectedCount = $manager->Delete($keys);
+      }
+
 		</code>
 	</Retrieve>
-	<Update>
+  <RetrieveSQL>
+    <summary>
+      Creates the Retrieve SQL.
+    </summary>
+    <param name="$keyColumns">The where clause key columns.</param>
+    <param name="$propertyNames">The included column property names.</param>
+    <param name="$joins"></param>
+    <returns>The Retrieve SQL statement.</returns>
+    <code>
+      // Creates the Retrieve SQL.
+      private static function RetrieveSQL(LJCDataManager $manager)
+      {
+        $nameValue = "NameValue";
+        $methodName = "RetrieveSQL()";
+
+		    $data = new LJCDbColumns();
+		    $data->Add("Name", value: $nameValue);
+		    $affectedCount = $manager->Add($data);
+
+        // Retrieve with SQLLoad().
+        // See constructor for how to create $manager.
+		    $keyColumns = new LJCDbColumns();
+		    $keyColumns->Add("Name", value: $nameValue);
+        $result = $manager->RetrieveSQL($keyColumns);
+
+        // result:
+		    // select
+		    //   TableName.ID, 
+		    //   TableName.Name 
+		    // from TableName 
+		    // where TableName.Name = 'NameValue'
+
+        $keys = new LJCDbColumns();
+		    $keys->Add("Name", value: $updateValue);
+        $affectedCount = $manager->Delete($keys);
+      }
+    </code>
+  </RetrieveSQL>
+  <Update>
 		<summary>Updates the records for the provided values.</summary>
 		<param name="$keyColumns">The where clause key columns.</param>
 		<param name="$dataColumns">The data columns.</param>
@@ -206,45 +365,331 @@
 			or the Update will not be executed.
 		</remarks>
 		<code>
-      include_once "LJCRoot.php";
-      $prefix = RelativePrefix();
-      include_once "$prefix/LJCPHPCommon/LJCDataManagerLib.php";
-      include_once "$prefix/LJCPHPCommon/LJCDBAccessLib.php";
+      // Updates the records for the provided values.
+      private static function Update(LJCDataManager $manager)
+      {
+        $nameValue = "NameValue";
+        $updateValue = "Updated";
+        $methodName = "Update()";
 
-		  // See constructor for how to create $connectionValues.
-		  $tableName = "TableName";
-		  $manager = new LJCDataManager($connectionValues, $tableName);
+		    $data = new LJCDbColumns();
+		    $data->Add("Name", value: $nameValue);
+		    $affectedCount = $manager->Add($data);
 
-		  $keyColumns = new LJCDbColumns();
-		  $keyColumns->Add("ID", value:1);
-			
-		  $dataColumns = new LJCDbColumns();
-		  $dataColumns->Add("Name", value:"NameValue");
-		  $affectedCount = $manager->Update($keyColumns, $dataColumns);
+        // Update the test data.
+        // See constructor for how to create $manager.
+		    $keys = new LJCDbColumns();
+		    $keys->Add("Name", value: $nameValue);
+        $data = new LJCDbColumns();
+		    $data->Add("Name", value: $updateValue);
+        $affectedCount = $manager->Update($keys, $data);
+        $result = strval($affectedCount);
 
-		  // $manager->SQL =
-		  // update TableName
-		  //   set Name = 'NameValue'
-		  // where TableName.ID = 1;
+        // result:
+        // 1
+
+		    // $manager->SQL =
+		    // update TableName set
+		    //   Name = 'Updated' 
+        //
+		    // where TableName.Name = 'NameValue'
+
+		    $keys = new LJCDbColumns();
+		    $keys->Add("Name", value: $updateValue);
+        $affectedCount = $manager->Delete($keys);
+      }
 		</code>
 	</Update>
-	<SQLExecute>
+  <UpdateSQL>
+    <summary>
+      Creates the Update SQL.
+    </summary>
+    <param name="$keyColumns">The where clause key columns.</param>
+    <param name="$dataColumns">The data columns.</param>
+    <returns>The Update SQL statement.</returns>
+    <code>
+      // Creates the Update SQL.
+      private static function UpdateSQL(LJCDataManager $manager)
+      {
+        $nameValue = "NameValue";
+        $updateValue = "Updated";
+        $methodName = "UpdateSQL()";
+
+		    $data = new LJCDbColumns();
+		    $data->Add("Name", value: $nameValue);
+		    $affectedCount = $manager->Add($data);
+
+        // Get the Update SQL statement.
+        // See constructor for how to create $manager.
+		    $keys = new LJCDbColumns();
+		    $keys->Add("Name", value: $nameValue);
+        $data = new LJCDbColumns();
+		    $data->Add("Name", value: $updateValue);
+        $result = $manager->UpdateSQL($keys, $data);
+
+        // result:
+        // update TableName set
+        //   Name = 'Updated' 
+        //
+        // where TableName.Name = 'NameValue'
+
+        $keys = new LJCDbColumns();
+		    $keys->Add("Name", value: $updateValue);
+        $affectedCount = $manager->Delete($keys)
+      }
+    </code>
+  </UpdateSQL>
+  <SQLExecute>
 		<summary>Executes an Add, Delete or Update SQL statement.</summary>
 		<param name="$sql">The SQL statement.</param>
 		<returns>The count of affected records.</returns>
+    <code>
+      // Executes an Add, Delete or Update SQL statement.
+      private static function SQLExecute(LJCDataManager $manager)
+      {
+        $nameValue = "NameValue";
+        $updateValue = "Updated";
+        $methodName = "SQLExecute()";
+
+		    $data = new LJCDbColumns();
+		    $data->Add("Name", value: $nameValue);
+		    $affectedCount = $manager->Add($data);
+
+        // Update with SQLExecute().
+        // See constructor for how to create $manager.
+		    $keys = new LJCDbColumns();
+		    $keys->Add("Name", value: $nameValue);
+        $data = new LJCDbColumns();
+		    $data->Add("Name", value: $updateValue);
+        $sql = $manager->UpdateSQL($keys, $data);
+        $affectedCount = $manager->SQLExecute($sql);
+        $result = strval($affectedCount);
+
+        // result:
+        // 1
+
+		    // $sql =
+        // update TableName set
+        //   Name = 'Updated' 
+        //
+        // where TableName.Name = 'NameValue'
+
+		    $keys = new LJCDbColumns();
+		    $keys->Add("Name", value: $updateValue);
+        $affectedCount = $manager->Delete($keys);
+      }
+    </code>
 	</SQLExecute>
 	<SQLLoad>
 		<summary>Executes a Select SQL statement.</summary>
 		<param name="$sql">The SQL statement.</param>
 		<returns>An array of data records.</returns>
+    <code>
+      // Executes a Select SQL statement.
+      private static function SQLLoad(LJCDataManager $manager)
+      {
+        $nameValue = "NameValue";
+        $methodName = "SQLLoad()";
+
+		    $data = new LJCDbColumns();
+		    $data->Add("Name", value: $nameValue);
+		    $affectedCount = $manager->Add($data);
+
+        // Retrieve with SQLLoad().
+        // See constructor for how to create $manager.
+		    $keys = new LJCDbColumns();
+		    $keys->Add("Name", value: $nameValue);
+        $sql = $manager->LoadSQL($keys);
+        $rows = $manager->SQLLoad($sql);
+        if (null == $rows
+          || !is_array($rows)
+          || 0 == count($rows))
+        {
+          echo($manager->SQL);
+          echo("\r\n{$methodName} No data retrieved.");
+        }
+
+        // $sql =
+        // $manager->SQL =
+		    // select
+		    //   TableName.ID, 
+		    //   TableName.Name 
+		    // from TableName 
+        // where TableName.Name = 'NameValue'
+
+		    $keys = new LJCDbColumns();
+		    $keys->Add("Name", value: $nameValue);
+        $affectedCount = $manager->Delete($keys);
+      }
+    </code>
 	</SQLLoad>
 	<SQLRetrieve>
 		<summary>Executes a Select SQL statement.</summary>
 		<param name="$sql">The SQL statement.</param>
 		<returns>An array of record columns.</returns>
+    <code>
+      // Executes a Select SQL statement.
+      private static function SQLRetrieve(LJCDataManager $manager)
+      {
+        $nameValue = "NameValue";
+        $methodName = "SQLRetrieve()";
+
+		    $data = new LJCDbColumns();
+		    $data->Add("Name", value: $nameValue);
+		    $affectedCount = $manager->Add($data);
+
+        // Retrieve with SQLRetrieve().
+        // See constructor for how to create $manager.
+		    $keys = new LJCDbColumns();
+		    $keys->Add("Name", value: $nameValue);
+        $sql = $manager->RetrieveSQL($keys);
+        $rows = $manager->SQLRetrieve($sql);
+        if (null == $rows
+          || !is_array($rows)
+          || 0 == count($rows))
+        {
+          echo($manager->SQL);
+          echo("\r\n{$methodName} No data retrieved.");
+        }
+
+        // $sql =
+		    // select
+		    //   TableName.ID, 
+		    //   TableName.Name 
+		    // from TableName 
+		    // where TableName.Name = 'NameValue'
+
+		    $keys = new LJCDbColumns();
+		    $keys->Add("Name", value: $nameValue);
+        $affectedCount = $manager->Delete($keys);
+      }
+    </code>
 	</SQLRetrieve>
-	
-	<!-- Public Methods -->
+
+  <!-- Schema Methods -->
+  <Columns>
+    <summary>
+      Get the schema columns that match the property names.
+    </summary>
+    <param name="$propertyNames">The included column property names.</param>
+    <code>
+      // Get the column definitions that match the property names.
+      private static function Columns(LJCDataManager $manager)
+      {
+        $propertyNames = [
+          "ID",
+          "Name",
+        ];
+
+        // See constructor for how to create $manager.
+        $columns = $manager->Columns($propertyNames);
+        $value = count($columns);
+        $result = strval($value);
+
+        // result:
+        // 2
+
+        $result = "";
+        foreach ($columns as $column)
+        {
+          if (strlen(trim($result)) > 0)
+          {
+            $result .= ",";
+          }
+          $result .= $column->PropertyName;
+        }
+
+        // result:
+        // ID,Name
+      }
+    </code>
+  </Columns>
+  <MapNames>
+    <summary>
+      Sets PropertyName, RenameAs and Caption values for a schema column.
+    </summary>
+    <param name="$key">The column property name.</param>
+    <param name="$propertyName">The new property name.</param>
+    <param name="$renameAs">The rename as value.</param>
+    <param name="$caption">The caption value.</param>
+    <code>
+      // Sets PropertyName, RenameAs and Caption values for a schema column.
+      private static function MapNames(LJCDataManager $manager)
+      {
+        $methodName = "MapNames";
+
+        $propertyNames = [
+          "Name",
+        ];
+        // See constructor for how to create $manager.
+        $columns = $manager->Columns($propertyNames);
+        if ($columns != null
+          &amp;&amp; count($columns) > 0)
+        {
+          // Change schema column PropertyName value.
+          // Matches by key which is the current PropertyName value.
+          $manager->MapNames("Name", "NewName", "", "Caption");
+
+          // Get changed column.
+          $propertyNames = [
+            "NewName",
+          ];
+          $columns = $manager->Columns($propertyNames);
+          if (null == $columns
+            || 0 == count($columns))
+          {
+            echo("{$methodName}: PropertyName change failed.");
+          }
+
+          // Check changes.
+          if ($columns != null
+            &amp;&amp; count($columns) > 0)
+          {
+            // Get column by key which is the PropertyName value.
+            $column = $columns->Retrieve("NewName");
+            $result = "{$column->PropertyName},{$column->RenameAs}";
+            $result .= ",{$column->Caption}";
+
+            // result:
+            // NewName,,Caption
+          }
+
+          // Reset original column properties.
+          // Matches by key which is the current PropertyName value.
+          $manager->MapNames("NewName", "Name", "", "Caption");
+        }
+      }
+    </code>
+  </MapNames>
+  <PropertyNames>
+    <summary>
+      Creates a PropertyNames list from the data definition.
+    </summary>
+    <code>
+      // Creates a PropertyNames list from the data definition.
+      private static function PropertyNames(LJCDataManager $manager)
+      {
+        // See constructor for how to create $manager.
+        $methodName = "PropertyNames()";
+        $propertyNames = $manager->PropertyNames();
+
+        $result = "";
+        foreach ($propertyNames as $propertyName)
+        {
+          if (strlen(trim($result)) > 0)
+          {
+            $result .= ",";
+          }
+          $result .= $propertyName;
+        }
+
+        // result:
+        // ID,Name
+      }
+    </code>
+  </PropertyNames>
+  
+	<!-- ORM Methods -->
 	<CreateDataCollection>
 		<summary>
 			Creates an array of typed Data Objects from a DB rows array.
@@ -273,27 +718,85 @@
 			The DataObject must supply a Clone() method.
 		</remarks>
 		<code>
-      include_once "LJCRoot.php";
-      $prefix = RelativePrefix();
-      include_once "$prefix/LJCPHPCommon/LJCDataManagerLib.php";
+      class Item
+      {
+        public function __construct()
+        {
+          $this->ID = 0;
+          $this->Name = "";
+        }
 
-		  // See constructor for how to create $connectionValues.
-		  $manager = new LJCDataManager($connectionValues, "TableName");
+        // Creates an object clone.
+        public function Clone(): self
+        {
+          $retValue = new self();
 
-		  class Person
-		  {
-		 	  public int $ID;
-			  public string $Name;
-		  }
+          $retValue->ID = $this->ID;
+          $retValue->Name = $this->Name;
+          return $retValue;
+        } // Clone()
 
-		  $rows = $manager->Load(null);
-		  $persons = $manager->CreateDataCollection(new Persons(), new Person()
-			  , $rows);
-		  foreach ($persons as $person)
-		  { 
-			  echo $person->ID;
-			  echo $person->Name;
-		  }
+        public int $ID;
+        public string $PropertyName;
+      }
+
+      class Items extends LJCCollectionBase
+      {
+        // Adds an object and key value.
+        public function AddObject(Item $item, $key = null): ?Item
+        {
+          $methodName = "AddObject()";
+
+          if (null == $key)
+          {
+            $key = $item->Name;
+          }
+
+          // AddItem() is in LJCCollectionBase.
+          $retItem = $this->AddItem($item, $key);
+          return $retItem;
+        } // AddObject()
+
+        // Retrieves the item by index.
+        public function RetrieveAtIndex($index)
+        {
+          $retItem = $this->RetrieveItemAtIndex($index);
+          return $retItem;
+        }
+      }
+      
+      // Creates an array of Data Objects from a Data Result rows array.
+      private static function CreateDataCollection(LJCDataManager $manager)
+      {
+        $methodName = "CreateDataCollection";
+
+        $rows = $manager->Load();
+        $row = $rows[0];
+        $id = LJCDbAccess::GetValue($row, "ID");
+        $name = LJCDbAccess::GetValue($row, "Name");
+
+        // result:
+        // $id = First row ID column value.
+        // $name = First row Name column value.
+
+        // See constructor for how to create $manager.
+        $items = new Items();
+        $item = new Item();
+        $items = $manager->CreateDataCollection($items, $item, $rows);
+        if (null == $items
+          || 0 == count($items))
+        {
+          echo("\$items was not created.");
+        }
+        else
+        {
+          $item = $items->RetrieveAtIndex(0);
+
+          // result:
+          // $item->ID = First item ID column value.
+          // $item->Name = First item Name column value.
+        }
+      }
 		</code>
 	</CreateDataCollection>
 	<CreateDataObject>
@@ -311,27 +814,88 @@
 			property names in the DataObject.
 		</remarks>
 		<code>
-      include_once "LJCRoot.php";
-      $prefix = RelativePrefix();
-      include_once "$prefix/LJCPHPCommon/LJCDBAccessLib.php";
+      class Item
+      {
+        public function __construct()
+        {
+          $this->ID = 0;
+          $this->Name = "";
+        }
 
-		  // See constructor for how to create $connectionValues.
-		  $manager = new LJCDataManager($connectionValues, "TableName");
+        // Creates an object clone.
+        public function Clone(): self
+        {
+          $retValue = new self();
 
-		  class Person
-		  {
-			  public int $ID;
-			  public ?string $Name;
-		  }
-			
-		  $keyColumns = new LJCDbColumns();
-		  $keyColumns->Add("ID", value: 1);
-		  $row = $manager->Retrieve($keyColumns);
+          $retValue->ID = $this->ID;
+          $retValue->Name = $this->Name;
+          return $retValue;
+        } // Clone()
 
-		  $dataObject = new Person();
-		  $person = $manager->CreateDataObject($dataObject, $row);
-		  echo $person->ID;
-		  echo $person->Name;
+        public int $ID;
+        public string $PropertyName;
+      }
+
+      // Populates a Data Object with values from a Data Result row.
+      private static function CreateDataObject(LJCDataManager $manager)
+      {
+        $methodName = "CreateDataObject";
+
+        $rows = $manager->Load();
+        $row = $rows[0];
+        $id = LJCDbAccess::GetValue($row, "ID");
+        $name = LJCDbAccess::GetValue($row, "Name");
+
+        // result:
+        // $id = First row ID column value.
+        // $name = First row Name column value.
+
+        // See constructor for how to create $manager.
+        $item = new Item();
+        $item = $manager->CreateDataObject($item, $row);
+        if (null == $item)
+        {
+          echo("\$item was not created.");
+        }
+
+        // result:
+        // $item->ID = First item ID column value.
+        // $item->Name = First item Name column value.
+      }
 		</code>
 	</CreateDataObject>
+  
+  <!-- Other Methods -->
+  <CreateResultKeys>
+    <summary>
+      Create the keys from the result.
+    </summary>
+    <param name="$rows">An array of data records.</param>
+    <param name="$keyNames">An array of key names.</param>
+    <returns>
+      An array of key rows with key values.
+    </returns>
+    <code>
+      // Create the keys from the result.
+      private static function CreateResultKeys(LJCDataManager $manager)
+      {
+        $methodName = "CreateResultKeys";
+
+        // See constructor for how to create $manager.
+        $rows = $manager->Load();
+        
+        // Get primary key and unique key.
+        $keyNames = [
+          "ID",
+          "Name",
+        ];
+        $resultKeys = $manager->CreateResultKeys($rows, $keyNames);
+        if (null == $resultKeys
+          || 0 == count($resultKeys))
+        {
+          echo("{$methodName}: \$resultKeys were not created.");
+        }
+      }
+    </code>
+  </CreateResultKeys>
 </items>

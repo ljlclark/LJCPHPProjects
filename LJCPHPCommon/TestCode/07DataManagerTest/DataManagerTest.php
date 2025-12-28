@@ -24,8 +24,7 @@
     public function __construct()
     {
       $this->ID = 0;
-      // Name changed to PropertyName in MapNames().
-      $this->PropertyName = "";
+      $this->Name = "";
     }
 
     /// <summary>Creates an object clone.</summary>
@@ -34,7 +33,7 @@
       $retValue = new self();
 
       $retValue->ID = $this->ID;
-      $retValue->PropertyName = $this->PropertyName;
+      $retValue->Name = $this->Name;
       return $retValue;
     } // Clone()
 
@@ -53,7 +52,7 @@
 
       if (null == $key)
       {
-        $key = $item->PropertyName;
+        $key = $item->Name;
       }
 
       // AddItem() is in LJCCollectionBase.
@@ -114,7 +113,7 @@
       self::CreateDataObject($manager);
 
       // Other Methods
-      self::CreateResultKeys();
+      self::CreateResultKeys($manager);
     }
 
     // --------------------
@@ -156,14 +155,15 @@
       $methodName = "Add()";
 
       // Add the test data.
+      // See constructor for how to create $manager.
 		  $data = new LJCDbColumns();
 		  $data->Add("Name", value: $nameValue);
-		  $value = $manager->Add($data);
-      if ($value > 1)
+		  $affectedCount = $manager->Add($data);
+      if ($affectedCount < 1)
       {
         echo($manager->SQL);
       }
-      $result = strval($value);
+      $result = strval($affectedCount);
 
       $compare = "1";
       LJC::OutputLogCompare($methodName, $result, $compare);
@@ -180,14 +180,15 @@
       self::TestAdd($manager, $methodName, $nameValue);
 
       // Delete the test data.
+      // See constructor for how to create $manager.
 		  $keys = new LJCDbColumns();
 		  $keys->Add("Name", value: $nameValue);
-      $value = $manager->Delete($keys);
-      if ($value > 1)
+      $affectedCount = $manager->Delete($keys);
+      if ($affectedCount < 1)
       {
         echo($manager->SQL);
       }
-      $result = strval($value);
+      $result = strval($affectedCount);
 
       $compare = "1";
       LJC::OutputLogCompare("$methodName", $result, $compare);
@@ -198,20 +199,16 @@
     {
       $nameValue = "NameValue";
       $methodName = "DeleteSQL()";
-      self::TestAdd($manager, $methodName, $nameValue);
 
-      // Delete with SQLExecute().
+      // Create the Delete with SQL statement.
+      // See constructor for how to create $manager.
 		  $keys = new LJCDbColumns();
 		  $keys->Add("Name", value: $nameValue);
-      $sql = $manager->DeleteSQL($keys);
-      $value = $manager->SQLExecute($sql);
-      if ($value > 1)
-      {
-        echo($manager->SQL);
-      }
-      $result = strval($value);
+      $result = $manager->DeleteSQL($keys);
 
-      $compare = "1";
+      $compare = "delete from Person \r\n";
+      $compare .= "\r\n";
+      $compare .= "where Person.Name = 'NameValue'";
       LJC::OutputLogCompare("$methodName", $result, $compare);
     } // DeleteSQL()
 
@@ -223,6 +220,7 @@
       self::TestAdd($manager, $methodName, $nameValue);
 
       // Load the test data.
+      // See constructor for how to create $manager.
 		  $keys = new LJCDbColumns();
 		  $keys->Add("Name", value: $nameValue);
       $rows = $manager->Load($keys);
@@ -242,22 +240,20 @@
     {
       $nameValue = "NameValue";
       $methodName = "LoadSQL()";
-      self::TestAdd($manager, $methodName, $nameValue);
 
       // Load with SQLLoad().
 		  $keys = new LJCDbColumns();
 		  $keys->Add("Name", value: $nameValue);
-      $sql = $manager->LoadSQL($keys);
-      $rows = $manager->SQLLoad($sql);
-      if (null == $rows
-        || !is_array($rows)
-        || 0 == count($rows))
-      {
-        echo($manager->SQL);
-        echo("\r\n{$methodName} No data retrieved.");
-      }
+      $result = $manager->LoadSQL($keys);
 
-      self::TestDelete($manager, $methodName, $nameValue);
+      $compare = "select\r\n";
+      $compare .= "  Person.ID, \r\n";
+      $compare .= "  Person.Name, \r\n";
+      $compare .= "  Person.PrincipleFlag, \r\n";
+      $compare .= "  Person.TitleID \r\n";
+      $compare .= "from Person \r\n";
+      $compare .= "where Person.Name = 'NameValue'";
+      LJC::OutputLogCompare("$methodName", $result, $compare);
     } // LoadSQL()
 
     // Retrieves the record for the provided values.
@@ -268,6 +264,7 @@
       self::TestAdd($manager, $methodName, $nameValue);
 
       // Retrieve the test data.
+      // See constructor for how to create $manager.
 		  $keys = new LJCDbColumns();
 		  $keys->Add("Name", value: $nameValue);
       $rows = $manager->Retrieve($keys);
@@ -287,22 +284,20 @@
     {
       $nameValue = "NameValue";
       $methodName = "RetrieveSQL()";
-      self::TestAdd($manager, $methodName, $nameValue);
 
       // Retrieve with SQLLoad().
 		  $keyColumns = new LJCDbColumns();
 		  $keyColumns->Add("Name", value: $nameValue);
-      $sql = $manager->RetrieveSQL($keyColumns);
-      $rows = $manager->SQLLoad($sql);
-      if (null == $rows
-        || !is_array($rows)
-        || 0 == count($rows))
-      {
-        echo($manager->SQL);
-        echo("\r\n{$methodName} No data retrieved.");
-      }
+      $result = $manager->RetrieveSQL($keyColumns);
 
-      self::TestDelete($manager, $methodName, $nameValue);
+      $compare = "select\r\n";
+      $compare .= "  Person.ID, \r\n";
+      $compare .= "  Person.Name, \r\n";
+      $compare .= "  Person.PrincipleFlag, \r\n";
+      $compare .= "  Person.TitleID \r\n";
+      $compare .= "from Person \r\n";
+      $compare .= "where Person.Name = 'NameValue'";
+      LJC::OutputLogCompare("$methodName", $result, $compare);
     } // RetrieveSQL()
 
     // Updates the records for the provided values.
@@ -314,12 +309,13 @@
       self::TestAdd($manager, $methodName, $nameValue);
 
       // Update the test data.
+      // See constructor for how to create $manager.
 		  $keys = new LJCDbColumns();
 		  $keys->Add("Name", value: $nameValue);
       $data = new LJCDbColumns();
 		  $data->Add("Name", value: $updateValue);
-      $value = $manager->Update($keys, $data);
-      $result = strval($value);
+      $affectedCount = $manager->Update($keys, $data);
+      $result = strval($affectedCount);
 
       $compare = "1";
       LJC::OutputLogCompare($methodName, $result
@@ -335,22 +331,20 @@
       $nameValue = "NameValue";
       $updateValue = "Updated";
       $methodName = "UpdateSQL()";
-      self::TestAdd($manager, $methodName, $nameValue);
 
-      // Update with SQLExecute().
+      // Get the Update SQL statement.
+      // See constructor for how to create $manager.
 		  $keys = new LJCDbColumns();
 		  $keys->Add("Name", value: $nameValue);
       $data = new LJCDbColumns();
 		  $data->Add("Name", value: $updateValue);
-      $sql = $manager->UpdateSQL($keys, $data);
-      $value = $manager->SQLExecute($sql);
-      $result = strval($value);
+      $result = $manager->UpdateSQL($keys, $data);
 
-      $compare = "1";
-      LJC::OutputLogCompare("{$methodName} - SQLExecute()", $result, $compare);
-
-      self::TestRetrieve($manager, $methodName, $updateValue);
-      self::TestDelete($manager, $methodName, $updateValue);
+      $compare = "update Person set\r\n";
+      $compare .= "  Name = 'Updated' \r\n";
+      $compare .= "\r\n";
+      $compare .= "where Person.Name = 'NameValue'";
+      LJC::OutputLogCompare("$methodName", $result, $compare);
     } // UpdateSQL()
 
     // Executes an Add, Delete or Update SQL statement.
@@ -362,13 +356,17 @@
       self::TestAdd($manager, $methodName, $nameValue);
 
       // Update with SQLExecute().
+      // See constructor for how to create $manager.
 		  $keys = new LJCDbColumns();
 		  $keys->Add("Name", value: $nameValue);
       $data = new LJCDbColumns();
 		  $data->Add("Name", value: $updateValue);
       $sql = $manager->UpdateSQL($keys, $data);
-      $value = $manager->SQLExecute($sql);
-      $result = strval($value);
+      $affectedCount = $manager->SQLExecute($sql);
+      $result = strval($affectedCount);
+
+      $compare = "1";
+      LJC::OutputLogCompare("$methodName", $result, $compare);
 
       self::TestRetrieve($manager, $methodName, $updateValue);
       self::TestDelete($manager, $methodName, $updateValue);
@@ -382,6 +380,7 @@
       self::TestAdd($manager, $methodName, $nameValue);
 
       // Retrieve with SQLLoad().
+      // See constructor for how to create $manager.
 		  $keys = new LJCDbColumns();
 		  $keys->Add("Name", value: $nameValue);
       $sql = $manager->LoadSQL($keys);
@@ -405,6 +404,7 @@
       self::TestAdd($manager, $methodName, $nameValue);
 
       // Retrieve with SQLRetrieve().
+      // See constructor for how to create $manager.
 		  $keys = new LJCDbColumns();
 		  $keys->Add("Name", value: $nameValue);
       $sql = $manager->RetrieveSQL($keys);
@@ -423,7 +423,7 @@
     // --------------------
     // Schema Methods
 
-    // Get the column definitions that match the property names.
+    // Get the schema columns that match the property names.
     private static function Columns(LJCDataManager $manager)
     {
       $propertyNames = [
@@ -431,6 +431,7 @@
         "Name",
       ];
 
+      // See constructor for how to create $manager.
       $columns = $manager->Columns($propertyNames);
       $value = count($columns);
       $result = strval($value);
@@ -452,7 +453,7 @@
       LJC::OutputLogCompare("SQLRetrieve() - Add()", $result, $compare);
     }
 
-    // Sets the PropertyName, RenameAs and Caption values for a column.
+    // Sets PropertyName, RenameAs and Caption values for a schema column.
     private static function MapNames(LJCDataManager $manager)
     {
       $methodName = "MapNames";
@@ -460,13 +461,18 @@
       $propertyNames = [
         "Name",
       ];
+      // See constructor for how to create $manager.
       $columns = $manager->Columns($propertyNames);
       if ($columns != null
         && count($columns) > 0)
       {
-        $manager->MapNames("Name", "PropertyName", "", "Caption");
+        // Change schema column PropertyName value.
+        // Matches by key which is the current PropertyName value.
+        $manager->MapNames("Name", "NewName", "", "Caption");
+
+        // Get changed column.
         $propertyNames = [
-          "PropertyName",
+          "NewName",
         ];
         $columns = $manager->Columns($propertyNames);
         if (null == $columns
@@ -475,22 +481,29 @@
           echo("{$methodName}: PropertyName change failed.");
         }
 
+        // Check changes.
         if ($columns != null
           && count($columns) > 0)
         {
-          $column = $columns->Retrieve("PropertyName");
+          // Get column by key which is the PropertyName value.
+          $column = $columns->Retrieve("NewName");
           $result = "{$column->PropertyName},{$column->RenameAs}";
           $result .= ",{$column->Caption}";
 
-          $compare = "PropertyName,,Caption";
+          $compare = "NewName,,Caption";
           LJC::OutputLogCompare($methodName, $result, $compare);
         }
+
+        // Reset original column properties.
+        // Matches by key which is the current PropertyName value.
+        $manager->MapNames("NewName", "Name", "", "Caption");
       }
     }
 
     // Creates a PropertyNames list from the data definition.
     private static function PropertyNames(LJCDataManager $manager)
     {
+      // See constructor for how to create $manager.
       $methodName = "PropertyNames()";
       $propertyNames = $manager->PropertyNames();
       LJC::RemoveString($propertyNames, "PrincipleFlag");
@@ -506,8 +519,7 @@
         $result .= $propertyName;
       }
 
-      // Name changed to PropertyName in MapNames().
-      $compare = "ID,PropertyName";
+      $compare = "ID,Name";
       LJC::OutputLogCompare("\r\n{$methodName}", $result, $compare);
     }
 
@@ -525,6 +537,7 @@
       $name = LJCDbAccess::GetValue($row, "Name");
       $result = "{$id},{$name}";
 
+      // See constructor for how to create $manager.
       $items = new Items();
       $item = new Item();
       $items = $manager->CreateDataCollection($items, $item, $rows);
@@ -536,8 +549,7 @@
       else
       {
         $item = $items->RetrieveAtIndex(0);
-        // Name changed to PropertyName in MapNames().
-        $compare = "{$item->ID},{$item->PropertyName}";
+        $compare = "{$item->ID},{$item->Name}";
         LJC::OutputLogCompare("\r\n{$methodName}", $result, $compare);
       }
     }
@@ -545,16 +557,50 @@
     // Populates a Data Object with values from a Data Result row.
     private static function CreateDataObject(LJCDataManager $manager)
     {
+      $methodName = "CreateDataObject";
 
+      $rows = $manager->Load();
+      $row = $rows[0];
+      $id = LJCDbAccess::GetValue($row, "ID");
+      $name = LJCDbAccess::GetValue($row, "Name");
+      $result = "{$id},{$name}";
+
+      // See constructor for how to create $manager.
+      $item = new Item();
+      $item = $manager->CreateDataObject($item, $row);
+      if (null == $item)
+      {
+        echo("\$item was not created.");
+      }
+      else
+      {
+        $compare = "{$item->ID},{$item->Name}";
+        LJC::OutputLogCompare("\r\n{$methodName}", $result, $compare);
+      }
     }
 
     // --------------------
     // Other Methods
 
     // Create the keys from the result.
-    private static function CreateResultKeys()
+    private static function CreateResultKeys(LJCDataManager $manager)
     {
+      $methodName = "CreateResultKeys";
 
+      // See constructor for how to create $manager.
+      $rows = $manager->Load();
+
+      // Get primary key and unique key.
+      $keyNames = [
+        "ID",
+        "Name",
+      ];
+      $resultKeys = $manager->CreateResultKeys($rows, $keyNames);
+      if (null == $resultKeys
+        || 0 == count($resultKeys))
+      {
+        echo("{$methodName}: \$resultKeys were not created.");
+      }
     }
 
     // --------------------
@@ -578,8 +624,8 @@
       // Add the test data.
 		  $data = new LJCDbColumns();
 		  $data->Add("Name", value: $nameValue);
-		  $value = $manager->Add($data);
-      $result = strval($value);
+		  $affectedCount = $manager->Add($data);
+      $result = strval($affectedCount);
 
       $compare = "1";
       LJC::OutputLogCompare("{$parentMethod} - TestAdd()", $result, $compare);
@@ -592,10 +638,6 @@
 		  $keys = new LJCDbColumns();
 		  $keys->Add("Name", value: $nameValue);
       $value = $manager->Delete($keys);
-      if ($value > 1)
-      {
-        echo($manager->SQL);
-      }
       $result = strval($value);
 
       $compare = "1";
@@ -614,8 +656,9 @@
         || !is_array($rows)
         || 0 == count($rows))
       {
-        echo($manager->SQL);
-        echo("\r\nSQLExecute() No data retrieved.");
+        echo("\r\nTestRetrieve");
+        echo("\r\n{$manager->SQL}");
+        echo("\r\nTestRetrieve() No data retrieved.");
       }
     }
 

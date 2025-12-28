@@ -46,10 +46,10 @@
       $this->ClassName = "LJCDataManager";
       $this->DebugText = "";
 
-      $this->DbAccess= new LJCDbAccess($connectionValues);
+      $this->DataAccess= new LJCDbAccess($connectionValues);
       $this->TableName = $tableName;
       $dbName= $connectionValues->DbName;
-      $this->SchemaColumns = $this->DbAccess->LoadTableSchema($dbName
+      $this->SchemaColumns = $this->DataAccess->LoadTableSchema($dbName
         , $tableName);
       $this->Joins = null;
       $this->Limit = 0;
@@ -73,12 +73,12 @@
     /// <ParentGroup>Data</ParentGroup>
     public function Add(LJCDbColumns $dataColumns): int
     {
-      $retValue = 0;
+      $retCount = 0;
       
       $this->SQL = LJCSQLBuilder::CreateInsert($this->TableName
         , $dataColumns);
-      $retValue = $this->DbAccess->Execute($this->SQL);
-      return $retValue;
+      $retCount = $this->DataAccess->Execute($this->SQL);
+      return $retCount;
     } // Add()
   
     // Deletes the records for the provided values.
@@ -89,11 +89,12 @@
       $retValue = 0;
       
       $this->SQL = $this->DeleteSQL($keyColumns);
-      $retValue = $this->DbAccess->Execute($this->SQL);
+      $retValue = $this->DataAccess->Execute($this->SQL);
       return $retValue;
     } // Delete()
 
-    /// <summary>Creates the Delete SQL.</summary>
+    // Creates the Delete SQL.
+    /// <include path='items/DeleteSQL/*' file='Doc/LJCDataManager.xml'/>
     /// <ParentGroup>Data</ParentGroup>
     public function DeleteSQL(LJCDbColumns $keyColumns)
     {
@@ -118,11 +119,12 @@
       
       $this->SQL = $this->LoadSQL($keyColumns, $propertyNames, $joins
         , $filter);
-      $retValue = $this->DbAccess->Load($this->SQL);
+      $retValue = $this->DataAccess->Load($this->SQL);
       return $retValue;
     } // Load()
 
-    /// <summary>Creates the Load SQL.</summary>
+    // Creates the Load SQL.
+    /// <include path='items/LoadSQL/*' file='Doc/LJCDataManager.xml'/>
     /// <ParentGroup>Data</ParentGroup>
     public function LoadSQL(?LJCDbColumns $keyColumns = null
       , ?array $propertyNames = null, ?LJCJoins $joins = null
@@ -168,11 +170,12 @@
       $retValue = null;
 
       $this->SQL = $this->RetrieveSQL($keyColumns, $propertyNames, $joins);
-      $retValue = $this->DbAccess->Retrieve($this->SQL);
+      $retValue = $this->DataAccess->Retrieve($this->SQL);
       return $retValue;
     } // Retrieve()
 
-    /// <summary>Creates the Retrieve SQL.</summary>
+    // Creates the Retrieve SQL.
+    /// <include path='items/RetrieveSQL/*' file='Doc/LJCDataManager.xml'/>
     /// <ParentGroup>Data</ParentGroup>
     public function RetrieveSQL(LJCDbColumns $keyColumns
       , array $propertyNames = null, LJCJoins $joins = null)
@@ -200,11 +203,12 @@
       $retValue = 0;
       
       $this->SQL = $this->UpdateSQL($keyColumns, $dataColumns);
-      $retValue = $this->DbAccess->Execute($this->SQL);
+      $retValue = $this->DataAccess->Execute($this->SQL);
       return $retValue;
     } // Update()
 
-    /// <summary>Creates the Update SQL.</summary>
+    // Creates the Update SQL.
+    /// <include path='items/UpdateSQL/*' file='Doc/LJCDataManager.xml'/>
     /// <ParentGroup>Data</ParentGroup>
     public function UpdateSQL(LJCDbColumns $keyColumns
       , LJCDbColumns $dataColumns)
@@ -226,7 +230,7 @@
     public function SQLExecute(string $sql): int
     {
       $this->SQL = $sql;
-      $retValue = $this->DbAccess->Execute($this->SQL);
+      $retValue = $this->DataAccess->Execute($this->SQL);
       return $retValue;
     } // SQLExecute()
 
@@ -236,7 +240,7 @@
     public function SQLLoad(string $sql): ?array
     {
       $this->SQL = $sql;
-      $retValue = $this->DbAccess->Load($this->SQL);
+      $retValue = $this->DataAccess->Load($this->SQL);
       return $retValue;
     } // SQLLoad()
 
@@ -246,14 +250,15 @@
     public function SQLRetrieve(string $sql): ?array
     {
       $this->SQL = $sql;
-      $retValue = $this->DbAccess->Retrieve($this->SQL);
+      $retValue = $this->DataAccess->Retrieve($this->SQL);
       return $retValue;
     } // SQLRetrieve()
 
     // ---------------
     // Schema Methods
 
-    // Get the column definitions that match the property names.
+    // Get the schema columns that match the property names.
+    /// <include path='items/Columns/*' file='Doc/LJCDataManager.xml'/>
     /// <ParentGroup>Schema</ParentGroup>
     public function Columns(array $propertyNames = null): LJCDbColumns
     {
@@ -261,23 +266,18 @@
       return $retValue;
     } // Columns()
 
-    /// <summary>
-    ///   Sets the PropertyName, RenameAs and Caption values for a column.
-    /// </summary>
-    /// <param name="$columnName">The column name.</param>
-    /// <param name="$propertyName">The property name.</param>
-    /// <param name="$renameAs">The rename as value.</param>
-    /// <param name="$caption">The caption value.</param>
+    // Sets PropertyName, RenameAs and Caption values for a schema column.
+    /// <include path='items/MapNames/*' file='Doc/LJCDataManager.xml'/>
     /// <ParentGroup>Schema</ParentGroup>
-    public function MapNames(string $columnName, ?string $propertyName = null
+    public function MapNames(string $key, ?string $propertyName = null
       , ?string $renameAs = null, ?string $caption = null)
     {
-      $this->SchemaColumns->MapNames($columnName, $propertyName, $renameAs
+      $this->SchemaColumns->MapNames($key, $propertyName, $renameAs
         , $caption);
     }
 
     // Creates a PropertyNames list from the data definition.
-    /// <ParentGroup>Other</ParentGroup>
+    /// <include path='items/PropertyNames/*' file='Doc/LJCDataManager.xml'/>
     /// <ParentGroup>Schema</ParentGroup>
     public function PropertyNames(): array
     {
@@ -291,10 +291,10 @@
     // Creates an array of Data Objects from a Data Result rows array.
     /// <include path='items/CreateDataCollection/*' file='Doc/LJCDataManager.xml'/>
     /// <ParentGroup>ORM</ParentGroup>
-    public function CreateDataCollection(object $collection
+    public function CreateDataCollection(object $dataCollection
       , object $dataObject, array $rows)
     {
-      $retValue = $collection;
+      $retValue = $dataCollection;
 
       if ($rows != null && count($rows) > 0)
       {
@@ -304,7 +304,7 @@
           $data = $this->CreateDataObject($data, $row);
           $retValue->AddObject($data);
         }
-        $values = $collection->GetValues();
+        $values = $dataCollection->GetValues();
       }
       return $retValue;
     } // CreateDataCollection()
@@ -409,7 +409,7 @@
     public string $ClassName;
 
     /// <summary>The DbAccess object.</summary>
-    public LJCDbAccess $DbAccess;
+    public LJCDbAccess $DataAccess;
 
     /// <summary>The debug text.</summary>
     public string $DebugText;

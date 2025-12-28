@@ -644,12 +644,12 @@
     // Sets the PropertyName, RenameAs and Caption values for a column.
     /// <include path='items/MapNames/*' file='Doc/LJCDbColumns.xml'/>
     /// <ParentGroup>Other</ParentGroup>
-    public function MapNames(string $columnName, ?string $propertyName = null
+    public function MapNames(string $key, ?string $propertyName = null
       , ?string $renameAs = null, ?string $caption = null): void
     {
       $methodName = "MapNames()";
 
-      $dbColumn = $this->Retrieve($columnName);
+      $dbColumn = $this->Retrieve($key);
       if ($dbColumn != null)
       {
         if ($propertyName != null)
@@ -657,7 +657,7 @@
           // Change Key
           $dbColumn = $dbColumn->Clone();
           $dbColumn->PropertyName = $propertyName;
-          $this->DeleteItem($columnName);
+          $this->DeleteItem($key);
           $this->AddObject($dbColumn);
           // ***** 
           //self::DebugItems($this, $methodName);
