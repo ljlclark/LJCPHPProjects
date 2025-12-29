@@ -7,13 +7,9 @@
   $prefix = RelativePrefix();
   include_once "$prefix/LJCPHPCommon/LJCCollectionLib.php";
   include_once "$prefix/LJCPHPCommon/LJCCommonLib.php";
-  include_once "$prefix/LJCPHPCommon/LJCDebugLib.php";
-  include_once "$prefix/LJCPHPCommon/LJCTextLib.php";
   //include_once "$prefix/LJCPHPCommon/LJCDbAccessLib.php";
   // LJCCollectionLib: LJCCollectionBase
   // LJCCommonLib: LJC
-  // LJCDebugLib: LJCDebug
-  // LJCTextLib: LJCWriter
 
   // The Common PHP Text Builder Class Library
   /// <include path='items/LJCTextBuilderLib/*' file='Doc/LJCTextBuilder.xml'/>
@@ -451,13 +447,6 @@
       // Output logging.
       //LJC::OutputDebugObject(__line__, $this->ClassName, $methodName
       //  , "\$object", $object);
-
-      // File logging.
-      $sourceLibName = "LJCTextBuilderLib";
-      $this->Log = LJCDebug::CreateLog($sourceLibName, $this->ClassName
-        , enabled: false);
-      $this->Log->IncludePrivate = false;
-      //$this->Log->Write(__line__." \$value = {$this->value}");
 
       // Property logging.
       $this->LogText = "";

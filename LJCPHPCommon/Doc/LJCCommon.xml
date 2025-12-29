@@ -239,7 +239,7 @@
       simply tested for success $index &gt;= 0 or failure $index &lt; 0.
       &lt;br /&gt;
       &lt;br /&gt;
-      This alternative for PHP strpos() always returns an integer.
+      This alternative for PHP strrpos() always returns an integer.
     </remarks>
     <code>
       // Gets the last index for the search value.
