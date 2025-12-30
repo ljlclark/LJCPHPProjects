@@ -417,6 +417,9 @@
     /// <summary>The Join definitions.</summary>
     public ?LJCJoins $Joins;
 
+    /// <summary>The number of records for a data page.</summary>
+    public int $Limit;
+
     /// <summary>The OrderBy names.</summary>
     public ?array $OrderByNames;
 
@@ -450,7 +453,7 @@
     public static function CreateDelete(string $tableName
       , LJCDbColumns $keyColumns): string
     {
-      $retValue = "delete from $tableName \r\n";
+      $retValue = "delete from $tableName";
       $retValue .= self::WhereClause($tableName,$keyColumns);
       return $retValue;
     } // CreateDelete()
@@ -461,9 +464,9 @@
     public static function CreateInsert(string $tableName
       , LJCDbColumns $dataColumns): string
     {
-      $retValue = "insert into $tableName\r\n";
+      $retValue = "insert into $tableName";
       $retValue .= self::SqlColumns($tableName, $dataColumns, true);
-      $retValue .= " values \r\n" . self::SQLValueColumns($dataColumns, false
+      $retValue .= " \r\nvalues" . self::SQLValueColumns($dataColumns, false
         , true);
       return $retValue;
     } // CreateInsert()
@@ -481,9 +484,9 @@
         $sqlColumns = $schemaColumns->SelectItems($propertyNames);
       }
 
-      $retValue = "select\r\n";
+      $retValue = "select";
       $retValue .= self::SQLColumns($tableName, $sqlColumns, joins: $joins);
-      $retValue .= "from $tableName ";
+      $retValue .= " \r\nfrom $tableName";
       $retValue .= self::GetJoinStatement($tableName, $joins);
       $retValue .= self::WhereClause($tableName, $keyColumns);
       return $retValue;
@@ -495,7 +498,7 @@
     public static function CreateUpdate(string $tableName
       , ?LJCDbColumns $keyColumns, LJCDbColumns $dataColumns): string
     {
-      $retValue = "update $tableName set\r\n";
+      $retValue = "update $tableName set";
       $retValue .= self::SQLValueColumns($dataColumns, true);
       $retValue .= self::WhereClause($tableName, $keyColumns);
       return $retValue;
@@ -540,11 +543,13 @@
       , LJCDbColumns $sqlColumns, bool $includeParens = false
       , LJCJoins $joins = null): string
     {
-      $retValue = "";
+      // Start component with space + newline.
+      // Component does not end with newline.
+      $retValue = " \r\n";
 
       if ($includeParens)
       {
-        $retValue .= " (\r\n";
+        $retValue .= "(\r\n";
       }
 
       $first = true;
@@ -564,10 +569,9 @@
       }
       $retValue .= self::SQLJoinColumns($joins);
 
-      $retValue .= " \r\n";
       if ($includeParens)
       {
-        $retValue .= " )\r\n";
+        $retValue .= " \r\n)";
       }
       return $retValue;
     } // SQLColumns()
@@ -611,11 +615,13 @@
     public static function SQLValueColumns(LJCDbColumns $dataColumns
       , bool $isUpdate = false, bool $includeParens = false): string
     {
-      $retValue = "";
+      // Start component with space + newline.
+      // Component does not end with newline.
+      $retValue = " \r\n";
 
       if ($includeParens)
       {
-        $retValue .= " (\r\n";
+        $retValue .= "(\r\n";
       }
 
       $first = true;
@@ -657,10 +663,10 @@
           $retValue .= "$value";
         }
       }
-      $retValue .= " \r\n";
+
       if ($includeParens)
       {
-        $retValue .= " )\r\n";
+        $retValue .= " \r\n)";
       }
       return $retValue;
     } // SQLValueColumns()
@@ -669,11 +675,13 @@
     private static function WhereClause(string $tableName
       , ?LJCDbColumns $keyColumns): ?string
     {
+      // Start component with space + newline.
+      // Component does not end with newline.
       $retValue = null;
 
       if ($keyColumns != null && count($keyColumns) > 0)
       {
-        $retValue = "\r\nwhere ";
+        $retValue = " \r\nwhere ";
 
         $first = true;
         foreach ($keyColumns as $keyColumn)
@@ -777,6 +785,8 @@
     public static function GetJoinStatement(string $tableName
       , ?LJCJoins $joins): ?string
     {
+      // Start component with space + newline.
+      // Component does not end with newline.
       $retValue = null;
 
       if ($joins != null && count($joins) > 0)

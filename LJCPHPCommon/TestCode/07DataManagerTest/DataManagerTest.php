@@ -161,7 +161,7 @@
 		  $affectedCount = $manager->Add($data);
       if ($affectedCount < 1)
       {
-        echo($manager->SQL);
+        echo("{$methodName}\r\n{$manager->SQL}");
       }
       $result = strval($affectedCount);
 
@@ -186,7 +186,7 @@
       $affectedCount = $manager->Delete($keys);
       if ($affectedCount < 1)
       {
-        echo($manager->SQL);
+        echo("{$methodName}\r\n{$manager->SQL}");
       }
       $result = strval($affectedCount);
 
@@ -207,7 +207,6 @@
       $result = $manager->DeleteSQL($keys);
 
       $compare = "delete from Person \r\n";
-      $compare .= "\r\n";
       $compare .= "where Person.Name = 'NameValue'";
       LJC::OutputLogCompare("$methodName", $result, $compare);
     } // DeleteSQL()
@@ -246,7 +245,7 @@
 		  $keys->Add("Name", value: $nameValue);
       $result = $manager->LoadSQL($keys);
 
-      $compare = "select\r\n";
+      $compare = "select \r\n";
       $compare .= "  Person.ID, \r\n";
       $compare .= "  Person.Name, \r\n";
       $compare .= "  Person.PrincipleFlag, \r\n";
@@ -290,7 +289,7 @@
 		  $keyColumns->Add("Name", value: $nameValue);
       $result = $manager->RetrieveSQL($keyColumns);
 
-      $compare = "select\r\n";
+      $compare = "select \r\n";
       $compare .= "  Person.ID, \r\n";
       $compare .= "  Person.Name, \r\n";
       $compare .= "  Person.PrincipleFlag, \r\n";
@@ -340,9 +339,8 @@
 		  $data->Add("Name", value: $updateValue);
       $result = $manager->UpdateSQL($keys, $data);
 
-      $compare = "update Person set\r\n";
+      $compare = "update Person set \r\n";
       $compare .= "  Name = 'Updated' \r\n";
-      $compare .= "\r\n";
       $compare .= "where Person.Name = 'NameValue'";
       LJC::OutputLogCompare("$methodName", $result, $compare);
     } // UpdateSQL()
@@ -621,6 +619,8 @@
     private static function TestAdd(LJCDataManager $manager
       , string $parentMethod, string $nameValue)
     {
+      $methodName = "TestAdd()";
+
       // Add the test data.
 		  $data = new LJCDbColumns();
 		  $data->Add("Name", value: $nameValue);
@@ -628,20 +628,22 @@
       $result = strval($affectedCount);
 
       $compare = "1";
-      LJC::OutputLogCompare("{$parentMethod} - TestAdd()", $result, $compare);
+      LJC::OutputLogCompare("{$parentMethod} - {$methodName}", $result, $compare);
     }
 
     // Delete record for testing.
     private static function TestDelete(LJCDataManager $manager
       , string $parentMethod, string $nameValue)
     {
+      $methodName = "TestDelete()";
+
 		  $keys = new LJCDbColumns();
 		  $keys->Add("Name", value: $nameValue);
       $value = $manager->Delete($keys);
       $result = strval($value);
 
       $compare = "1";
-      LJC::OutputLogCompare("{$parentMethod} - TestDelete()", $result
+      LJC::OutputLogCompare("{$parentMethod} - {$methodName}", $result
         , $compare);
     }
 
@@ -649,6 +651,8 @@
     private static function TestRetrieve(LJCDataManager $manager
       , string $parentMethod, string $nameValue)
     {
+      $methodName = "TestRetrieve()";
+
 		  $keys = new LJCDbColumns();
 		  $keys->Add("Name", value: $nameValue);
       $rows = $manager->Retrieve($keys);
@@ -668,6 +672,7 @@
       , string $updateValue)
     {
       $methodName = "TestUpdate()";
+
 		  $keys = new LJCDbColumns();
 		  $keys->Add("Name", value: $nameValue);
       

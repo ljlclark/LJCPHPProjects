@@ -79,13 +79,13 @@
 
         // $manager->SQL =
         // insert into Person
-        //  (
+        // (
         //   Person.Name 
-        //  )
-        //  values 
-        //  (
+        // )
+        // values 
+        // (
         //   'NameValue' 
-        //  )
+        // )
       }
 		</code>
 	</Add>
@@ -129,7 +129,6 @@
 
         // $manager->SQL =
 		    // delete from TableName 
-        //
 		    // where TableName.Name = 'NameValue'
       }
 		</code>
@@ -159,7 +158,6 @@
 
         // result:
 		    // delete from TableName 
-        //
 		    // where TableName.Name = 'NameValue'
       }
     </code>
@@ -389,9 +387,8 @@
         // 1
 
 		    // $manager->SQL =
-		    // update TableName set
+		    // update TableName set 
 		    //   Name = 'Updated' 
-        //
 		    // where TableName.Name = 'NameValue'
 
 		    $keys = new LJCDbColumns();
@@ -428,9 +425,8 @@
         $result = $manager->UpdateSQL($keys, $data);
 
         // result:
-        // update TableName set
+        // update TableName set 
         //   Name = 'Updated' 
-        //
         // where TableName.Name = 'NameValue'
 
         $keys = new LJCDbColumns();
@@ -469,9 +465,8 @@
         // 1
 
 		    // $sql =
-        // update TableName set
+        // update TableName set 
         //   Name = 'Updated' 
-        //
         // where TableName.Name = 'NameValue'
 
 		    $keys = new LJCDbColumns();

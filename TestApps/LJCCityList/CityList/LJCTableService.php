@@ -51,10 +51,9 @@
       $_SESSION["tableName"] = $this->TableName;
 
       $connectionValues = $this->GetConnectionValues($this->ConfigName);  
-      // *** ToDo: Use DataManager
-      $this->CityManager = new CityManager($connectionValues, $this->TableName);
+      $this->DataManager = new DataManager($connectionValues, $this->TableName);
 
-      $manager = $this->CityManager;
+      $manager = $this->DataManager;
       if ($this->Limit > 0)
       {
         $manager->Limit = $this->Limit;
@@ -95,7 +94,7 @@
       $methodName = "GetConnectionValues()";
 
       $configFile = $this->ConfigFile;
-      $configName = "TestData";
+      //$configName = "TestData";
       $retValues = DataConfigs::GetConnectionValues($configFile, $configName);
       return $retValues;
     } // GetConnectionValues()
@@ -123,7 +122,7 @@
         $this->AddColumns = $pageData->AddTableColumns;
       }
       $this->BeginKeyData = $pageData->BeginKeyData;
-      $this->CityTableID = $pageData->HTMLTableID;
+      $this->HTMLTableID = $pageData->HTMLTableID;
       $this->ConfigFile = $pageData->ConfigFile;
       $this->ConfigName = $pageData->ConfigName;
       $this->EndKeyData = $pageData->EndKeyData;
@@ -224,7 +223,7 @@
       // Setup table attributes.
       $tb = new LJCTextBuilder($textState);
       $className = null;
-      $id = $this->CityTableID;
+      $id = $this->HTMLTableID;
       $retAttribs = $tb->Attribs($className, $id);
 
       // Centers to page.
@@ -289,7 +288,7 @@
       $methodName = "ResultKeyArray()";
 
       // Create key values array.
-      $dataManager = $this->CityManager->DataManager;
+      $dataManager = $this->DataManager->DataManager;
       $retKeyArray = $dataManager->CreateResultKeys($result, $keyNames);
       return $retKeyArray;
     } // ResultKeyArray()
@@ -349,7 +348,7 @@
       $methodName = "RetrieveData()";
       $retResult = null;
 
-      $manager = $this->CityManager;
+      $manager = $this->DataManager;
       $joins = $manager->CreateJoins();
       $propertyNames = $this->PropertyNames;
 
@@ -414,7 +413,7 @@
     public object $BeginKeyData;
 
     /// <summary>The HTML city table element ID.</summary>
-    public string $CityTableID;
+    public string $HTMLTableID;
 
     /// <summary>The data config file name.</summary>
     public string $ConfigFile;
@@ -463,7 +462,7 @@
     // Other Properties
 
     /// <summary>The CityManager object.</summary>
-    public CityManager $CityManager;
+    public DataManager $DataManager;
 
     /// <summary>The HTML Table column definition collection.
     public LJCDbColumns $TableColumns;
