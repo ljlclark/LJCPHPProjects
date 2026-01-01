@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<!-- Copyright (c) Lester J. Clark 2022 - All Rights Reserved -->
+<!-- Copyright (c) Lester J. Clark and Contributors -->
+<!-- Licensed under the MIT License. -->
 <!-- LJCDataManager.xml -->
 <items>
 	<LJCDataManager>
-		<summary>Provides Standard DB Table methods.</summary>
+		<summary>
+      Provides Standard DB Table methods.
+    </summary>
 		<remarks>
 			The DataManager class provides a higher level of abstraction on top of the
 			DataAccess class.
@@ -26,7 +29,9 @@
 	
 	<!-- Constructor Methods -->
 	<construct>
-		<summary>Initializes a class instance with the provided values.</summary>
+		<summary>
+      Initializes a class instance with the provided values.
+    </summary>
 		<param name="$connectionValues">The DB Connection values.</param>
 		<param name="$tableName">The table name.</param>
 		<code>
@@ -49,7 +54,9 @@
 	
 	<!-- Data Methods -->
 	<Add>
-		<summary>Adds the record for the provided values.</summary>
+		<summary>
+      Adds the record for the provided values.
+    </summary>
 		<param name="$dataColumns">The data columns.</param>
 		<returns>The count of affected records.</returns>
 		<remarks>
@@ -90,7 +97,9 @@
 		</code>
 	</Add>
 	<Delete>
-		<summary>Deletes the records for the provided values.</summary>
+		<summary>
+      Deletes the records for the provided values.
+    </summary>
 		<param name="$keyColumns">The where clause key columns.</param>
 		<returns>The count of affected records.</returns>
 		<remarks>
@@ -163,7 +172,9 @@
     </code>
   </DeleteSQL>
   <Load>
-		<summary>Loads the records for the provided values.</summary>
+		<summary>
+      Loads the records for the provided values.
+    </summary>
 		<param name="$keyColumns">The where clause key columns.</param>
 		<param name="$propertyNames">The included column property names.</param>
     <param name="$joins"></param>
@@ -257,7 +268,9 @@
     </code>
   </LoadSQL>
   <Retrieve>
-		<summary>Retrieves the record for the provided values.</summary>
+		<summary>
+      Retrieves the record for the provided values.
+    </summary>
 		<param name="$keyColumns">The where clause key columns.</param>
 		<param name="$propertyNames">The included column property names.</param>
 		<returns>An array of record columns.</returns>
@@ -348,7 +361,9 @@
     </code>
   </RetrieveSQL>
   <Update>
-		<summary>Updates the records for the provided values.</summary>
+		<summary>
+      Updates the records for the provided values.
+    </summary>
 		<param name="$keyColumns">The where clause key columns.</param>
 		<param name="$dataColumns">The data columns.</param>
 		<returns>The count of affected records.</returns>
@@ -436,7 +451,9 @@
     </code>
   </UpdateSQL>
   <SQLExecute>
-		<summary>Executes an Add, Delete or Update SQL statement.</summary>
+		<summary>
+      Executes an Add, Delete or Update SQL statement.
+    </summary>
 		<param name="$sql">The SQL statement.</param>
 		<returns>The count of affected records.</returns>
     <code>
@@ -476,7 +493,9 @@
     </code>
 	</SQLExecute>
 	<SQLLoad>
-		<summary>Executes a Select SQL statement.</summary>
+		<summary>
+      Executes a Select SQL statement.
+    </summary>
 		<param name="$sql">The SQL statement.</param>
 		<returns>An array of data records.</returns>
     <code>
@@ -519,7 +538,9 @@
     </code>
 	</SQLLoad>
 	<SQLRetrieve>
-		<summary>Executes a Select SQL statement.</summary>
+		<summary>
+      Executes a Select SQL statement.
+    </summary>
 		<param name="$sql">The SQL statement.</param>
 		<returns>An array of record columns.</returns>
     <code>
@@ -795,7 +816,9 @@
 		</code>
 	</CreateDataCollection>
 	<CreateDataObject>
-		<summary>Populates a typed Data Object with values from a DB row.</summary>
+		<summary>
+      Populates a typed Data Object with values from a DB row.
+    </summary>
 		<param name="$dataObject">A Data Object to use as a template.</param>
 		<param name="$row">An array of data columns.</param>
 		<returns>A data object record.</returns>

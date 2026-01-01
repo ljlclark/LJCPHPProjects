@@ -14,7 +14,9 @@
   //   , LJCJoinOn, LJCJoinOns
   // LJCTextLib: LJCStringBuilder
 
-  /// <summary>The PDO Data Manager Library</summary>
+  // The PDO Data Manager Library
+  /// <include path='items/LJCDataManagerLib/*' file='Doc/LJCDataManager.xml'/>
+
   /// LibName: LJCDataManagerLib
   //  Classes: LJCDataManager, LJCSQLBuilder
 
@@ -325,6 +327,7 @@
     // Other Methods - LJCDataManager
 
     // Create the keys from the result.
+    /// <include path='items/CreateResultKeys/*' file='Doc/LJCDataManager.xml'/>
     /// <ParentGroup>Other</ParentGroup>
     public function CreateResultKeys($rows, $keyNames)
     {
@@ -445,7 +448,7 @@
   class LJCSQLBuilder
   {
     // ---------------
-    // Static Statement Methods
+    // Static SQL Methods
 
     // Creates a Delete SQL statement.
     /// <include path='items/CreateDelete/*' file='Doc/LJCSQLBuilder.xml'/>

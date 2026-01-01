@@ -6,7 +6,7 @@
   <!-- The XML file for the first file class contains the library comments. -->
   <LJCTextBuilderLib>
     <summary>
-      The Text Builder PHP Class Library
+      The Text Builder Class Library
     </summary>
     <remarks>
       Use this code to include the Text Builder lib classes.
@@ -99,6 +99,7 @@
       indent may already have been added to the text by the "Get Text" method.
     </remarks>
   </LJCTextBuilder>
+  
   <!-- Constructor Methods  -->
   <cstr>
     <summary>
@@ -106,6 +107,7 @@
     </summary>
     <param name="$textState">The text state object.</param>
   </cstr>
+  
   <!-- Data Class Methods -->
   <ToString>
     <summary>
@@ -113,6 +115,7 @@
     </summary>
     <returns>The HTML text.</returns>
   </ToString>
+  
   <!-- Add Text Methods -->
   <AddLine>
     <summary>
@@ -158,6 +161,7 @@
       // This is some appended text.
     </code>
   </AddText>
+  
   <!-- Append Text Methods -->
   <Line>
     <summary>
@@ -233,6 +237,7 @@
       //   This is an indented line.
     </code>
   </Text>
+  
   <!-- Get Text Methods -->
   <GetLine>
     <summary>
@@ -323,6 +328,7 @@
       //   This is an indented line.
     </code>
   </GetText>
+  
   <!-- Other Get Text Methods -->
   <GetIndented>
     <summary>
@@ -396,6 +402,7 @@
       // time for all good men to come to the aid of their country.
     </code>
   </GetWrapped>
+  
   <!-- Get Attribs Methods -->
   <Attribs>
     <summary>
@@ -521,6 +528,7 @@
       //  style="border: 1px solid; borderspacing: 2px; cellpadding: 3px;"
     </code>
   </TableAttribs>
+  
   <!-- Append Element Methods -->
   <Begin>
     <summary>
@@ -624,6 +632,7 @@
       // &amp;lt;/p&amp;gt;
     </code>
   </End>
+  
   <!-- Get Element Methods -->
   <GetBegin>
     <summary>
@@ -663,23 +672,6 @@
       // &amp;lt;body&amp;gt;
     </code>
   </GetBegin>
-  <GetBeginSelector>
-    <summary>
-      Gets beginning of style selector.
-    </summary>
-    <param name="$selectorName">The selector name.</param>
-    <param name="$textState">The current text state values.</param>
-    <code>
-      $textState = new LJCTextState();
-      $tb = new LJCTextBuilder($textState);
-
-      // Example Method:
-      $result = $tb-&gt;GetBeginSelector(".myClass", $textState);
-
-      // result:
-      // .myClass {
-    </code>
-  </GetBeginSelector>
   <GetCreate>
     <summary>
       Gets an element.
@@ -751,6 +743,7 @@
       // &amp;lt;/p&amp;gt;
     </code>
   </GetEnd>
+  
   <!-- Other Methods -->
   <AddChildIndent>
     <summary>

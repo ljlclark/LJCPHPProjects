@@ -18,7 +18,9 @@
     </remarks>
   </LJCHTMLLib>
   <LJCHTML>
-    <summary>Provides methods for creating HTML sections.</summary>
+    <summary>
+      Provides methods for creating HTML sections.
+    </summary>
     <remarks>
       &lt;p&gt;
       &lt;b&gt;Other Append Element Methods&lt;/b&gt;&lt;br /&gt;
@@ -34,6 +36,7 @@
       &lt;/p&gt;
     </remarks>
   </LJCHTML>
+  
   <!-- Create Element Methods -->
   <GetBeginSelector>
     <summary>
@@ -159,6 +162,7 @@
       }
     </code>
   </GetScript>
+  
   <!-- Create HTML Methods -->
   <GetHTMLBegin>
     <summary>

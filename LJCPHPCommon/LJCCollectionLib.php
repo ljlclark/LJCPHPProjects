@@ -6,7 +6,9 @@
 
   // Contains Classes to represent a Collection.
   /// <include path='items/LJCCollectionLib/*' file='Doc/LJCCollectionBase.xml'/>
-  // The LibName: XML comment triggers the file (library) HTML page generation.
+  
+  // The "LibName:" XML comment triggers the file (library) HTML page
+  // generation.
   // It generates a page with the same name as the library.
   // LJCCollectionLib.html
   /// LibName: LJCCollectionLib
@@ -14,12 +16,13 @@
 
   // ***************
   // Represents a Collection of objects.
+  /// <include path='items/LJCCollectionBase/*' file='Doc/LJCCollectionBase.xml'/>
   /// <group name="Data">Data Methods</group>
   //    AddItem(), ClearItems(), DeleteItem(), RetrieveIndex(), RetrieveItem()
   /// <group name="Other">Other Methods</group>
   //    GetKeys(), GetValues(), HasKey(), count()
-  /// <include path='items/LJCCollectionBase/*' file='Doc/LJCCollectionBase.xml'/>
-  // The class triggers the class HTML page generation.
+
+  // A class triggers the class HTML page generation.
   // It generates a page with the same name as the class.
   // LJCCollectionBase/LJCCollectionBase.html
   class LJCCollectionBase implements IteratorAggregate, Countable
@@ -30,8 +33,9 @@
     // Adds an object and key value.
     /// <include path='items/AddItem/*' file='Doc/LJCCollectionBase.xml'/>
     /// <ParentGroup>Data</ParentGroup>
-    // The method triggers the method HTML page generation.
-    // It generates a page with the name class plus method.
+
+    // A method triggers the method HTML page generation.
+    // It generates a page with the name: class plus method.
     // LJCCollectionBase/LJCCollectionBaseAddItem.html
     protected function AddItem($item, $key = null)
     {
@@ -54,7 +58,8 @@
       return $retValue;
     } // AddItem()
 
-    /// <summary>Clears the collection items.</summary>
+    // Clears the collection items.
+    /// <include path='items/AddItem/*' file='Doc/LJCCollectionBase.xml'/>
     /// <ParentGroup>Data</ParentGroup>
     protected function ClearItems()
     {

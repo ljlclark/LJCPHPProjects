@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<!-- Copyright (c) Lester J. Clark 2022 - All Rights Reserved -->
+<!-- Copyright (c) Lester J. Clark and Contributors -->
+<!-- Licensed under the MIT License. -->
 <!-- LJCCollectionBase.xml -->
 <items>
   <!-- The XML file for the first file class contains the library comments. -->
@@ -17,7 +18,9 @@
     </remarks>
   </LJCCollectionLib>
 	<LJCCollectionBase>
-		<summary>Represents a Collection of objects.</summary>
+		<summary>
+      Represents a Collection of objects.
+    </summary>
 		<remarks>
 			The LJCCollectionBase class provides the code that can be inherited to
 			create a strongly typed Collection.
@@ -39,9 +42,11 @@
     </remarks>
 	</LJCCollectionBase>
 	
-	<!-- Public Methods -->
+	<!-- Data Methods -->
 	<AddItem>
-		<summary>Adds an object and key value.</summary>
+		<summary>
+      Adds an object and key value.
+    </summary>
 		<param name="$item">The object to be added to the collection.</param>
 		<param name="$key">The element key.</param>
 		<returns>The added item.</returns>
@@ -133,7 +138,9 @@
     </code>
   </ClearItems>
   <DeleteItem>
-    <summary>Remove the item by Key value.</summary>
+    <summary>
+      Remove the item by Key value.
+    </summary>
     <param name="$key">The element key.</param>
     <param name="$throwError">Indicates if an error should be thrown if the key is not found.</param>
     <code>
@@ -179,7 +186,9 @@
     </code>
   </DeleteItem>
   <RetrieveItem>
-		<summary>Retrieves the item by Key value.</summary>
+		<summary>
+      Retrieves the item by Key value.
+    </summary>
 		<param name="$key">The element key.</param>
 		<param name="$throwError">Indicates if an error should be thrown if the key is not found.</param>
 		<returns>The object with the matching key value.</returns>
@@ -218,7 +227,9 @@
 		</code>
 	</RetrieveItem>
   <RetrieveItemAtIndex>
-    <summary>Retrieves the item by index.</summary>
+    <summary>
+      Retrieves the item by index.
+    </summary>
     <param name="$index">The element index.</param>
     <returns>The object at the index parameter.</returns>
     <code>
@@ -255,6 +266,8 @@
       }
     </code>
   </RetrieveItemAtIndex>
+  
+  <!-- Other Methods -->
   <GetKeys>
     <summary>
       Gets an indexed array of keys.
@@ -322,7 +335,9 @@
     </code>
   </GetValues> 
   <HasKey>
-		<summary>Indicates if a key already exists.</summary>
+		<summary>
+      Indicates if a key already exists.
+    </summary>
 		<param name="$key">The element key.</param>
 		<returns>True if the key already exists, otherwise false.</returns>
 		<code>

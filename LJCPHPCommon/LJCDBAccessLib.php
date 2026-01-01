@@ -12,7 +12,9 @@
   // LJCCollectionLib: LJCCollectionBase
   // LJCTextLib: LJCWriter
 
-  /// <summary>The SQL data access library.</summary>
+  // The SQL data access library.
+  /// <include path='items/LJCDBAccessLib/*' file='Doc/LJCDbAccess.xml'/>
+
   /// LibName: LJCDBAccessLib
   //  Classes: LJCConnectionValues, LJCDbAccess
   //    , LJCDataColumn, LJCDataColumns
@@ -235,7 +237,7 @@
   }  // LJCDbAccess
 
   // ***************
-  // Represents a DB Column definition.
+  // Represents a Data Column definition.
   // Static: GetDataType()
   // Methods: Clone()
   /// <include path='items/LJCDataColumn/*' file='Doc/LJCDataColumn.xml'/>
@@ -245,11 +247,8 @@
     // Static Methods
 
     // *** New Method ***
-    /// <summary>
-    ///   Creates a new typed object with existing standard object values.
-    /// </summary>
-    /// <param name="$objColumn"></param>
-    /// <returns>The new LJCDataColumn object.</returns>
+    // Creates a new typed object with existing standard object values.
+    /// <include path='items/Copy/*' file='Doc/LJCDataColumn.xml'/>
     public static function Copy($objColumn)
     {
       $retColumn = null;
@@ -340,7 +339,8 @@
       $this->WhereCompareOperator = "=";
     } // __construct()
 
-    /// <summary>Creates an object clone.</summary>
+    // Creates an object clone.
+    /// <include path='items/Clone/*' file='Doc/LJCDataColumn.xml'/>
     public function Clone(): self
     {
       $retColumn = new self($this->ColumnName);

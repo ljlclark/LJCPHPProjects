@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<!-- Copyright (c) Lester J. Clark 2022 - All Rights Reserved -->
+<!-- Copyright (c) Lester J. Clark and Contributors -->
+<!-- Licensed under the MIT License. -->
 <!-- LJCJoinOns.xml -->
 <items>
 	<Add>
-		<summary>Creates an object and adds it to the collection.</summary>
+		<summary>
+      Creates an object and adds it to the collection.
+    </summary>
 		<param name="$fromColumnName">The 'from' column name.</param>
 		<param name="$toColumnName">The 'to' column name.</param>
 		<param name="$key">The optional key value.</param>
@@ -17,7 +20,9 @@
 		</code>
 	</Add>
 	<AddObject>
-		<summary>Adds an object and key value.</summary>
+		<summary>
+      Adds an object and key value.
+    </summary>
 		<param name="$item">The item to add to the collection.</param>
 		<param name="$key">The optional key value.</param>
 		<code>
@@ -31,7 +36,9 @@
 		</code>
 	</AddObject>
   <Retrieve>
-		<summary>Retrieves the item by Key value.</summary>
+		<summary>
+      Retrieves the item by Key value.
+    </summary>
 		<param name="$key">The key value.</param>
 		<param name="$throwError">The optional throw error flag.</param>
 		<code>

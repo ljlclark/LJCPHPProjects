@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<!-- Copyright (c) Lester J. Clark 2022 - All Rights Reserved -->
+<!-- Copyright(c) Lester J. Clark and Contributors. -->
+<!-- Licensed under the MIT License. -->
 <!-- LJCConnectionValues.xml -->
 <items>
 	<!-- Constructors -->
 	<construct>
-		<summary>Initializes a class instance with the provided values.</summary>
+		<summary>
+      Initializes a class instance with the provided values.
+    </summary>
 		<param name="$dbServer">The DB Server name.</param>
 		<param name="$dbName">The Database name.</param>
 		<param name="$userID">The user name.</param>

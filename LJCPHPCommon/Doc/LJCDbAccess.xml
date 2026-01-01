@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<!-- Copyright (c) Lester J. Clark 2022 - All Rights Reserved -->
+<!-- Copyright(c) Lester J. Clark and Contributors. -->
+<!-- Licensed under the MIT License. -->
 <!-- LJCDbAccess.xml -->  
 <items>
   <!-- The XML file for the first file class contains the library comments. -->
-  <LJCHTMLLib>
+  <LJCDBAccessLib>
     <summary>
       The SQL Data Access Library
     </summary>
@@ -15,7 +16,7 @@
       $prefix = RelativePrefix();
       include_once "$prefix/LJCPHPCommon/LJCDBAccessLib.php";&lt;/pre&gt;
     </remarks>
-  </LJCHTMLLib>
+  </LJCDBAccessLib>
   <LJCDbAccess>
 		<summary>
       Provides standard PDO Data Access.
@@ -28,7 +29,7 @@
 		</remarks>
 	</LJCDbAccess>
 	
-	<!-- Static Functions -->
+	<!-- Static Methods -->
 	<GetValue>
 		<summary>
 			Returns a data value if the element exists.</summary>
@@ -84,9 +85,11 @@
     </code>
 	</construct>
 
-	<!-- Public Data Methods -->
+	<!-- Data Methods -->
 	<Execute>
-		<summary>Executes a non-query sql statement.</summary>
+		<summary>
+      Executes a non-query sql statement.
+    </summary>
 		<param name="$sql">The SQL statement.</param>
 		<returns>The count of affected records.</returns>
 		<code>
@@ -140,7 +143,9 @@
     </code>
 	</Execute>
 	<Load>
-		<summary>Loads the records for the provided SQL statement.</summary>
+		<summary>
+      Loads the records for the provided SQL statement.
+    </summary>
 		<param name="$sql">The SQL statement.</param>
 		<returns>An array of data records.</returns>
 		<code>
@@ -163,7 +168,9 @@
 		</code>
 	</Load>
 	<Retrieve>
-		<summary>Retrieves a record for the provided SQL statement.</summary>
+		<summary>
+      Retrieves a record for the provided SQL statement.
+    </summary>
 		<param name="$sql">The SQL statement.</param>
 		<returns>An array of record columns.</returns>
 		<code>
@@ -216,9 +223,11 @@
 		</code>
 	</Retrieve>
 
-	<!-- Other Public Methods -->
+	<!-- Other Methods -->
 	<GetConnection>
-		<summary>Creates the PDO connection.</summary>
+		<summary>
+      Creates the PDO connection.
+    </summary>
 		<returns>The PDO connection object.</returns>
 		<code>
       // Retrieves a record for the provided SQL statement.
@@ -236,7 +245,9 @@
 		</code>
 	</GetConnection>
 	<LoadTableSchema>
-		<summary>Returns the Table Schema DbColumns collection.</summary>
+		<summary>
+      Returns the Table Schema DbColumns collection.
+    </summary>
 		<param name="$dbName">The Database name.</param>
 		<param name="$tableName">The Table name.</param>
 		<returns>A DbColumns collection of column definitions.</returns>
@@ -261,7 +272,9 @@
 		</code>
 	</LoadTableSchema>
 	<SetConnectionValues>
-		<summary>Sets the $ConnectionValues property.</summary>
+		<summary>
+      Sets the $ConnectionValues property.
+    </summary>
 		<param name="$dbServer">The DB Server name.</param>
 		<param name="$dbName">The Database name.</param>
 		<param name="$userID">The user name.</param>
@@ -296,6 +309,6 @@
 	<GetTableSchema>
 		<summary>Creates the Table Schema DbColumn object.</summary>
 		<param name="$row">The array of data columns.</param>
-		<returns>A DbColumn table column definition.</returns>
+		<returns>An LJCDataColumn table column definition.</returns>
 	</GetTableSchema>
 </items>

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<!-- Copyright (c) Lester J. Clark 2022 - All Rights Reserved -->
+<!-- Copyright (c) Lester J. Clark and Contributors -->
+<!-- Licensed under the MIT License. -->
 <!-- LJCSQLBuilder.xml -->
 <items>
 	<LJCSQLBuilder>
@@ -8,9 +9,11 @@
 		</summary>		
 	</LJCSQLBuilder>
 	
-	<!-- Static Functions -->
+	<!-- Static SQL Methods -->
 	<CreateDelete>
-		<summary>Creates a Delete SQL statement.</summary>
+		<summary>
+      Creates a Delete SQL statement.
+    </summary>
 		<param name="$tableName">The table name.</param>
 		<param name="$keyColumns">The where clause key columns.</param>
 		<returns>The Update SQL statement.</returns>
@@ -31,7 +34,9 @@
     </code>
 	</CreateDelete>
 	<CreateInsert>
-		<summary>Creates an Insert SQL statement.</summary>
+		<summary>
+      Creates an Insert SQL statement.
+    </summary>
 		<param name="$tableName">The table name.</param>
 		<param name="$dataColumns">The Data columns.</param>
 		<returns>The Update SQL statement.</returns>
@@ -54,7 +59,9 @@
 		</code>
 	</CreateInsert>
 	<CreateSelect>
-		<summary>Creates a Select SQL statement.</summary>
+		<summary>
+      Creates a Select SQL statement.
+    </summary>
 		<param name="$tableName">The table name.</param>
 		<param name="$schemaColumns">The table schema definition columns.</param>
 		<param name="$keyColumns">The where clause key columns.</param>
@@ -98,7 +105,9 @@
 		</code>
 	</CreateSelect>
 	<CreateUpdate>
-		<summary>Creates an Update SQL statement.</summary>
+		<summary>
+      Creates an Update SQL statement.
+    </summary>
 		<param name="$tableName">The table name.</param>
 		<param name="$keyColumns">The where clause key columns.</param>
 		<param name="$dataColumns">The Data columns.</param>
@@ -126,58 +135,19 @@
 		  // where TableName.ID = 1
 		</code>
 	</CreateUpdate>
-	<GetJoinOns>
-		<summary>Get the JoinOn statements.</summary>
-		<param name="$tableName">The request table name.</param>
-		<param name="$join">The Join object.</param>
-		<param name="$recursive">Indicates if it is a recursive call.</param>
-		<returns>The JoinOn statements.</returns>
-		<code>
-      include_once "LJCRoot.php";
-      $prefix = RelativePrefix();
-      include_once "$prefix/LJCPHPCommon/LJCDataManagerLib.php";
-
-		  $joins = new LJCJoins();
-		  $join = $joins->Add("JoinTableName");
-		  $join->JoinOns->Add("FromColumnName", "ToColumnName");
-		</code>
-	</GetJoinOns>
-	<GetJoinStatement>
-		<summary>Creates the join statement.</summary>
-		<param name="$tableName">The request table name.</param>
-		<param name="$joins">The Collection of Join objects.</param>
-		<returns>The Join clause.</returns>
-		<code>
-      include_once "LJCRoot.php";
-      $prefix = RelativePrefix();
-      include_once "$prefix/LJCPHPCommon/LJCDataManagerLib.php";
-
-		  $joins = new LJCJoins();
-		  $join = $joins->Add("JoinTableName");
-		  $join->JoinOns->Add("FromColumnName", "ToColumnName");
-		  $join->Columns->Add("JoinColumnName", "PropertyName", "ResultName");
-
-		  $tableName = "TableName";
-		  $schemaColumns = $dataManager->SchemaColumns;
-		  $sql = "select\r\n";
-		  $sql .= LJCSQLBuilder::SQLColumns($tableName, $schemaColumns
-		    , joins: $joins);
-		  $sql .= "from $tableName \r\n";
-		  $sql .= LJCSQLBuilder::GetJoinStatement($tableName, $joins);
-		</code>
-	</GetJoinStatement>
-	<GetJoinTableString>
-		<summary>Get the full join table string.</summary>
-		<param name="$join">The Join object.</param>
-		<returns>The Join table string.</returns>
-	</GetJoinTableString>
+  
+  <!-- Static Column Methods -->
 	<GetOrderBy>
-		<summary>Creates an OrderBy clause.</summary>
+		<summary>
+      Creates an OrderBy clause.
+    </summary>
 		<param name="$orderByNames">The OrderBy names array.</param>
 		<returns>The OrderBy clause.</returns>
 	</GetOrderBy>
 	<SQLColumns>
-		<summary>Creates the columns for a Select SQL statement.</summary>
+		<summary>
+      Creates the columns for a Select SQL statement.
+    </summary>
 		<param name="$tableName">The request Table name.</param>
 		<param name="$sqlColumns">The included columns.</param>
 		<param name="$includeParens">Includes the statement parenthesis.</param>
@@ -207,12 +177,16 @@
 		</code>
 	</SQLColumns>
 	<SQLJoinColumns>
-		<summary>Creates the Join columns for a Select SQL statement.</summary>
+		<summary>
+      Creates the Join columns for a Select SQL statement.
+    </summary>
 		<param name="$joins">The Join definitions.</param>
 		<returns>The Join columns.</returns>
 	</SQLJoinColumns>
 	<SQLValueColumns>
-		<summary>Creates the value columns for an Update SQL statement.</summary>
+		<summary>
+      Creates the value columns for an Update SQL statement.
+    </summary>
 		<param name="$dataColumns">The Data columns.</param>
 		<param name="$isUpdate">Indicates if the values are for an Update.</param>
 		<param name="$includeParens">Includes the statement parenthesis.</param>
@@ -242,6 +216,59 @@
 		  //  )
 		</code>
 	</SQLValueColumns>
+
+  <!-- Static Join Methods -->
+  <GetJoinOns>
+		<summary>
+      Get the JoinOn statements.
+    </summary>
+		<param name="$tableName">The request table name.</param>
+		<param name="$join">The Join object.</param>
+		<param name="$recursive">Indicates if it is a recursive call.</param>
+		<returns>The JoinOn statements.</returns>
+		<code>
+      include_once "LJCRoot.php";
+      $prefix = RelativePrefix();
+      include_once "$prefix/LJCPHPCommon/LJCDataManagerLib.php";
+
+		  $joins = new LJCJoins();
+		  $join = $joins->Add("JoinTableName");
+		  $join->JoinOns->Add("FromColumnName", "ToColumnName");
+		</code>
+	</GetJoinOns>
+	<GetJoinStatement>
+		<summary>
+      Creates the join statement.
+    </summary>
+		<param name="$tableName">The request table name.</param>
+		<param name="$joins">The Collection of Join objects.</param>
+		<returns>The Join clause.</returns>
+		<code>
+      include_once "LJCRoot.php";
+      $prefix = RelativePrefix();
+      include_once "$prefix/LJCPHPCommon/LJCDataManagerLib.php";
+
+		  $joins = new LJCJoins();
+		  $join = $joins->Add("JoinTableName");
+		  $join->JoinOns->Add("FromColumnName", "ToColumnName");
+		  $join->Columns->Add("JoinColumnName", "PropertyName", "ResultName");
+
+		  $tableName = "TableName";
+		  $schemaColumns = $dataManager->SchemaColumns;
+		  $sql = "select\r\n";
+		  $sql .= LJCSQLBuilder::SQLColumns($tableName, $schemaColumns
+		    , joins: $joins);
+		  $sql .= "from $tableName \r\n";
+		  $sql .= LJCSQLBuilder::GetJoinStatement($tableName, $joins);
+		</code>
+	</GetJoinStatement>
+	<GetJoinTableString>
+		<summary>
+      Get the full join table string.
+    </summary>
+		<param name="$join">The Join object.</param>
+		<returns>The Join table string.</returns>
+	</GetJoinTableString>
 	<GetQualifiedColumnName>
 		<summary>
 			Qualify with the table name or alias unless already qualified.

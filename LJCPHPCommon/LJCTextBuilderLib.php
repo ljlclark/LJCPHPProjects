@@ -11,8 +11,9 @@
   // LJCCollectionLib: LJCCollectionBase
   // LJCCommonLib: LJC
 
-  // The Common PHP Text Builder Class Library
+  // The Text Builder Class Library
   /// <include path='items/LJCTextBuilderLib/*' file='Doc/LJCTextBuilder.xml'/>
+  
   // The LibName: XML comment triggers the file (library) HTML page generation.
   // It generates a page with the same name as the library.
   // LJCTextBuilderLib.html
@@ -25,13 +26,18 @@
   /// <group name="Static">Static Methods</group>
   //    Copy()
   /// <group name="Constructor">Constructor Methods</group>
+
+  // A class triggers the class HTML page generation.
+  // It generates a page with the same name as the class.
+  // LJCAttribute/LJCAttribute.html
   class LJCAttribute
   {
     // Creates a typed data object from a standard object.
     /// <include path='items/Copy/*' file='Doc/LJCAttribute.xml'/>
     /// <ParentGroup>Static</ParentGroup>
-    // The method triggers the method HTML page generation.
-    // It generates a page with the name class plus method.
+
+    // A method triggers the method HTML page generation.
+    // It generates a page with the name: class plus method.
     // LJCAttribute/LJCAttributeCopy.html
     public static function Copy($item)
     {
@@ -91,7 +97,7 @@
     // Properties
 
     /// <summary>The item name.</summary>
-    // The property triggers the property HTML page generation.
+    // A property triggers the property HTML page generation.
     // It generates a page with the same name as the class plus property.
     // LJCAttribute/LJCAttribute$Name.html
     public ?string $Name;

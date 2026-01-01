@@ -4,15 +4,19 @@
   // LJCCommonLib.php
   declare(strict_types=1);
 
-  // The Common PHP Class Library
+  // The Common Class Library
   /// <include path='items/LJCCommonLib/*' file='Doc/LJCCommon.xml'/>
-  // The LibName: XML comment triggers the file (library) HTML page generation.
+  
+  // The "LibName:" XML comment triggers the file (library) HTML page
+  // generation.
   // It generates a page with the same name as the library.
   // LJCCommonLib.html
   /// LibName: LJCCommonLib
   // Classes: LJC
 
   // ***************
+  // Contains common PHP functions.
+  /// <include path='items/LJC/*' file='Doc/LJCCommon.xml'/>
   /// <group name="String">String Functions</group>
   //    EndsWithNewLine(), GetDelimitedString(), GetTokens(), NewLineTrim(),
   //    Scrub(), Split(), StrPos(), StrRPos() 
@@ -27,9 +31,8 @@
   /// <group name="Output">Output Functions</group>
   //    GetLogObjectText(), Location(), OutputLog(), OutputLogCompare(),
   //    OutputLogObject()
-  // Contains common PHP functions.
-  /// <include path='items/LJC/*' file='Doc/LJCCommon.xml'/>
-  // The class triggers the class HTML page generation.
+
+  // A class triggers the class HTML page generation.
   // It generates a page with the same name as the class.
   // LJC/LJC.html
   class LJC
@@ -40,8 +43,9 @@
     // Creates JSON from the provided value.
     /// <include path='items/CreateJSON/*' file='Doc/LJCCommon.xml'/>
     /// <ParentGroup>String</ParentGroup>
-    // The method triggers the method HTML page generation.
-    // It generates a page with the name class plus method.
+
+    // A method triggers the method HTML page generation.
+    // It generates a page with the name: class plus method.
     // LJC/LJCCreateJSON.html
     public static function CreateJSON($value): string
     {
@@ -710,7 +714,7 @@
     }
 
     // Outputs the value or object text.
-    /// <include path='items/OutputLog/*' file='Doc/LJCCommon.xml'/>
+    /// <include path='items/Log/*' file='Doc/LJCCommon.xml'/>
     public function Log(int $lineNumber, string $valueName, $value
       , bool $asObject = false, bool $output = true): string
     {
@@ -743,7 +747,7 @@
     }
 
     // Outputs the object text.
-    /// <include path='items/OutputLogObject/*' file='Doc/LJCCommon.xml'/>
+    /// <include path='items/LogObject/*' file='Doc/LJCCommon.xml'/>
     public function LogObject(int $lineNumber, string $valueName, $value
       , bool $isObject = true, bool $output = true): string
     {
@@ -759,7 +763,7 @@
     }
 
     // Outputs the value text.
-    /// <include path='items/OutputLogValue/*' file='Doc/LJCCommon.xml'/>
+    /// <include path='items/LogValue/*' file='Doc/LJCCommon.xml'/>
     public function LogValue(int $lineNumber, ?string $valueName, $value
       , bool $output = true): string
     {

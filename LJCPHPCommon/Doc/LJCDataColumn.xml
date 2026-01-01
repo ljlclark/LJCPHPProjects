@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<!-- Copyright (c) Lester J. Clark 2022 - All Rights Reserved -->
+<!-- Copyright (c) Lester J. Clark and Contributors -->
+<!-- Licensed under the MIT License. -->
 <!-- LJCDataColumn.xml -->
 <items>
 	<LJCDataColumn>
-		<summary>Represents a DB Column definition.</summary>
+		<summary>
+      Represents a Data Column definition.
+    </summary>
 		<remarks>
 			The LJCDataColumn object is used extensively throughout the LJC PHP files,
 			utilities and applications; wherever data elements need to be	dynamically
@@ -22,8 +25,17 @@
 	</LJCDataColumn>
 
 	<!-- Static Methods -->
+  <Copy>
+    <summary>
+      Creates a new typed object with existing standard object values.
+    </summary>
+    <param name="$objColumn"></param>
+    <returns>The new LJCDataColumn object.</returns>
+  </Copy>
 	<GetDataType>
-		<summary>Coverts MySQL type names to PHP type names.</summary>
+		<summary>
+      Coverts MySQL type names to PHP type names.
+    </summary>
 		<param name="$mySQLTypeName">The MySQL data type name.</param>
 		<returns>The PHP data type name.</returns>
 		<code>
@@ -51,4 +63,9 @@
       $dbColumn = new LJCDataColumn("Name");
     </code>
 	</construct>
+  <Clone>
+    <summary>
+      Creates an object clone.
+    </summary>
+  </Clone>
 </items>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright (c) Lester J. Clark and Contributors -->
+<!-- Licensed under the MIT License. -->
+<!-- DataConfigs.xml -->
+<items>
+  <LJCDataConfigs>
+    <summary>
+      The DB config Library.
+    </summary>
+  </LJCDataConfigs>
+  <DataConfigs>
+    <summary>
+      Contains methods to retrieve the DB config values.
+    </summary>
+  </DataConfigs>
+  <GetConnectionValues>
+    <summary>
+      Retrieves the DB connection values.
+    </summary>
+    <returns>The DB connection values object.</returns>
+  </GetConnectionValues>
+</items>

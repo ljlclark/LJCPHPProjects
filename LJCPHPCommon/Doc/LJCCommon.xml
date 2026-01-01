@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<!-- Copyright (c) Lester J. Clark 2022 - All Rights Reserved -->
+<!-- Copyright (c) Lester J. Clark and Contributors -->
+<!-- Licensed under the MIT License. -->
 <!-- LJCCommon.xml -->
 <items>
   <!-- The XML file for the first file class contains the library comments. -->
   <LJCCommonLib>
     <summary>
-      The Common PHP Class Library
+      The Common Class Library
     </summary>
     <remarks>
       Use this code to include the Common lib classes.
@@ -21,6 +22,7 @@
       Contains common PHP functions
     </summary>
   </LJC>
+  
   <!-- String Functions -->
   <CreateJSON>
     <summary>
@@ -63,7 +65,9 @@
     </code>
   </EndsWithNewLine>
   <GetDelimitedString>
-    <summary>Gets the string between the delimiters.</summary>
+    <summary>
+      Gets the string between the delimiters.
+    </summary>
     <param name="$text">The text to be parsed.</param>
     <param name="$beginDelimiter">The beginning delimiter.</param>
     <param name="$endDelimiter">The ending delimiter.</param>
@@ -157,7 +161,9 @@
     </code>
   </ParseJSON>
   <Scrub>
-    <summary>Returns a scrubbed external value.</summary>
+    <summary>
+      Returns a scrubbed external value.
+    </summary>
     <param name="$text">The text to be scrubbed.</param>
     <returns>The scrubbed value.</returns>
     <remarks>
@@ -194,7 +200,9 @@
     </code>
   </Split>
   <StrPos>
-    <summary>Gets the first index for the search value.</summary>
+    <summary>
+      Gets the first index for the search value.
+    </summary>
     <param name="$text">The text to be searched.</param>
     <param name="$find">The search value.</param>
     <param name="$start">The search start index.</param>
@@ -228,7 +236,9 @@
     </code>
   </StrPos>
   <StrRPos>
-    <summary>Gets the last index for the search value.</summary>
+    <summary>
+      Gets the last index for the search value.
+    </summary>
     <param name="$text">The text to be searched.</param>
     <param name="$find">The search value.</param>
     <param name="$start">The search start index.</param>
@@ -261,9 +271,12 @@
       }
     </code>
   </StrRPos>
+  
   <!-- File Name Functions -->
   <GetFileName>
-    <summary>Gets the FileName from the file spec.</summary>
+    <summary>
+      Gets the FileName from the file spec.
+    </summary>
     <param name="$fileSpec">The file specification.</param>
     <returns>The file name.</returns>
     <remarks>
@@ -285,7 +298,9 @@
     </code>
   </GetFileName>
   <GetFileSpecPath>
-    <summary>Gets the Path from the file spec.</summary>
+    <summary>
+      Gets the Path from the file spec.
+    </summary>
     <param name="$fileSpec">The file specification.</param>
     <returns>The file path.</returns>
     <remarks>
@@ -303,6 +318,7 @@
       }
     </code>
   </GetFileSpecPath>
+  
   <!-- Check Value Functions -->
   <HasElements>
     <summary>
@@ -401,6 +417,7 @@
       }
     </code>
   </HasXML>
+  
   <!-- Array Functions -->
   <RemoveString>
     <summary>
@@ -421,6 +438,7 @@
       }
     </code>
   </RemoveString>
+  
   <!-- Convert Functions -->
   <ToArray>
     <summary>
@@ -508,6 +526,7 @@
       }
     </code>
   </XMLToString>
+  
   <!-- Output Functions -->
   <OutputLogCompare>
     <summary>
@@ -607,6 +626,7 @@
       }
     </code>
   </ShowWhiteSpace>
+  
   <!-- Output Class Functions -->
   <Output>
     <summary>
@@ -667,7 +687,7 @@
       }
     </code>
   </Location>
-  <OutputLog>
+  <Log>
     <summary>
       Outputs the value or object text.
     </summary>
@@ -692,8 +712,8 @@
         // 123 $value = Test
       }
     </code>
-  </OutputLog>
-  <OutputLogObject>
+  </Log>
+  <LogObject>
     <summary>
       Outputs the object text.
     </summary>
@@ -733,8 +753,8 @@
         // )
       }
     </code>
-  </OutputLogObject>
-  <OutputLogValue>
+  </LogObject>
+  <LogValue>
     <summary>
       Outputs the value text.
     </summary>
@@ -763,9 +783,13 @@
         LJC::OutputLogCompare("Output.Log()", $result, $compare);
       }
     </code>
-  </OutputLogValue>
+  </LogValue>
+  
+  <!-- Missing Methods -->
   <GetIndexedDebugFileName>
-    <summary>Gets the indexed Debug file name.</summary>
+    <summary>
+      Gets the indexed Debug file name.
+    </summary>
     <param name="$folder">The folder name.</param>
     <param name="$fileName">The file name.</param>
     <returns>The indexed Debug file spec.</returns>
@@ -787,7 +811,9 @@
     </code>
   </GetIndexedDebugFileName>
   <SetSessionValue>
-    <summary>Assigns a session value and returns the value.</summary>
+    <summary>
+      Assigns a session value and returns the value.
+    </summary>
     <param name="$name">The session value name.</param>
     <param name="$value">The session value.</param>
     <returns>The session value.</returns>
@@ -799,7 +825,9 @@
     </code>
   </SetSessionValue>
   <GetDebugFileName>
-    <summary>Gets the Debug file name.</summary>
+    <summary>
+      Gets the Debug file name.
+    </summary>
     <param name="$folder">The folder name.</param>
     <param name="$fileName">The file name.</param>
     <returns>The Debug file spec.</returns>

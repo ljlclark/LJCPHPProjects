@@ -8,6 +8,7 @@
       Represents a collection of node or element attributes.
     </summary>    
   </LJCAttributes>
+  
   <!-- Static Methods -->
   <ToCollection>
     <summary>
@@ -16,6 +17,7 @@
     <param name="$items">The object array.</param>
     <returns>The LJCAttributes collection.</returns>
   </ToCollection>
+  
   <!-- Constructor Methods -->
   <construct>
     <summary>
@@ -60,6 +62,7 @@
     <param name="$key">The optional item key.</param>
     <returns>The retrieved item.</returns>
   </Retrieve>
+  
   <!-- Other Methods -->
   <MergeStyle>
     <summary>
