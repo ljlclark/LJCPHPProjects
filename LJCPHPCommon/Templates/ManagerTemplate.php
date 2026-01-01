@@ -19,7 +19,7 @@
   include_once "$prefix/LJCPHPCommon/LJCDataManagerLib.php";
   // LJCCommon: LJC
   // LJCCollectionLib: LJCCollectionBase
-  // LJCDBAccessLib: LJCConnectionValues, LJCDbColumns
+  // LJCDBAccessLib: LJCConnectionValues, LJCDataColumns
   // LJCDataManager: LJCDataManager
 
   /// <summary>The _ItemObjectName_ Data Access Layer Library</summary>
@@ -76,7 +76,7 @@
     /// <summary>Adds a new record for the provided values.</summary>
     /// <param name="$dataColumns"></parm>
     /// <returns>The added record data object.</returns>
-    public function Add(LJCDbColumns $dataColumns): ?_ItemObjectName_
+    public function Add(LJCDataColumns $dataColumns): ?_ItemObjectName_
     {
       $methodName = "Add()";
       $retCount = 0;
@@ -89,7 +89,7 @@
   
     // Deletes the records for the provided values.
     /// <include path='items/Delete/*' file='Doc/_ItemObjectName_Manger.xml'/>
-    public function Delete(LJCDbColumns $keyColumns): int
+    public function Delete(LJCDataColumns $keyColumns): int
     {
       $methodName = "Delete()";
       $retCount = 0;
@@ -102,7 +102,7 @@
 
     // Loads the data and creates the records for the provided values.
     /// <include path='items/Load/*' file='Doc/CityManger.xml'/>
-    public function Load(?LJCDbColumns $keyColumns, array $propertyNames = null
+    public function Load(?LJCDataColumns $keyColumns, array $propertyNames = null
       , LJCJoins $joins = null, ?string $filter = null): ?_CollectionObjectName_
     {
       $methodName = "Load()";
@@ -121,7 +121,7 @@
     }
 
     // Loads the result data.
-    public function LoadResult(?LJCDbColumns $keyColumns
+    public function LoadResult(?LJCDataColumns $keyColumns
       , array $propertyNames = null, LJCJoins $joins = null
       , ?string $filter = null): ?array
     {
@@ -144,7 +144,7 @@
 
     // Retrieves the record for the provided values.
     /// <include path='items/Retrieve/*' file='Doc/CityManger.xml'/>
-    public function Retrieve(LJCDbColumns $keyColumns
+    public function Retrieve(LJCDataColumns $keyColumns
       , array $propertyNames = null, LJCJoins $joins = null): ?City
     {
       $methodName = "Retrieve()";
@@ -162,7 +162,7 @@
 
     // Updates the records for the provided values.
     /// <include path='items/Update/*' file='Doc/CityManger.xml'/>
-    public function Update(LJCDbColumns $keyColumns, LJCDbColumns $dataColumns)
+    public function Update(LJCDataColumns $keyColumns, LJCDataColumns $dataColumns)
       : int
     {
       $methodName = "Update()";
@@ -178,7 +178,7 @@
     // Class Methods
 
     // Get the column definitions that match the property names.
-    public function Columns(array $propertyNames = null): ?LJCDbColumns
+    public function Columns(array $propertyNames = null): ?LJCDataColumns
     {
       $retDataColumns = $this->DataManager->Columns($propertyNames);
       $this->DebugText .= $this->DataManager->DebugText;
@@ -199,7 +199,7 @@
       $joinOn = $joinOns->Add(_JoinFromColumnName_, _JoinToPropertyName_);
       $join->JoinOns = $joinOns;
 
-      $dataColumns = new LJCDbColumns();
+      $dataColumns = new LJCDataColumns();
       // #Value _JoinColumnName_ Province::ColumnName
       // #Value _JoinPropertyName_ "ProvinceName"
       // #Value _JoinRenameAs_ "ProvinceName"

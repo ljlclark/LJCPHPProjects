@@ -10,7 +10,7 @@
   require_once "$prefix/LJCPHPCommon/LJCTextBuilderLib.php";
   require_once "$prefix/LJCPHPCommon/LJCDBAccessLib.php";
   // LJCTextLib: LJCWriter
-  // LJCDbAccessLib: LJCDbColumn, LJCDbColumns
+  // LJCDbAccessLib: LJCDataColumn, LJCDataColumns
   // LJCDebugLib: LJCDebug
 
   // The data classes for representing GenData XML.
@@ -339,7 +339,7 @@
 
     // Creates "Class" and "Properties" sections data from the table definition.
     /// <include path='items/CreateColumnData/*' file='Doc/LJCSections.xml'/>
-    public static function CreateColumnData(LJCDbColumns $dbColumns
+    public static function CreateColumnData(LJCDataColumns $dbColumns
       , string $tableName, string $className = null) : LJCSections
     {
       $enabled = false;
@@ -370,7 +370,7 @@
         $Item = new LJCItem($propertyName);
         $section->Items[] = $Item;
 
-        $dataTypeName = LJCDbColumn::GetDataType($dbColumn->MySQLTypeName);
+        $dataTypeName = LJCDataColumn::GetDataType($dbColumn->MySQLTypeName);
         self::AddReplacement($Item, "_DataType_", $dataTypeName);
         if ("string" == $dataTypeName)
         {
@@ -521,7 +521,7 @@
     {
       $textState = new LJCTextState();
 
-      $hb = new LJCHTMLBuilder($textState);
+      $hb = new LJCTextBuilder($textState);
       $hb->AddLine("<?xml version=\"1.0\"?>");
       $hb->Begin($rootName, $textState);
 

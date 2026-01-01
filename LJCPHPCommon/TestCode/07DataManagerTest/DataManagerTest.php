@@ -12,7 +12,7 @@
   include_once "$prefix/LJCPHPCommon/LJCTextBuilderLib.php";
   include_once "$prefix/LJCPHPCommon/LJCHTMLLib.php";
   // LJCCommonLib: LJC
-  // LJCDBAccessLib: LJCConnectionValues, LJCDbAccess, LJCTextState
+  // LJCDBAccessLib: LJCConnectionValues, LJCDataAccess, LJCTextState
   // LJCTextBuilderLib: LJCTextBuilder, LJCTextState
   // LJCHTMLLib: LJCHTML
 
@@ -44,7 +44,7 @@
   class Items extends LJCCollectionBase
   {
     // Adds an object and key value.
-    /// <include path='items/AddObject/*' file='Doc/LJCDbColumns.xml'/>
+    /// <include path='items/AddObject/*' file='Doc/LJCDataColumns.xml'/>
     /// <ParentGroup>Data</ParentGroup>
     public function AddObject(Item $item, $key = null): ?Item
     {
@@ -156,7 +156,7 @@
 
       // Add the test data.
       // See constructor for how to create $manager.
-		  $data = new LJCDbColumns();
+		  $data = new LJCDataColumns();
 		  $data->Add("Name", value: $nameValue);
 		  $affectedCount = $manager->Add($data);
       if ($affectedCount < 1)
@@ -181,7 +181,7 @@
 
       // Delete the test data.
       // See constructor for how to create $manager.
-		  $keys = new LJCDbColumns();
+		  $keys = new LJCDataColumns();
 		  $keys->Add("Name", value: $nameValue);
       $affectedCount = $manager->Delete($keys);
       if ($affectedCount < 1)
@@ -202,7 +202,7 @@
 
       // Create the Delete with SQL statement.
       // See constructor for how to create $manager.
-		  $keys = new LJCDbColumns();
+		  $keys = new LJCDataColumns();
 		  $keys->Add("Name", value: $nameValue);
       $result = $manager->DeleteSQL($keys);
 
@@ -220,7 +220,7 @@
 
       // Load the test data.
       // See constructor for how to create $manager.
-		  $keys = new LJCDbColumns();
+		  $keys = new LJCDataColumns();
 		  $keys->Add("Name", value: $nameValue);
       $rows = $manager->Load($keys);
       if (null == $rows
@@ -241,7 +241,7 @@
       $methodName = "LoadSQL()";
 
       // Load with SQLLoad().
-		  $keys = new LJCDbColumns();
+		  $keys = new LJCDataColumns();
 		  $keys->Add("Name", value: $nameValue);
       $result = $manager->LoadSQL($keys);
 
@@ -264,7 +264,7 @@
 
       // Retrieve the test data.
       // See constructor for how to create $manager.
-		  $keys = new LJCDbColumns();
+		  $keys = new LJCDataColumns();
 		  $keys->Add("Name", value: $nameValue);
       $rows = $manager->Retrieve($keys);
       if (null == $rows
@@ -285,7 +285,7 @@
       $methodName = "RetrieveSQL()";
 
       // Retrieve with SQLLoad().
-		  $keyColumns = new LJCDbColumns();
+		  $keyColumns = new LJCDataColumns();
 		  $keyColumns->Add("Name", value: $nameValue);
       $result = $manager->RetrieveSQL($keyColumns);
 
@@ -309,9 +309,9 @@
 
       // Update the test data.
       // See constructor for how to create $manager.
-		  $keys = new LJCDbColumns();
+		  $keys = new LJCDataColumns();
 		  $keys->Add("Name", value: $nameValue);
-      $data = new LJCDbColumns();
+      $data = new LJCDataColumns();
 		  $data->Add("Name", value: $updateValue);
       $affectedCount = $manager->Update($keys, $data);
       $result = strval($affectedCount);
@@ -333,9 +333,9 @@
 
       // Get the Update SQL statement.
       // See constructor for how to create $manager.
-		  $keys = new LJCDbColumns();
+		  $keys = new LJCDataColumns();
 		  $keys->Add("Name", value: $nameValue);
-      $data = new LJCDbColumns();
+      $data = new LJCDataColumns();
 		  $data->Add("Name", value: $updateValue);
       $result = $manager->UpdateSQL($keys, $data);
 
@@ -355,9 +355,9 @@
 
       // Update with SQLExecute().
       // See constructor for how to create $manager.
-		  $keys = new LJCDbColumns();
+		  $keys = new LJCDataColumns();
 		  $keys->Add("Name", value: $nameValue);
-      $data = new LJCDbColumns();
+      $data = new LJCDataColumns();
 		  $data->Add("Name", value: $updateValue);
       $sql = $manager->UpdateSQL($keys, $data);
       $affectedCount = $manager->SQLExecute($sql);
@@ -379,7 +379,7 @@
 
       // Retrieve with SQLLoad().
       // See constructor for how to create $manager.
-		  $keys = new LJCDbColumns();
+		  $keys = new LJCDataColumns();
 		  $keys->Add("Name", value: $nameValue);
       $sql = $manager->LoadSQL($keys);
       $rows = $manager->SQLLoad($sql);
@@ -403,7 +403,7 @@
 
       // Retrieve with SQLRetrieve().
       // See constructor for how to create $manager.
-		  $keys = new LJCDbColumns();
+		  $keys = new LJCDataColumns();
 		  $keys->Add("Name", value: $nameValue);
       $sql = $manager->RetrieveSQL($keys);
       $rows = $manager->SQLRetrieve($sql);
@@ -622,7 +622,7 @@
       $methodName = "TestAdd()";
 
       // Add the test data.
-		  $data = new LJCDbColumns();
+		  $data = new LJCDataColumns();
 		  $data->Add("Name", value: $nameValue);
 		  $affectedCount = $manager->Add($data);
       $result = strval($affectedCount);
@@ -637,7 +637,7 @@
     {
       $methodName = "TestDelete()";
 
-		  $keys = new LJCDbColumns();
+		  $keys = new LJCDataColumns();
 		  $keys->Add("Name", value: $nameValue);
       $value = $manager->Delete($keys);
       $result = strval($value);
@@ -653,7 +653,7 @@
     {
       $methodName = "TestRetrieve()";
 
-		  $keys = new LJCDbColumns();
+		  $keys = new LJCDataColumns();
 		  $keys->Add("Name", value: $nameValue);
       $rows = $manager->Retrieve($keys);
       if (null == $rows
@@ -673,10 +673,10 @@
     {
       $methodName = "TestUpdate()";
 
-		  $keys = new LJCDbColumns();
+		  $keys = new LJCDataColumns();
 		  $keys->Add("Name", value: $nameValue);
       
-      $data = new LJCDbColumns();
+      $data = new LJCDataColumns();
 		  $data->Add($updateProperty, value: $updateValue);
       $value = $manager->Update($keys, $data);
       $result = strval($value);

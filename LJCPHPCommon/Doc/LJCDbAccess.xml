@@ -252,7 +252,7 @@
 		    $tableName = "TableName";
         $schema = $dbAccess->LoadTableSchema($dbName, $tableName);
         if (null == $schema
-          || !$schema instanceof LJCDbColumns
+          || !$schema instanceof LJCDataColumns
           || count($schema) == 0)
         {
           echo("\r\nLoadTableSchema() The Schema was not retrieved.");

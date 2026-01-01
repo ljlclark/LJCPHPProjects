@@ -34,7 +34,7 @@
 			The strongly typed collection class would also provide a Retrieve() method
 			that could retrieve the internal array element by key.
 			&lt;/p&gt;
-      For an example of how this works, see class: LJCDBAccessLib-LJCDbColumns.
+      For an example of how this works, see class: LJCDBAccessLib-LJCDataColumns.
       Use this code to include the Collection lib classes.
     </remarks>
 	</LJCCollectionBase>

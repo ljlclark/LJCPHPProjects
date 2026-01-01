@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!-- Copyright (c) Lester J. Clark 2022 - All Rights Reserved -->
-<!-- LJCDbColumns.xml -->
+<!-- LJCDataColumns.xml -->
 <items>
-	<LJCDbColumns>
-		<summary>Represents a typed Collection of LJCDbColumn objects.</summary>
+	<LJCDataColumns>
+		<summary>Represents a typed Collection of LJCDataColumn objects.</summary>
 		<remarks>
 			It extends (inherits) from class LJCCollectionLib-LJCCollectionBase which
 			provides the "foreach" and "count" functionality.
 			&lt;p&gt;
-			It includes an AddObject() method that requires the strongly typed
-			LJCDbColumn object collection element. This is what makes the collection
-			strongly typed.
-			&lt;/p&gt;
+      It includes an AddObject() method that requires the strongly typed
+      LJCDataColumn object collection element. This is what makes the collection
+      strongly typed.
+      &lt;/p&gt;
 			The Get() method retrieves the internal array element by key.
 		</remarks>
-	</LJCDbColumns>
+	</LJCDataColumns>
 	
 	<!-- Public Methods -->
 	<Add>
@@ -27,11 +27,11 @@
 		<code>
       include_once "LJCRoot.php";
       $prefix = RelativePrefix();
- 		  include_once "$prefix/LJCPHPCommon/LJCDBAccessLib.php";
+      include_once "$prefix/LJCPHPCommon/LJCDBAccessLib.php";
 
-			$dbColumns = new LJCDbColumns();
-			$dbColumns->Add("ID", dataTypeName: "int");
-		</code>
+      $dbColumns = new LJCDataColumns();
+      $dbColumns->Add("ID", dataTypeName: "int");
+    </code>
 	</Add>
 	<AddObject>
 		<summary>Adds an object and key value.</summary>
@@ -40,12 +40,12 @@
 		<code>
       include_once "LJCRoot.php";
       $prefix = RelativePrefix();
- 		  include_once "$prefix/LJCPHPCommon/LJCDBAccessLib.php";
+      include_once "$prefix/LJCPHPCommon/LJCDBAccessLib.php";
 
-			$dbColumns = new LJCDbColumns();
-			$dbColumn = new LJCDbColumn("Name");
-			$dbColumns->AddObject($dbColumn);
-		</code>
+      $dbColumns = new LJCDataColumns();
+      $dbColumn = new LJCDataColumn("Name");
+      $dbColumns->AddObject($dbColumn);
+    </code>
 	</AddObject>
   <Retrieve>
 		<summary>Retrieves the item by Key value.</summary>
@@ -54,12 +54,12 @@
 		<code>
       include_once "LJCRoot.php";
       $prefix = RelativePrefix();
- 		  include_once "$prefix/LJCPHPCommon/LJCDBAccessLib.php";
+      include_once "$prefix/LJCPHPCommon/LJCDBAccessLib.php";
 
-			$dbColumns = new LJCDbColumns();
-			$dbColumns->Add("Name");
-			$dbColumn = $dbColumns->Get("Name");
-		</code>
+      $dbColumns = new LJCDataColumns();
+      $dbColumns->Add("Name");
+      $dbColumn = $dbColumns->Get("Name");
+    </code>
 	</Retrieve>
 	<GetColumns>
 		<summary>
@@ -70,18 +70,18 @@
 		<code>
       include_once "LJCRoot.php";
       $prefix = RelativePrefix();
- 		  include_once "$prefix/LJCPHPCommon/LJCDBAccessLib.php";
+      include_once "$prefix/LJCPHPCommon/LJCDBAccessLib.php";
 
-		  $dbColumns = new LJCDbColumns();
-		  $dbColumns->Add"FirstName");
-		  $dbColumns->Add("MiddleName");
-		  $dbColumns->Add("LastName");
+      $dbColumns = new LJCDataColumns();
+      $dbColumns->Add"FirstName");
+      $dbColumns->Add("MiddleName");
+      $dbColumns->Add("LastName");
 
-		  $propertyNames = [];
-		  $propertyNames[] = "FirstName";
-		  $propertyNames[] = "LastName";
-		  $specificColumns = $dbColumns->GetColumns($propertyNames);
-		</code>
+      $propertyNames = [];
+      $propertyNames[] = "FirstName";
+      $propertyNames[] = "LastName";
+      $specificColumns = $dbColumns->GetColumns($propertyNames);
+    </code>
 	</GetColumns>
 	<MapNames>
 		<summary>
@@ -100,14 +100,14 @@
 		<code>
       include_once "LJCRoot.php";
       $prefix = RelativePrefix();
- 		  include_once "$prefix/LJCPHPCommon/LJCDBAccessLib.php";
+      include_once "$prefix/LJCPHPCommon/LJCDBAccessLib.php";
 
-		  $dbColumns = new LJCDbColumns();
-		  $dbColumns->Add("Name", value: "%C%");
+      $dbColumns = new LJCDataColumns();
+      $dbColumns->Add("Name", value: "%C%");
 
       // $compareOperator - Any valid comparison operator; defaults to "=".
-		  // $boolOperator - "and" or "or"; defaults to "and".
-		  $dbColumns->SetWhereOperators("Name", "like", "or");
-		</code>
+      // $boolOperator - "and" or "or"; defaults to "and".
+      $dbColumns->SetWhereOperators("Name", "like", "or");
+    </code>
 	</SetWhereOperators>
 </items>

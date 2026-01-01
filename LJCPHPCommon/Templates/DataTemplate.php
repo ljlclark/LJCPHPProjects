@@ -21,7 +21,7 @@
   include_once "$prefix/LJCPHPCommon/LJCDataManagerLib.php";
   // LJCCommon: LJC
   // LJCCollectionLib: LJCCollectionBase
-  // LJCDBAccessLib: LJCConnectionValues, LJCDbColumns
+  // LJCDBAccessLib: LJCConnectionValues, LJCDataColumns
   // LJCDataManager: LJCDataManager
 
   /// <summary>The _ItemObjectName_ Data Access Layer Library</summary>

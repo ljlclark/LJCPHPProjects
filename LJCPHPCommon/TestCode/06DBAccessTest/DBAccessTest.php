@@ -10,7 +10,7 @@
   include_once "$prefix/LJCPHPCommon/LJCTextBuilderLib.php";
   include_once "$prefix/LJCPHPCommon/LJCHTMLLib.php";
   // LJCCommonLib: LJC
-  // LJCDBAccessLib: LJCConnectionValues, LJCDbAccess, LJCTextState
+  // LJCDBAccessLib: LJCConnectionValues, LJCDataAccess, LJCTextState
   // LJCTextBuilderLib: LJCTextBuilder, LJCTextState
   // LJCHTMLLib: LJCHTML
 
@@ -67,7 +67,7 @@
 		  $name = LJCDbAccess::GetValue($row, "Name");
       $result = "{$id}, {$name}";
 
-      $compare = "345, Update Name";
+      $compare = "345, SaveName";
       LJC::OutputLogCompare("GetValue()", $result, $compare);
     }
 
@@ -233,7 +233,7 @@
 		  $tableName = "person";
       $schema = $dbAccess->LoadTableSchema($dbName, $tableName);
       if (null == $schema
-        || !$schema instanceof LJCDbColumns
+        || !$schema instanceof LJCDataColumns
         || count($schema) == 0)
       {
         echo("\r\nLoadTableSchema() The Schema was not retrieved.");

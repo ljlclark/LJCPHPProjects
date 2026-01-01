@@ -10,7 +10,7 @@
   include_once "../LJCPHPCommon/LJCTextLib.php";
   include_once "LJCTextRangesLib.php";
   // LJCCollectionLib: LJCCollectionBase
-  // LJCDbAccessLib: LJCDbColumn, LJCDbColumns
+  // LJCDbAccessLib: LJCDataColumn, LJCDataColumns
   // LJCCommonLib: LJCCommon
   // LJCDebugLib: LJCDebug
   // LJCTextRangesLib: LJCTextRange, LJCTextRanges
@@ -229,7 +229,7 @@
       {
         throw new Exception("Config file '$configXMLSpec' was not found.");
       }
-      $this->DbColumns = LJCDbColumns::Deserialize($configXMLSpec);
+      $this->DbColumns = LJCDataColumns::Deserialize($configXMLSpec);
       foreach($this->DbColumns as $dbColumn)
       {
         $name = $dbColumn->PropertyName;
@@ -263,7 +263,7 @@
 
       if ($this->IsConfig($names))
       {
-        $this->DbColumns = new LJCDbColumns();
+        $this->DbColumns = new LJCDataColumns();
         foreach ($names as $name)
         {
           $name = $this->TrimNewline($name);
@@ -322,7 +322,7 @@
     // Properties - LJCTextReader
 
     /// <summary>The field configuration.</summary>
-    public ?LJCDbColumns $DbColumns;
+    public ?LJCDataColumns $DbColumns;
 
     /// <summary>The field count.</summary>
     public int $FieldCount;

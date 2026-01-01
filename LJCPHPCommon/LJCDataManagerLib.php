@@ -9,7 +9,7 @@
   include_once "$prefix/LJCPHPCommon/LJCDBAccessLib.php";
   include_once "$prefix/LJCPHPCommon/LJCTextLib.php";
   // LJCDBAccessLib: LJCConnectionValues, LJCDbAccess
-  //   , LJCDbColumn, LJCDbColumns
+  //   , LJCDataColumn, LJCDataColumns
   //   , LJCJoin, LJCJoins
   //   , LJCJoinOn, LJCJoinOns
   // LJCTextLib: LJCStringBuilder
@@ -71,7 +71,7 @@
     // Adds the record for the provided values.
     /// <include path='items/Add/*' file='Doc/LJCDataManager.xml'/>
     /// <ParentGroup>Data</ParentGroup>
-    public function Add(LJCDbColumns $dataColumns): int
+    public function Add(LJCDataColumns $dataColumns): int
     {
       $retCount = 0;
       
@@ -84,7 +84,7 @@
     // Deletes the records for the provided values.
     /// <include path='items/Delete/*' file='Doc/LJCDataManager.xml'/>
     /// <ParentGroup>Data</ParentGroup>
-    public function Delete(LJCDbColumns $keyColumns): int
+    public function Delete(LJCDataColumns $keyColumns): int
     {
       $retValue = 0;
       
@@ -96,7 +96,7 @@
     // Creates the Delete SQL.
     /// <include path='items/DeleteSQL/*' file='Doc/LJCDataManager.xml'/>
     /// <ParentGroup>Data</ParentGroup>
-    public function DeleteSQL(LJCDbColumns $keyColumns)
+    public function DeleteSQL(LJCDataColumns $keyColumns)
     {
       $retSQL = null;
 
@@ -111,7 +111,7 @@
     // Loads the records for the provided values.
     /// <include path='items/Load/*' file='Doc/LJCDataManager.xml'/>
     /// <ParentGroup>Data</ParentGroup>
-    public function Load(?LJCDbColumns $keyColumns = null
+    public function Load(?LJCDataColumns $keyColumns = null
       , ?array $propertyNames = null, ?LJCJoins $joins = null
       , ?string $filter = null): ?array
     {
@@ -126,7 +126,7 @@
     // Creates the Load SQL.
     /// <include path='items/LoadSQL/*' file='Doc/LJCDataManager.xml'/>
     /// <ParentGroup>Data</ParentGroup>
-    public function LoadSQL(?LJCDbColumns $keyColumns = null
+    public function LoadSQL(?LJCDataColumns $keyColumns = null
       , ?array $propertyNames = null, ?LJCJoins $joins = null
       , ?string $filter = null) : string
     {
@@ -163,7 +163,7 @@
     // Retrieves the record for the provided values.
     /// <include path='items/Retrieve/*' file='Doc/LJCDataManager.xml'/>
     /// <ParentGroup>Data</ParentGroup>
-    public function Retrieve(LJCDbColumns $keyColumns
+    public function Retrieve(LJCDataColumns $keyColumns
       , array $propertyNames = null, LJCJoins $joins = null): ?array
     {
       $methodName = "Retrieve()";
@@ -177,7 +177,7 @@
     // Creates the Retrieve SQL.
     /// <include path='items/RetrieveSQL/*' file='Doc/LJCDataManager.xml'/>
     /// <ParentGroup>Data</ParentGroup>
-    public function RetrieveSQL(LJCDbColumns $keyColumns
+    public function RetrieveSQL(LJCDataColumns $keyColumns
       , array $propertyNames = null, LJCJoins $joins = null)
     {
       $retSQL = "";
@@ -196,7 +196,7 @@
     // Updates the records for the provided values.
     /// <include path='items/Update/*' file='Doc/LJCDataManager.xml'/>
     /// <ParentGroup>Data</ParentGroup>
-    public function Update(LJCDbColumns $keyColumns, LJCDbColumns $dataColumns)
+    public function Update(LJCDataColumns $keyColumns, LJCDataColumns $dataColumns)
       : int
     {
       $methodName = "Retrieve()";
@@ -210,8 +210,8 @@
     // Creates the Update SQL.
     /// <include path='items/UpdateSQL/*' file='Doc/LJCDataManager.xml'/>
     /// <ParentGroup>Data</ParentGroup>
-    public function UpdateSQL(LJCDbColumns $keyColumns
-      , LJCDbColumns $dataColumns)
+    public function UpdateSQL(LJCDataColumns $keyColumns
+      , LJCDataColumns $dataColumns)
     {
       $retSQL = "";
 
@@ -260,7 +260,7 @@
     // Get the schema columns that match the property names.
     /// <include path='items/Columns/*' file='Doc/LJCDataManager.xml'/>
     /// <ParentGroup>Schema</ParentGroup>
-    public function Columns(array $propertyNames = null): LJCDbColumns
+    public function Columns(array $propertyNames = null): LJCDataColumns
     {
       $retValue = $this->SchemaColumns->SelectItems($propertyNames);
       return $retValue;
@@ -369,7 +369,7 @@
     } // CreateJoinData()
 
     // Sets Data Object values from the Data Result row.
-    private function SetData(LJCDbColumns $columns, $dataObject, array $row)
+    private function SetData(LJCDataColumns $columns, $dataObject, array $row)
      : void
     {
       if ($columns != null && count($columns) > 0)
@@ -424,7 +424,7 @@
     public ?array $OrderByNames;
 
     /// <summary>The column definitions.</summary>
-    public LJCDbColumns $SchemaColumns;
+    public LJCDataColumns $SchemaColumns;
 
     /// <summary>The last SQL statement.</summary>
     public ?string $SQL;
@@ -451,7 +451,7 @@
     /// <include path='items/CreateDelete/*' file='Doc/LJCSQLBuilder.xml'/>
     /// <ParentGroup>Statement</ParentGroup>
     public static function CreateDelete(string $tableName
-      , LJCDbColumns $keyColumns): string
+      , LJCDataColumns $keyColumns): string
     {
       $retValue = "delete from $tableName";
       $retValue .= self::WhereClause($tableName,$keyColumns);
@@ -462,7 +462,7 @@
     /// <include path='items/CreateInsert/*' file='Doc/LJCSQLBuilder.xml'/>
     /// <ParentGroup>Statement</ParentGroup>
     public static function CreateInsert(string $tableName
-      , LJCDbColumns $dataColumns): string
+      , LJCDataColumns $dataColumns): string
     {
       $retValue = "insert into $tableName";
       $retValue .= self::SqlColumns($tableName, $dataColumns, true);
@@ -475,7 +475,7 @@
     /// <include path='items/CreateSelect/*' file='Doc/LJCSQLBuilder.xml'/>
     /// <ParentGroup>Statement</ParentGroup>
     public static function CreateSelect(string $tableName
-      , LJCDbColumns $schemaColumns, ?LJCDbColumns $keyColumns
+      , LJCDataColumns $schemaColumns, ?LJCDataColumns $keyColumns
       , array $propertyNames = null, ?LJCJoins $joins = null): string
     {
       $sqlColumns = $schemaColumns;
@@ -496,7 +496,7 @@
     /// <include path='items/CreateUpdate/*' file='Doc/LJCSQLBuilder.xml'/>
     /// <ParentGroup>Statement</ParentGroup>
     public static function CreateUpdate(string $tableName
-      , ?LJCDbColumns $keyColumns, LJCDbColumns $dataColumns): string
+      , ?LJCDataColumns $keyColumns, LJCDataColumns $dataColumns): string
     {
       $retValue = "update $tableName set";
       $retValue .= self::SQLValueColumns($dataColumns, true);
@@ -540,7 +540,7 @@
     /// <include path='items/SQLColumns/*' file='Doc/LJCSQLBuilder.xml'/>
     /// <ParentGroup>Column</ParentGroup>
     public static function SQLColumns(string $tableName
-      , LJCDbColumns $sqlColumns, bool $includeParens = false
+      , LJCDataColumns $sqlColumns, bool $includeParens = false
       , LJCJoins $joins = null): string
     {
       // Start component with space + newline.
@@ -612,7 +612,7 @@
     // Creates the value columns for an Update SQL statement.
     /// <include path='items/SQLValueColumns/*' file='Doc/LJCSQLBuilder.xml'/>
     /// <ParentGroup>Column</ParentGroup>
-    public static function SQLValueColumns(LJCDbColumns $dataColumns
+    public static function SQLValueColumns(LJCDataColumns $dataColumns
       , bool $isUpdate = false, bool $includeParens = false): string
     {
       // Start component with space + newline.
@@ -673,7 +673,7 @@
 
     // Creates the Where clause.
     private static function WhereClause(string $tableName
-      , ?LJCDbColumns $keyColumns): ?string
+      , ?LJCDataColumns $keyColumns): ?string
     {
       // Start component with space + newline.
       // Component does not end with newline.

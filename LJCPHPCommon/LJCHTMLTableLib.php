@@ -61,7 +61,7 @@
 
       if (LJC::HasItems($dataItems))
       {
-        $dataItem = $dataItems->RetrieveWithIndex(0);
+        $dataItem = $dataItems->RetrieveItemAtIndex(0);
         $retValue = $this->ObjectHeadings($dataItem, $textState);
       }
       return $retValue;
