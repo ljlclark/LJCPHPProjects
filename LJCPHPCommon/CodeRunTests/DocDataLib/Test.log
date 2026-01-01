@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<!-- Copyright (c) Lester J. Clark and Contributors. -->
+<!-- Licensed under the MIT License. -->
+<LJCDocDataFile xmlns:xsd='http://www.w3.org/2001/XMLSchema'
+  xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'>
+  <Name>GenCodeDocLib</Name>
+  <Summary>
+   Contains classes to generate HTML doc for files listed
+   in GenCodeSourceFileList.txt.
+</Summary>
+  <Classes>
+    <Class>
+      <Name>GenCodeDoc</Name>
+      <Summary>
+   Generates HTML doc for files in GenCodeSourceFileList.txt
+</Summary>
+      <Methods>
+        <Method>
+          <Name>construct</Name>
+          <Summary>Initializes an object instance.</Summary>
+          <Syntax>public function __construct()</Syntax>
+        </Method>
+        <Method>
+          <Name>CreateFromList</Name>
+          <Summary>Creates CodeDoc pages from source file list.</Summary>
+          <Syntax>public function CreateFromList()</Syntax>
+        </Method>
+        <Method>
+          <Name>CreateFilePages</Name>
+          <Summary>Create the HTML files.</Summary>
+          <Params>
+            <Param>
+              <Name>$fileSpecLine</Name>
+              <Summary>The source file spec.</Summary>
+            </Param>
+          </Params>
+          <Syntax>public function CreateFilePages($fileSpecLine) : void</Syntax>
+        </Method>
+      </Methods>
+    </Class>
+  </Classes>
+</LJCDocDataFile>

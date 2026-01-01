@@ -1,0 +1,14 @@
+<table>
+  <tr>
+    <th style='background-color: blue' width='200'>One</th>
+    <th width='100'>Two</th>
+  </tr>
+  <tr>
+    <td>Les</td>
+    <td>Clark</td>
+  </tr>
+  <tr>
+    <td>Another</td>
+    <td>Tawo</td>
+  </tr>
+</table>
