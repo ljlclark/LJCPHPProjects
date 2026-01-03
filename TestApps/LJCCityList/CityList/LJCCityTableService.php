@@ -13,7 +13,7 @@
   include_once "$prefix/LJCPHPCommon/LJCHTMLTableLib.php";
   include_once "$prefix/RegionApp/City/RegionTablesDAL.php";
   // LJCDataConfigs: DataConfigs 
-  // LJCDBAccessLib: LJCConnectionValues
+  // LJCDBAccessLib: LJCConnectionValues, LJCDataColumn, LJCDataColumns
   // LJCTextBuilderLib: LJCAttributes, LJCTextBuilder, LJCTextState
   // LJCHTMLTableLib: LJCHTMLTable
   // CityDAL: City, CityManager
@@ -61,7 +61,7 @@
       }
 
       // Create table columns.
-      $this->TableColumns = new LJCDbColumns();
+      $this->TableColumns = new LJCDataColumns();
       $columns = $manager->Columns($this->TableColumnNames);
       $this->TableColumns->AddObjects($columns);
 
@@ -70,7 +70,7 @@
       {
         foreach ($this->AddColumns as $column)
         {
-          $dataColumn = LJCDbColumn::Copy($column);
+          $dataColumn = LJCDataColumn::Copy($column);
           $insertIndex = $dataColumn->InsertIndex;
           $this->TableColumns->InsertObject($dataColumn, $insertIndex);
         }
@@ -450,6 +450,6 @@
     public CityManager $CityManager;
 
     /// <summary>The HTML Table column definition collection.
-    public LJCDbColumns $TableColumns;
+    public LJCDataColumns $TableColumns;
   }
 ?>

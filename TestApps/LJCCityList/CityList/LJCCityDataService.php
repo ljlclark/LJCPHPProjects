@@ -10,7 +10,7 @@
   include_once "$prefix/LJCPHPCommon/LJCDBAccessLib.php";
   include_once "$prefix/RegionApp/City/RegionTablesDAL.php";
   // LJCDataConfigs: DataConfigs 
-  // LJCDBAccessLib: LJCConnectionValues
+  // LJCDBAccessLib: LJCConnectionValues, LJCDataColumn, LJCDataColumns
   // CityDAL: City, Cities, CityManager
 
   $cityDataService = new LJCCityDataService();
@@ -93,7 +93,7 @@
       $this->Action = $request->Action;
       $this->ConfigFile = $request->ConfigFile;
       $this->ConfigName = $request->ConfigName;
-      $this->KeyColumns = LJCDbColumns::ToCollection($request->KeyColumns);
+      $this->KeyColumns = LJCDataColumns::ToCollection($request->KeyColumns);
       $this->OrderByNames = $request->OrderByNames;
       $this->PropertyNames = $request->PropertyNames;
       $this->RequestCities = Cities::ToCollection($request->RequestItems);
@@ -266,7 +266,7 @@
     {
       $methodName = "DataColumns()";
 
-      $retDataColumns = new LJCDbColumns();
+      $retDataColumns = new LJCDataColumns();
 
       // Insert and Update do not accept synthetic primary key.
       $retDataColumns->Add("ProvinceID", dataTypeName: "int"
@@ -285,7 +285,7 @@
     {
       $methodName = "KeyColumns()";
 
-      $retKeyColumns = new LJCDbColumns();
+      $retKeyColumns = new LJCDataColumns();
 
       $retKeyColumns->Add("CityID", dataTypeName: "int"
         , value: strval($city->CityID));
@@ -309,7 +309,7 @@
     public string $ConfigName;
 
     /// <summary>The item unique keys.</summary>
-    public LJCDbColumns $KeyColumns;
+    public LJCDataColumns $KeyColumns;
 
     /// <summary>The OrderBy names.</summary>
     public ?array $OrderByNames;

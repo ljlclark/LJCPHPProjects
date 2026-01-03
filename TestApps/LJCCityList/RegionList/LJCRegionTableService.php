@@ -13,7 +13,7 @@
   include_once "$prefix/LJCPHPCommon/LJCHTMLTableLib.php";
   include_once "$prefix/RegionApp/City/RegionTablesDAL.php";
   // LJCDataConfigs: DataConfigs 
-  // LJCDBAccessLib: LJCConnectionValues
+  // LJCDBAccessLib: LJCConnectionValues, LJCDataColumns
   // LJCTextBuilderLib: LJCAttributes, LJCTextBuilder, LJCTextState
   // LJCHTMLTableLib: LJCHTMLTable
   // RegionDAL: Region, RegionManager
@@ -61,7 +61,7 @@
       }
 
       // Create table columns.
-      $this->TableColumns = new LJCDbColumns();
+      $this->TableColumns = new LJCDataColumns();
       $columns = $manager->Columns($this->TableColumnNames);
       $this->TableColumns->AddObjects($columns);
 
@@ -445,6 +445,6 @@
     public RegionManager $RegionManager;
 
     /// <summary>The HTML Table column definition collection.
-    public LJCDbColumns $TableColumns;
+    public LJCDataColumns $TableColumns;
   }
 ?>
