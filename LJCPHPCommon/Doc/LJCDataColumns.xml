@@ -16,9 +16,51 @@
 		</remarks>
 	</LJCDataColumns>
 	
-	<!-- Public Methods -->
+  <!-- Static Methods -->
+  <ToCollection>
+    <summary>
+      Create typed collection from deserialized JavasScript collection.
+    </summary>
+  </ToCollection>
+  
+  <!-- Constructor Methods -->
+  <Constructor>
+    <summary>
+      Initializes a class instance.
+    </summary>
+  </Constructor>
+  
+  <!-- Data Class Methods -->
+  <Clone>
+    <summary>
+      Creates an object clone.
+    </summary>
+  </Clone>
+
+  <!-- Collection Methods -->
+  <KeyNames>
+    <summary>
+      Creates a KeyNames list from the collection.
+    </summary>
+  </KeyNames>
+  <SelectItems>
+    <summary>
+      Get the items that match the key names array values.
+    </summary>
+    <param name="$keyNames">The key names array.</param>
+    <returns>Returns an LJCDataColums object with the selected items.</returns>
+  </SelectItems>
+  <ToArray>
+    <summary>
+      Get an array of item objects.
+    </summary>
+  </ToArray>
+  
+  <!-- Data Methods -->
 	<Add>
-		<summary>Creates an object and adds it to the collection.</summary>
+		<summary>
+      Creates an object and adds it to the collection.
+    </summary>
 		<param name="$columnName">The Column name.</param>
 		<param name="$propertyName">The Property name.</param>
 		<param name="$dataTypeName">The DataType name.</param>
@@ -34,8 +76,10 @@
     </code>
 	</Add>
 	<AddObject>
-		<summary>Adds an object and key value.</summary>
-		<param name="$item">The DbColumn definition.</param>
+		<summary>
+      Adds an object and key value.
+    </summary>
+		<param name="$item">The DataColumn definition.</param>
 		<param name="$key">The collection array key.</param>
 		<code>
       include_once "LJCRoot.php";
@@ -47,6 +91,20 @@
       $dbColumns->AddObject($dbColumn);
     </code>
 	</AddObject>
+  <AddObjects>
+    <summary>
+      Adds another collection of objects to this collection.
+    </summary>
+    <param name="$items">The items to be added.</param>
+  </AddObjects>
+  <InsertObject>
+    <summary>
+      Inserts an object at the provided insert index.
+    </summary>
+    <param name="$insertItem">
+      The DataColumn definition.
+    </param>
+  </InsertObject>
   <Retrieve>
 		<summary>Retrieves the item by Key value.</summary>
 		<param name="$key">The collection array key.</param>
@@ -83,6 +141,8 @@
       $specificColumns = $dbColumns->GetColumns($propertyNames);
     </code>
 	</GetColumns>
+  
+  <!-- Other Methods -->
 	<MapNames>
 		<summary>
 			Sets the PropertyName, RenameAs and Caption values for a column.
@@ -93,7 +153,9 @@
 		<param name="$caption">The Caption value.</param>
 	</MapNames>
 	<SetWhereOperators>
-		<summary>Sets the Where Clause operators.</summary>
+		<summary>
+      Sets the Where Clause operators.
+    </summary>
 		<param name="$key">The collection array key.</param>
 		<param name="$compareOperator">The comparison operator.</param>
 		<param name="$boolOperator">The boolean operator.</param>

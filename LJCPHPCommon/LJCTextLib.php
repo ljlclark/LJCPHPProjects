@@ -6,9 +6,13 @@
   include_once "LJCRoot.php";
   $prefix = RelativePrefix();
   include_once "$prefix/LJCPHPCommon/LJCCommonLib.php";
-  // LJCCommonLib: LJCCommon
+  // LJCCommonLib: LJC
 
   /// <summary>The Common Text Output Class Library</summary>
+  
+  // The LibName: XML comment triggers the file (library) HTML page generation.
+  // It generates a page with the same name as the library.
+  // LJCTextLib.html
   /// LibName: LJCTextLib
   //  Classes: LJCStringBuilder, LJCHTMLTableColumn, LJCHTMLWriter, LJCWriter
 
@@ -112,10 +116,14 @@
 
   // ***************
   /// <summary>The HTML table column definition.</summary> 
+
+  // A class triggers the class HTML page generation.
+  // It generates a page with the same name as the class.
+  // LJCTableColumn/LJCTableColumn.html
   class LJCHTMLTableColumn
   {
     // ---------------
-    // Constructors
+    // Constructors - LJCHTMLTableColumn
 
     // Initializes an object instance.
     /// <include path='items/construct/*' file='Doc/LJCHTMLTableColumn.xml'/>
@@ -152,7 +160,7 @@
   class LJCHTMLWriter
   {
     // ---------------
-    // Public Static Functions
+    // Public Static Functions - LJCHTMLWriter
 
     // Writes the element attributes.
     public static function WriteAttribute(string $name, ?string $value): void
@@ -214,7 +222,7 @@
   class LJCWriter
   {
     // ---------------
-    // Public Static Functions
+    // Public Static Functions - LJCWriter
 
     // Runs a program and returns the output.
     public static function Run($programName): array

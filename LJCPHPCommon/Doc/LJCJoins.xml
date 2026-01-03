@@ -3,6 +3,26 @@
 <!-- Licensed under the MIT License. -->
 <!-- LJCJoins.xml -->
 <items>
+  <LJCJoins>
+    <summary>
+      Represents a collection of LJCJoin objects.
+    </summary>
+  </LJCJoins>
+  
+  <!-- Constructor Methods -->
+  <Constructor>
+    <summary>
+      Initializes a class instance.
+    </summary>
+  </Constructor>
+  
+  <!-- Data Class Methods -->
+  <Clone>
+    <summary>
+      Creates an object clone.
+    </summary>
+  </Clone>
+    
   <!-- Data Methods -->
 	<Add>
 		<summary>

@@ -1,7 +1,7 @@
 <?php
   // Copyright(c) Lester J. Clark and Contributors.
   // Licensed under the MIT License.
-  // DataConfigs.php
+  // LJCDataConfigLib.php
   declare(strict_types=1);
   include_once "LJCRoot.php";
   $prefix = RelativePrefix();
@@ -10,15 +10,22 @@
   // LJCCommon: LJC
   // LJCDBAccessLib: LJCConnectionValues
 
-  // The DB config Library.
+  // The Data Configuration Class Library.
   /// <include path='items/LJCDataConfigs/*' file='Doc/DataConfigs.xml'/>
-
-  /// LibName: DataConfigs
-  //  Classes: DataConfigs
+    
+  // The LibName: XML comment triggers the file (library) HTML page generation.
+  // It generates a page with the same name as the library.
+  // LJCDataConfigLib.html
+  /// LibName: LJCDataConfigLib
+  //  Classes: LJCDataConfigs
 
   // ***************
-  // Contains methods to retrieve the DB config values.
+  // Contains methods to retrieve the data config values.
   /// <include path='items/DataConfigs/*' file='Doc/DataConfigs.xml'/>
+
+  // A class triggers the class HTML page generation.
+  // It generates a page with the same name as the class.
+  // DataConfigs/DataConfigs.html
   class DataConfigs
   {
     // Standard debug method for each class.
@@ -30,6 +37,9 @@
         , $valueName);
       $this->DebugText .= LJC::DebugObject($location, $value);
     } // AddDebug()
+
+    // ---------------
+    // Static Methods - DataConfigs
 
     // Retrieves the DB connection values.
     /// <include path='items/GetConnectionValues/*' file='Doc/DataConfigs.xml'/>
@@ -85,7 +95,7 @@
     } // GetDataConfig()
 
     // ---------------
-    // Result Properties
+    // Properties
 
     /// <summary>The debug text.</summary>
     public string $DebugText;

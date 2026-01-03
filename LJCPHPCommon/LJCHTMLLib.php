@@ -11,6 +11,9 @@
   // The HTML Section Class Library
   /// <include path='items/LJCHTMLLib/*' file='Doc/LJCHTML.xml'/>
 
+  // The LibName: XML comment triggers the file (library) HTML page generation.
+  // It generates a page with the same name as the library.
+  // LJCHTMLBuilderLib.html
   /// LibName: LJCHTMLLib
   //  Classes: LJCHTML
 
@@ -21,14 +24,22 @@
   //    GetBeginSelector(), GetLink(), GetMeta(), GetMetas(), GetScript()
   /// <group name="HTML">Create HTML</group>
   //    GetHTMLBegin(), GetHTMLEnd(), GetHTMLHead()
+
+  // A class triggers the class HTML page generation.
+  // It generates a page with the same name as the class.
+  // LJCHTML/LJCHTML.html
   class LJCHTML
   {
     // ----------
-    // Create Element Methods
+    // Create Element Methods - LJCHTML
 
     // Gets beginning of style selector.
     /// <include path='items/GetBeginSelector/*' file='Doc/LJCHTML.xml'/>
     /// <ParentGroup>Element</ParentGroup>
+
+    // A method triggers the method HTML page generation.
+    // It generates a page with the name: class plus method.
+    // LJCHTML/LJCHTMLGetBeginSelector.html
     public static function GetBeginSelector(string $selectorName, LJCTextState $textState)
       : string
     {
@@ -137,7 +148,7 @@
     }
 
     // ----------
-    // Create HTML Methods
+    // Create HTML Methods - LJCHTML
 
     // Gets the HTML beginning up to <head>.
     /// <include path='items/GetHTMLBegin/*' file='Doc/LJCHTML.xml'/>

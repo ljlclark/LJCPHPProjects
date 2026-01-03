@@ -38,7 +38,7 @@
   class LJC
   {
     // ---------------
-    // String Functions
+    // String Functions - LJC
 
     // Creates JSON from the provided value.
     /// <include path='items/CreateJSON/*' file='Doc/LJCCommon.xml'/>
@@ -267,7 +267,7 @@
     } // StrRPos()
 
     // ---------------
-    // File Name Functions
+    // File Name Functions - LJC
 
     // Gets the FileName from the file spec.
     /// <include path='items/GetFileName/*' file='Doc/LJCCommon.xml'/>
@@ -308,7 +308,7 @@
     } // GetFileSpecPath()
 
     // ---------------
-    // Check Value Functions
+    // Check Value Functions - LJC
 
     // Checks for array elements.
     /// <include path='items/HasElements/*' file='Doc/LJCCommon.xml'/>
@@ -375,7 +375,7 @@
     }
 
     // ---------------
-    // Array Functions
+    // Array Functions - LJC
 
     // Remove an element from a string array by value.
     /// <include path='items/RemoveString/*' file='Doc/LJCCommon.xml'/>
@@ -396,7 +396,7 @@
     }
 
     // ---------------
-    // Convert Functions
+    // Convert Functions - LJC
 
     // Copy collection items to an indexed array.
     /// <include path='items/ToArray/*' file='Doc/LJCCommon.xml'/>
@@ -473,7 +473,7 @@
     } // XMLToString()
 
     // ---------------
-    // Output Functions
+    // Output Functions - LJC
 
     // Outputs the test compare text.
     /// <include path='items/OutputLogCompare/*' file='Doc/LJCCommon.xml'/>

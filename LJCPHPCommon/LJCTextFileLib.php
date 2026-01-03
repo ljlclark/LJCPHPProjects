@@ -8,9 +8,13 @@
   include_once "$prefix/LJCPHPCommon/LJCCommonLib.php";
   include_once "$prefix/LJCPHPCommon/LJCCommonFileLib.php";
   //include_once "$prefix/LJCPHPCommon/LJCTextFileLib.php";
-  // LJCCommonLib: LJCCommon
+  // LJCCommonLib: LJC
 
-  /// <summary>The Common Text Output Class Library</summary>
+  /// <summary>The Text File Class Library</summary>
+  
+  // The LibName: XML comment triggers the file (library) HTML page generation.
+  // It generates a page with the same name as the library.
+  // LJCTextFileLib.html
   /// LibName: LJCTextFileLib
   //  Classes: LJCFileWriter, LJCDebugWriter
 
@@ -21,13 +25,17 @@
   //    WriteFile()
   /// <group name="Class">Class Methods</group>
   //    FClose(), FWrite(), FWriteLine()
+
+  // A class triggers the class HTML page generation.
+  // It generates a page with the same name as the class.
+  // LJCFileWriter/LJCFileWriter.html
   class LJCFileWriter
   {
     // ---------------
-    // Static Functions
+    // Static Functions - LJCFileWriter
 
     // <summary>Writes an XML file.</summary>
-    /// <include path='items/WriteFile/*' file='Doc/LJCWriter.xml'/>
+    /// <include path='items/WriteFile/*' file='Doc/LJCFileWriter.xml'/>
     /// <ParentGroup>Static</ParentGroup>
     public static function WriteFile(string $text, string $fileSpec)
     {
@@ -40,7 +48,7 @@
     } // WriteFile()
 
     // ---------------
-    // Constructors - LJCWriter
+    // Constructors - LJCFileWriter
 
     /// <summary>Initializes an object instance.</summary>
     /// <param name="$stream">The stream object.</param>
@@ -51,7 +59,7 @@
     } // __construct()
 
     // ---------------
-    // Public Methods - LJCWriter
+    // Public Methods - LJCFileWriter
 
     /// <summary>Closes the stream.</summary>
     /// <ParentGroup>Class</ParentGroup>
@@ -61,7 +69,7 @@
     }
 
     // Writes file text with indents.
-    /// <include path='items/FWrite/*' file='Doc/LJCWriter.xml'/>
+    /// <include path='items/FWrite/*' file='Doc/LJCFileWriter.xml'/>
     /// <ParentGroup>Class</ParentGroup>
     public function FWrite(string $text, int $indentCount = 0)
     {
@@ -73,7 +81,7 @@
     } // FWrite()
 
     // Writes a file text line with indents.
-    /// <include path='items/FWriteLine/*' file='Doc/LJCWriter.xml'/>
+    /// <include path='items/FWriteLine/*' file='Doc/LJCFileWriter.xml'/>
     /// <ParentGroup>Class</ParentGroup>
     public function FWriteLine(string $text, int $indentCount = 0)
     {
@@ -93,7 +101,7 @@
   class LJCDebugWriter
   {
     // ---------------
-    // Constructors
+    // Constructors - LJCDebugWriter
 
     public function __construct(string $locName, $mode = "w")
     {

@@ -8,6 +8,7 @@
       Represents a node or element attribute.
     </summary>    
   </LJCAttribute>
+  
   <!-- Static Methods -->
   <Copy>
     <summary>
@@ -16,6 +17,7 @@
     <param name="$item">The standard object.</param>
     <returns>The LJCAttribute object.</returns>
   </Copy>
+  
   <!-- Constructor Methods -->
   <construct>
     <summary>

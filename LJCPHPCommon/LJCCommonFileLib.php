@@ -4,17 +4,29 @@
   // LJCCommonFileLib.php
   declare(strict_types=1);
 
-  /// <summary>The Common PHP Class Library</summary>
+  /// <summary>The Common File Class Library</summary>
+  
+  // The LibName: XML comment triggers the file (library) HTML page generation.
+  // It generates a page with the same name as the library.
+  // LJCCommonFileLib.html
   /// LibName: LJCCommonFileLib
   // Classes: LJCCommonFile
 
   // ***************
   // Static: GetDebugFileName(), GetIndexedDebugFileName(), MkDir()
   /// <summary>Contains common functions.</summary>
+
+  // A class triggers the class HTML page generation.
+  // It generates a page with the same name as the class.
+  // LJCCommonFile/LJCCommonFile.html
   class LJCCommonFile
   {
     // Gets the Debug file name.
     /// <include path='items/GetDebugFileName/*' file='Doc/LJCCommon.xml'/>
+
+    // A method triggers the method HTML page generation.
+    // It generates a page with the name: class plus method.
+    // LJCCommonFile/LJCCommonFileGetDebugFileName.html
     public static function GetDebugFileName(string $folder, string $fileName)
       : string
     {

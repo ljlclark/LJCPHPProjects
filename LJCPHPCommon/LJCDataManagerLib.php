@@ -16,7 +16,10 @@
 
   // The PDO Data Manager Library
   /// <include path='items/LJCDataManagerLib/*' file='Doc/LJCDataManager.xml'/>
-
+  
+  // The LibName: XML comment triggers the file (library) HTML page generation.
+  // It generates a page with the same name as the library.
+  // LJCDataManagerLib.html
   /// LibName: LJCDataManagerLib
   //  Classes: LJCDataManager, LJCSQLBuilder
 
@@ -35,10 +38,14 @@
   //    CreateDataCollection(), CreateDataObject()
   /// <group name="Other">Other Methods</group>
   //    CreateResultKeys()
+
+  // A class triggers the class HTML page generation.
+  // It generates a page with the same name as the class.
+  // LJCDataManager/LJCDataManager.html
   class LJCDataManager
   {
     // ---------------
-    // Constructor Methods
+    // Constructor Methods - LJCDataManager
 
     // Initializes a class instance with the provided values.
     /// <include path='items/construct/*' file='Doc/LJCDataManager.xml'/>
@@ -257,7 +264,7 @@
     } // SQLRetrieve()
 
     // ---------------
-    // Schema Methods
+    // Schema Methods - LJCDataManager
 
     // Get the schema columns that match the property names.
     /// <include path='items/Columns/*' file='Doc/LJCDataManager.xml'/>
@@ -448,7 +455,7 @@
   class LJCSQLBuilder
   {
     // ---------------
-    // Static SQL Methods
+    // Static SQL Methods - LJCSQLBuilder
 
     // Creates a Delete SQL statement.
     /// <include path='items/CreateDelete/*' file='Doc/LJCSQLBuilder.xml'/>

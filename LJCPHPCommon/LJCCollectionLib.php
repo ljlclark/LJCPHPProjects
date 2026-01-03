@@ -4,7 +4,7 @@
   // LJCCollectionLib.php
   declare(strict_types=1);
 
-  // Contains Classes to represent a Collection.
+  // The Collection Class Library
   /// <include path='items/LJCCollectionLib/*' file='Doc/LJCCollectionBase.xml'/>
   
   // The "LibName:" XML comment triggers the file (library) HTML page
@@ -28,7 +28,7 @@
   class LJCCollectionBase implements IteratorAggregate, Countable
   {
     // ---------------
-    // Data Methods
+    // Data Methods - LJCCollecionBase
 
     // Adds an object and key value.
     /// <include path='items/AddItem/*' file='Doc/LJCCollectionBase.xml'/>
@@ -127,7 +127,7 @@
     } // Item()
 
     // ---------------
-    // Other Methods
+    // Other Methods - LJCCollecionBase
 
     // Gets an indexed array of keys.
     /// <include path='items/GetKeys/*' file='Doc/LJCCollectionBase.xml'/>

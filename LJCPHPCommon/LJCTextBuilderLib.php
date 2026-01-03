@@ -5,11 +5,11 @@
   declare(strict_types=1);
   include_once "LJCRoot.php";
   $prefix = RelativePrefix();
-  include_once "$prefix/LJCPHPCommon/LJCCollectionLib.php";
   include_once "$prefix/LJCPHPCommon/LJCCommonLib.php";
+  include_once "$prefix/LJCPHPCommon/LJCCollectionLib.php";
   //include_once "$prefix/LJCPHPCommon/LJCDbAccessLib.php";
-  // LJCCollectionLib: LJCCollectionBase
   // LJCCommonLib: LJC
+  // LJCCollectionLib: LJCCollectionBase
 
   // The Text Builder Class Library
   /// <include path='items/LJCTextBuilderLib/*' file='Doc/LJCTextBuilder.xml'/>
@@ -32,6 +32,9 @@
   // LJCAttribute/LJCAttribute.html
   class LJCAttribute
   {
+    // ---------------
+    // Static Methods - LJCAttribute
+
     // Creates a typed data object from a standard object.
     /// <include path='items/Copy/*' file='Doc/LJCAttribute.xml'/>
     /// <ParentGroup>Static</ParentGroup>
@@ -62,6 +65,9 @@
       }
       return $retAttrib;
     } // Copy()
+
+    // ---------------
+    // Constructor Methods - LJCAttribute
 
     // Initializes an object instance.
     /// <include path='items/construct/*' file='Doc/LJCAttribute.xml'/>
@@ -94,7 +100,7 @@
     } // AddLogText()
 
     // ---------------
-    // Properties
+    // Properties - LJCAttribute
 
     /// <summary>The item name.</summary>
     // A property triggers the property HTML page generation.
@@ -118,6 +124,9 @@
   //    MergeStyle()
   class LJCAttributes extends LJCCollectionBase
   {
+    // ---------------
+    // Static Methods - LJCAttributes
+
     // Creates a typed collection from an array of objects.
     /// <include path='items/ToCollection/*' file='Doc/LJCAttributes.xml'/>
     /// <ParentGroup>Static</ParentGroup>
@@ -142,6 +151,9 @@
       }
       return $retAttributes;
     }
+
+    // ---------------
+    // Constructor Methods - LJCAttributes
 
     // Initializes an object instance.
     /// <include path='items/construct/*' file='Doc/LJCAttributes.xml'/>
@@ -172,7 +184,7 @@
     } // AddLogText()
 
     // ----------
-    // Collection Methods
+    // Collection Methods - LJCAttributes
 
     // Creates an object and adds it to the collection.
     /// <include path='items/Add/*' file='Doc/LJCAttributes.xml'/>
@@ -266,7 +278,7 @@
     }
 
     // ----------
-    // Other Methods
+    // Other Methods - LJCAttributes
 
     // Merges "style" attrib rules.
     /// <include path='items/MergeStyle/*' file='Doc/LJCAttributes.xml'/>
@@ -326,7 +338,7 @@
     }
 
     // ----------
-    // Private Methods
+    // Private Methods - LJCAttributes
 
     // Trims element value or if null, returns null.
     private static function TrimElement($values, $index)
@@ -405,7 +417,7 @@
     }
 
     // ----------
-    // Properties
+    // Properties - LJCAttributes
 
     /// <summary>The class name for debugging.</summary>
     public string $ClassName;
@@ -440,7 +452,7 @@
   class LJCTextBuilder
   {
     // ----------
-    // Constructor Methods
+    // Constructor Methods - LJCTextBuilder
 
     // Initializes a class instance.
     /// <include path='items/cstr/*' file='Doc/LJCTextBuilder.xml'/>
@@ -482,7 +494,7 @@
     } // AddLogText()
 
     // ----------
-    // Data Class Methods
+    // Data Class Methods - LJCTextBuilder
 
     // Gets the built string.
     /// <include path='items/ToString/*' file='Doc/LJCTextBuilder.xml'/>
@@ -493,7 +505,7 @@
     } // ToString()
 
     // ----------
-    // Add Text Methods
+    // Add Text Methods - LJCTextBuilder
     
     // Appends a text line without modification.
     /// <include path='items/AddLine/*' file='Doc/LJCTextBuilder.xml'/>
@@ -521,7 +533,7 @@
     }
 
     // ----------
-    // Append Text Methods
+    // Append Text Methods - LJCTextBuilder
 
     // Appends a potentially indented text line to the builder.
     /// <include path='items/Line/*' file='Doc/LJCTextBuilder.xml'/>
@@ -553,7 +565,7 @@
     }
 
     // ----------
-    // Get Text Methods
+    // Get Text Methods - LJCTextBuilder
 
     // Gets a modified text line.
     /// <include path='items/GetLine/*' file='Doc/LJCTextBuilder.xml'/>
@@ -613,7 +625,7 @@
     }
 
     // ----------
-    // Other Get Text Methods
+    // Other Get Text Methods - LJCTextBuilder
 
     // Gets a new potentially indented line.
     /// <include path='items/GetIndented/*' file='Doc/LJCTextBuilder.xml'/>
@@ -711,7 +723,7 @@
     }
 
     // ----------
-    // Get Attribs Methods
+    // Get Attribs Methods - LJCTextBuilder
 
     // Gets common element attributes.
     /// <include path='items/Attribs/*' file='Doc/LJCTextBuilder.xml'/>
@@ -833,7 +845,7 @@
     }
 
     // ----------
-    // Append Element Methods
+    // Append Element Methods - LJCTextBuilder
 
     // Appends the element begin tag.
     /// <include path='items/Begin/*' file='Doc/LJCTextBuilder.xml'/>
@@ -901,7 +913,7 @@
     }
 
     // ----------
-    // Get Element Methods
+    // Get Element Methods - LJCTextBuilder
 
     // Gets the element begin tag.
     /// <include path='items/GetBegin/*' file='Doc/LJCTextBuilder.xml'/>
@@ -997,7 +1009,7 @@
     }
 
     // ----------
-    // Other Methods
+    // Other Methods - LJCTextBuilder
 
     // Adds the new (child) indents.
     /// <include path='items/AddChildIndent/*' file='Doc/LJCTextBuilder.xml'/>
@@ -1105,7 +1117,7 @@
     }
 
     // ----------
-    // Private Methods
+    // Private Methods - LJCTextBuilder
 
     // Adds indent to builders and sync object.
     private function AddSyncIndent(LJCTextBuilder $tb, LJCTextState $state
@@ -1258,7 +1270,7 @@
     }
 
     // ----------
-    // Getters and Setters
+    // Getters and Setters - LJCTextBuilder
 
     // Gets the indent count.
     public function getIndentCount(): int
@@ -1276,7 +1288,7 @@
     }
 
     // ----------
-    // Properties
+    // Properties - LJCTextBuilder
 
     /// <summary>The class name for debugging.</summary>
     public string $ClassName;
@@ -1311,7 +1323,7 @@
   class LJCTextState
   {
     // ----------
-    // Constructors
+    // Constructor Methods - LJCTextState
 
     // Initializes an object instance.
     /// <include path='items/construct/*' file='Doc/LJCTextState.xml'/>
@@ -1343,7 +1355,7 @@
     } // AddLogText()
 
     // ----------
-    // Getters and Setters
+    // Getters and Setters - LJCTextState
 
     // Gets the indent count.
     /// <include path='items/getIndentCount/*' file='Doc/LJCTextState.xml'/>
@@ -1367,7 +1379,7 @@
     }
 
     // ----------
-    // Properties
+    // Properties - LJCTextState
 
     // <summary>The current Child IndentCount value.</summary>
     public int $ChildIndentCount;

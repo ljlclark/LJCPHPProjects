@@ -4,7 +4,7 @@
 <!-- LJCConnectionValues.xml -->
 <items>
 	<!-- Constructors -->
-	<construct>
+	<Constructor>
 		<summary>
       Initializes a class instance with the provided values.
     </summary>
@@ -23,5 +23,5 @@
       $connectionValues = new LJCConnectionValues("localhost", $database, $userID
       , $password);
     </code>
-	</construct>
+	</Constructor>
 </items>

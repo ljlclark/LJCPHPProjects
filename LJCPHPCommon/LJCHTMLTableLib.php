@@ -10,8 +10,12 @@
   // LJCCommonLib: LJCCommon
   // LJCTextBuilderLib: LJCAttribute, LJCAttributes, LJCTextBuilder
 
-  // The HTML Object Table Class Library
+  // The HTML Table Generator Class Library
   /// <include path='items/LJCHTMLTableLib/*' file='Doc/LJCHTMLTable.xml'/>
+  
+  // The LibName: XML comment triggers the file (library) HTML page generation.
+  // It generates a page with the same name as the library.
+  // LJCHTMLTableLib.html
   /// LibName: LJCHTMLTableLib
   //  Classes: LJCHTMLTable
 
@@ -24,10 +28,18 @@
   //    ObjectArrayHeadings(), ObjectArrayHTML(), ObjectArrayRows()
   /// <group name="Rows">Array of Rows</group>
   //    ResultHeadings(), ResultHTML(), ResultRows()
+
+  // A class triggers the class HTML page generation.
+  // It generates a page with the same name as the class.
+  // LJCHTMLTable/LJCHTMLTable.html
   class LJCHTMLTable
   {
     // Initializes a class instance with the provided values.
     /// <include path='items/construct/*' file='Doc/LJCDataManager.xml'/>
+
+    // A method triggers the method HTML page generation.
+    // It generates a page with the name: class plus method.
+    // LJCHTMLTable/LJCHTMLTableconstruct.html
     public function __construct()
     {
       $this->ClassName = "LJCHTMLTable";
@@ -49,7 +61,7 @@
     } // AddLogText()
 
     // ----------
-    // Collection Functions
+    // Collection Functions - LJCHTMLTable
 
     // Create table headings from a Collection Object.
     /// <include path='items/CollectionHeadings/*' file='Doc/LJCHTMLTable.xml'/>
@@ -117,7 +129,7 @@
     }
 
     // ----------
-    // ObjectArray Functions
+    // ObjectArray Functions - LJCHTMLTable
 
     // Create table headings from an ObjectArray Data Object.
     /// <include path='items/ObjectArrayHeadings/*' file='Doc/LJCHTMLTable.xml'/>
@@ -188,7 +200,7 @@
     }
 
     // ----------
-    // Data Table Functions
+    // Data Table Functions - LJCHTMLTable
 
     // Create table headings from result rows.
     /// <include path='items/ResultHeadings/*' file='Doc/LJCHTMLTable.xml'/>
@@ -255,7 +267,7 @@
     }
 
     // --------------------
-    // Support Methods
+    // Support Methods - LJCHTMLTable
 
     // Create the Array heading table rows.
     private function ArrayHeadings(array $dataItem
@@ -364,7 +376,7 @@
     }
 
     // --------------------
-    // Properties
+    // Properties - LJCHTMLTable
     
     /// <summary>The class name for debugging.</summary>
     public string $ClassName;

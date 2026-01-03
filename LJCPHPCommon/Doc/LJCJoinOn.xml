@@ -3,11 +3,25 @@
 <!-- Licensed under the MIT License. -->
 <!-- LJCJoinOn.xml -->
 <items>
-	<construct>
+  <LJCJoinOn>
+    <summary>
+      Represents a SQL JoinOn
+    </summary>
+  </LJCJoinOn>
+  
+  <!-- Constructor Methods -->
+	<Constructor>
 		<summary>
       Initializes a class instance.
     </summary>
 		<param name="$fromColumnName">The 'from' column name.</param>
 		<param name="$toColumnName">The 'to' column name.</param>
-	</construct>
+	</Constructor>
+  
+  <!-- Data Class Methods -->
+  <Clone>
+    <summary>
+      Creates an object clone.
+    </summary>
+  </Clone>
 </items>

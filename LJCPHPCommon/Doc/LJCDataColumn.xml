@@ -48,8 +48,8 @@
     </code>
 	</GetDataType>
 
-	<!-- Constructors -->
-	<construct>
+	<!-- Constructor Methods -->
+	<Constructor>
 		<summary>Initializes a class instance.</summary>
 		<param name="$columnName">The Column name.</param>
 		<param name="$propertyName">The Property name.</param>
@@ -62,7 +62,9 @@
 
       $dbColumn = new LJCDataColumn("Name");
     </code>
-	</construct>
+	</Constructor>
+
+  <!-- Data Class Methods -->
   <Clone>
     <summary>
       Creates an object clone.
