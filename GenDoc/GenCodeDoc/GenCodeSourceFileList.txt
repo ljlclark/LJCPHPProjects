@@ -7,7 +7,7 @@ WriteGenDataXML: false
 ../../LJCPHPCommon/LJCCollectionLib.php
 ../../LJCPHPCommon/LJCCommonFileLib.php
 ../../LJCPHPCommon/LJCCommonLib.php
-../../LJCPHPCommon/LJCDataConfigs.php
+../../LJCPHPCommon/LJCDataConfigLib.php
 ../../LJCPHPCommon/LJCDataManagerLib.php
 ../../LJCPHPCommon/LJCDBAccessLib.php
 ../../LJCPHPCommon/LJCTextFileLib.php

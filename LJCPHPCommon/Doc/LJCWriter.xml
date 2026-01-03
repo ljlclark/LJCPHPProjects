@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright (c) Lester J. Clark 2022 - All Rights Reserved -->
+<!-- LJCWriter.xml -->
+<items>
+  <LJCWriter>
+    <summary>Contains console and file output methods.</summary>
+    <remarks>
+      The Write() and WriteLine() static functions are used to write to stdout.
+    </remarks>
+  </LJCWriter>
+
+  <!-- Static Functions -->
+	<Write>
+		<summary>Writes text with indents.</summary>
+		<param name="$text">The text value.</param>
+		<param name="$indentCount">The number of tabs to add to the line beginning.</param>
+		<param name="$addBreak">Adds an HTML break before the cr/lf.</param>
+		<remarks>
+			The text is sent to stdout using the echo php function.
+			&lt;br /&gt;
+			&lt;br /&gt;
+			It is often used for Debug output.
+		</remarks>
+		<code>
+      include_once "LJCRoot.php";
+      $prefix = RelativePrefix();
+      include_once "$prefix/LJCPHPCommon/LJCTextLib.php";
+
+      $text = "This value";
+      LJCWriter::Write("SomeMethod() text: $text");
+    </code>
+	</Write>
+  <WriteAll>
+    <summary>Writes text with indents.</summary>
+    <param name="$lines">An array of lines.</param>
+    <param name="$addNewline">
+      Indicates if each line ends with a newline.
+    </param>
+  </WriteAll>
+	<WriteLine>
+		<summary>Writes a text line with indents.</summary>
+		<param name="$text">The text value.</param>
+		<param name="$indentCount">The number of tabs to add to the line beginning.</param>
+		<param name="$addBreak">Adds an HTML break before the cr/lf.</param>
+		<remarks>
+			The text is sent to stdout using the echo php function.
+			&lt;br /&gt;
+			&lt;br /&gt;
+			It is often used for Debug output.
+		</remarks>
+		<code>
+      include_once "LJCRoot.php";
+      $prefix = RelativePrefix();
+      include_once "$prefix/LJCPHPCommon/LJCTextLib.php";
+
+      $text = "This value";
+      LJCWriter::WriteLine("SomeMethod() text: $text");
+    </code>
+	</WriteLine>
+</items>

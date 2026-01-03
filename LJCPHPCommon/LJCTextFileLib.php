@@ -20,7 +20,7 @@
 
   // ***************
   // Contains console and file output methods.
-  /// <include path='items/LJCWriter/*' file='Doc/LJCWriter.xml'/>
+  /// <include path='items/LJCFileWriter/*' file='Doc/LJCFileWriter.xml'/>
   /// <group name="Static">Static Methods</group>
   //    WriteFile()
   /// <group name="Class">Class Methods</group>
@@ -92,7 +92,7 @@
     // Class Data
 
     private $Stream;
-  } // LJCWriter
+  } // LJCFileWriter
 
   // ***************
   // Contains Debug output methods.
