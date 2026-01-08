@@ -45,7 +45,7 @@
       $methodName = "Request()";
       // *** Add ***
       $this->Output = new Output($this->ClassName);
-      $this->Output->MethodName = $methodName;
+      $this->Output->MethodName = "Request";
 
       $this->InitResponseProperties();
 
@@ -56,17 +56,11 @@
 
       // Set class properties from request data.
       $this->SetRequestProperties($request);
-      // ***** Begin
-      //$this->DebugResponse(__line__, $methodName, "\$this->ConfigName"
-      //  , $this->ConfigName);
-      //return;
-      // ***** 
       $_SESSION["tableName"] = $this->TableName;
 
       $connectionValues = $this->GetConnectionValues($this->ConfigName);  
       // *** Change *** 
-      $this->DataManager = new LJCDataManager($connectionValues
-        , $this->TableName);
+      $this->DataManager = new DataManager($connectionValues, $this->TableName);
 
       // *** Change *** 
       $manager = $this->DataManager;
@@ -95,21 +89,8 @@
       echo($response);
     } // Request()
 
-    // Testing
-    private function DebugResponse(int $lineNumber, string $methodName
-      , string $valueName, $value)
-    {
-      // ***** Begin
-      // Execute after SetRequestProperties();
-      $response = $this->InitResponse();
-      $this->AddDebug($methodName, $valueName, $value);
-      $response->DebugText = $this->DebugText;
-      $retResponse = LJC::CreateJSON($response);
-      echo($retResponse);
-    }
-
     // Standard debug method for each class.
-    private function AddDebug(string $methodName, string $valueName, $value = "null")
+    private function AddDebug($methodName, $valueName, $value = "null")
     {
       $this->Output->MethodName = $methodName;
       $this->DebugText .= $this->Output->Log(__line__, $valueName, $value
@@ -171,6 +152,10 @@
 
       $this->TableName = $pageData->TableName;
       $this->TableColumnNames = $pageData->TableColumnNames;
+      //if (null == $pageData->TableColumnNames)
+      //{
+      //  $this->TableColumnNames = $this->DefaultTableColumnNames();
+      //}
     }
 
     // ---------------
@@ -335,8 +320,8 @@
 
       // *** Change *** 
       $manager = $this->DataManager;
+      // ***** 
       //$joins = $manager->CreateJoins();
-      $joins = null;
       $propertyNames = $this->PropertyNames;
 
       switch ($this->Action)
@@ -467,9 +452,9 @@
     // Other Properties
 
     /// <summary>The CityManager object.</summary>
-    public LJCDataManager $DataManager;
+    public DataManager $DataManager;
 
     /// <summary>The HTML Table column definition collection.
-    public LJCDataColumns $TableColumns;
+    public LJCDbColumns $TableColumns;
   }
 ?>

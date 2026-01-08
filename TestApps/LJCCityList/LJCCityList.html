@@ -13,7 +13,7 @@
   <meta name='viewport' content='width=device-width' initial-scale=1 />
   <link href='CSS/Table.css' rel='stylesheet' />
   <script src="../../LJCJSCommon/LJCCommonLib.js"></script>
-  <script src="../../LJCJSCommon/LJCDataLib.js"></script>
+  <script src="../../LJCJSCommon/LJCDBAccessLib.js"></script>
   <script src="LJCTable.js"></script>
 
   <script src="LJCTableMessageLib.js"></script>
@@ -288,7 +288,8 @@
   </div>  <!-- Closes page -->
   <script>
     cityTableID.focus();
-    let cityListEvents = new LJCCityListEvents("cityTableID");
+    let configName = "TestData";
+    let cityListEvents = new LJCCityListEvents("cityTableID", configName);
     cityListEvents.SetDialogValues("textDialog", "textArea");
   </script>
 </body>

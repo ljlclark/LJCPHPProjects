@@ -7,8 +7,11 @@
   session_start();
   include_once "LJCRoot.php";
   $prefix = RelativePrefix();
+  include_once "$prefix/LJCPHPCommon/LJCCommonLib.php";
   include_once "$prefix/ATestForm/CityList/LJCDataConfigs.php";
   include_once "$prefix/LJCPHPCommon/LJCDBAccessLib.php";
+  // ***** 
+  include_once "$prefix/LJCPHPCommon/LJCDataManagerLib.php";
   include_once "$prefix/LJCPHPCommon/LJCTextBuilderLib.php";
   include_once "$prefix/LJCPHPCommon/LJCHTMLTableLib.php";
   include_once "$prefix/RegionApp/City/RegionTablesDAL.php";
@@ -38,6 +41,7 @@
     public function Request(): void
     {
       $this->ClassName = "LJCCityTableService";
+      $this->DebugText = "";
       $methodName = "Request()";
 
       $this->InitResponseProperties();
@@ -53,6 +57,15 @@
 
       $connectionValues = $this->GetConnectionValues($this->ConfigName);  
       $this->CityManager = new CityManager($connectionValues, $this->TableName);
+      // ***** Begin
+      $this->AddDebug($methodName, "\$this->ConfigName"
+        , $this->ConfigName);
+      $response = $this->InitResponse();
+      $response->DebugText = $this->DebugText;
+      $retResponse = LJC::CreateJSON($response);
+      echo($retResponse);
+      return;
+      // *****
 
       $manager = $this->CityManager;
       if ($this->Limit > 0)
@@ -83,9 +96,12 @@
     // Standard debug method for each class.
     private function AddDebug($methodName, $valueName, $value = "null")
     {
-      $location = LJC::Location($this->ClassName, $methodName
-        , $valueName);
-      $this->DebugText .= LJC::DebugObject($location, $value);
+      // *** Begin *** Change
+      $output = new Output($this->ClassName);
+      $output->MethodName = $methodName;
+      $this->DebugText .= $output->Log(__line__, $valueName, $value
+       , output: false);
+      // *** End ***
     } // AddDebug()
 
     // Get connection values for a DataConfig name.
@@ -424,6 +440,9 @@
 
     // ---------------
     // Response Properties
+
+    /// <summary>The debug class name.</summary>
+    public string $ClassName;
 
     /// <summary>The debug text.</summary>
     public string $DebugText;

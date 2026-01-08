@@ -19,10 +19,10 @@
   // It generates a page with the same name as the library.
   // LJCDBAccessLib.html
   /// LibName: LJCDBAccessLib
-  //  Classes: LJCConnectionValues, LJCDbAccess
-  //    , LJCDataColumn, LJCDataColumns
-  //    , LJCJoin, LJCJoins
-  //    , LJCJoinOn, LJCJoinOns
+  //  Classes: LJCConnectionValues, LJCDbAccess,
+  //    LJCDataColumn, LJCDataColumns,
+  //    LJCJoin, LJCJoins,
+  //    LJCJoinOn, LJCJoinOns
 
   // ***************
   /// <summary>Contains the Connection values.</summary>
@@ -846,12 +846,13 @@
     /// <include path='items/Constructor/*' file='Doc/LJCJoin.xml'/>
     public function __construct(string $tableName, ?string $tableAlias = null)
     {
+      $this->TableName = $tableName;
+      $this->TableAlias = $tableAlias;
+
       $this->Columns = new LJCDataColumns();
       $this->JoinOns = new LJCJoinOns();
       $this->JoinType = "left";
       $this->SchemaName = null;
-      $this->TableAlias = $tableAlias;
-      $this->TableName = $tableName;
     } // __construct()
 
     // ---------------
