@@ -1,0 +1,48 @@
+** DOM Names **
+eventName     - An HTMLDOM event name.
+selector      - A CSS selector name.
+tagName       - An HTML tag name.
+
+** Object Names **
+elementID     - The element ID name.
+propertyName  - An object property name.
+propertyNames - A string array of property names.
+typeName      - An object type name.
+
+** DOM Elements **
+element       - An HTMLElement object.
+parentElement - The parent HTMLElement.
+
+** DOM Objects **
+event         - A DOM event object.
+font          - A Font object.
+handler       - An event handler method object.
+keyDownEvent  - A "keydown" event.
+handlerOwner  - The handler owner object.
+
+** Values **
+arrValue      - An array object.
+compareMethod - The callback compare method.
+count         - A count value.
+fontDivisor   - The number of units by which to divide the font.
+item          - A collection item.
+items         - A collection object.
+json          - JSON text.
+objValue      - An object value.
+placeValue    - The number of decimal place values.
+sortMethod    - The callback sort method.
+startText     - The start text value.
+text          - A string value.
+value         - A supplied (type) value.
+width         - A width value.
+widthDivisor  - The number of units by which to divide the width.
+
+** Flags **
+showAlerts    - Indicates if an alert should be displayed on an error.
+force         - Force (action).
+
+** Debug Values **
+className     - The current class name.
+location      - The debug location text.
+methodName    - The current method name.
+valueName     - The debug value name.

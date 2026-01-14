@@ -1,0 +1,1071 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright (c) Lester J. Clark and Contributors -->
+<!-- Licensed under the MIT License. -->
+<!-- LJC.xml -->
+<members>
+  <!-- Element Methods -->
+  <AddEvent>
+    <summary>
+      Adds an event handler.
+    </summary>
+    <param name="elementID">The element ID name.</param>
+    <param name="eventName">An HTMLDOM event name.</param>
+    <param name="handler">An event handler method object.</param>
+    <param name="handlerOwner">The handler owner object.</param>
+    <code>
+      CompareValue = "";
+
+      // Adds an event handler.
+      AddEvent()
+      {
+        const elementID = "targetInput";
+        const eventName = "keydown";
+        const handler = this.AddEventHandler.bind(this);
+        LJC.AddEvent(elementID, eventName, handler);
+
+        // Tab
+        let eventOptions = {
+          key: "Tab",
+          code: "Tab",
+          ctrlKey: false,
+          shiftKey: false,
+          altKey: false,
+          metaKey: false,
+          repeat: false,
+          bubbles: true
+        };
+        let keyDownEvent = new KeyboardEvent('keydown', eventOptions);
+        this.CompareValue = true;
+        targetInput.dispatchEvent(keyDownEvent);
+
+        targetInput.removeEventListener("keydown", handler);
+      }
+
+      AddEventHandler(keyDownEvent)
+      {
+        const result = LJC.IsTab(keyDownEvent);
+
+        // result:
+        // true
+      }
+    </code>
+  </AddEvent>
+  <AverageCharWidth>
+    <summary>
+      Gets the average character width using the first selector element font.
+    </summary>
+    <param name="selector">A CSS selector name.</param>
+    <param name="text">A string value.</param>
+    <returns>The average character width.</returns>
+    <code>
+      // Gets the average character width using the first selector element font.
+      AverageCharWidth()
+      {
+        const selector = "div";
+        const text = "This is sample text.";
+        const result = LJC.AverageCharWidth(selector, text);
+
+        // With font = "16px "Times New Roman"
+        // result:
+        // 6.22;
+      }
+    </code>
+  </AverageCharWidth>
+  <Element>
+    <summary>
+      Gets the HTMLElement by ID.
+    </summary>
+    <param name="elementID">The element ID name.</param>
+    <returns>The HTML element.</returns>
+    <code>
+      // Gets the HTMLElement by ID.
+      Element()
+      {
+        const elementID = "testDiv";
+        const element = LJC.Element(elementID);
+
+        let result = element.tagName;
+        // result:
+        // "DIV";
+
+        result = element.id;
+        // result:
+        // "testDiv";
+      }
+    </code>
+  </Element>
+  <ElementStyle>
+    <summary>
+      Gets the element ComputedStyle property.
+    </summary>
+    <param name="element">An HTMLElement object.</param>
+    <param name="propertyName">An object property name.</param>
+    <returns>The computed style value.</returns>
+    <code>
+      // Gets the element ComputedStyle property.
+      ElementStyle()
+      {
+        const element = testDiv;
+        const propertyName = "color";
+        const result = LJC.ElementStyle(element, propertyName);
+
+        // result:
+        // rgb(0, 0, 0)
+      }
+    </code>
+  </ElementStyle>
+  <Round>
+    <summary>
+      Rounds and truncates to the provided place value.
+    </summary>
+    <param name="value">A supplied value.</param>
+    <param name="placeValue">The number of decimal place values.</param>
+    <returns>The rounded value.</returns>
+    <code>
+      // Rounds and truncates to the provided place value.
+      Round()
+      {
+        const value = 3.14159;
+        const placeValue = 2;
+        const result = LJC.Round(value, placeValue);
+
+        // result:
+        // 3.14;
+      }
+    </code>
+  </Round>
+  <SelectorStyle>
+    <summary>
+      Gets the first matching selector ComputedStyle property.
+    </summary>
+    <param name="selector">A CSS selector name.</param>
+    <param name="propertyName">An object property name.</param>
+    <returns>The computed style value.</returns>
+    <code>
+      // Gets the first matching selector ComputedStyle property.
+      SelectorStyle()
+      {
+        const selector = "div";
+        const propertyName = "color";
+        const result = LJC.SelectorStyle(selector, propertyName);
+
+        // result:
+        // rgb(0, 0, 0)
+      }
+    </code>
+  </SelectorStyle>
+  <TagElements>
+    <summary>
+      Gets HTMLElements by Tag.
+    </summary>
+    <param name="parentElement">The parent HTMLElement.</param>
+    <param name="tagName">An HTML tag name.</param>
+    <returns>An array of HTML elements.</returns>
+    <code>
+      // Gets HTMLElements by Tag.
+      TagElements()
+      {
+        const parentElement = document.body;
+        const tagName = "div";
+
+        const elements = LJC.TagElements(parentElement, tagName);
+        const element = elements[0];
+        const result = element.id;
+
+        // result:
+        // testDiv
+      }
+    </code>
+  </TagElements>
+  <TextWidth>
+    <summary>
+      Gets the text width.
+    </summary>
+    <param name="font">A Font object.</param>
+    <param name="text">A string value.</param>
+    <returns>The text width in pixels.</returns>
+    <code>
+      // Gets the text width.
+      TextWidth()
+      {
+        const element = document.body;
+        const propertyName = "font";
+        const font = LJC.ElementStyle(element, propertyName);
+        const text = "This is sample text.";
+        const value = LJC.TextWidth(font, text);
+        const result = LJC.Round(value);
+
+        // With font = "16px "Times New Roman"
+        // result:
+        // 124
+      }
+    </code>
+  </TextWidth>
+  
+  <!-- Check Value Methods -->
+  <HasElements>
+    <summary>
+      Checks if an array has elements.
+    </summary>
+    <param name="arrValue">An array object.</param>
+    <returns>
+      true if an array and it has elements; otherwise false.
+    </returns>
+    <code>
+      // Checks if an array has elements.
+      HasElements()
+      {
+        let arrValue = [ "Value" ];
+        let result = LJC.HasElements(arrValue);
+
+        // result:
+        // true;
+
+        arrValue = [];
+        result = LJC.HasElements(arrValue);
+
+        // result:
+        // false;
+      }
+    </code>
+  </HasElements>
+  <HasElementValue>
+    <summary>
+      Checks if an element has a value.
+    </summary>
+    <param name="element">An HTMLElement object.</param>
+    <returns>true if the element has content; otherwise false.</returns>
+    <code>
+      // Checks if an element has a value.
+      HasElementValue()
+      {
+        const element = targetInput;
+        LJC.SetValue("targetInput", "X");
+        let result = LJC.HasElementValue(element);
+        
+        // result:
+        // true
+
+        LJC.SetValue("targetInput", "  ");
+        result = LJC.HasElementValue(element);
+        
+        // result:
+        // false
+      }
+    </code>
+  </HasElementValue>
+  <HasText>
+    <summary>
+      Checks if the text has a value.
+    </summary>
+    <param name="text">A string value.</param>
+    <returns>
+      true if the text has other than white space; otherwise false.
+    </returns>
+    <code>
+      // Checks if the text has a value.
+      HasText()
+      {
+        let text = "X";
+        let result = LJC.HasText(text);
+
+        // result:
+        // true
+
+        text = "  ";
+        result = LJC.HasText(text);
+
+        // result:
+        // false
+      }
+    </code>
+  </HasText>
+  <IsBackTab>
+    <summary>
+      Checks keydown for a Backtab key.
+    </summary >
+    <param name="keyDownEvent">The target event.</param>
+    <returns>true if a backtab; otherwise false.</returns>
+    <code>
+      CompareValue = "";
+      
+      // Checks keydown for a Backtab key.
+      IsBackTab()
+      {
+        const elementID = "targetInput";
+        const eventName = "keydown";
+        const handler = this.IsBackTabHandler.bind(this);
+        LJC.AddEvent(elementID, eventName, handler);
+
+        // Tab
+        let eventOptions = {
+          key: "Tab",
+          code: "Tab",
+          ctrlKey: false,
+          shiftKey: true,
+          altKey: false,
+          metaKey: false,
+          repeat: false,
+          bubbles: true
+        };
+        let keyDownEvent = new KeyboardEvent('keydown', eventOptions);
+        this.CompareValue = true;
+        targetInput.dispatchEvent(keyDownEvent);
+
+        // BackTab
+        eventOptions.shiftKey = false;
+        keyDownEvent = new KeyboardEvent('keydown', eventOptions);
+        this.CompareValue = false;
+        targetInput.dispatchEvent(keyDownEvent);
+
+        let element = LJC.Element("targetInput");
+        element.removeEventListener("keydown", handler);
+      }
+
+      IsBackTabHandler(keyDownEvent)
+      {
+        const result = LJC.IsBackTab(keyDownEvent);
+
+        // result
+        // this.CompareValue;
+      }
+    </code>
+  </IsBackTab>
+  <IsNumber>
+    <summary>
+      Checks if the text is a number.
+    </summary>
+    <param name="text">A string value.</param>
+    <returns>true if a number; otherwise false.</returns>
+    <code>
+      // Checks if the text is a number.
+      IsNumber()
+      {
+        let number = 1;
+        let result = LJC.IsNumber(number);
+
+        // result
+        // true
+
+        number = "X";
+        result = LJC.IsNumber(number);
+
+        // result
+        // false
+      }
+    </code>
+  </IsNumber>
+  <IsShiftOnly>
+    <summary>
+      Checks keydown for only a Shift key.
+    </summary >
+    <param name="keyDownEvent">The target event.</param>
+    <returns>true if only a Shift key; otherwise false.</returns>
+    <code>
+      // Checks keydown for only a Shift key.
+      IsShiftOnly()
+      {
+        const elementID = "targetInput";
+        const eventName = "keydown";
+        const handler = this.IsShiftOnlyHandler.bind(this);
+        LJC.AddEvent(elementID, eventName, handler);
+
+        // Tab
+        let eventOptions = {
+          key: "Shift",
+          code: "",
+          ctrlKey: false,
+          shiftKey: true,
+          altKey: false,
+          metaKey: false,
+          repeat: false,
+          bubbles: true
+        };
+        let keyDownEvent = new KeyboardEvent('keydown', eventOptions);
+        this.CompareValue = true;
+        targetInput.dispatchEvent(keyDownEvent);
+
+        // BackTab
+        eventOptions.key = "";
+        eventOptions.shiftKey = false;
+        keyDownEvent = new KeyboardEvent('keydown', eventOptions);
+        this.CompareValue = false;
+        targetInput.dispatchEvent(keyDownEvent);
+
+        targetInput.removeEventListener("keydown", handler);
+      }
+
+      IsShiftOnlyHandler(keyDownEvent)
+      {
+        const result = LJC.IsShiftOnly(keyDownEvent);
+
+        // result
+        // this.CompareValue;
+      }
+    </code>
+  </IsShiftOnly>
+  <IsSimpleType>
+    <summary>
+      Checks if the value is a primitive type.
+    </summary>
+    <param name="value">A supplied value.</param>
+    <returns>true if a simple type; otherwise false.</returns>
+    <code>
+      //Checks if the value is a primitive type.
+      IsSimpleType()
+      {
+        let number = 1;
+        let result = LJC.IsSimpleType(number);
+
+        // result:
+        // true;
+
+        number = [];
+        result = LJC.IsSimpleType(number);
+
+        // result:
+        // false;
+      }
+    </code>
+  </IsSimpleType>
+  <IsString>
+    <summary>
+      Checks if the value is a string.
+    </summary>
+    <param name="value">A supplied value.</param>
+    <returns>true if a string; otherwise false.</returns>
+    <code>
+      // Checks if the value is a string.
+      IsString()
+      {
+        let number = "1";
+        let result = LJC.IsString(number);
+
+        // result:
+        // true;
+
+        number = 1;
+        result = LJC.IsString(number);
+
+        // result:
+        // false;
+      }
+    </code>
+  </IsString>
+  <IsTab>
+    <summary>
+      Checks keydown for a Tab key.
+    </summary >
+    <param name="keyDownEvent">The target event.</param>
+    <returns>true if a Tab; otherwise false.</returns>
+    <code>
+      CompareValue = "";
+      
+      // Checks keydown for a Tab key.
+      IsTab()
+      {
+        const elementID = "targetInput";
+        const eventName = "keydown";
+        const handler = this.IsTabHandler.bind(this);
+        LJC.AddEvent(elementID, eventName, handler);
+
+        // Tab
+        let eventOptions = {
+          key: "Tab",
+          code: "Tab",
+          ctrlKey: false,
+          shiftKey: false,
+          altKey: false,
+          metaKey: false,
+          repeat: false,
+          bubbles: true
+        };
+        let keyDownEvent = new KeyboardEvent('keydown', eventOptions);
+        
+        this.CompareValue = true;
+        targetInput.dispatchEvent(keyDownEvent);
+
+        // BackTab
+        eventOptions.key = "";
+        eventOptions.code = "";
+        keyDownEvent = new KeyboardEvent('keydown', eventOptions);
+        this.CompareValue = false;
+        targetInput.dispatchEvent(keyDownEvent);
+
+        targetInput.removeEventListener("keydown", handler);
+      }
+
+      IsTabHandler(keyDownEvent)
+      {
+        const result = LJC.IsTab(keyDownEvent);
+
+        // result:
+        // this.CompareValue;
+      }
+    </code>
+  </IsTab>
+  
+  <!-- Text and Value Methods -->
+  <GetText>
+    <summary>
+      Gets the element text.
+    </summary>
+    <param name="elementID">The element ID name.</param>
+    <returns>The element content (inner) text.</returns>
+    <code>
+      &lt;body&gt;
+        &lt;div id="testDiv"&gt;&lt;/div&gt;
+      &lt;/body&gt;
+
+      // Gets the element text.
+      GetText()
+      {
+        testDiv.innerText = "X";
+        let result = LJC.GetText("testDiv");
+        
+        // result:
+        // "X";
+
+        testDiv.innerText = "";
+        result = LJC.GetText("testDiv");
+        
+        // result:
+        // "";
+      }
+    </code>
+  </GetText>
+  <GetValue>
+    <summary>
+      Gets the input element value.
+    </summary>
+    <param name="elementID">The element ID name.</param>
+    <returns>The input element value.</returns>
+    <code>
+      &lt;body&gt;
+        &lt;input type="text" id="targetInput"&gt;
+      &lt;/body&gt;
+
+      // Gets the input element value.
+      GetValue()
+      {
+        targetInput.value = "X";
+        let result = LJC.GetValue("targetInput");
+        
+        // result:
+        // "X";
+
+        targetInput.value = "";
+        result = LJC.GetValue("targetInput");
+        
+        // result:
+        // "";
+      }
+    </code>
+  </GetValue>
+  <SetText>
+    <summary>
+      Sets the element text.
+    </summary>
+    <param name="elementID">The element ID name.</param>
+    <param name="text">A string value.</param>
+    <code>
+      &lt;body&gt;
+        &lt;div id="testDiv"&gt;&lt;/div&gt;
+      &lt;/body&gt;
+
+      // Sets the element text.
+      SetText()
+      {
+        LJC.SetText("testDiv", "X");
+        let result = LJC.GetText("testDiv");
+        
+        // result:
+        // "X";
+
+        LJC.SetText("testDiv", "");
+        result = LJC.GetText("testDiv");
+        
+        // result:
+        // "";
+      }
+    </code>
+  </SetText>
+  <SetValue>
+    <summary>
+      Sets the input element value.
+    </summary>
+    <param name="elementID">The element ID name.</param>
+    <param name="value">A supplied value.</param>
+    <code>
+      &lt;body&gt;
+        &lt;input type="text" id="targetInput"&gt;
+      &lt;/body&gt;
+
+      // Sets the input element value.
+      SetValue()
+      {
+        const elementID = "targetInput";
+        LJC.SetValue(elementID, "X");
+        let result = LJC.GetValue(elementID);
+        
+        // result:
+        // "X";
+
+        LJC.SetValue(elementID, "");
+        result = LJC.GetValue(elementID);
+        
+        // result:
+        // "";
+      }
+    </code>
+  </SetValue>
+  
+  <!-- TextArea Methods -->
+  <EventTextRows>
+    <summary>
+      Sets the textarea rows for newlines.
+    </summary>
+    <param name="event">A DOM event object.</param>
+    <code>
+      // Sets the textarea rows for newlines.
+      EventTextRows()
+      {
+
+      }
+    </code>
+  </EventTextRows>
+  <GetTextCols>
+    <summary>
+      Gets the textarea columns.
+    </summary>
+    <param name="width">A width value.</param>
+    <param name="widthDivisor">
+      The number of units by which to divide the width.
+    </param>
+    <param name="fontDivisor"></param>
+    <returns>The text area column count.</returns>
+    <code>
+      // Gets the textarea columns.
+      GetTextCols()
+      {
+
+      }
+    </code>
+  </GetTextCols>
+  <SetTextRows>
+    <summary>
+      Sets the textarea rows for newlines.
+    </summary>
+    <param name="element">An HTMLElement object.</param>
+    <code>
+      // Sets the textarea rows for newlines.
+      SetTextRows()
+      {
+
+      }
+    </code>
+  </SetTextRows>
+  
+  <!-- Binary Search Methods -->
+  <BinarySearch>
+    <summary>
+      Returns the index of a search item in the array.
+    </summary>
+    <param name="arrValue">An array object.</param>
+    <param name="sortMethod">The callback sort method.</param>
+    <param name="compareMethod">The callback compare method.</param>
+    <param name="showAlerts">
+      Indicates if an alert should be displayed on an error.
+    </param>
+    <returns>The index of the matching item.</returns>
+    <code>
+      // Returns the index of a search item in the array.
+      BinarySearch()
+      {
+
+      }
+    </code>
+  </BinarySearch>
+  <MiddlePosition>
+    <summary>
+      Returns the middle position of the count value.
+    </summary>
+    <param name="count">A count value.</param>
+    <returns>The middle position value.</returns>
+    <code>
+      // Returns the middle position of the count value.
+      MiddlePosition()
+      {
+
+      }
+    </code>
+  </MiddlePosition>
+  
+  <!-- Other Methods -->
+  <CreateJSON>
+    <summary>
+      Creates JSON from the provided value.
+    </summary>
+    <param name="value">A supplied object value.</param>
+    <returns>The JSON text.</returns>
+    <code>
+      // Creates JSON from the provided value.
+      CreateJSON()
+      {
+        let object = {};
+        object.Name = "First";
+        object.Sequence = 1;
+        const result = LJC.CreateJSON(object);
+
+        // result:
+        // {\"Name\":\"First\",\"Sequence\":1}
+      }
+    </code>
+  </CreateJSON>
+  <Location>
+    <summary>
+      Creates the debug location text.
+    </summary>
+    <param name="className">The current class name.</param>
+    <param name="methodName">The current method name.</param>
+    <param name="valueName">The debug value name.</param>
+    <returns>The debug location text.</returns>
+    <code>
+      // Creates the debug location text.
+      Location()
+      {
+        const className = "Class";
+        const methodName = "Method()";
+        const valueName = "value";
+        const result = LJC.Location(className, methodName, valueName);
+
+        // result
+        // Class.Method() value:
+      }
+    </code>
+  </Location>
+  <Message>
+    <summary>
+      Shows the service message.
+    </summary>
+    <param name="location">The code location.</param>
+    <param name="text">A string value.</param>
+    <param name="force">Force the text to show.</param>
+    <param name="textDialogID">The text dialog element ID name.</param>
+    <param name="textAreaID">The text area element ID name.</param>
+    <code>
+      &lt;body&gt;
+        &lt;!-- The dialog for debug or other display text. --&gt;
+        &lt;dialog id="textDialog"
+          style="border: none; padding: 0px"&gt;
+          &lt;textarea id="textArea" rows="25" cols="80" autocorrect="off"
+            autocapitalize="off" spellcheck="false" readonly
+            style="border: none; padding: 10px"&gt;
+          &lt;/textarea&gt;
+        &lt;/dialog&gt;
+      &lt;/body&gt;
+
+      // Shows the service message.
+      Message()
+      {
+        const location = LJC.Location("Class", "Method()", "textValue");
+        const textValue = "This is some text shown in a \"textarea\""
+          + " dialog to display more text than allowed by an alert message"
+          + " and to allow the copy to clipboard function."
+          + "\r\nText that starts with \"\"ServiceName\":\","
+          + " \"delete\", \"insert\", \"select\" or \"update\" will not display"
+          + " unless the \"force\" parameter is set to \"true\"."
+          + "\r\nAn alert dialog is displayed if the textDialogID or textAreaID"
+          + " parameters are null."
+          + "\r\nUse the Escape [ESC] key to exit the dialog."
+        const force = false;
+        const textDialogID = "textDialog";
+        const textAreaID = "textArea";
+        LJC.Message(location, textValue, force, textDialogID, textAreaID);
+      }
+    </code>
+  </Message>
+  <MouseLocation>
+    <summary>
+      Creates a mouse location object.
+    </summary>
+    <param name="event">The event object.</param>
+    <returns>The mouse location object.</returns>
+    <code>
+      // Creates a mouse location object.
+      MouseLocation()
+      {
+        const handler = this.MouseLocationHandler.bind(this);
+        document.addEventListener("contextmenu", handler);
+
+        // Right mouse button.
+        let eventOptions = {
+          bubbles: true,
+          cancelable: true,
+          button: 2,
+          buttons: 2,
+          view: window,
+          clientY: 10,
+        };
+        let mouseEvent = new MouseEvent('contextmenu', eventOptions);
+        document.dispatchEvent(mouseEvent);
+
+        document.removeEventListener("contextmenu", handler);
+      }
+
+      MouseLocationHandler(mouseEvent)
+      {
+        const mouseLocation = LJC.MouseLocation(mouseEvent);
+        const result = mouseLocation.Top;
+
+        // result:
+        // 10;
+      }
+    </code>
+  </MouseLocation>
+  <ParseJSON>
+    <summary>
+      Parses JSON into an object.
+    </summary>
+    <param name="json">The json text.</param>
+    <returns>The parsed object.</returns>
+    <code>
+      // Parses JSON into an object.
+      ParseJSON()
+      {
+        const json = "{\"Name\":\"First\",\"Sequence\":1}";
+        const object = LJC.ParseJSON(json);
+        const result = object.Name;
+
+        // result:
+        // "First";
+      }
+    </code>
+  </ParseJSON>
+  <ShowText>
+    <summary>
+      Show text in textArea element.
+    </summary>
+    <param name="className">The current class name.</param>
+    <param name="methodName">The current method name.</param>
+    <param name="valueName">The debug value name.</param>
+    <param name="objValue">An object value.</param>
+    <param name="textDialogID">The text dialog element ID name.</param>
+    <param name="force">Force the text to show.</param>
+    <code>
+      &lt;body&gt;
+        &lt;!-- The dialog for debug or other display text. --&gt;
+        &lt;dialog id="textDialog"
+          style="border: none; padding: 0px"&gt;
+          &lt;textarea id="textArea" rows="25" cols="80" autocorrect="off"
+            autocapitalize="off" spellcheck="false" readonly
+            style="border: none; padding: 10px"&gt;
+          &lt;/textarea&gt;
+        &lt;/dialog&gt;
+      &lt;/body&gt;
+
+      // Show text in textArea element.
+      ShowText()
+      {
+        const className = "ClassName";
+        const methodName = "MethodName()";
+        const valueName = "text";
+        const value = "This is the value.";
+        const force = false;
+        const textDialogID = "textDialog";
+        const textAreaID = "textArea";
+        LJC.ShowText(className, methodName, valueName, value, force, textDialogID
+          , textAreaID);
+      }
+    </code>
+  </ShowText>
+  <ToArray>
+    <summary>
+      Copy collection items to an indexed array.
+    </summary>
+    <param name="items">A collection object.</param>
+    <returns>The indexed array.</returns>
+    <code>
+      // Copy collection items to an indexed array.
+      ToArray()
+      {
+        class Item
+        {
+          Text = "";
+        }
+        
+        class Items
+        {
+          // The current items count.
+          Count = 0;
+
+          // The current #Items clone.
+          ReadItems = [];
+
+          // The private object array is part of what makes it a strongly typed
+          // collection.
+          #Items = [];
+
+          // Adds the supplied object to the list.
+          AddObject(item)
+          {
+            let retItem = null;
+
+            // This check is part of what makes it a strongly typed collection.
+            if (item instanceof Item)
+            {
+              retItem = item;
+              this.#Items.push(item);
+              this.Count = this.#Items.length;
+              this.ReadItems = Array.from(this.#Items);
+            }
+            return retItem;
+          }
+
+          // Retrieves the object with the supplied index.
+          RetrieveAtIndex(index)
+          {
+            let retObject = null;
+
+            if (index >= 0
+              &amp;&amp; this.#Items.length > index)
+            {
+              retObject = this.#Items[index];
+            }
+            return retObject;
+          }
+        }
+
+        let items = new Items();
+        let item = new Item();
+        item.Text = "First Object";
+        items.AddObject(item);
+        item = new Item();
+        item.Text = "Second Object";
+        items.AddObject(item);
+
+        // The collection object must support Count and RetrieveAtIndex().
+        const array = LJC.ToArray(items);
+        if (LJC.HasElements(array))
+        {
+          const result = array[1].Text;
+
+          // result:
+          // Second Object
+        }
+      }
+    </code>
+  </ToArray>
+  <Visibility>
+    <summary>
+      Sets the element visibility.
+    </summary>
+    <param name="elementID">The ID name for a specific HTMLElement.</param>
+    <param name="value">
+      "visible" to show the element, "hidden" to hide.
+    </param>
+    <code>
+      // Sets the element visibility.
+      Visibility()
+      {
+        // <body>
+        //   <div id="testDiv"></div>
+        // </body>
+
+        const elementID = "testDiv";
+        let value = "hidden";
+        LJC.Visibility(elementID, value);
+        let element = LJC.Element(elementID);
+        let result = element.style.visibility;
+
+        // result:
+        // hidden;
+
+        value = "visible";
+        LJC.Visibility(elementID, value);
+        element = LJC.Element(elementID);
+        result = element.style.visibility;
+
+        // result:
+        // visible
+      }
+    </code>
+  </Visibility>
+  
+  <!-- Show Property Methods -->
+  <GetPropertyNames>
+    <summary>
+      Gets the default property names.
+    </summary>
+    <param name="typeName">An object type name.</param>
+    <returns>The common property names.</returns>
+    <code>
+      // Gets the default property names.
+      GetPropertyNames()
+      {
+
+      }
+    </code>
+  </GetPropertyNames>
+  <GetPropertyOutput>
+    <summary>
+      Gets the property output.
+    </summary>
+    <param name="item">A collection item.</param>
+    <param name="propertyName">An object property name.</param>
+    <code>
+      // Gets the property output.
+      GetPropertyOutput()
+      {
+
+      }
+    </code>
+  </GetPropertyOutput>
+  <GetStartText>
+    <summary>
+      Get the property list start text.
+    </summary>
+    <param name="typeName">An object type name.</param>
+    <param name="startText">The start text value.</param>
+    <returns>The property list start text.</returns>
+    <code>
+      // Get the property list start text.
+      GetStartText()
+      {
+
+      }
+    </code>
+  </GetStartText>
+  <ShowProperties>
+    <summary>
+      Show the properties of an object that are not null or "" and do not start
+      with "on".
+    </summary>
+    <param name="location">The debug location text.</param>
+    <param name="item">A collection item.</param>
+    <code>
+      // Show the properties of an object that are not null or "" and do not start
+      // with "on".
+      ShowProperties()
+      {
+
+      }
+    </code>
+  </ShowProperties>
+  <ShowSelectProperties>
+    <summary>
+      Show selected properties of an object.
+    </summary>
+    <param name="item">A collection item.</param>
+    <param name="typeName">An object type name.</param>
+    <param name="startText">The start text value.</param>
+    <param name="propertyNames">A string array of property names.</param>
+    <code>
+      // Show selected properties of an object.
+      ShowSelectProperties()
+      {
+
+      }
+    </code>
+  </ShowSelectProperties>
+</members>
