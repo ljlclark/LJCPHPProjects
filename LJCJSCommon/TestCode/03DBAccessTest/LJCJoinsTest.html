@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<!-- Copyright(c) Lester J. Clark and Contributors. -->
+<!-- Licensed under the MIT License.-->
+<!-- LJCJoinsTest.html -->
+<html lang='en' xmlns='http://www.w3.org/1999/xhtml'>
+<head>
+  <title>LJCJoins Class Tests</title>
+  <meta charset='utf-8' />
+  <meta name='description' content='LJCJoins Class Tests'>
+  <meta name='author' content='Lester J. Clark' />
+  <meta name='viewport' content='width=device-width initial-scale=1' />
+  <script src='../../../LJCJSCommon/LJCCommonLib.js'></script>
+  <script src='../../../LJCJSCommon/LJCCollectionLib.js'></script>
+  <script src='../../../LJCJSCommon/LJCDBDataAccessLib.js'></script>
+  <script src='LJCJoinsTest.js'></script>
+</head>
+<body>
+  <input type="text" id="targetInput">
+  <div id="testDiv"></div>
+
+  <!-- A dialog for debug and other display text. -->
+  <dialog id="textDialog"
+          style="border: none; padding: 0px">
+    <textarea id="textArea" rows="25" cols="80" autocorrect="off"
+              autocapitalize="off" spellcheck="false" readonly
+              style="border: none; padding: 10px">
+      </textarea>
+  </dialog>
+
+  <script>
+    let joinsTest = new LJCJoinsTest();
+    joinsTest.Run();
+  </script>
+</body>
+</html>

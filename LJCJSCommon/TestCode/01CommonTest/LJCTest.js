@@ -61,6 +61,7 @@ class LJCTest
     this.ShowSelectProperties();
   }
 
+  // Checks result value to compare value.
   CheckValues(methodName, result, compare)
   {
     if (result != compare)

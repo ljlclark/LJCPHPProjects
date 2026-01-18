@@ -116,6 +116,19 @@ class LJC
 
   // #region Check Value Methods
 
+  // Checks result value to compare value.
+  static CheckValues(methodName, result, compare)
+  {
+    if (result != compare)
+    {
+      let message = methodName;
+      message += `\r\n${result}`;
+      message += "\r\n !=";
+      message += `\r\n${compare}`;
+      alert(message)
+    }
+  }
+
   // Checks if an array has elements.
   /// <include path='members/HasElements/*' file='Doc/LJC.xml'/>
   static HasElements(arrValue)

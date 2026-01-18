@@ -69,7 +69,7 @@ class LJCCollection
     this.#UpdateProperties();
   }
 
-  // Removes the column object with the supplied property name.
+  // Removes the object which matches the data values.
   /// <include path='items/Remove/*' file='Doc/LJCCollection.xml'/>
   Remove(dataColumns)
   {
@@ -101,7 +101,7 @@ class LJCCollection
     return retItem;
   }
 
-  // Retrieves the object with the supplied index.
+  // Retrieves the object at the supplied index.
   /// <include path='items/RetrieveAtIndex/*' file='Doc/LJCCollection.xml'/>
   RetrieveAtIndex(index)
   {
@@ -144,7 +144,7 @@ class LJCCollection
     return retIndex;
   }
 
-  // Checks if the item match the data values.
+  // Checks if the item matches the data values.
   /// <include path='items/IsMatch/*' file='Doc/LJCCollections.xml'/>
   IsMatch(item, dataColumns)
   {

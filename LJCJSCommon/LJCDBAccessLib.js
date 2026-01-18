@@ -65,7 +65,7 @@ class LJCDataColumn
 
   // #region Static Methods
 
-  // Creates a new object with existing standard object values.
+  // Creates a new object from standard object values.
   /// <include path='items/Copy/*' file='Doc/LJCDataColumn.xml'/>
   static Copy(objColumn)
   {
@@ -134,7 +134,7 @@ class LJCDataColumn
   }
   // #endregion
 
-  // #region Data Object Methods
+  // #region Data Class Methods
 
   /// <summary>Creates an object clone.</summary>
   /// <returns>The new cloned object.</returns>
@@ -179,18 +179,6 @@ class LJCDataColumns
   // #endregion
 
   // #region Static Methods
-
-  /// <summary>Adds an item value.</summary>
-  /// <param name="propertyName">The item PropertyName value.</param>
-  /// <param name="value">The added value.</param>
-  static AddValue(propertyName, value)
-  {
-    let itemDataColumn = this.Retrieve(propertyName);
-    if (itemDataColumn != null)
-    {
-      itemDataColumn.Value = value;
-    }
-  }
 
   /// <summary>
   ///   Create typed collection from deserialized JavasScript array.
@@ -271,15 +259,36 @@ class LJCDataColumns
     return retDataColumn;
   }
 
+  /// <summary>Adds an item value.</summary>
+  /// <param name="propertyName">The item PropertyName value.</param>
+  /// <param name="value">The added value.</param>
+  AddValue(propertyName, value)
+  {
+    let itemDataColumn = this.Retrieve(propertyName);
+    if (itemDataColumn != null)
+    {
+      itemDataColumn.Value = value;
+    }
+  }
+
+  /// <summary>Clears the collection list.</summary>
+  Clear()
+  {
+    this.#Items = [];
+    this.Count = this.#Items.length;
+    this.ReadItems = Array.from(this.#Items);
+  }
+
   // Removes the column object with the supplied property name.
   /// <include path='items/Remove/*' file='Doc/LJCDataColumns.xml'/>
   Remove(propertyName)
   {
-    let itemIndex = this.GetIndex(propertyName);
-    if (itemIndex > -1)
+    let beginIndex = this.GetIndex(propertyName);
+    if (beginIndex > -1)
     {
-      let beginIndex = 0;
-      this.#Items.splice(beginIndex, itemIndex);
+      //let beginIndex = 0;
+      //this.#Items.splice(beginIndex, itemIndex);
+      this.#Items.splice(beginIndex, 1);
       this.Count = this.#Items.length;
       this.ReadItems = Array.from(this.#Items);
     }
@@ -311,22 +320,14 @@ class LJCDataColumns
 
   // #region Other Methods
 
-  /// <summary>Clears the collection list.</summary>
-  Clear()
-  {
-    this.#Items = [];
-    this.Count = this.#Items.length;
-    this.ReadItems = Array.from(this.#Items);
-  }
-
-  /// <summary>Returns the collection element count.</summary>
-  Count()
-  {
-    let retCount = 0;
-
-    retCount = this.#Items.length;
-    return retCount;
-  }
+  // <summary>Returns the collection element count.</summary>
+  //Count()
+  //{
+  //  let retCount = 0;
+  //
+  //  retCount = this.#Items.length;
+  //  return retCount;
+  //}
 
   // Gets the column object with the supplied property name.
   /// <include path='items/GetIndex/*' file='Doc/LJCDataColumns.xml'/>
@@ -373,7 +374,7 @@ class LJCDataColumns
     else
     {
       retDataColumns = new LJCDataColumns();
-      for (let index = 0; index < names.length; index++)
+      for (let index = 0; index < propertyNames.length; index++)
       {
         let propertyName = propertyNames[index];
         let dataColumn = this.Retrieve(propertyName);
@@ -417,7 +418,7 @@ class LJCJoin
 
   // #region Static Methods
 
-  // Creates a new object with existing standard object values.
+  // Creates a new object from standard object values.
   /// <include path='items/Copy/*' file='Doc/LJCDataColumn.xml'/>
   static Copy(objJoin)
   {
@@ -565,6 +566,14 @@ class LJCJoins
     return join;
   }
 
+  /// <summary>Clears the collection list.</summary>
+  Clear()
+  {
+    this.#Items = [];
+    this.Count = this.#Items.length;
+    this.ReadItems = Array.from(this.#Items);
+  }
+
   // Removes the join object with the supplied values.
   /// <include path='items/Remove/*' file='Doc/LJCJoins.xml'/>
   Remove(tableName, tableAlias = null)
@@ -606,22 +615,14 @@ class LJCJoins
 
   // #region Other Methods
 
-  /// <summary>Clears the collection list.</summary>
-  Clear()
-  {
-    this.#Items = [];
-    this.Count = this.#Items.length;
-    this.ReadItems = Array.from(this.#Items);
-  }
-
-  /// <summary>Returns the collection element count.</summary>
-  Count()
-  {
-    let retCount = 0;
-
-    retCount = this.#Items.length;
-    return retCount;
-  }
+  // <summary>Returns the collection element count.</summary>
+  //Count()
+  //{
+  //  let retCount = 0;
+  //
+  //  retCount = this.#Items.length;
+  //  return retCount;
+  //}
 
   // Gets the column object with the supplied values.
   /// <include path='items/GetIndex/*' file='Doc/LJCJoins.xml'/>
@@ -802,8 +803,8 @@ class LJCJoinOns
     return retJoinOn;
   }
 
-  /// <summary>Adds the supplied column to the list.</summary>
-  /// <param name="dataColumn">The column object.</param>
+  /// <summary>Adds the supplied item to the list.</summary>
+  /// <param name="joinOn">The JoinOn object.</param>
   AddObject(joinOn)
   {
     let methodName = "AddObject()";
@@ -812,6 +813,14 @@ class LJCJoinOns
     this.Count = this.#Items.length;
     this.ReadItems = Array.from(this.#Items);
     return joinOn;
+  }
+
+  /// <summary>Clears the collection list.</summary>
+  Clear()
+  {
+    this.#Items = [];
+    this.Count = this.#Items.length;
+    this.ReadItems = Array.from(this.#Items);
   }
 
   // Removes the join on object with the supplied from Column name.
@@ -853,23 +862,6 @@ class LJCJoinOns
   // #endregion
 
   // #region Other Methods
-
-  /// <summary>Clears the collection list.</summary>
-  Clear()
-  {
-    this.#Items = [];
-    this.Count = this.#Items.length;
-    this.ReadItems = Array.from(this.#Items);
-  }
-
-  /// <summary>Returns the collection element count.</summary>
-  Count()
-  {
-    let retCount = 0;
-
-    retCount = this.#Items.length;
-    return retCount;
-  }
 
   // Gets the column object with the supplied property name.
   /// <include path='items/GetIndex/*' file='Doc/LJCDataColumns.xml'/>
