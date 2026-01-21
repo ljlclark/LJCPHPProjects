@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright (c) Lester J. Clark and Contributors -->
+<!-- Licensed under the MIT License. -->
+<!-- LJCJoinOn.xml -->
+<members>
+  <!-- Static Methods -->
+  <Copy>
+    <summary>
+      Creates a new object from simple object values.
+    </summary>
+    <param name="objJoinOn">A simple object.</param>
+    <returns>A data object.</returns>
+    <code>
+      // Creates a new object with existing simple object values.
+      Copy()
+      {
+        const simpleJoinOn = {
+          "FromColumnName": "FromColumn",
+          "ToColumn": "ToColumn",
+        };
+        const joinOn = LJCJoinOn.Copy(simpleJoinOn);
+
+        const result = joinOn.FromColumnName;
+
+        // result:
+        // FromColumn
+      }
+    </code>
+  </Copy>
+  
+  <!-- Data Class Methods -->
+  <Clone>
+    <summary>
+      Creates an object clone.
+    </summary>
+    <returns>The new cloned object.</returns>
+    <code>
+      // Creates a clone of this object.
+      Clone()
+      {
+        const fromColumn = "FromColumn";
+        const toColumn = "ToColumn";
+        const joinOn = new LJCJoinOn(fromColumn, toColumn);
+
+        let clone = joinOn.Clone();
+        const result = clone.FromColumnName;
+
+        // result:
+        // FromColumn
+      }
+    </code>
+  </Clone>
+</members>

@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright (c) Lester J. Clark and Contributors -->
+<!-- Licensed under the MIT License. -->
+<!-- LJCJoins.xml -->
+<members>
+  <!-- Static Methods -->
+  <ToCollection>
+    <summary>
+      Create typed collection from deserialized JavasScript array.
+    </summary>
+    <param name="items">The items object.</param>
+    <returns>The collection</returns>
+    <code>
+      // Create typed collection from deserialized JavasScript array.
+      ToCollection()
+      {
+        const array = [
+          { TableName: "TableOne", TableAlias: "t" },
+          { TableName: "TableTwo", TableAlias: "t2" },
+        ];
+
+        const columns = LJCJoins.ToCollection(array);
+        const result = columns.Count;
+
+        // result:
+        // 2
+      }
+    </code>
+  </ToCollection>
+
+  <!-- Data Class methods -->
+  <Clone>
+    <summary>
+      Creates a clone of this object.
+    </summary>
+    <returns>The new cloned object.</returns>
+    <code>
+      // Creates a clone of this object.
+      Clone()
+      {
+        const joins = new LJCJoins();
+        let join = joins.Add("TableOne", "t");
+        join = joins.Add("TableTwo", "t2");
+
+        let clone = joins.Clone();
+        const result = clone.Count;
+
+        // result:
+        // 2
+      }
+    </code>
+  </Clone>
+
+  <!-- Collection Data Methods -->
+  <Add>
+    <summary>
+      Creates and adds the item to the list.
+    </summary>
+    <param name="tableName">The table name.</param>
+    <param name="tableAlias">The table alias.</param>
+    <returns>The added item.</returns>
+    <code>
+      // Adds the item to the array.
+      Add()
+      {
+        const joins = new LJCJoins();
+        let join = joins.Add("TableOne", "t");
+        join = joins.Add("TableTwo", "t2");
+        join.SchemaName = "Schema";
+
+        join = joins.Retrieve("TableTwo", "t2");
+        let result = join.SchemaName;
+
+        // result:
+        // Schema
+      }
+    </code>
+  </Add>
+  <AddObject>
+    <summary>
+      Adds the supplied item to the list.
+    </summary>
+    <param name="join">The join object.</param>
+    <returns>The added item.</returns>
+    <code>
+      // Adds the supplied item to the list.
+      AddObject()
+      {
+        const joins = new LJCJoins();
+        let join = new LJCJoin("TableOne", "t");
+        joins.AddObject(join);
+        join = new LJCJoin("TableTwo", "t2");
+        join.SchemaName = "Schema";
+        joins.AddObject(join);
+
+        join = joins.Retrieve("TableTwo", "t2");
+        let result = join.SchemaName;
+
+        // result:
+        // Schema
+      }
+    </code>
+  </AddObject>
+  <Remove>
+    <summary>
+      Removes the the object which matches the data values.
+    </summary>
+    <param name="tableName">The table name.</param>
+    <param name="tableAlias">The table alias.</param>
+    <code>
+      // Removes the object which matches the data values.
+      Remove()
+      {
+        const joins = new LJCJoins();
+        let join = joins.Add("TableOne", "t");
+        join = joins.Add("TableTwo", "t2");
+        join.SchemaName = "Schema";
+
+        joins.Remove("TableOne", "t");
+        join = joins.Retrieve("TableOne", "t");
+        let result = "Found";
+        if (null == join)
+        {
+          result = "";
+        }
+
+        // result:
+        // 
+      }
+    </code>
+  </Remove>
+  <Retrieve>
+    <summary>
+      Retrieves the object which matches the data values.
+    </summary>
+    <param name="tableName">The table name.</param>
+    <param name="tableAlias">The table alias.</param>
+    <returns>The item with matching values.</returns>
+    <code>
+      // Retrieves the object which matches the data values.
+      Retrieve()
+      {
+        const joins = new LJCJoins();
+        let join = joins.Add("TableOne", "t");
+        join = joins.Add("TableTwo", "t2");
+        join.SchemaName = "Schema";
+
+        join = joins.Retrieve("TableOne", "t");
+        const result = join.TableName;
+
+        // result:
+        // TableOne
+      }
+    </code>
+  </Retrieve>
+  <RetrieveAtIndex>
+    <summary>
+      Retrieves the object at the supplied index.
+    </summary>
+    <param name="index">The index value.</param>
+    <returns>The item at the supplied index.</returns>
+    <code>
+      // Retrieves the object at the supplied index.
+      RetrieveAtIndex()
+      {
+        const joins = new LJCJoins();
+        let join = joins.Add("TableOne", "t");
+        join = joins.Add("TableTwo", "t2");
+        join.SchemaName = "Schema";
+
+        join = joins.RetrieveAtIndex(1);
+        const result = join.TableName;
+
+        // result:
+        // TableTwo
+      }
+    </code>
+  </RetrieveAtIndex>
+
+  <!-- Other Methods -->
+  <Clear>
+    <summary>
+      Clears the collection list.
+    </summary>
+    <code>
+      // Clears the collection list.
+      Clear()
+      {
+        const joins = new LJCJoins();
+        let join = joins.Add("TableOne", "t");
+        join = joins.Add("TableTwo", "t2");
+        join.SchemaName = "Schema";
+
+        joins.Clear();
+        const result = joins.Count;
+
+        // result:
+        // 0
+      }
+    </code>
+  </Clear>
+  <GetIndex>
+    <summary>
+      Gets the index of the object which matches the data values.
+    </summary>
+    <param name="tableName">The table name.</param>
+    <param name="tableAlias">The table alias.</param>
+    <returns>The matching object index.</returns>
+    <code>
+      // Gets the index of the object which matches the data values.
+      GetIndex()
+      {
+        const joins = new LJCJoins();
+        let join = joins.Add("TableOne", "t");
+        join = joins.Add("TableTwo", "t2");
+        join.SchemaName = "Schema";
+
+        const result = joins.GetIndex("TableTwo", "t2");
+
+        // result:
+        // 1
+      }
+    </code>
+  </GetIndex>
+</members>

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright (c) Lester J. Clark and Contributors -->
+<!-- Licensed under the MIT License. -->
+<!-- LJCDataColumn.xml -->
+<members>
+  <!-- Static Methods -->
+  <Copy>
+    <summary>
+      Creates a new object from simple object values.
+    </summary>
+    <param name="objColumn">A simple object.</param>
+    <returns>A data object.</returns>
+    <code>
+      // Creates a new object with existing standard object values.
+      Copy()
+      {
+        const simpleDataColumn = {
+          "PropertyName": "PropertyName",
+          "Value": "PropertyValue",
+        };
+        const column = LJCDataColumn.Copy(simpleDataColumn);
+
+        const result = column.PropertyName;
+
+        // result:
+        // PropertyName
+      }
+    </code>
+  </Copy>
+  <GetDataType>
+    <summary>
+      Converts MySQL type names to JavaScript type names.
+    </summary>
+    <param name="mySQLTypeName">A MySQL type name.</param>
+    <returns>A JavaScript type name.</returns>
+    <code>
+      // Converts MySQL type names to JavaScript type names.
+      GetDataType()
+      {
+        let result = LJCDataColumn.GetDataType("bit");
+
+        // result:
+        // int
+      }
+    </code>
+  </GetDataType>
+
+  <!-- Data Class Methods -->
+  <Clone>
+    <summary>
+      Creates an object clone.
+    </summary>
+    <returns>The new cloned object.</returns>
+    <code>
+      // Creates an object clone.
+      Clone()
+      {
+        const propertyName = "PropertyName";
+        const value = "PropertyValue";
+        const column = new LJCDataColumn(propertyName);
+        column.Value = value;
+
+        let clone = column.Clone();
+        const result = clone.PropertyName;
+
+        // result:
+        // PropertyName
+      }
+    </code>
+  </Clone>
+</members>

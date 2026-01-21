@@ -1,0 +1,287 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright (c) Lester J. Clark and Contributors -->
+<!-- Licensed under the MIT License. -->
+<!-- LJCDataColumns.xml -->
+<members>
+  <!-- Static Methods -->
+  <AddValue>
+    <summary>
+      Adds an item value.
+    </summary>
+    <param name="propertyName">The item PropertyName value.</param>
+    <param name="value">The added value.</param>
+  </AddValue>
+  <ToCollection>
+    <summary>
+      Create typed collection from deserialized JavasScript array.
+    </summary>
+    <param name="items">The items object.</param>
+    <returns>The collection.</returns>
+    <code>
+      // Create typed collection from deserialized JavasScript array.
+      ToCollection()
+      {
+        const array = [
+          { PropertyName: "Name", Value: "First" },
+          { PropertyName: "Sequence", Value: 1 },
+        ];
+
+        const columns = LJCDataColumns.ToCollection(array);
+        const result = columns.Count;
+
+        // result:
+        // 2;
+      }
+    </code>
+  </ToCollection>
+  
+  <!-- Data Class methods -->
+  <Clone>
+    <summary>
+      Creates a clone of this object.
+    </summary>
+    <returns>The new cloned object.</returns>
+    <code>
+      // Creates a clone of this object.
+      Clone()
+      {
+        const columns = new LJCDataColumns();
+        let column = columns.Add("Name");
+        column = columns.Add("Sequence");
+
+        let clone = columns.Clone();
+        const result = clone.Count;
+
+        // result:
+        // 2
+      }
+    </code>
+  </Clone>
+  
+  <!-- Collection Data Methods -->
+  <Add>
+    <summary>
+      Creates and adds the item to the list.
+    </summary>
+    <param name="propertyName">The property name.</param>
+    <param name="columnName">The column name.</param>
+    <param name="renameAs">The rename value.</param>
+    <param name="dataTypeName">The data type name.</param>
+    <param name="value">The column value.</param>
+    <returns>The added item.</returns>
+    <code>
+      // Creates and adds the item to the list.
+      Add()
+      {
+        const columns = new LJCDataColumns();
+        let column = columns.Add("Name");
+        column = columns.Add("Sequence");
+        column.Value = 1;
+
+        column = columns.Retrieve("Sequence");
+        let result = column.Value;
+
+        // result:
+        // 1
+      }
+    </code>
+  </Add>
+  <AddObject>
+    <summary>
+      Adds the supplied item to the list.
+    </summary>
+    <param name="dataColumn">The column object.</param>
+    <returns>The added item.</returns>
+    <code>
+      // Adds the supplied column to the list.
+      AddObject()
+      {
+        const columns = new LJCDataColumns();
+        let column = new LJCDataColumn("Name");
+        columns.AddObject(column);
+        column = new LJCDataColumn("Sequence");
+        column.Value = 1;
+        columns.AddObject(column);
+
+        column = columns.Retrieve("Sequence");
+        let result = column.Value;
+
+        // result:
+        // 1
+      }
+    </code>
+  </AddObject>
+  <Remove>
+    <summary>
+      Removes the the object which matches the data values.
+    </summary>
+    <param name="propertyName">The property name.</param>
+    <code>
+      // Removes the object which matches the data values.
+      Remove()
+      {
+        const columns = new LJCDataColumns();
+        let column = columns.Add("Name");
+        column = columns.Add("Sequence");
+
+        columns.Remove("Name");
+        column = columns.Retrieve("Name");
+        let result = "Found";
+        if (null == column)
+        {
+          result = "";
+        }
+
+        // result:
+        // 
+      }
+    </code>
+  </Remove>
+  <Retrieve>
+    <summary>
+      Retrieves the object which matches the data values.
+    </summary>
+    <param name="propertyName">The property name.</param>
+    <returns>The item with matching values.</returns>
+    <code>
+      // Retrieves the object which matches the data values.
+      Retrieve()
+      {
+        const columns = new LJCDataColumns();
+        let column = columns.Add("Name");
+        column = columns.Add("Sequence");
+
+        column = columns.Retrieve("Name");
+        const result = column.PropertyName;
+
+        // result:
+        // Name
+      }
+    </code>
+  </Retrieve>
+  <RetrieveAtIndex>
+    <summary>
+      Retrieves the object at the supplied index.
+    </summary>
+    <param name="index">The index value.</param>
+    <returns>The item at the supplied index.</returns>
+    <code>
+      // Retrieves the object at the supplied index.
+      RetrieveAtIndex()
+      {
+        const columns = new LJCDataColumns();
+        let column = columns.Add("Name");
+        column = columns.Add("Sequence");
+
+        column = columns.RetrieveAtIndex(1);
+        const result = column.PropertyName;
+
+        // result:
+        // Sequence
+      }
+    </code>
+  </RetrieveAtIndex>
+  
+  <!-- Other Methods -->
+  <Clear>
+    <summary>
+      Clears the collection list.
+    </summary>
+    <code>
+      // Clears the collection list.
+      Clear()
+      {
+        const columns = new LJCDataColumns();
+        let column = columns.Add("Name");
+        column = columns.Add("Sequence");
+
+        columns.Clear();
+        const result = columns.Count;
+
+        // result:
+        // 0
+      }
+    </code>
+  </Clear>
+  <GetIndex>
+    <summary>
+      Gets the index of the object which matches the data values.
+    </summary>
+    <param name="propertyName">The property name.</param>
+    <returns>The matching object index.</returns>
+    <code>
+      // Gets the index of the object which matches the data values.
+      GetIndex()
+      {
+        const columns = new LJCDataColumns();
+        let column = columns.Add("Name");
+        column = columns.Add("Sequence");
+
+        const result = columns.GetIndex("Name");
+
+        // result:
+        // 0
+      }
+    </code>
+  </GetIndex>
+  <PropertyNames>
+    <summary>
+      Gets an array of property names.
+    </summary>
+    <returns>The property name array.</returns>
+    <code>
+      // Gets an array of property names.
+      PropertyNames()
+      {
+        const columns = new LJCDataColumns();
+        let column = columns.Add("Name");
+        column = columns.Add("Sequence");
+
+        const names = columns.PropertyNames();
+        let result = "";
+        for (let index = 0; index < names.length; index++)
+        {
+          let column = columns.RetrieveAtIndex(index);
+          if (LJC.HasText(result))
+          {
+            result += ", ";
+          }
+          result += column.PropertyName;
+        }
+
+        // result:
+        // Name, Sequence
+      }
+    </code>
+  </PropertyNames>
+  <SelectItems>
+    <summary>
+      Gets the items that match the supplied names.
+    </summary>
+    <param name="propertyNames">The property names.</param>
+    <returns>The selected items.</returns>
+    <code>
+      // Gets the items that match the supplied names.
+      SelectItems()
+      {
+        const columns = new LJCDataColumns();
+        let column = columns.Add("Name");
+        column = columns.Add("Sequence");
+
+        const propertyNames = [
+          "Sequence",
+        ]
+        const selected = columns.SelectItems(propertyNames);
+        let result = selected.Count;
+        let compare = 1;
+        LJC.CheckValues("SelectItems()", result, compare);
+
+        column = selected.RetrieveAtIndex(0);
+        result = column.PropertyName;
+
+        // result:
+        // Sequence
+      }
+    </code>
+  </SelectItems>
+</members>

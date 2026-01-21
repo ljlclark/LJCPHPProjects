@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright (c) Lester J. Clark and Contributors -->
+<!-- Licensed under the MIT License. -->
+<!-- LJCJoin.xml -->
+<members>
+  <!-- Static Methods -->
+  <Copy>
+    <summary>
+      Creates a new object from simple object values.
+    </summary>
+    <param name="objJoin">A simple object.</param>
+    <returns>A data object.</returns>
+    <code>
+      // Creates a new object with existing simple object values.
+      Copy()
+      {
+        const simpleJoin = { "TableName": "TableName", "TableAlias": "t" };
+        const join = LJCJoin.Copy(simpleJoin);
+
+        const result = join.TableName;
+
+        // result:
+        // TableName
+      }
+    </code>
+  </Copy>
+
+  <!-- Data Class Methods -->
+  <Clone>
+    <summary>
+      Creates an object clone.
+    </summary>
+    <returns>The new cloned object.</returns>
+    <code>
+      // Creates a clone of this object.
+      Clone()
+      {
+        const tableName = "TableName";
+        const tableAlias = "t";
+        const join = new LJCJoin(tableName, tableAlias);
+
+        let clone = join.Clone();
+        const result = clone.TableName;
+
+        // result:
+        // TableName
+      }
+    </code>
+  </Clone>
+</members>

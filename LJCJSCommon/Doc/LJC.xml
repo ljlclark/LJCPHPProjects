@@ -280,57 +280,56 @@
       }
     </code>
   </HasText>
-  <IsBackTab>
+  <IsKey>
     <summary>
-      Checks keydown for a Backtab key.
-    </summary >
-    <param name="keyDownEvent">The target event.</param>
-    <returns>true if a backtab; otherwise false.</returns>
+      Checks keydown for a supplied key.
+    </summary>
+    <param name="key">The key value.</param>
+    <param name="keyDownEvent">The keydown event.</param>
+    <returns>
+      true if the supplied key and no shift key; otherwise false.
+    </returns>
     <code>
-      CompareValue = "";
-      
-      // Checks keydown for a Backtab key.
-      IsBackTab()
-      {
-        const elementID = "targetInput";
-        const eventName = "keydown";
-        const handler = this.IsBackTabHandler.bind(this);
-        LJC.AddEvent(elementID, eventName, handler);
+&lt;body&gt;
+  &lt;input type="text" id="targetInput"&gt;
+&lt;/body&gt;
 
-        // Tab
-        let eventOptions = {
-          key: "Tab",
-          code: "Tab",
-          ctrlKey: false,
-          shiftKey: true,
-          altKey: false,
-          metaKey: false,
-          repeat: false,
-          bubbles: true
-        };
-        let keyDownEvent = new KeyboardEvent('keydown', eventOptions);
-        this.CompareValue = true;
-        targetInput.dispatchEvent(keyDownEvent);
+// Checks keydown for a supplied key.
+IsKey()
+{
+  const elementID = "targetInput";
+  const eventName = "keydown";
+  const handler = this.IsKeyHandler.bind(this);
+  LJC.AddEvent(elementID, eventName, handler);
 
-        // BackTab
-        eventOptions.shiftKey = false;
-        keyDownEvent = new KeyboardEvent('keydown', eventOptions);
-        this.CompareValue = false;
-        targetInput.dispatchEvent(keyDownEvent);
+  // Tab
+  let eventOptions = {
+    key: "Tab",
+    code: "Tab",
+    ctrlKey: false,
+    shiftKey: false,
+    altKey: false,
+    metaKey: false,
+    repeat: false,
+    bubbles: true,
+  };
+  let keyDownEvent = new KeyboardEvent(eventName, eventOptions);
+  this.CompareValue = true;
+  targetInput.dispatchEvent(keyDownEvent);
 
-        let element = LJC.Element("targetInput");
-        element.removeEventListener("keydown", handler);
-      }
+  let element = LJC.Element("targetInput");
+  element.removeEventListener("keydown", handler);
+}
 
-      IsBackTabHandler(keyDownEvent)
-      {
-        const result = LJC.IsBackTab(keyDownEvent);
+IsKeyHandler(keyDownEvent)
+{
+  const result = LJC.IsKey("Tab", keyDownEvent);
 
-        // result
-        // this.CompareValue;
-      }
+  const compare = this.CompareValue;
+  LJC.CheckValues("IsShiftedKey()", result, compare);
+}
     </code>
-  </IsBackTab>
+  </IsKey>
   <IsNumber>
     <summary>
       Checks if the text is a number.
@@ -355,55 +354,56 @@
       }
     </code>
   </IsNumber>
-  <IsShiftOnly>
+  <IsShiftedKey>
     <summary>
-      Checks keydown for only a Shift key.
-    </summary >
-    <param name="keyDownEvent">The target event.</param>
-    <returns>true if only a Shift key; otherwise false.</returns>
+      Checks keydown for shift and the supplied key.
+    </summary>
+    <param name="key">The key value.</param>
+    <param name="keyDownEvent">The keydown event.</param>
+    <returns>
+      true if the supplied key and shift key; otherwise false.
+    </returns>
     <code>
-      // Checks keydown for only a Shift key.
-      IsShiftOnly()
-      {
-        const elementID = "targetInput";
-        const eventName = "keydown";
-        const handler = this.IsShiftOnlyHandler.bind(this);
-        LJC.AddEvent(elementID, eventName, handler);
+&lt;body&gt;
+  &lt;input type="text" id="targetInput"&gt;
+&lt;/body&gt;
 
-        // Tab
-        let eventOptions = {
-          key: "Shift",
-          code: "",
-          ctrlKey: false,
-          shiftKey: true,
-          altKey: false,
-          metaKey: false,
-          repeat: false,
-          bubbles: true
-        };
-        let keyDownEvent = new KeyboardEvent('keydown', eventOptions);
-        this.CompareValue = true;
-        targetInput.dispatchEvent(keyDownEvent);
+// Checks keydown for shift and the supplied key.
+IsShiftedKey()
+{
+  const elementID = "targetInput";
+  const eventName = "keydown";
+  const handler = this.IsShiftedKeyHandler.bind(this);
+  LJC.AddEvent(elementID, eventName, handler);
 
-        // BackTab
-        eventOptions.key = "";
-        eventOptions.shiftKey = false;
-        keyDownEvent = new KeyboardEvent('keydown', eventOptions);
-        this.CompareValue = false;
-        targetInput.dispatchEvent(keyDownEvent);
+  // Tab
+  let eventOptions = {
+    key: "Tab",
+    code: "Tab",
+    ctrlKey: false,
+    shiftKey: true,
+    altKey: false,
+    metaKey: false,
+    repeat: false,
+    bubbles: true,
+  };
+  let keyDownEvent = new KeyboardEvent(eventName, eventOptions);
+  this.CompareValue = true;
+  targetInput.dispatchEvent(keyDownEvent);
 
-        targetInput.removeEventListener("keydown", handler);
-      }
+  let element = LJC.Element("targetInput");
+  element.removeEventListener("keydown", handler);
+}
 
-      IsShiftOnlyHandler(keyDownEvent)
-      {
-        const result = LJC.IsShiftOnly(keyDownEvent);
+IsShiftedKeyHandler(keyDownEvent)
+{
+  const result = LJC.IsShiftedKey("Tab", keyDownEvent);
 
-        // result
-        // this.CompareValue;
-      }
+  const compare = this.CompareValue;
+  LJC.CheckValues("IsShiftedKey()", result, compare);
+}
     </code>
-  </IsShiftOnly>
+  </IsShiftedKey>
   <IsSimpleType>
     <summary>
       Checks if the value is a primitive type.
@@ -452,58 +452,6 @@
       }
     </code>
   </IsString>
-  <IsTab>
-    <summary>
-      Checks keydown for a Tab key.
-    </summary >
-    <param name="keyDownEvent">The target event.</param>
-    <returns>true if a Tab; otherwise false.</returns>
-    <code>
-      CompareValue = "";
-      
-      // Checks keydown for a Tab key.
-      IsTab()
-      {
-        const elementID = "targetInput";
-        const eventName = "keydown";
-        const handler = this.IsTabHandler.bind(this);
-        LJC.AddEvent(elementID, eventName, handler);
-
-        // Tab
-        let eventOptions = {
-          key: "Tab",
-          code: "Tab",
-          ctrlKey: false,
-          shiftKey: false,
-          altKey: false,
-          metaKey: false,
-          repeat: false,
-          bubbles: true
-        };
-        let keyDownEvent = new KeyboardEvent('keydown', eventOptions);
-        
-        this.CompareValue = true;
-        targetInput.dispatchEvent(keyDownEvent);
-
-        // BackTab
-        eventOptions.key = "";
-        eventOptions.code = "";
-        keyDownEvent = new KeyboardEvent('keydown', eventOptions);
-        this.CompareValue = false;
-        targetInput.dispatchEvent(keyDownEvent);
-
-        targetInput.removeEventListener("keydown", handler);
-      }
-
-      IsTabHandler(keyDownEvent)
-      {
-        const result = LJC.IsTab(keyDownEvent);
-
-        // result:
-        // this.CompareValue;
-      }
-    </code>
-  </IsTab>
   
   <!-- Text and Value Methods -->
   <GetText>
@@ -645,10 +593,40 @@
     <param name="fontDivisor"></param>
     <returns>The text area column count.</returns>
     <code>
+      &lt;body&gt;
+        &lt;!-- The dialog for debug or other display text. --&gt;
+        &lt;dialog id="textDialog"
+          style="border: none; padding: 0px"&gt;
+          &lt;textarea id="textArea" rows="25" cols="80" autocorrect="off"
+            autocapitalize="off" spellcheck="false" readonly
+            style="border: none; padding: 10px"&gt;
+          &lt;/textarea&gt;
+        &lt;/dialog&gt;
+      &lt;/body&gt;
+
       // Gets the textarea columns.
       GetTextCols()
       {
+        const className = "ClassName";
+        const methodName = "MethodName()";
+        const valueName = "text";
+        const value = "This is the\r\nthree line\r\ntext value.";
+        const force = false;
+        const textDialogID = "textDialog";
+        const textAreaID = "textArea";
+        LJC.ShowText(className, methodName, valueName, value, force, textDialogID
+          , textAreaID);
 
+        const eTextArea = LJC.Element(textAreaID);
+        const font = LJC.ElementStyle(eTextArea, "font");
+        const averageCharWidth = LJC.AverageFontCharWidth(font, value);
+
+        const characterCount = 40;
+        const clientWidth = characterCount * averageCharWidth;
+        const columns = 1;
+
+        eTextArea.cols = LJC.GetTextCols(clientWidth, columns, averageCharWidth);
+        LJC.SetTextRows(eTextArea);
       }
     </code>
   </GetTextCols>
@@ -658,10 +636,32 @@
     </summary>
     <param name="element">An HTMLElement object.</param>
     <code>
+      &lt;body&gt;
+        &lt;!-- The dialog for debug or other display text. --&gt;
+        &lt;dialog id="textDialog"
+          style="border: none; padding: 0px"&gt;
+          &lt;textarea id="textArea" rows="25" cols="80" autocorrect="off"
+            autocapitalize="off" spellcheck="false" readonly
+            style="border: none; padding: 10px"&gt;
+          &lt;/textarea&gt;
+        &lt;/dialog&gt;
+      &lt;/body&gt;
+
       // Sets the textarea rows for newlines.
       SetTextRows()
       {
+        const className = "ClassName";
+        const methodName = "MethodName()";
+        const valueName = "text";
+        const value = "This is the\r\nthree line\r\ntext value.";
+        const force = false;
+        const textDialogID = "textDialog";
+        const textAreaID = "textArea";
+        LJC.ShowText(className, methodName, valueName, value, force, textDialogID
+          , textAreaID);
 
+        const eTextArea = LJC.Element(textAreaID);
+        LJC.SetTextRows(eTextArea);
       }
     </code>
   </SetTextRows>
@@ -849,9 +849,10 @@
     <param name="className">The current class name.</param>
     <param name="methodName">The current method name.</param>
     <param name="valueName">The debug value name.</param>
-    <param name="objValue">An object value.</param>
-    <param name="textDialogID">The text dialog element ID name.</param>
+    <param name="objValue">A text or object value.</param>
     <param name="force">Force the text to show.</param>
+    <param name="textDialogID">The text dialog element ID name.</param>
+    <param name="textAreaID">The text area element ID name.</param>
     <code>
       &lt;body&gt;
         &lt;!-- The dialog for debug or other display text. --&gt;
