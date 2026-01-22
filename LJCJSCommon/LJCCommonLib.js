@@ -7,14 +7,15 @@
 /// <summary>Common Static Class Library</summary>
 //  Element: AddEvent(), AverageCharWidth(), Element(), ElementStyle(),
 //    Round(), SelectorStyle(), TagElements(), TextWidth()
-//  Check: HasElementValue(), HasElements(), HasText(), IsBackTab(),
-//    IsNumber(), IsShiftOnly(), IsSimpleType(), IsString(), IsTab()
+//  Check: CheckValue(), HasElementValue(), HasElements(), HasText(),
+//    IsBackTab(), IsNumber(), IsShiftOnly(), IsSimpleType(), IsString(),
+//    IsTab()
 //  Value: GetText(), GetValue(), SetText(), SetValue()
 //  TextArea: EventTextRows(), GetTextCols(), SetTextRows()
 //  Search: BinarySearch(), MiddlePosition()
-//  Other: CreateJSON(), Location(), Message(), MouseLocation(), ParseJSON()
+//  Other: CreateJSON(), Location(), Message(), MouseLocation(), ParseJSON(),
 //         ShowText(), ToArray(), Visibility()
-//  Show Property: AddPropertyOutput(), GetPropertyNames()
+//  Show Property: AddPropertyOutput(), GetPropertyNames(),
 //    GetStartText(), ShowProperties(), ShowSelectProperties()
 class LJC
 {
@@ -38,12 +39,10 @@ class LJC
     }
   }
 
-  // Gets the average character width using the first selector element font.
-  /// <include path='members/AverageCharWidth/*' file='Doc/LJC.xml'/>
-  static AverageCharWidth(selector, text)
+  // Gets the average character width for the supplied font and text.
+  static AverageCharWidth(font, text)
   {
-    let font = LJC.SelectorStyle(selector, "font");
-    let textWidth = LJC.TextWidth(font, text);
+    const textWidth = LJC.TextWidth(font, text);
     let averageWidth = textWidth / text.length;
     let retValue = LJC.Round(averageWidth, 2);
     return retValue;
@@ -159,6 +158,21 @@ class LJC
     return retValue;
   }
 
+  /// <summary>Checks if a collection has items.</summary>
+  /// <param name="items">The collection object.</param>
+  /// <returns>true if the collection has items; otherwise false.</returns>
+  static HasItems(items)
+  {
+    let retValue = false;
+
+    if (items instanceof LJCCollection
+      && items.Count > 0)
+    {
+      retValue = true;
+    }
+    return retValue;
+  }
+
   // Checks if the text has a value.
   /// <include path='members/HasText/*' file='Doc/LJC.xml'/>
   static HasText(text)
@@ -174,16 +188,20 @@ class LJC
     return retValue;
   }
 
-  // Checks keydown for a Backtab key.
-  /// <include path='members/IsBackTab/*' file='Doc/LJC.xml'/>
-  static IsBackTab(keyDownEvent)
+  // Checks keydown for the supplied key.
+  static IsKey(key, keyDownEvent)
   {
     let retValue = false;
 
-    if (keyDownEvent.shiftKey
-      && "Tab" == keyDownEvent.key)
+    // Not a shift-only.
+    if (keyDownEvent.key != "Shift")
     {
-      retValue = true;
+      if (key != null
+        && !keyDownEvent.shiftKey
+        && key == keyDownEvent.key)
+      {
+        retValue = true;
+      }
     }
     return retValue;
   }
@@ -211,15 +229,20 @@ class LJC
     return retValue;
   }
 
-  // Checks keydown for only a Shift key.
-  /// <include path='members/IsShiftOnly/*' file='Doc/LJC.xml'/>
-  static IsShiftOnly(keyDownEvent)
+  // Checks keydown for a shift and the supplied key.
+  static IsShiftedKey(key, keyDownEvent)
   {
     let retValue = false;
 
-    if ("Shift" == keyDownEvent.key)
+    // Not a shift-only.
+    if (keyDownEvent.key != "Shift")
     {
-      retValue = true;
+      if (key != null
+        && keyDownEvent.shiftKey
+        && key == keyDownEvent.key)
+      {
+        retValue = true;
+      }
     }
     return retValue;
   }
@@ -257,23 +280,6 @@ class LJC
   static IsString(value)
   {
     return typeof value === 'string';
-  }
-
-  // Checks keydown for a Tab key.
-  /// <include path='members/IsTab/*' file='Doc/LJC.xml'/>
-  static IsTab(keyDownEvent)
-  {
-    let retValue = false;
-
-    if (keyDownEvent.key != "Shift")
-    {
-      if (!keyDownEvent.shiftKey
-        && "Tab" == keyDownEvent.key)
-      {
-        retValue = true;
-      }
-    }
-    return retValue;
   }
   // #endregion
 
