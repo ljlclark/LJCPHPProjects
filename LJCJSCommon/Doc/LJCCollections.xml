@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright (c) Lester J. Clark and Contributors -->
+<!-- Licensed under the MIT License. -->
+<!-- LJCDataColumns.xml -->
+<members>
+  <!-- Data Class Methods -->
+  <Clone>
+    <summary>
+      Creates a clone of this object.
+    </summary>
+    <param name="items">The new object template.</param>
+    <returns>The cloned object.</returns>
+    <remarks>
+      The items parameter is used as a template for a new object.
+    </remarks>
+    <code>
+// Creates a clone of this object.
+Clone()
+{
+  const testItems = new TestItems();
+  let testItem = testItems.Add("NameOne");
+  testItem.Sequence = 1;
+  testItem = testItems.Add("NameTwo");
+  testItem.Sequence = 2;
+
+  // testItems is used as a template.
+  const clonedItems = testItems.Clone(testItems);
+  let result = 0;
+  if (LJC.HasItems(clonedItems))
+  {
+    result = clonedItems.Count;
+  }
+  
+  // result:
+  // 2;
+
+  let dataColumns = new LJCDataColumns();
+  dataColumns.AddValue("Name", "NameTwo");
+  testItem = testItems.Retrieve(dataColumns);
+  result = testItem.Sequence;
+
+  // result:
+  // 2
+}
+    </code>
+  </Clone>
+  
+  <!-- Collection Data Methods -->
+  <_AddItem>
+    <summary>
+      Adds the item to the array.
+    </summary>
+    <param name="item">The item to add to the list.</param>
+    <returns>The added item.</returns>
+    <remarks>
+      This method must only be called from the child class.
+    </remarks>
+    <code>
+// Adds the item to the array.
+_AddItem()
+{
+  const testItems = new TestItems();
+  let testItem = new TestItem("NameOne");
+  testItem.Sequence = 1;
+  testItems._AddItem(testItem);
+
+  let result = testItems.Count;
+
+  // result:
+  // 1
+}
+    </code>
+  </_AddItem>
+  <Clear>
+    <summary>
+      Clears the collection list.
+    </summary>
+    <code>
+// Clears the collection list.
+Clear()
+{
+  const testItems = new TestItems();
+  let testItem = testItems.Add("NameOne");
+  testItem.Sequence = 1;
+  testItems.Clear();
+
+  let result = testItems.Count;
+  
+  // result:
+  // 0
+}
+    </code>
+  </Clear>
+  <Remove>
+    <summary>
+      Removes the the object which matches the data values.
+    </summary>
+    <param name="dataColumns">The unique data names and values.</param>
+    <remarks>Uses the dataColumns to identify the item.</remarks>
+    <code>
+// Removes the object which matches the data values.
+Remove()
+{
+  const testItems = new TestItems();
+  let testItem = testItems.Add("NameOne");
+  testItem.Sequence = 1;
+  testItem = testItems.Add("NameTwo");
+  testItem.Sequence = 2;
+
+  const dataColumns = new LJCDataColumns();
+  dataColumns.AddValue("Name", "NameOne");
+  testItems.Remove(dataColumns);
+
+  testItem = testItems.RetrieveAtIndex(0);
+  const result = testItem.Name;
+  
+  // result:
+  // NameTwo
+}
+    </code>
+  </Remove>
+  <Retrieve>
+    <summary>
+      Retrieves the object which matches the data values.
+    </summary>
+    <param name="dataColumns">The unique data names and values.</param>
+    <returns>The matching collection item.</returns>
+    <remarks>Uses the dataColumns to identify the item.</remarks>
+    <code>
+// Retrieves the object which matches the data values.
+Retrieve()
+{
+  const testItems = new TestItems();
+  let testItem = testItems.Add("NameOne");
+  testItem.Sequence = 1;
+  testItem = testItems.Add("NameTwo");
+  testItem.Sequence = 2;
+
+  const dataColumns = new LJCDataColumns();
+  dataColumns.AddValue("Name", "NameTwo");
+  testItem = testItems.Retrieve(dataColumns);
+  const result = testItem.Name;
+  
+  // result:
+  // NameTwo
+}
+    </code>
+  </Retrieve>
+  <RetrieveAtIndex>
+    <summary>
+      Retrieves the object with the supplied index.
+    </summary>
+    <param name="index">The index value.</param>
+    <returns>The collection item at the supplied index.</returns>
+    <code>
+// Retrieves the object at the supplied index.
+RetrieveAtIndex()
+{
+  const testItems = new TestItems();
+  let testItem = testItems.Add("NameOne");
+  testItem.Sequence = 1;
+  testItem = testItems.Add("NameTwo");
+  testItem.Sequence = 2;
+
+  testItem = testItems.RetrieveAtIndex(1);
+  const result = testItem.Name;
+  
+  // result:
+  // NameTwo
+}
+    </code>
+  </RetrieveAtIndex>
+  
+  <!-- Other Methods -->
+  <GetIndex>
+    <summary>
+      Gets the index of the object which matches the data values.
+    </summary>
+    <param name="dataColumns">The unique data names and values.</param>
+    <returns>The index of the matching collection item.</returns>
+    <remarks>Uses the dataColumns to identify the item.</remarks>
+    <code>
+// Gets the index of the object which matches the data values.
+GetIndex()
+{
+  const testItems = new TestItems();
+  let testItem = testItems.Add("NameOne");
+  testItem.Sequence = 1;
+  testItem = testItems.Add("NameTwo");
+  testItem.Sequence = 2;
+
+  const dataColumns = new LJCDataColumns();
+  dataColumns.AddValue("Name", "NameTwo");
+  const result = testItems.GetIndex(dataColumns);
+  
+  // result:
+  // 1
+}
+    </code>
+  </GetIndex>
+  <IsMatch>
+    <summary>
+      Checks if the item matches the data values.
+    </summary>
+    <param name="item">The collection item.</param>
+    <param name="dataColumns">The unique data names and values.</param>
+    <returns>true if it matches; otherwise false.</returns>
+    <code>
+// Checks if the item matches the data values.
+IsMatch()
+{
+  const testItems = new TestItems();
+  let testItem = testItems.Add("NameOne");
+  testItem.Sequence = 1;
+  testItem = testItems.Add("NameTwo");
+  testItem.Sequence = 2;
+
+  const dataColumns = new LJCDataColumns();
+  dataColumns.AddValue("Name", "NameTwo");
+  let result = testItems.IsMatch(testItem, dataColumns);
+  result = result ? "true" : "false";
+  
+  // result:
+  // true
+}
+    </code>
+  </IsMatch>
+</members>

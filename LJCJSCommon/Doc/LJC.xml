@@ -52,9 +52,9 @@
   </AddEvent>
   <AverageCharWidth>
     <summary>
-      Gets the average character width using the first selector element font.
+      Gets the average character width for the supplied font and text.
     </summary>
-    <param name="selector">A CSS selector name.</param>
+    <param name="font">A CSS font object.</param>
     <param name="text">A string value.</param>
     <returns>The average character width.</returns>
     <code>
@@ -62,12 +62,22 @@
       AverageCharWidth()
       {
         const selector = "div";
+        let font = LJC.SelectorStyle(selector, "font");
         const text = "This is sample text.";
-        const result = LJC.AverageCharWidth(selector, text);
+        let result = LJC.AverageCharWidth(font, text);
 
-        // With font = "16px "Times New Roman"
-        // result:
+        // result;
+        // With font = "16px Times New Roman"
         // 6.22;
+
+        const textAreaID = "textArea";
+        const eTextArea = LJC.Element(textAreaID);
+        font = LJC.ElementStyle(eTextArea, "font");
+        result = LJC.AverageCharWidth(font, text);
+
+        // result:
+        // With font = "13.3333px monospace"
+        // 7.33;
       }
     </code>
   </AverageCharWidth>
