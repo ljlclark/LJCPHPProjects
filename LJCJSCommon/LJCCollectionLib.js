@@ -31,10 +31,11 @@ class LJCCollection
   /// <include path='items/Clone/*' file='Doc/LJCCollection.xml'/>
   Clone(items)
   {
-    let retItems = items;
+    let retItems = null;
 
     if (items instanceof LJCCollection)
     {
+      retItems = Object.create(items);
       retItems.Clear();
       for (let index = 0; index < this._Items.length; index++)
       {
@@ -57,7 +58,9 @@ class LJCCollection
   {
     let retItem = item;
     this._Items.push(item);
-    this.#UpdateProperties();
+    //this.#UpdateProperties();
+    this.Count = this._Items.length;
+    this.ReadItems = Array.from(this._Items);
     return retItem;
   }
 
@@ -66,24 +69,25 @@ class LJCCollection
   Clear()
   {
     this._Items = [];
-    this.#UpdateProperties();
+    //this.#UpdateProperties();
+    this.Count = this._Items.length;
+    this.ReadItems = Array.from(this._Items);
   }
 
-  // Removes the object which matches the data values.
+  // Removes the the object which matches the data values.
   /// <include path='items/Remove/*' file='Doc/LJCCollection.xml'/>
   Remove(dataColumns)
   {
     let itemIndex = this.GetIndex(dataColumns);
     if (itemIndex > -1)
     {
-      let beginIndex = 0;
-      this._Items.splice(beginIndex, itemIndex);
+      this._Items.splice(itemIndex, 1);
       this.#UpdateProperties();
     }
   }
 
   // Retrieves the object which matches the data values.
-  /// <include path='items/Retrieve/*' file='Doc/LJCJoins.xml'/>
+  /// <include path='items/Retrieve/*' file='Doc/LJCCollection.xml'/>
   Retrieve(dataColumns)
   {
     let retItem = null;
@@ -101,7 +105,7 @@ class LJCCollection
     return retItem;
   }
 
-  // Retrieves the object at the supplied index.
+  // Retrieves the object with the supplied index.
   /// <include path='items/RetrieveAtIndex/*' file='Doc/LJCCollection.xml'/>
   RetrieveAtIndex(index)
   {
@@ -126,7 +130,7 @@ class LJCCollection
   // #region Other Methods
 
   // Gets the index of the object which matches the data values.
-  /// <include path='items/GetIndex/*' file='Doc/LJCCollections.xml'/>
+  /// <include path='items/GetIndex/*' file='Doc/LJCCollection.xml'/>
   GetIndex(dataColumns)
   {
     let retIndex = -1;
@@ -145,14 +149,15 @@ class LJCCollection
   }
 
   // Checks if the item matches the data values.
-  /// <include path='items/IsMatch/*' file='Doc/LJCCollections.xml'/>
+  /// <include path='items/IsMatch/*' file='Doc/LJCCollection.xml'/>
   IsMatch(item, dataColumns)
   {
     let retMatch = true;
 
     for (let dataIndex = 0; dataIndex < dataColumns.Count; dataIndex++)
     {
-      let dataColumn = dataColumns[dataIndex];
+      //let dataColumn = dataColumns[dataIndex];
+      let dataColumn = dataColumns.RetrieveAtIndex(dataIndex);
       let propertyName = dataColumn.PropertyName;
       let value = dataColumn.Value;
       if (item[propertyName] != value)

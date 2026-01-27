@@ -1,4 +1,6 @@
 "use strict";
+// Copyright(c) Lester J. Clark and Contributors.
+// Licensed under the MIT License.
 // LJCTest.js
 
 class LJCTest
@@ -21,12 +23,11 @@ class LJCTest
     this.HasElements();
     this.HasElementValue();
     this.HasText();
-    this.IsBackTab();
+    this.IsKey();
     this.IsNumber();
-    this.IsShiftOnly();
+    this.IsShiftedKey();
     this.IsSimpleType();
     this.IsString();
-    this.IsTab();
 
     // Text and Value Methods
     this.GetText();
@@ -52,26 +53,6 @@ class LJCTest
     this.ShowText();
     this.ToArray();
     this.Visibility();
-
-    // Show Property Methods
-    this.GetPropertyNames();
-    this.GetPropertyOutput();
-    this.GetStartText();
-    this.ShowProperties();
-    this.ShowSelectProperties();
-  }
-
-  // Checks result value to compare value.
-  CheckValues(methodName, result, compare)
-  {
-    if (result != compare)
-    {
-      let message = methodName;
-      message += `\r\n${result}`;
-      message += "\r\n !=";
-      message += `\r\n${compare}`;
-      alert(message)
-    }
   }
 
   // #region Element Methods
@@ -104,22 +85,43 @@ class LJCTest
 
   AddEventHandler(keyDownEvent)
   {
-    const result = LJC.IsTab(keyDownEvent);
+    const result = LJC.IsKey("Tab", keyDownEvent);
 
     const compare = this.CompareValue;
-    this.CheckValues("AddEventHandler()", result, compare);
+    LJC.CheckValues("AddEventHandler()", result, compare);
   }
 
   // Gets the average character width using the first selector element font.
   AverageCharWidth()
   {
-    const selector = "div";
-    const text = "This is sample text.";
-    const result = LJC.AverageCharWidth(selector, text);
+    // <body>
+    //   <!-- The dialog for debug or other display text. -->
+    //   <dialog id="textDialog"
+    //     style="border: none; padding: 0px">
+    //     <textarea id="textArea" rows="25" cols="80" autocorrect="off"
+    //       autocapitalize="off" spellcheck="false" readonly
+    //       style="border: none; padding: 10px">
+    //     </textarea>
+    //   </dialog>
+    // </body>
 
-    // With font = "16px "Times New Roman"
-    const compare = 6.22;
-    this.CheckValues("AverageCharWidth()", result, compare);
+    const selector = "div";
+    let font = LJC.SelectorStyle(selector, "font");
+    const text = "This is sample text.";
+    let result = LJC.AverageCharWidth(font, text);
+
+    // With font = "16px Times New Roman"
+    let compare = 6.22;
+    LJC.CheckValues("AverageCharWidth()", result, compare);
+
+    const textAreaID = "textArea";
+    const eTextArea = LJC.Element(textAreaID);
+    font = LJC.ElementStyle(eTextArea, "font");
+    result = LJC.AverageCharWidth(font, text);
+
+    // With font = "13.3333px monospace"
+    compare = 7.33;
+    LJC.CheckValues("AverageCharWidth()", result, compare);
   }
 
   // Gets the HTMLElement by ID.
@@ -130,11 +132,11 @@ class LJCTest
 
     let result = element.tagName;
     let compare = "DIV";
-    this.CheckValues("Element()", result, compare);
+    LJC.CheckValues("Element()", result, compare);
 
     result = element.id;
     compare = "testDiv";
-    this.CheckValues("Element()", result, compare);
+    LJC.CheckValues("Element()", result, compare);
   }
 
   // Gets the element ComputedStyle property.
@@ -145,7 +147,7 @@ class LJCTest
     const result = LJC.ElementStyle(element, propertyName);
 
     const compare = "rgb(0, 0, 0)";
-    this.CheckValues("ElementStyle()", result, compare);
+    LJC.CheckValues("ElementStyle()", result, compare);
   }
 
   // Rounds and truncates to the provided place value.
@@ -156,7 +158,7 @@ class LJCTest
     const result = LJC.Round(value, placeValue);
 
     const compare = 3.14;
-    this.CheckValues("Round()", result, compare);
+    LJC.CheckValues("Round()", result, compare);
   }
 
   // Gets the first matching selector ComputedStyle property.
@@ -167,7 +169,7 @@ class LJCTest
     const result = LJC.SelectorStyle(selector, propertyName);
 
     const compare = "rgb(0, 0, 0)";
-    this.CheckValues("SelectorStyle()", result, compare);
+    LJC.CheckValues("SelectorStyle()", result, compare);
   }
 
   // Gets HTMLElements by Tag.
@@ -181,7 +183,7 @@ class LJCTest
     const result = element.id;
 
     const compare = "testDiv";
-    this.CheckValues("TagElements()", result, compare);
+    LJC.CheckValues("TagElements()", result, compare);
   }
 
   // Gets the text width.
@@ -196,7 +198,7 @@ class LJCTest
 
     // With font = "16px "Times New Roman"
     const compare = "124";
-    this.CheckValues("TagElements()", result, compare);
+    LJC.CheckValues("TagElements()", result, compare);
   }
   // #endregion
 
@@ -208,12 +210,12 @@ class LJCTest
     let arrValue = ["Value"];
     let result = LJC.HasElements(arrValue);
     let compare = true;
-    this.CheckValues("HasElements()", result, compare);
+    LJC.CheckValues("HasElements()", result, compare);
 
     arrValue = [];
     result = LJC.HasElements(arrValue);
     compare = false;
-    this.CheckValues("HasElements()", result, compare);
+    LJC.CheckValues("HasElements()", result, compare);
   }
 
   // Checks if an element has a value.
@@ -223,12 +225,12 @@ class LJCTest
     LJC.SetValue("targetInput", "X");
     let result = LJC.HasElementValue(element);
     let compare = true;
-    this.CheckValues("HasElementValue()1", result, compare);
+    LJC.CheckValues("HasElementValue()1", result, compare);
 
     LJC.SetValue("targetInput", "  ");
     result = LJC.HasElementValue(element);
     compare = false;
-    this.CheckValues("HasElementValue()", result, compare);
+    LJC.CheckValues("HasElementValue()", result, compare);
   }
 
   // Checks if the text has a value.
@@ -237,144 +239,20 @@ class LJCTest
     let text = "X";
     let result = LJC.HasText(text);
     let compare = true;
-    this.CheckValues("HasText()", result, compare);
+    LJC.CheckValues("HasText()", result, compare);
 
     text = "  ";
     result = LJC.HasText(text);
     compare = false;
-    this.CheckValues("HasText()", result, compare);
+    LJC.CheckValues("HasText()", result, compare);
   }
 
-  // Checks keydown for a Backtab key.
-  IsBackTab()
+  // Checks keydown for a supplied key.
+  IsKey()
   {
     const elementID = "targetInput";
     const eventName = "keydown";
-    const handler = this.IsBackTabHandler.bind(this);
-    LJC.AddEvent(elementID, eventName, handler);
-
-    // Tab
-    let eventOptions = {
-      key: "Tab",
-      code: "Tab",
-      ctrlKey: false,
-      shiftKey: true,
-      altKey: false,
-      metaKey: false,
-      repeat: false,
-      bubbles: true,
-    };
-    let keyDownEvent = new KeyboardEvent('keydown', eventOptions);
-    this.CompareValue = true;
-    targetInput.dispatchEvent(keyDownEvent);
-
-    // BackTab
-    eventOptions.shiftKey = false;
-    keyDownEvent = new KeyboardEvent('keydown', eventOptions);
-    this.CompareValue = false;
-    targetInput.dispatchEvent(keyDownEvent);
-
-    let element = LJC.Element("targetInput");
-    element.removeEventListener("keydown", handler);
-  }
-
-  IsBackTabHandler(keyDownEvent)
-  {
-    const result = LJC.IsBackTab(keyDownEvent);
-
-    const compare = this.CompareValue;
-    this.CheckValues("IsBackTab()", result, compare);
-  }
-
-  // Checks if the text is a number.
-  IsNumber()
-  {
-    let number = 1;
-    let result = LJC.IsNumber(number);
-    let compare = true;
-    this.CheckValues("IsNumber()", result, compare);
-
-    number = "X";
-    result = LJC.IsNumber(number);
-    compare = false;
-    this.CheckValues("IsNumber()", result, compare);
-  }
-
-  // Checks keydown for only a Shift key.
-  IsShiftOnly()
-  {
-    const elementID = "targetInput";
-    const eventName = "keydown";
-    const handler = this.IsShiftOnlyHandler.bind(this);
-    LJC.AddEvent(elementID, eventName, handler);
-
-    // Tab
-    let eventOptions = {
-      key: "Shift",
-      code: "",
-      ctrlKey: false,
-      shiftKey: true,
-      altKey: false,
-      metaKey: false,
-      repeat: false,
-      bubbles: true,
-    };
-    let keyDownEvent = new KeyboardEvent('keydown', eventOptions);
-    this.CompareValue = true;
-    targetInput.dispatchEvent(keyDownEvent);
-
-    // BackTab
-    eventOptions.key = "";
-    eventOptions.shiftKey = false;
-    keyDownEvent = new KeyboardEvent('keydown', eventOptions);
-    this.CompareValue = false;
-    targetInput.dispatchEvent(keyDownEvent);
-
-    targetInput.removeEventListener("keydown", handler);
-  }
-
-  IsShiftOnlyHandler(keyDownEvent)
-  {
-    const result = LJC.IsShiftOnly(keyDownEvent);
-
-    const compare = this.CompareValue;
-    this.CheckValues("IsShiftOnly()", result, compare);
-  }
-
-  //Checks if the value is a primitive type.
-  IsSimpleType()
-  {
-    let number = 1;
-    let result = LJC.IsSimpleType(number);
-    let compare = true;
-    this.CheckValues("IsSimpleType()", result, compare);
-
-    number = [];
-    result = LJC.IsSimpleType(number);
-    compare = false;
-    this.CheckValues("IsSimpleType()", result, compare);
-  }
-
-  // Checks if the value is a string.
-  IsString()
-  {
-    let number = "1";
-    let result = LJC.IsString(number);
-    let compare = true;
-    this.CheckValues("IsSimpleType()", result, compare);
-
-    number = 1;
-    result = LJC.IsString(number);
-    compare = false;
-    this.CheckValues("IsString()", result, compare);
-  }
-
-  // Checks keydown for a Tab key.
-  IsTab()
-  {
-    const elementID = "targetInput";
-    const eventName = "keydown";
-    const handler = this.IsTabHandler.bind(this);
+    const handler = this.IsKeyHandler.bind(this);
     LJC.AddEvent(elementID, eventName, handler);
 
     // Tab
@@ -388,26 +266,97 @@ class LJCTest
       repeat: false,
       bubbles: true,
     };
-    let keyDownEvent = new KeyboardEvent('keydown', eventOptions);
+    let keyDownEvent = new KeyboardEvent(eventName, eventOptions);
     this.CompareValue = true;
     targetInput.dispatchEvent(keyDownEvent);
 
-    // BackTab
-    eventOptions.key = "";
-    eventOptions.code = "";
-    keyDownEvent = new KeyboardEvent('keydown', eventOptions);
-    this.CompareValue = false;
-    targetInput.dispatchEvent(keyDownEvent);
-
-    targetInput.removeEventListener("keydown", handler);
+    let element = LJC.Element("targetInput");
+    element.removeEventListener("keydown", handler);
   }
 
-  IsTabHandler(keyDownEvent)
+  IsKeyHandler(keyDownEvent)
   {
-    const result = LJC.IsTab(keyDownEvent);
+    const result = LJC.IsKey("Tab", keyDownEvent);
 
     const compare = this.CompareValue;
-    this.CheckValues("IsTab()", result, compare);
+    LJC.CheckValues("IsShiftedKey()", result, compare);
+  }
+
+  // Checks if the text is a number.
+  IsNumber()
+  {
+    let number = 1;
+    let result = LJC.IsNumber(number);
+    let compare = true;
+    LJC.CheckValues("IsNumber()", result, compare);
+
+    number = "X";
+    result = LJC.IsNumber(number);
+    compare = false;
+    LJC.CheckValues("IsNumber()", result, compare);
+  }
+
+  // Checks keydown for shift and the supplied key.
+  IsShiftedKey()
+  {
+    const elementID = "targetInput";
+    const eventName = "keydown";
+    const handler = this.IsShiftedKeyHandler.bind(this);
+    LJC.AddEvent(elementID, eventName, handler);
+
+    // Back Tab
+    let eventOptions = {
+      key: "Tab",
+      code: "Tab",
+      ctrlKey: false,
+      shiftKey: true,
+      altKey: false,
+      metaKey: false,
+      repeat: false,
+      bubbles: true,
+    };
+    let keyDownEvent = new KeyboardEvent(eventName, eventOptions);
+    this.CompareValue = true;
+    targetInput.dispatchEvent(keyDownEvent);
+
+    let element = LJC.Element("targetInput");
+    element.removeEventListener(keyDownEvent, handler);
+  }
+
+  IsShiftedKeyHandler(keyDownEvent)
+  {
+    const result = LJC.IsShiftedKey("Tab", keyDownEvent);
+
+    const compare = this.CompareValue;
+    LJC.CheckValues("IsShiftedKey()", result, compare);
+  }
+
+  //Checks if the value is a primitive type.
+  IsSimpleType()
+  {
+    let number = 1;
+    let result = LJC.IsSimpleType(number);
+    let compare = true;
+    LJC.CheckValues("IsSimpleType()", result, compare);
+
+    number = [];
+    result = LJC.IsSimpleType(number);
+    compare = false;
+    LJC.CheckValues("IsSimpleType()", result, compare);
+  }
+
+  // Checks if the value is a string.
+  IsString()
+  {
+    let number = "1";
+    let result = LJC.IsString(number);
+    let compare = true;
+    LJC.CheckValues("IsSimpleType()", result, compare);
+
+    number = 1;
+    result = LJC.IsString(number);
+    compare = false;
+    LJC.CheckValues("IsString()", result, compare);
   }
   // #endregion
 
@@ -423,12 +372,12 @@ class LJCTest
     testDiv.innerText = "X";
     let result = LJC.GetText("testDiv");
     let compare = "X";
-    this.CheckValues("GetText()", result, compare);
+    LJC.CheckValues("GetText()", result, compare);
 
     testDiv.innerText = "";
     result = LJC.GetText("testDiv");
     compare = "";
-    this.CheckValues("GetText()", result, compare);
+    LJC.CheckValues("GetText()", result, compare);
   }
 
   // Gets the input element value.
@@ -441,12 +390,12 @@ class LJCTest
     targetInput.value = "X";
     let result = LJC.GetValue("targetInput");
     let compare = "X";
-    this.CheckValues("GetValue()", result, compare);
+    LJC.CheckValues("GetValue()", result, compare);
 
     targetInput.value = "";
     result = LJC.GetValue("targetInput");
     compare = "";
-    this.CheckValues("GetValue()", result, compare);
+    LJC.CheckValues("GetValue()", result, compare);
   }
 
   // Sets the element text.
@@ -459,12 +408,12 @@ class LJCTest
     LJC.SetText("testDiv", "X");
     let result = LJC.GetText("testDiv");
     let compare = "X";
-    this.CheckValues("SetText()", result, compare);
+    LJC.CheckValues("SetText()", result, compare);
 
     LJC.SetText("testDiv", "");
     result = LJC.GetText("testDiv");
     compare = "";
-    this.CheckValues("SetText()", result, compare);
+    LJC.CheckValues("SetText()", result, compare);
   }
 
   // Sets the input element value.
@@ -478,12 +427,12 @@ class LJCTest
     LJC.SetValue(elementID, "X");
     let result = LJC.GetValue(elementID);
     let compare = "X";
-    this.CheckValues("SetValue()", result, compare);
+    LJC.CheckValues("SetValue()", result, compare);
 
     LJC.SetValue(elementID, "");
     result = LJC.GetValue(elementID);
     compare = "";
-    this.CheckValues("GetValue()", result, compare);
+    LJC.CheckValues("GetValue()", result, compare);
   }
   // #endregion
 
@@ -492,28 +441,145 @@ class LJCTest
   // Sets the textarea rows for newlines.
   EventTextRows()
   {
+    const elementID = "textArea";
+    const eventName = "keydown";
+    const handler = this.IsEnterHandler.bind(this);
+    LJC.AddEvent(elementID, eventName, handler);
 
+    // Enter
+    let eventOptions = {
+      key: "Enter",
+      code: "Enter",
+      ctrlKey: false,
+      shiftKey: false,
+      altKey: false,
+      metaKey: false,
+      repeat: false,
+      bubbles: true,
+    };
+    let keyDownEvent = new KeyboardEvent(eventName, eventOptions);
+    this.CompareValue = true;
+    textArea.dispatchEvent(keyDownEvent);
+
+    textArea.removeEventListener(eventName, handler);
+  }
+
+  IsEnterHandler(keyDownEvent)
+  {
+    const result = LJC.IsKey("Enter", keyDownEvent);
+
+    const compare = this.CompareValue;
+    LJC.CheckValues("EventTextRows()", result, compare);
   }
 
   // Gets the textarea columns.
   GetTextCols()
   {
+    // <body>
+    //   <!-- The dialog for debug or other display text. -->
+    //   <dialog id="textDialog"
+    //     style="border: none; padding: 0px">
+    //     <textarea id="textArea" rows="25" cols="80" autocorrect="off"
+    //       autocapitalize="off" spellcheck="false" readonly
+    //       style="border: none; padding: 10px">
+    //     </textarea>
+    //   </dialog>
+    // </body>
 
+    const className = "ClassName";
+    const methodName = "MethodName()";
+    const valueName = "text";
+    const value = "This is the\r\nthree line\r\ntext value.";
+    const force = false;
+    const textDialogID = "textDialog";
+    const textAreaID = "textArea";
+    LJC.ShowText(className, methodName, valueName, value, force, textDialogID
+      , textAreaID);
+
+    const eTextArea = LJC.Element(textAreaID);
+    const font = LJC.ElementStyle(eTextArea, "font");
+    const averageCharWidth = LJC.AverageCharWidth(font, value);
+
+    const characterCount = 40;
+    const clientWidth = characterCount * averageCharWidth;
+    const columns = 1;
+
+    eTextArea.cols = LJC.GetTextCols(clientWidth, columns, averageCharWidth);
+    LJC.SetTextRows(eTextArea);
   }
 
   // Sets the textarea rows for newlines.
   SetTextRows()
   {
+    // <body>
+    //   <!-- The dialog for debug or other display text. -->
+    //   <dialog id="textDialog"
+    //     style="border: none; padding: 0px">
+    //     <textarea id="textArea" rows="25" cols="80" autocorrect="off"
+    //       autocapitalize="off" spellcheck="false" readonly
+    //       style="border: none; padding: 10px">
+    //     </textarea>
+    //   </dialog>
+    // </body>
 
+    const className = "ClassName";
+    const methodName = "MethodName()";
+    const valueName = "text";
+    const value = "This is the\r\nthree line\r\ntext value.";
+    const force = false;
+    const textDialogID = "textDialog";
+    const textAreaID = "textArea";
+    LJC.ShowText(className, methodName, valueName, value, force, textDialogID
+      , textAreaID);
+
+    const eTextArea = LJC.Element(textAreaID);
+    LJC.SetTextRows(eTextArea);
   }
   // #endregion
 
   // #region Binary Search Methods
 
+  SortMethod(compare, compareTo)
+  {
+    return compare.Text.localeCompare(compareTo.Text);
+  }
+
+  CompareMethod(compare, compareTo)
+  {
+    return compare.Text.localeCompare(compareTo.Text);
+  }
+
   // Returns the index of a search item in the array.
   BinarySearch()
   {
+    class Item
+    {
+      Text = "";
 
+      // Creates an object clone.
+      Clone()
+      {
+        let retItem = new Item();
+        retItem.Text = this.Text;
+        return retItem;
+      }
+    }
+
+    const items = [];
+    let item = new Item();
+    item.Text = "Second";
+    items.push(item);
+    item = new Item();
+    item.Text = "First";
+    items.push(item);
+    item = new Item();
+    item.Text = "Third";
+    items.push(item);
+    item = new Item();
+    item.Text = "Fourth";
+    items.push(item);
+
+    let index = LJC.BinarySearch(items, this.SortMethod, this.CompareMethod);
   }
 
   // Returns the middle position of the count value.
@@ -534,7 +600,7 @@ class LJCTest
     const result = LJC.CreateJSON(object);
 
     const compare = "{\"Name\":\"First\",\"Sequence\":1}";
-    this.CheckValues("CreateJSON()", result, compare);
+    LJC.CheckValues("CreateJSON()", result, compare);
   }
 
   // Creates the debug location text.
@@ -546,7 +612,7 @@ class LJCTest
     const result = LJC.Location(className, methodName, valueName);
 
     const compare = "Class.Method() value:";
-    this.CheckValues("Location()", result, compare);
+    LJC.CheckValues("Location()", result, compare);
   }
 
   // Shows the service message.
@@ -606,7 +672,7 @@ class LJCTest
     const result = mouseLocation.Top;
 
     const compare = 10;
-    this.CheckValues("MouseLocation()", result, compare);
+    LJC.CheckValues("MouseLocation()", result, compare);
   }
 
   // Parses JSON into an object.
@@ -617,7 +683,7 @@ class LJCTest
     const result = object.Name;
 
     const compare = "First";
-    this.CheckValues("CreateJSON()", result, compare);
+    LJC.CheckValues("CreateJSON()", result, compare);
   }
 
   // Show text in textArea element.
@@ -637,7 +703,7 @@ class LJCTest
     const className = "ClassName";
     const methodName = "MethodName()";
     const valueName = "text";
-    const value = "This is the value.";
+    const value = "This is the\r\nthree line\r\ntext value.";
     const force = false;
     const textDialogID = "textDialog";
     const textAreaID = "textArea";
@@ -695,7 +761,7 @@ class LJCTest
         const result = array[1].Text;
 
         const compare = "Second Object";
-        this.CheckValues("ToArray()", result, compare);
+        LJC.CheckValues("ToArray()", result, compare);
       }
     }
     else
@@ -718,7 +784,7 @@ class LJCTest
     let result = element.style.visibility;
 
     let compare = "hidden";
-    this.CheckValues("Visibility()", result, compare);
+    LJC.CheckValues("Visibility()", result, compare);
 
     value = "visible";
     LJC.Visibility(elementID, value);
@@ -726,41 +792,7 @@ class LJCTest
     result = element.style.visibility;
 
     compare = "visible";
-    this.CheckValues("Visibility()", result, compare);
-  }
-  // #endregion
-
-  // #region Show Property Methods
-
-  // Gets the default property names.
-  GetPropertyNames()
-  {
-
-  }
-
-  // Gets the property output.
-  GetPropertyOutput()
-  {
-
-  }
-
-  // Get the property list start text.
-  GetStartText()
-  {
-
-  }
-
-  // Show the properties of an object that are not null or "" and do not start
-  // with "on".
-  ShowProperties()
-  {
-
-  }
-
-  // Show selected properties of an object.
-  ShowSelectProperties()
-  {
-
+    LJC.CheckValues("Visibility()", result, compare);
   }
   // #endregion
 }

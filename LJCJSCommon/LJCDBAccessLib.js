@@ -65,18 +65,18 @@ class LJCDataColumn
 
   // #region Static Methods
 
-  // Creates a new object from standard object values.
-  /// <include path='items/Copy/*' file='Doc/LJCDataColumn.xml'/>
+  // Creates a new object from simple object values.
+  /// <include path='members/Copy/*' file='Doc/LJCDataColumn.xml'/>
   static Copy(objColumn)
   {
     let retColumn = new LJCDataColumn();
 
-    // Look for properties of standard object in typed object.
+    // Look for properties of simple object in typed object.
     for (let propertyName in objColumn)
     {
       if (propertyName in retColumn)
       {
-        // Update new typed object properties from the standard object.
+        // Update new typed object properties from the simple object.
         retColumn[propertyName] = objColumn[propertyName];
       }
     }
@@ -84,7 +84,7 @@ class LJCDataColumn
   }
 
   // Converts MySQL type names to JavaScript type names.
-  /// <include path='items/GetDataType/*' file='Doc/LJCDataColumn.xml'/>
+  /// <include path='members/GetDataType/*' file='Doc/LJCDataColumn.xml'/>
   static GetDataType(mySQLTypeName)
   {
     let retValue = "string";
@@ -134,10 +134,10 @@ class LJCDataColumn
   }
   // #endregion
 
-  // #region Data Class Methods
+  // #region Data Object Methods
 
-  /// <summary>Creates an object clone.</summary>
-  /// <returns>The new cloned object.</returns>
+  // Creates an object clone.
+  /// <include path='members/Clone/*' file='Doc/LJCDataColumn.xml'/>
   Clone()
   {
     let retColumn = new LJCDataColumn(this.PropertyName, this.ColumnName
@@ -151,7 +151,7 @@ class LJCDataColumn
     retColumn.MySQLTypeName = this.MySQLTypeName;
     retColumn.WhereBoolOperator = this.WhereBoolOperator;
     retColumn.WhereCompareOperator = this.WhereCompareOperator;
-    retColumn.Value = this.Value;
+    //retColumn.Value = this.Value;
     return retColumn;
   }
   // #endregion
@@ -180,11 +180,8 @@ class LJCDataColumns
 
   // #region Static Methods
 
-  /// <summary>
-  ///   Create typed collection from deserialized JavasScript array.
-  /// </summary>
-  /// <param name="items">The items object.</param>
-  /// <returns>The collection></returns.
+  // Create typed collection from deserialized JavasScript array.
+  /// <include path='members/ToCollection/*' file='Doc/LJCDataColumns.xml'/>
   static ToCollection(items)
   {
     let retDataColumns = new LJCDataColumns();
@@ -207,14 +204,14 @@ class LJCDataColumns
 
   // #region Data Class Methods
 
-  /// <summary>Creates a clone of this object.</summary>
-  /// <returns>The new cloned object.</returns>
+  // Creates a clone of this object.
+  /// <include path='members/Clone/*' file='Doc/LJCDataColumns.xml'/>
   Clone()
   {
     let retDataColumns = new LJCDataColumns();
 
-    let names = this.PropertyNames();
-    for (let index = 0; index < names.length; index++)
+    let count = this.#Items.length;
+    for (let index = 0; index < count; index++)
     {
       let dataColumn = this.#Items[index];
       if (dataColumn != null)
@@ -229,7 +226,7 @@ class LJCDataColumns
   // #region Collection Data Methods
 
   // Creates and adds the item to the list.
-  /// <include path='items/Add/*' file='Doc/LJCDataColumns.xml'/>
+  /// <include path='members/Add/*' file='Doc/LJCDataColumns.xml'/>
   Add(propertyName, columnName = null, renameAs = null
     , dataTypeName = "string", value = null)
   {
@@ -242,8 +239,8 @@ class LJCDataColumns
     return retDataColumn;
   }
 
-  /// <summary>Adds the supplied column to the list.</summary>
-  /// <param name="dataColumn">The column object.</param>
+  // Adds the supplied item to the list.
+  /// <include path='members/AddObject/*' file='Doc/LJCDataColumns.xml'/>
   AddObject(dataColumn)
   {
     let methodName = "AddObject()";
@@ -253,49 +250,43 @@ class LJCDataColumns
     {
       retDataColumn = dataColumn;
       this.#Items.push(dataColumn);
-      this.Count = this.#Items.length;
-      this.ReadItems = Array.from(this.#Items);
+      this.#UpdateProperties();
     }
     return retDataColumn;
   }
 
-  /// <summary>Adds an item value.</summary>
-  /// <param name="propertyName">The item PropertyName value.</param>
-  /// <param name="value">The added value.</param>
+  // Adds an item and value.
+  /// <include path='members/AddValue/*' file='Doc/LJCDataColumns.xml'/>
   AddValue(propertyName, value)
   {
-    let itemDataColumn = this.Retrieve(propertyName);
-    if (itemDataColumn != null)
-    {
-      itemDataColumn.Value = value;
-    }
+    let retDataColumn = new LJCDataColumn(propertyName);
+    retDataColumn.Value = value;
+    this.AddObject(retDataColumn);
+    return retDataColumn;
   }
 
-  /// <summary>Clears the collection list.</summary>
+  // Clears the collection list.
+  /// <include path='members/Clear/*' file='Doc/LJCDataColumns.xml'/>
   Clear()
   {
     this.#Items = [];
-    this.Count = this.#Items.length;
-    this.ReadItems = Array.from(this.#Items);
+    this.#UpdateProperties();
   }
 
-  // Removes the column object with the supplied property name.
-  /// <include path='items/Remove/*' file='Doc/LJCDataColumns.xml'/>
+  // Removes the column object which matches the data values.
+  /// <include path='members/Remove/*' file='Doc/LJCDataColumns.xml'/>
   Remove(propertyName)
   {
-    let beginIndex = this.GetIndex(propertyName);
-    if (beginIndex > -1)
+    let itemIndex = this.GetIndex(propertyName);
+    if (itemIndex > -1)
     {
-      //let beginIndex = 0;
-      //this.#Items.splice(beginIndex, itemIndex);
-      this.#Items.splice(beginIndex, 1);
-      this.Count = this.#Items.length;
-      this.ReadItems = Array.from(this.#Items);
+      this.#Items.splice(itemIndex, 1);
+      this.#UpdateProperties();
     }
   }
 
-  // Retrieves the column object with the supplied property name.
-  /// <include path='items/Retrieve/*' file='Doc/LJCDataColumns.xml'/>
+  // Retrieves the object which matches the data values.
+  /// <include path='members/Retrieve/*' file='Doc/LJCDataColumns.xml'/>
   Retrieve(propertyName)
   {
     let retDataColumn = this.#Items.find(item =>
@@ -304,7 +295,7 @@ class LJCDataColumns
   }
 
   // Retrieves the column object with the supplied index.
-  /// <include path='items/RetrieveAtIndex/*' file='Doc/LJCDataColumns.xml'/>
+  /// <include path='members/RetrieveAtIndex/*' file='Doc/LJCDataColumns.xml'/>
   RetrieveAtIndex(index)
   {
     let retDataColumn = null;
@@ -316,21 +307,30 @@ class LJCDataColumns
     }
     return retDataColumn;
   }
+
+  // Sets an item value.
+  /// <include path='members/SetValue/*' file='Doc/LJCDataColumns.xml'/>
+  SetValue(propertyName, value)
+  {
+    let itemDataColumn = this.Retrieve(propertyName);
+    if (itemDataColumn != null)
+    {
+      itemDataColumn.Value = value;
+    }
+  }
+
+  // Updates the property values.
+  #UpdateProperties()
+  {
+    this.Count = this.#Items.length;
+    this.ReadItems = Array.from(this.#Items);
+  }
   // #endregion
 
   // #region Other Methods
 
-  // <summary>Returns the collection element count.</summary>
-  //Count()
-  //{
-  //  let retCount = 0;
-  //
-  //  retCount = this.#Items.length;
-  //  return retCount;
-  //}
-
-  // Gets the column object with the supplied property name.
-  /// <include path='items/GetIndex/*' file='Doc/LJCDataColumns.xml'/>
+  // Gets the index of the object which matches the data values.
+  /// <include path='members/GetIndex/*' file='Doc/LJCDataColumns.xml'/>
   GetIndex(propertyName)
   {
     let retIndex = -1;
@@ -348,7 +348,7 @@ class LJCDataColumns
   }
 
   /// <summary>Gets an array of property names.</summary>
-  /// <returns>The property name array.</returns>
+  /// <include path='members/PropertyNames/*' file='Doc/LJCDataColumns.xml'/>
   PropertyNames()
   {
     let retNames = [];
@@ -362,7 +362,7 @@ class LJCDataColumns
   }
 
   // Gets the items that match the supplied names.
-  /// <include path='items/Items/*' file='Doc/Cities.xml'/>
+  /// <include path='members/SelectItems/*' file='Doc/LJCDataColumn.xml'/>
   SelectItems(propertyNames)
   {
     let retDataColumns = null;
@@ -418,18 +418,18 @@ class LJCJoin
 
   // #region Static Methods
 
-  // Creates a new object from standard object values.
-  /// <include path='items/Copy/*' file='Doc/LJCDataColumn.xml'/>
+  // Creates a new object from simple object values.
+  /// <include path='members/Copy/*' file='Doc/LJCJoin.xml'/>
   static Copy(objJoin)
   {
     let retJoin = new LJCJoin();
 
-    // Look for properties of standard object in typed object.
+    // Look for properties of simple object in typed object.
     for (let propertyName in objJoin)
     {
       if (propertyName in retJoin)
       {
-        // Update new typed object properties from the standard object.
+        // Update new typed object properties from the simple object.
         retJoin[propertyName] = objJoin[propertyName];
       }
     }
@@ -455,17 +455,15 @@ class LJCJoin
 
   // #region Data Class Methods
 
-  /// <summary>Creates an object clone.</summary>
-  /// <returns>The new cloned object.</returns>
+  // Creates an object clone.
+  /// <include path='members/Clone/*' file='Doc/LJCJoin.xml'/>
   Clone()
   {
-    let retJoin = new LJCJoin(this.TableName, this.AliasName);
+    let retJoin = new LJCJoin(this.TableName, this.TableAlias);
     retJoin.Columns = this.Columns;
     retJoin.JoinOns = this.JoinOns;
     retJoin.JoinType = this.JoinType;
     retJoin.SchemaName = this.SchemaName;
-    retJoin.TableAlias = this.TableAlias;
-    retJoin.TableName = this.TableName;
     return retJoin;
   } // Clone()
   // #endregion
@@ -494,11 +492,8 @@ class LJCJoins
 
   // #region Static Methods
 
-  /// <summary>
-  ///   Create typed collection from deserialized JavasScript array.
-  /// </summary>
-  /// <param name="items">The items object.</param>
-  /// <returns>The collection></returns.
+  // Create typed collection from deserialized JavasScript array.
+  /// <include path='members/ToCollection/*' file='Doc/LJCJoins.xml'/>
   static ToCollection(items)
   {
     let retJoins = new LJCJoins();
@@ -521,22 +516,22 @@ class LJCJoins
 
   // #region Data Class Methods
 
-  /// <summary>Creates a clone of this object.</summary>
-  /// <returns>The new cloned object.</returns>
+  // Creates a clone of this object.
+  /// <include path='members/Clone/*' file='Doc/LJCJoins.xml'/>
   Clone()
   {
     let retJoins = new LJCJoins();
 
-    let names = this.PropertyNames();
-    for (let index = 0; index < names.length; index++)
+    let count = this.#Items.length;
+    for (let index = 0; index < count; index++)
     {
       let join = this.#Items[index];
       if (join != null)
       {
-        retjoins.AddObject(join.Clone());
+        retJoins.AddObject(join.Clone());
       }
     }
-    return retjoins;
+    return retJoins;
   }
   // #endregion
 
@@ -554,51 +549,48 @@ class LJCJoins
     return retJoin;
   }
 
-  /// <summary>Adds the supplied column to the list.</summary>
-  /// <param name="dataColumn">The column object.</param>
+  // Adds the supplied column to the list.
+  /// <include path='items/AddObject/*' file='Doc/LJCJoins.xml'/>
   AddObject(join)
   {
     let methodName = "AddObject()";
 
     this.#Items.push(join);
-    this.Count = this.#Items.length;
-    this.ReadItems = Array.from(this.#Items);
+    this.#UpdateProperties();
     return join;
   }
 
-  /// <summary>Clears the collection list.</summary>
+  // Clears the collection list.
+  /// <include path='items/Clear/*' file='Doc/LJCJoins.xml'/>
   Clear()
   {
     this.#Items = [];
-    this.Count = this.#Items.length;
-    this.ReadItems = Array.from(this.#Items);
+    this.#UpdateProperties();
   }
 
-  // Removes the join object with the supplied values.
+  // Removes the the object which matches the data values.
   /// <include path='items/Remove/*' file='Doc/LJCJoins.xml'/>
   Remove(tableName, tableAlias = null)
   {
     let itemIndex = this.GetIndex(tableName, tableAlias);
     if (itemIndex > -1)
     {
-      let beginIndex = 0;
-      this.#Items.splice(beginIndex, itemIndex);
-      this.Count = this.#Items.length;
-      this.ReadItems = Array.from(this.#Items);
+      this.#Items.splice(itemIndex, 1);
+      this.#UpdateProperties();
     }
   }
 
-  // Retrieves the join on object with the supplied from column name.
+  // Retrieves the object which matches the data values.
   /// <include path='items/Retrieve/*' file='Doc/LJCJoins.xml'/>
   Retrieve(tableName, tableAlias = null)
   {
-    let retJoinOn = this.#Items.find(item =>
-      item.tableName == tableName
+    let retJoin = this.#Items.find(item =>
+      item.TableName == tableName
       && item.TableAlias == tableAlias);
-    return retJoinOn;
+    return retJoin;
   }
 
-  // Retrieves the join on object with the supplied index.
+  // Retrieves the object at the supplied index.
   /// <include path='items/RetrieveAtIndex/*' file='Doc/LJCJoins.xml'/>
   RetrieveAtIndex(index)
   {
@@ -611,20 +603,18 @@ class LJCJoins
     }
     return retJoin;
   }
+
+  // Updates the property values.
+  #UpdateProperties()
+  {
+    this.Count = this.#Items.length;
+    this.ReadItems = Array.from(this.#Items);
+  }
   // #endregion
 
   // #region Other Methods
 
-  // <summary>Returns the collection element count.</summary>
-  //Count()
-  //{
-  //  let retCount = 0;
-  //
-  //  retCount = this.#Items.length;
-  //  return retCount;
-  //}
-
-  // Gets the column object with the supplied values.
+  // Gets the index of the object which matches the data values.
   /// <include path='items/GetIndex/*' file='Doc/LJCJoins.xml'/>
   GetIndex(tableName, tableAlias = null)
   {
@@ -671,18 +661,18 @@ class LJCJoinOn
 
   // #region Static Methods
 
-  // Creates a new object with existing standard object values.
-  /// <include path='items/Copy/*' file='Doc/LJCJoinOn.xml'/>
+  // Creates a new object from simple object values.
+  /// <include path='members/Copy/*' file='Doc/LJCJoinOn.xml'/>
   static Copy(objJoinOn)
   {
     let retJoinOn = new LJCJoinOn();
 
-    // Look for properties of standard object in typed object.
+    // Look for properties of simple object in typed object.
     for (let propertyName in objJoinOn)
     {
       if (propertyName in retJoinOn)
       {
-        // Update new typed object properties from the standard object.
+        // Update new typed object properties from the simple object.
         retJoinOn[propertyName] = objJoinOn[propertyName];
       }
     }
@@ -707,8 +697,8 @@ class LJCJoinOn
 
   // #region Data Class Methods
 
-  /// <summary>Creates an object clone.</summary>
-  /// <returns>The new cloned object.</returns>
+  // Creates an object clone.
+  /// <include path='members/Clone/*' file='Doc/LJCJoinOn.xml'/>
   Clone()
   {
     let retJoinOn = new LJCJoinOn(this.FromColumnName, this.ToColumnName);
@@ -743,11 +733,8 @@ class LJCJoinOns
 
   // #region Static Methods
 
-  /// <summary>
-  ///   Create typed collection from deserialized JavasScript array.
-  /// </summary>
-  /// <param name="items">The items object.</param>
-  /// <returns>The collection></returns.
+  // Create typed collection from deserialized JavasScript array.
+  /// <include path='members/ToCollection/*' file='Doc/LJCJoinOns.xml'/>
   static ToCollection(items)
   {
     let retJoinOns = new LJCJoinOns();
@@ -770,29 +757,29 @@ class LJCJoinOns
 
   // #region Data Class Methods
 
-  /// <summary>Creates a clone of this object.</summary>
-  /// <returns>The new cloned object.</returns>
+  // Creates a clone of this object.
+  /// <include path='members/Clone/*' file='Doc/LJCJoinOns.xml'/>
   Clone()
   {
     let retJoinOns = new LJCJoinOns();
 
-    let names = this.PropertyNames();
-    for (let index = 0; index < names.length; index++)
+    const count = this.#Items.length;
+    for (let index = 0; index < count; index++)
     {
       let joinOn = this.#Items[index];
       if (joinOn != null)
       {
-        retjoinOns.AddObject(joinOn.Clone());
+        retJoinOns.AddObject(joinOn.Clone());
       }
     }
-    return retjoinOns;
+    return retJoinOns;
   }
   // #endregion
 
   // #region Collection Data Methods
 
   // Creates and adds the item to the list.
-  /// <include path='items/Add/*' file='Doc/LJCDataColumns.xml'/>
+  /// <include path='items/Add/*' file='Doc/LJCJoinOns.xml'/>
   Add(fromColumnName, toColumnName = null)
   {
     let methodName = "Add()";
@@ -803,41 +790,38 @@ class LJCJoinOns
     return retJoinOn;
   }
 
-  /// <summary>Adds the supplied item to the list.</summary>
-  /// <param name="joinOn">The JoinOn object.</param>
+  // Adds the supplied item to the list.
+  /// <include path='items/AddObject/*' file='Doc/LJCJoinOns.xml'/>
   AddObject(joinOn)
   {
     let methodName = "AddObject()";
 
     this.#Items.push(joinOn);
-    this.Count = this.#Items.length;
-    this.ReadItems = Array.from(this.#Items);
+    this.#UpdateProperties();
     return joinOn;
   }
 
-  /// <summary>Clears the collection list.</summary>
+  // Clears the collection list.
+  /// <include path='items/Clear/*' file='Doc/LJCJoinOns.xml'/>
   Clear()
   {
     this.#Items = [];
-    this.Count = this.#Items.length;
-    this.ReadItems = Array.from(this.#Items);
+    this.#UpdateProperties();
   }
 
-  // Removes the join on object with the supplied from Column name.
+  // Removes the the object which matches the data values.
   /// <include path='items/Remove/*' file='Doc/LJCJoinOns.xml'/>
   Remove(fromColumnName)
   {
     let itemIndex = this.GetIndex(fromColumnName);
     if (itemIndex > -1)
     {
-      let beginIndex = 0;
-      this.#Items.splice(beginIndex, itemIndex);
-      this.Count = this.#Items.length;
-      this.ReadItems = Array.from(this.#Items);
+      this.#Items.splice(itemIndex, 1);
+      this.#UpdateProperties();
     }
   }
 
-  // Retrieves the join on object with the supplied from column name.
+  // Retrieves the object which matches the data values.
   /// <include path='items/Retrieve/*' file='Doc/LJCJoinOns.xml'/>
   Retrieve(fromColumnName)
   {
@@ -846,7 +830,7 @@ class LJCJoinOns
     return retJoinOn;
   }
 
-  // Retrieves the join on object with the supplied index.
+  // Retrieves the object at the supplied index.
   /// <include path='items/RetrieveAtIndex/*' file='Doc/LJCJoinOns.xml'/>
   RetrieveAtIndex(index)
   {
@@ -859,12 +843,19 @@ class LJCJoinOns
     }
     return retJoinOn;
   }
+
+  // Updates the property values.
+  #UpdateProperties()
+  {
+    this.Count = this.#Items.length;
+    this.ReadItems = Array.from(this.#Items);
+  }
   // #endregion
 
   // #region Other Methods
 
-  // Gets the column object with the supplied property name.
-  /// <include path='items/GetIndex/*' file='Doc/LJCDataColumns.xml'/>
+  // Gets the index of the object which matches the data values.
+  /// <include path='items/GetIndex/*' file='Doc/LJCJoinOns.xml'/>
   GetIndex(fromColumnName)
   {
     let retIndex = -1;

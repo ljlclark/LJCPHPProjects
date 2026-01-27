@@ -134,12 +134,10 @@ class LJC
   {
     let retValue = false;
 
-    if (Array.isArray(arrValue))
+    if (Array.isArray(arrValue)
+      && arrValue.length > 0)
     {
-      if (arrValue.length > 0)
-      {
-        retValue = true;
-      }
+      retValue = true;
     }
     return retValue;
   }
