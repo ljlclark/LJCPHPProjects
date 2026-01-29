@@ -36,10 +36,12 @@
         $properties = get_object_vars($item);
         $retAttrib = new LJCAttribute();
 
+        // Look for properties of simple object in object.
         foreach ($properties as $name => $value)
         {
           if (property_exists($item, $name))
           {
+            // Update new object properties from the simple object.
             $retAttrib->$name = $value;
           }
         }
@@ -196,7 +198,6 @@
 
       $process = true;
 
-      // *** Begin ***
       // Merge new styles with existing styles.
       if ("style" == $key
         && $this->HasKey($key))
@@ -212,7 +213,6 @@
           }
         }
       }
-      // *** End ***
 
       if ($process)
       {
@@ -407,7 +407,7 @@
     // #region Constructor Methods - LJCTextBuilder
 
     // Initializes a class instance.
-    /// <include path='members/cstr/*' file='Doc/LJCTextBuilder.xml'/>
+    /// <include path='members/construct/*' file='Doc/LJCTextBuilder.xml'/>
     public function __construct(?LJCTextState $textState = null)
     {
       // Set logging values.

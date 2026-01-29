@@ -322,7 +322,7 @@ class LJCTextBuilder
   {
     this.#BuilderValue = "";
     this.IndentCharCount = 2;
-    this.setIndentCount(0);
+    this.#setIndentCount(0);
     if (textState != null)
     {
       this.AddIndent(textState.getIndentCount());
@@ -799,7 +799,7 @@ class LJCTextBuilder
   AddIndent(increment = 1)
   {
     let indentCount = this.getIndentCount() + increment;
-    this.setIndentCount(indentCount);
+    this.#setIndentCount(indentCount);
     return this.getIndentCount;
   }
 
@@ -863,26 +863,6 @@ class LJCTextBuilder
       retValue = true;
     }
     return retValue;
-  }
-  // #endregion
-
-  // #region Getters and Setters
-
-  // Gets the indent count.
-  /// <include path='items/getIndentCount/*' file='Doc/LJCTextBuidler.xml'/>
-  getIndentCount()
-  {
-    return this.#IndentCount;
-  }
-
-  // Sets the indent count.
-  /// <include path='items/setIndentCount/*' file='Doc/LJCTextBuidler.xml'/>
-  setIndentCount(count)
-  {
-    if (count >= 0)
-    {
-      this.#IndentCount = count;
-    }
   }
   // #endregion
 
@@ -957,7 +937,7 @@ class LJCTextBuilder
   {
     if (textState != null)
     {
-      this.setIndentCount(textState.getIndentCount());
+      this.#setIndentCount(textState.getIndentCount());
     }
   }
 
@@ -1026,6 +1006,25 @@ class LJCTextBuilder
       retText = text.substring(startIndex, nextLength);
     }
     return retText;
+  }
+  // #endregion
+
+  // #region Getters and Setters
+
+  // Gets the indent count.
+  /// <include path='members/getIndentCount/*' file='Doc/LJCTextBuidler.xml'/>
+  getIndentCount()
+  {
+    return this.#IndentCount;
+  }
+
+  // Sets the indent count.
+  #setIndentCount(count)
+  {
+    if (count >= 0)
+    {
+      this.#IndentCount = count;
+    }
   }
   // #endregion
 }

@@ -77,7 +77,10 @@ class LJCTextBuilderTest
   {
     const tb = new LJCTextBuilder();
     tb.Text("This is some text.");
+
+    // Example Method:
     const result = tb.ToString();
+
     const compare = "This is some text.";
     LJC.CheckValues("ToString()", result, compare);
   }
@@ -89,9 +92,13 @@ class LJCTextBuilderTest
   AddLine()
   {
     const tb = new LJCTextBuilder();
-    tb.AddLine("This is some text.");
+
+    // Example Method:
+    tb.AddLine("This is an appended line.");
+
+    tb.AddText(":");
     const result = tb.ToString();
-    const compare = "This is some text.\r\n";
+    const compare = "This is an appended line.\r\n:";
     LJC.CheckValues("AddLine()", result, compare);
   }
 
@@ -99,9 +106,12 @@ class LJCTextBuilderTest
   AddText()
   {
     const tb = new LJCTextBuilder();
-    tb.AddText("This is some text.");
+
+    // Example Method:
+    tb.AddText("This is some appended text.");
+
     const result = tb.ToString();
-    const compare = "This is some text.";
+    const compare = "This is some appended text.";
     LJC.CheckValues("AddText()", result, compare);
   }
   // #endregion
@@ -256,7 +266,7 @@ class LJCTextBuilderTest
     const border = 1; // Default
     const borderspacing = 0; // Default
     const cellpadding = 2; // Default
-    let attribs = tb.TableAttribs(border, borderspacing, cellpadding
+    const attribs = tb.TableAttribs(border, borderspacing, cellpadding
       , className, id);
     const result = tb.GetAttribs(attribs, textState);
     let compare = " id=\"idValue\" class=\"styleClass\"\r\n";
@@ -395,7 +405,17 @@ class LJCTextBuilderTest
   // Checks if the text can start with a newline.
   StartWithNewLine()
   {
+    const tb = new LJCTextBuilder();
+    tb.Text("First Line");
+    const allowNewLine = true;
+    let result = tb.StartWithNewLine(allowNewLine);
+    let compare = true;
+    LJC.CheckValues("StartWithNewLine()", result, compare);
 
+    tb.Line();
+    result = tb.StartWithNewLine(allowNewLine);
+    compare = false;
+    LJC.CheckValues("StartWithNewLine()", result, compare);
   }
   // #endregion
 
@@ -405,7 +425,8 @@ class LJCTextBuilderTest
   getIndentCount()
   {
     const textBuilder = new LJCTextBuilder();
-    textBuilder.setIndentCount(2);
+    //textBuilder.setIndentCount(2);
+    textBuilder.AddIndent(2);
     const result = textBuilder.getIndentCount();
     const compare = 2;
     LJC.CheckValues("getIndentCount()", result, compare);
@@ -415,7 +436,8 @@ class LJCTextBuilderTest
   setIndentCount()
   {
     const textBuilder = new LJCTextBuilder();
-    textBuilder.setIndentCount(2);
+    //textBuilder.setIndentCount(2);
+    textBuilder.AddIndent(2);
     const result = textBuilder.getIndentCount();
     const compare = 2;
     LJC.CheckValues("setIndentCount()", result, compare);
