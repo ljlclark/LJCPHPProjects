@@ -1,0 +1,15 @@
+The LibName: XML comment triggers the file (library) HTML page generation.
+It generates a page with the same name as the library.
+LJCTextBuilderLib.html
+
+A class definition triggers the class HTML page generation.
+It generates a page with the same name as the class.
+LJCAttribute/LJCAttribute.html
+
+A method definition triggers the method HTML page generation.
+It generates a page with the name: class plus method.
+LJCAttribute/LJCAttributeCopy.html
+
+A property definition triggers the property HTML page generation.
+It generates a page with the same name as the class plus property.
+LJCAttribute/LJCAttribute$Name.html

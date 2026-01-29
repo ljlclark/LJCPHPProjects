@@ -17,6 +17,16 @@
     <summary>
       Represents a built string value.
     </summary>
+    /// <group name="Constructor">Constructor Methods</group>
+    /// <group name="DataClass">Data Class Methods</group>
+    /// <group name="AddText">Add Text</group>
+    /// <group name="AppendText">Append Text</group>
+    /// <group name="GetText">Get Text</group>
+    /// <group name="OtherGetText">Other Get Text</group>
+    /// <group name="GetAttribs">Get Attribs</group>
+    /// <group name="AppendElement">Append Element</group>
+    /// <group name="GetElement">Get Element</group>
+    /// <group name="Other">Other Methods</group>
     <remarks>
       The LJCTextBuilder class is designed for creating text. It can also be
       used to create HTML and XML text.
@@ -101,6 +111,7 @@
       Initializes a class instance.
     </summary>
     <param name="textState">The text state object.</param>
+    <ParentGroup>Constructor</ParentGroup>
     <code>
       const tb = new LJCTextBuilder();
       const result = tb.IndentCharCount;
@@ -116,6 +127,7 @@
       Gets the built string.
     </summary>
     <returns>The HTML text.</returns>
+    <ParentGroup>DataClass</ParentGroup>
     <code>
       const tb = new LJCTextBuilder();
       tb.Text("This is some text.");
@@ -135,6 +147,7 @@
     </summary>
     <param name="text">The add text.</param>
     <returns>The added text line.</returns>
+    <ParentGroup>AddText</ParentGroup>
     <remarks>
       AddLine() is an "Append" method. It adds the unmodified text line to the
       builder.
@@ -159,6 +172,7 @@
     </summary>
     <param name="$text">The add text.</param>
     <returns>The added text.</returns>
+    <ParentGroup>AddText</ParentGroup>
     <remarks>
       AddText() is an "Append" method. It adds the unmodified text to the
       builder.
@@ -185,6 +199,7 @@
     <param name="$addIndent">Indicates if the element can be indented.</param>
     <param name="$allowNewLine">Indicates if a new line can be added.</param>
     <returns>The potentially indented and wrapped new text value.</returns>
+    <ParentGroup>AppendText</ParentGroup>
     <remarks>
       Line() is an "Append" method. It creates the text with GetText() and adds
       a new line after the text. The text is then added to the builder.
@@ -223,6 +238,7 @@
     <param name="$addIndent">Indicates if the element can be indented.</param>
     <param name="$allowNewLine">Indicates if a new line can be added.</param>
     <returns>The potentially indented and wrapped new text value.</returns>
+    <ParentGroup>AppendText</ParentGroup>
     <remarks>
       Text() is an "Append" method. It creates the text with GetText() and adds
       it to the builder.&lt;br /&gt;
@@ -261,6 +277,7 @@
     <param name="$addIndent">Indicates if the element can be indented.</param>
     <param name="$allowNewLine">Indicates if a new line can be added.</param>
     <returns>The potentially indented and wrapped new text value.</returns>
+    <ParentGroup>GetText</ParentGroup>
     <remarks>
       GetLine() is a "Get Text" method. It creates and returns the potentially
       indented and wrapped text. It will start the returned text with a new line
@@ -308,6 +325,7 @@
     <param name="$addIndent">Indicates if the element can be indented.</param>
     <param name="$allowNewLine">Indicates if a new line can be added.</param>
     <returns>The potentially indented and wrapped new text value.</returns>
+    <ParentGroup>GetText</ParentGroup>
     <remarks>
       GetText() is a "Get Text" method. It creates and returns the potentially
       indented and wrapped text. It will start the returned text with a new line
@@ -350,6 +368,7 @@
     </summary>
     <param name="$text">The add text.</param>
     <returns>The potentially indented new text value.</returns>
+    <ParentGroup>OtherGetText</ParentGroup>
     <code>
       $tb = new LJCTextBuilder();
 
@@ -373,6 +392,7 @@
       Returns the current indent string.
     </summary>
     <returns>The current indent string.</returns>
+    <ParentGroup>OtherGetText</ParentGroup>
     <code>
       $tb = new LJCTextBuilder();
 
@@ -395,6 +415,7 @@
     </summary>
     <param name="$text">The text value.</param>
     <returns>The wrapped string.</returns>
+    <ParentGroup>OtherGetText</ParentGroup>
     <remarks>
       Creates new wrapped line if combined line > LineLimit.
     </remarks>
@@ -425,6 +446,7 @@
     <param name="$className">The class attribute.</param>
     <param name="$id">The id attribute.</param>
     <returns>The common element attributes collection.</returns>
+    <ParentGroup>GetAttribs</ParentGroup>
     <code>
       // Root Method Begin
       $textState = new LJCTextState();
@@ -449,6 +471,7 @@
     <param name="$htmlAttribs">The attributes collection.</param>
     <param name="$textState">The current text state values.</param>
     <returns>The attributes text.</returns>
+    <ParentGroup>GetAttribs</ParentGroup>
     <remarks>
       The returned text does not end with a new line. This allows for additions
       after the text.&lt;br /&gt;
@@ -477,6 +500,7 @@
       Creates the HTML element attributes.
     </summary>
     <returns>The HTML element attributes.</returns>
+    <ParentGroup>GetAttribs</ParentGroup>
     <code>
       // Root Method Begin
       $textState = new LJCTextState();
@@ -497,6 +521,7 @@
       Creates the XML element attributes.
     </summary>
     <returns>The XML start element attributes.</returns>
+    <ParentGroup>GetAttribs</ParentGroup>
     <code>
       // Root Method Begin
       $textState = new LJCTextState();
@@ -523,6 +548,7 @@
     <param name="$className">The class attribute.</param>
     <param name="$id">The id attribute.</param>
     <returns>The common table attributes.</returns>
+    <ParentGroup>GetAttribs</ParentGroup>
     <code>
       // Root Method Begin
       $textState = new LJCTextState();
@@ -558,6 +584,7 @@
       Indicates if the child elements should be indented.
     </param>
     <returns>The added element begin tag.</returns>
+    <ParentGroup>AppendElement</ParentGroup>
     <remarks>
       Begin() is an "Append Element" method. It creates the element opening tag
       with GetCreate() and adds it to the builder.
@@ -596,6 +623,7 @@
     <param name="$isEmpty">Indicates if an empty element.</param>
     <param name="$close">Indicates if the element will be closed.</param>
     <returns>The added HTML element.</returns>
+    <ParentGroup>AppendElement</ParentGroup>
     <remarks>
       Create() is an "Append Element" method. It creates the element text with
       GetCreate() and adds it to the builder.
@@ -626,6 +654,7 @@
       Indicates if the element can be indented.
     </param>
     <returns>The added element end tag.</returns>
+    <ParentGroup>AppendElement</ParentGroup>
     <remarks>
       End() is an "Append Element" method. It creates the element text with
       GetEnd() and adds it to the builder.<br />
@@ -662,6 +691,7 @@
       Indicates if the child indent should be applied.
     </param>"
     <returns>The HTML element begin tag.</returns>
+    <ParentGroup>GetElement</ParentGroup>
     <remarks>
       GetBegin() is an "Get Text" method which creates the element opening tag
       with GetCreate() and returns the text value.&lt;br /&gt;
@@ -703,6 +733,7 @@
     <param name="$isEmpty">Indicates if an empty element.</param>
     <param name="$close">Indicates if the element will be closed.</param>
     <returns>The HTML element.</returns>
+    <ParentGroup>GetElement</ParentGroup>
     <remarks>
       GetCreate() is a "Get Text" method which creates the element or element
       opening tag and returns the text value. It is called from other element
@@ -740,6 +771,7 @@
       Indicates if the element can be indented.
     </param>
     <returns>The element end tag.</returns>
+    <ParentGroup>GetElement</ParentGroup>
     <remarks>
       GetEnd() is a "GetText" method which creates the element closing tag
       and returns the text value.
@@ -765,6 +797,7 @@
     </summary>
     <param name="$createText">The previously created text.</param>
     <param name="$textState">The text state object.</param>
+    <ParentGroup>Other</ParentGroup>
     <remarks>
       Adds an indent for following child elements.&lt;br /&gt;
       The indent will only be added if the createText length &gt; 0 and the
@@ -809,6 +842,7 @@
       The amount to increment or decrement the indent count.
     </param>
     <returns>The current indent count.</returns>
+    <ParentGroup>Other</ParentGroup>
     <code>
       $tb = new LJCTextBuilder();
 
@@ -847,6 +881,7 @@
     <returns>
       true if builder text ends with a newline; otherwise false.
     </returns>
+    <ParentGroup>Other</ParentGroup>
     <code>
       $tb = new LJCTextBuilder();
 
@@ -863,6 +898,7 @@
       Gets a current LJCTextState object.
     </summary>
     <returns>An LJCTextState object.</returns>
+    <ParentGroup>Other</ParentGroup>
     <code>
       $tb = new LJCTextBuilder();
 
@@ -879,6 +915,7 @@
       Indicates if the builder has text.
     </summary>
     <returns>true if builder has text; otherwise false.</returns>
+    <ParentGroup>Other</ParentGroup>
     <code>
       $textState = new LJCTextState();
       $tb = new LJCTextBuilder();
@@ -896,6 +933,7 @@
       Gets the current indent length.
     </summary>
     <returns>The current indent length.</returns>
+    <ParentGroup>Other</ParentGroup>
     <code>
       $tb = new LJCTextBuilder();
 
@@ -914,6 +952,7 @@
     </summary>
     <param name="$allowNewLine">Indicates if a new line can be added.</param>
     <returns>true if allowed to start with a newline; otherwise false.</returns>
+    <ParentGroup>Other</ParentGroup>
     <code>
       $tb = new LJCTextBuilder();
 
@@ -926,4 +965,11 @@
       // "false"
     </code>
   </StartWithNewLine>
+  
+  <!-- Getters and Setters -->
+  <getIndentCount>
+    <summary>
+      Gets the indent count.
+    </summary>
+  </getIndentCount>
 </members>

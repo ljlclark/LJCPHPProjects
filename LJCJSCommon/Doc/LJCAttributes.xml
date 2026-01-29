@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright(c) Lester J. Clark and Contributors. -->
+<!-- Licensed under the MIT License. -->
+<!-- LJCAttributes.xml -->
+<members>
+  <LJCAttributes>
+    <summary>
+      Represents a collection of node or element attributes.
+    </summary>
+    <group name="Static">Static Methods</group>
+    <group name="Constructor">Constructor Methods</group>
+    <group name="Collection">Collection Methods</group>
+    <group name="Other">Other Methods</group>
+  </LJCAttributes>
+  
+  <!-- Static Methods -->
+  <ToCollection>
+    <summary>
+      Creates a typed collection from an array of objects.
+    </summary>
+    <param name="$items">The object array.</param>
+    <returns>The LJCAttributes collection.</returns>
+    <ParentGroup>Static</ParentGroup>
+  </ToCollection>
+  
+  <!-- Constructor Methods -->
+  <construct>
+    <summary>
+      Initializes an object instance.
+    </summary>
+    <ParentGroup>Constructor</ParentGroup>
+  </construct>
+  
+  <!-- Collection Methods -->
+  <Add>
+    <summary>
+      Creates an object and adds it to the collection.
+    </summary>
+    <param name="$name">The item name.</param>
+    <param name="$value">The item value.</param>
+    <param name="$key">The optional item key.</param>
+    <returns>The LJCAttributes collection.</returns>
+    <ParentGroup>Collection</ParentGroup>
+  </Add>
+  <AddObject>
+    <summary>
+      Adds an object and key value.
+    </summary>
+    <param name="$attrib">The item object.</param>
+    <param name="$key">The optional item key.</param>
+    <returns>The LJCAttribute object.</returns>
+    <ParentGroup>Collection</ParentGroup>
+  </AddObject>
+  <Append>
+    <summary>
+      Appends items.
+    </summary>
+    <param name="$attribs">The item objects.</param>
+    <ParentGroup>Collection</ParentGroup>
+  </Append>
+  <Remove>
+    <summary>
+      Removes the item by Key value.
+    </summary>
+    <param name="$key">The optional item key.</param>
+    <param name="$throwError">The optional throw error flag.</param>
+    <ParentGroup>Collection</ParentGroup>
+  </Remove>
+  <Retrieve>
+    <summary>
+      Gets an item by key.
+    </summary>
+    <param name="$key">The optional item key.</param>
+    <returns>The retrieved item.</returns>
+    <ParentGroup>Collection</ParentGroup>
+  </Retrieve>
+  
+  <!-- Other Methods -->
+  <MergeStyle>
+    <summary>
+      Merges "style" attrib rules.
+    </summary>
+    <param name="$existingAttrib">The existing style attribute.</param>
+    <param name="$newAttrib">The new style attribute.</param>
+    <returns>The merged style attributes.</returns>
+    <ParentGroup>Other</ParentGroup>
+  </MergeStyle>
+</members>

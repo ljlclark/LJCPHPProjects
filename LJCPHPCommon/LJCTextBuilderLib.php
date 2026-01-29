@@ -12,36 +12,17 @@
   // LJCCollectionLib: LJCCollectionBase
 
   // The Text Builder Class Library
-  /// <include path='items/LJCTextBuilderLib/*' file='Doc/LJCTextBuilder.xml'/>
-  
-  // The LibName: XML comment triggers the file (library) HTML page generation.
-  // It generates a page with the same name as the library.
-  // LJCTextBuilderLib.html
+  /// <include path='members/LJCTextBuilderLib/*' file='Doc/LJCTextBuilder.xml'/>
   /// LibName: LJCTextBuilderLib
-  //  Classes: LJCAttribute, LJCAttributes, LJCTextBuilder, LJCTextState
 
-  // ********************
   // Represents a node or element attribute.
-  /// <include path='items/LJCAttribute/*' file='Doc/LJCAttribute.xml'/>
-  /// <group name="Static">Static Methods</group>
-  //    Copy()
-  /// <group name="Constructor">Constructor Methods</group>
-
-  // A class triggers the class HTML page generation.
-  // It generates a page with the same name as the class.
-  // LJCAttribute/LJCAttribute.html
+  /// <include path='members/LJCAttribute/*' file='Doc/LJCAttribute.xml'/>
   class LJCAttribute
   {
-    // ---------------
-    // Static Methods - LJCAttribute
+    // #region Static Methods - LJCAttribute
 
     // Creates a typed data object from a standard object.
-    /// <include path='items/Copy/*' file='Doc/LJCAttribute.xml'/>
-    /// <ParentGroup>Static</ParentGroup>
-
-    // A method triggers the method HTML page generation.
-    // It generates a page with the name: class plus method.
-    // LJCAttribute/LJCAttributeCopy.html
+    /// <include path='members/Copy/*' file='Doc/LJCAttribute.xml'/>
     public static function Copy($item)
     {
       // Static method output logging.
@@ -65,13 +46,12 @@
       }
       return $retAttrib;
     } // Copy()
+    // #endregion
 
-    // ---------------
-    // Constructor Methods - LJCAttribute
+    // #region Constructor Methods - LJCAttribute
 
     // Initializes an object instance.
-    /// <include path='items/construct/*' file='Doc/LJCAttribute.xml'/>
-    /// <ParentGroup>Constructor</ParentGroup>
+    /// <include path='members/construct/*' file='Doc/LJCAttribute.xml'/>
     public function __construct(string $name = null, string $value = null)
     {
       // Set logging values.
@@ -88,7 +68,7 @@
 
       $this->Name = $name;
       $this->Value = $value;
-    } // __construct()
+    } // construct()
 
     // Add to logging property.
     private function AddLogText(int $lineNumber, $methodName, $valueName
@@ -98,38 +78,37 @@
       $this->LogText .= LJC::OutputDebugObject($lineNumber, $this->ClassName
         , $methodName, $valueName, $value);
     } // AddLogText()
+    // #endregion
+    
+    // #region Data Class Methods - LJCAttribute
 
-    // ---------------
-    // Properties - LJCAttribute
+    // Creates an object clone.
+    /// <include path='members/Clone/*' file='Doc/LJCAttribute.xml'/>
+    public function Clone()
+    {
+      $retAttrib = new LJCAttribute($this.Name, $this.Value);
+      return $retAttrib;
+    } // Clone()
+    // #endregion
+
+    // #region Properties - LJCAttribute
 
     /// <summary>The item name.</summary>
-    // A property triggers the property HTML page generation.
-    // It generates a page with the same name as the class plus property.
-    // LJCAttribute/LJCAttribute$Name.html
     public ?string $Name;
 
     /// <summary>The item value.</summary>
     public ?string $Value;
-  }
+    // #endregion
+  } // LJCAttribute
 
-  // ********************
   // Represents a collection of node or element attributes.
-  /// <include path='items/LJCAttributes/*' file='Doc/LJCAttributes.xml'/>
-  /// <group name="Static">Static Methods</group>
-  //    ToCollection()
-  /// <group name="Constructor">Constructor Methods</group>
-  /// <group name="Collection">Collection Methods</group>
-  //    Add(), AddObject(), Append(), Remove(), Retrieve()
-  /// <group name="Other">Other Methods</group>
-  //    MergeStyle()
+  /// <include path='members/LJCAttributes/*' file='Doc/LJCAttributes.xml'/>
   class LJCAttributes extends LJCCollectionBase
   {
-    // ---------------
-    // Static Methods - LJCAttributes
+    // #region Static Methods - LJCAttributes
 
     // Creates a typed collection from an array of objects.
-    /// <include path='items/ToCollection/*' file='Doc/LJCAttributes.xml'/>
-    /// <ParentGroup>Static</ParentGroup>
+    /// <include path='members/ToCollection/*' file='Doc/LJCAttributes.xml'/>
     public static function ToCollection(array $items)
     {
       // Static method output logging.
@@ -150,14 +129,13 @@
         }
       }
       return $retAttributes;
-    }
+    } // ToCollection()
+    // #endregion
 
-    // ---------------
-    // Constructor Methods - LJCAttributes
+    // #region Constructor Methods - LJCAttributes
 
     // Initializes an object instance.
-    /// <include path='items/construct/*' file='Doc/LJCAttributes.xml'/>
-    /// <ParentGroup>Constructor</ParentGroup>
+    /// <include path='members/construct/*' file='Doc/LJCAttributes.xml'/>
     public function __construct()
     {
       // Set logging values.
@@ -171,7 +149,7 @@
       $this->LogText = "";
       //$this->AddLogText(__line__, $this->ClassName, $methodName, "\$value"
       //  , $value);
-    }
+    } // construct()
 
     // Add to logging property.
     private function AddLogText(int $lineNumber, $methodName, $valueName
@@ -182,13 +160,12 @@
       $this->LogText .= LJC::OutputDebugObject($lineNumber, $this->ClassName
         , $methodName, $valueName, $value);
     } // AddLogText()
+    // #endregion
 
-    // ----------
-    // Collection Methods - LJCAttributes
+    // #region Collection Methods - LJCAttributes
 
     // Creates an object and adds it to the collection.
-    /// <include path='items/Add/*' file='Doc/LJCAttributes.xml'/>
-    /// <ParentGroup>Collection</ParentGroup>
+    /// <include path='members/Add/*' file='Doc/LJCAttributes.xml'/>
     public function Add(string $name, string $value = null, $key = null)
       : ?LJCAttribute
     {
@@ -203,11 +180,10 @@
       $item = new LJCAttribute($name, $value);
       $retValue = $this->AddObject($item, $key);
       return $retValue;
-    }
+    } // Add()
 
     // Adds an object and key value.
-    /// <include path='items/AddObject/*' file='Doc/LJCAttributes.xml'/>
-    /// <ParentGroup>Collection</ParentGroup>
+    /// <include path='members/AddObject/*' file='Doc/LJCAttributes.xml'/>
     public function AddObject(LJCAttribute $attrib, $key = null): ?LJCAttribute
     {
       $methodName = "AddObject";
@@ -246,28 +222,25 @@
     }// AddObject()
 
     // Appends items.
-    /// <include path='items/Append/*' file='Doc/LJCAttributes.xml'/>
-    /// <ParentGroup>Collection</ParentGroup>
+    /// <include path='members/Append/*' file='Doc/LJCAttributes.xml'/>
     public function Append(LJCAttributes $attribs): void
     {
       foreach ($attribs as $attrib)
       {
         $this->AddObject($attrib);
       }
-    }
+    } // Append()
 
     // Removes the item by Key value.
-    /// <include path='items/Remove/*' file='Doc/LJCAttributes.xml'/>
-    /// <ParentGroup>Collection</ParentGroup>
+    /// <include path='members/Remove/*' file='Doc/LJCAttributes.xml'/>
     public function Remove($key, bool $throwError = true): void
     {
       // DeleteItem() is in LJCCollectionBase.
       $this->DeleteItem($key, $throwError);
-    }
+    } // Remove()
 
     // Gets an item by key.
-    /// <include path='items/Retrieve/*' file='Doc/LJCAttributes.xml'/>
-    /// <ParentGroup>Collection</ParentGroup>
+    /// <include path='members/Retrieve/*' file='Doc/LJCAttributes.xml'/>
     public function Retrieve($key)
     {
       $retValue = null;
@@ -275,14 +248,13 @@
       // RetrieveItem() is in LJCCollectionBase.
       $retValue = $this->RetrieveItem($key);
       return $retValue;
-    }
+    } // Retrieve()
+    // #endregion
 
-    // ----------
-    // Other Methods - LJCAttributes
+    // #region Other Methods - LJCAttributes
 
     // Merges "style" attrib rules.
-    /// <include path='items/MergeStyle/*' file='Doc/LJCAttributes.xml'/>
-    /// <ParentGroup>Other</ParentGroup>
+    /// <include path='members/MergeStyle/*' file='Doc/LJCAttributes.xml'/>
     public function MergeStyle($existingAttrib, $newAttrib)
     {
       $methodName = "MergeStyle";
@@ -312,7 +284,7 @@
             if ($newRule != null)
             {
               $values = explode(":", $newRule);
-              $index = $this->FindRuleIndex($newRules, $property);
+              $index = $this->GetRuleIndex($newRules, $property);
               unset($newRules[index]);
             }
 
@@ -335,10 +307,10 @@
         }
       }
       return $retMergedRules;
-    }
+    } // MergeStyle()
+    // #endregion
 
-    // ----------
-    // Private Methods - LJCAttributes
+    // #region Private Methods - LJCAttributes
 
     // Trims element value or if null, returns null.
     private static function TrimElement($values, $index)
@@ -356,7 +328,7 @@
         }
       }
       return $retValue;
-    }
+    } // TrimElement()
 
     // Finds the rule with the supplied property name.
     private function FindRule($rules, $property)
@@ -375,7 +347,7 @@
         }
       }
       return $retRule;
-    }
+    } // FindRule()
 
     // Finds the rule index with the supplied property name.
     private function GetRuleIndex($rules, $property)
@@ -394,7 +366,7 @@
         }
       }
       return $retIndex;
-    }
+    } // GetRuleIndex()
 
     // Returns the existing value if only one exists.
     // Otherwise returns an empty string.
@@ -414,49 +386,28 @@
         $retRules = $existingAttrib->Value;
       }
       return $retRules;
-    }
+    } // SingleValue()
+    // #endregion
 
-    // ----------
-    // Properties - LJCAttributes
+    // #region Properties - LJCAttributes
 
     /// <summary>The class name for debugging.</summary>
     public string $ClassName;
 
     /// <summary>The debug text.</summary>
     public string $LogText;
-  }
+    // #endregion
+  } // LJCAttributes
 
   // ********************
   // Represents a built string value.
-  /// <include path='items/LJCTextBuilder/*' file='Doc/LJCTextBuilder.xml'/>
-  /// <group name="Constructor">Constructor Methods</group>
-  /// <group name="DataClass">Data Class Methods</group>
-  //    ToString()
-  /// <group name="AddText">Add Text</group>
-  //    AddLine(), AddText(), Line(), Text()
-  /// <group name="AppendText">Append Text</group>
-  //    Line(), Text()
-  /// <group name="GetText">Get Text</group>
-  //    GetLine(), GetText()
-  /// <group name="OtherGetText">Other Get Text</group>
-  //    GetIndented(), GetIndentString(), GetWrapped()
-  /// <group name="GetAttribs">Get Attribs</group>
-  //    Attribs(), GetAttribs(), StartAttribs(), StartXMLAttribs(), TableAttribs()
-  /// <group name="AppendElement">Append Element</group>
-  //    Begin(), Create(), End()
-  /// <group name="GetElement">Get Element</group>
-  //    GetBegin(), GetCreate(), GetEnd()
-  /// <group name="Other">Other Methods</group>
-  //    AddChildIndent(), AddIndent(), EndsWithNewLine(), GetTextState(),
-  //    HasText(), IndentLength(), StartWithNewLine()
+  /// <include path='members/LJCTextBuilder/*' file='Doc/LJCTextBuilder.xml'/>
   class LJCTextBuilder
   {
-    // ----------
-    // Constructor Methods - LJCTextBuilder
+    // #region Constructor Methods - LJCTextBuilder
 
     // Initializes a class instance.
-    /// <include path='items/cstr/*' file='Doc/LJCTextBuilder.xml'/>
-    /// <ParentGroup>Constructor</ParentGroup>
+    /// <include path='members/cstr/*' file='Doc/LJCTextBuilder.xml'/>
     public function __construct(?LJCTextState $textState = null)
     {
       // Set logging values.
@@ -481,7 +432,7 @@
       $this->LineLength = 0;
       $this->LineLimit = 80;
       $this->WrapEnabled = false;
-    } // __construct()
+    } // construct()
 
     // Add to logging property.
     private function AddLogText(int $lineNumber, $methodName, $valueName
@@ -492,24 +443,22 @@
       $this->LogText .= LJC::OutputDebugObject($lineNumber, $this->ClassName
         , $methodName, $valueName, $value);
     } // AddLogText()
+    // #endregion
 
-    // ----------
-    // Data Class Methods - LJCTextBuilder
+    // #region Data Class Methods - LJCTextBuilder
 
     // Gets the built string.
-    /// <include path='items/ToString/*' file='Doc/LJCTextBuilder.xml'/>
-    /// <ParentGroup>DataClass</ParentGroup>
+    /// <include path='members/ToString/*' file='Doc/LJCTextBuilder.xml'/>
     public function ToString(): string
     {
       return $this->BuilderValue;
     } // ToString()
+    // #endregion
 
-    // ----------
-    // Add Text Methods - LJCTextBuilder
+    // #region Add Text Methods - LJCTextBuilder
     
     // Appends a text line without modification.
-    /// <include path='items/AddLine/*' file='Doc/LJCTextBuilder.xml'/>
-    /// <ParentGroup>AddText</ParentGroup>
+    /// <include path='members/AddLine/*' file='Doc/LJCTextBuilder.xml'/>
     public function AddLine(string $text = null): string
     {
       $methodName = "Add";
@@ -517,11 +466,10 @@
 
       $this->BuilderValue .= $retText;
       return $retText;
-    }
+    } // AddLine()
 
     // Appends text without modification.
-    /// <include path='items/AddText/*' file='Doc/LJCTextBuilder.xml'/>
-    /// <ParentGroup>AddText</ParentGroup>
+    /// <include path='members/AddText/*' file='Doc/LJCTextBuilder.xml'/>
     public function AddText(string $text): void
     {
       $methodName = "AddText";
@@ -530,14 +478,13 @@
       {
         $this->BuilderValue .= $text;
       }
-    }
+    } // AddText()
+    // #endregion
 
-    // ----------
-    // Append Text Methods - LJCTextBuilder
+    // #region Append Text Methods - LJCTextBuilder
 
     // Appends a potentially indented text line to the builder.
-    /// <include path='items/Line/*' file='Doc/LJCTextBuilder.xml'/>
-    /// <ParentGroup>AppendText</ParentGroup>
+    /// <include path='members/Line/*' file='Doc/LJCTextBuilder.xml'/>
     public function Line(?string $text = null, bool $addIndent = true
       , bool $allowNewLine = true): string
     {
@@ -546,11 +493,10 @@
 
       $this->BuilderValue .= $retText;
       return $retText;
-    }
+    } // Line()
 
     // Appends the potentially indented text.
-    /// <include path='items/Text/*' file='Doc/LJCTextBuilder.xml'/>
-    /// <ParentGroup>AppendText</ParentGroup>
+    /// <include path='members/Text/*' file='Doc/LJCTextBuilder.xml'/>
     public function Text(string $text, bool $addIndent = true
       , bool $allowNewLine = true): string
     {
@@ -562,14 +508,13 @@
         $this->BuilderValue .= $retText;
       }
       return $retText;
-    }
+    } // Text()
+    // #endregion
 
-    // ----------
-    // Get Text Methods - LJCTextBuilder
+    // #region Get Text Methods - LJCTextBuilder
 
     // Gets a modified text line.
-    /// <include path='items/GetLine/*' file='Doc/LJCTextBuilder.xml'/>
-    /// <ParentGroup>GetText</ParentGroup>
+    /// <include path='members/GetLine/*' file='Doc/LJCTextBuilder.xml'/>
     public function GetLine(string $text = null, bool $addIndent = true
       , bool $allowNewLine = true): string
     {
@@ -578,11 +523,10 @@
 
       $retLine .= "\r\n";
       return $retLine;
-    }
+    } // GetLine()
 
     // Gets the potentially indented and wrapped text.
-    /// <include path='items/GetText/*' file='Doc/LJCTextBuilder.xml'/>
-    /// <ParentGroup>GetText</ParentGroup>
+    /// <include path='members/GetText/*' file='Doc/LJCTextBuilder.xml'/>
     public function GetText(?string $text, bool $addIndent = true
       , bool $allowNewLine = true): string
     {
@@ -622,14 +566,13 @@
         }
       }
       return $retText;
-    }
+    } // GetText()
+    // #endregion
 
-    // ----------
-    // Other Get Text Methods - LJCTextBuilder
+    // #region Other Get Text Methods - LJCTextBuilder
 
     // Gets a new potentially indented line.
-    /// <include path='items/GetIndented/*' file='Doc/LJCTextBuilder.xml'/>
-    /// <ParentGroup>OtherGetText</ParentGroup>
+    /// <include path='members/GetIndented/*' file='Doc/LJCTextBuilder.xml'/>
     public function GetIndented(string $text): string
     {
       $methodName = "GetIndented";
@@ -642,21 +585,19 @@
         $retText .= $text;
       }
       return $retText;
-    }
+    } // GetIndented()
 
     // Gets the current indent string.
-    /// <include path='items/GetIndentString/*' file='Doc/LJCTextBuilder.xml'/>
-    /// <ParentGroup>OtherGetText</ParentGroup>
+    /// <include path='members/GetIndentString/*' file='Doc/LJCTextBuilder.xml'/>
     public function GetIndentString(): string
     {
       $methodName = "GetIndentString";
       $retValue = str_repeat(" ", $this->IndentLength());
       return $retValue;
-    }
+    } // GetIndentString()
 
     // Appends added text and new wrapped line.
-    /// <include path='items/GetWrapped/*' file='Doc/LJCTextBuilder.xml'/>
-    /// <ParentGroup>OtherGetText</ParentGroup>
+    /// <include path='members/GetWrapped/*' file='Doc/LJCTextBuilder.xml'/>
     public function GetWrapped(string $text): string
     {
       $methodName = "GetWrapped";
@@ -720,14 +661,13 @@
         $retText = $buildText;
       }
       return $retText;
-    }
+    } // GetWrapped()
+    // #endregion
 
-    // ----------
-    // Get Attribs Methods - LJCTextBuilder
+    // #region Get Attribs Methods - LJCTextBuilder
 
     // Gets common element attributes.
-    /// <include path='items/Attribs/*' file='Doc/LJCTextBuilder.xml'/>
-    /// <ParentGroup>GetAttribs</ParentGroup>
+    /// <include path='members/Attribs/*' file='Doc/LJCTextBuilder.xml'/>
     public function Attribs(string $className = null, string $id = null)
       : LJCAttributes
     {
@@ -745,11 +685,10 @@
 
       $this->LogText .= $retAttribs->LogText;
       return $retAttribs;
-    }
+    } // Attribs()
 
     // Gets the attributes text.
-    /// <include path='items/GetAttribs/*' file='Doc/LJCTextBuilder.xml'/>
-    /// <ParentGroup>GetAttribs</ParentGroup>
+    /// <include path='members/GetAttribs/*' file='Doc/LJCTextBuilder.xml'/>
     public function GetAttribs(?LJCAttributes $attribs, LJCTextState $textState)
       : string
     {
@@ -788,11 +727,10 @@
         $retText = $tb->ToString();
       }
       return $retText;
-    }
+    } // GetAttribs()
 
     // Creates the HTML element attributes.
-    /// <include path='items/StartAttribs/*' file='Doc/LJCTextBuilder.xml'/>
-    /// <ParentGroup>GetAttribs</ParentGroup>
+    /// <include path='members/StartAttribs/*' file='Doc/LJCTextBuilder.xml'/>
     public function StartAttribs(): LJCAttributes
     {
       $methodName = "StartAttribs";
@@ -803,11 +741,10 @@
 
       $this->LogText .= $retAttribs->LogText;
       return $retAttribs;
-    }
+    } // StartAttribs()
 
     // Creates the XML element attributes.
-    /// <include path='items/StartXMLAttribs/*' file='Doc/LJCTextBuilder.xml'/>
-    /// <ParentGroup>GetAttribs</ParentGroup>
+    /// <include path='members/StartXMLAttribs/*' file='Doc/LJCTextBuilder.xml'/>
     public function StartXMLAttribs(): LJCAttributes
     {
       $methodName = "StartXMLAttribs";
@@ -819,11 +756,10 @@
 
       $this->LogText .= $retAttribs->LogText;
       return $retAttribs;
-    }
+    } // StartXMLAttribs()
 
     // Gets common table attributes.
-    /// <include path='items/TableAttribs/*' file='Doc/LJCTextBuilder.xml'/>
-    /// <ParentGroup>GetAttribs</ParentGroup>
+    /// <include path='members/TableAttribs/*' file='Doc/LJCTextBuilder.xml'/>
     public function TableAttribs(int $border = 1, int $borderSpacing = 0
       , int $cellPadding = 2, string $className = null, string $id = null)
       : LJCAttributes
@@ -842,14 +778,13 @@
 
       $this->LogText .= $retAttribs->LogText;
       return $retAttribs;
-    }
+    } // TableAttribs()
+    // #endregion
 
-    // ----------
-    // Append Element Methods - LJCTextBuilder
+    // #region Append Element Methods - LJCTextBuilder
 
     // Appends the element begin tag.
-    /// <include path='items/Begin/*' file='Doc/LJCTextBuilder.xml'/>
-    /// <ParentGroup>AppendElement</ParentGroup>
+    /// <include path='members/Begin/*' file='Doc/LJCTextBuilder.xml'/>
     public function Begin(string $name, LJCTextState $textState
       , LJCAttributes $attribs = null, bool $addIndent = true
       , bool $childIndent = true): string
@@ -869,11 +804,10 @@
       // Append Method
       $this->UpdateState($textState);
       return $createText;
-    }
+    } // Begin()
 
     // Appends an element.
-    /// <include path='items/Create/*' file='Doc/LJCTextBuilder.xml'/>
-    /// <ParentGroup>AppendElement</ParentGroup>
+    /// <include path='members/Create/*' file='Doc/LJCTextBuilder.xml'/>
     public function Create(string $name, LJCTextState $textState
       , string $text = "", LJCAttributes $attribs = null, bool $addIndent = true
       , bool $childIndent = true, bool $isEmpty = false, bool $close = true)
@@ -894,11 +828,10 @@
       // Append Method
       $this->UpdateState($textState);
       return $createText;
-    }
+    } // Create()
 
     // Appends the element end tag.
-    /// <include path='items/End/*' file='Doc/LJCTextBuilder.xml'/>
-    /// <ParentGroup>AppendElement</ParentGroup>
+    /// <include path='members/End/*' file='Doc/LJCTextBuilder.xml'/>
     public function End(string $name, LJCTextState $textState
       , bool $addIndent = true): string
     {
@@ -910,14 +843,13 @@
       // Append Method
       $this->UpdateState($textState);
       return $createText;
-    }
+    } // End()
+    // #endregion
 
-    // ----------
-    // Get Element Methods - LJCTextBuilder
+    // #region Get Element Methods - LJCTextBuilder
 
     // Gets the element begin tag.
-    /// <include path='items/GetBegin/*' file='Doc/LJCTextBuilder.xml'/>
-    /// <ParentGroup>GetElement</ParentGroup>
+    /// <include path='members/GetBegin/*' file='Doc/LJCTextBuilder.xml'/>
     public function GetBegin(string $name, LJCTextState $textState
       , LJCAttributes $attribs = null, bool $addIndent = true
       , bool $childIndent = true): string
@@ -933,11 +865,10 @@
       // Only use AddChildIndent() if additional text is added in this method.
       $retValue = $tb->ToString();
       return $retValue;
-    }
+    } // GetBegin()
 
     // Gets an element.
-    /// <include path='items/GetCreate/*' file='Doc/LJCTextBuilder.xml'/>
-    /// <ParentGroup>GetElement</ParentGroup>
+    /// <include path='members/GetCreate/*' file='Doc/LJCTextBuilder.xml'/>
     public function GetCreate(string $name, string $text
       , LJCTextState $textState, LJCAttributes $attribs = null
       , bool $addIndent = true, bool $childIndent = true, bool $isEmpty = false
@@ -989,11 +920,10 @@
 
       $retElement = $tb->ToString();
       return $retElement;
-    }
+    } // GetCreate()
 
     // Gets the element end tag.
-    /// <include path='items/GetEnd/*' file='Doc/LJCTextBuilder.xml'/>
-    /// <ParentGroup>GetElement</ParentGroup>
+    /// <include path='members/GetEnd/*' file='Doc/LJCTextBuilder.xml'/>
     public function GetEnd(string $name, LJCTextState $textState
       , bool $addIndent = true): string
     {
@@ -1006,14 +936,13 @@
 
       $retElement = $tb->ToString();
       return $retElement;
-    }
+    } // GetEnd()
+    // #endregion
 
-    // ----------
     // Other Methods - LJCTextBuilder
 
     // Adds the new (child) indents.
-    /// <include path='items/AddChildIndent/*' file='Doc/LJCTextBuilder.xml'/>
-    /// <ParentGroup>Other</ParentGroup>
+    /// <include path='members/AddChildIndent/*' file='Doc/LJCTextBuilder.xml'/>
     public function AddChildIndent(string $createText, LJCTextState $textState)
       : void
     {
@@ -1029,11 +958,10 @@
         $textState->setIndentCount($indentCount);
         $textState->ChildIndentCount = 0;
       }
-    }
+    } // AddChildIndent()
 
     // Changes the IndentCount by the provided value.
-    /// <include path='items/AddIndent/*' file='Doc/LJCTextBuilder.xml'/>
-    /// <ParentGroup>Other</ParentGroup>
+    /// <include path='members/AddIndent/*' file='Doc/LJCTextBuilder.xml'/>
     public function AddIndent($increment = 1): int
     {
       $methodName = "AddIndent";
@@ -1044,8 +972,7 @@
     } // AddIndent()
 
     // Indicates if the builder text ends with a newline.
-    /// <include path='items/EndsWithNewLine/*' file='Doc/LJCTextBuilder.xml'/>
-    /// <ParentGroup>Other</ParentGroup>
+    /// <include path='members/EndsWithNewLine/*' file='Doc/LJCTextBuilder.xml'/>
     public function EndsWithNewLine(): bool
     {
       $methodName = "EndsWithNewLine";
@@ -1062,11 +989,10 @@
         }
       }
       return $retValue;
-    }
+    } // EndsWithNewLine()
 
     // Gets a current LJCTextState object.
-    /// <include path='items/GetTextState/*' file='Doc/LJCTextBuilder.xml'/>
-    /// <ParentGroup>Other</ParentGroup>
+    /// <include path='members/GetTextState/*' file='Doc/LJCTextBuilder.xml'/>
     public function GetTextState(): LJCTextState
     {
       $methodName = "GetTextState";
@@ -1074,11 +1000,10 @@
       $indentCount = $this->getIndentCount();
       $retState = new LJCTextState($indentCount);
       return $retState;
-    }
+    } // GetTextState()
 
     // Indicates if the builder has text.
-    /// <include path='items/HasText/*' file='Doc/LJCTextBuilder.xml'/>
-    /// <ParentGroup>Other</ParentGroup>
+    /// <include path='members/HasText/*' file='Doc/LJCTextBuilder.xml'/>
     public function HasText(): bool
     {
       $methodName = "HasText";
@@ -1089,19 +1014,17 @@
         $retValue = true;
       }
       return $retValue;
-    }
+    } // HasText()
 
     // Gets the current indent length.
-    /// <include path='items/IndentLength/*' file='Doc/LJCTextBuilder.xml'/>
-    /// <ParentGroup>Other</ParentGroup>
+    /// <include path='members/IndentLength/*' file='Doc/LJCTextBuilder.xml'/>
     public function IndentLength(): int
     {
       return $this->getIndentCount() * $this->IndentCharCount;
-    }
+    } // IndentLength()
 
     // Checks if the text can start with a newline.
-    /// <include path='items/StartWithNewLine/*' file='Doc/LJCTextBuilder.xml'/>
-    /// <ParentGroup>Other</ParentGroup>
+    /// <include path='members/StartWithNewLine/*' file='Doc/LJCTextBuilder.xml'/>
     public function StartWithNewLine(bool $allowNewLine): bool
     {
       $methodName = "StartWithNewLine";
@@ -1114,10 +1037,10 @@
         $retValue = true;
       }
       return $retValue;
-    }
+    } // StartWithNewLine()
+    // #endregion
 
-    // ----------
-    // Private Methods - LJCTextBuilder
+    // #region Private Methods - LJCTextBuilder
 
     // Adds indent to builders and sync object.
     private function AddSyncIndent(LJCTextBuilder $tb, LJCTextState $state
@@ -1268,11 +1191,12 @@
       }
       return $retText;
     }
+    // #endregion
 
-    // ----------
-    // Getters and Setters - LJCTextBuilder
+    // #region Getters and Setters - LJCTextBuilder
 
     // Gets the indent count.
+    /// <include path='members/getIndentCount/*' file='Doc/LJCTextBuilder.xml'/>
     public function getIndentCount(): int
     {
       return $this->IndentCount;
@@ -1286,9 +1210,9 @@
         $this->IndentCount = $count;
       }
     }
+    // #endregion
 
-    // ----------
-    // Properties - LJCTextBuilder
+    // #region Properties - LJCTextBuilder
 
     /// <summary>The class name for debugging.</summary>
     public string $ClassName;
@@ -1313,6 +1237,7 @@
 
     // The current indent count.
     private int $IndentCount;
+    // #endregion
   }
 
   // ********************
