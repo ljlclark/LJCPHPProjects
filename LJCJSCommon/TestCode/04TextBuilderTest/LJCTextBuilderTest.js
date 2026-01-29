@@ -256,7 +256,7 @@ class LJCTextBuilderTest
     const border = 1; // Default
     const borderspacing = 0; // Default
     const cellpadding = 2; // Default
-    const attribs = tb.TableAttribs(border, borderspacing, cellpadding
+    let attribs = tb.TableAttribs(border, borderspacing, cellpadding
       , className, id);
     const result = tb.GetAttribs(attribs, textState);
     let compare = " id=\"idValue\" class=\"styleClass\"\r\n";

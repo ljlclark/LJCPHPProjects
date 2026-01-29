@@ -1,0 +1,929 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright(c) Lester J. Clark and Contributors. -->
+<!-- Licensed under the MIT License. -->
+<!-- LJCTextBuilder.xml -->
+<members>
+  <!-- The XML file for the first file class contains the library comments. -->
+  <LJCTextBuilderLib>
+    <summary>
+      The Text Builder Class Library
+    </summary>
+    <remarks>
+      Use this code to include the Text Builder lib classes.
+      &lt;script src='../../../LJCJSCommon/LJCTextBuilderLib.js'&gt;&lt;/script&gt;
+    </remarks>
+  </LJCTextBuilderLib>
+  <LJCTextBuilder>
+    <summary>
+      Represents a built string value.
+    </summary>
+    <remarks>
+      The LJCTextBuilder class is designed for creating text. It can also be
+      used to create HTML and XML text.
+
+      &lt;p&gt;
+      The LJCTextBuilder class stores the built text internally. The text is
+      retrieved with the ToString() method.
+      &lt;/p&gt;
+
+      &lt;p&gt;
+      &lt;b&gt;"Append" Methods&lt;/b&gt;&lt;br /&gt;
+      "Append" methods add the potentially indented and wrapped text to the
+      builder.&lt;br /&gt;
+      These methods append the supplied text without an ending newline. This
+      behavior is done for consistency and it allows for appending to the
+      existing text if desired.&lt;br /&gt;
+      The "Append" methods start the text with a newline if the builder already
+      has text, param allowNewLine = true (default) and the builder text does
+      not already end with a newline.
+      &lt;/p&gt;
+
+      &lt;p&gt;
+      &lt;b&gt;"Get" Methods&lt;/b&gt;&lt;br /&gt;
+      "Get" methods create and return the potentialy indented and wrapped text
+      but do not add it to the builder.&lt;br /&gt;
+      This allows for using the text outside of the builder.&lt;br /&gt;
+      Use the "addIndent" parameter set to "false" when appending text to the
+      builder that was retrieved using a "Get" method. This is because the
+      indent may already have been added to the text by the "Get" method.
+      &lt;/p&gt;
+
+      &lt;p&gt;
+      &lt;b&gt;"Add Text" Methods&lt;/b&gt;&lt;br /&gt;
+      AddLine(), AddText()&lt;br /&gt;
+      These "Add Text" methods add text to the builder unmodified except for AddLine()
+      which appends a newline.
+      &lt;/p&gt;
+
+      &lt;p&gt;
+      &lt;b&gt;"Append Text" Methods&lt;/b&gt;&lt;br /&gt;
+      Line(), Text()&lt;br /&gt;
+      The "Append Text" methods add the potentially indented and wrapped text to
+      the builder. The Line() method appends a newline.
+      &lt;/p&gt;
+      
+      &lt;p&gt;
+      The AddIndent() method manually controls the current indent count.
+      The indent string length is calculated with the properties
+      (IndentCount * IndentCharCount) and can be retrieved with the
+      IndentLength property.
+      &lt;/p&gt;
+      
+      &lt;p&gt;
+      &lt;b&gt;"Get Text" Methods&lt;/b&gt;&lt;br /&gt;
+      GetLine(), GetText()&lt;br /&gt;
+      The "Get Text" methods create and return the potentialy indented and
+      wrapped text but do not add it to the builder.&lt;br /&gt;
+      The GetLine() and GetText() methods modify the returned text the same as
+      the Line() and Text() methods.
+      &lt;/p&gt;
+      
+      &lt;p&gt;
+      &lt;b&gt;"Append Element" Methods&lt;/b&gt;&lt;br /&gt;
+      Begin(), Create(), End()&lt;br /&gt;
+      These methods append element tags and content. Begin() automatically
+      increments the IndentCount by 1. Create() also increments the IndentCount
+      by 1 if the isEmpty parameter is false and the close parameter is false.
+      End() automatically decrements the IndentCount by 1 if the IndentCount
+      is currently greater than zero.
+      &lt;/p&gt;
+      
+      &lt;b&gt;"Get Element" Methods&lt;/b&gt;&lt;br /&gt;
+      GetBegin(), GetCreate(), GetEnd()&lt;br /&gt;
+      The "Get Element" methods create and return the potentialy indented and
+      wrapped text but do not add it to the builder.&lt;br /&gt;
+    </remarks>
+  </LJCTextBuilder>
+
+  <!-- Constructor Methods  -->
+  <constructor>
+    <summary>
+      Initializes a class instance.
+    </summary>
+    <param name="textState">The text state object.</param>
+    <code>
+      const tb = new LJCTextBuilder();
+      const result = tb.IndentCharCount;
+
+      // result:
+      // 2
+    </code>
+  </constructor>
+
+  <!-- Data Class Methods -->
+  <ToString>
+    <summary>
+      Gets the built string.
+    </summary>
+    <returns>The HTML text.</returns>
+    <code>
+      const tb = new LJCTextBuilder();
+      tb.Text("This is some text.");
+
+      // Example Method:
+      const result = tb.ToString();
+
+      // result;
+      // This is some text.
+    </code>
+  </ToString>
+
+  <!-- Add Text Methods -->
+  <AddLine>
+    <summary>
+      Appends a text line without modification.
+    </summary>
+    <param name="text">The add text.</param>
+    <returns>The added text line.</returns>
+    <remarks>
+      AddLine() is an "Append" method. It adds the unmodified text line to the
+      builder.
+    </remarks>
+    <code>
+      const tb = new LJCTextBuilder();
+
+      // Example Method:
+      tb.AddLine("This is an appended line.");
+
+      tb.AddText(":");
+      const result = tb.ToString();
+
+      // result:
+      // This is an appended line.
+      // :
+    </code>
+  </AddLine>
+  <AddText>
+    <summary>
+      Appends text without modification.
+    </summary>
+    <param name="$text">The add text.</param>
+    <returns>The added text.</returns>
+    <remarks>
+      AddText() is an "Append" method. It adds the unmodified text to the
+      builder.
+    </remarks>
+    <code>
+      const tb = new LJCTextBuilder();
+
+      // Example Method:
+      tb.AddText("This is some appended text.");
+
+      const result = tb.ToString();
+
+      // result:
+      // This is some appended text.
+    </code>
+  </AddText>
+
+  <!-- Append Text Methods -->
+  <Line>
+    <summary>
+      Appends a potentially indented text line to the builder.
+    </summary>
+    <param name="$text">The add text.</param>
+    <param name="$addIndent">Indicates if the element can be indented.</param>
+    <param name="$allowNewLine">Indicates if a new line can be added.</param>
+    <returns>The potentially indented and wrapped new text value.</returns>
+    <remarks>
+      Line() is an "Append" method. It creates the text with GetText() and adds
+      a new line after the text. The text is then added to the builder.
+      &lt;br /&gt;
+      Line() works the same as Text() except it appends a new line.
+    </remarks>
+    <code>
+      const tb = new LJCTextBuilder();
+
+      tb.Text("This is an appended line.");
+      tb.AddIndent();
+
+      // Example Method:
+      // Starts the text with a newline if the builder already has text, param
+      // allowNewLine = true and builder text does not end with a newline.
+      // The text begins with the current indent string if param
+      // addIndent = true.
+      // Ends the text with a newline.
+      // Defaults: addIndent = true, allowNewLine = true.
+      tb.Line();
+
+      tb.Text("This is an indented line.");
+      const result = tb.ToString();
+
+      // result:
+      // This is an appended line.
+      //
+      //   This is an indented line.
+    </code>
+  </Line>
+  <Text>
+    <summary>
+      Appends the potentially indented text.
+    </summary>
+    <param name="$text">The add text.</param>
+    <param name="$addIndent">Indicates if the element can be indented.</param>
+    <param name="$allowNewLine">Indicates if a new line can be added.</param>
+    <returns>The potentially indented and wrapped new text value.</returns>
+    <remarks>
+      Text() is an "Append" method. It creates the text with GetText() and adds
+      it to the builder.&lt;br /&gt;
+      Note: One should set the "addIndent" parameter to false when adding text
+      to the builder after getting the text with a "GetText" method. This is
+      because the the indent has already been added with the "GetText"
+      method.
+    </remarks>
+    <code>
+      $tb = new LJCTextBuilder();
+
+      $tb-&gt;Text("This is an appended line.");
+      $tb-&gt;AddIndent();
+
+      // Example Method:
+      // Starts the text with a newline if the builder already has text, param
+      // allowNewLine = true and builder text does not end with a newline.
+      // The text begins with the current indent string if param
+      // addIndent = true.
+      // Defaults: addIndent = true, allowNewLine = true.
+      $tb-&gt;Text("This is an indented line.");
+      $result = $tb-&gt;ToString();
+
+      // result:
+      // This is an appended line.
+      //   This is an indented line.
+    </code>
+  </Text>
+
+  <!-- Get Text Methods -->
+  <GetLine>
+    <summary>
+      Gets the potentially indented and wrapped text line.
+    </summary>
+    <param name="$text">The text value.</param>
+    <param name="$addIndent">Indicates if the element can be indented.</param>
+    <param name="$allowNewLine">Indicates if a new line can be added.</param>
+    <returns>The potentially indented and wrapped new text value.</returns>
+    <remarks>
+      GetLine() is a "Get Text" method. It creates and returns the potentially
+      indented and wrapped text. It will start the returned text with a new line
+      if the builder already has text.&lt;br /&gt;
+      It appends a new line to the returned text.
+      The applied indent is the product of the class properties IndentCount
+      and IndentCharCount. (IndentCount * IndentCharCount).&lt;br /&gt;
+      The "addIndent" parameter defaults to true. Set it to false to prevent
+      indenting the line further.&lt;br /&gt;
+      The "allowNewLine" parameter defaults to true. Set it to false to prevent
+      starting with a new line.&lt;br /&gt;
+      Wraps the text with a newline if the WrapEnabled parameter is true and the
+      line length is greater than LineLimit.&lt;br /&gt;
+      GetLine() works the same as GetText() except it appends a new line.
+    </remarks>
+    <code>
+      const tb = new LJCTextBuilder();
+
+      tb.AddText("This is an appended line.");
+      tb.AddIndent();
+
+      // Example Method:
+      // Starts the text with a newline if the builder already has text, param
+      // allowNewLine = true and builder text does not end with a newline.
+      // The text begins with the current indent string if param
+      // addIndent = true.
+      // Ends the text with a newline.
+      // Defaults: addIndent = true, allowNewLine = true.
+      const text = tb.GetLine();
+      tb.Text(text, false);
+
+      tb.Text(":");
+      const result = tb.ToString();
+
+      // result:
+      // This is an appended line.
+      //   :
+    </code>
+  </GetLine>
+  <GetText>
+    <summary>
+      Gets the potentially indented and wrapped text.
+    </summary>
+    <param name="$text">The text value.</param>
+    <param name="$addIndent">Indicates if the element can be indented.</param>
+    <param name="$allowNewLine">Indicates if a new line can be added.</param>
+    <returns>The potentially indented and wrapped new text value.</returns>
+    <remarks>
+      GetText() is a "Get Text" method. It creates and returns the potentially
+      indented and wrapped text. It will start the returned text with a new line
+      if the builder already has text.&lt;br /&gt;
+      The applied indent is the product of the class properties IndentCount
+      and IndentCharCount. (IndentCount * IndentCharCount).&lt;br /&gt;
+      The "addIndent" parameter defaults to true. Set it to false to prevent
+      indenting the line further.&lt;br /&gt;
+      The "allowNewLine" parameter defaults to true. Set it to false to prevent
+      starting with a new line.&lt;br /&gt;
+      Wraps the text with a newline if the WrapEnabled parameter is true and the
+      line length is greater than LineLimit.
+    </remarks>
+    <code>
+      $tb = new LJCTextBuilder();
+
+      $tb-&gt;Text("This is an appended line.");
+      $tb-&gt;AddIndent();
+
+      // Example Method:
+      // Starts the text with a newline if the builder already has text, param
+      // allowNewLine = true and builder text does not end with a newline.
+      // The text begins with the current indent string if param
+      // addIndent = true.
+      // Defaults: addIndent = true, allowNewLine = true.
+      $text = $tb-&gt;GetText("This is an indented line.");
+      $tb-&gt;AddText($text);
+      $result = $tb-&gt;ToString();
+
+      // result:
+      // This is an appended line.
+      //   This is an indented line.
+    </code>
+  </GetText>
+
+  <!-- Other Get Text Methods -->
+  <GetIndented>
+    <summary>
+      Gets a new potentially indented line.
+    </summary>
+    <param name="$text">The add text.</param>
+    <returns>The potentially indented new text value.</returns>
+    <code>
+      $tb = new LJCTextBuilder();
+
+      // Example Method:
+      $result = hb-&gt;GetIndented("This text is NOT indented.");
+      $tb-&gt;AddText($result);
+
+      $tb-&gt;AddIndent(2);
+      $tb-&gt;AddLine();
+      $result = $tb-&gt;GetIndented("This text is indented.");
+      $tb-&gt;Text($result, addIndent: false);
+      $result = $tb-&gt;ToString();
+
+      // result:
+      // This text is NOT indented.
+      //     This text is indented.
+    </code>
+  </GetIndented>
+  <GetIndentString>
+    <summary>
+      Returns the current indent string.
+    </summary>
+    <returns>The current indent string.</returns>
+    <code>
+      $tb = new LJCTextBuilder();
+
+      $tb-&gt;AddIndent();
+
+      // Example Method:
+      $text = hb-&gt;GetIndentString();
+      $tb-&gt;AddText($text);
+
+      $tb-&gt;AddText(":");
+      $result = hb-&gt;ToString();
+
+      // result:
+      //   :
+    </code>
+  </GetIndentString>
+  <GetWrapped>
+    <summary>
+      Appends added text and new wrapped line.
+    </summary>
+    <param name="$text">The text value.</param>
+    <returns>The wrapped string.</returns>
+    <remarks>
+      Creates new wrapped line if combined line > LineLimit.
+    </remarks>
+    <code>
+      $tb = new LJCTextBuilder();
+      $tb->WrapEnabled = true;
+
+      // Example Method:
+      $tb->AddText("Now is the time for all good men to come to the aid of their");
+      $tb->AddText(" country.");
+      $tb->AddText(" Now is the time for all good men to come to the aid of their");
+      $tb->AddText(" country.");
+      $text = $tb->ToString();
+      $result = $tb->GetWrapped($text);
+
+      // result:
+      // Now is the time for all good men to come to the aid of
+      //  their country. Now is the
+      // time for all good men to come to the aid of their country.
+    </code>
+  </GetWrapped>
+
+  <!-- Get Attribs Methods -->
+  <Attribs>
+    <summary>
+      Gets common element attributes.
+    </summary>
+    <param name="$className">The class attribute.</param>
+    <param name="$id">The id attribute.</param>
+    <returns>The common element attributes collection.</returns>
+    <code>
+      // Root Method Begin
+      $textState = new LJCTextState();
+
+      $tb = new LJCTextBuilder($textState);
+
+      // Example Method:
+      $className = "className";
+      $id = "id";
+      $attribs = $tb-&gt;Attribs($className, $id);
+
+      $result = $tb-&gt;GetAttribs($attribs, $textState);
+
+      // result:
+      //  id="id" class="className"
+    </code>
+  </Attribs>
+  <GetAttribs>
+    <summary>
+      Gets the attributes text.
+    </summary>
+    <param name="$htmlAttribs">The attributes collection.</param>
+    <param name="$textState">The current text state values.</param>
+    <returns>The attributes text.</returns>
+    <remarks>
+      The returned text does not end with a new line. This allows for additions
+      after the text.&lt;br /&gt;
+      Begin, Create and End text will start with a new line if the builder text
+      already has a value.&lt;br /&gt;
+    </remarks>
+    <code>
+      // Root Method Begin
+      $textState = new LJCTextState();
+
+      $tb = new LJCTextBuilder($textState);
+
+      $className = "className";
+      $id = "id";
+      $attribs = $tb-&gt;Attribs($className, $id);
+
+      // Example Method:
+      $result = $tb-&gt;GetAttribs($attribs, $textState);
+
+      // result:
+      //  id="id" class="className"
+    </code>
+  </GetAttribs>
+  <StartAttribs>
+    <summary>
+      Creates the HTML element attributes.
+    </summary>
+    <returns>The HTML element attributes.</returns>
+    <code>
+      // Root Method Begin
+      $textState = new LJCTextState();
+
+      $tb = new LJCTextBuilder($textState);
+
+      // Example Method:
+      $attribs = $tb-&gt;StartAttribs();
+
+      $result = $tb-&gt;GetAttribs($attribs, $textState);
+
+      // result:
+      //  lang="en"
+    </code>
+  </StartAttribs>
+  <StartXMLAttribs>
+    <summary>
+      Creates the XML element attributes.
+    </summary>
+    <returns>The XML start element attributes.</returns>
+    <code>
+      // Root Method Begin
+      $textState = new LJCTextState();
+
+      $tb = new LJCTextBuilder($textState);
+
+      // Example Method:
+      $attribs = $tb-&gt;StartXMLAttribs();
+
+      $result = $tb-&gt;GetAttribs($attribs, $textState);
+
+      // result:
+      //  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+      //  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    </code>
+  </StartXMLAttribs>
+  <TableAttribs>
+    <summary>
+      Gets common table attributes.
+    </summary>
+    <param name="$border">The border attribute.</param>
+    <param name="$borderSpacing">The borderspacing attribute</param>
+    <param name="$cellPadding">The cellpadding attribute</param>
+    <param name="$className">The class attribute.</param>
+    <param name="$id">The id attribute.</param>
+    <returns>The common table attributes.</returns>
+    <code>
+      // Root Method Begin
+      $textState = new LJCTextState();
+
+      $tb = new LJCTextBuilder($textState);
+
+      // Example Method:
+      $border = 1;
+      $cellspacing = 2;
+      $cellpadding = 3;
+      // Defaults: border = 1, borderspacing = 0, cellpadding = 2.
+      $attribs = $tb-&gt;TableAttribs($border, $cellspacing, $cellpadding);
+
+      $result = $tb-&gt;GetAttribs($attribs, $textState);
+
+      // result:
+      //  style="border: 1px solid; borderspacing: 2px; cellpadding: 3px;"
+    </code>
+  </TableAttribs>
+
+  <!-- Append Element Methods -->
+  <Begin>
+    <summary>
+      Appends the element begin tag.
+    </summary>
+    <param name="$name">The element name.</param>
+    <param name="$textState">The current text state values.</param>
+    <param name="$attribs">The element attributes.</param>
+    <param name="$addIndent">
+      Indicates if the element can be indented.
+    </param>
+    <param name="$childIndent">
+      Indicates if the child elements should be indented.
+    </param>
+    <returns>The added element begin tag.</returns>
+    <remarks>
+      Begin() is an "Append Element" method. It creates the element opening tag
+      with GetCreate() and adds it to the builder.
+      The appended text does not end with a new line. This allows for additions
+      after the text.&lt;br /&gt;
+      The added text will start with a new line if the builder text already has
+      a value.
+    </remarks>
+    <code>
+      $textState = new LJCTextState();
+      $tb = new LJCTextBuilder($textState);
+
+      // Example Method:
+      $tb-&gt;Begin("body", $textState);
+
+      $result = $tb-&gt;ToString();
+
+      // result:
+      // &amp;lt;body&amp;gt;
+    </code>
+  </Begin>
+  <Create>
+    <summary>
+      Appends an element.
+    </summary>
+    <param name="$name">The element name.</param>
+    <param name="$text">The element content text.</param>
+    <param name="$textState">The current text state values.</param>
+    <param name="$htmlAttribs">The element attributes.</param>
+    <param name="$addIndent">
+      Indicates if the element can be indented.
+    </param>
+    <param name="$childIndent">
+      Indicates if the child elements should be indented.
+    </param>
+    <param name="$isEmpty">Indicates if an empty element.</param>
+    <param name="$close">Indicates if the element will be closed.</param>
+    <returns>The added HTML element.</returns>
+    <remarks>
+      Create() is an "Append Element" method. It creates the element text with
+      GetCreate() and adds it to the builder.
+      The appended text does not end with a new line. This allows for additions
+      after the text.&lt;br /&gt;
+      The added text will start with a new line if the builder text already has
+      a value.
+    </remarks>
+    <code>
+      $textState = new LJCTextState();
+      $tb = new LJCTextBuilder($textState);
+
+      // Example Method:
+      $tb-&gt;Create("p", $textState);
+      $result = $tb-&gt;ToString();
+
+      // result:
+      // &amp;lt;p&amp;gt;&amp;lt;/p&amp;gt;
+    </code>
+  </Create>
+  <End>
+    <summary>
+      Appends the element end tag.
+    </summary>
+    <param name="$name">The element name.</param>
+    <param name="$textState">The current text state values.</param>"
+    <param name="$addIndent">
+      Indicates if the element can be indented.
+    </param>
+    <returns>The added element end tag.</returns>
+    <remarks>
+      End() is an "Append Element" method. It creates the element text with
+      GetEnd() and adds it to the builder.<br />
+      The appended text does not end with a new line. This allows for additions
+      after the text.<br />
+      The added text will start with a new line if the builder text already has
+      a value.
+    </remarks>
+    <code>
+      $textState = new LJCTextState();
+      $tb = new LJCTextBuilder($textState);
+
+      // Example Method:
+      $tb-&gt;End("p", $textState);
+      $result = $tb-&gt;ToString();
+
+      // result:
+      // &amp;lt;/p&amp;gt;
+    </code>
+  </End>
+
+  <!-- Get Element Methods -->
+  <GetBegin>
+    <summary>
+      Gets the element begin tag.
+    </summary>
+    <param name="$name">The element name.</param>
+    <param name="$textState">The current text state values.</param>
+    <param name="$htmlAttribs">The element attributes.</param>
+    <param name="$addIndent">
+      Indicates if the element can be indented.
+    </param>
+    <param name="$childIndent">
+      Indicates if the child indent should be applied.
+    </param>"
+    <returns>The HTML element begin tag.</returns>
+    <remarks>
+      GetBegin() is an "Get Text" method which creates the element opening tag
+      with GetCreate() and returns the text value.&lt;br /&gt;
+      Note: One should set the "addIndent" parameter to false when adding text
+      to the builder after getting the text with a "GetText" method. This is
+      because the the indent has already been added with the "GetText"
+      method.
+    </remarks>
+    <code>
+      $textState = new LJCTextState();
+      $tb = new LJCTextBuilder();
+
+      // Example Method:
+      // Starts the text with a newline if the builder already has text, param
+      // allowNewLine = true and builder text does not end with a newline.
+      // The text begins with the current indent string if param
+      // addIndent = true.
+      // Defaults: addIndent = true, allowNewLine = true.
+      $result = $tb-&gt;GetBegin("body", $textState);
+
+      // result:
+      // &amp;lt;body&amp;gt;
+    </code>
+  </GetBegin>
+  <GetCreate>
+    <summary>
+      Gets an element.
+    </summary>
+    <param name="$name">The element name.</param>
+    <param name="$text">The element content text.</param>
+    <param name="$textState">The current text state values.</param>
+    <param name="$htmlAttribs">The element attributes.</param>
+    <param name="$addIndent">
+      Indicates if the element can be indented.
+    </param>
+    <param name="$childIndent">
+      Indicates if the child indent should be applied.
+    </param>"
+    <param name="$isEmpty">Indicates if an empty element.</param>
+    <param name="$close">Indicates if the element will be closed.</param>
+    <returns>The HTML element.</returns>
+    <remarks>
+      GetCreate() is a "Get Text" method which creates the element or element
+      opening tag and returns the text value. It is called from other element
+      create methods.&lt;br /&gt;
+      The addIndent parameter defaults to true, which starts the text with the
+      current indent string.&lt;br /&gt;
+      The isEmpty element defaults to false, which does not add the empty
+      element slash.&lt;br /&gt;
+      If isEmpty is true, the empty element slash is added and the close
+      parameter is ignored. The element will not include the closing tag.
+      &lt;br /&gt;
+      The ChildIndentCount is incremented if the element is not empty and
+      not closed.
+    </remarks>
+    <code>
+      // Root Method Begin
+      $textState = new LJCTextState();
+
+      $tb = new HTMLBuilder($textState);
+
+      // Example Method:
+      $result = $tb-&gt;GetCreate("p", "", $textState);
+
+      // result:
+      // &amp;lt;p&amp;gt;&amp;lt;/p&amp;gt;
+    </code>
+  </GetCreate>
+  <GetEnd>
+    <summary>
+      Gets the element end tag.
+    </summary>
+    <param name="$name">The element name.</param>
+    <param name="$textState">The current text state values.</param>
+    <param name="$addIndent">
+      Indicates if the element can be indented.
+    </param>
+    <returns>The element end tag.</returns>
+    <remarks>
+      GetEnd() is a "GetText" method which creates the element closing tag
+      and returns the text value.
+    </remarks>
+    <code>
+      // Root Method Begin
+      $textState = new LJCTextState();
+
+      $tb = new LJCTextBuilder($textState);
+
+      // Example Method:
+      $result = $tb-&gt;GetEnd("p", $textState);
+
+      // result:
+      // &amp;lt;/p&amp;gt;
+    </code>
+  </GetEnd>
+
+  <!-- Other Methods -->
+  <AddChildIndent>
+    <summary>
+      Adds the new (child) indents.
+    </summary>
+    <param name="$createText">The previously created text.</param>
+    <param name="$textState">The text state object.</param>
+    <remarks>
+      Adds an indent for following child elements.&lt;br /&gt;
+      The indent will only be added if the createText length &gt; 0 and the
+      textState.ChildIndentCount &gt; 0.
+    </remarks>
+    <code>
+      // Root Method Begin
+      $textState = new LJCTextState();
+
+      $result = self::CustomBegin("body", $textState);
+
+      // result:
+      // &amp;lt;body&amp;gt;
+
+      private static string CustomBegin(string $name, LJCTextState $textState
+      , LJCAttributes $attribs = null, bool $addIndent = true
+      , bool $childIndent = true)
+      {
+      $tb = new LJCTextBuilder($textState);
+
+      $createText = hb-&gt;GetBegin(name, $textState, $attribs, $addIndent
+      , $childIndent);
+      $addIndent = false;
+      $tb-&gt;Text($createText, $addIndent);
+
+      // Use AddChildIndent after beginning an element.
+      $tb-&gt;AddChildIndent($createText, $textState);
+
+      $result = $tb-&gt;ToString();
+
+      // Append Method
+      //hb-&gt;UpdateState($textState);
+      return result;
+      }
+    </code>
+  </AddChildIndent>
+  <AddIndent>
+    <summary>
+      Changes the IndentCount by the provided value.
+    </summary>
+    <param name="$increment">
+      The amount to increment or decrement the indent count.
+    </param>
+    <returns>The current indent count.</returns>
+    <code>
+      $tb = new LJCTextBuilder();
+
+      // Example Method:
+      // The builder keeps track of the current number of indents.
+      // Adds 1 indent by default.
+      $tb-&gt;AddIndent();
+
+      // Adds text without modification.
+      $tb-&gt;AddText("This text is not indented.");
+
+      // Starts the text with a newline if the builder already has text, param
+      // allowNewLine = true and builder text does not end with a newline.
+      // The text begins with the current indent string if param
+      // addIndent = true.
+      // Defaults: addIndent = true, allowNewLine = true.
+      $tb-&gt;Text("This text is indented.");
+
+      // No Indent
+      $tb-&gt;Text("Not indented.", addIndent: false);
+
+      // Do not start a newline.
+      $tb-&gt;AddText(" No start with newline.");
+      $result = hb-&gt;ToString();
+
+      // result:
+      // This text is not indented.
+      //   This text is indented.
+      // Not indented. No start with newline.
+    </code>
+  </AddIndent>
+  <EndsWithNewLine>
+    <summary>
+      Indicates if the builder text ends with a newline.
+    </summary>
+    <returns>
+      true if builder text ends with a newline; otherwise false.
+    </returns>
+    <code>
+      $tb = new LJCTextBuilder();
+
+      // Example Method:
+      $retValue = hb-&gt;EndsWithNewLine();
+      $result = $retValue ? "true" : "false";
+
+      // result:
+      // "false"
+    </code>
+  </EndsWithNewLine>
+  <GetTextState>
+    <summary>
+      Gets a current LJCTextState object.
+    </summary>
+    <returns>An LJCTextState object.</returns>
+    <code>
+      $tb = new LJCTextBuilder();
+
+      $textState = $tb->GetTextState();
+      $retValue = $textState->getIndentCount();
+      $result = strval($retValue);
+
+      // result:
+      // "0";
+    </code>
+  </GetTextState>
+  <HasText>
+    <summary>
+      Indicates if the builder has text.
+    </summary>
+    <returns>true if builder has text; otherwise false.</returns>
+    <code>
+      $textState = new LJCTextState();
+      $tb = new LJCTextBuilder();
+
+      // Example Method:
+      $retValue = $tb->HasText();
+      $result = $retValue ? "true" : "false";
+
+      // result:
+      // "false"
+    </code>
+  </HasText>
+  <IndentLength>
+    <summary>
+      Gets the current indent length.
+    </summary>
+    <returns>The current indent length.</returns>
+    <code>
+      $tb = new LJCTextBuilder();
+
+      // Example Method:
+      $tb->AddIndent();
+      $retValue = $tb->IndentLength();
+      $result = strval($retValue);
+
+      // result:
+      // 2
+    </code>
+  </IndentLength>
+  <StartWithNewLine>
+    <summary>
+      Checks if the text can start with a newline.
+    </summary>
+    <param name="$allowNewLine">Indicates if a new line can be added.</param>
+    <returns>true if allowed to start with a newline; otherwise false.</returns>
+    <code>
+      $tb = new LJCTextBuilder();
+
+      // Example Method:
+      $allowNewLine = true;
+      $retValue = hb-&gt;StartWithNewLine($allowNewLine);
+      $result = $retValue ? "true" : "false";
+
+      // result:
+      // "false"
+    </code>
+  </StartWithNewLine>
+</members>

@@ -5,36 +5,17 @@
 // <script src='../../../LJCJSCommon/LJCCommonLib.js'></script>
 // <script src='../../../LJCJSCommon/LJCDBAccessLib.js'></script>
 
-// ***************
 // The Text Builder Class Library
 /// <include path='members/LJCTextBuilderLib/*' file='Doc/LJCTextBuilder.xml'/>
-
-// The LibName: XML comment triggers the file (library) HTML page generation.
-// It generates a page with the same name as the library.
-// LJCTextBuilderLib.html
 /// LibName: LJCTextBuilderLib
-//  Classes: LJCAttribute, LJCAttributes, LJCTextBuilder, LJCTextState
 
-// ********************
 // Represents a node or element attribute.
 /// <include path='members/LJCAttribute/*' file='Doc/LJCAttribute.xml'/>
-/// <group name="Static">Static Methods</group>
-//    Copy()
-/// <group name="Constructor">Constructor Methods</group>
-/// <group name="Data">Data Class Methods</group>
-//    Clone()
-
-// A class triggers the class HTML page generation.
-// It generates a page with the same name as the class.
-// LJCAttribute/LJCAttribute.html
 class LJCAttribute
 {
   // #region Properties
 
   /// <summary>The item name.</summary>
-  // A property triggers the property HTML page generation.
-  // It generates a page with the same name as the class plus property.
-  // LJCAttribute/LJCAttribute$Name.html
   Name = "";
 
   /// <summary>The item value.</summary>
@@ -45,11 +26,6 @@ class LJCAttribute
 
   // Creates a new object from simple object values.
   /// <include path='members/Copy/*' file='Doc/LJCAttribute.xml'/>
-  /// <ParentGroup>Static</ParentGroup>
-
-  // A method triggers the method HTML page generation.
-  // It generates a page with the name: class plus method.
-  // LJCAttribute/LJCAttributeCopy.html
   static Copy(objItem)
   {
     let retAttrib = null;
@@ -58,12 +34,12 @@ class LJCAttribute
     {
       retAttrib = new LJCAttribute();
 
-      // Look for properties of simple object in typed object.
+      // Look for properties of simple object in object.
       for (let propertyName in objItem)
       {
         if (propertyName in retAttrib)
         {
-          // Update new typed object properties from the simple object.
+          // Update new object properties from the simple object.
           retAttrib[propertyName] = objItem[propertyName];
         }
       }
@@ -76,7 +52,6 @@ class LJCAttribute
 
   // Initializes an object instance.
   /// <include path='members/constructor/*' file='Doc/LJCAttribute.xml'/>
-  /// <ParentGroup>Constructor</ParentGroup>
   constructor(name = "", value = "")
   {
     this.Name = name;
@@ -88,7 +63,6 @@ class LJCAttribute
 
   // Creates an object clone.
   /// <include path='members/Clone/*' file='Doc/LJCAttribute.xml'/>
-  /// <ParentGroup>Data</ParentGroup>
   Clone()
   {
     let retAttribute = new LJCAttribute(this.Name, this.Value);
@@ -97,21 +71,14 @@ class LJCAttribute
   // #endregion
 }
 
-// ********************
 // Represents a collection of node or element attributes.
 /// <include path='members/LJCAttributes/*' file='Doc/LJCAttributes.xml'/>
-/// <group name="Static">Static Methods</group>
-//    ToCollection()
-/// <group name="Constructor">Constructor Methods</group>
-/// <group name="Collection">Collection Methods</group>
-//    Add(), AddObject()
 class LJCAttributes extends LJCCollection
 {
   // #region Static Methods - LJCAttributes
 
   // Creates a typed collection from an array of objects.
   /// <include path='items/ToCollection/*' file='Doc/LJCAttributes.xml'/>
-  /// <ParentGroup>Static</ParentGroup>
   static ToCollection(items)
   {
     let retAttributes = null;
@@ -119,11 +86,12 @@ class LJCAttributes extends LJCCollection
     if (LJC.HasElements(items))
     {
       retAttributes = new LJCAttributes();
-      for (let index = 0; index < items.length; index++)
+      //for (let index = 0; index < items.length; index++)
+      for (let objItem of items)
       {
-        let objItem = items[index];
+        //let objItem = items[index];
 
-        // Create typed object from simple object.
+        // Create object from simple object.
         let attrib = LJCAttribute.Copy(objItem);
         retAttributes.AddObject(attrib);
       }
@@ -139,32 +107,49 @@ class LJCAttributes extends LJCCollection
   /// <param name="value">The value property.</summary>
   Add(name, value = "")
   {
-    let retAttribute = new LJCAttribute(name, value);
-    this.AddObject(retAttribute);
-    return retAttribute;
+    let retAttrib = new LJCAttribute(name, value);
+    this.AddObject(retAttrib);
+    return retAttrib;
   }
 
   // Adds the supplied item to the list.
   /// <include path='members/AddObject/*' file='Doc/LJCAttributes.xml'/>
-  AddObject(attribute)
+  AddObject(attrib)
   {
-    let retAttribute = null;
+    let retAttrib = null;
 
     // This check is part of what makes it a strongly typed collection.
-    if (attribute instanceof LJCAttribute)
+    if (attrib instanceof LJCAttribute)
     {
-      // _AddItem is only used here.
-      retAttribute = this._AddItem(attribute);
+      let process = true;
+      if ("style" == attrib.Name.toLowerCase())
+      {
+        let foundAttrib = this.Retrieve(attrib.Name);
+        if (foundAttrib != null)
+        {
+          process = false;
+          let mergedValue = this.MergeStyle(foundAttrib, attrib);
+          if (LJC.HasText(mergedValue))
+          {
+            foundAttrib.Value = mergedValue;
+          }
+        }
+      }
+
+      if (process)
+      {
+        // _AddItem is only used here.
+        retAttrib = this._AddItem(attrib);
+      }
     }
-    return retAttribute;
+    return retAttrib;
   }
 
   // Appends items.
   /// <include path='members/Append/*' file='Doc/LJCAttributes.xml'/>
-  /// <ParentGroup>Collection</ParentGroup>
   Append(attribs)
   {
-    for(attrib of attribs)
+    for(const attrib of attribs.ReadItems)
     {
       this.AddObject(attrib);
     }
@@ -175,53 +160,52 @@ class LJCAttributes extends LJCCollection
 
   // Merges "style" attrib rules.
   /// <include path='members/MergeStyle/*' file='Doc/LJCAttributes.xml'/>
-  /// <ParentGroup>Other</ParentGroup>
-  MergeStyle(existingAttrib, newAttrib)
+  MergeStyle(foundAttrib, newAttrib)
   {
-    retMergedRules = this.SingleValue(existingAttrib, newAttrib);
+    let retMergedRules = this.SingleValue(foundAttrib, newAttrib);
 
-    if (!LJC.HasValue(retMergedRules))
+    if (!LJC.HasText(retMergedRules))
     {
       // Get existing style rules.
-      const existingValue = trim(existingAttrib.Value);
-      const existingRules = existingValue.split(";");
+      const foundValue = foundAttrib.Value.trim();
+      const foundRules = foundValue.split(";");
 
       // Get new style rules.
-      const newValue = trim(newAttrib.Value);
+      const newValue = newAttrib.Value.trim();
       let newRules = newValue.split(';');
 
       // Save previous rule unless overriden by new rule.
-      for (const existingRule of existingRules)
+      for (const foundRule of foundRules)
       {
-        if (existingRule != null)
+        if (foundRule != null)
         {
           // 0 = Property, 1 = Value.
-          let values = existingRule.split(":");
-          let property = LJCTextBuilder.TrimElement(values, 0);
+          let values = foundRule.split(":");
+          let property = LJCAttributes.TrimElement(values, 0);
 
           // Check for override.
           const newRule = this.FindRule(newRules, property);
           if (newRule != null)
           {
             let values = newRule.split(":");
-            index = this.FindRuleIndex(newRules, property);
+            const index = this.GetRuleIndex(newRules, property);
             newRules.splice(index, 1);
           }
 
-          property = LJCTextBuilder.TrimElement(values, 0);
-          let value = LJCTextBuilder.TrimElement(values, 1);
+          property = LJCAttributes.TrimElement(values, 0);
+          let value = LJCAttributes.TrimElement(values, 1);
           retMergedRules += `${property}: ${value}; `;
         }
       }
 
       // Add remaining new rules.
-      for (newRule of newRules)
+      for (const newRule of newRules)
       {
-        values = newRule.split(":");
-        property = LJCTextBuilder.TrimElement(values, 0);
-        if (LJC.HasValue(property))
+        const values = newRule.split(":");
+        const property = LJCAttributes.TrimElement(values, 0);
+        if (LJC.HasText(property))
         {
-          value = LJCTextBuilder.TrimElement(values, 1);
+          const value = LJCAttributes.TrimElement(values, 1);
           retMergedRules += `${property}: ${value}; `;
         }
       }
@@ -235,13 +219,13 @@ class LJCAttributes extends LJCCollection
   // Trims element value or if null, returns null.
   static TrimElement(values, index)
   {
-    retValue = null;
+    let retValue = null;
 
     if (values != null)
     {
       if (values.length > index)
       {
-        retValue = trim(values[index]);
+        retValue = values[index].trim();
       }
     }
     return retValue;
@@ -270,9 +254,10 @@ class LJCAttributes extends LJCCollection
   {
     let retIndex = -1;
 
-    for (let index = 0; index < rules.length; index++)
+    //for (let index = 0; index < rules.length; index++)
+    for (const rule of rules)
     {
-      const rule = rules[$index];
+      //const rule = rules[$index];
       let values = rule.split(":");
       if (values[0].trim() == property)
       {
@@ -285,48 +270,27 @@ class LJCAttributes extends LJCCollection
 
   // Returns the existing value if only one exists.
   // Otherwise returns an empty string.
-  SingleValue(existingAttrib, newAttrib)
+  SingleValue(foundAttrib, newAttrib)
   {
     let retRules = "";
 
-    if (null == existingAttrib
+    if (null == foundAttrib
       && newAttrib != null)
     {
       retRules = newAttrib.Value;
     }
     if (null == newAttrib
-      && existingAttrib != null)
+      && foundAttrib != null)
     {
-      retRules = existingAttrib.Value;
+      retRules = foundAttrib.Value;
     }
     return retRules;
   }
   // #endregion
 }
 
-// ********************
 // Represents a built string value.
 /// <include path='items/LJCTextBuilder/*' file='Doc/LJCTextBuilder.xml'/>
-/// <group name="Constructor">Constructor Methods</group>
-/// <group name="DataClass">Data Class Methods</group>
-//    ToString()
-/// <group name="AddText">Add Text</group>
-//    AddLine(), AddText(), Line(), Text()
-/// <group name="AppendText">Append Text</group>
-//    Line(), Text()
-/// <group name="GetText">Get Text</group>
-//    GetLine(), GetText()
-/// <group name="OtherGetText">Other Get Text</group>
-//    GetIndented(), GetIndentString(), GetWrapped()
-/// <group name="GetAttribs">Get Attribs</group>
-//    Attribs(), GetAttribs(), StartAttribs(), StartXMLAttribs(), TableAttribs()
-/// <group name="AppendElement">Append Element</group>
-//    Begin(), Create(), End()
-/// <group name="GetElement">Get Element</group>
-//    GetBegin(), GetCreate(), GetEnd()
-/// <group name="Other">Other Methods</group>
-//    AddChildIndent(), AddIndent(), EndsWithNewLine(), GetTextState(),
-//    HasText(), IndentLength(), StartWithNewLine()
 class LJCTextBuilder
 {
   // #region Properties
@@ -354,7 +318,6 @@ class LJCTextBuilder
 
   // Initializes a class instance.
   /// <include path='members/constructor/*' file='Doc/LJCTextBuilder.xml'/>
-  /// <ParentGroup>Constructor</ParentGroup>
   constructor(textState = null)
   {
     this.#BuilderValue = "";
@@ -374,7 +337,6 @@ class LJCTextBuilder
 
   // Gets the built string.
   /// <include path='members/ToString/*' file='Doc/LJCTextBuilder.xml'/>
-  /// <ParentGroup>DataClass</ParentGroup>
   ToString()
   {
     return this.#BuilderValue;
@@ -384,6 +346,7 @@ class LJCTextBuilder
   // #region Add Text Methods
 
   // Appends a text line without modification.
+  /// <include path='members/AddLine/*' file='Doc/LJCTextBuilder.xml'/>
   AddLine(text)
   {
     const retText = `${text}\r\n`;
@@ -393,7 +356,6 @@ class LJCTextBuilder
 
   // Appends text without modification.
   /// <include path='members/AddText/*' file='Doc/LJCTextBuilder.xml'/>
-  /// <ParentGroup>AddText</ParentGroup>
   AddText(text)
   {
     if (this.#TextLength(text) > 0)
@@ -407,7 +369,6 @@ class LJCTextBuilder
 
   // Appends a potentially indented text line to the builder.
   /// <include path='members/Line/*' file='Doc/LJCTextBuilder.xml'/>
-  /// <ParentGroup>AppendText</ParentGroup>
   Line(text = null, addIndent = true, allowNewLine = true)
   {
     const retText = this.GetLine(text, addIndent, allowNewLine);
@@ -418,7 +379,6 @@ class LJCTextBuilder
 
   // Appends the potentially indented text.
   /// <include path='members/Text/*' file='Doc/LJCTextBuilder.xml'/>
-  /// <ParentGroup>AppendText</ParentGroup>
   Text(text, addIndent = true, allowNewLine = true)
   {
     const retText = this.GetText(text, addIndent, allowNewLine);
@@ -435,7 +395,6 @@ class LJCTextBuilder
 
   // Gets a modified text line.
   /// <include path='members/GetLine/*' file='Doc/LJCTextBuilder.xml'/>
-  /// <ParentGroup>GetText</ParentGroup>
   GetLine(text = null, addIndent = true, allowNewLine = true)
   {
     let retLine = this.GetText(text, addIndent, allowNewLine);
@@ -491,7 +450,6 @@ class LJCTextBuilder
 
   // Gets a new potentially indented line.
   /// <include path='members/GetIndented/*' file='Doc/LJCTextBuilder.xml'/>
-  /// <ParentGroup>OtherGetText</ParentGroup>
   GetIndented(text)
   {
     let retText = "";
@@ -507,7 +465,6 @@ class LJCTextBuilder
 
   // Gets the current indent string.
   /// <include path='members/GetIndentString/*' file='Doc/LJCTextBuilder.xml'/>
-  /// <ParentGroup>OtherGetText</ParentGroup>
   GetIndentString()
   {
     let retValue = " ".repeat(this.IndentLength());
@@ -516,7 +473,6 @@ class LJCTextBuilder
 
   // Appends added text and new wrapped line.
   /// <include path='members/GetWrapped/*' file='Doc/LJCTextBuilder.xml'/>
-  /// <ParentGroup>OtherGetText</ParentGroup>
   GetWrapped(text)
   {
     let retText = text;
@@ -586,7 +542,6 @@ class LJCTextBuilder
 
   // Gets common element attributes.
   /// <include path='members/Attribs/*' file='Doc/LJCTextBuilder.xml'/>
-  /// <ParentGroup>GetAttribs</ParentGroup>
   Attribs(className = null, id = null)
   {
     const retAttribs = new LJCAttributes();
@@ -604,7 +559,6 @@ class LJCTextBuilder
 
   // Gets the attributes text.
   /// <include path='members/GetAttribs/*' file='Doc/LJCTextBuilder.xml'/>
-  /// <ParentGroup>GetAttribs</ParentGroup>
   GetAttribs(attribs, textState)
   {
     let retText = "";
@@ -643,7 +597,6 @@ class LJCTextBuilder
 
   // Creates the HTML element attributes.
   /// <include path='members/StartAttribs/*' file='Doc/LJCTextBuilder.xml'/>
-  /// <ParentGroup>GetAttribs</ParentGroup>
   StartAttribs()
   {
     const retAttribs = new LJCAttributes();
@@ -655,7 +608,6 @@ class LJCTextBuilder
 
   // Creates the XML element attributes.
   /// <include path='members/StartXMLAttribs/*' file='Doc/LJCTextBuilder.xml'/>
-  /// <ParentGroup>GetAttribs</ParentGroup>
   StartXMLAttribs()
   {
     const retAttribs = new LJCAttributes();
@@ -668,7 +620,6 @@ class LJCTextBuilder
 
   // Gets common table attributes.
   /// <include path='members/TableAttribs/*' file='Doc/LJCTextBuilder.xml'/>
-  /// <ParentGroup>GetAttribs</ParentGroup>
   TableAttribs(border = 1, borderSpacing = 0, cellPadding = 2, className = null
       , id = null)
   {
@@ -690,7 +641,6 @@ class LJCTextBuilder
 
   // Appends the element begin tag.
   /// <include path='members/Begin/*' file='Doc/LJCTextBuilder.xml'/>
-  /// <ParentGroup>AppendElement</ParentGroup>
   Begin(name, textState, attribs = null, addIndent = true
     , childIndent = true)
   {
@@ -711,7 +661,6 @@ class LJCTextBuilder
 
   // Appends an element.
   /// <include path='members/Create/*' file='Doc/LJCTextBuilder.xml'/>
-  /// <ParentGroup>AppendElement</ParentGroup>
   Create(name, textState, text = "", attribs = null, addIndent = true
     , childIndent = true, isEmpty = false, close = true)
   {
@@ -732,7 +681,6 @@ class LJCTextBuilder
 
   // Appends the element end tag.
   /// <include path='members/End/*' file='Doc/LJCTextBuilder.xml'/>
-  /// <ParentGroup>AppendElement</ParentGroup>
   End(name, textState, addIndent = true)
   {
     const createText = this.GetEnd(name, textState, addIndent);
@@ -748,7 +696,6 @@ class LJCTextBuilder
 
   // Gets the element begin tag.
   /// <include path='members/GetBegin/*' file='Doc/LJCTextBuilder.xml'/>
-  /// <ParentGroup>GetElement</ParentGroup>
   GetBegin(name, textState, attribs = null, addIndent = true
     , childIndent = true)
   {
@@ -765,7 +712,6 @@ class LJCTextBuilder
 
   // Gets an element.
   /// <include path='members/GetCreate/*' file='Doc/LJCTextBuilder.xml'/>
-  /// <ParentGroup>GetElement</ParentGroup>
   GetCreate(name, text, textState, attribs = null, addIndent = true
     , childIndent = true, isEmpty = false, close = true)
   {
@@ -818,7 +764,6 @@ class LJCTextBuilder
 
   // Gets the element end tag.
   /// <include path='members/GetEnd/*' file='Doc/LJCTextBuilder.xml'/>
-  /// <ParentGroup>GetElement</ParentGroup>
   GetEnd(name, textState, addIndent = true)
   {
     const tb = new LJCTextBuilder(textState);
@@ -835,7 +780,6 @@ class LJCTextBuilder
 
   // Adds the new (child) indents.
   /// <include path='members/AddChildIndent/*' file='Doc/LJCTextBuilder.xml'/>
-  /// <ParentGroup>Other</ParentGroup>
   AddChildIndent(createText, textState)
   {
     const childIndentCount = textState.ChildIndentCount;
@@ -852,7 +796,6 @@ class LJCTextBuilder
 
   // Changes the IndentCount by the provided value.
   /// <include path='members/AddIndent/*' file='Doc/LJCTextBuilder.xml'/>
-  /// <ParentGroup>Other</ParentGroup>
   AddIndent(increment = 1)
   {
     let indentCount = this.getIndentCount() + increment;
@@ -862,7 +805,6 @@ class LJCTextBuilder
 
   // Indicates if the builder text ends with a newline.
   /// <include path='members/EndsWithNewLine/*' file='Doc/LJCTextBuilder.xml'/>
-  /// <ParentGroup>Other</ParentGroup>
   EndsWithNewLine()
   {
     let retValue = false;
@@ -879,9 +821,17 @@ class LJCTextBuilder
     return retValue;
   }
 
+  // Gets a current LJCTextState object.
+  /// <include path='items/GetTextState/*' file='Doc/LJCTextBuilder.xml'/>
+  GetTextState()
+  {
+    const indentCount = this.getIndentCount();
+    const retState = new LJCTextState(indentCount);
+    return retState;
+  }
+
   // Indicates if the builder has text.
   /// <include path='members/HasText/*' file='Doc/LJCTextBuilder.xml'/>
-  /// <ParentGroup>Other</ParentGroup>
   HasText()
   {
     let retValue = false;
@@ -895,7 +845,6 @@ class LJCTextBuilder
 
   // Gets the current indent length.
   /// <include path='members/IndentLength/*' file='Doc/LJCTextBuilder.xml'/>
-  /// <ParentGroup>Other</ParentGroup>
   IndentLength()
   {
     return this.getIndentCount() * this.IndentCharCount;
@@ -903,7 +852,6 @@ class LJCTextBuilder
 
   // Checks if the text can start with a newline.
   /// <include path='members/StartWithNewLine/*' file='Doc/LJCTextBuilder.xml'/>
-  /// <ParentGroup>Other</ParentGroup>
   StartWithNewLine(allowNewLine)
   {
     let retValue = false;
@@ -921,12 +869,14 @@ class LJCTextBuilder
   // #region Getters and Setters
 
   // Gets the indent count.
+  /// <include path='items/getIndentCount/*' file='Doc/LJCTextBuidler.xml'/>
   getIndentCount()
   {
     return this.#IndentCount;
   }
 
   // Sets the indent count.
+  /// <include path='items/setIndentCount/*' file='Doc/LJCTextBuidler.xml'/>
   setIndentCount(count)
   {
     if (count >= 0)
@@ -1080,28 +1030,25 @@ class LJCTextBuilder
   // #endregion
 }
 
-// ********************
 /// <summary>Represents the text state.</summary>
-/// <group name="Constructor">Constructor Methods</group>
-/// <group name="getset">Getters and Setters</group>
-//    getIndentCount(), setIndentCount()
 class LJCTextState
 {
   // #region Properties
 
-  // <summary>The current Child IndentCount value.</summary>
+  /// <summary>The current Child IndentCount value.</summary>
   ChildIndentCount = 0;
 
-  // <summary>Indicates if the current builder has text.</summary>
+  /// <summary>Indicates if the current builder has text.</summary>
   HasText = false;
 
-  // <summary>The current IndentCount value.</summary>
+  /// <summary>The current IndentCount value.</summary>
   IndentCount = 0;
   // #endregion
 
   // #region Constructor Methods
 
   // Initializes an object instance.
+  /// <include path='items/construct/*' file='Doc/LJCTextState.xml'/>
   constructor(indentCount = 0, hasText = false)
   {
     this.setIndentCount(indentCount);
@@ -1113,12 +1060,14 @@ class LJCTextState
   // #region Getters and Setters
 
   // Gets the indent count.
+  /// <include path='items/getIndentCount/*' file='Doc/LJCTextState.xml'/>
   getIndentCount()
   {
     return this.IndentCount;
   }
 
   // Sets the indent count.
+  /// <include path='items/setIndentCount/*' file='Doc/LJCTextState.xml'/>
   setIndentCount(count)
   {
     if (count >= 0)
