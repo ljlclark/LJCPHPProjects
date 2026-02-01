@@ -3,7 +3,9 @@
 // Licensed under the MIT License.
 // LJCTextBuilderLib.js
 // <script src='../../../LJCJSCommon/LJCCommonLib.js'></script>
-// <script src='../../../LJCJSCommon/LJCDBAccessLib.js'></script>
+// <script src='../../../LJCJSCommon/LJCCollectionLib.js'></script>
+// LJCCommonLib: LJC
+// LJCCollectionLib: LJCCollection
 
 // The Text Builder Class Library
 /// <include path='members/LJCTextBuilderLib/*' file='Doc/LJCTextBuilder.xml'/>
@@ -65,7 +67,7 @@ class LJCAttribute
   /// <include path='members/Clone/*' file='Doc/LJCAttribute.xml'/>
   Clone()
   {
-    let retAttribute = new LJCAttribute(this.Name, this.Value);
+    const retAttribute = new LJCAttribute(this.Name, this.Value);
     return retAttribute;
   }
   // #endregion
@@ -78,37 +80,33 @@ class LJCAttributes extends LJCCollection
   // #region Static Methods - LJCAttributes
 
   // Creates a typed collection from an array of objects.
-  /// <include path='items/ToCollection/*' file='Doc/LJCAttributes.xml'/>
-  static ToCollection(items)
+  /// <include path='members/ToCollection/*' file='Doc/LJCAttributes.xml'/>
+  static ToCollection(arrItems)
   {
-    let retAttributes = null;
+    const retAttribs = null;
 
-    if (LJC.HasElements(items))
+    if (LJC.HasElements(arrItems))
     {
-      retAttributes = new LJCAttributes();
-      //for (let index = 0; index < items.length; index++)
-      for (let objItem of items)
+      retAttribs = new LJCAttributes();
+      for (let objItem of arrItems)
       {
-        //let objItem = items[index];
-
         // Create object from simple object.
         let attrib = LJCAttribute.Copy(objItem);
-        retAttributes.AddObject(attrib);
+        retAttribs.AddObject(attrib);
       }
     }
-    return retAttributes;
+    return retAttribs;
   }
   // #endregion
 
   // #region Collection Data Methods
 
-  /// <summary>Creates and adds the item to the list.</summary>
-  /// <param name="name">The unique name value.</summary>
-  /// <param name="value">The value property.</summary>
+  // Creates and adds the item to the list.
+  /// <include path='members/Add/*' file='Doc/LJCAttributes.xml'/>
   Add(name, value = "")
   {
     let retAttrib = new LJCAttribute(name, value);
-    this.AddObject(retAttrib);
+    retAttrib = this.AddObject(retAttrib);
     return retAttrib;
   }
 
@@ -124,7 +122,9 @@ class LJCAttributes extends LJCCollection
       let process = true;
       if ("style" == attrib.Name.toLowerCase())
       {
-        let foundAttrib = this.Retrieve(attrib.Name);
+        const dataColumns = new LJCDataColumns();
+        dataColumns.AddValue("Name", attrib.Value);
+        let foundAttrib = this.Retrieve(dataColumns);
         if (foundAttrib != null)
         {
           process = false;
@@ -162,7 +162,7 @@ class LJCAttributes extends LJCCollection
   /// <include path='members/MergeStyle/*' file='Doc/LJCAttributes.xml'/>
   MergeStyle(foundAttrib, newAttrib)
   {
-    let retMergedRules = this.SingleValue(foundAttrib, newAttrib);
+    let retMergedRules = this.#SingleValue(foundAttrib, newAttrib);
 
     if (!LJC.HasText(retMergedRules))
     {
@@ -181,19 +181,19 @@ class LJCAttributes extends LJCCollection
         {
           // 0 = Property, 1 = Value.
           let values = foundRule.split(":");
-          let property = LJCAttributes.TrimElement(values, 0);
+          let property = LJCAttributes.#TrimElement(values, 0);
 
           // Check for override.
-          const newRule = this.FindRule(newRules, property);
+          const newRule = this.#FindRule(newRules, property);
           if (newRule != null)
           {
             let values = newRule.split(":");
-            const index = this.GetRuleIndex(newRules, property);
+            const index = this.#GetRuleIndex(newRules, property);
             newRules.splice(index, 1);
           }
 
-          property = LJCAttributes.TrimElement(values, 0);
-          let value = LJCAttributes.TrimElement(values, 1);
+          property = LJCAttributes.#TrimElement(values, 0);
+          let value = LJCAttributes.#TrimElement(values, 1);
           retMergedRules += `${property}: ${value}; `;
         }
       }
@@ -202,10 +202,10 @@ class LJCAttributes extends LJCCollection
       for (const newRule of newRules)
       {
         const values = newRule.split(":");
-        const property = LJCAttributes.TrimElement(values, 0);
+        const property = LJCAttributes.#TrimElement(values, 0);
         if (LJC.HasText(property))
         {
-          const value = LJCAttributes.TrimElement(values, 1);
+          const value = LJCAttributes.#TrimElement(values, 1);
           retMergedRules += `${property}: ${value}; `;
         }
       }
@@ -217,7 +217,7 @@ class LJCAttributes extends LJCCollection
   // #region Private Methods
 
   // Trims element value or if null, returns null.
-  static TrimElement(values, index)
+  static #TrimElement(values, index)
   {
     let retValue = null;
 
@@ -232,7 +232,7 @@ class LJCAttributes extends LJCCollection
   }
 
   // Finds the rule with the supplied property name.
-  FindRule(rules, property)
+  #FindRule(rules, property)
   {
     let retRule = "";
 
@@ -250,14 +250,13 @@ class LJCAttributes extends LJCCollection
   }
 
   // Finds the rule index with the supplied property name.
-  GetRuleIndex(rules, property)
+  #GetRuleIndex(rules, property)
   {
     let retIndex = -1;
 
-    //for (let index = 0; index < rules.length; index++)
-    for (const rule of rules)
+    for (let index = 0; index < rules.length; index++)
     {
-      //const rule = rules[$index];
+      const rule = rules[index];
       let values = rule.split(":");
       if (values[0].trim() == property)
       {
@@ -270,7 +269,7 @@ class LJCAttributes extends LJCCollection
 
   // Returns the existing value if only one exists.
   // Otherwise returns an empty string.
-  SingleValue(foundAttrib, newAttrib)
+  #SingleValue(foundAttrib, newAttrib)
   {
     let retRules = "";
 
@@ -290,7 +289,7 @@ class LJCAttributes extends LJCCollection
 }
 
 // Represents a built string value.
-/// <include path='items/LJCTextBuilder/*' file='Doc/LJCTextBuilder.xml'/>
+/// <include path='members/LJCTextBuilder/*' file='Doc/LJCTextBuilder.xml'/>
 class LJCTextBuilder
 {
   // #region Properties
@@ -347,7 +346,7 @@ class LJCTextBuilder
 
   // Appends a text line without modification.
   /// <include path='members/AddLine/*' file='Doc/LJCTextBuilder.xml'/>
-  AddLine(text)
+  AddLine(text = "")
   {
     const retText = `${text}\r\n`;
     this.#BuilderValue += retText;
@@ -501,10 +500,8 @@ class LJCTextBuilder
 
         // Next text up to LineLimit - prepend length without leading space.
         const wrapText = this.#WrapText(workText, wrapIndex);
-        // *** Different than TextBuilder ***
         const indentString = this.GetIndentString();
         const lineText = `${indentString}${wrapText}`;
-        // Does this also set lineLength?
         this.LineLength = lineText.length;
         buildText += lineText;
 
@@ -566,13 +563,12 @@ class LJCTextBuilder
     if (LJC.HasItems(attribs))
     {
       const tb = new LJCTextBuilder(textState);
-      let isFirst = true;
       for (let attrib of attribs.ReadItems)
       {
         const name = attrib.Name;
         const value = attrib.Value;
 
-        if (!isFirst)
+        if (tb.HasText())
         {
           // Wrap line for large attribute value.
           if (LJC.HasText(value)
@@ -581,7 +577,6 @@ class LJCTextBuilder
             tb.AddText(`\r\n${this.GetIndentString()}`);
           }
         }
-        isFirst = false;
 
         // [ AttribName="Value"]
         tb.AddText(` ${name}`);
@@ -822,7 +817,7 @@ class LJCTextBuilder
   }
 
   // Gets a current LJCTextState object.
-  /// <include path='items/GetTextState/*' file='Doc/LJCTextBuilder.xml'/>
+  /// <include path='members/GetTextState/*' file='Doc/LJCTextBuilder.xml'/>
   GetTextState()
   {
     const indentCount = this.getIndentCount();
@@ -885,7 +880,7 @@ class LJCTextBuilder
     // Add text content.
     refIsWrapped.Value = false;
     if (!isEmpty
-      && LJC.HasValue(text))
+      && LJC.HasText(text))
     {
       if (text.length > 80 - this.IndentLength())
       {
@@ -961,7 +956,7 @@ class LJCTextBuilder
       // *** Different than TextBuilder ***
       // Get wrap point in allowed length.
       // Wrap on a space.
-      retIndex = text.indexOf(" ", wrapLength);
+      retIndex = text.lastIndexOf(" ", wrapLength);
       if (-1 == retIndex)
       {
         // Wrap index not found; Wrap at new text.
@@ -979,7 +974,6 @@ class LJCTextBuilder
     let nextLength = text.length - wrapIndex;
 
     // Leave room for prepend text.
-    // *** Different than TextBuilder ***
     if (nextLength <= this.LineLimit - this.IndentLength())
     {
       // Get text at the wrap index.
@@ -1000,7 +994,6 @@ class LJCTextBuilder
         tempText = tempText.substring(1);
         startIndex++;
       }
-      // *** Different than TextBuilder ***
       let nextLength = this.LineLimit - this.IndentLength;
       nextLength = tempText.lastIndexOf(" ", nextLength);
       retText = text.substring(startIndex, nextLength);
@@ -1047,7 +1040,7 @@ class LJCTextState
   // #region Constructor Methods
 
   // Initializes an object instance.
-  /// <include path='items/construct/*' file='Doc/LJCTextState.xml'/>
+  /// <include path='members/constructor/*' file='Doc/LJCTextState.xml'/>
   constructor(indentCount = 0, hasText = false)
   {
     this.setIndentCount(indentCount);
@@ -1059,14 +1052,14 @@ class LJCTextState
   // #region Getters and Setters
 
   // Gets the indent count.
-  /// <include path='items/getIndentCount/*' file='Doc/LJCTextState.xml'/>
+  /// <include path='members/getIndentCount/*' file='Doc/LJCTextState.xml'/>
   getIndentCount()
   {
     return this.IndentCount;
   }
 
   // Sets the indent count.
-  /// <include path='items/setIndentCount/*' file='Doc/LJCTextState.xml'/>
+  /// <include path='members/setIndentCount/*' file='Doc/LJCTextState.xml'/>
   setIndentCount(count)
   {
     if (count >= 0)

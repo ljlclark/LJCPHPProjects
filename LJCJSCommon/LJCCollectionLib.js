@@ -156,11 +156,11 @@ class LJCCollection
 
     for (let dataIndex = 0; dataIndex < dataColumns.Count; dataIndex++)
     {
-      //let dataColumn = dataColumns[dataIndex];
       let dataColumn = dataColumns.RetrieveAtIndex(dataIndex);
       let propertyName = dataColumn.PropertyName;
+      let itemValue = item[propertyName];
       let value = dataColumn.Value;
-      if (item[propertyName] != value)
+      if (itemValue != value)
       {
         retMatch = false;
         break;

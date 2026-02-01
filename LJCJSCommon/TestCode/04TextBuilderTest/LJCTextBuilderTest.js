@@ -214,7 +214,10 @@ class LJCTextBuilderTest
   {
     const tb = new LJCTextBuilder();
     const attribs = tb.Attribs("className", "idName");
-    const id = attribs.Retrieve("id");
+
+    const dataColumns = new LJCDataColumns();
+    dataColumns.AddValue("Name", "id");
+    const id = attribs.Retrieve(dataColumns);
     const result = id.Value;
     const compare = "idName";
     LJC.CheckValues("Attribs()", result, compare);
@@ -264,9 +267,9 @@ class LJCTextBuilderTest
     const className = "styleClass";
     const id = "idValue";
     const border = 1; // Default
-    const borderspacing = 0; // Default
-    const cellpadding = 2; // Default
-    const attribs = tb.TableAttribs(border, borderspacing, cellpadding
+    const borderSpacing = 0; // Default
+    const cellPadding = 2; // Default
+    const attribs = tb.TableAttribs(border, borderSpacing, cellPadding
       , className, id);
     const result = tb.GetAttribs(attribs, textState);
     let compare = " id=\"idValue\" class=\"styleClass\"\r\n";
