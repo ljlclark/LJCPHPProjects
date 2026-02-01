@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright(c) Lester J. Clark and Contributors. -->
+<!-- Licensed under the MIT License. -->
+<!-- LJCTextBuilder.xml -->
+<members>
+  <LJCTextState>
+    <summary>
+      Represents the text state.
+    </summary>
+    /// <group name="constructor">Constructor Methods</group>
+    /// <group name="getset">Getters and Setters</group>
+  </LJCTextState>
+  
+  <!-- Constructor Methods -->
+  <constructor>
+    <summary>
+      Initializes an object instance.
+    </summary>
+    <param name="indentCount"></param>
+    <ParentGroup>Constructor</ParentGroup>
+  </constructor>
+  
+  <!-- Getters and Setters -->
+  <getIndentCount>
+    <summary>
+      // Gets the indent count.
+    </summary>
+    <ParentGroup>getset</ParentGroup>
+  </getIndentCount>
+  <setIndentCount>
+    <summary>
+      Sets the indent count.
+    </summary>
+    <remarks>
+      Will not set the indent count if a negative value.
+    </remarks>
+    <ParentGroup>getset</ParentGroup>
+  </setIndentCount>
+</members>

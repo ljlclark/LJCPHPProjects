@@ -18,27 +18,26 @@
     <summary>
       Creates a typed collection from an array of objects.
     </summary>
-    <param name="$items">The object array.</param>
+    <param name="items">The object array.</param>
     <returns>The LJCAttributes collection.</returns>
     <ParentGroup>Static</ParentGroup>
   </ToCollection>
   
   <!-- Constructor Methods -->
-  <construct>
+  <constructor>
     <summary>
       Initializes an object instance.
     </summary>
     <ParentGroup>Constructor</ParentGroup>
-  </construct>
+  </constructor>
   
   <!-- Collection Methods -->
   <Add>
     <summary>
       Creates an object and adds it to the collection.
     </summary>
-    <param name="$name">The item name.</param>
-    <param name="$value">The item value.</param>
-    <param name="$key">The optional item key.</param>
+    <param name="name">The item name.</param>
+    <param name="value">The item value.</param>
     <returns>The LJCAttributes collection.</returns>
     <ParentGroup>Collection</ParentGroup>
   </Add>
@@ -46,8 +45,7 @@
     <summary>
       Adds an object and key value.
     </summary>
-    <param name="$attrib">The item object.</param>
-    <param name="$key">The optional item key.</param>
+    <param name="attrib">The item object.</param>
     <returns>The LJCAttribute object.</returns>
     <ParentGroup>Collection</ParentGroup>
   </AddObject>
@@ -55,22 +53,30 @@
     <summary>
       Appends items.
     </summary>
-    <param name="$attribs">The item objects.</param>
+    <param name="attribs">The item objects.</param>
     <ParentGroup>Collection</ParentGroup>
   </Append>
+  <UniqueColumn>
+    <summary>
+      Gets a Unique column for this object.
+    </summary>
+    <param name="name">The property name.</param>
+    <param name="value">The unique key value.</param>
+    <returns>The unique data column.</returns>
+  </UniqueColumn>
   <Remove>
     <summary>
       Removes the item by Key value.
     </summary>
-    <param name="$key">The optional item key.</param>
-    <param name="$throwError">The optional throw error flag.</param>
+    <param name="key">The optional item key.</param>
+    <param name="throwError">The optional throw error flag.</param>
     <ParentGroup>Collection</ParentGroup>
   </Remove>
   <Retrieve>
     <summary>
       Gets an item by key.
     </summary>
-    <param name="$key">The optional item key.</param>
+    <param name="key">The optional item key.</param>
     <returns>The retrieved item.</returns>
     <ParentGroup>Collection</ParentGroup>
   </Retrieve>
@@ -80,8 +86,8 @@
     <summary>
       Merges "style" attrib rules.
     </summary>
-    <param name="$existingAttrib">The existing style attribute.</param>
-    <param name="$newAttrib">The new style attribute.</param>
+    <param name="foundAttrib">The existing style attribute.</param>
+    <param name="newAttrib">The new style attribute.</param>
     <returns>The merged style attributes.</returns>
     <ParentGroup>Other</ParentGroup>
   </MergeStyle>

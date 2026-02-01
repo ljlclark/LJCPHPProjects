@@ -6,16 +6,20 @@
   <LJCAttribute>
     <summary>
       Represents a node or element attribute.
-    </summary>    
+    </summary>
+    <group name="Static">Static Methods</group>
+    <group name="Constructor">Constructor Methods</group>
+    <group name="Data">Data Class Methods</group>
   </LJCAttribute>
   
   <!-- Static Methods -->
   <Copy>
     <summary>
-      Creates a typed data object from a standard object.
+      Creates a data object from a simple object.
     </summary>
-    <param name="$item">The standard object.</param>
+    <param name="$item">The simple object.</param>
     <returns>The LJCAttribute object.</returns>
+    <ParentGroup>Static</ParentGroup>
   </Copy>
   
   <!-- Constructor Methods -->
@@ -25,5 +29,15 @@
     </summary>
     <param name="$name">The optional item name.</param>
     <param name="$value">The optional item value.</param>
+    <ParentGroup>Constructor</ParentGroup>
   </construct>
+
+  <!-- Data Class Methods -->
+  <Clone>
+    <summary>
+      Creates an object clone.
+    </summary>
+    <returns>The cloned object.</returns>
+    <ParentGroup>Data</ParentGroup>
+  </Clone>
 </items>

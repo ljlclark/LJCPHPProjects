@@ -7,7 +7,6 @@
   $prefix = RelativePrefix();
   include_once "$prefix/LJCPHPCommon/LJCCommonLib.php";
   include_once "$prefix/LJCPHPCommon/LJCCollectionLib.php";
-  //include_once "$prefix/LJCPHPCommon/LJCDbAccessLib.php";
   // LJCCommonLib: LJC
   // LJCCollectionLib: LJCCollectionBase
 
@@ -19,11 +18,26 @@
   /// <include path='members/LJCAttribute/*' file='Doc/LJCAttribute.xml'/>
   class LJCAttribute
   {
+    // #region Properties - LJCAttribute
+
+    /// <summary>The class name for debugging.</summary>
+    public string $ClassName = "";
+
+    /// <summary>The debug text.</summary>
+    public string $LogText = "";
+
+    /// <summary>The item name.</summary>
+    public ?string $Name = null;
+
+    /// <summary>The item value.</summary>
+    public ?string $Value = null;
+    // #endregion
+
     // #region Static Methods - LJCAttribute
 
     // Creates a typed data object from a standard object.
     /// <include path='members/Copy/*' file='Doc/LJCAttribute.xml'/>
-    public static function Copy($item)
+    public static function Copy($objItem)
     {
       // Static method output logging.
       $className = "LJCAttribute";
@@ -31,18 +45,18 @@
 
       $retAttrib = null;
 
-      if ($item != null)
+      if ($objItem != null)
       {
-        $properties = get_object_vars($item);
+        $properties = get_object_vars($objItem);
         $retAttrib = new LJCAttribute();
 
         // Look for properties of simple object in object.
-        foreach ($properties as $name => $value)
+        foreach ($properties as $propertyName => $value)
         {
-          if (property_exists($item, $name))
+          if (property_exists($objItem, $propertyName))
           {
             // Update new object properties from the simple object.
-            $retAttrib->$name = $value;
+            $retAttrib->$propertyName = $value;
           }
         }
       }
@@ -88,18 +102,9 @@
     /// <include path='members/Clone/*' file='Doc/LJCAttribute.xml'/>
     public function Clone()
     {
-      $retAttrib = new LJCAttribute($this.Name, $this.Value);
+      $retAttrib = new LJCAttribute($this->Name, $this->Value);
       return $retAttrib;
     } // Clone()
-    // #endregion
-
-    // #region Properties - LJCAttribute
-
-    /// <summary>The item name.</summary>
-    public ?string $Name;
-
-    /// <summary>The item value.</summary>
-    public ?string $Value;
     // #endregion
   } // LJCAttribute
 
@@ -107,30 +112,39 @@
   /// <include path='members/LJCAttributes/*' file='Doc/LJCAttributes.xml'/>
   class LJCAttributes extends LJCCollectionBase
   {
+    // #region Properties - LJCAttributes
+
+    /// <summary>The class name for debugging.</summary>
+    public string $ClassName = "";
+
+    /// <summary>The debug text.</summary>
+    public string $LogText = "";
+    // #endregion
+
     // #region Static Methods - LJCAttributes
 
     // Creates a typed collection from an array of objects.
     /// <include path='members/ToCollection/*' file='Doc/LJCAttributes.xml'/>
-    public static function ToCollection(array $items)
+    public static function ToCollection(array $arrItems)
     {
       // Static method output logging.
       $className = "LJCAttributes";
       $methodName = "ToCollection";
-      $retAttributes = null;
+      $retAttribs = null;
 
-      if (is_array($items)
-        && count($items) > 0)
+      if (LJC::HasElements($arrItems))
       {
-        $retAttributes = new LJCAttributes();
+        $retAttribs = new LJCAttributes();
         $key = 1;
-        foreach ($items as $item)
+        foreach ($arrItems as $objItem)
         {
-          $attrib = LJCAttribute::Copy($item);
-          $retAttributes->AddObject($attrib, $key);
+          // Create object from simple object.
+          $attrib = LJCAttribute::Copy($objItem);
+          $retAttribs->AddObject($attrib, $key);
           $key++;
         }
       }
-      return $retAttributes;
+      return $retAttribs;
     } // ToCollection()
     // #endregion
 
@@ -172,16 +186,16 @@
       : ?LJCAttribute
     {
       $methodName = "Add";
-      $retValue = null;
+      $retAttrib = null;
 
       if (null == $key)
       {
         $key = $name;
       }
 
-      $item = new LJCAttribute($name, $value);
-      $retValue = $this->AddObject($item, $key);
-      return $retValue;
+      $attrib = new LJCAttribute($name, $value);
+      $retAttrib = $this->AddObject($attrib, $key);
+      return $retAttrib;
     } // Add()
 
     // Adds an object and key value.
@@ -199,24 +213,24 @@
       $process = true;
 
       // Merge new styles with existing styles.
-      if ("style" == $key
+      if ("style" == strtolower($key)
         && $this->HasKey($key))
       {
-        $existingAttrib = $this->Retrieve($key);
-        if ($existingAttrib != null)
+        $foundAttrib = $this->Retrieve($key);
+        if ($foundAttrib != null)
         {
           $process = false;
-          $mergedValue = $this->MergeStyle($existingAttrib, $attrib);
+          $mergedValue = $this->MergeStyle($foundAttrib, $attrib);
           if (LJC::HasValue($mergedValue))
           {
-            $existingAttrib->Value = $mergedValue;
+            $foundAttrib->Value = $mergedValue;
           }
         }
       }
 
       if ($process)
       {
-        $retValue = $this->AddItem($attrib, $key);
+        $retAttrib = $this->AddItem($attrib, $key);
       }
       return $retAttrib;
     }// AddObject()
@@ -255,28 +269,28 @@
 
     // Merges "style" attrib rules.
     /// <include path='members/MergeStyle/*' file='Doc/LJCAttributes.xml'/>
-    public function MergeStyle($existingAttrib, $newAttrib)
+    public function MergeStyle($foundAttrib, $newAttrib)
     {
       $methodName = "MergeStyle";
-      $retMergedRules = $this->SingleValue($existingAttrib, $newAttrib);
+      $retMergedRules = $this->SingleValue($foundAttrib, $newAttrib);
 
       if (!LJC::HasValue($retMergedRules))
       {
         // Get existing style rules.
-        $existingValue = trim($existingAttrib->Value);
-        $existingRules = explode(";", $existingValue);
+        $foundValue = trim($foundAttrib->Value);
+        $foundRules = explode(";", $foundValue);
 
         // Get new style rules.
         $newValue = trim($newAttrib->Value);
         $newRules = explode(";", $newValue);
 
         // Save previous rule unless overriden by new rule.
-        foreach ($existingRules as $existingRule)
+        foreach ($foundRules as $foundRule)
         {
-          if ($existingRule != null)
+          if ($foundRule != null)
           {
             // 0 = Property, 1 = Value.
-            $values = explode(":", $existingRule);
+            $values = explode(":", $foundRule);
             $property = self::TrimElement($values, 0);
 
               // Check for override.
@@ -370,12 +384,12 @@
 
     // Returns the existing value if only one exists.
     // Otherwise returns an empty string.
-    private function SingleValue($existingAttrib, $newAttrib)
+    private function SingleValue($foundAttrib, $newAttrib)
     {
       $methodName = "SingleValue";
       $retRules = "";
 
-      if (null == $existingAttrib
+      if (null == $foundAttrib
         && $newAttrib != null)
       {
         $retRules = $newAttrib->Value;
@@ -383,19 +397,10 @@
       if (null == $newAttrib
         && $existingAttrib != null)
       {
-        $retRules = $existingAttrib->Value;
+        $retRules = $foundAttrib->Value;
       }
       return $retRules;
     } // SingleValue()
-    // #endregion
-
-    // #region Properties - LJCAttributes
-
-    /// <summary>The class name for debugging.</summary>
-    public string $ClassName;
-
-    /// <summary>The debug text.</summary>
-    public string $LogText;
     // #endregion
   } // LJCAttributes
 
@@ -404,6 +409,33 @@
   /// <include path='members/LJCTextBuilder/*' file='Doc/LJCTextBuilder.xml'/>
   class LJCTextBuilder
   {
+    // #region Properties - LJCTextBuilder
+
+    /// <summary>The class name for debugging.</summary>
+    public string $ClassName = "";
+
+    /// <summary>The debug text.</summary>
+    public string $LogText = "";
+
+    // <summary>The indent character count.</summary>
+    public int $IndentCharCount = 0;
+
+    /// <summary>Gets the current length.</summary>
+    public int $LineLength = 0;
+
+    /// <summary>Gets or sets the character limit.</summary>
+    public int $LineLimit = 0;
+
+    /// <summary>Indicates if the wrap functionality is enabled.</summary>
+    public bool $WrapEnabled = false;
+
+    // The built string value.
+    private ?string $BuilderValue = "";
+
+    // The current indent count.
+    private int $IndentCount = 0;
+    // #endregion
+
     // #region Constructor Methods - LJCTextBuilder
 
     // Initializes a class instance.
@@ -627,10 +659,8 @@
 
           // Next text up to LineLimit - prepend length without leading space.
           $wrapText = $this->WrapText($workText, $wrapIndex);
-          // *** Different than TextBuilder ***
           $indentString = $this->GetIndentString();
           $lineText = "{$indentString}{$wrapText}";
-          // Does this also set $lineLength?
           $this->LineLength = strlen($lineText);
           $buildText .= $lineText;
 
@@ -698,13 +728,12 @@
       if (LJC::HasItems($attribs))
       {
         $tb = new LJCTextBuilder($textState);
-        $isFirst = true;
         foreach ($attribs as $attrib)
         {
           $name = $attrib->Name;
           $value = $attrib->Value;
 
-          if (!$isFirst)
+          if ($tb->HasText())
           {
             // Wrap line for large attribute value.
             if (LJC::HasValue($value)
@@ -713,7 +742,6 @@
               $tb->AddText("\r\n{$this->GetIndentString()}");
             }
           }
-          $isFirst = false;
 
           // [ AttribName="Value"]
           $tb->AddText(" {$name}");
@@ -979,7 +1007,6 @@
       $retValue = false;
 
       $builderValue = $this->BuilderValue;
-      // *** Add ***
       $length = strlen($builderValue);
       if ($length > 0)
       {
@@ -1141,7 +1168,6 @@
         }
         $wrapLength = $this->LineLimit - $currentLength;
 
-        // *** Different than TextBuilder ***
         // Get wrap point in allowed length.
         // Wrap on a space.
         $retIndex = LJC::StrRPos($text, " ", $wrapLength);
@@ -1163,7 +1189,6 @@
       $nextLength = strlen($text) - $wrapIndex;
 
       // Leave room for prepend text.
-      // *** Different than TextBuilder ***
       if ($nextLength <= $this->LineLimit - $this->IndentLength())
       {
         // Get text at the wrap index.
@@ -1184,7 +1209,6 @@
           $tempText = substr($tempText, 1);
           $startIndex++;
         }
-        // *** Different than TextBuilder ***
         $nextLength = $this->LineLimit - $this->IndentLength;
         $nextLength = LJC::StrRPos($tempText, " ", $nextLength);
         $retText = substr($text, $startIndex, $nextLength);
@@ -1211,48 +1235,34 @@
       }
     }
     // #endregion
-
-    // #region Properties - LJCTextBuilder
-
-    /// <summary>The class name for debugging.</summary>
-    public string $ClassName;
-
-    /// <summary>The debug text.</summary>
-    public string $LogText;
-
-    // <summary>The indent character count.</summary>
-    public int $IndentCharCount;
-
-    /// <summary>Gets the current length.</summary>
-    public int $LineLength;
-
-    /// <summary>Gets or sets the character limit.</summary>
-    public int $LineLimit;
-
-    /// <summary>Indicates if the wrap functionality is enabled.</summary>
-    public bool $WrapEnabled;
-
-    // The built string value.
-    private ?string $BuilderValue;
-
-    // The current indent count.
-    private int $IndentCount;
-    // #endregion
   }
 
-  // ********************
-  /// <summary>Represents the text state.</summary>
-  /// <group name="Constructor">Constructor Methods</group>
-  /// <group name="getset">Getters and Setters</group>
-  //    getIndentCount(), setIndentCount()
+  // Represents the text state.
+  /// <include path='items/LJCTextState/*' file='Doc/LJCTextState.xml'/>
   class LJCTextState
   {
-    // ----------
-    // Constructor Methods - LJCTextState
+    // #region Properties - LJCTextState
+
+    /// <summary>The class name for debugging.</summary>
+    public string $ClassName = "";
+
+    /// <summary>The debug text.</summary>
+    public string $LogText = "";
+
+    // <summary>The current Child IndentCount value.</summary>
+    public int $ChildIndentCount;
+
+    // <summary>Indicates if the current builder has text.</summary>
+    public bool $HasText;
+
+    // <summary>The current IndentCount value.</summary>
+    private int $IndentCount;
+    // #endregion
+
+    // #region Constructor Methods - LJCTextState
 
     // Initializes an object instance.
     /// <include path='items/construct/*' file='Doc/LJCTextState.xml'/>
-    /// <ParentGroup>Constructor</ParentGroup>
     public function __construct(int $indentCount = 0, bool $hasText = false)
     {
       // Set logging values.
@@ -1278,13 +1288,12 @@
       $this->LogText .= LJC::OutputDebugObject($lineNumber, $this->ClassName
         , $methodName, $valueName, $value);
     } // AddLogText()
+    // #endregion
 
-    // ----------
-    // Getters and Setters - LJCTextState
+    // #region Getters and Setters - LJCTextState
 
     // Gets the indent count.
     /// <include path='items/getIndentCount/*' file='Doc/LJCTextState.xml'/>
-    /// <ParentGroup>getset</ParentGroup>
     public function getIndentCount(): int
     {
       return $this->IndentCount;
@@ -1292,7 +1301,6 @@
 
     // Sets the indent count.
     /// <include path='items/setIndentCount/*' file='Doc/LJCTextState.xml'/>
-    /// <ParentGroup>getset</ParentGroup>
     public function setIndentCount(int $count): void
     {
       $methodName = "setIndentCount";
@@ -1302,17 +1310,6 @@
         $this->IndentCount = $count;
       }
     }
-
-    // ----------
-    // Properties - LJCTextState
-
-    // <summary>The current Child IndentCount value.</summary>
-    public int $ChildIndentCount;
-
-    // <summary>Indicates if the current builder has text.</summary>
-    public bool $HasText;
-
-    // <summary>The current IndentCount value.</summary>
-    private int $IndentCount;
+    // #endregion
   }
 

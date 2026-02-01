@@ -83,7 +83,7 @@ class LJCAttributes extends LJCCollection
   /// <include path='members/ToCollection/*' file='Doc/LJCAttributes.xml'/>
   static ToCollection(arrItems)
   {
-    const retAttribs = null;
+    let retAttribs = null;
 
     if (LJC.HasElements(arrItems))
     {
@@ -105,8 +105,10 @@ class LJCAttributes extends LJCCollection
   /// <include path='members/Add/*' file='Doc/LJCAttributes.xml'/>
   Add(name, value = "")
   {
-    let retAttrib = new LJCAttribute(name, value);
-    retAttrib = this.AddObject(retAttrib);
+    let retAttrib = null;
+
+    let attrib = new LJCAttribute(name, value);
+    retAttrib = this.AddObject(attrib);
     return retAttrib;
   }
 
@@ -122,9 +124,8 @@ class LJCAttributes extends LJCCollection
       let process = true;
       if ("style" == attrib.Name.toLowerCase())
       {
-        const dataColumns = new LJCDataColumns();
-        dataColumns.AddValue("Name", attrib.Value);
-        let foundAttrib = this.Retrieve(dataColumns);
+        const uniqueColumns = this.UniqueColumns(attrib.Value);
+        let foundAttrib = this.Retrieve(uniqueColumns);
         if (foundAttrib != null)
         {
           process = false;
@@ -211,6 +212,15 @@ class LJCAttributes extends LJCCollection
       }
     }
     return retMergedRules;
+  }
+
+  // Get the unique columns data object.
+  /// <include path='members/UniqueColumns/*' file='Doc/LJCAttributes.xml'/>
+  UniqueColumns(value)
+  {
+    const retColumns = new LJCDataColumns();
+    retColumns.AddValue("Name", value);
+    return retColumns;
   }
   // #endregion
 
@@ -349,6 +359,7 @@ class LJCTextBuilder
   AddLine(text = "")
   {
     const retText = `${text}\r\n`;
+
     this.#BuilderValue += retText;
     return retText;
   }
@@ -953,7 +964,6 @@ class LJCTextBuilder
       }
       const wrapLength = this.LineLimit - currentLength;
 
-      // *** Different than TextBuilder ***
       // Get wrap point in allowed length.
       // Wrap on a space.
       retIndex = text.lastIndexOf(" ", wrapLength);

@@ -6,7 +6,11 @@
   <LJCAttributes>
     <summary>
       Represents a collection of node or element attributes.
-    </summary>    
+    </summary>
+    <group name="Static">Static Methods</group>
+    <group name="Constructor">Constructor Methods</group>
+    <group name="Collection">Collection Methods</group>
+    <group name="Other">Other Methods</group>
   </LJCAttributes>
   
   <!-- Static Methods -->
@@ -16,6 +20,7 @@
     </summary>
     <param name="$items">The object array.</param>
     <returns>The LJCAttributes collection.</returns>
+    <ParentGroup>Static</ParentGroup>
   </ToCollection>
   
   <!-- Constructor Methods -->
@@ -23,6 +28,7 @@
     <summary>
       Initializes an object instance.
     </summary>
+    <ParentGroup>Constructor</ParentGroup>
   </construct>
   
   <!-- Collection Methods -->
@@ -34,6 +40,7 @@
     <param name="$value">The item value.</param>
     <param name="$key">The optional item key.</param>
     <returns>The LJCAttributes collection.</returns>
+    <ParentGroup>Collection</ParentGroup>
   </Add>
   <AddObject>
     <summary>
@@ -42,12 +49,14 @@
     <param name="$attrib">The item object.</param>
     <param name="$key">The optional item key.</param>
     <returns>The LJCAttribute object.</returns>
+    <ParentGroup>Collection</ParentGroup>
   </AddObject>
   <Append>
     <summary>
       Appends items.
     </summary>
     <param name="$attribs">The item objects.</param>
+    <ParentGroup>Collection</ParentGroup>
   </Append>
   <Remove>
     <summary>
@@ -55,6 +64,7 @@
     </summary>
     <param name="$key">The optional item key.</param>
     <param name="$throwError">The optional throw error flag.</param>
+    <ParentGroup>Collection</ParentGroup>
   </Remove>
   <Retrieve>
     <summary>
@@ -62,6 +72,7 @@
     </summary>
     <param name="$key">The optional item key.</param>
     <returns>The retrieved item.</returns>
+    <ParentGroup>Collection</ParentGroup>
   </Retrieve>
   
   <!-- Other Methods -->
@@ -72,5 +83,6 @@
     <param name="$existingAttrib">The existing style attribute.</param>
     <param name="$newAttrib">The new style attribute.</param>
     <returns>The merged style attributes.</returns>
+    <ParentGroup>Other</ParentGroup>
   </MergeStyle>
 </items>
