@@ -15,22 +15,49 @@
   <!-- Static Methods -->
   <Copy>
     <summary>
-      Creates a data object from a simple object.
+      Creates a new object from simple object values.
     </summary>
-    <param name="$item">The simple object.</param>
+    <param name="objItem">The simple object.</param>
     <returns>The LJCAttribute object.</returns>
     <ParentGroup>Static</ParentGroup>
+    <code>
+      // Create typed collection from deserialized JavasScript array.
+      Copy()
+      {
+        const simpleAttribute = {
+          "Name": "id",
+          "Value": "name",
+        };
+
+        const attribute = LJCAttribute.Copy(simpleAttribute);
+        const result = attribute.Name;
+        
+        // result:
+        // id
+      }
+    </code>
   </Copy>
   
   <!-- Constructor Methods -->
-  <construct>
+  <constructor>
     <summary>
-      Initializes a class instance.
+      Initializes an object instance.
     </summary>
-    <param name="$name">The optional item name.</param>
-    <param name="$value">The optional item value.</param>
+    <param name="name">The optional item name.</param>
+    <param name="value">The optional item value.</param>
     <ParentGroup>Constructor</ParentGroup>
-  </construct>
+    <code>
+      // Initializes an object instance.
+      Constructor()
+      {
+        const attribute = new LJCAttribute("id", "name");
+        const result = attribute.Name;
+      
+        // result:
+        // id
+      }
+    </code>
+  </constructor>
   
   <!-- Data Class Methods -->
   <Clone>
@@ -39,5 +66,17 @@
     </summary>
     <returns>The cloned object.</returns>
     <ParentGroup>Data</ParentGroup>
+    <code>
+      // Creates an object clone.
+      Clone()
+      {
+        const attribute = new LJCAttribute("id", "name");
+        const clone = attribute.Clone();
+        const result = clone.Name;
+        
+        // result:
+        // id
+      }
+    </code>
   </Clone>
 </members>

@@ -8,7 +8,6 @@
       Represents a collection of node or element attributes.
     </summary>
     <group name="Static">Static Methods</group>
-    <group name="Constructor">Constructor Methods</group>
     <group name="Collection">Collection Methods</group>
     <group name="Other">Other Methods</group>
   </LJCAttributes>
@@ -18,36 +17,77 @@
     <summary>
       Creates a typed collection from an array of objects.
     </summary>
-    <param name="items">The object array.</param>
+    <param name="arrItems">The object array.</param>
     <returns>The LJCAttributes collection.</returns>
     <ParentGroup>Static</ParentGroup>
+    <code>
+      // Creates a typed collection from an array of objects.
+      ToCollection()
+      {
+        const array = [
+          { Name: "id", Value: "idName" },
+          { Name: "class", Value: "className" },
+        ];
+
+        const attributes = LJCAttributes.ToCollection(array);
+        let result = attributes.Count;
+        
+        // result:
+        // 2
+      }
+    </code>
   </ToCollection>
-  
-  <!-- Constructor Methods -->
-  <constructor>
-    <summary>
-      Initializes an object instance.
-    </summary>
-    <ParentGroup>Constructor</ParentGroup>
-  </constructor>
   
   <!-- Collection Methods -->
   <Add>
     <summary>
-      Creates an object and adds it to the collection.
+      Creates and adds the item to the list.
     </summary>
     <param name="name">The item name.</param>
     <param name="value">The item value.</param>
     <returns>The LJCAttributes collection.</returns>
     <ParentGroup>Collection</ParentGroup>
+    <code>
+      // Creates and adds the item to the list.
+      Add()
+      {
+        const attributes = new LJCAttributes();
+        attributes.Add("id");
+
+        const attribute = attributes.Retrieve("id");
+        const result = attribute.Name;
+        
+        // result:
+        // id
+      }
+    </code>
   </Add>
   <AddObject>
     <summary>
-      Adds an object and key value.
+      Adds the supplied item to the list.
     </summary>
     <param name="attrib">The item object.</param>
     <returns>The LJCAttribute object.</returns>
     <ParentGroup>Collection</ParentGroup>
+    <code>
+      // Adds the supplied item to the list.
+      AddObject()
+      {
+        const attributes = new LJCAttributes();
+        let attribute = new LJCAttribute("id", "idName");
+
+        const addedAttrib = attributes.AddObject(attribute);
+        let result = addedAttrib.Name;
+        let compare = "id";
+        LJC.CheckValues("AddObject()", result, compare);
+
+        attribute = attributes.Retrieve("id");
+        result = attribute.Name;
+        
+        // result:
+        // id
+      }
+    </code>
   </AddObject>
   <Append>
     <summary>
@@ -55,31 +95,24 @@
     </summary>
     <param name="attribs">The item objects.</param>
     <ParentGroup>Collection</ParentGroup>
+    <code>
+      // Appends items.
+      Append()
+      {
+        const fromAttribs = new LJCAttributes();
+        fromAttribs.Add("id", "idName");
+        fromAttribs.Add("class", "className");
+
+        const attribs = new LJCAttributes();
+        attribs.Append(fromAttribs);
+        attrib = attributes.Retrieve("id");
+        const result = attrib.Name;
+        
+        // result:
+        // id;
+      }
+    </code>
   </Append>
-  <UniqueColumn>
-    <summary>
-      Gets a Unique column for this object.
-    </summary>
-    <param name="name">The property name.</param>
-    <param name="value">The unique key value.</param>
-    <returns>The unique data column.</returns>
-  </UniqueColumn>
-  <Remove>
-    <summary>
-      Removes the item by Key value.
-    </summary>
-    <param name="key">The optional item key.</param>
-    <param name="throwError">The optional throw error flag.</param>
-    <ParentGroup>Collection</ParentGroup>
-  </Remove>
-  <Retrieve>
-    <summary>
-      Gets an item by key.
-    </summary>
-    <param name="key">The optional item key.</param>
-    <returns>The retrieved item.</returns>
-    <ParentGroup>Collection</ParentGroup>
-  </Retrieve>
   
   <!-- Other Methods -->
   <MergeStyle>
@@ -90,5 +123,40 @@
     <param name="newAttrib">The new style attribute.</param>
     <returns>The merged style attributes.</returns>
     <ParentGroup>Other</ParentGroup>
+    <code>
+      // Merges "style" attrib rules.
+      MergeStyle()
+      {
+        const attribs = new LJCAttributes();
+        const foundAttrib = attribs.Add("style", "borderspacing: 0px");
+        const newAttrib = new LJCAttribute("style", "cellpadding: 2px");
+
+        const result = attribs.MergeStyle(foundAttrib, newAttrib);
+
+        // result:
+        // borderspacing: 0px; cellpadding: 2px; 
+      }
+    </code>
   </MergeStyle>
+  <UniqueColumns>
+    <summary>
+      Get the unique columns data object.
+    </summary>
+    <param name="value">The unique key value.</param>
+    <returns>The unique data columns.</returns>
+    <code>
+      // Get the unique columns.
+      UniqueColumns()
+      {
+        const attribs = new LJCAttributes();
+        const columns = attribs.UniqueColumns("id");
+
+        const column = columns.RetrieveAtIndex(0);
+        const result = column.Value;
+        
+        // result:
+        // id
+      }
+    </code>
+  </UniqueColumns>
 </members>

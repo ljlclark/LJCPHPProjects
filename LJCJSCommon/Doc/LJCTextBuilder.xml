@@ -23,7 +23,7 @@
     /// <group name="AppendText">Append Text</group>
     /// <group name="GetText">Get Text</group>
     /// <group name="OtherGetText">Other Get Text</group>
-    /// <group name="GetAttribs">Get Attribs</group>
+    /// <group name="GetAttribs">Attribs</group>
     /// <group name="AppendElement">Append Element</group>
     /// <group name="GetElement">Get Element</group>
     /// <group name="Other">Other Methods</group>
@@ -113,11 +113,15 @@
     <param name="textState">The text state object.</param>
     <ParentGroup>Constructor</ParentGroup>
     <code>
-      const tb = new LJCTextBuilder();
-      const result = tb.IndentCharCount;
+      // Initializes an object instance.
+      Constructor()
+      {
+        const tb = new LJCTextBuilder();
+        const result = tb.IndentCharCount;
 
-      // result:
-      // 2
+        // result:
+        // 2
+      }
     </code>
   </constructor>
 
@@ -126,17 +130,21 @@
     <summary>
       Gets the built string.
     </summary>
-    <returns>The HTML text.</returns>
+    <returns>The built text.</returns>
     <ParentGroup>DataClass</ParentGroup>
     <code>
-      const tb = new LJCTextBuilder();
-      tb.Text("This is some text.");
+      // Gets the built string.
+      ToString()
+      {
+        const tb = new LJCTextBuilder();
+        tb.Text("This is some text.");
 
-      // Example Method:
-      const result = tb.ToString();
+        // Example Method:
+        const result = tb.ToString();
 
-      // result;
-      // This is some text.
+        // result;
+        // "This is some text."
+      }
     </code>
   </ToString>
 
@@ -153,24 +161,28 @@
       builder.
     </remarks>
     <code>
-      const tb = new LJCTextBuilder();
+      // Appends a text line without modification.
+      AddLine()
+      {
+        const tb = new LJCTextBuilder();
 
-      // Example Method:
-      tb.AddLine("This is an appended line.");
+        // Example Method:
+        tb.AddLine("This is an appended line.");
 
-      tb.AddText(":");
-      const result = tb.ToString();
+        tb.AddText(":");
+        const result = tb.ToString();
 
-      // result:
-      // This is an appended line.
-      // :
+        // result:
+        // "This is an appended line."
+        // ":"
+      }
     </code>
   </AddLine>
   <AddText>
     <summary>
       Appends text without modification.
     </summary>
-    <param name="$text">The add text.</param>
+    <param name="text">The add text.</param>
     <returns>The added text.</returns>
     <ParentGroup>AddText</ParentGroup>
     <remarks>
@@ -178,15 +190,19 @@
       builder.
     </remarks>
     <code>
-      const tb = new LJCTextBuilder();
+      // Appends text without modification.
+      AddText()
+      {
+        const tb = new LJCTextBuilder();
 
-      // Example Method:
-      tb.AddText("This is some appended text.");
+        // Example Method:
+        tb.AddText("This is some appended text.");
 
-      const result = tb.ToString();
+        const result = tb.ToString();
 
-      // result:
-      // This is some appended text.
+        // result:
+        // "This is some appended text."
+      }
     </code>
   </AddText>
 
@@ -195,9 +211,9 @@
     <summary>
       Appends a potentially indented text line to the builder.
     </summary>
-    <param name="$text">The add text.</param>
-    <param name="$addIndent">Indicates if the element can be indented.</param>
-    <param name="$allowNewLine">Indicates if a new line can be added.</param>
+    <param name="text">The add text.</param>
+    <param name="addIndent">Indicates if the element can be indented.</param>
+    <param name="allowNewLine">Indicates if a new line can be added.</param>
     <returns>The potentially indented and wrapped new text value.</returns>
     <ParentGroup>AppendText</ParentGroup>
     <remarks>
@@ -207,36 +223,37 @@
       Line() works the same as Text() except it appends a new line.
     </remarks>
     <code>
-      const tb = new LJCTextBuilder();
+      // Appends a potentially indented text line to the builder.
+      Line()
+      {
+        const tb = new LJCTextBuilder();
+        tb.AddIndent();
 
-      tb.Text("This is an appended line.");
-      tb.AddIndent();
+        // Example Method:
+        // Starts the text with a newline if the builder already has text, param
+        // allowNewLine = true and builder text does not end with a newline.
+        // The text begins with the current indent string if param
+        // addIndent = true.
+        // Ends the text with a newline.
+        tb.Line("First Line");
+        tb.Line("This is some indented text.");
 
-      // Example Method:
-      // Starts the text with a newline if the builder already has text, param
-      // allowNewLine = true and builder text does not end with a newline.
-      // The text begins with the current indent string if param
-      // addIndent = true.
-      // Ends the text with a newline.
-      // Defaults: addIndent = true, allowNewLine = true.
-      tb.Line();
+        const result = tb.ToString();
 
-      tb.Text("This is an indented line.");
-      const result = tb.ToString();
-
-      // result:
-      // This is an appended line.
-      //
-      //   This is an indented line.
+        // result:
+        // "  First Line"
+        // "  This is some indented text."
+        // ""
+      }
     </code>
   </Line>
   <Text>
     <summary>
       Appends the potentially indented text.
     </summary>
-    <param name="$text">The add text.</param>
-    <param name="$addIndent">Indicates if the element can be indented.</param>
-    <param name="$allowNewLine">Indicates if a new line can be added.</param>
+    <param name="text">The add text.</param>
+    <param name="addIndent">Indicates if the element can be indented.</param>
+    <param name="allowNewLine">Indicates if a new line can be added.</param>
     <returns>The potentially indented and wrapped new text value.</returns>
     <ParentGroup>AppendText</ParentGroup>
     <remarks>
@@ -248,35 +265,38 @@
       method.
     </remarks>
     <code>
-      $tb = new LJCTextBuilder();
+      // Appends the potentially indented text.
+      Text()
+      {
+        const tb = new LJCTextBuilder();
+        tb.AddIndent();
 
-      $tb-&gt;Text("This is an appended line.");
-      $tb-&gt;AddIndent();
+        // Example Method:
+        // Starts the text with a newline if the builder already has text, param
+        // allowNewLine = true and builder text does not end with a newline.
+        // The text begins with the current indent string if param
+        // addIndent = true.
+        tb.Text("First Line");
+        tb.Text("This is some indented text.");
 
-      // Example Method:
-      // Starts the text with a newline if the builder already has text, param
-      // allowNewLine = true and builder text does not end with a newline.
-      // The text begins with the current indent string if param
-      // addIndent = true.
-      // Defaults: addIndent = true, allowNewLine = true.
-      $tb-&gt;Text("This is an indented line.");
-      $result = $tb-&gt;ToString();
+        const result = tb.ToString();
 
-      // result:
-      // This is an appended line.
-      //   This is an indented line.
+        // result:
+        // "First Line"
+        // "  This is some indented text."
+      }
     </code>
   </Text>
 
   <!-- Get Text Methods -->
   <GetLine>
     <summary>
-      Gets the potentially indented and wrapped text line.
+      Gets a modified text line.
     </summary>
-    <param name="$text">The text value.</param>
-    <param name="$addIndent">Indicates if the element can be indented.</param>
-    <param name="$allowNewLine">Indicates if a new line can be added.</param>
-    <returns>The potentially indented and wrapped new text value.</returns>
+    <param name="text">The text value.</param>
+    <param name="addIndent">Indicates if the element can be indented.</param>
+    <param name="allowNewLine">Indicates if a new line can be added.</param>
+    <returns>The potentially indented and wrapped new text line.</returns>
     <ParentGroup>GetText</ParentGroup>
     <remarks>
       GetLine() is a "Get Text" method. It creates and returns the potentially
@@ -294,36 +314,37 @@
       GetLine() works the same as GetText() except it appends a new line.
     </remarks>
     <code>
-      const tb = new LJCTextBuilder();
+      // Gets a modified text line.
+      GetLine()
+      {
+        const tb = new LJCTextBuilder();
 
-      tb.AddText("This is an appended line.");
-      tb.AddIndent();
+        tb.AddText("This is an appended line.");
+        tb.AddIndent();
 
-      // Example Method:
-      // Starts the text with a newline if the builder already has text, param
-      // allowNewLine = true and builder text does not end with a newline.
-      // The text begins with the current indent string if param
-      // addIndent = true.
-      // Ends the text with a newline.
-      // Defaults: addIndent = true, allowNewLine = true.
-      const text = tb.GetLine();
-      tb.Text(text, false);
+        // Example Method:
+        // Starts the text with a newline if the builder already has text, param
+        // allowNewLine = true and builder text does not end with a newline.
+        // The text begins with the current indent string if param
+        // addIndent = true.
+        // Ends the text with a newline.
+        let result = tb.GetLine("First Line");
+        result += tb.GetLine("This is some indented text.");
 
-      tb.Text(":");
-      const result = tb.ToString();
-
-      // result:
-      // This is an appended line.
-      //   :
+        // result:
+        // "  First Line"
+        // "  This is some indented text."
+        // ""
+      }
     </code>
   </GetLine>
   <GetText>
     <summary>
       Gets the potentially indented and wrapped text.
     </summary>
-    <param name="$text">The text value.</param>
-    <param name="$addIndent">Indicates if the element can be indented.</param>
-    <param name="$allowNewLine">Indicates if a new line can be added.</param>
+    <param name="text">The text value.</param>
+    <param name="addIndent">Indicates if the element can be indented.</param>
+    <param name="allowNewLine">Indicates if a new line can be added.</param>
     <returns>The potentially indented and wrapped new text value.</returns>
     <ParentGroup>GetText</ParentGroup>
     <remarks>
@@ -340,24 +361,23 @@
       line length is greater than LineLimit.
     </remarks>
     <code>
-      $tb = new LJCTextBuilder();
+      // Gets the potentially indented and wrapped text.
+      GetText()
+      {
+        const tb = new LJCTextBuilder();
+        tb.AddIndent();
 
-      $tb-&gt;Text("This is an appended line.");
-      $tb-&gt;AddIndent();
+        // Example Method:
+        // Starts the text with a newline if the builder already has text, param
+        // allowNewLine = true and builder text does not end with a newline.
+        // The text begins with the current indent string if param
+        // addIndent = true.
+        let result = tb.GetText("First Line");
+        result += tb.GetText("This is some indented text.");
 
-      // Example Method:
-      // Starts the text with a newline if the builder already has text, param
-      // allowNewLine = true and builder text does not end with a newline.
-      // The text begins with the current indent string if param
-      // addIndent = true.
-      // Defaults: addIndent = true, allowNewLine = true.
-      $text = $tb-&gt;GetText("This is an indented line.");
-      $tb-&gt;AddText($text);
-      $result = $tb-&gt;ToString();
-
-      // result:
-      // This is an appended line.
-      //   This is an indented line.
+        // result:
+        // "  First Line  This is some indented text."
+      }
     </code>
   </GetText>
 
@@ -366,25 +386,22 @@
     <summary>
       Gets a new potentially indented line.
     </summary>
-    <param name="$text">The add text.</param>
+    <param name="text">The add text.</param>
     <returns>The potentially indented new text value.</returns>
     <ParentGroup>OtherGetText</ParentGroup>
     <code>
-      $tb = new LJCTextBuilder();
+      // Gets a new potentially indented line.
+      GetIndented()
+      {
+        const tb = new LJCTextBuilder();
+        tb.AddIndent();
 
-      // Example Method:
-      $result = hb-&gt;GetIndented("This text is NOT indented.");
-      $tb-&gt;AddText($result);
+        // Example Method:
+        const result = tb.GetIndented("This is some indented text.");
 
-      $tb-&gt;AddIndent(2);
-      $tb-&gt;AddLine();
-      $result = $tb-&gt;GetIndented("This text is indented.");
-      $tb-&gt;Text($result, addIndent: false);
-      $result = $tb-&gt;ToString();
-
-      // result:
-      // This text is NOT indented.
-      //     This text is indented.
+        // result:
+        // "  This is some indented text."
+      }
     </code>
   </GetIndented>
   <GetIndentString>
@@ -394,47 +411,46 @@
     <returns>The current indent string.</returns>
     <ParentGroup>OtherGetText</ParentGroup>
     <code>
-      $tb = new LJCTextBuilder();
+      // Gets the current indent string.
+      GetIndentString()
+      {
+        const tb = new LJCTextBuilder();
+        tb.AddIndent();
 
-      $tb-&gt;AddIndent();
+        // Example Method:
+        const result = tb.GetIndentString();
 
-      // Example Method:
-      $text = hb-&gt;GetIndentString();
-      $tb-&gt;AddText($text);
-
-      $tb-&gt;AddText(":");
-      $result = hb-&gt;ToString();
-
-      // result:
-      //   :
+        // result:
+        // "  "
+      }
     </code>
   </GetIndentString>
   <GetWrapped>
     <summary>
       Appends added text and new wrapped line.
     </summary>
-    <param name="$text">The text value.</param>
+    <param name="text">The text value.</param>
     <returns>The wrapped string.</returns>
     <ParentGroup>OtherGetText</ParentGroup>
     <remarks>
       Creates new wrapped line if combined line > LineLimit.
     </remarks>
     <code>
-      $tb = new LJCTextBuilder();
-      $tb->WrapEnabled = true;
+      // Appends added text and new wrapped line.
+      GetWrapped()
+      {
+        const tb = new LJCTextBuilder();
+        let text = "This is some wrapped text because it is longer than";
+        text += " 80 characters and then some more just as an example.";
 
-      // Example Method:
-      $tb->AddText("Now is the time for all good men to come to the aid of their");
-      $tb->AddText(" country.");
-      $tb->AddText(" Now is the time for all good men to come to the aid of their");
-      $tb->AddText(" country.");
-      $text = $tb->ToString();
-      $result = $tb->GetWrapped($text);
+        // Example Method:
+        const result = tb.GetWrapped(text);
 
-      // result:
-      // Now is the time for all good men to come to the aid of
-      //  their country. Now is the
-      // time for all good men to come to the aid of their country.
+        // result:
+        // "This is some wrapped text because it is longer than"
+        // " 80 characters and then some"
+        // " more just as an example."
+      }
     </code>
   </GetWrapped>
 
@@ -443,33 +459,39 @@
     <summary>
       Gets common element attributes.
     </summary>
-    <param name="$className">The class attribute.</param>
-    <param name="$id">The id attribute.</param>
+    <param name="className">The class attribute.</param>
+    <param name="id">The id attribute.</param>
     <returns>The common element attributes collection.</returns>
     <ParentGroup>GetAttribs</ParentGroup>
     <code>
-      // Root Method Begin
-      $textState = new LJCTextState();
+      // Gets common element attributes.
+      Attribs()
+      {
+        // Root Method Begin
+        const textState = new LJCTextState();
 
-      $tb = new LJCTextBuilder($textState);
+        const tb = new LJCTextBuilder(textState);
 
-      // Example Method:
-      $className = "className";
-      $id = "id";
-      $attribs = $tb-&gt;Attribs($className, $id);
+        // Example Method:
+        const className = "className";
+        const id = "idName";
+        const attribs = tb.Attribs(className, id);
 
-      $result = $tb-&gt;GetAttribs($attribs, $textState);
+        const dataColumns = attribs.UniqueColumns("id");
+        const attrib = attribs.Retrieve(dataColumns);
+        const result = attrib.Value;
 
-      // result:
-      //  id="id" class="className"
+        // result:
+        // "idName"
+      }
     </code>
   </Attribs>
   <GetAttribs>
     <summary>
       Gets the attributes text.
     </summary>
-    <param name="$htmlAttribs">The attributes collection.</param>
-    <param name="$textState">The current text state values.</param>
+    <param name="attribs">The attributes collection.</param>
+    <param name="textState">The current text state values.</param>
     <returns>The attributes text.</returns>
     <ParentGroup>GetAttribs</ParentGroup>
     <remarks>
@@ -479,20 +501,23 @@
       already has a value.&lt;br /&gt;
     </remarks>
     <code>
-      // Root Method Begin
-      $textState = new LJCTextState();
+      // Gets the attributes text.
+      GetAttribs()
+      {
+        // Root Method Begin
+        const textState = new LJCTextState();
 
-      $tb = new LJCTextBuilder($textState);
+        const tb = new LJCTextBuilder(textState);
+        const attribs = new LJCAttributes();
+        attribs.Add("Attribute1", "One");
+        attribs.Add("Attribute2", "Two");
 
-      $className = "className";
-      $id = "id";
-      $attribs = $tb-&gt;Attribs($className, $id);
+        // Example Method:
+        const result = tb.GetAttribs(attribs, textState);
 
-      // Example Method:
-      $result = $tb-&gt;GetAttribs($attribs, $textState);
-
-      // result:
-      //  id="id" class="className"
+        // result:
+        // ' Attribute1="One" Attribute2="Two"'
+      }
     </code>
   </GetAttribs>
   <StartAttribs>
@@ -502,18 +527,22 @@
     <returns>The HTML element attributes.</returns>
     <ParentGroup>GetAttribs</ParentGroup>
     <code>
-      // Root Method Begin
-      $textState = new LJCTextState();
+      // Creates the XML element attributes.
+      StartAttribs()
+      {
+        // Root Method Begin
+        let textState = new LJCTextState();
 
-      $tb = new LJCTextBuilder($textState);
+        const tb = new LJCTextBuilder(textState);
 
-      // Example Method:
-      $attribs = $tb-&gt;StartAttribs();
+        // Example Method:
+        const attribs = tb.StartAttribs()
+        
+        const result = tb.GetAttribs(attribs, textState);
 
-      $result = $tb-&gt;GetAttribs($attribs, $textState);
-
-      // result:
-      //  lang="en"
+        // result:
+        // " lang=\"en\""
+      }
     </code>
   </StartAttribs>
   <StartXMLAttribs>
@@ -523,49 +552,61 @@
     <returns>The XML start element attributes.</returns>
     <ParentGroup>GetAttribs</ParentGroup>
     <code>
-      // Root Method Begin
-      $textState = new LJCTextState();
+      // Creates the XML element attributes.
+      StartXMLAttribs()
+      {
+        // Root Method Begin
+        const textState = new LJCTextState();
 
-      $tb = new LJCTextBuilder($textState);
+        const tb = new LJCTextBuilder(textState);
 
-      // Example Method:
-      $attribs = $tb-&gt;StartXMLAttribs();
+        // Example Method:
+        const attribs = tb.StartXMLAttribs();
+        
+        const result = tb.GetAttribs(attribs, textState);
 
-      $result = $tb-&gt;GetAttribs($attribs, $textState);
-
-      // result:
-      //  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-      //  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        // result:
+        // " xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\""
+        // " xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\""
+      }
     </code>
   </StartXMLAttribs>
   <TableAttribs>
     <summary>
       Gets common table attributes.
     </summary>
-    <param name="$border">The border attribute.</param>
-    <param name="$borderSpacing">The borderspacing attribute</param>
-    <param name="$cellPadding">The cellpadding attribute</param>
-    <param name="$className">The class attribute.</param>
-    <param name="$id">The id attribute.</param>
+    <param name="border">The border attribute.</param>
+    <param name="borderSpacing">The borderspacing attribute</param>
+    <param name="cellPadding">The cellpadding attribute</param>
+    <param name="className">The class attribute.</param>
+    <param name="id">The id attribute.</param>
     <returns>The common table attributes.</returns>
     <ParentGroup>GetAttribs</ParentGroup>
     <code>
-      // Root Method Begin
-      $textState = new LJCTextState();
+      // Gets common table attributes.
+      TableAttribs()
+      {
+        // Root Method Begin
+        let textState = new LJCTextState();
 
-      $tb = new LJCTextBuilder($textState);
+        const tb = new LJCTextBuilder(textState);
 
-      // Example Method:
-      $border = 1;
-      $cellspacing = 2;
-      $cellpadding = 3;
-      // Defaults: border = 1, borderspacing = 0, cellpadding = 2.
-      $attribs = $tb-&gt;TableAttribs($border, $cellspacing, $cellpadding);
+        // Example Method:
+        const className = "styleClass";
+        const id = "idValue";
+        const border = 1; // Default
+        const borderSpacing = 0; // Default
+        const cellPadding = 2; // Default
+        const attribs = tb.TableAttribs(border, borderSpacing, cellPadding
+        , className, id);
+        
+        const result = tb.GetAttribs(attribs, textState);
 
-      $result = $tb-&gt;GetAttribs($attribs, $textState);
-
-      // result:
-      //  style="border: 1px solid; borderspacing: 2px; cellpadding: 3px;"
+        // result:
+        // " id=\"idValue\" class=\"styleClass\""
+        // " style=\"border: 1px solid; borderspacing: 0px;" // No newline
+        // " cellpadding: 2px;\"" // No newline
+      }
     </code>
   </TableAttribs>
 
@@ -574,13 +615,13 @@
     <summary>
       Appends the element begin tag.
     </summary>
-    <param name="$name">The element name.</param>
-    <param name="$textState">The current text state values.</param>
-    <param name="$attribs">The element attributes.</param>
-    <param name="$addIndent">
+    <param name="name">The element name.</param>
+    <param name="textState">The current text state values.</param>
+    <param name="attribs">The element attributes.</param>
+    <param name="addIndent">
       Indicates if the element can be indented.
     </param>
-    <param name="$childIndent">
+    <param name="childIndent">
       Indicates if the child elements should be indented.
     </param>
     <returns>The added element begin tag.</returns>
@@ -594,34 +635,41 @@
       a value.
     </remarks>
     <code>
-      $textState = new LJCTextState();
-      $tb = new LJCTextBuilder($textState);
+      // Appends the element begin tag.
+      Begin()
+      {
+        // Root Method Begin
+        let textState = new LJCTextState();
 
-      // Example Method:
-      $tb-&gt;Begin("body", $textState);
+        const tb = new LJCTextBuilder(textState);
+        const attribs = tb.Attribs("className");
 
-      $result = $tb-&gt;ToString();
+        // Example Method:
+        tb.Begin("div", textState, attribs);
+        
+        const result = tb.ToString();
 
-      // result:
-      // &amp;lt;body&amp;gt;
+        // result:
+        // "&amp;lt;div class=\"className\"&amp;gt;"
+      }
     </code>
   </Begin>
   <Create>
     <summary>
       Appends an element.
     </summary>
-    <param name="$name">The element name.</param>
-    <param name="$text">The element content text.</param>
-    <param name="$textState">The current text state values.</param>
-    <param name="$htmlAttribs">The element attributes.</param>
-    <param name="$addIndent">
+    <param name="name">The element name.</param>
+    <param name="textState">The current text state values.</param>
+    <param name="text">The element content text.</param>
+    <param name="attribs">The element attributes.</param>
+    <param name="addIndent">
       Indicates if the element can be indented.
     </param>
-    <param name="$childIndent">
+    <param name="childIndent">
       Indicates if the child elements should be indented.
     </param>
-    <param name="$isEmpty">Indicates if an empty element.</param>
-    <param name="$close">Indicates if the element will be closed.</param>
+    <param name="isEmpty">Indicates if an empty element.</param>
+    <param name="close">Indicates if the element will be closed.</param>
     <returns>The added HTML element.</returns>
     <ParentGroup>AppendElement</ParentGroup>
     <remarks>
@@ -633,24 +681,32 @@
       a value.
     </remarks>
     <code>
-      $textState = new LJCTextState();
-      $tb = new LJCTextBuilder($textState);
+      // Appends an element.
+      Create()
+      {
+        // Root Method Begin
+        let textState = new LJCTextState();
 
-      // Example Method:
-      $tb-&gt;Create("p", $textState);
-      $result = $tb-&gt;ToString();
+        const tb = new LJCTextBuilder(textState);
+        const attribs = tb.Attribs("className");
 
-      // result:
-      // &amp;lt;p&amp;gt;&amp;lt;/p&amp;gt;
+        // Example Method:
+        tb.Create("div", textState, null, attribs);
+        
+        const result = tb.ToString();
+
+        // result:
+        // "&amp;lt;div class=\"className\"&amp;gt;"
+      }
     </code>
   </Create>
   <End>
     <summary>
       Appends the element end tag.
     </summary>
-    <param name="$name">The element name.</param>
-    <param name="$textState">The current text state values.</param>"
-    <param name="$addIndent">
+    <param name="name">The element name.</param>
+    <param name="textState">The current text state values.</param>"
+    <param name="addIndent">
       Indicates if the element can be indented.
     </param>
     <returns>The added element end tag.</returns>
@@ -664,15 +720,25 @@
       a value.
     </remarks>
     <code>
-      $textState = new LJCTextState();
-      $tb = new LJCTextBuilder($textState);
+      // Appends the element end tag.
+      End()
+      {
+        // Root Method Begin
+        let textState = new LJCTextState();
 
-      // Example Method:
-      $tb-&gt;End("p", $textState);
-      $result = $tb-&gt;ToString();
+        const tb = new LJCTextBuilder(textState);
+        const attribs = tb.Attribs("className");
+        tb.Begin("div", textState, attribs);
 
-      // result:
-      // &amp;lt;/p&amp;gt;
+        // Example Method:
+        tb.End("div", textState);
+
+        const result = tb.ToString();
+
+        // result:
+        // "&amp;lt;div class=\"className\"&amp;gt;"
+        // "&amp;lt;/div&amp;gt;"
+      }
     </code>
   </End>
 
@@ -681,16 +747,16 @@
     <summary>
       Gets the element begin tag.
     </summary>
-    <param name="$name">The element name.</param>
-    <param name="$textState">The current text state values.</param>
-    <param name="$htmlAttribs">The element attributes.</param>
-    <param name="$addIndent">
+    <param name="name">The element name.</param>
+    <param name="textState">The current text state values.</param>
+    <param name="attribs">The element attributes.</param>
+    <param name="addIndent">
       Indicates if the element can be indented.
     </param>
-    <param name="$childIndent">
+    <param name="childIndent">
       Indicates if the child indent should be applied.
     </param>"
-    <returns>The HTML element begin tag.</returns>
+    <returns>The element begin tag.</returns>
     <ParentGroup>GetElement</ParentGroup>
     <remarks>
       GetBegin() is an "Get Text" method which creates the element opening tag
@@ -701,38 +767,44 @@
       method.
     </remarks>
     <code>
-      $textState = new LJCTextState();
-      $tb = new LJCTextBuilder();
+      // Gets the element begin tag.
+      GetBegin()
+      {
+        // Root Method Begin
+        let textState = new LJCTextState();
 
-      // Example Method:
-      // Starts the text with a newline if the builder already has text, param
-      // allowNewLine = true and builder text does not end with a newline.
-      // The text begins with the current indent string if param
-      // addIndent = true.
-      // Defaults: addIndent = true, allowNewLine = true.
-      $result = $tb-&gt;GetBegin("body", $textState);
+        const tb = new LJCTextBuilder(textState);
 
-      // result:
-      // &amp;lt;body&amp;gt;
+        // Example Method:
+        // Starts the text with a newline if the builder already has text, param
+        // allowNewLine = true and builder text does not end with a newline.
+        // The text begins with the current indent string if param
+        // addIndent = true.
+        const attribs = tb.Attribs("className");
+        const result = tb.GetBegin("div", textState, attribs);
+
+        // result:
+        // "&amp;lt;div class=\"className\"&amp;gt;>"
+      }
     </code>
   </GetBegin>
   <GetCreate>
     <summary>
       Gets an element.
     </summary>
-    <param name="$name">The element name.</param>
-    <param name="$text">The element content text.</param>
-    <param name="$textState">The current text state values.</param>
-    <param name="$htmlAttribs">The element attributes.</param>
-    <param name="$addIndent">
+    <param name="name">The element name.</param>
+    <param name="text">The element content text.</param>
+    <param name="textState">The current text state values.</param>
+    <param name="attribs">The element attributes.</param>
+    <param name="addIndent">
       Indicates if the element can be indented.
     </param>
-    <param name="$childIndent">
+    <param name="childIndent">
       Indicates if the child indent should be applied.
     </param>"
-    <param name="$isEmpty">Indicates if an empty element.</param>
-    <param name="$close">Indicates if the element will be closed.</param>
-    <returns>The HTML element.</returns>
+    <param name="isEmpty">Indicates if an empty element.</param>
+    <param name="close">Indicates if the element will be closed.</param>
+    <returns>The element.</returns>
     <ParentGroup>GetElement</ParentGroup>
     <remarks>
       GetCreate() is a "Get Text" method which creates the element or element
@@ -749,25 +821,30 @@
       not closed.
     </remarks>
     <code>
-      // Root Method Begin
-      $textState = new LJCTextState();
+      // Gets an element.
+      GetCreate()
+      {
+        // Root Method Begin
+        let textState = new LJCTextState();
 
-      $tb = new HTMLBuilder($textState);
+        const tb = new LJCTextBuilder(textState);
 
-      // Example Method:
-      $result = $tb-&gt;GetCreate("p", "", $textState);
+        // Example Method:
+        const attribs = tb.Attribs("className");
+        const result = tb.GetCreate("div", null, textState, attribs);
 
-      // result:
-      // &amp;lt;p&amp;gt;&amp;lt;/p&amp;gt;
+        // result:
+        // "&amp;lt;div class=\"className\"&amp;gt;&amp;lt;/div&amp;gt;"
+      }
     </code>
   </GetCreate>
   <GetEnd>
     <summary>
       Gets the element end tag.
     </summary>
-    <param name="$name">The element name.</param>
-    <param name="$textState">The current text state values.</param>
-    <param name="$addIndent">
+    <param name="name">The element name.</param>
+    <param name="textState">The current text state values.</param>
+    <param name="addIndent">
       Indicates if the element can be indented.
     </param>
     <returns>The element end tag.</returns>
@@ -777,16 +854,24 @@
       and returns the text value.
     </remarks>
     <code>
-      // Root Method Begin
-      $textState = new LJCTextState();
+      // Gets the element end tag.
+      GetEnd()
+      {
+        // Root Method Begin
+        let textState = new LJCTextState();
 
-      $tb = new LJCTextBuilder($textState);
+        const tb = new LJCTextBuilder(textState);
+        const attribs = tb.Attribs("className");
+        let result = tb.GetBegin("div", textState, attribs);
+        result += "\r\n";
 
-      // Example Method:
-      $result = $tb-&gt;GetEnd("p", $textState);
+        // Example Method:
+        result += tb.GetEnd("div", textState);
 
-      // result:
-      // &amp;lt;/p&amp;gt;
+        // result:
+        // "&amp;lt;div class=\"className\"&amp;gt;"
+        // "&amp;lt;/div&amp;gt;"
+      }
     </code>
   </GetEnd>
 
@@ -795,8 +880,8 @@
     <summary>
       Adds the new (child) indents.
     </summary>
-    <param name="$createText">The previously created text.</param>
-    <param name="$textState">The text state object.</param>
+    <param name="createText">The previously created text.</param>
+    <param name="textState">The text state object.</param>
     <ParentGroup>Other</ParentGroup>
     <remarks>
       Adds an indent for following child elements.&lt;br /&gt;
@@ -838,40 +923,24 @@
     <summary>
       Changes the IndentCount by the provided value.
     </summary>
-    <param name="$increment">
+    <param name="increment">
       The amount to increment or decrement the indent count.
     </param>
     <returns>The current indent count.</returns>
     <ParentGroup>Other</ParentGroup>
     <code>
-      $tb = new LJCTextBuilder();
+      // Changes the IndentCount by the provided value.
+      AddIndent()
+      {
+        const tb = new LJCTextBuilder();
 
-      // Example Method:
-      // The builder keeps track of the current number of indents.
-      // Adds 1 indent by default.
-      $tb-&gt;AddIndent();
+        // Example Method:
+        tb.AddIndent(2);
+        const result = tb.GetText("This is indented text.");
 
-      // Adds text without modification.
-      $tb-&gt;AddText("This text is not indented.");
-
-      // Starts the text with a newline if the builder already has text, param
-      // allowNewLine = true and builder text does not end with a newline.
-      // The text begins with the current indent string if param
-      // addIndent = true.
-      // Defaults: addIndent = true, allowNewLine = true.
-      $tb-&gt;Text("This text is indented.");
-
-      // No Indent
-      $tb-&gt;Text("Not indented.", addIndent: false);
-
-      // Do not start a newline.
-      $tb-&gt;AddText(" No start with newline.");
-      $result = hb-&gt;ToString();
-
-      // result:
-      // This text is not indented.
-      //   This text is indented.
-      // Not indented. No start with newline.
+        // result:
+        // "    This is indented text."
+      }
     </code>
   </AddIndent>
   <EndsWithNewLine>
@@ -883,14 +952,18 @@
     </returns>
     <ParentGroup>Other</ParentGroup>
     <code>
-      $tb = new LJCTextBuilder();
+      // Indicates if the builder text ends with a newline.
+      EndsWithNewLine()
+      {
+        const tb = new LJCTextBuilder();
+        tb.Text("This text ends with a newline.\r\n");
 
-      // Example Method:
-      $retValue = hb-&gt;EndsWithNewLine();
-      $result = $retValue ? "true" : "false";
+        // Example Method:
+        const result = tb.EndsWithNewLine();
 
-      // result:
-      // "false"
+        // result:
+        // "true"
+      }
     </code>
   </EndsWithNewLine>
   <GetTextState>
@@ -900,14 +973,19 @@
     <returns>An LJCTextState object.</returns>
     <ParentGroup>Other</ParentGroup>
     <code>
-      $tb = new LJCTextBuilder();
+      // Gets a current LJCTextState object.
+      GetTextState()
+      {
+        const tb = new LJCTextBuilder();
 
-      $textState = $tb->GetTextState();
-      $retValue = $textState->getIndentCount();
-      $result = strval($retValue);
+        // Example Method:
+        const textState = tb.GetTextState();
 
-      // result:
-      // "0";
+        const result = textState.getIndentCount();
+
+        // result:
+        // 0;
+      }
     </code>
   </GetTextState>
   <HasText>
@@ -917,15 +995,18 @@
     <returns>true if builder has text; otherwise false.</returns>
     <ParentGroup>Other</ParentGroup>
     <code>
-      $textState = new LJCTextState();
-      $tb = new LJCTextBuilder();
+      // Indicates if the builder has text.
+      HasText()
+      {
+        const tb = new LJCTextBuilder();
+        tb.Text("This is some text.");
 
-      // Example Method:
-      $retValue = $tb->HasText();
-      $result = $retValue ? "true" : "false";
+        // Example Method:
+        const result = tb.HasText();
 
-      // result:
-      // "false"
+        // result:
+        // "true"
+      }
     </code>
   </HasText>
   <IndentLength>
@@ -935,34 +1016,49 @@
     <returns>The current indent length.</returns>
     <ParentGroup>Other</ParentGroup>
     <code>
-      $tb = new LJCTextBuilder();
+      // Gets the current indent length.
+      IndentLength()
+      {
+        const tb = new LJCTextBuilder();
+        tb.AddIndent(2);
 
-      // Example Method:
-      $tb->AddIndent();
-      $retValue = $tb->IndentLength();
-      $result = strval($retValue);
+        // Example Method:
+        const result = tb.IndentLength();
 
-      // result:
-      // 2
+        // result:
+        // 4
+      }
     </code>
   </IndentLength>
   <StartWithNewLine>
     <summary>
       Checks if the text can start with a newline.
     </summary>
-    <param name="$allowNewLine">Indicates if a new line can be added.</param>
+    <param name="allowNewLine">Indicates if a new line can be added.</param>
     <returns>true if allowed to start with a newline; otherwise false.</returns>
     <ParentGroup>Other</ParentGroup>
     <code>
-      $tb = new LJCTextBuilder();
+      // Checks if the text can start with a newline.
+      StartWithNewLine()
+      {
+        const tb = new LJCTextBuilder();
+        tb.Text("First Line");
+        const allowNewLine = true;
 
-      // Example Method:
-      $allowNewLine = true;
-      $retValue = hb-&gt;StartWithNewLine($allowNewLine);
-      $result = $retValue ? "true" : "false";
+        // Example Method:
+        let result = tb.StartWithNewLine(allowNewLine);
 
-      // result:
-      // "false"
+        // result:
+        // true
+
+        tb.Line();
+
+        // Example Method:
+        result = tb.StartWithNewLine(allowNewLine);
+
+        // result:
+        // false
+      }
     </code>
   </StartWithNewLine>
   
@@ -971,5 +1067,20 @@
     <summary>
       Gets the indent count.
     </summary>
+    <code>
+      // Gets the indent count.
+      getIndentCount()
+      {
+        const textBuilder = new LJCTextBuilder();
+        //textBuilder.setIndentCount(2);
+        textBuilder.AddIndent(2);
+
+        // Example Method:
+        const result = textBuilder.getIndentCount();
+        
+        // result:
+        // 2s
+      }
+    </code>
   </getIndentCount>
 </members>
