@@ -49,7 +49,7 @@
       //$this->Debug->Write(__line__." Var = {$this->Var}");
       //LJC::Debug(__line__, "Var", $this->Var);
       
-      $this->GenDocConfig =new LJCGenDocConfig();
+      $this->GenDocConfig = new LJCGenDocConfig();
       $this->DocDataGen = new LJCDocDataGen();
       $this->GenDataGen = new LJCGenDataGen();
     } // __construct()

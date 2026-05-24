@@ -43,8 +43,8 @@ copy LJCCollectionLib.php %servicePath%
 copy LJCCommonLib.php %servicePath%
 copy LJCDataManagerLib.php %servicePath%
 copy LJCDBAccessLib.php %servicePath%
-copy LJCHTMLBuilderLib.php %servicePath%
 copy LJCHTMLTableLib.php %servicePath%
 copy LJCRoot.php %servicePath%
+copy LJCTextBuilderLib.php %servicePath%
 copy LJCTextLib.php %servicePath%
 copy Templates\*.* %servicePath%\Templates\

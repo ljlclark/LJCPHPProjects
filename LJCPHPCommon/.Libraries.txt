@@ -1,0 +1,54 @@
+*** Common Library Files
+   _File_                   _Class_                              _Description_
+1  LJCRoot.php
+2  LJCCommonLib.php*       (LJC, Output)                         Common Class Library
+3  LJCCollectionLib.php*   (LJCCollectionBase)                   Collection Class Library
+4  LJCTextBuilderLib.php*  (LJCAttribute, LJCAttributes,         Text Builder Class Library
+                            LJCTextBuilder, LJCTextState)
+5  LJCHTMLLib.php*         (LJCHTML)                             HTML Section Generator Class Library
+6  LJCDataConfigLib.php*   (LJCDataConfigs)                      Data Configuration Class Library
+7  LJCDBAccessLib.php*     (LJCConnectionValues, LJCDataAccess,  PDO Data Access Class Library
+                            LJCDataColumn, LJCDataColumns
+                            LJCJoin, LJCJoins,
+                            LJCJoinOn, LJCJoinOns)
+8  LJCDataManagerLib.php*  (LJCDataManager, LJCSQLBuilder)       Data Manager Class Library
+9  LJCTextReaderLib.php    (LJCTextReader)                       Text Reader Class Library
+10 LJCTextRangesLib.php    (LJCTextRanges)                       Text Ranges Class Library
+11 LJCHTMLTableLib.php*    (LJCHTMLTable)                        HTML Table Generator Class Library
+12 LJCTableServiceLib.php  (LJCTableService)
+13 LJCDataServiceLib.php   (LJCDataService)
+                           24 Classes
+
+*** Other Library Files
+   _File_                  _Class_                                _Description_
+14 LJCTextLib.php*         (LJCStringBuilder, LJCHTMLTableColumn, Common Text Output Class Library
+                            LJCHTMLWriter, LJCWriter)
+15 LJCCommonFileLib.php*   (LJCCommonFile)                        Common File Class Library
+16 LJCTextFileLib.php*     (LJCFileWriter, LJCDebugWriter)        Text File Class Library
+17 LJCDebugLib.php         (LJCDebug)
+                           8 Classes
+
+Utilities
+*** GenDoc
+- Create DocData XML
+   _File_                    _Class_                                    _Description_
+1  LJCDocDataGenLib.php      (LJCDocDataGen)                            DocData Generator Class Library
+2   LJCDocDataLib.php        (LJCDocDataFile                            DocData Class Library
+  			                      LJCDocDataClass, LJCDocDataClasses
+                              LJCDocDataMethod, LJCDocDataMethods
+                              LJCDocDataParam, LJCDocDataParams
+                              LJCDocDataProperty, LJCDocDataProperties  
+3   LJCCommentsLib.php       (LJCComments)                              XML Comments Class Library
+4   LJCIncludeLib.php        (LJCInclude)                               Include File Class Library
+5   LJCParamCommentLib.php   (LJCParamComment)			                    Parameters Class Library
+                             13 Classes
+
+- Create GenData XML
+6  LJCGenDataGenLib.php     (LJCGenDataGen)                            GenData Generator Class Library
+7    LJCGenDataXMLLib.php   (LJCGenDataXML)                            GenData XML Class Library
+
+- Generate Doc HTML
+8  GenCodeDocFiles.php                                                 Generate HTML Doc Program
+     GenCodeSourceFileList.txt                                         List of files for which to generate HTML.
+9  GenCodeDocLib.php        (GenCodeDoc)                               Generate HTML Doc Class Library 
+10   LJCGenDocConfigLib.php (LJCGenDocConfig)

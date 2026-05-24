@@ -32,8 +32,8 @@
         , "w", false);
       $this->Debug->IncludePrivate = true;
 
-      $this->DocDataXMLPath = "";
-      $this->GenDataXMLPath = "";
+      $this->DocDataXMLPath = "XMLDocData";
+      $this->GenDataXMLPath = "XMLGenData";
       $this->OutputPath = "";
       $this->WriteDocDataXML = false;
       $this->WriteGenDataXML = false;

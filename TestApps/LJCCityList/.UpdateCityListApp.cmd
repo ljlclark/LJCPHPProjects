@@ -1,8 +1,8 @@
-set linePath="\Users\Les\Documents\Visual Studio 2022\wwwrootDev\LJCDataTableTestApp"
+set linePath="\Users\Les\Documents\Visual Studio 2022\LJCPHPProjectsDev\TestApps"
 set projectPath=%linePath%\LJCCityList
 
 cd %projectPath%
-rem 1\2Users\3Les\4Documents\5Visual Studio 2022\6wwwrootDev\7LJCDataTableTestApp\8LJCCityList
+rem 1\2Users\3Les\4Documents\5Visual Studio 2022\6LJCPHPProjectsDev\7TestApps\8LJCCityList
 set root=..\..\..\..\..\..\..
 set servicePath=%root%\inetpub\wwwroot\ATestForm\CityList
 copy LJCCityList.html %servicePath%
@@ -22,6 +22,7 @@ copy LJCCityTableEvents.js %servicePath%
 copy LJCCityTableEventsArgs.js %servicePath%
 copy LJCCityTableService.php %servicePath%
 copy LJCRegionDAL.js %servicePath%
+copy LJCTableService.php %servicePath%
 
 cd ..\RegionList
 set servicePath=%root%\inetpub\wwwroot\ATestForm\CityList\RegionList
@@ -31,11 +32,13 @@ copy LJCRegionDetailEvents.js %servicePath%
 copy LJCRegionTableEvents.js %servicePath%
 copy LJCRegionTableService.php %servicePath%
 
-rem 1\2Users\3Les\4Documents\5Visual Studio 2022\6wwwrootDev\7LJCJSCommon
+rem 1\2Users\3Les\4Documents\5Visual Studio 2022\6LJCPHPProjectsDev\7LJCJSCommon
 cd ..\..\..\LJCJSCommon
 set root=..\..\..\..\..\..
 set servicePath=%root%\inetpub\wwwroot\LJCJSCommon
-copy LJCDataLib.js %servicePath%
+rem LJCDataLib.js %servicePath%
+copy LJCDBAccessLib.js %servicePath%
+copy LJCCollectionLib.js %servicePath%
 copy LJCCommonLib.js %servicePath%
 
 cd ..\LJCPHPCommon
@@ -45,14 +48,15 @@ copy LJCCollectionLib.php %servicePath%
 copy LJCCommonLib.php %servicePath%
 copy LJCDataManagerLib.php %servicePath%
 copy LJCDBAccessLib.php %servicePath%
-copy LJCHTMLBuilderLib.php %servicePath%
 copy LJCHTMLTableLib.php %servicePath%
 copy LJCRoot.php %servicePath%
+copy LJCTextBuilderLib.php %servicePath%
 copy LJCTextLib.php %servicePath%
 
-rem 1\2Users\3Les\4Documents\5Visual Studio 2022\6wwwrootDev\7RegionApp\8City
-cd ..\RegionApp\City
-set root=..\..\..\..\..\..\..
+rem 1\2Users\3Les\4Documents\5Visual Studio 2022\6LJCPHPProjectsDev\7TestApps\8RegionApp\9City
+cd ..\TestApps\RegionApp\City
+set root=..\..\..\..\..\..\..\..
 set servicePath=%root%\inetpub\wwwroot\RegionApp\City
 copy CityDAL.php %servicePath%
 copy RegionDAL.php %servicePath%
+

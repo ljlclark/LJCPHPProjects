@@ -201,7 +201,7 @@
     } // GetComment()
 
     // Gets the begin tag.
-    private  function GetLineBeginTag(string $line): ?string
+    private function GetLineBeginTag(string $line): ?string
     {
       $enabled = false;
       $this->Debug->BeginPrivateMethod("GetLineBeginTag", $enabled);
